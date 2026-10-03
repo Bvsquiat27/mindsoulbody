@@ -168,19 +168,15 @@ body{background:radial-gradient(ellipse 58% 25% at 50% -6%,var(--app-glow),trans
 .msg-mine .msg-bubble{background:#17262a;color:#f3ead6}
 .msg-bubble p{margin:0 0 4px;white-space:pre-wrap}
 .msg-bubble small{opacity:.75}
-.bible-log-btn.bible-logged{background:#dcbf84;color:#17262a;border-color:#dcbf84}
-.bible-log-wrap{display:flex;flex-direction:column;align-items:center;gap:5px}
-.bible-log-btn{position:relative;overflow:hidden;padding:7px 15px;border-radius:999px;border:1px solid rgba(146,110,38,.55);background:linear-gradient(135deg,#f6e3b4 0%,#dcbf84 45%,#c9a227 100%);color:#17262a;font-weight:700;font-size:.88rem;letter-spacing:.02em;text-shadow:0 1px 0 rgba(255,255,255,.35);box-shadow:0 4px 12px rgba(0,0,0,.3),0 0 0 3px rgba(220,191,132,.14),inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(120,86,20,.3);cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
-.bible-log-btn::after{content:"";position:absolute;top:0;bottom:0;left:0;width:45%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-160%) skewX(-18deg);animation:bibleLogShine 3.2s ease-in-out infinite;pointer-events:none}
-@keyframes bibleLogShine{0%,55%{transform:translateX(-160%) skewX(-18deg)}85%,100%{transform:translateX(340%) skewX(-18deg)}}
-.bible-log-btn:hover{transform:translateY(-1px);filter:brightness(1.05);box-shadow:0 14px 28px rgba(0,0,0,.4),0 0 0 5px rgba(220,191,132,.22),inset 0 1px 0 rgba(255,255,255,.8),inset 0 -2px 0 rgba(120,86,20,.35)}
-.bible-log-btn:active{transform:translateY(1px) scale(.98);box-shadow:0 5px 14px rgba(0,0,0,.3),0 0 0 3px rgba(220,191,132,.18),inset 0 1px 0 rgba(255,255,255,.6)}
-.bible-log-btn:focus-visible{outline:3px solid #dcbf84;outline-offset:3px}
-.bible-log-btn.bible-logged{background:linear-gradient(135deg,#22383f,#17262a);color:#dcbf84;border:1px solid #dcbf84;text-shadow:0 0 8px rgba(220,191,132,.35);box-shadow:0 8px 20px rgba(0,0,0,.35),0 0 0 4px rgba(220,191,132,.14),inset 0 1px 0 rgba(220,191,132,.25)}
-.bible-log-btn.bible-logged::after{animation:none;opacity:0}
-.bible-log-progressbar{display:block;width:min(180px,60vw);height:5px;border-radius:99px;background:rgba(220,191,132,.22);overflow:hidden}
-.bible-log-progressbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#f0d9a0,#dcbf84,#b8934a);box-shadow:0 0 6px rgba(220,191,132,.55);transition:width .5s ease}
-.bible-log-progress{opacity:.85;letter-spacing:.05em;text-transform:uppercase;font-size:.68rem;font-weight:700}
+.bible-log-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+.bible-log-btn{padding:6px 12px;min-height:0;border-radius:10px;background:#233438;color:var(--text);border:1px solid #6580786b;font-weight:600;font-size:.82rem;cursor:pointer;transition:border-color .15s ease,background .15s ease,color .15s ease}
+.bible-log-btn:hover{border-color:var(--gold)}
+.bible-log-btn:active{transform:scale(.98)}
+.bible-log-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.bible-log-btn.bible-logged{background:#10423e;border-color:#2fe0cf66;color:#e8f7f2}
+.bible-log-progressbar{display:block;width:min(140px,50vw);height:4px;border-radius:99px;background:#ffffff1f;overflow:hidden}
+.bible-log-progressbar i{display:block;height:100%;border-radius:99px;background:#2fe0cf;transition:width .5s ease}
+.bible-log-progress{opacity:.75;letter-spacing:.04em;text-transform:uppercase;font-size:.64rem;font-weight:600}
 .ach-pop{position:fixed;top:14px;left:50%;transform:translate(-50%,-140%);z-index:9999;display:flex;gap:12px;align-items:center;max-width:min(92vw,430px);background:linear-gradient(135deg,#22383f,#17262a);color:#f3ead6;border:2px solid #dcbf84;border-radius:16px;padding:12px 16px;box-shadow:0 14px 34px rgba(0,0,0,.5);transition:transform .45s cubic-bezier(.2,1.4,.4,1),opacity .3s ease;opacity:0}
 .ach-pop-in{transform:translate(-50%,0);opacity:1}
 .ach-pop-out{transform:translate(-50%,-140%);opacity:0}
