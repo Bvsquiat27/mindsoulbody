@@ -347,6 +347,20 @@ window.BibleGames = (() => {
       return `<button class="secondary gx-level${n === sel ? ' active' : ''}" data-gx="lvl-pick" data-show-key="${show}" data-level="${n}"${locked ? ' disabled' : ''}>${locked ? '🔒 ' : ''}Level ${n}${beaten ? ' ✓' : ''}</button>`;
     }).join('')}</div><p class="small muted gx-levelnote">${esc(gxLevelNote(show, sel))}</p>`;
   }
+  function gxStartSolo(show) {
+    /* The canonical solo entry for each game (rooms and Next Level share it).
+       Two-player modes restart in the same seats the player just used. */
+    if (show === 'jeopardy') jeopardyStart(G && (G.mode === '2p' || G.mode === 'pc') ? G.mode : 'solo');
+    else if (show === 'millionaire') millionaireStart();
+    else if (show === 'feud') feudStart(G && G.mode === 'teams' ? 'teams' : 'pc');
+    else if (show === 'sound') soundStart('solo');
+    else if (show === 'babel') babelStart();
+    else faithStart();
+  }
+  function gxNextLevelButton(beaten) {
+    if (!beaten || !G || !G.runLevel || G.runLevel >= 5) return '';
+    return `<button class="primary" data-gx="next-level">Next level ${G.runLevel + 1} →</button>`;
+  }
   function gxLevelBanner(show, level, beaten) {
     if (!beaten || !level) return '';
     return level >= 5
@@ -602,6 +616,7 @@ window.BibleGames = (() => {
         <p>${G.seats.map(s => `${esc(s.name)}: <strong>${s.score}</strong>`).join(' · ')}</p>
         <p class="muted">The final response was: ${esc((G.fin || bank.jeopardyFinal).answer)} (${esc((G.fin || bank.jeopardyFinal).reference)})</p>
         ${gxLevelBanner('jeopardy', lvl, beat)}${lvl && !beat ? `<p class="muted">Finish above zero after Final Jeopardy to beat Level ${lvl}.</p>` : ''}
+        ${gxNextLevelButton(beat)}
         <button class="primary" data-gx="show-menu" data-show="jeopardy">Play again</button>
         <button class="secondary" data-gx="hub">All games</button>
       </section>`);
@@ -734,6 +749,7 @@ window.BibleGames = (() => {
         <h2>${wonAll ? `${esc(G.name)} — you did it!` : beat ? `${esc(G.name)} banked ${money(won)}` : `You leave with ${money(won)}`}</h2>
         <p>${wonAll ? 'Fifteen questions, answered in faith and knowledge. A perfect game.' : beat ? `You reached question ${G.targetRung} of the ladder — Level ${G.runLevel} is beaten and the money is yours to keep.` : `You reached question ${G.rung}${G.runLevel ? ` of ${G.targetRung}` : ' of 15'}. The guaranteed amount is yours to keep.`}</p>
         ${gxLevelBanner('millionaire', G.runLevel, beat)}
+        ${gxNextLevelButton(beat)}
         <button class="primary" data-gx="show-menu" data-show="millionaire">Play again</button>
         <button class="secondary" data-gx="hub">All games</button>
       </section>`);
@@ -1314,6 +1330,7 @@ window.BibleGames = (() => {
         <h2>${over ? (champs.length > 1 ? 'A tie game!' : `${esc(champs[0].name)} win${G.seats.length > 1 && champs[0].pc ? 's' : ''} the Feud!`) : `${esc(G.seats[G.roundWinner].name)} take round ${G.round}`}</h2>
         <p>${esc(G.lastEvent)}</p>
         ${lvlLine}
+        ${gxNextLevelButton(over && !!G.levelDone)}
         <p>${G.seats.map(s => `${esc(s.name)}: <strong>${s.score}</strong>`).join(' · ')}</p>
         ${over
           ? `<button class="primary" data-gx="show-menu" data-show="feud">Play again</button> <button class="secondary" data-gx="hub">All games</button>`
@@ -1589,6 +1606,7 @@ window.BibleGames = (() => {
         <p>${G.seats.map(s => `${esc(s.name)}: <strong>${s.score}</strong>`).join(' · ')}</p>
         <p class="muted">${blurb}</p>
         ${extra}
+        ${gxNextLevelButton(G.mode === 'solo' && (G.runLevel || 0) > 0 && (G.decoded || 0) >= 7)}
         <button class="primary" data-gx="show-menu" data-show="sound">Play again</button>
         <button class="secondary" data-gx="hub">All games</button>
       </section>`);
@@ -1821,6 +1839,7 @@ window.BibleGames = (() => {
         ${vic ? gxLevelBanner('babel', G.runLevel, true) : ''}
         ${vic && G.runLevel >= 5 ? `<p class="lead">👑 Babel master — all five levels beaten.</p>` : ''}
         <p class="muted">Best on this device: <strong>${b.best} points</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'}.</p>
+        ${gxNextLevelButton(vic)}
         <button class="primary" data-gx="show-menu" data-show="babel">Build again</button>
         <button class="secondary" data-gx="hub">All games</button>
       </section>`);
@@ -2036,6 +2055,7 @@ window.BibleGames = (() => {
         ${beaten ? '' : `<p class="muted">Get ${G.plan.pass} right to beat Level ${G.runLevel}. Replay the same level until the first sentence comes fast.</p>`}
         ${beaten && G.runLevel >= 5 ? `<p class="lead">Defender trained: all five levels beaten.</p>` : ''}
         <p class="muted">Best score on this device: <strong>${b.best} points</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'}.</p>
+        ${gxNextLevelButton(beaten)}
         <button class="primary" data-gx="show-menu" data-show="${show}">Play again</button>
         <button class="secondary" data-gx="hub">All games</button>
       </section>`);
@@ -2119,6 +2139,15 @@ window.BibleGames = (() => {
       return;
     }
     if (action === 'room-create') { roomCreate(btn.dataset.showKey); return; }
+    if (action === 'next-level') {
+      if (!G) return;
+      const show = G.show, next = (G.runLevel || 1) + 1;
+      if (next > 5) return;
+      if (gxRoom) leaveRoomQuiet();
+      gxLevelSel[show] = next;
+      gxStartSolo(show);
+      return;
+    }
     if (action === 'room-join') { roomJoin(); return; }
     if (action === 'room-start') { roomStartMatch(); return; }
     if (action === 'room-play') { roomPlay(); return; }
