@@ -83,7 +83,7 @@ const MSB_UNSCORED='Answer keys were kept on the old server, so answers cannot b
 async function localApi(path,method='GET',body){
   const clean=path.split('?')[0],store=msbStore(),p=store.profile;
   if(clean==='/study/library'){if(!msbLibraryCache)msbLibraryCache=await msbBundled('data/study-library.json');return msbLibraryCache}
-  if(clean==='/study/challenges'){if(!msbChallengesCache){const res=await fetch('data/study-challenges.json',{cache:'force-cache'});if(!res.ok)throw Error(`Bundled content is missing (${res.status}).`);msbChallengesCache=await res.json()}return msbChallengesCache}
+  if(clean==='/study/challenges'){if(!msbChallengesCache){const res=await fetch('data/study-challenges.json',{cache:'no-store'});if(!res.ok)throw Error(`Bundled content is missing (${res.status}).`);msbChallengesCache=await res.json()}return msbChallengesCache}
   if(clean==='/study/trivia'){if(!msbTriviaCache)msbTriviaCache=await msbBundled('data/trivia.json');return msbTriviaCache}
   if(clean==='/auth/reset-config')return{enabled:false};
   if(clean==='/auth/session')return{user:store.signedOut?null:{id:p.id,registered:true}};
@@ -112,4 +112,6 @@ async function localApi(path,method='GET',body){
 async function api(path,method='GET',body){if(MSB_LOCAL)return localApi(path,method,body);try{return await apiRemote(path,method,body)}catch(error){if(error?.status===404||error?.status===501||error?.offline){MSB_LOCAL=true;return localApi(path,method,body)}throw error}}
 
 /* PWA: offline shell + install support */
-if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("./sw.js").catch(function(){})})}
+let msbReloaded=false;function msbFreshReload(){if(msbReloaded)return;msbReloaded=true;location.reload()}
+window.addEventListener("pageshow",function(event){if(event.persisted)msbFreshReload()});
+if("serviceWorker" in navigator){const msbHadController=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener("controllerchange",function(){if(msbHadController)msbFreshReload()});window.addEventListener("load",function(){navigator.serviceWorker.register("./sw.js").catch(function(){})})}

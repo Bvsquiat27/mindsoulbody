@@ -3,7 +3,7 @@
    deploys land immediately (no stale-build trap). Bible/study JSON under
    bible/ and data/ is CACHE-FIRST (versioned with the deploy) and lazy-cached
    per book on first read. Bump CACHE_VERSION to force a clean precache. */
-const CACHE_VERSION = 'v18';
+const CACHE_VERSION = 'v19';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 
@@ -39,8 +39,8 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-const isDataRequest = (url) =>
-  url.pathname.includes('/bible/') || url.pathname.includes('/data/');
+const isBibleRequest = (url) => url.pathname.includes('/bible/');
+const isDataRequest = (url) => url.pathname.includes('/data/');
 
 self.addEventListener('fetch', (event) => {
   const { request } = event;
@@ -48,8 +48,8 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  if (isDataRequest(url)) {
-    // Cache-first for verse/study JSON; populate on first fetch.
+  if (isBibleRequest(url)) {
+    // Cache-first for verse JSON (the text never changes); populate on first fetch.
     event.respondWith(
       caches.match(request).then((hit) => hit || fetch(request).then((res) => {
         if (res.ok) {
@@ -58,6 +58,23 @@ self.addEventListener('fetch', (event) => {
         }
         return res;
       }))
+    );
+    return;
+  }
+
+  if (isDataRequest(url)) {
+    // Network-first for study/game JSON so content and answer-key updates
+    // can never be served stale; fall back to cache when offline.
+    event.respondWith(
+      fetch(request)
+        .then((res) => {
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(DATA_CACHE).then((cache) => cache.put(request, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(request))
     );
     return;
   }
