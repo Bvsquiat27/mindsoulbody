@@ -108,3 +108,32 @@ h3{font-size:5.6vw}
 .section-head{margin:9.2vw 0 4.3vw}
 input,textarea,select{font-size:4.15vw}
 }
+
+/* MSB phone sizing v9: Angel confirmed it is NOT Chrome 'Desktop site'. The current build's type scale is simply smaller than his reference render, so on touch devices the phone sizing is now unconditional (any layout width, any rotation) and boosted ~15% past phone-equivalent. Supersedes v6-v8 blocks above. */
+@media (pointer:coarse){
+body{font-size:4.5vw}
+h1{font-size:10.6vw}
+h2{font-size:6.7vw}
+h3{font-size:6.1vw}
+.lead{font-size:4.75vw}
+.small{font-size:3.6vw}
+.eyebrow,.nav-caption{font-size:3.1vw}
+#screen{padding:7vw 5vw calc(34vw + env(safe-area-inset-bottom))}
+.topbar{height:17vw;padding:0 5vw}
+.mobile-brand{font-size:5.6vw}
+.mobile-brand .brand-mark{width:9vw;height:9vw;font-size:6.7vw;border-radius:3.1vw}
+.account-button{width:11.7vw;height:11.7vw;font-size:6.1vw}
+.card{padding:7vw;border-radius:6.1vw}
+.daily-stack{min-height:82vw;padding:7vw 7vw 20vw;border-radius:7.5vw}
+.daily-stack h2{font-size:11.5vw}
+.verse-play{width:12.3vw;height:12.3vw;right:5.6vw;bottom:5vw}
+.neon-stat{padding:6.5vw;min-height:44vw}
+.neon-stat strong{font-size:14.5vw}
+.primary,.secondary{min-height:12.5vw;padding:3.4vw 5vw}
+.bottom-nav{padding:2.3vw 2.3vw calc(2.7vw + env(safe-area-inset-bottom));border-radius:6.1vw 6.1vw 0 0}
+.bottom-nav button{min-height:15.6vw;border-radius:4.7vw}
+.bottom-nav button svg{width:6.4vw;height:6.4vw}
+.bottom-nav button small{font-size:3.3vw}
+.section-head{margin:10vw 0 4.7vw}
+input,textarea,select{font-size:4.5vw}
+}
