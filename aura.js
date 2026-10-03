@@ -213,6 +213,9 @@ async function msbAchievementsCompute(){
   const sumBooks=ids=>ids.reduce((n,id)=>n+(perBook[id]||0),0);
   const totalBooks=ids=>ids.reduce((n,id)=>n+bookTotal(books[id-1]),0);
   const gospelIds=[40,41,42,43],ntIds=Array.from({length:27},(_,i)=>40+i),allIds=books.map(b=>b.id);
+  /* A book counts only when every chapter in it is logged — Matthew 1 alone
+     is not "the Gospel read". Book achievements count finished books. */
+  const booksFinished=ids=>ids.filter(id=>{const t=bookTotal(books[id-1]);return t>0&&(perBook[id]||0)>=t}).length;
   const studiesTotal=Array.isArray(state.studies)&&state.studies.length?state.studies.length:6;
   const days=new Set();
   for(const l of store.readLog||[])if(l.ts)days.add(new Date(l.ts*1000).toDateString());
@@ -222,7 +225,7 @@ async function msbAchievementsCompute(){
   const cur={
     'first-chapter':(store.readLog||[]).length,'chapters-10':(store.readLog||[]).length,'chapters-50':(store.readLog||[]).length,'chapters-100':(store.readLog||[]).length,'chapters-250':(store.readLog||[]).length,
     'psalms-25':perBook[19]||0,'psalms-all':[perBook[19]||0,bookTotal(books[18])||150],
-    'gospels-all':[sumBooks(gospelIds),totalBooks(gospelIds)||89],'nt-all':[sumBooks(ntIds),totalBooks(ntIds)||260],'bible-all':[sumBooks(allIds),totalBooks(allIds)||1336],
+    'gospels-all':[booksFinished(gospelIds),4],'nt-all':[booksFinished(ntIds),27],'bible-all':[booksFinished(allIds),books.length||78],
     'studies-1':(store.progress||[]).filter(p=>p.completed_at).length,'studies-all':[(store.progress||[]).filter(p=>p.completed_at).length,studiesTotal],
     'streak-7':streak,'notes-1':(store.notes||[]).filter(n=>(n.body||'').trim()).length,'verse-notes-1':(store.verseNotes||[]).length,'highlights-1':(store.highlights||[]).length,'friend-1':msbFriendsId()?1:0,
   };
