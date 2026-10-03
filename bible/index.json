@@ -1,5 +1,5 @@
 {
-  "edition": "King James Version (1611 spelling), with Apocrypha",
+  "edition": "King James Version with Apocrypha (YouVersion KJV / KJVA text)",
   "books": [
     {
       "id": 1,
@@ -399,97 +399,78 @@
     },
     {
       "id": 67,
-      "name": "1 Esdras",
-      "chapters": 9,
-      "section": "Deuterocanon / Apocrypha"
-    },
-    {
-      "id": 68,
-      "name": "2 Esdras",
-      "chapters": 16,
-      "section": "Deuterocanon / Apocrypha"
-    },
-    {
-      "id": 69,
       "name": "Tobit",
       "chapters": 14,
       "section": "Deuterocanon / Apocrypha"
     },
     {
-      "id": 70,
+      "id": 68,
       "name": "Judith",
       "chapters": 16,
       "section": "Deuterocanon / Apocrypha"
     },
     {
-      "id": 71,
+      "id": 69,
       "name": "Wisdom of Solomon",
       "chapters": 19,
       "section": "Deuterocanon / Apocrypha"
     },
     {
-      "id": 72,
+      "id": 70,
       "name": "Ecclesiasticus",
       "chapters": 51,
       "section": "Deuterocanon / Apocrypha"
     },
     {
-      "id": 73,
+      "id": 71,
       "name": "Baruch",
       "chapters": 5,
       "section": "Deuterocanon / Apocrypha"
     },
     {
-      "id": 74,
+      "id": 72,
       "name": "Letter of Jeremiah",
       "chapters": 1,
       "section": "Deuterocanon / Apocrypha"
     },
     {
-      "id": 75,
+      "id": 73,
       "name": "Prayer of Azariah",
       "chapters": 1,
       "section": "Deuterocanon / Apocrypha"
     },
     {
-      "id": 76,
+      "id": 74,
       "name": "Susanna",
       "chapters": 1,
       "section": "Deuterocanon / Apocrypha"
     },
     {
-      "id": 77,
+      "id": 75,
       "name": "Bel and the Dragon",
       "chapters": 1,
       "section": "Deuterocanon / Apocrypha"
     },
     {
-      "id": 78,
-      "name": "Prayer of Manasseh",
-      "chapters": 1,
-      "section": "Deuterocanon / Apocrypha"
-    },
-    {
-      "id": 79,
+      "id": 76,
       "name": "1 Maccabees",
       "chapters": 16,
       "section": "Deuterocanon / Apocrypha"
     },
     {
-      "id": 80,
+      "id": 77,
       "name": "2 Maccabees",
       "chapters": 15,
       "section": "Deuterocanon / Apocrypha"
     },
     {
-      "id": 81,
+      "id": 78,
       "name": "Rest of Esther",
       "chapters": 16,
       "chapterStart": 10,
       "section": "Deuterocanon / Apocrypha"
     }
   ],
-  "source": "https://github.com/aruljohn/Bible-kjv-1611",
-  "notice": "This reading shelf contains 81 books in 1611 KJV spelling. The first 80 follow the linked JSON collection; Rest of Esther (10:4–16:24), absent from that collection, is supplemented from the 1611 text. This is not the Orthodox Study Bible, and its books and numbering differ from some Orthodox editions.",
-  "supplementSource": "https://en.wikisource.org/wiki/Bible_(King_James_Version,_1611)/The_rest_of_Esther"
+  "source": "https://www.bible.com",
+  "notice": "This reading shelf contains 78 books. The text is the King James Version exactly as served by YouVersion (bible.com): the standard KJV (version 1) for the Old and New Testaments, and the King James Version with Apocrypha, American Edition (version 546) for the Deuterocanon, including Rest of Esther chapters 10-16 (listed there as \"Esther (Additions)\"). Spelling and punctuation follow those modernized texts, not the spelling of the original King James printing. 1 Esdras, 2 Esdras, and the Prayer of Manasseh are not included, because YouVersion's KJVA does not carry them. This is not the Orthodox Study Bible, and its books and numbering differ from some Orthodox editions."
 }
