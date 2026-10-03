@@ -104,6 +104,7 @@ window.BibleGames = (() => {
       <p class="footnote">For two-player games, set both names above. In solo and PC games only your name is used.</p>`);
   }
   function jeopardyStart(mode) {
+    setSong('jeopardy');
     const usedNames = readNames(['You', 'Player 2']);
     const seats = mode === 'solo'
       ? [{ name: usedNames[0] || 'You', pc: false, score: 0 }]
@@ -343,6 +344,7 @@ window.BibleGames = (() => {
   }
   function tierFor(rung) { return rung <= 5 ? 'easy' : rung <= 10 ? 'medium' : 'hard'; }
   function millionaireStart() {
+    setSong('millionaire');
     const usedNames = readNames(['You']);
     const pools = { easy: shuffle(bank.millionaire.easy), medium: shuffle(bank.millionaire.medium), hard: shuffle(bank.millionaire.hard) };
     G = Object.assign(G || {}, {
@@ -483,6 +485,7 @@ window.BibleGames = (() => {
       <p class="footnote">Team names above are used in two-team games; against the PC only your team name is used.</p>`);
   }
   function feudStart(mode) {
+    setSong('feud');
     const usedNames = readNames(['Your Team', 'Team Two']);
     const seats = mode === 'pc'
       ? [{ name: usedNames[0] || 'Your Team', pc: false, score: 0 }, { name: 'PC Team', pc: true, score: 0 }]
@@ -641,51 +644,96 @@ window.BibleGames = (() => {
       else if (kind === 'lose') { tone(392, 0, 0.16, 'triangle', 0.12); tone(311, 0.13, 0.16, 'triangle', 0.12); tone(262, 0.26, 0.2, 'triangle', 0.12); tone(196, 0.39, 0.36, 'triangle', 0.12); }
     } catch { /* sound is garnish, never a blocker */ }
   }
-  /* Generative ambient loop: soft plucks over Am–F–C–G, very low gain.
-     Starts on the first pointer inside games; the scheduler stops itself once
-     the games UI has left the DOM (or hide() stops it directly). */
-  let gxMusicTimer = null, gxMusicStep = 0, gxMusicMiss = 0;
-  const GX_CHORDS = [
-    [110.00, 220.00, 261.63, 329.63],   /* Am */
-    [87.31, 174.61, 220.00, 261.63],    /* F */
-    [130.81, 196.00, 261.63, 329.63],   /* C */
-    [98.00, 196.00, 246.94, 293.66],    /* G */
-  ];
-  function gxPluck(freq, vol, type) {
+  /* Generative music: every game has its OWN song. WebAudio plucks only,
+     no files. Each song is data (tempo, mode, chord loop, waves, density);
+     setSong() crossfades between them. Starts on the first pointer inside
+     games; the scheduler stops itself once the games UI has left the DOM
+     (or hide() stops it directly). */
+  let gxMusicTimer = null, gxMusicStep = 0, gxMusicMiss = 0, gxFadeTimer = null, gxSongKey = 'hub';
+  const GX_SONGS = {
+    /* hub — the calm menu loop (Am–F–C–G), as it has always been */
+    hub: { bpm: 63, mode: 'aeolian', wave: 'triangle', bassWave: 'sine', density: 0.55, stepsPerChord: 8, noteLen: 1.5, vol: 0.055, bassVol: 0.10, bassEvery: 0, bassDiv: 2, octUp: 0.3, tick: false,
+      chords: [[110.00, 220.00, 261.63, 329.63], [87.31, 174.61, 220.00, 261.63], [130.81, 196.00, 261.63, 329.63], [98.00, 196.00, 246.94, 293.66]] },
+    /* feud — bright and bouncy show-time (C–G–Am–F) */
+    feud: { bpm: 112, mode: 'major', wave: 'square', bassWave: 'triangle', density: 0.7, stepsPerChord: 4, noteLen: 0.5, vol: 0.035, bassVol: 0.09, bassEvery: 2, bassDiv: 2, octUp: 0.35, tick: false,
+      chords: [[130.81, 261.63, 329.63, 392.00], [98.00, 196.00, 246.94, 293.66], [110.00, 220.00, 261.63, 329.63], [87.31, 174.61, 220.00, 261.63]] },
+    /* jeopardy — thinking music: soft puzzle motif, ticking clock edge (Dm–Bb–Gm–A) */
+    jeopardy: { bpm: 84, mode: 'natural minor', wave: 'sine', bassWave: 'sine', density: 0.4, stepsPerChord: 8, noteLen: 0.9, vol: 0.05, bassVol: 0.09, bassEvery: 0, bassDiv: 2, octUp: 0.15, tick: true,
+      chords: [[146.83, 293.66, 349.23, 440.00], [116.54, 233.08, 293.66, 349.23], [98.00, 196.00, 233.08, 293.66], [110.00, 220.00, 277.18, 329.63]] },
+    /* millionaire — tense and dramatic: slow, sparse, low pulse (Am–F–Am–E) */
+    millionaire: { bpm: 52, mode: 'harmonic minor', wave: 'sine', bassWave: 'sine', density: 0.16, stepsPerChord: 16, noteLen: 3.2, vol: 0.05, bassVol: 0.13, bassEvery: 8, bassDiv: 1, octUp: 0.1, tick: false,
+      chords: [[55.00, 110.00, 130.81, 164.81], [43.65, 87.31, 110.00, 130.81], [55.00, 110.00, 130.81, 164.81], [41.20, 82.41, 103.83, 164.81]] },
+    /* sound — playful pentatonic bounce (C–F–G–F) */
+    sound: { bpm: 124, mode: 'major pentatonic', wave: 'triangle', bassWave: 'sine', density: 0.75, stepsPerChord: 4, noteLen: 0.45, vol: 0.05, bassVol: 0.08, bassEvery: 2, bassDiv: 2, octUp: 0.5, tick: false,
+      chords: [[130.81, 261.63, 329.63, 392.00], [174.61, 349.23, 440.00, 523.25], [98.00, 196.00, 246.94, 293.66], [174.61, 349.23, 440.00, 523.25]] },
+    /* babel — ancient and ominous, hijaz color (E–F–C–E); thickens as the tower rises */
+    babel: { bpm: 58, mode: 'phrygian dominant', wave: 'triangle', bassWave: 'sine', density: 0.3, stepsPerChord: 8, noteLen: 1.8, vol: 0.055, bassVol: 0.14, bassEvery: 4, bassDiv: 1, octUp: 0.1, tick: false,
+      chords: [[82.41, 164.81, 207.65, 246.94], [87.31, 174.61, 220.00, 261.63], [65.41, 130.81, 164.81, 196.00], [82.41, 164.81, 207.65, 246.94]] },
+  };
+  function gxSong() { return GX_SONGS[gxSongKey] || GX_SONGS.hub; }
+  function gxStepMs() { return Math.round(30000 / gxSong().bpm); }
+  function gxDensity(song) {
+    let d = song.density;
+    if (gxSongKey === 'babel' && G && G.show === 'babel') d = Math.min(0.85, d + (G.height || 0) * 0.035);
+    return d;
+  }
+  function gxPluck(freq, vol, type, len) {
     try {
       if (!gxAudio || !gxMusicBus) return;
-      const t = gxAudio.currentTime;
+      const t = gxAudio.currentTime, dur = len || 1.5;
       const o = gxAudio.createOscillator(), g = gxAudio.createGain();
       o.type = type || 'triangle'; o.frequency.value = freq;
       g.gain.setValueAtTime(0.0001, t);
       g.gain.exponentialRampToValueAtTime(vol, t + 0.03);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 1.5);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
       o.connect(g); g.connect(gxMusicBus);
-      o.start(t); o.stop(t + 1.6);
+      o.start(t); o.stop(t + dur + 0.1);
     } catch { /* garnish */ }
   }
   function gxMusicTick() {
     const mounted = root && document.contains(root) && root.querySelector('[data-gx]');
     if (!mounted) { if (++gxMusicMiss >= 3) stopMusic(); return; }
     gxMusicMiss = 0;
-    const chord = GX_CHORDS[Math.floor(gxMusicStep / 8) % GX_CHORDS.length];
-    if (gxMusicStep % 8 === 0) gxPluck(chord[0] / 2, 0.10, 'sine');
+    const song = gxSong();
+    const chord = song.chords[Math.floor(gxMusicStep / song.stepsPerChord) % song.chords.length];
+    const inBar = gxMusicStep % song.stepsPerChord;
+    if (inBar === 0) gxPluck(chord[0] / (song.bassDiv || 2), song.bassVol, song.bassWave, song.noteLen * 1.6);
+    else if (song.bassEvery && inBar % song.bassEvery === 0) gxPluck(chord[0] / (song.bassDiv || 2), song.bassVol * 0.7, song.bassWave, song.noteLen);
     const roll = Math.random();
-    if (roll < 0.55) gxPluck(chord[1 + rand(chord.length - 1)] * (Math.random() < 0.3 ? 2 : 1), 0.055);
-    else if (roll < 0.68) gxPluck(chord[0] * 2, 0.04, 'sine');
+    if (roll < gxDensity(song)) gxPluck(chord[1 + rand(chord.length - 1)] * (Math.random() < (song.octUp || 0.3) ? 2 : 1), song.vol, song.wave, song.noteLen);
+    else if (song.tick && inBar % 2 === 0) gxPluck(chord[0] * 8, 0.016, 'square', 0.06);
     gxMusicStep++;
   }
   function startMusic() {
     if (!gxSoundOn || gxMusicTimer) return;
     const ac = gxCtx(); if (!ac) return;
     try {
-      if (!gxMusicBus) { gxMusicBus = ac.createGain(); gxMusicBus.gain.value = 0.5; gxMusicBus.connect(ac.destination); }
+      if (!gxMusicBus) { gxMusicBus = ac.createGain(); gxMusicBus.connect(ac.destination); }
+      gxMusicBus.gain.value = 0.5;
       gxMusicMiss = 0;
-      gxMusicTimer = setInterval(gxMusicTick, 480);
+      gxMusicTimer = setInterval(gxMusicTick, gxStepMs());
     } catch { /* garnish */ }
   }
   function stopMusic() {
     if (gxMusicTimer) { clearInterval(gxMusicTimer); gxMusicTimer = null; }
+    if (gxFadeTimer) { clearTimeout(gxFadeTimer); gxFadeTimer = null; }
+  }
+  /* Switch songs: dip the music bus, restart the scheduler on the new tempo. */
+  function setSong(key) {
+    try {
+      const next = GX_SONGS[key] ? key : 'hub';
+      if (next === gxSongKey) return;
+      gxSongKey = next; gxMusicStep = 0;
+      if (!gxMusicTimer) return;
+      clearInterval(gxMusicTimer); gxMusicTimer = null;
+      const restart = () => { gxFadeTimer = null; if (gxSoundOn && gxAudio) gxMusicTimer = setInterval(gxMusicTick, gxStepMs()); };
+      if (gxAudio && gxMusicBus) {
+        const t = gxAudio.currentTime, g = gxMusicBus.gain;
+        g.cancelScheduledValues(t); g.setValueAtTime(Math.max(0.02, g.value), t);
+        g.linearRampToValueAtTime(0.02, t + 0.12);
+        gxFadeTimer = setTimeout(() => { try { g.linearRampToValueAtTime(0.5, gxAudio.currentTime + 0.35); } catch { /* garnish */ } restart(); }, 140);
+      } else restart();
+    } catch { /* garnish */ }
   }
   function feudTopIdx() {
     let best = 0;
@@ -986,6 +1034,7 @@ window.BibleGames = (() => {
       <p class="footnote">Your name is used in solo and race games. Party names are set on the next screen.</p>`);
   }
   function soundStart(mode) {
+    setSong('sound');
     const lvl = (G && G.level) || 'mixed';
     if (mode === 'party') { soundPartySetup(); return; }
     const usedNames = readNames(['You']);
@@ -1263,6 +1312,7 @@ window.BibleGames = (() => {
       <button class="primary" data-gx="b-start" data-gx-autofocus>Start building</button>`);
   }
   async function babelStart() {
+    setSong('babel');
     const usedNames = readNames(['You']);
     const name = usedNames[0] || 'You';
     setHtml(`${backBar('Tower of Babel')}<div class="loading">Gathering questions…</div>`);
@@ -1404,6 +1454,7 @@ window.BibleGames = (() => {
   let pendingShow = null;
   function showMenu(key) {
     clearTimers();
+    setSong('hub');
     G = { show: key, timers: [], tickId: null, clockEndsAt: 0, clockTotal: 0 };
     if (key === 'jeopardy') jeopardyMenu();
     else if (key === 'millionaire') millionaireMenu();
