@@ -111,6 +111,14 @@ window.BibleGames = (() => {
       { catches: 10, fallMs: 9000 }, { catches: 12, fallMs: 8400 }, { catches: 15, fallMs: 7800 },
       { catches: 18, fallMs: 7200 }, { catches: 20, fallMs: 6600 },
     ],
+    /* Adam in the Garden: level -> crossing name, traffic speed, daylight per life */
+    garden: [
+      { name: 'Dawn in Eden', speed: 0.84, time: 85, lives: 3 },
+      { name: 'Rivers of Eden', speed: 0.96, time: 80, lives: 3 },
+      { name: 'Beasts of the Field', speed: 1.08, time: 76, lives: 3 },
+      { name: 'Thorns and Stones', speed: 1.20, time: 72, lives: 3 },
+      { name: 'The Eastern Gate', speed: 1.34, time: 68, lives: 3 },
+    ],
   };
   let gxLevelSel = {};
   function gxProgAll() { try { const p = JSON.parse(localStorage.getItem('msb_gx_progress')); return p && typeof p === 'object' ? p : {}; } catch { return {}; } }
@@ -144,6 +152,7 @@ window.BibleGames = (() => {
       feud: `A two-board match — boards ${(level - 1) * 2 + 1} and ${(level - 1) * 2 + 2} of ten. Clear both boards to beat this level.`,
       sound: 'Ten cards dealt fresh from this level of the deck. Decode 7 of 10 to beat it.',
       babel: `Catch ${GX_LEVELS.babel[level - 1].catches} falling pieces before the tower reaches ten bricks.`,
+      garden: `Cross ${GX_LEVELS.garden[level - 1].name}: fill all five Tree Gate alcoves before the lives run out. Rivers carry you; beasts, serpents, scorpions, and rolling stones end a life.`,
     };
     return `${bits[show] || ''}${p.done.length ? ` Beaten so far: Level ${p.done.join(', ')}.` : ''}`;
   }
@@ -765,6 +774,9 @@ window.BibleGames = (() => {
     /* babel — ancient and ominous, hijaz color (E–F–C–E); thickens as the tower rises */
     babel: { bpm: 58, mode: 'phrygian dominant', wave: 'triangle', bassWave: 'sine', density: 0.3, stepsPerChord: 8, noteLen: 1.8, vol: 0.055, bassVol: 0.14, bassEvery: 4, bassDiv: 1, octUp: 0.1, tick: false,
       chords: [[82.41, 164.81, 207.65, 246.94], [87.31, 174.61, 220.00, 261.63], [65.41, 130.81, 164.81, 196.00], [82.41, 164.81, 207.65, 246.94]] },
+    /* garden — airy harp-like pentatonic, morning in Eden (C–G–Am–F) */
+    garden: { bpm: 96, mode: 'major pentatonic', wave: 'triangle', bassWave: 'sine', density: 0.62, stepsPerChord: 8, noteLen: 1.1, vol: 0.05, bassVol: 0.085, bassEvery: 4, bassDiv: 2, octUp: 0.42, tick: false,
+      chords: [[130.81, 261.63, 329.63, 392.00], [98.00, 196.00, 293.66, 392.00], [110.00, 220.00, 261.63, 329.63], [87.31, 174.61, 261.63, 349.23]] },
   };
   function gxSong() { return GX_SONGS[gxSongKey] || GX_SONGS.hub; }
   function gxStepMs() { return Math.round(30000 / gxSong().bpm); }
@@ -1622,6 +1634,357 @@ window.BibleGames = (() => {
       </section>`);
   }
 
+  
+  /* ================= ADAM IN THE GARDEN =================
+     A crossing adventure in the spirit of the old temple-crossing games:
+     guide Adam (and Eve in two-player) from the Garden Gate at the bottom
+     to five Tree Gate alcoves at the top. Rivers are crossed on lily pads,
+     logs, and turtles; the lower garden is patrolled by serpents,
+     scorpions, rolling stones, and wild beasts. Local multiplayer on one
+     device: solo, two-player versus (separate runs; high score wins), or
+     co-op (one shared crossing; the guide changes hands after a lost life
+     or a filled alcove). */
+  const GARDEN_COLS = 9, GARDEN_ROWS = 12, GARDEN_SLOTS = [0, 2, 4, 6, 8];
+  const GARDEN_ROW_DEFS = [
+    { type: 'goal', label: 'Tree Gates' },
+    { type: 'water', label: 'Pishon', icon: '🪷', dir: -1, speed: 0.78, width: 2, gap: 4.8, offset: 1.2 },
+    { type: 'water', label: 'Gihon', icon: '🪵', dir: 1, speed: 0.62, width: 3, gap: 5.6, offset: 2.0 },
+    { type: 'water', label: 'Tigris', icon: '🐢', dir: -1, speed: 0.52, width: 2, gap: 4.6, offset: 0.4 },
+    { type: 'safe', label: 'Riverbank' },
+    { type: 'hazard', label: 'Serpent path', icon: '🐍', dir: 1, speed: 1.02, width: 1.15, gap: 3.9, offset: 0.2 },
+    { type: 'hazard', label: 'Scorpion stones', icon: '🦂', dir: -1, speed: 1.18, width: 1, gap: 3.6, offset: 2.0 },
+    { type: 'hazard', label: 'Rolling stones', icon: '🪨', dir: 1, speed: 0.92, width: 1, gap: 4.1, offset: 1.0 },
+    { type: 'hazard', label: 'Wild beasts', icon: '🐆', dir: -1, speed: 1.10, width: 1.2, gap: 3.8, offset: 2.5 },
+    { type: 'safe', label: 'Garden path' },
+    { type: 'hazard', label: 'Thorn thicket', icon: '🐍', dir: -1, speed: 0.84, width: 1, gap: 4.2, offset: 1.0 },
+    { type: 'start', label: 'Garden Gate' },
+  ];
+  function gardenPlan(level) { return (GX_LEVELS.garden || [])[level - 1] || (GX_LEVELS.garden || [])[0] || { name: 'Dawn in Eden', speed: 1, time: 80, lives: 3 }; }
+  function gardenOverlap(a, aw, b, bw) { return Math.max(0, Math.min(a + aw, b + bw) - Math.max(a, b)); }
+  function gardenMakeEntities(def, level) {
+    if (!def || !def.icon) return [];
+    const plan = gardenPlan(level);
+    const gap = Math.max(2.7, def.gap - (level - 1) * 0.16);
+    const step = def.width + gap;
+    const count = Math.ceil((GARDEN_COLS + def.width + step) / step) + 1;
+    const speed = def.speed * plan.speed * def.dir;
+    const out = [];
+    for (let i = 0; i < count; i++) out.push({ x: -def.width + def.offset + i * step, w: def.width, speed, icon: def.icon, cycle: count * step });
+    return out;
+  }
+  function gardenMakeLanes(level) { return GARDEN_ROW_DEFS.map((def, row) => ({ ...def, row, entities: gardenMakeEntities(def, level) })); }
+  function gardenFruitFor(level) {
+    return [
+      { row: 9, col: (level + 1) % GARDEN_COLS, icon: '🍇', collected: false },
+      { row: 6, col: (level * 3) % GARDEN_COLS, icon: '🍎', collected: false },
+      { row: 4, col: (level * 5 + 2) % GARDEN_COLS, icon: '🍐', collected: false },
+    ];
+  }
+  function gardenActivePlayer() {
+    if (!G || !Array.isArray(G.players) || !G.players.length) return { name: 'Adam', icon: '🧔🏽' };
+    return G.mode === 'coop' ? (G.players[G.controller] || G.players[0]) : (G.players[G.current] || G.players[0]);
+  }
+  function gardenMenu() {
+    setHtml(`${backBar('Adam in the Garden')}
+      <p class="lead">Cross Eden from the Garden Gate to the five Tree Gate alcoves. Ride lily pads, logs, and turtles across the rivers; dodge serpents, scorpions, rolling stones, and wild beasts below. Gather fruit for bonus points before the daylight runs out.</p>
+      ${bestLine('garden', v => v + ' points')}
+      ${gxLevelChips('garden')}
+      <div class="gx-modes">
+        <button class="card gx-mode" data-gx="g-mode" data-mode="solo"><strong>Solo — Adam</strong><span>Three lives. Fill all five alcoves to beat the level.</span></button>
+        <button class="card gx-mode" data-gx="g-mode" data-mode="versus"><strong>Two players — versus</strong><span>Adam and Eve take separate runs on the same level. Highest score wins.</span></button>
+        <button class="card gx-mode" data-gx="g-mode" data-mode="coop"><strong>Two players — co-op</strong><span>One shared crossing and shared lives. The guide changes hands after every lost life or filled alcove.</span></button>
+      </div>
+      <div class="gx-names">${nameInputs('2p')}</div>
+      <p class="footnote">Player one guides Adam; player two guides Eve. Same-device multiplayer — pass the phone at the turn screens. Keyboard: arrow keys or WASD.</p>`);
+  }
+  function gardenStart(mode) {
+    const lvl = gxSelectedLevel('garden');
+    if (!gxCanPlay('garden', lvl)) { showMenu('garden'); return; }
+    setSong('garden');
+    const names = readNames(['Adam', 'Eve']);
+    const mk = (i, fallback, icon) => ({ name: names[i] || fallback, icon, score: 0 });
+    const players = mode === 'solo' ? [mk(0, 'Adam', '🧔🏽')] : [mk(0, 'Adam', '🧔🏽'), mk(1, 'Eve', '👩🏽')];
+    G = Object.assign(G || {}, {
+      show: 'garden', mode, phase: 'pass', runLevel: lvl, plan: gardenPlan(lvl), players,
+      current: 0, controller: 0, results: [], levelBeaten: false, lastEvent: '',
+      timers: (G && G.timers) || [], tickId: null, pcAction: null,
+    });
+    gardenBeginRun(0);
+  }
+  function gardenBeginRun(index) {
+    if (!G) return;
+    stopClock();
+    G.current = index;
+    if (G.mode !== 'coop') G.controller = index;
+    G.lanes = gardenMakeLanes(G.runLevel);
+    G.fruit = gardenFruitFor(G.runLevel);
+    G.run = {
+      lives: G.mode === 'coop' ? G.plan.lives + 2 : G.plan.lives,
+      score: 0, filled: Array(GARDEN_SLOTS.length).fill(false), fruitCount: 0,
+      crossings: 0, completed: false,
+    };
+    gardenResetLife();
+    G.phase = 'pass';
+    gardenPassScreen();
+  }
+  function gardenResetLife() {
+    if (!G) return;
+    G.player = { x: 4, y: GARDEN_ROWS - 1 };
+    G.progressRow = GARDEN_ROWS - 1;
+    G.timeLeft = G.plan.time;
+  }
+  function gardenPassScreen() {
+    if (!G || !G.run) return;
+    const p = gardenActivePlayer();
+    const first = G.mode === 'versus' && G.current === 1
+      ? `<p class="lead">${esc(G.lastEvent || '')}</p>`
+      : `<p class="lead">${esc(p.name)} guides ${p.icon} through <strong>${esc(G.plan.name)}</strong>. Fill all five Tree Gate alcoves before the lives and daylight run out.</p>`;
+    setHtml(`${backBar('Adam in the Garden')}${scoreBar(gardenSeatsForBar(), G.mode === 'coop' ? G.controller : G.current)}
+      <section class="card gx-center">
+        <span class="eyebrow">${G.mode === 'coop' ? 'TWO PLAYERS · ONE CROSSING' : G.mode === 'versus' ? `PLAYER ${G.current + 1}'S RUN` : 'SOLO CROSSING'}</span>
+        <h2>${esc(p.name)} ${p.icon} — your crossing</h2>
+        ${first}
+        <p class="muted">Rivers: step only on 🪷 lily pads, 🪵 logs, and 🐢 turtles. Land lanes: avoid 🐍 serpents, 🦂 scorpions, 🪨 stones, and 🐆 beasts.</p>
+        <button class="primary" data-gx="g-begin" data-gx-autofocus>Begin crossing</button>
+        <button class="secondary" data-gx="show-menu" data-show="garden">Change mode</button>
+      </section>`);
+  }
+  function gardenBeginPlay() {
+    if (!G || !G.run) return;
+    G.phase = 'play';
+    const p = gardenActivePlayer();
+    G.lastEvent = `${p.name} — guide ${p.icon} to an open ✦ Tree Gate alcove.`;
+    gardenRender();
+    gardenStartLoop();
+  }
+  function gardenStartLoop() {
+    if (!G) return;
+    stopClock();
+    G.tickId = setInterval(() => gardenTick(0.1), 100);
+  }
+  function gardenSeatsForBar() {
+    if (!G || !Array.isArray(G.players)) return [];
+    if (!G.run) return G.players;
+    if (G.mode === 'coop') return G.players.map(p => ({ ...p, score: G.run.score }));
+    return G.players.map((p, i) => ({ ...p, score: i === G.current ? G.run.score : (G.results[i] ? G.results[i].score : 0) }));
+  }
+  function gardenBoardHtml() {
+    if (!G || !G.run || !G.player) return '';
+    const rowPct = 100 / GARDEN_ROWS, colPct = 100 / GARDEN_COLS;
+    const lanes = G.lanes.map(lane => `<div class="gx-garden-lane gx-garden-${lane.type}" style="top:${lane.row * rowPct}%;height:${rowPct}%"><span>${esc(lane.label)}</span></div>`).join('');
+    const homes = Array.from({ length: GARDEN_COLS }, (_, col) => {
+      const si = GARDEN_SLOTS.indexOf(col);
+      if (si < 0) return `<span class="gx-garden-hedge" style="left:${col * colPct}%;width:${colPct}%">🌿</span>`;
+      const filled = !!G.run.filled[si];
+      return `<span class="gx-garden-home${filled ? ' filled' : ''}" style="left:${col * colPct}%;width:${colPct}%" title="Tree Gate alcove">${filled ? '🍎' : '🌳✦'}</span>`;
+    }).join('');
+    const entities = G.lanes.flatMap(lane => lane.entities.map(e => `<span class="gx-garden-entity gx-garden-entity-${lane.type}" style="left:${(e.x / GARDEN_COLS) * 100}%;top:${lane.row * rowPct}%;width:${(e.w / GARDEN_COLS) * 100}%;height:${rowPct}%">${esc(e.icon.repeat(Math.max(1, Math.ceil(e.w))))}</span>`)).join('');
+    const fruit = G.fruit.filter(f => !f.collected).map(f => `<span class="gx-garden-fruit" style="left:${f.col * colPct}%;top:${f.row * rowPct}%;width:${colPct}%;height:${rowPct}%">${esc(f.icon)}</span>`).join('');
+    const p = gardenActivePlayer();
+    const player = `<span class="gx-garden-player" style="left:${(G.player.x / GARDEN_COLS) * 100}%;top:${G.player.y * rowPct}%;width:${colPct}%;height:${rowPct}%" title="${esc(p.name)}">${esc(p.icon)}</span>`;
+    return `<div class="gx-garden-board" role="img" aria-label="Garden crossing board">${lanes}${homes}${entities}${fruit}${player}</div>`;
+  }
+  function gardenRender() {
+    if (!G || !G.run || !G.player) return;
+    const p = gardenActivePlayer();
+    const filledCount = G.run.filled.filter(Boolean).length;
+    const hearts = '♥'.repeat(Math.max(0, G.run.lives)) + '♡'.repeat(Math.max(0, (G.mode === 'coop' ? G.plan.lives + 2 : G.plan.lives) - G.run.lives));
+    const actionCard = G.phase === 'between'
+      ? `<div class="gx-garden-turn"><h2>${esc(G.betweenTitle || 'Take another step')}</h2><p>${esc(G.betweenText || '')}</p><button class="primary" data-gx="g-continue" data-gx-autofocus>Continue</button></div>`
+      : G.phase === 'paused'
+        ? `<div class="gx-garden-turn"><h2>Paused</h2><p>The garden waits.</p><button class="primary" data-gx="g-pause" data-gx-autofocus>Resume</button></div>`
+        : '';
+    const controls = G.phase === 'play'
+      ? `<div class="gx-garden-controls" aria-label="Garden controls">
+          <button data-gx="g-move" data-dir="left" aria-label="Move left">◀</button>
+          <div class="gx-garden-ud"><button data-gx="g-move" data-dir="up" aria-label="Move up">▲</button><button data-gx="g-move" data-dir="down" aria-label="Move down">▼</button></div>
+          <button data-gx="g-move" data-dir="right" aria-label="Move right">▶</button>
+          <button class="secondary" data-gx="g-pause">Pause</button>
+        </div>`
+      : '';
+    setHtml(`${backBar('Adam in the Garden')}${scoreBar(gardenSeatsForBar(), G.mode === 'coop' ? G.controller : G.current)}
+      <section class="card gx-garden-card">
+        <div class="gx-garden-hud"><span>Level ${G.runLevel} · ${esc(G.plan.name)}</span><span>${esc(p.name)} guiding ${esc(p.icon)}</span><span>Lives <strong>${hearts}</strong></span><span>Groves <strong>${filledCount}/5</strong></span><span>Daylight <strong>${Math.max(0, Math.ceil(G.timeLeft || 0))}s</strong></span><span>Fruit <strong>${G.run.fruitCount}</strong></span></div>
+        ${gardenBoardHtml()}
+        <p class="gx-event" role="status">${esc(G.lastEvent || 'Reach an open Tree Gate alcove.')}</p>
+        ${actionCard}
+        ${controls}
+      </section>
+      <p class="footnote">Step on lily pads, logs, and turtles to cross the rivers — they carry you with the current. If the river pulls you past the edge, the life is lost. On land, one touch from a serpent, scorpion, stone, or beast ends the life.</p>`);
+  }
+  function gardenCollect() {
+    if (!G || !G.run || !G.player) return;
+    const col = Math.max(0, Math.min(GARDEN_COLS - 1, Math.round(G.player.x)));
+    const hit = G.fruit.find(f => !f.collected && f.row === G.player.y && f.col === col);
+    if (!hit) return;
+    hit.collected = true;
+    G.run.fruitCount++;
+    G.run.score += 30;
+    G.lastEvent = `${hit.icon} Fruit gathered — +30.`;
+    sfx('catch');
+  }
+  function gardenMove(dir) {
+    if (!G || G.show !== 'garden' || G.phase !== 'play' || !G.player) return;
+    const d = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }[dir];
+    if (!d) return;
+    const nx = Math.max(0, Math.min(GARDEN_COLS - 1, G.player.x + d[0]));
+    const ny = Math.max(0, Math.min(GARDEN_ROWS - 1, G.player.y + d[1]));
+    if (d[1] < 0 && ny === 0) { gardenTryGoal(nx); return; }
+    G.player.x = nx; G.player.y = ny;
+    if (ny < G.progressRow) { G.run.score += (G.progressRow - ny) * 10; G.progressRow = ny; }
+    sfx('select');
+    gardenAfterMove();
+  }
+  function gardenAfterMove() {
+    if (!G || G.phase !== 'play') return;
+    gardenCollect();
+    const lane = G.lanes[G.player.y];
+    if (lane && lane.type === 'hazard' && lane.entities.some(e => gardenOverlap(G.player.x, 1, e.x, e.w) > 0.22)) {
+      gardenDie(`${lane.icon || 'A garden danger'} caught ${gardenActivePlayer().name} on the ${lane.label.toLowerCase()}.`);
+      return;
+    }
+    if (lane && lane.type === 'water' && !lane.entities.some(e => gardenOverlap(G.player.x, 1, e.x, e.w) > 0.32)) {
+      gardenDie(`The ${lane.label} river swept ${gardenActivePlayer().name} away — step only on pads, logs, and turtles.`);
+      return;
+    }
+    gardenRender();
+  }
+  function gardenTryGoal(nx) {
+    if (!G || !G.run || !G.player) return;
+    const col = Math.max(0, Math.min(GARDEN_COLS - 1, Math.round(nx)));
+    G.player.x = col; G.player.y = 0;
+    const si = GARDEN_SLOTS.indexOf(col);
+    if (si < 0) { gardenDie('A thorn hedge blocked that Tree Gate. Aim for a 🌳✦ alcove.'); return; }
+    if (G.run.filled[si]) { gardenDie('That Tree Gate alcove is already filled. Choose an open ✦.'); return; }
+    G.run.filled[si] = true;
+    G.run.crossings++;
+    const bonus = 250 + Math.max(0, Math.ceil(G.timeLeft || 0)) * 2;
+    G.run.score += bonus;
+    sfx('ding');
+    if (G.run.filled.every(Boolean)) {
+      G.run.completed = true;
+      G.levelBeaten = true;
+      sfx('win');
+      gardenEndRun();
+      return;
+    }
+    stopClock();
+    if (G.mode === 'coop') G.controller = 1 - G.controller;
+    G.phase = 'between';
+    G.betweenTitle = 'A Tree Gate alcove is filled!';
+    G.betweenText = `+${bonus} points. ${G.run.filled.filter(Boolean).length} of 5 groves are filled.${G.mode === 'coop' ? ` Pass the guide to ${gardenActivePlayer().name}.` : ''}`;
+    G.lastEvent = G.betweenText;
+    gardenRender();
+  }
+  function gardenDie(reason) {
+    if (!G || !G.run || G.phase !== 'play') return;
+    stopClock();
+    sfx('wrong');
+    G.run.lives--;
+    G.lastEvent = reason;
+    if (G.run.lives > 0) {
+      if (G.mode === 'coop') G.controller = 1 - G.controller;
+      G.phase = 'between';
+      G.betweenTitle = 'A life is lost';
+      G.betweenText = `${reason} ${G.run.lives} ${G.run.lives === 1 ? 'life' : 'lives'} remain.${G.mode === 'coop' ? ` Pass the guide to ${gardenActivePlayer().name}.` : ''}`;
+      gardenRender();
+    } else {
+      gardenEndRun();
+    }
+  }
+  function gardenContinue() {
+    if (!G || !G.run || G.phase !== 'between') return;
+    gardenResetLife();
+    G.phase = 'play';
+    const p = gardenActivePlayer();
+    G.lastEvent = `${p.name} — guide ${p.icon} to an open ✦ Tree Gate alcove.`;
+    gardenRender();
+    gardenStartLoop();
+  }
+  function gardenPauseToggle() {
+    if (!G || !G.run) return;
+    if (G.phase === 'play') { stopClock(); G.phase = 'paused'; G.lastEvent = 'Paused.'; gardenRender(); }
+    else if (G.phase === 'paused') { G.phase = 'play'; G.lastEvent = 'Back to the crossing.'; gardenRender(); gardenStartLoop(); }
+  }
+  function gardenEndRun() {
+    if (!G || !G.run) return;
+    stopClock();
+    G.phase = 'runover';
+    const result = G.mode === 'coop'
+      ? { name: G.players.map(p => p.name).join(' & '), icon: '🧔🏽👩🏽', score: G.run.score, fruitCount: G.run.fruitCount, crossings: G.run.crossings, completed: G.run.completed }
+      : { name: gardenActivePlayer().name, icon: gardenActivePlayer().icon, score: G.run.score, fruitCount: G.run.fruitCount, crossings: G.run.crossings, completed: G.run.completed };
+    if (G.mode === 'coop') G.results[0] = result;
+    else G.results[G.current] = result;
+    if (G.mode === 'versus' && G.current === 0) {
+      const done = result;
+      gardenBeginRun(1);
+      G.lastEvent = `${done.name} finished with ${done.score} points and ${done.crossings} filled alcove${done.crossings === 1 ? '' : 's'}. ${G.players[1].name}, your crossing is next.`;
+      gardenPassScreen();
+      return;
+    }
+    gardenResults();
+  }
+  function gardenResults() {
+    if (!G || !G.run) return;
+    stopClock();
+    G.phase = 'over';
+    if (G.levelBeaten) gxBeatLevel('garden', G.runLevel);
+    const results = (G.results || []).filter(Boolean);
+    const bestScore = results.length ? Math.max(...results.map(r => r.score)) : G.run.score;
+    saveBest('garden', bestScore);
+    const b = bestOf('garden');
+    let title, blurb;
+    if (G.mode === 'coop') {
+      title = G.run.completed ? 'The five groves are filled!' : 'The garden crossing ends';
+      blurb = `${esc(G.players.map(p => p.name).join(' & '))} crossed together for ${G.run.score} points, gathered ${G.run.fruitCount} fruit, and filled ${G.run.crossings} of 5 alcoves.`;
+    } else if (G.mode === 'versus' && results.length > 1) {
+      const top = Math.max(...results.map(r => r.score));
+      const champs = results.filter(r => r.score === top);
+      title = champs.length > 1 ? 'A tie in the garden!' : `${esc(champs[0].name)} wins the garden!`;
+      blurb = results.map(r => `${esc(r.icon)} ${esc(r.name)}: <strong>${r.score}</strong> points · ${r.crossings}/5 alcoves · ${r.fruitCount} fruit`).join('<br>');
+    } else {
+      const r = results[0] || { name: gardenActivePlayer().name, icon: gardenActivePlayer().icon, score: G.run.score, fruitCount: G.run.fruitCount, crossings: G.run.crossings, completed: G.run.completed };
+      title = r.completed ? `${esc(r.name)} filled the five groves!` : `${esc(r.name)} — ${r.score} points`;
+      blurb = `${esc(r.icon)} ${esc(r.name)} filled ${r.crossings} of 5 alcoves and gathered ${r.fruitCount} fruit.`;
+    }
+    setHtml(`${backBar('Adam in the Garden')}
+      <section class="card gx-center">
+        <span class="eyebrow">LEVEL ${G.runLevel} · ${esc(G.plan.name).toUpperCase()}</span>
+        <h2>${title}</h2>
+        <p>${blurb}</p>
+        ${gxLevelBanner('garden', G.runLevel, !!G.levelBeaten)}
+        ${G.levelBeaten ? '' : `<p class="muted">Fill all five Tree Gate alcoves in one run to beat Level ${G.runLevel}.</p>`}
+        ${G.levelBeaten && G.runLevel >= 5 ? `<p class="lead">👑 Keeper of the Garden — all five levels beaten.</p>` : ''}
+        <p class="muted">Best garden score on this device: <strong>${b.best} points</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'}.</p>
+        <button class="primary" data-gx="show-menu" data-show="garden">Play again</button>
+        <button class="secondary" data-gx="hub">All games</button>
+      </section>`);
+  }
+  function gardenTick(step) {
+    if (!G || G.show !== 'garden' || G.phase !== 'play' || !G.run || !G.player) return;
+    const dt = Number.isFinite(step) ? step : 0.1;
+    G.timeLeft = (G.timeLeft || 0) - dt;
+    G.lanes.forEach(lane => lane.entities.forEach(e => {
+      e.x += e.speed * dt;
+      if (e.speed > 0 && e.x > GARDEN_COLS) e.x -= e.cycle;
+      if (e.speed < 0 && e.x + e.w < 0) e.x += e.cycle;
+    }));
+    const lane = G.lanes[G.player.y];
+    if (lane && lane.type === 'water') {
+      const carrier = lane.entities.find(e => gardenOverlap(G.player.x, 1, e.x, e.w) > 0.32);
+      if (!carrier) { gardenDie(`The ${lane.label} river swept ${gardenActivePlayer().name} away — step only on pads, logs, and turtles.`); return; }
+      G.player.x += carrier.speed * dt;
+      if (G.player.x + 1 <= 0 || G.player.x >= GARDEN_COLS) { gardenDie('The current carried the crossing beyond the garden edge.'); return; }
+    }
+    if (lane && lane.type === 'hazard' && lane.entities.some(e => gardenOverlap(G.player.x, 1, e.x, e.w) > 0.22)) {
+      gardenDie(`${lane.icon || 'A garden danger'} caught ${gardenActivePlayer().name} on the ${lane.label.toLowerCase()}.`);
+      return;
+    }
+    gardenCollect();
+    if (G.timeLeft <= 0) { gardenDie('The daylight faded before the crossing was finished.'); return; }
+    gardenRender();
+  }
+
   /* ================= CORE ================= */
   let pendingShow = null;
   function showMenu(key) {
@@ -1632,6 +1995,7 @@ window.BibleGames = (() => {
     else if (key === 'millionaire') millionaireMenu();
     else if (key === 'sound') soundMenu();
     else if (key === 'babel') babelMenu();
+    else if (key === 'garden') gardenMenu();
     else feudMenu();
   }
   async function loadBank() {
@@ -1699,6 +2063,12 @@ window.BibleGames = (() => {
       if (gxCanPlay(sh, n)) { gxLevelSel[sh] = n; showMenu(sh); }
       return;
     }
+    /* Adam in the Garden */
+    if (action === 'g-mode') { gardenStart(btn.dataset.mode); return; }
+    if (action === 'g-begin') { gardenBeginPlay(); return; }
+    if (action === 'g-move') { gardenMove(btn.dataset.dir); return; }
+    if (action === 'g-continue') { gardenContinue(); return; }
+    if (action === 'g-pause') { gardenPauseToggle(); return; }
     /* Tower of Babel */
     if (action === 'b-start') { babelStart(); return; }
     if (action === 'b-answer') { babelAnswer(Number(btn.dataset.i)); return; }
@@ -1741,6 +2111,11 @@ window.BibleGames = (() => {
   }
   document.addEventListener('click', click);
   document.addEventListener('keydown', e => {
+    if (G && G.show === 'garden' && G.phase === 'play') {
+      const dir = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', w: 'up', s: 'down', a: 'left', d: 'right', W: 'up', S: 'down', A: 'left', D: 'right' }[e.key];
+      if (dir) { e.preventDefault(); gardenMove(dir); return; }
+      if (e.key === ' ') { e.preventDefault(); gardenPauseToggle(); return; }
+    }
     if (e.key !== 'Enter') return;
     const row = e.target.closest && e.target.closest('.gx-guessrow');
     if (!row) return;
@@ -1755,6 +2130,8 @@ window.BibleGames = (() => {
       get bank() { return bank; },
       gx: { GX_LEVELS, gxProgAll, gxShowProg, gxCanPlay, gxBeatLevel, gxDefaultLevel, gxSelectedLevel, gxSoundLevelDeck, babelBuildPool, babelMakeDeck, babelSeenLoad, babelSeenSave, setBank(b) { bank = b; }, audio: { sfx, startMusic, stopMusic, musicState: () => ({ musicOn: gxMusicOn, soundOn: gxSoundOn, playing: !!gxMusicTimer }), setMusicOn(v) { gxMusicOn = !!v; }, setSoundOn(v) { gxSoundOn = !!v; } } },
       setClock(seconds) { if (G) { G.clockEndsAt = Date.now() + seconds * 1000; } },
+      setG(v) { G = v; },
+      garden: { gardenMakeLanes, gardenMakeEntities, gardenFruitFor, gardenOverlap, gardenMove, gardenTick, gardenDie, gardenTryGoal, gardenCollect, gardenActivePlayer, gardenSeatsForBar, GARDEN_COLS, GARDEN_ROWS, GARDEN_SLOTS },
       forcePc() { flushPc(); },
       finishBoard() { if (G && G.cats) { G.cats.forEach(c => c.clues.forEach(cl => { cl.used = true; })); jeopardyBoard(); } },
     },
