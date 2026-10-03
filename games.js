@@ -731,6 +731,245 @@ window.BibleGames = (() => {
     return `<div class="gx-feud-board">${G.q.answers.map((a, i) => `<div class="gx-slot open"><span class="gx-slot-rank">${i + 1}</span><strong>${esc(a.text)}</strong><b>${a.points * G.multiplier}</b></div>`).join('')}</div>`;
   }
 
+  /* ================= SOUND IT OUT ================= */
+  const SOUND_BASE = { easy: 100, medium: 200, hard: 300 };
+  function soundDeck(level) {
+    const all = bank.soundItOut || [];
+    if (level === 'easy') return all.filter(c => c.level === 'easy');
+    if (level === 'hard') return all.filter(c => c.level === 'hard');
+    return all;
+  }
+  function soundMenu() {
+    const lvl = (G && G.level) || 'mixed';
+    setHtml(`${backBar('Sound It Out')}
+      <p class="lead">Famous lines of Scripture, hidden in phonetic gibberish. Sound the card out — aloud works best — and decode the real phrase. Two or three readings is normal: the ear gets it before the eye does.</p>
+      <div class="gx-levels" role="group" aria-label="Difficulty">
+        ${[['easy', 'Easy'], ['mixed', 'Mixed'], ['hard', 'Hard']].map(([k, l]) => `<button class="secondary gx-level ${lvl === k ? 'active' : ''}" data-gx="s-level" data-level="${k}">${l}</button>`).join('')}
+      </div>
+      ${bestLine('sound', v => v + ' points')}
+      <div class="gx-modes">
+        <button class="card gx-mode" data-gx="s-mode" data-mode="solo"><strong>Solo decode</strong><span>Ten cards against the clock. Reveal when you're ready, then score yourself honestly.</span></button>
+        <button class="card gx-mode" data-gx="s-mode" data-mode="race"><strong>Race the PC</strong><span>Four phrases, one true card. Tap the real line before the PC cracks it — a wrong tap hands it the steal.</span></button>
+        <button class="card gx-mode" data-gx="s-mode" data-mode="party"><strong>Party — pass and play</strong><span>One reader sounds the gibberish aloud; everyone else decodes by ear. Twelve cards, reader rotates.</span></button>
+      </div>
+      <div class="gx-names">${nameInputs('solo')}</div>
+      <p class="footnote">Your name is used in solo and race games. Party names are set on the next screen.</p>`);
+  }
+  function soundStart(mode) {
+    const lvl = (G && G.level) || 'mixed';
+    if (mode === 'party') { soundPartySetup(); return; }
+    const usedNames = readNames(['You']);
+    const base = { show: 'sound', level: lvl, phase: 'card', idx: 0, streak: 0, timedOut: false, timeLeft: 0 };
+    if (mode === 'race') {
+      G = Object.assign(G || {}, base, {
+        mode: 'race',
+        seats: [{ name: usedNames[0] || 'You', pc: false, score: 0 }, { name: 'The PC', pc: true, score: 0 }],
+        deck: sample(soundDeck(lvl), 10),
+      });
+    } else {
+      G = Object.assign(G || {}, base, {
+        mode: 'solo',
+        seats: [{ name: usedNames[0] || 'You', pc: false, score: 0 }],
+        deck: sample(soundDeck(lvl), 10),
+      });
+    }
+    soundCard();
+  }
+  function soundCardData() { return G.deck[G.idx]; }
+  function soundCard() {
+    if (!G) return;
+    const c = soundCardData();
+    G.phase = 'card'; G.timedOut = false;
+    const eyebrow = `CARD ${G.idx + 1} OF ${G.deck.length} · ${c.level.toUpperCase()} · ${SOUND_BASE[c.level]} POINTS`;
+    if (G.mode === 'party') {
+      const holder = G.seats[G.holder];
+      setHtml(`${backBar('Sound It Out')}${scoreBar(G.seats, G.holder)}
+        <section class="card gx-clue">
+          <span class="eyebrow">${eyebrow}</span>
+          <p class="lead"><strong>${esc(holder.name)}</strong> — read this aloud. Everyone else decodes it by ear.</p>
+          <h2 class="gx-gibberish">${esc(c.gibberish)}</h2>
+          ${clockHtml('Forty-five seconds')}
+          <button class="primary" data-gx="s-reveal" data-gx-autofocus>Reveal the phrase</button>
+        </section>`);
+      startClock(45, () => soundReveal(true));
+      return;
+    }
+    if (G.mode === 'race') {
+      const decoys = sample((bank.soundItOut || []).filter(x => x.phrase !== c.phrase), 3).map(x => x.phrase);
+      G.options = shuffle([c.phrase, ...decoys]);
+      setHtml(`${backBar('Sound It Out')}${scoreBar(G.seats, 0)}
+        <section class="card gx-clue">
+          <span class="eyebrow">${eyebrow}</span>
+          <h2 class="gx-gibberish">${esc(c.gibberish)}</h2>
+          <p class="lead">Which line of Scripture is this? Tap it before the PC decodes it.</p>
+          ${clockHtml('Twenty-five seconds')}
+          <div class="gx-choices">${G.options.map(o => `<button data-gx="s-pick" data-choice="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+        </section>`);
+      startClock(25, () => soundPcSteal(true));
+      return;
+    }
+    setHtml(`${backBar('Sound It Out')}${scoreBar(G.seats, 0)}
+      <section class="card gx-clue">
+        <span class="eyebrow">${eyebrow}</span>
+        <h2 class="gx-gibberish">${esc(c.gibberish)}</h2>
+        <p class="lead">Sound it out. Got it — or giving up? Reveal and score yourself honestly.</p>
+        ${clockHtml('Thirty seconds')}
+        <button class="primary" data-gx="s-reveal" data-gx-autofocus>Reveal the phrase</button>
+      </section>`);
+    startClock(30, () => soundReveal(true));
+  }
+  function soundReveal(timedOut) {
+    if (!G || G.phase !== 'card' || G.mode === 'race') return;
+    const c = soundCardData();
+    G.timeLeft = timedOut ? 0 : Math.max(0, Math.ceil((G.clockEndsAt - Date.now()) / 1000));
+    stopClock();
+    if (timedOut && G.mode === 'solo') G.streak = 0;
+    G.phase = 'reveal'; G.timedOut = !!timedOut;
+    const last = G.idx + 1 >= G.deck.length;
+    let actions;
+    if (G.mode === 'solo') {
+      actions = G.timedOut
+        ? `<p class="lead">Time's up — that one got away.</p><button class="primary" data-gx="s-next" data-gx-autofocus>${last ? 'See results' : 'Next card'}</button>`
+        : `<p class="lead">Be honest now.</p><div class="gx-buzzrow"><button class="primary" data-gx="s-got" data-gx-autofocus>Got it</button><button class="secondary" data-gx="s-missed">Missed it</button></div>`;
+    } else {
+      actions = `<p class="lead">${G.timedOut ? 'Time! ' : ''}Who decoded it?</p>
+        <div class="gx-buzzrow">${G.seats.map((s, i) => i === G.holder ? '' : `<button class="primary" data-gx="s-party-got" data-seat="${i}">${esc(s.name)}</button>`).join('')}<button class="secondary" data-gx="s-party-none">Nobody</button></div>`;
+    }
+    setHtml(`${backBar('Sound It Out')}${scoreBar(G.seats, G.mode === 'party' ? G.holder : 0)}
+      <section class="card gx-clue">
+        <span class="eyebrow">THE PHRASE WAS</span>
+        <h2>“${esc(c.phrase)}”</h2>
+        <p class="muted">${esc(c.ref)}</p>
+        <p class="gx-gibberish-small">You read: ${esc(c.gibberish)}</p>
+        ${actions}
+      </section>`);
+  }
+  function soundSoloScore(got) {
+    if (!G || G.phase !== 'reveal' || G.mode !== 'solo') return;
+    const c = soundCardData();
+    if (got) {
+      const bonus = Math.min(G.streak, 5) * 10;
+      G.seats[0].score += SOUND_BASE[c.level] + (G.timeLeft || 0) * 2 + bonus;
+      G.streak++;
+    } else {
+      G.streak = 0;
+    }
+    soundNext();
+  }
+  function soundNext() {
+    if (!G) return;
+    G.idx++;
+    if (G.idx >= G.deck.length) { soundResults(); return; }
+    if (G.mode === 'party') G.holder = G.idx % G.seats.length;
+    soundCard();
+  }
+  function soundPick(choice) {
+    if (!G || G.mode !== 'race' || G.phase !== 'card') return;
+    const c = soundCardData();
+    if (choice === c.phrase) {
+      stopClock();
+      G.seats[0].score += SOUND_BASE[c.level];
+      soundRaceEnd(`${esc(G.seats[0].name)} cracked it — +${SOUND_BASE[c.level]}.`, true);
+      return;
+    }
+    stopClock();
+    G.phase = 'steal';
+    setHtml(`${backBar('Sound It Out')}${scoreBar(G.seats, 0)}
+      <section class="card gx-clue">
+        <span class="eyebrow">CARD ${G.idx + 1} OF ${G.deck.length} · ${c.level.toUpperCase()} · ${SOUND_BASE[c.level]} POINTS</span>
+        <h2 class="gx-gibberish">${esc(c.gibberish)}</h2>
+        <p class="lead">Not that one. The PC is sounding it out…</p>
+        <div class="gx-choices">${G.options.map(o => `<button disabled>${esc(o)}</button>`).join('')}</div>
+      </section>`);
+    G.pcAction = () => soundPcSteal(false);
+    later(flushPc, 1300);
+  }
+  function soundPcSteal(fromTimeout) {
+    if (!G || G.mode !== 'race' || (G.phase !== 'card' && G.phase !== 'steal')) return;
+    stopClock();
+    const c = soundCardData();
+    const chance = c.level === 'easy' ? 0.55 : c.level === 'medium' ? 0.45 : 0.35;
+    if (Math.random() < chance) {
+      G.seats[1].score += SOUND_BASE[c.level];
+      soundRaceEnd(`The PC decoded it — +${SOUND_BASE[c.level]} to the machine.`, false);
+    } else {
+      soundRaceEnd('The PC couldn’t crack it either. The card dies.', false);
+    }
+  }
+  function soundRaceEnd(message, youWon) {
+    const c = soundCardData();
+    G.phase = 'reveal';
+    const last = G.idx + 1 >= G.deck.length;
+    setHtml(`${backBar('Sound It Out')}${scoreBar(G.seats, youWon ? 0 : 1)}
+      <section class="card gx-clue">
+        <span class="eyebrow">THE PHRASE WAS</span>
+        <h2>“${esc(c.phrase)}”</h2>
+        <p class="muted">${esc(c.ref)}</p>
+        <p class="gx-gibberish-small">You read: ${esc(c.gibberish)}</p>
+        <p class="lead">${message}</p>
+        <button class="primary" data-gx="s-next" data-gx-autofocus>${last ? 'See results' : 'Next card'}</button>
+      </section>`);
+  }
+  function soundPartySetup() {
+    const lvl = (G && G.level) || 'mixed';
+    G = Object.assign(G || {}, { show: 'sound', mode: 'party', level: lvl, phase: 'setup' });
+    setHtml(`${backBar('Sound It Out')}
+      <p class="lead">Two to four players, one device. The reader sounds the gibberish aloud — no showing the card. Twelve cards; the reader rotates every card.</p>
+      <div class="gx-names">
+        ${[0, 1, 2, 3].map(i => `<label class="gx-field">Player ${i + 1}${i > 1 ? ' (optional)' : ''}<input data-gx-pname="${i}" ${i < 2 ? `value="Player ${i + 1}"` : 'placeholder="Leave blank if unused"'} maxlength="20"></label>`).join('')}
+      </div>
+      <button class="primary" data-gx="s-party-start" data-gx-autofocus>Start the party</button>`);
+  }
+  function soundPartyStart() {
+    if (!G) return;
+    const names = [];
+    for (let i = 0; i < 4; i++) {
+      const el = root.querySelector(`[data-gx-pname="${i}"]`);
+      const v = el ? el.value.trim() : '';
+      if (v) names.push(v);
+    }
+    while (names.length < 2) names.push('Player ' + (names.length + 1));
+    const lvl = G.level || 'mixed';
+    G = Object.assign(G || {}, {
+      show: 'sound', mode: 'party', level: lvl, phase: 'card', idx: 0, holder: 0, streak: 0,
+      seats: names.map(n => ({ name: n, pc: false, score: 0 })),
+      deck: sample(soundDeck(lvl), 12),
+    });
+    soundCard();
+  }
+  function soundPartyAward(seatIdx) {
+    if (!G || G.mode !== 'party' || G.phase !== 'reveal') return;
+    const c = soundCardData();
+    if (seatIdx >= 0 && G.seats[seatIdx]) G.seats[seatIdx].score += SOUND_BASE[c.level];
+    soundNext();
+  }
+  function soundResults() {
+    if (!G) return;
+    stopClock();
+    G.phase = 'over';
+    saveBest('sound', G.mode === 'party' ? Math.max(...G.seats.map(s => s.score)) : G.seats[0].score);
+    const b = bestOf('sound');
+    let title, blurb;
+    if (G.mode === 'solo') {
+      title = `${esc(G.seats[0].name)} — ${G.seats[0].score} points`;
+      blurb = `Ten cards decoded by ear. Best on this device: ${b.best} over ${b.plays} game${b.plays === 1 ? '' : 's'}.`;
+    } else {
+      const top = Math.max(...G.seats.map(s => s.score));
+      const champs = G.seats.filter(s => s.score === top);
+      title = champs.length > 1 ? 'A tie game!' : `${esc(champs[0].name)} win${champs[0].pc || G.mode === 'party' ? 's' : ''}!`;
+      blurb = G.mode === 'race' ? 'You raced the machine card for card.' : 'Twelve cards, read aloud and decoded by ear.';
+    }
+    setHtml(`${backBar('Sound It Out')}${scoreBar(G.seats, -1)}
+      <section class="card gx-center">
+        <span class="eyebrow">FINAL SCORE</span>
+        <h2>${title}</h2>
+        <p>${G.seats.map(s => `${esc(s.name)}: <strong>${s.score}</strong>`).join(' · ')}</p>
+        <p class="muted">${blurb}</p>
+        <button class="primary" data-gx="show-menu" data-show="sound">Play again</button>
+        <button class="secondary" data-gx="hub">All games</button>
+      </section>`);
+  }
+
   /* ================= CORE ================= */
   let pendingShow = null;
   function showMenu(key) {
@@ -738,6 +977,7 @@ window.BibleGames = (() => {
     G = { show: key, timers: [], tickId: null, clockEndsAt: 0, clockTotal: 0 };
     if (key === 'jeopardy') jeopardyMenu();
     else if (key === 'millionaire') millionaireMenu();
+    else if (key === 'sound') soundMenu();
     else feudMenu();
   }
   async function loadBank() {
@@ -787,6 +1027,17 @@ window.BibleGames = (() => {
     if (action === 'm-answer') { millionaireAnswer(btn.dataset.choice); return; }
     if (action === 'm-life') { millionaireLifeline(btn.dataset.life); return; }
     if (action === 'm-walk') { millionaireWalk(); return; }
+    /* Sound It Out */
+    if (action === 's-level') { if (G) G.level = btn.dataset.level; soundMenu(); return; }
+    if (action === 's-mode') { soundStart(btn.dataset.mode); return; }
+    if (action === 's-party-start') { soundPartyStart(); return; }
+    if (action === 's-reveal') { soundReveal(false); return; }
+    if (action === 's-got') { soundSoloScore(true); return; }
+    if (action === 's-missed') { soundSoloScore(false); return; }
+    if (action === 's-next') { soundNext(); return; }
+    if (action === 's-pick') { soundPick(btn.dataset.choice); return; }
+    if (action === 's-party-got') { soundPartyAward(Number(btn.dataset.seat)); return; }
+    if (action === 's-party-none') { soundPartyAward(-1); return; }
     /* Family Feud */
     if (action === 'f-mode') { feudStart(btn.dataset.mode); return; }
     if (action === 'f-playpass') { feudPlayPass(btn.dataset.choice); return; }

@@ -55,6 +55,11 @@ body{background:radial-gradient(ellipse 58% 25% at 50% -6%,var(--app-glow),trans
 .gx-hub-jeopardy{border-color:#bca5ff55}.gx-hub-jeopardy .tag{border-color:#bca5ff88;color:#d9ccff}
 .gx-hub-millionaire{border-color:#ffd38d55}.gx-hub-millionaire .tag{border-color:#ffd38d88;color:#ffe3b3}
 .gx-hub-feud{border-color:#f4adca55}.gx-hub-feud .tag{border-color:#f4adca88;color:#ffd3e6}
+.gx-hub-sound{border-color:#8ff5d255}.gx-hub-sound .tag{border-color:#8ff5d288;color:#c9ffe9}
+.gx-gibberish{font-family:var(--serif);font-size:2rem;line-height:1.4}
+.gx-gibberish-small{color:var(--muted);font-style:italic}
+.gx-levels{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 2px}
+.gx-level.active{border-color:#8ff5d2;color:#c9ffe9}
 .gx-modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:18px 0}
 .gx-mode{display:flex;flex-direction:column;gap:7px;align-items:flex-start;text-align:left;cursor:pointer;color:var(--text)}
 .gx-mode strong{font-size:1.12rem}
