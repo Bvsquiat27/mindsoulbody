@@ -469,7 +469,7 @@ window.BibleGames = (() => {
   /* ================= FAMILY FEUD ================= */
   function feudMenu() {
     setHtml(`${backBar('Family Feud')}
-      <p class="lead">We asked the board — well, we wrote the board: our own house rankings, made for this app. Name the answers the board holds, mind your three strikes, and watch the steal.</p>
+      <p class="lead">We asked the board — well, we wrote the board: our own house rankings, made for this app. Every answer starts hidden. Type a guess: if it's up there, the board flips it over with its points. Three strikes, and the other side gets one guess to steal the pot.</p>
       ${bestLine('feud', v => v + ' points')}
       <div class="gx-modes">
         <button class="card gx-mode" data-gx="f-mode" data-mode="pc"><strong>Your team vs the PC</strong><span>Face off against the machine across three rounds. Round three counts double.</span></button>
@@ -497,14 +497,16 @@ window.BibleGames = (() => {
     G.multiplier = G.round === 3 ? 2 : 1;
     G.faceHits = {}; G.faceMissed = {};
     G.faceTurn = (G.round - 1) % 2;
+    G.faceStarter = G.faceTurn; G.faceCycles = 0;
+    G.justRevealed = null; G.flashX = 0;
     G.phase = 'faceoff'; G.lastEvent = '';
     feudRender();
     feudMaybePcFaceoff();
   }
-  function feudSlotsHtml() {
+  function feudSlotsHtml(flipIdx) {
     return `<div class="gx-feud-board">${G.q.answers.map((a, i) => G.revealed.has(i)
-      ? `<div class="gx-slot open"><span class="gx-slot-rank">${i + 1}</span><strong>${esc(a.text)}</strong><b>${a.points * G.multiplier}</b></div>`
-      : `<div class="gx-slot"><span class="gx-slot-rank">${i + 1}</span><strong class="gx-hidden-answer">— — —</strong><b></b></div>`).join('')}</div>`;
+      ? `<div class="gx-slot open${flipIdx === i ? ' flip' : ''}"><span class="gx-slot-rank">${i + 1}</span><strong>${esc(a.text)}</strong><b>${a.points * G.multiplier}</b></div>`
+      : `<div class="gx-slot covered"><span class="gx-slot-rank">${i + 1}</span><strong class="gx-hidden-answer">— — —</strong><b></b></div>`).join('')}</div>`;
   }
   function feudHeader() {
     return `${backBar('Family Feud')}${scoreBar(G.seats, G.phase === 'faceoff' ? G.faceTurn : G.playing)}
@@ -515,11 +517,15 @@ window.BibleGames = (() => {
   }
   function feudRender() {
     const q = G.q;
+    /* One-shot flourishes: the slot flipped by the last guess, and the big X. */
+    const flipIdx = G.justRevealed, flashX = G.flashX;
+    G.justRevealed = null; G.flashX = 0;
+    const bigX = flashX ? '<div class="gx-bigx" aria-hidden="true">✕</div>' : '';
     if (G.phase === 'faceoff') {
       const turn = G.seats[G.faceTurn];
       setHtml(`${feudHeader()}
         <section class="card gx-clue"><span class="eyebrow">FACE-OFF</span><h2>${esc(q.prompt)}</h2>
-        ${feudSlotsHtml()}
+        ${feudSlotsHtml(flipIdx)}
         ${G.lastEvent ? `<p class="gx-event" role="status">${esc(G.lastEvent)}</p>` : ''}
         ${turn.pc ? `<p class="lead">The PC is making its face-off guess…</p>` : `<p class="lead"><strong>${esc(turn.name)}</strong> — name an answer on the board. Twenty seconds.</p>${clockHtml('Twenty seconds to guess')}${feudGuessRow('Guess')}`}
         </section>`);
@@ -530,7 +536,7 @@ window.BibleGames = (() => {
       const winner = G.seats[G.playing];
       setHtml(`${feudHeader()}
         <section class="card gx-clue"><span class="eyebrow">FACE-OFF WON</span><h2>${esc(q.prompt)}</h2>
-        ${feudSlotsHtml()}
+        ${feudSlotsHtml(flipIdx)}
         <p class="lead"><strong>${esc(winner.name)}</strong> took the face-off. Play the board, or pass it to ${esc(G.seats[1 - G.playing].name)}?</p>
         <div class="gx-buzzrow"><button class="primary" data-gx="f-playpass" data-choice="play">Play</button><button class="secondary" data-gx="f-playpass" data-choice="pass">Pass</button></div>
         </section>`);
@@ -540,7 +546,7 @@ window.BibleGames = (() => {
       const team = G.seats[G.playing];
       setHtml(`${feudHeader()}
         <section class="card gx-clue"><span class="eyebrow">${esc(team.name).toUpperCase()} AT THE BOARD</span><h2>${esc(q.prompt)}</h2>
-        ${feudSlotsHtml()}
+        ${feudSlotsHtml(flipIdx)}${bigX}
         ${G.lastEvent ? `<p class="gx-event" role="status">${esc(G.lastEvent)}</p>` : ''}
         ${team.pc ? `<p class="lead">The PC team is guessing…</p>` : `<p class="lead"><strong>${esc(team.name)}</strong> — keep naming answers. Three strikes and the other team may steal. Twenty seconds a guess.</p>${clockHtml('Twenty seconds to guess')}${feudGuessRow('Guess')}`}
         </section>`);
@@ -551,7 +557,7 @@ window.BibleGames = (() => {
       const stealer = G.seats[1 - G.playing];
       setHtml(`${feudHeader()}
         <section class="card gx-clue"><span class="eyebrow">THE STEAL</span><h2>${esc(q.prompt)}</h2>
-        ${feudSlotsHtml()}
+        ${feudSlotsHtml(flipIdx)}${bigX}
         <p class="lead">Three strikes! <strong>${esc(stealer.name)}</strong> — one answer steals the whole pot of ${G.pot}.</p>
         ${stealer.pc ? `<p class="lead">The PC is choosing its steal…</p>` : `${clockHtml('Twenty seconds for the steal')}${feudGuessRow('Steal it')}`}
         </section>`);
@@ -559,21 +565,97 @@ window.BibleGames = (() => {
       else { G.pcAction = () => feudPcSteal(); later(flushPc, 1000); }
       return;
     }
+    if (G.phase === 'reveal') {
+      setHtml(`${feudHeader()}
+        <section class="card gx-clue"><span class="eyebrow">WHAT WAS LEFT</span><h2>${esc(q.prompt)}</h2>
+        ${feudSlotsHtml(flipIdx)}
+        <p class="lead">${esc(G.lastEvent)}</p>
+        <p class="lead">Let's see what was still hiding on the board…</p>
+        </section>`);
+      return;
+    }
     if (G.phase === 'splash' || G.phase === 'over') { feudSplash(); return; }
+  }
+  /* Tiny show sounds (Feud only): a ding when an answer flips, a buzz on a strike. */
+  let gxAudio = null;
+  function sfx(kind) {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      gxAudio = gxAudio || new AC();
+      if (gxAudio.state === 'suspended') gxAudio.resume();
+      const t = gxAudio.currentTime;
+      const tone = (freq, start, dur, type, vol) => {
+        const o = gxAudio.createOscillator(), g = gxAudio.createGain();
+        o.type = type || 'sine'; o.frequency.value = freq;
+        g.gain.setValueAtTime(0.0001, t + start);
+        g.gain.exponentialRampToValueAtTime(vol || 0.14, t + start + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + start + dur);
+        o.connect(g); g.connect(gxAudio.destination);
+        o.start(t + start); o.stop(t + start + dur + 0.05);
+      };
+      if (kind === 'ding') { tone(880, 0, 0.16); tone(1318, 0.08, 0.3); }
+      else if (kind === 'buzz') { tone(138, 0, 0.5, 'sawtooth', 0.1); tone(104, 0, 0.5, 'square', 0.07); }
+      else if (kind === 'win') { tone(660, 0, 0.14); tone(880, 0.11, 0.14); tone(1320, 0.22, 0.34); }
+    } catch { /* sound is garnish, never a blocker */ }
+  }
+  function feudTopIdx() {
+    let best = 0;
+    G.q.answers.forEach((a, i) => { if (a.points > G.q.answers[best].points) best = i; });
+    return best;
   }
   function feudNormalize(text) {
     return String(text || '').toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
   }
-  function feudMatch(text) {
-    const input = feudNormalize(text);
-    if (!input) return -1;
-    const targets = [];
-    G.q.answers.forEach((a, i) => { targets.push([feudNormalize(a.text), i]); (a.aliases || []).forEach(al => targets.push([feudNormalize(al), i])); });
-    for (const [t, i] of targets) { if (input === t) return i; }
-    for (const [t, i] of targets) {
-      if (input.length >= 4 && (t.includes(input) || input.includes(t))) return i;
-      if ((input + 's') === t || input === (t + 's')) return i;
+  function feudSingular(w) {
+    if (w.length > 4 && w.endsWith('ies')) return w.slice(0, -3) + 'y';
+    if (w.length > 3 && w.endsWith('es') && /(s|x|z|ch|sh)$/.test(w.slice(0, -2))) return w.slice(0, -2);
+    if (w.length > 3 && w.endsWith('s') && !w.endsWith('ss') && !w.endsWith('us')) return w.slice(0, -1);
+    return w;
+  }
+  function feudTokens(text) {
+    return feudNormalize(text).split(' ').filter(t => t && t !== 'a' && t !== 'an' && t !== 'the').map(feudSingular);
+  }
+  function feudLev(a, b) {
+    if (a === b) return 0;
+    const m = a.length, n = b.length;
+    if (!m) return n;
+    if (!n) return m;
+    let prev = [];
+    for (let j = 0; j <= n; j++) prev.push(j);
+    for (let i = 1; i <= m; i++) {
+      const cur = [i];
+      for (let j = 1; j <= n; j++) cur.push(Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)));
+      prev = cur;
     }
+    return prev[n];
+  }
+  /* Forgiving scorer: exact > word-subset > substring > near-miss spelling. */
+  function feudScore(inputTokens, targetTokens) {
+    const inp = inputTokens.join(' '), tgt = targetTokens.join(' ');
+    if (!inp || !tgt) return 0;
+    if (inp === tgt) return 100;
+    const inSet = new Set(inputTokens), tgSet = new Set(targetTokens);
+    if ([...inSet].every(t => tgSet.has(t)) || [...tgSet].every(t => inSet.has(t))) return 85;
+    if (inp.length >= 4 && (tgt.includes(inp) || inp.includes(tgt))) return 75;
+    if (inp.length >= 4) {
+      const d = feudLev(inp, tgt);
+      if (d <= (tgt.length >= 8 ? 2 : 1)) return 62 - d;
+    }
+    return 0;
+  }
+  function feudMatch(text) {
+    const inputTokens = feudTokens(text);
+    if (!inputTokens.length) return -1;
+    let bestAny = { idx: -1, score: 0 }, bestOpen = { idx: -1, score: 0 };
+    G.q.answers.forEach((a, i) => {
+      let s = 0;
+      [a.text, ...(a.aliases || [])].forEach((t, k) => { s = Math.max(s, feudScore(inputTokens, feudTokens(t)) - (k ? 4 : 0)); });
+      if (s > bestAny.score) bestAny = { idx: i, score: s };
+      if (!G.revealed.has(i) && s > bestOpen.score) bestOpen = { idx: i, score: s };
+    });
+    if (bestOpen.score >= 55) return bestOpen.idx;
+    if (bestAny.score >= 55) return bestAny.idx; /* already showing — callers call it out */
     return -1;
   }
   function feudMaybePcFaceoff() {
@@ -591,23 +673,39 @@ window.BibleGames = (() => {
     for (const i of unrevealed) { roll -= G.q.answers[i].points; if (roll <= 0) return i; }
     return unrevealed[0];
   }
+  function feudPcGuessIdx() {
+    /* The PC "types" a real board answer with fading confidence as the board
+       empties — a team running dry — or misses, and names a decoy instead. */
+    const open = G.q.answers.map((a, i) => i).filter(i => !G.revealed.has(i));
+    if (!open.length) return -1;
+    const pHit = Math.max(0.25, 0.8 - 0.12 * G.revealed.size);
+    return Math.random() < pHit ? feudPcPickAnswer() : -1;
+  }
+  function feudPcDecoy() {
+    const pool = (G.q.decoys || []).filter(d => feudMatch(d) < 0);
+    return pool.length ? pool[rand(pool.length)] : 'something not on the board';
+  }
   function feudPcFaceGuess() {
     if (!G || G.phase !== 'faceoff') return;
     const hit = Math.random() < 0.85 ? feudPcPickAnswer() : -1;
-    feudApplyFace(G.faceTurn, hit);
+    feudApplyFace(G.faceTurn, hit, hit >= 0 ? G.q.answers[hit].text : feudPcDecoy());
   }
   function feudFaceGuess(text) {
     if (!G || G.phase !== 'faceoff') return;
+    if (text !== null && !String(text).trim()) return; /* an empty box is not a guess */
     stopClock();
-    feudApplyFace(G.faceTurn, text === null ? -1 : feudMatch(text));
+    feudApplyFace(G.faceTurn, text === null ? -1 : feudMatch(text), text === null ? '' : text.trim());
   }
-  function feudApplyFace(seat, hitIdx) {
+  function feudApplyFace(seat, hitIdx, shownGuess) {
     const other = 1 - seat;
     if (hitIdx >= 0 && !G.revealed.has(hitIdx)) {
       G.revealed.add(hitIdx);
       G.pot += G.q.answers[hitIdx].points * G.multiplier;
       G.faceHits[seat] = G.q.answers[hitIdx].points;
-      G.lastEvent = `${G.seats[seat].name} found “${G.q.answers[hitIdx].text}” — ${G.q.answers[hitIdx].points} points.`;
+      G.justRevealed = hitIdx;
+      sfx('ding');
+      G.lastEvent = `${G.seats[seat].name} found “${G.q.answers[hitIdx].text}” — ${G.q.answers[hitIdx].points * G.multiplier} points.`;
+      if (hitIdx === feudTopIdx()) { G.lastEvent += ' That is the number one answer!'; feudFaceWinner(seat); return; }
       if (G.faceHits[other] != null) {
         feudFaceWinner(G.faceHits[seat] > G.faceHits[other] ? seat : other);
         return;
@@ -615,10 +713,20 @@ window.BibleGames = (() => {
       if (G.faceMissed[other]) { feudFaceWinner(seat); return; }
       G.faceTurn = other;
     } else {
-      G.lastEvent = hitIdx >= 0 ? 'Already on the board — that counts as a miss.' : `${G.seats[seat].name} named nothing on the board.`;
+      G.lastEvent = hitIdx >= 0
+        ? 'Already on the board — that counts as a miss.'
+        : (shownGuess ? `${G.seats[seat].name} guessed “${shownGuess}” — not on the board.` : `${G.seats[seat].name} named nothing on the board.`);
       G.faceMissed[seat] = true;
       if (G.faceHits[other] != null) { feudFaceWinner(other); return; }
-      if (G.faceMissed[other]) { G.faceMissed = {}; G.faceTurn = seat; G.lastEvent += ' Both missed — guess again.'; }
+      if (G.faceMissed[other]) {
+        G.faceCycles = (G.faceCycles || 0) + 1;
+        if (G.faceCycles >= 2) {
+          G.lastEvent += ` Neither side could crack the board, so control goes to ${G.seats[G.faceStarter].name}.`;
+          feudFaceWinner(G.faceStarter);
+          return;
+        }
+        G.faceMissed = {}; G.faceTurn = G.faceStarter; G.lastEvent += ' Both missed — guess again.';
+      }
       else G.faceTurn = other;
     }
     feudRender();
@@ -645,23 +753,29 @@ window.BibleGames = (() => {
   }
   function feudPlayGuess(text) {
     if (!G || G.phase !== 'play') return;
+    if (text !== null && !String(text).trim()) return; /* an empty box is not a guess */
     stopClock();
     const idx = text === null ? -1 : feudMatch(text);
     if (idx >= 0 && !G.revealed.has(idx)) feudReveal(idx, `${G.seats[G.playing].name} found “${G.q.answers[idx].text}” (+${G.q.answers[idx].points * G.multiplier}).`);
-    else feudStrike(idx >= 0 ? 'Already revealed — that costs a strike.' : 'Not on the board.');
+    else if (idx >= 0) feudStrike(`“${String(text).trim()}” is already on the board — that costs a strike.`);
+    else feudStrike(text === null ? 'Time ran out with no guess.' : `“${String(text).trim()}” is not on the board.`);
   }
   function feudReveal(idx, message) {
     G.revealed.add(idx);
     G.pot += G.q.answers[idx].points * G.multiplier;
     G.lastEvent = message;
+    G.justRevealed = idx;
+    sfx('ding');
     if (G.revealed.size >= G.q.answers.length) { feudSettle(G.playing, 'The board is cleared!'); return; }
     feudRender();
     feudMaybePcPlay();
   }
   function feudStrike(message) {
     G.strikes++;
-    G.lastEvent = `${message} Strike ${G.strikes} of 3.`;
+    sfx('buzz');
+    G.flashX = G.strikes;
     if (G.strikes >= 3) { G.phase = 'steal'; G.lastEvent = `${message} Three strikes!`; feudRender(); return; }
+    G.lastEvent = `${message} Strike ${G.strikes} of 3.`;
     feudRender();
     feudMaybePcPlay();
   }
@@ -673,29 +787,35 @@ window.BibleGames = (() => {
   }
   function feudPcPlayGuess() {
     if (!G || G.phase !== 'play') return;
-    const idx = Math.random() < 0.55 ? feudPcPickAnswer() : -1;
-    if (idx >= 0 && !G.revealed.has(idx)) feudReveal(idx, `The PC found “${G.q.answers[idx].text}” (+${G.q.answers[idx].points * G.multiplier}).`);
-    else feudStrike('The PC named nothing on the board.');
+    const idx = feudPcGuessIdx();
+    if (idx >= 0) feudReveal(idx, `The PC guessed “${G.q.answers[idx].text}” (+${G.q.answers[idx].points * G.multiplier}).`);
+    else feudStrike(`The PC guessed “${feudPcDecoy()}” — not on the board.`);
   }
   function feudPcSteal() {
     if (!G || G.phase !== 'steal') return;
     const idx = Math.random() < 0.5 ? feudPcPickAnswer() : -1;
-    feudApplySteal(idx);
+    feudApplySteal(idx, idx >= 0 ? '' : feudPcDecoy());
   }
   function feudStealGuess(text) {
     if (!G || G.phase !== 'steal') return;
+    if (text !== null && !String(text).trim()) return; /* an empty box is not a guess */
     stopClock();
-    feudApplySteal(text === null ? -1 : feudMatch(text));
+    feudApplySteal(text === null ? -1 : feudMatch(text), text === null ? '' : text.trim());
   }
-  function feudApplySteal(idx) {
+  function feudApplySteal(idx, shownGuess) {
     const stealer = 1 - G.playing;
     if (idx >= 0 && !G.revealed.has(idx)) {
       G.revealed.add(idx);
       G.pot += G.q.answers[idx].points * G.multiplier;
+      G.justRevealed = idx;
+      sfx('ding');
       G.lastEvent = `The steal is good — “${G.q.answers[idx].text}” was on the board!`;
       feudSettle(stealer, G.lastEvent);
+    } else if (idx >= 0) {
+      G.lastEvent = `“${shownGuess}” is already showing — the steal fails.`;
+      feudSettle(G.playing, G.lastEvent);
     } else {
-      G.lastEvent = 'The steal missed.';
+      G.lastEvent = shownGuess ? `The steal missed — “${shownGuess}” is not up there.` : 'The steal missed.';
       feudSettle(G.playing, G.lastEvent);
     }
   }
@@ -703,13 +823,37 @@ window.BibleGames = (() => {
     stopClock();
     G.seats[winner].score += G.pot;
     G.roundWinner = winner;
-    G.phase = G.round >= 3 ? 'over' : 'splash';
     G.lastEvent = `${message} ${G.seats[winner].name} takes the pot of ${G.pot}.`;
-    if (G.phase === 'over') {
+    if (G.round >= 3) {
       const top = Math.max(...G.seats.map(s => s.score));
       saveBest('feud', top);
     }
-    feudSplash();
+    sfx('win');
+    const left = G.q.answers.map((a, i) => i).filter(i => !G.revealed.has(i));
+    if (left.length) {
+      /* Show-style: flip whatever is left, one at a time, before the splash. */
+      G.phase = 'reveal';
+      G.leftToReveal = left;
+      feudRender();
+      later(feudRevealNext, 850);
+    } else {
+      G.phase = G.round >= 3 ? 'over' : 'splash';
+      feudSplash();
+    }
+  }
+  function feudRevealNext() {
+    if (!G || G.phase !== 'reveal') return;
+    const idx = G.leftToReveal.shift();
+    if (idx === undefined) {
+      G.phase = G.round >= 3 ? 'over' : 'splash';
+      feudSplash();
+      return;
+    }
+    G.revealed.add(idx);
+    G.justRevealed = idx;
+    sfx('ding');
+    feudRender();
+    later(feudRevealNext, 700);
   }
   function feudSplash() {
     const over = G.phase === 'over';
@@ -724,11 +868,7 @@ window.BibleGames = (() => {
         ${over
           ? `<button class="primary" data-gx="show-menu" data-show="feud">Play again</button> <button class="secondary" data-gx="hub">All games</button>`
           : `<button class="primary" data-gx="f-next">Start round ${G.round + 1}</button>`}
-      </section>
-      <section class="card"><span class="eyebrow">THE BOARD, REVEALED</span>${feudSlotsAllOpen()}</section>`);
-  }
-  function feudSlotsAllOpen() {
-    return `<div class="gx-feud-board">${G.q.answers.map((a, i) => `<div class="gx-slot open"><span class="gx-slot-rank">${i + 1}</span><strong>${esc(a.text)}</strong><b>${a.points * G.multiplier}</b></div>`).join('')}</div>`;
+      </section>`);
   }
 
   /* ================= SOUND IT OUT ================= */

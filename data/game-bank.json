@@ -4,7 +4,9 @@
       "answers": [
         {
           "aliases": [
-            "gospel of john"
+            "gospel of john",
+            "gospel according to john",
+            "fourth gospel"
           ],
           "points": 30,
           "text": "John"
@@ -17,17 +19,23 @@
           "text": "James"
         },
         {
-          "aliases": [],
+          "aliases": [
+            "jonas"
+          ],
           "points": 16,
           "text": "Jonah"
         },
         {
-          "aliases": [],
+          "aliases": [
+            "jeremias"
+          ],
           "points": 12,
           "text": "Jeremiah"
         },
         {
-          "aliases": [],
+          "aliases": [
+            "josue"
+          ],
           "points": 10,
           "text": "Joshua"
         },
@@ -42,7 +50,12 @@
           "text": "Judith"
         }
       ],
-      "prompt": "Name a book of the Bible that starts with the letter J"
+      "prompt": "Name a book of the Bible that starts with the letter J",
+      "decoys": [
+        "Joel",
+        "Jude",
+        "Judges"
+      ]
     },
     {
       "answers": [
@@ -50,7 +63,8 @@
           "aliases": [
             "simon peter",
             "simon",
-            "st peter"
+            "st peter",
+            "cephas"
           ],
           "points": 34,
           "text": "Peter"
@@ -64,39 +78,53 @@
         },
         {
           "aliases": [
-            "james son of zebedee"
+            "james son of zebedee",
+            "st james"
           ],
           "points": 14,
           "text": "James"
         },
         {
           "aliases": [
-            "levi"
+            "levi",
+            "st matthew"
           ],
           "points": 10,
           "text": "Matthew"
         },
         {
-          "aliases": [],
+          "aliases": [
+            "st andrew",
+            "apostle andrew"
+          ],
           "points": 8,
           "text": "Andrew"
         },
         {
           "aliases": [
-            "doubting thomas"
+            "doubting thomas",
+            "didymus",
+            "the twin"
           ],
           "points": 6,
           "text": "Thomas"
         },
         {
           "aliases": [
-            "judas"
+            "judas",
+            "iscariot"
           ],
           "points": 4,
           "text": "Judas Iscariot"
         }
       ],
-      "prompt": "Name one of the Twelve Apostles"
+      "prompt": "Name one of the Twelve Apostles",
+      "decoys": [
+        "Paul",
+        "Barnabas",
+        "Luke",
+        "Mark"
+      ]
     },
     {
       "answers": [
@@ -105,7 +133,9 @@
             "animals",
             "pairs of animals",
             "the animals",
-            "two of every kind"
+            "two of every kind",
+            "two by two",
+            "pairs"
           ],
           "points": 40,
           "text": "Two of every animal"
@@ -114,7 +144,9 @@
           "aliases": [
             "shem ham and japheth",
             "his family",
-            "family"
+            "family",
+            "sons",
+            "noah's sons"
           ],
           "points": 18,
           "text": "His sons"
@@ -122,14 +154,16 @@
         {
           "aliases": [
             "food",
-            "provisions"
+            "provisions",
+            "supplies"
           ],
           "points": 15,
           "text": "Food and drink"
         },
         {
           "aliases": [
-            "wife"
+            "wife",
+            "noah's wife"
           ],
           "points": 12,
           "text": "His wife"
@@ -138,7 +172,8 @@
           "aliases": [
             "fowls",
             "doves",
-            "ravens"
+            "ravens",
+            "bird"
           ],
           "points": 9,
           "text": "Birds"
@@ -146,13 +181,21 @@
         {
           "aliases": [
             "seven pairs",
-            "clean animals"
+            "clean animals",
+            "clean beasts",
+            "by sevens"
           ],
           "points": 6,
           "text": "Clean beasts by sevens"
         }
       ],
-      "prompt": "Name something Noah took with him on the ark"
+      "prompt": "Name something Noah took with him on the ark",
+      "decoys": [
+        "Tools",
+        "Seeds",
+        "Extra water",
+        "Wine"
+      ]
     },
     {
       "answers": [
@@ -183,27 +226,36 @@
         },
         {
           "aliases": [
-            "righteous simeon"
+            "righteous simeon",
+            "old simeon"
           ],
           "points": 8,
           "text": "Simeon"
         },
         {
           "aliases": [
-            "anna"
+            "anna",
+            "the prophetess"
           ],
           "points": 5,
           "text": "Anna the prophetess"
         },
         {
           "aliases": [
-            "herod"
+            "herod",
+            "herod's men",
+            "herod's soldiers"
           ],
           "points": 3,
           "text": "Herod's messengers"
         }
       ],
-      "prompt": "Name someone who visited the newborn Jesus"
+      "prompt": "Name someone who visited the newborn Jesus",
+      "decoys": [
+        "The innkeeper",
+        "Joseph",
+        "The disciples"
+      ]
     },
     {
       "answers": [
@@ -224,7 +276,8 @@
         },
         {
           "aliases": [
-            "olive"
+            "olive",
+            "olive branch"
           ],
           "points": 15,
           "text": "Olives"
@@ -258,24 +311,35 @@
           "text": "Almonds"
         }
       ],
-      "prompt": "Name a fruit mentioned in the Bible"
+      "prompt": "Name a fruit mentioned in the Bible",
+      "decoys": [
+        "Melons",
+        "Pears",
+        "Peaches",
+        "Cherries"
+      ]
     },
     {
       "answers": [
         {
           "aliases": [
-            "cana of galilee"
+            "cana of galilee",
+            "cana in galilee"
           ],
           "points": 22,
           "text": "Cana"
         },
         {
-          "aliases": [],
+          "aliases": [
+            "the holy city"
+          ],
           "points": 19,
           "text": "Jerusalem"
         },
         {
-          "aliases": [],
+          "aliases": [
+            "capharnaum"
+          ],
           "points": 15,
           "text": "Capernaum"
         },
@@ -295,19 +359,29 @@
           "text": "Jericho"
         },
         {
-          "aliases": [],
+          "aliases": [
+            "city of david"
+          ],
           "points": 6,
           "text": "Bethlehem"
         }
       ],
-      "prompt": "Name a town where Jesus worked a miracle"
+      "prompt": "Name a town where Jesus worked a miracle",
+      "decoys": [
+        "Nazareth",
+        "Bethphage",
+        "Gadara",
+        "Emmaus"
+      ]
     },
     {
       "answers": [
         {
           "aliases": [
             "firstborn",
-            "death of firstborn"
+            "death of firstborn",
+            "slaying of the firstborn",
+            "tenth plague"
           ],
           "points": 22,
           "text": "Death of the firstborn"
@@ -323,14 +397,17 @@
           "aliases": [
             "blood",
             "water to blood",
-            "river to blood"
+            "river to blood",
+            "bloody water",
+            "nile to blood"
           ],
           "points": 16,
           "text": "Water turned to blood"
         },
         {
           "aliases": [
-            "three days of darkness"
+            "three days of darkness",
+            "darkness over egypt"
           ],
           "points": 12,
           "text": "Darkness"
@@ -358,7 +435,12 @@
           "text": "Gnats"
         }
       ],
-      "prompt": "Name one of the Ten Plagues of Egypt"
+      "prompt": "Name one of the Ten Plagues of Egypt",
+      "decoys": [
+        "Boils",
+        "Flies",
+        "Livestock disease"
+      ]
     },
     {
       "answers": [
@@ -366,18 +448,25 @@
           "aliases": [
             "mary the theotokos",
             "theotokos",
-            "virgin mary"
+            "virgin mary",
+            "mother of god",
+            "mother mary"
           ],
           "points": 36,
           "text": "Mary"
         },
         {
-          "aliases": [],
+          "aliases": [
+            "ruth the moabitess",
+            "the moabitess"
+          ],
           "points": 18,
           "text": "Ruth"
         },
         {
-          "aliases": [],
+          "aliases": [
+            "hadassah"
+          ],
           "points": 14,
           "text": "Esther"
         },
@@ -389,22 +478,35 @@
           "text": "Sarah"
         },
         {
-          "aliases": [],
+          "aliases": [
+            "anna"
+          ],
           "points": 10,
           "text": "Hannah"
         },
         {
-          "aliases": [],
+          "aliases": [
+            "the first woman",
+            "first woman"
+          ],
           "points": 6,
           "text": "Eve"
         },
         {
-          "aliases": [],
+          "aliases": [
+            "martha of bethany"
+          ],
           "points": 4,
           "text": "Martha"
         }
       ],
-      "prompt": "Name a woman of the Bible you might name a daughter after"
+      "prompt": "Name a woman of the Bible you might name a daughter after",
+      "decoys": [
+        "Deborah",
+        "Rebekah",
+        "Leah",
+        "Miriam"
+      ]
     },
     {
       "answers": [
@@ -453,7 +555,13 @@
           "text": "Colossians"
         }
       ],
-      "prompt": "Name a letter (epistle) written by the apostle Paul"
+      "prompt": "Name a letter (epistle) written by the apostle Paul",
+      "decoys": [
+        "Corinthians",
+        "Hebrews",
+        "Titus",
+        "Philemon"
+      ]
     },
     {
       "answers": [
@@ -461,7 +569,8 @@
           "aliases": [
             "fasting",
             "abstain from meat",
-            "give up meat"
+            "give up meat",
+            "abstinence"
           ],
           "points": 40,
           "text": "Fast"
@@ -478,7 +587,8 @@
           "aliases": [
             "alms",
             "charity",
-            "give to the poor"
+            "give to the poor",
+            "donate"
           ],
           "points": 14,
           "text": "Give alms"
@@ -488,7 +598,9 @@
             "go to church",
             "services",
             "presanctified liturgy",
-            "church"
+            "church",
+            "chapel",
+            "liturgy"
           ],
           "points": 12,
           "text": "Attend more services"
@@ -505,13 +617,20 @@
           "aliases": [
             "forgiveness",
             "forgiveness sunday",
-            "forgive"
+            "forgive",
+            "forgiveness vespers"
           ],
           "points": 4,
           "text": "Ask forgiveness"
         }
       ],
-      "prompt": "Name something the faithful do during Great Lent"
+      "prompt": "Name something the faithful do during Great Lent",
+      "decoys": [
+        "Give up sweets",
+        "Wake up earlier",
+        "Read the Psalter",
+        "No social media"
+      ]
     }
   ],
   "jeopardy": [

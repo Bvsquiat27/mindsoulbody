@@ -123,5 +123,10 @@ body{background:radial-gradient(ellipse 58% 25% at 50% -6%,var(--app-glow),trans
 .gx-guessrow .primary{width:auto;margin-top:0}
 .gx-event{border-left:3px solid var(--gold);padding:8px 12px;background:#ffffff08;border-radius:0 10px 10px 0;font-weight:600}
 @media(max-width:680px){.gx-millionaire{grid-template-columns:1fr}.gx-ladder{grid-template-columns:repeat(3,1fr)}.gx-ladder .gx-rung{justify-content:center}.gx-ladder .gx-rung span{display:none}.gx-choices{grid-template-columns:1fr}.gx-jboard{grid-template-columns:repeat(5,104px)}}
+.gx-slot.covered{background:#ffffff10;border-style:dashed}
+.gx-slot.flip{animation:gxFlip .55s ease}
+@keyframes gxFlip{0%{transform:rotateX(85deg);background:#f4adca2e}55%{transform:rotateX(-14deg)}100%{transform:rotateX(0)}}
+.gx-bigx{position:fixed;inset:0;display:grid;place-items:center;font-size:34vmin;font-weight:900;color:#ff3b5c;text-shadow:0 10px 60px #ff3b5c66;pointer-events:none;z-index:80;animation:gxBigX .95s ease forwards}
+@keyframes gxBigX{0%{opacity:0;transform:scale(.35) rotate(-8deg)}22%{opacity:1;transform:scale(1.12) rotate(2deg)}68%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.04)}}
 .brand-mark{background:none;box-shadow:none;padding:0;overflow:hidden}
 .brand-mark svg{width:100%;height:100%;display:block}
