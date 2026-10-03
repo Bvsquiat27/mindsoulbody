@@ -166,3 +166,36 @@ h3{font-size:6.9vw}
 .section-head{margin:11vw 0 5.3vw}
 input,textarea,select{font-size:5.2vw}
 }
+
+/* MSB phone sizing v11: side-by-side with the old app (Angel's screenshots) shows the old build's type ran ~1.4x the new build's at the same screen. v10 values scaled x1.4 so the app sits at the old app's size: big, close, chunky. */
+@media (max-width:1024px){
+body{font-size:7.3vw}
+h1{font-size:16.5vw}
+h2{font-size:10.5vw}
+h3{font-size:9.5vw}
+.lead{font-size:7.5vw}
+.small{font-size:5.6vw}
+.eyebrow,.nav-caption{font-size:4.9vw}
+#screen{padding:11vw 7.8vw calc(53vw + env(safe-area-inset-bottom))}
+.topbar{height:26vw;padding:0 7.8vw}
+.mobile-brand{font-size:8.8vw}
+.mobile-brand .brand-mark{width:14vw;height:14vw;font-size:10.5vw;border-radius:4.9vw}
+.account-button{width:18vw;height:18vw;font-size:9.7vw}
+.card{padding:11vw;border-radius:9.7vw}
+.daily-stack{min-height:128vw;padding:11vw 10.5vw 31vw;border-radius:11.8vw}
+.daily-stack h2{font-size:16vw}
+.verse-play{width:19vw;height:19vw;right:8.8vw;bottom:7.8vw}
+.neon-stat{padding:10.2vw;min-height:68vw}
+.neon-stat strong{font-size:23vw}
+.primary,.secondary{min-height:19vw;padding:5.3vw 7.8vw}
+.bottom-nav{padding:3.6vw 3.6vw calc(4.2vw + env(safe-area-inset-bottom));border-radius:9.7vw 9.7vw 0 0}
+.bottom-nav button{min-height:24vw;border-radius:7.4vw}
+.bottom-nav button svg{width:10vw;height:10vw}
+.bottom-nav button small{font-size:5.2vw}
+.section-head{margin:15vw 0 7.4vw}
+input,textarea,select{font-size:7.3vw}
+.theme-swatches{gap:4.5vw}
+.theme-swatch{min-height:19vw;padding:4.5vw 5vw;font-size:4.6vw;border-radius:5.5vw}
+.profile-stats strong{font-size:11vw}
+.profile-stats small{font-size:4.2vw}
+}
