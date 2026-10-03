@@ -1,0 +1,11 @@
+{
+  "name": "Mind Soul and Body",
+  "short_name": "Mind Soul Body",
+  "description": "Orthodox Bible study, Scripture reading, notes, and quizzes.",
+  "start_url": ".",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#090e10",
+  "theme_color": "#090e10",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
