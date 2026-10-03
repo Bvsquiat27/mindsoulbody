@@ -64,7 +64,7 @@ window.BibleGames = (() => {
     if (target) setTimeout(() => { try { target.focus(); } catch { /* noop */ } }, 30);
   }
   function backBar(title) {
-    return `<button class="text-button" data-gx="hub">← Games</button><span class="eyebrow">GAME SHOW</span><h1>${esc(title)}</h1>`;
+    return `<button class="text-button" data-gx="hub">← Games</button><button class="text-button gx-snd" data-gx="sound-toggle" aria-label="${gxSoundOn ? 'Mute game sound' : 'Unmute game sound'}">${gxSoundOn ? '🔊' : '🔇'}</button><span class="eyebrow">GAME SHOW</span><h1>${esc(title)}</h1>`;
   }
   function scoreBar(seats, activeIdx) {
     return `<div class="gx-scorebar">${seats.map((s, i) => `<div class="gx-seat ${i === activeIdx ? 'active' : ''} ${s.pc ? 'pc' : ''}"><span>${esc(s.name)}</span><strong>${s.score}</strong></div>`).join('')}</div>`;
@@ -215,6 +215,7 @@ window.BibleGames = (() => {
     stopClock();
     const cl = G.current, seat = G.seats[seatIdx];
     const correct = !timedOut && choiceText === cl.answer;
+    sfx(correct ? 'correct' : 'wrong');
     cl.used = true; G.cats[cl.ci].clues[cl.ri].used = true;
     if (correct) {
       seat.score += cl.value; G.control = seatIdx;
@@ -398,12 +399,15 @@ window.BibleGames = (() => {
     G.locked = choiceText === q.answer;
     renderMillionaire();
     stopClock();
+    sfx('select');
     later(() => {
       if (G.locked) {
+        sfx('correct');
         if (G.rung === 15) { millionaireEnd(true, false); return; }
         G.rung++;
         nextMillionaireQuestion();
       } else {
+        sfx('wrong');
         millionaireEnd(false, false);
       }
     }, 700);
@@ -576,28 +580,112 @@ window.BibleGames = (() => {
     }
     if (G.phase === 'splash' || G.phase === 'over') { feudSplash(); return; }
   }
-  /* Tiny show sounds (Feud only): a ding when an answer flips, a buzz on a strike. */
-  let gxAudio = null;
-  function sfx(kind) {
+  /* ---------- games audio: shared sfx engine + a soft generative music loop.
+     WebAudio only, no audio files. Sound is garnish: everything is wrapped in
+     try/catch and nothing here may ever block or break a game. The toggle is
+     persisted in localStorage 'msb_gx_sound' ('off' mutes music and sfx). */
+  let gxAudio = null, gxNoiseBuf = null, gxMusicBus = null;
+  let gxSoundOn = (() => { try { return localStorage.getItem('msb_gx_sound') !== 'off'; } catch { return true; } })();
+  function gxCtx() {
+    if (!gxSoundOn) return null;
     try {
       const AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) return;
+      if (!AC) return null;
       gxAudio = gxAudio || new AC();
       if (gxAudio.state === 'suspended') gxAudio.resume();
-      const t = gxAudio.currentTime;
-      const tone = (freq, start, dur, type, vol) => {
-        const o = gxAudio.createOscillator(), g = gxAudio.createGain();
-        o.type = type || 'sine'; o.frequency.value = freq;
+      return gxAudio;
+    } catch { return null; }
+  }
+  function sfx(kind) {
+    const ac = gxCtx(); if (!ac) return;
+    try {
+      const t = ac.currentTime;
+      const tone = (freq, start, dur, type, vol, slideTo) => {
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.type = type || 'sine';
+        o.frequency.setValueAtTime(freq, t + start);
+        if (slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(20, slideTo), t + start + dur);
         g.gain.setValueAtTime(0.0001, t + start);
         g.gain.exponentialRampToValueAtTime(vol || 0.14, t + start + 0.02);
         g.gain.exponentialRampToValueAtTime(0.0001, t + start + dur);
-        o.connect(g); g.connect(gxAudio.destination);
+        o.connect(g); g.connect(ac.destination);
         o.start(t + start); o.stop(t + start + dur + 0.05);
+      };
+      const noise = (start, dur, vol, fFrom, fTo) => {
+        if (!gxNoiseBuf) {
+          gxNoiseBuf = ac.createBuffer(1, Math.floor(ac.sampleRate * 0.6), ac.sampleRate);
+          const d = gxNoiseBuf.getChannelData(0);
+          for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+        }
+        const src = ac.createBufferSource(); src.buffer = gxNoiseBuf;
+        const f = ac.createBiquadFilter(); f.type = 'lowpass';
+        f.frequency.setValueAtTime(fFrom, t + start);
+        f.frequency.exponentialRampToValueAtTime(Math.max(40, fTo), t + start + dur);
+        const g = ac.createGain();
+        g.gain.setValueAtTime(vol, t + start);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + start + dur);
+        src.connect(f); f.connect(g); g.connect(ac.destination);
+        src.start(t + start); src.stop(t + start + dur + 0.05);
       };
       if (kind === 'ding') { tone(880, 0, 0.16); tone(1318, 0.08, 0.3); }
       else if (kind === 'buzz') { tone(138, 0, 0.5, 'sawtooth', 0.1); tone(104, 0, 0.5, 'square', 0.07); }
       else if (kind === 'win') { tone(660, 0, 0.14); tone(880, 0.11, 0.14); tone(1320, 0.22, 0.34); }
+      else if (kind === 'correct') { tone(659, 0, 0.13, 'triangle', 0.15); tone(988, 0.09, 0.26, 'triangle', 0.15); }
+      else if (kind === 'wrong') { tone(165, 0, 0.28, 'sawtooth', 0.1, 92); tone(92, 0.02, 0.32, 'square', 0.06, 61); }
+      else if (kind === 'land') { tone(74, 0, 0.3, 'sine', 0.3, 38); noise(0, 0.09, 0.1, 900, 180); }
+      else if (kind === 'catch') { tone(880, 0, 0.1, 'triangle', 0.11); tone(1175, 0.06, 0.11, 'triangle', 0.11); tone(1568, 0.12, 0.2, 'triangle', 0.11); }
+      else if (kind === 'crash') { noise(0, 0.55, 0.3, 2600, 130); tone(216, 0, 0.55, 'sawtooth', 0.1, 52); tone(147, 0.05, 0.6, 'triangle', 0.12, 44); }
+      else if (kind === 'tick') { tone(1250, 0, 0.035, 'square', 0.045); }
+      else if (kind === 'select') { tone(620, 0, 0.07, 'sine', 0.1, 730); }
+      else if (kind === 'flip') { tone(320, 0, 0.16, 'sine', 0.09, 940); }
+      else if (kind === 'lose') { tone(392, 0, 0.16, 'triangle', 0.12); tone(311, 0.13, 0.16, 'triangle', 0.12); tone(262, 0.26, 0.2, 'triangle', 0.12); tone(196, 0.39, 0.36, 'triangle', 0.12); }
     } catch { /* sound is garnish, never a blocker */ }
+  }
+  /* Generative ambient loop: soft plucks over Am–F–C–G, very low gain.
+     Starts on the first pointer inside games; the scheduler stops itself once
+     the games UI has left the DOM (or hide() stops it directly). */
+  let gxMusicTimer = null, gxMusicStep = 0, gxMusicMiss = 0;
+  const GX_CHORDS = [
+    [110.00, 220.00, 261.63, 329.63],   /* Am */
+    [87.31, 174.61, 220.00, 261.63],    /* F */
+    [130.81, 196.00, 261.63, 329.63],   /* C */
+    [98.00, 196.00, 246.94, 293.66],    /* G */
+  ];
+  function gxPluck(freq, vol, type) {
+    try {
+      if (!gxAudio || !gxMusicBus) return;
+      const t = gxAudio.currentTime;
+      const o = gxAudio.createOscillator(), g = gxAudio.createGain();
+      o.type = type || 'triangle'; o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 1.5);
+      o.connect(g); g.connect(gxMusicBus);
+      o.start(t); o.stop(t + 1.6);
+    } catch { /* garnish */ }
+  }
+  function gxMusicTick() {
+    const mounted = root && document.contains(root) && root.querySelector('[data-gx]');
+    if (!mounted) { if (++gxMusicMiss >= 3) stopMusic(); return; }
+    gxMusicMiss = 0;
+    const chord = GX_CHORDS[Math.floor(gxMusicStep / 8) % GX_CHORDS.length];
+    if (gxMusicStep % 8 === 0) gxPluck(chord[0] / 2, 0.10, 'sine');
+    const roll = Math.random();
+    if (roll < 0.55) gxPluck(chord[1 + rand(chord.length - 1)] * (Math.random() < 0.3 ? 2 : 1), 0.055);
+    else if (roll < 0.68) gxPluck(chord[0] * 2, 0.04, 'sine');
+    gxMusicStep++;
+  }
+  function startMusic() {
+    if (!gxSoundOn || gxMusicTimer) return;
+    const ac = gxCtx(); if (!ac) return;
+    try {
+      if (!gxMusicBus) { gxMusicBus = ac.createGain(); gxMusicBus.gain.value = 0.5; gxMusicBus.connect(ac.destination); }
+      gxMusicMiss = 0;
+      gxMusicTimer = setInterval(gxMusicTick, 480);
+    } catch { /* garnish */ }
+  }
+  function stopMusic() {
+    if (gxMusicTimer) { clearInterval(gxMusicTimer); gxMusicTimer = null; }
   }
   function feudTopIdx() {
     let best = 0;
@@ -774,7 +862,7 @@ window.BibleGames = (() => {
     G.strikes++;
     sfx('buzz');
     G.flashX = G.strikes;
-    if (G.strikes >= 3) { G.phase = 'steal'; G.lastEvent = `${message} Three strikes!`; feudRender(); return; }
+    if (G.strikes >= 3) { if (!G.seats[G.playing].pc) sfx('lose'); G.phase = 'steal'; G.lastEvent = `${message} Three strikes!`; feudRender(); return; }
     G.lastEvent = `${message} Strike ${G.strikes} of 3.`;
     feudRender();
     feudMaybePcPlay();
@@ -812,9 +900,11 @@ window.BibleGames = (() => {
       G.lastEvent = `The steal is good — “${G.q.answers[idx].text}” was on the board!`;
       feudSettle(stealer, G.lastEvent);
     } else if (idx >= 0) {
+      if (!G.seats[stealer].pc) sfx('lose');
       G.lastEvent = `“${shownGuess}” is already showing — the steal fails.`;
       feudSettle(G.playing, G.lastEvent);
     } else {
+      if (!G.seats[stealer].pc) sfx('lose');
       G.lastEvent = shownGuess ? `The steal missed — “${shownGuess}” is not up there.` : 'The steal missed.';
       feudSettle(G.playing, G.lastEvent);
     }
@@ -968,6 +1058,7 @@ window.BibleGames = (() => {
     const c = soundCardData();
     G.timeLeft = timedOut ? 0 : Math.max(0, Math.ceil((G.clockEndsAt - Date.now()) / 1000));
     stopClock();
+    sfx('flip');
     if (timedOut && G.mode === 'solo') G.streak = 0;
     G.phase = 'reveal'; G.timedOut = !!timedOut;
     const last = G.idx + 1 >= G.deck.length;
@@ -1013,6 +1104,7 @@ window.BibleGames = (() => {
     const c = soundCardData();
     if (choice === c.phrase) {
       stopClock();
+      sfx('catch');
       G.seats[0].score += SOUND_BASE[c.level];
       soundRaceEnd(`${esc(G.seats[0].name)} cracked it — +${SOUND_BASE[c.level]}.`, true);
       return;
@@ -1035,6 +1127,7 @@ window.BibleGames = (() => {
     const c = soundCardData();
     const chance = c.level === 'easy' ? 0.62 : c.level === 'medium' ? 0.52 : 0.42;
     if (Math.random() < chance) {
+      sfx('wrong');
       G.seats[1].score += SOUND_BASE[c.level];
       soundRaceEnd(`The PC decoded it — +${SOUND_BASE[c.level]} to the machine.`, false);
     } else {
@@ -1115,6 +1208,198 @@ window.BibleGames = (() => {
       </section>`);
   }
 
+  /* ================= TOWER OF BABEL =================
+     Angel's design: no countdown bar. A brick falls slowly toward the tower;
+     a right answer catches it mid-air, a wrong answer (or letting it land)
+     slams it onto the wall. Ten bricks and the tower topples. */
+  const BABEL_MAX = 10;
+  let gxChallengesPromise = null;
+  function loadChallenges() {
+    if (!gxChallengesPromise) {
+      gxChallengesPromise = fetch('data/study-challenges.json', { cache: 'no-store' })
+        .then(res => { if (!res.ok) throw Error(`The lesson questions could not be loaded (${res.status}).`); return res.json(); })
+        .catch(err => { gxChallengesPromise = null; throw err; });
+    }
+    return gxChallengesPromise;
+  }
+  /* Pure pool builder (also exercised by the offline harness): jeopardy clues
+     and final + every keyed lesson question, normalized to {prompt, choices(4),
+     answer, source}, deduped by prompt. Three-choice questions borrow a
+     distractor from a sibling question in the same activity. */
+  function babelBuildPool(bankData, chData) {
+    const pool = [], seen = new Set();
+    const clean = v => String(v == null ? '' : v).trim().replace(/\s+/g, ' ');
+    const add = (prompt, choices, answer, source) => {
+      const p = clean(prompt);
+      if (!p || seen.has(p)) return;
+      const a = String(answer == null ? '' : answer);
+      const cs = [...new Set((choices || []).map(c => String(c)))];
+      if (cs.length < 4 || !cs.includes(a)) return;
+      seen.add(p);
+      pool.push({ prompt: p, choices: cs.length > 4 ? [a, ...cs.filter(c => c !== a).slice(0, 3)] : cs, answer: a, source: clean(source) });
+    };
+    ((bankData && bankData.jeopardy) || []).forEach(cat => (cat.clues || []).forEach(cl => add(cl.clue, cl.choices, cl.answer, `${cat.category || 'Jeopardy'} · ${cl.reference || ''}`)));
+    if (bankData && bankData.jeopardyFinal) { const f = bankData.jeopardyFinal; add(f.clue, f.choices, f.answer, `Final Jeopardy · ${f.reference || ''}`); }
+    ((chData && chData.challenges) || []).forEach(act => {
+      const qs = (act.questions || []).filter(q => q && Number.isInteger(q.correct) && Array.isArray(q.choices) && q.choices.length >= 3 && q.choices[q.correct] != null);
+      const sibling = [...new Set(qs.flatMap(q => q.choices.map(c => String(c))))];
+      qs.forEach(q => {
+        const cs = q.choices.map(c => String(c));
+        if (cs.length === 3) {
+          const extra = shuffle(sibling.filter(c => !cs.includes(c)))[0];
+          if (!extra) return;
+          cs.push(extra);
+        }
+        add(q.prompt, cs, cs[q.correct], act.title || 'Study lesson');
+      });
+    });
+    return pool;
+  }
+  function babelMenu() {
+    setHtml(`${backBar('Tower of Babel')}
+      <p class="lead">A brick is always falling toward the tower. Answer the question before it lands: right, and you catch the piece mid-air; wrong — or too slow — and the wall grows by one. Reach ten bricks and the whole tower topples.</p>
+      ${bestLine('babel', v => v + ' points')}
+      <div class="gx-names">${nameInputs('solo')}</div>
+      <button class="primary" data-gx="b-start" data-gx-autofocus>Start building</button>`);
+  }
+  async function babelStart() {
+    const usedNames = readNames(['You']);
+    const name = usedNames[0] || 'You';
+    setHtml(`${backBar('Tower of Babel')}<div class="loading">Gathering questions…</div>`);
+    try {
+      const chData = await loadChallenges();
+      const pool = babelBuildPool(bank, chData);
+      if (pool.length < 10) { setHtml(`${backBar('Tower of Babel')}<div class="empty error">Not enough questions loaded to build a tower. <button class="secondary" data-gx="hub">Back to games</button></div>`); return; }
+      G = Object.assign(G || {}, {
+        show: 'babel', name, score: 0, streak: 0, right: 0, height: 0,
+        fallMs: 9000, pool, deck: shuffle(pool), di: 0, phase: 'fall', q: null,
+        timers: (G && G.timers) || [], tickId: null, pcAction: null,
+      });
+      babelQuestion();
+    } catch (err) {
+      setHtml(`${backBar('Tower of Babel')}<div class="empty error">${esc(err.message)} <button class="secondary" data-gx="hub">Back to games</button></div>`);
+    }
+  }
+  function babelNextItem() {
+    if (G.di >= G.deck.length) { G.deck = shuffle(G.pool); G.di = 0; }
+    return G.deck[G.di++];
+  }
+  function babelQuestion() {
+    if (!G) return;
+    stopClock();
+    const item = babelNextItem();
+    const cs = shuffle(item.choices);
+    G.q = { prompt: item.prompt, choices: cs, correct: cs.indexOf(item.answer), answer: item.answer, source: item.source };
+    G.phase = 'fall';
+    babelRender(null);
+    babelStartFall();
+  }
+  function babelRender(fb) {
+    const h = G.height;
+    const danger = h >= 7;
+    const bricks = Array.from({ length: h }, (_, i) => `<i class="gx-babel-brick${i % 2 ? ' gx-babel-alt' : ''}"></i>`).join('');
+    const piece = fb && fb.caught
+      ? '<div class="gx-babel-piece gx-babel-caught"></div>'
+      : fb ? '' : '<div class="gx-babel-piece"></div>';
+    const fbHtml = fb ? `<p class="lead gx-babel-fb">${esc(fb.text)}</p>` : '';
+    setHtml(`${backBar('Tower of Babel')}
+      <section class="card gx-babel-card">
+        <div class="gx-babel-hud"><span>Score <strong>${G.score}</strong></span><span>Streak <strong>${G.streak}</strong></span><span class="${danger ? 'gx-babel-danger-text' : ''}">Tower <strong>${h}/${BABEL_MAX}</strong></span></div>
+        <div class="gx-babel-stage${danger ? ' gx-babel-danger' : ''}${fb && fb.slam ? ' gx-babel-shake' : ''}">
+          ${piece}
+          <div class="gx-babel-tower">${bricks}</div>
+          <div class="gx-babel-ground"></div>
+        </div>
+        <span class="eyebrow">${fb ? 'THE PIECE' : 'ANSWER BEFORE IT LANDS'}</span>
+        <h2>${esc(G.q.prompt)}</h2>
+        ${G.q.source ? `<p class="small muted">${esc(G.q.source)}</p>` : ''}
+        <div class="gx-choices gx-babel-choices">${G.q.choices.map((c, i) => `<button data-gx="b-answer" data-i="${i}" ${fb ? 'disabled' : ''} class="${fb && i === G.q.correct ? 'gx-babel-right' : fb && fb.picked === i ? 'gx-babel-wrong' : ''}">${esc(c)}</button>`).join('')}</div>
+        ${fbHtml}
+      </section>`);
+  }
+  function babelStartFall() {
+    stopClock();
+    G.pieceStart = Date.now();
+    G.pieceDur = Math.max(4500, G.fallMs - 120 * G.height);
+    G.tickId = setInterval(() => {
+      if (!G || G.phase !== 'fall') { stopClock(); return; }
+      const stage = root && root.querySelector('.gx-babel-stage');
+      const piece = root && root.querySelector('.gx-babel-piece');
+      if (!stage || !piece) return;
+      const travel = Math.max(0, stage.clientHeight - 10 - G.height * 24 - 22);
+      const p = Math.min(1, (Date.now() - G.pieceStart) / G.pieceDur);
+      piece.style.top = (p * travel) + 'px';
+      if (p >= 1) { stopClock(); babelBrick(-1); }
+    }, 50);
+  }
+  function babelAnswer(i) {
+    if (!G || G.phase !== 'fall' || !G.q) return;
+    stopClock();
+    if (i === G.q.correct) {
+      G.streak++; G.right++;
+      const bonus = G.streak >= 3 ? 25 : 0;
+      G.score += 100 + bonus;
+      G.fallMs = Math.max(4500, G.fallMs - 250);
+      sfx('catch'); sfx('correct');
+      G.phase = 'feedback';
+      babelRender({ caught: true, text: `Caught it! +${100 + bonus}${bonus ? ' — streak bonus included' : ''}. The piece never lands.` });
+      later(babelQuestion, 800);
+    } else {
+      sfx('wrong');
+      babelBrick(i);
+    }
+  }
+  function babelBrick(picked) {
+    if (!G) return;
+    stopClock();
+    G.streak = 0;
+    G.height++;
+    sfx('land');
+    if (G.height >= BABEL_MAX) { babelTopple(); return; }
+    G.phase = 'feedback';
+    babelRender({
+      landed: true, slam: true, picked,
+      text: picked === -1
+        ? `Too slow — it landed, and the wall grows. The answer was: ${G.q.answer}`
+        : `Not quite — that brick slams onto the wall. The answer was: ${G.q.answer}`,
+    });
+    later(babelQuestion, 1400);
+  }
+  function babelTopple() {
+    G.phase = 'topple';
+    sfx('crash'); sfx('lose');
+    const bricks = Array.from({ length: G.height }, (_, i) =>
+      `<i class="gx-babel-brick${i % 2 ? ' gx-babel-alt' : ''}" style="--x:${(i % 2 ? 1 : -1) * (14 + i * 7)}px;--r:${(i % 3 - 1) * 38 + (i % 2 ? 12 : -9)}deg;animation-delay:${i * 45}ms"></i>`).join('');
+    setHtml(`${backBar('Tower of Babel')}
+      <section class="card gx-babel-card">
+        <div class="gx-babel-hud"><span>Score <strong>${G.score}</strong></span><span>Tower <strong>${G.height}/${BABEL_MAX}</strong></span></div>
+        <div class="gx-babel-stage gx-babel-danger gx-babel-topple">
+          <div class="gx-babel-tower">${bricks}</div>
+          <div class="gx-babel-ground"></div>
+        </div>
+        <span class="eyebrow">AND THE TOWER FELL</span>
+        <h2>${esc(G.q.prompt)}</h2>
+        <p class="lead">Ten bricks high — too high. The last answer was: <strong>${esc(G.q.answer)}</strong></p>
+      </section>`);
+    later(babelOver, 1450);
+  }
+  function babelOver() {
+    if (!G) return;
+    stopClock();
+    G.phase = 'over';
+    saveBest('babel', G.score);
+    const b = bestOf('babel');
+    setHtml(`${backBar('Tower of Babel')}
+      <section class="card gx-center">
+        <span class="eyebrow">THE TOWER HAS FALLEN</span>
+        <h2>${esc(G.name)} — ${G.score} points</h2>
+        <p>You caught <strong>${G.right}</strong> piece${G.right === 1 ? '' : 's'} with right answers before the wall came down.</p>
+        <p class="muted">Best on this device: <strong>${b.best} points</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'}.</p>
+        <button class="primary" data-gx="show-menu" data-show="babel">Build again</button>
+        <button class="secondary" data-gx="hub">All games</button>
+      </section>`);
+  }
+
   /* ================= CORE ================= */
   let pendingShow = null;
   function showMenu(key) {
@@ -1123,6 +1408,7 @@ window.BibleGames = (() => {
     if (key === 'jeopardy') jeopardyMenu();
     else if (key === 'millionaire') millionaireMenu();
     else if (key === 'sound') soundMenu();
+    else if (key === 'babel') babelMenu();
     else feudMenu();
   }
   async function loadBank() {
@@ -1133,6 +1419,10 @@ window.BibleGames = (() => {
   }
   function show(el, options) {
     root = el; ctx = options || {};
+    if (el && !el._gxAudioKick) {
+      el._gxAudioKick = true;
+      el.addEventListener('pointerdown', () => { if (gxSoundOn && gxCtx()) startMusic(); });
+    }
     const key = pendingShow || 'jeopardy';
     pendingShow = null;
     G = { show: key, timers: [], tickId: null, clockEndsAt: 0, clockTotal: 0 };
@@ -1142,6 +1432,7 @@ window.BibleGames = (() => {
       .catch(err => { if (root) setHtml(`<div class="empty error">${esc(err.message)} <button class="secondary" data-gx="hub">Back to games</button></div>`); });
   }
   function hide() {
+    stopMusic();
     if (G) { stopClock(); (G.timers || []).forEach(clearTimeout); }
     G = null; root = null; ctx = null;
   }
@@ -1159,9 +1450,23 @@ window.BibleGames = (() => {
     const action = btn.dataset.gx;
     if (action === 'hub') { const back = ctx && ctx.back; hide(); if (back) back(); return; }
     if (action === 'show-menu') { showMenu(btn.dataset.show); return; }
+    if (action === 'sound-toggle') {
+      gxSoundOn = !gxSoundOn;
+      try { localStorage.setItem('msb_gx_sound', gxSoundOn ? 'on' : 'off'); } catch { /* private mode */ }
+      root.querySelectorAll('[data-gx="sound-toggle"]').forEach(b => {
+        b.textContent = gxSoundOn ? '🔊' : '🔇';
+        b.setAttribute('aria-label', gxSoundOn ? 'Mute game sound' : 'Unmute game sound');
+      });
+      if (!gxSoundOn) stopMusic();
+      else if (gxCtx()) { startMusic(); sfx('select'); }
+      return;
+    }
+    /* Tower of Babel */
+    if (action === 'b-start') { babelStart(); return; }
+    if (action === 'b-answer') { babelAnswer(Number(btn.dataset.i)); return; }
     /* Jeopardy */
     if (action === 'j-mode') { jeopardyStart(btn.dataset.mode); return; }
-    if (action === 'j-pick') { if (G.phase === 'pick' && !G.seats[G.control].pc) openClue(Number(btn.dataset.cat), Number(btn.dataset.row)); return; }
+    if (action === 'j-pick') { if (G.phase === 'pick' && !G.seats[G.control].pc) { sfx('select'); openClue(Number(btn.dataset.cat), Number(btn.dataset.row)); } return; }
     if (action === 'j-buzz') { buzz(Number(btn.dataset.seat)); return; }
     if (action === 'j-answer') { if (G.phase === 'answer' || G.phase === 'buzz') resolveJeopardy(btn.dataset.choice, G.answerSeat ?? 0, false); return; }
     if (action === 'j-final') { jeopardyFinalSetup(); return; }

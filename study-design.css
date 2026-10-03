@@ -68,3 +68,32 @@ html{background:var(--bg)}body{color:var(--text);font-family:Outfit,system-ui,sa
 /* Scripture Library results sit directly under the theme buttons and receive focus/scroll on tap. */
 .library-results{scroll-margin-top:76px}
 .library-results .section-head{margin-top:20px}
+
+/* Share buttons on notes (journal list + study note panel) */
+.note-open{display:block;width:100%;background:none;border:0;color:inherit;text-align:left;padding:0;cursor:pointer;font:inherit}
+.note-preview .note-share{margin-top:12px}
+
+/* Games sound toggle in the back bar */
+.gx-snd{font-size:17px;line-height:1;padding:10px 8px}
+
+/* Tower of Babel */
+.gx-babel-hud{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px;color:var(--muted);font-size:14px}
+.gx-babel-hud strong{color:var(--text)}
+.gx-babel-danger-text{color:#ff9db4;font-weight:700}
+.gx-babel-stage{position:relative;height:300px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#0d1622,#131a20);overflow:hidden;margin-bottom:18px}
+.gx-babel-tower{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);width:120px;display:flex;flex-direction:column-reverse;gap:2px}
+.gx-babel-brick{display:block;width:110px;height:22px;border-radius:4px;background:linear-gradient(145deg,#b4632f,#8a4a22);border:1px solid #00000055;box-shadow:inset 0 1px 0 #ffffff2e}
+.gx-babel-brick.gx-babel-alt{margin-left:10px}
+.gx-babel-piece{position:absolute;left:50%;top:0;margin-left:-55px;width:110px;height:22px;border-radius:4px;background:linear-gradient(145deg,#e0a458,#b4632f);border:1px solid #00000066;box-shadow:0 6px 18px #0009}
+.gx-babel-caught{animation:gxBabelCatch .8s ease forwards}
+@keyframes gxBabelCatch{30%{transform:translateY(-14px) scale(1.04);opacity:1}100%{transform:translateY(-64px) scale(.85);opacity:0}}
+.gx-babel-ground{position:absolute;left:0;right:0;bottom:0;height:10px;background:linear-gradient(180deg,#3a2c1c,#241a10);border-top:1px solid #ffffff22}
+.gx-babel-shake{animation:gxBabelShake .45s ease}
+@keyframes gxBabelShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+.gx-babel-danger .gx-babel-tower{animation:gxBabelWobble 1.1s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes gxBabelWobble{0%,100%{transform:translateX(-50%) rotate(-1.1deg)}50%{transform:translateX(-50%) rotate(1.1deg)}}
+.gx-babel-topple .gx-babel-brick{animation:gxBabelFall .9s ease-in forwards}
+@keyframes gxBabelFall{to{transform:translate(var(--x,20px),52px) rotate(var(--r,30deg));opacity:.2}}
+.gx-babel-choices button.gx-babel-right{border-color:#3fae7c;background:#14382a}
+.gx-babel-choices button.gx-babel-wrong{border-color:#c6506b;background:#3d1a26}
+.gx-babel-fb{margin-top:14px}
