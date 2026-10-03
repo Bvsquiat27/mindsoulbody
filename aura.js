@@ -109,3 +109,6 @@ async function localApi(path,method='GET',body){
   throw Error('That part of the app needed the old server and is not available in this offline copy.');
 }
 async function api(path,method='GET',body){if(MSB_LOCAL)return localApi(path,method,body);try{return await apiRemote(path,method,body)}catch(error){if(error?.status===404||error?.status===501||error?.offline){MSB_LOCAL=true;return localApi(path,method,body)}throw error}}
+
+/* PWA: offline shell + install support */
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("./sw.js").catch(function(){})})}
