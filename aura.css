@@ -56,8 +56,8 @@ body{background:radial-gradient(ellipse 58% 25% at 50% -6%,var(--app-glow),trans
 .gx-hub-millionaire{border-color:#ffd38d55}.gx-hub-millionaire .tag{border-color:#ffd38d88;color:#ffe3b3}
 .gx-hub-feud{border-color:#f4adca55}.gx-hub-feud .tag{border-color:#f4adca88;color:#ffd3e6}
 .gx-hub-sound{border-color:#8ff5d255}.gx-hub-sound .tag{border-color:#8ff5d288;color:#c9ffe9}
-.gx-hub-garden{border-color:#9ae6a055}.gx-hub-garden .tag{border-color:#9ae6a088;color:#dcffd9}
-.gx-hub-apple{border-color:#ff9d6b55}.gx-hub-apple .tag{border-color:#ff9d6b88;color:#ffe0c2}
+.gx-hub-defend{border-color:#d9b45b55}.gx-hub-defend .tag{border-color:#d9b45b88;color:#ffe9ad}
+.gx-hub-doctrine{border-color:#7dd3fc55}.gx-hub-doctrine .tag{border-color:#7dd3fc88;color:#dff3ff}
 .gx-gibberish{font-family:var(--serif);font-size:2rem;line-height:1.4}
 .gx-gibberish-small{color:var(--muted);font-style:italic}
 .gx-levels{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 2px}

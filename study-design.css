@@ -103,51 +103,17 @@ html{background:var(--bg)}body{color:var(--text);font-family:Outfit,system-ui,sa
 .gx-babel-choices button.gx-babel-wrong{border-color:#c6506b;background:#3d1a26}
 .gx-babel-fb{margin-top:14px}
 
-/* Adam in the Garden */
-.gx-garden-card{padding:18px}
-.gx-garden-hud{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px;color:var(--muted);font-size:14px}
-.gx-garden-hud strong{color:var(--text)}
-.gx-garden-board{position:relative;height:min(66vh,620px);aspect-ratio:3/4;margin:10px auto 16px;border:1px solid #9ae6a044;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#15351f,#0e2417);box-shadow:inset 0 0 0 1px #ffffff10,0 18px 45px #00000033}
-.gx-garden-lane{position:absolute;left:0;right:0;border-bottom:1px solid #ffffff10;overflow:hidden}
-.gx-garden-lane span{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ffffff58;font-weight:800;pointer-events:none}
-.gx-garden-goal{background:linear-gradient(180deg,#2f6b35,#1e4d28)}
-.gx-garden-water{background:linear-gradient(180deg,#174d78,#123a5e)}
-.gx-garden-safe{background:linear-gradient(180deg,#47652f,#354d28)}
-.gx-garden-start{background:linear-gradient(180deg,#5d6b35,#435426)}
-.gx-garden-hazard{background:linear-gradient(180deg,#4b3423,#332417)}
-.gx-garden-entity{position:absolute;display:flex;align-items:center;justify-content:center;font-size:clamp(17px,4.8vw,29px);line-height:1;z-index:3;pointer-events:none;filter:drop-shadow(0 3px 5px #0008);white-space:nowrap}
-.gx-garden-entity-water{text-shadow:0 2px 8px #7dd3fc}
-.gx-garden-home,.gx-garden-hedge,.gx-garden-fruit{position:absolute;top:0;height:8.333%;display:flex;align-items:center;justify-content:center;z-index:4;pointer-events:none}
-.gx-garden-home{font-size:clamp(15px,4vw,24px);color:#dcffd9;text-shadow:0 0 12px #9ae6a0}
-.gx-garden-home.filled{color:#ffd38d}
-.gx-garden-hedge{font-size:clamp(16px,4.4vw,25px);opacity:.85}
-.gx-garden-fruit{font-size:clamp(17px,4.8vw,27px);z-index:4;filter:drop-shadow(0 3px 6px #0008)}
-.gx-garden-player{position:absolute;display:grid;place-items:center;font-size:clamp(24px,7vw,38px);z-index:6;pointer-events:none;transition:left .08s linear,top .08s linear;text-shadow:0 4px 12px #000c,0 0 14px #dcffd966}
-.gx-garden-controls{display:grid;grid-template-columns:58px 58px 58px auto;gap:9px;justify-content:center;align-items:stretch;margin-top:14px}
-.gx-garden-controls>button,.gx-garden-ud button{min-height:54px;border-radius:16px;border:1px solid #9ae6a055;background:#1c3524;color:#dcffd9;font:inherit;font-size:1.25rem;font-weight:900;cursor:pointer}
-.gx-garden-controls>button:active,.gx-garden-ud button:active{transform:scale(.96);background:#285234}
-.gx-garden-ud{display:grid;gap:9px}
-.gx-garden-controls .secondary{font-size:.95rem;padding:0 16px}
-.gx-garden-turn{text-align:center;border:1px solid #9ae6a044;background:#9ae6a012;border-radius:18px;padding:18px;margin-top:14px}
-.gx-garden-turn h2{margin:4px 0 8px}
-@media(max-width:640px){.gx-garden-board{height:min(60vh,560px)}.gx-garden-controls{grid-template-columns:52px 52px 52px auto}.gx-garden-controls>button,.gx-garden-ud button{min-height:50px}}
-
-/* Two-player race pads (Garden race + Apple Maze) */
-.gx-race-pads{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.gx-race-pads-one{grid-template-columns:minmax(180px,280px);justify-content:center}
-.gx-race-pad{border:1px solid var(--line);border-radius:16px;padding:10px;text-align:center}
-.gx-race-pad strong{display:block;margin-bottom:8px}
-.gx-race-pad-grid{display:grid;grid-template-columns:repeat(3,52px);gap:7px;justify-content:center}
-.gx-race-pad-grid button{min-height:50px;border-radius:14px;border:1px solid #ffffff2b;background:#ffffff10;color:var(--text);font:inherit;font-size:1.15rem;font-weight:900;cursor:pointer}
-.gx-race-pad-grid button:active{transform:scale(.95);background:#ffffff22}
-
-/* Adam & Eve Apple Maze */
-.gx-apple-board{display:grid;grid-template-columns:repeat(15,1fr);gap:2px;background:#0d1f13;border:1px solid #9ae6a033;border-radius:16px;padding:8px;margin:10px auto 14px;max-width:620px}
-.gx-apple-cell{aspect-ratio:1;display:grid;place-items:center;font-size:clamp(13px,3.6vw,21px);line-height:1;border-radius:5px;background:#14301d}
-.gx-apple-wall{background:linear-gradient(145deg,#2c5d33,#1d4225);box-shadow:inset 0 0 0 1px #9ae6a022}
-.gx-apple-dot i{width:6px;height:6px;border-radius:50%;background:#ffd38d;display:block;box-shadow:0 0 5px #ffd38d88}
-.gx-apple-power{filter:drop-shadow(0 0 6px #c084fc)}
-.gx-apple-snake{filter:drop-shadow(0 2px 4px #0009)}
-.gx-apple-fright{filter:hue-rotate(190deg) saturate(2) drop-shadow(0 0 6px #7dd3fc)}
-.gx-apple-player{text-shadow:0 2px 8px #000c,0 0 10px #ffd38d66}
-@media(max-width:640px){.gx-race-pad-grid{grid-template-columns:repeat(3,46px)}.gx-race-pad-grid button{min-height:46px}}
+/* Defend the Faith + Say It Right */
+.gx-faith-card{padding:20px}
+.gx-faith-hud{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px;color:var(--muted);font-size:14px}
+.gx-faith-hud strong{color:var(--text)}
+.gx-faith-prompt{font-family:Georgia,serif;font-size:clamp(1.25rem,3vw,1.7rem);line-height:1.35;margin:10px 0 14px;padding:16px 18px;border-left:4px solid #d9b45b;background:#ffffff08;border-radius:0 16px 16px 0}
+.gx-faith-choices button.gx-faith-right{border-color:#3fae7c;background:#14382a}
+.gx-faith-choices button.gx-faith-wrong{border-color:#c6506b;background:#3d1a26}
+.gx-faith-feedback{margin-top:16px;border:1px solid var(--line);border-radius:16px;padding:16px;background:#ffffff07}
+.gx-faith-feedback.right{border-color:#3fae7c77}
+.gx-faith-feedback.wrong{border-color:#c6506b77}
+.gx-faith-feedback h3{margin:0 0 8px}
+.gx-say{margin:14px 0;padding:14px;border-radius:14px;background:#d9b45b14;border:1px solid #d9b45b44}
+.gx-say span{display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:6px}
+.gx-say strong{font-family:Georgia,serif;font-size:1.08rem;line-height:1.4}

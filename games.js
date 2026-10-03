@@ -111,21 +111,21 @@ window.BibleGames = (() => {
       { catches: 10, fallMs: 9000 }, { catches: 12, fallMs: 8400 }, { catches: 15, fallMs: 7800 },
       { catches: 18, fallMs: 7200 }, { catches: 20, fallMs: 6600 },
     ],
-    /* Adam in the Garden: level -> crossing name, traffic speed, daylight per life */
-    garden: [
-      { name: 'Dawn in Eden', speed: 0.84, time: 85, lives: 3 },
-      { name: 'Rivers of Eden', speed: 0.96, time: 80, lives: 3 },
-      { name: 'Beasts of the Field', speed: 1.08, time: 76, lives: 3 },
-      { name: 'Thorns and Stones', speed: 1.20, time: 72, lives: 3 },
-      { name: 'The Eastern Gate', speed: 1.34, time: 68, lives: 3 },
+    /* Defend the Faith: level -> sparring theme + right answers needed to beat it */
+    defend: [
+      { name: 'First Replies', pass: 5 },
+      { name: 'Right Words', pass: 5 },
+      { name: 'The Islamic Dilemma', pass: 5 },
+      { name: 'Hard Questions', pass: 5 },
+      { name: 'Master Round', pass: 6 },
     ],
-    /* Adam & Eve Apple Maze: level -> orchard name, snake count, snake cadence, race clock + winner target */
-    apple: [
-      { name: 'First Orchard', snakes: 3, snakeEvery: 2, time: 120, target: 600 },
-      { name: 'Fig and Vine', snakes: 4, snakeEvery: 2, time: 130, target: 750 },
-      { name: 'Serpents at Noon', snakes: 4, snakeEvery: 1, time: 140, target: 900 },
-      { name: 'The Walled Garden', snakes: 5, snakeEvery: 1, time: 150, target: 1050 },
-      { name: 'Eden at Dusk', snakes: 5, snakeEvery: 1, time: 160, target: 1200 },
+    /* Say It Right: level -> wording theme + right answers needed to beat it */
+    doctrine: [
+      { name: 'The Words', pass: 5 },
+      { name: 'One God, Three Hypostases', pass: 5 },
+      { name: 'Christ in Two Natures', pass: 5 },
+      { name: 'Church Words', pass: 5 },
+      { name: 'Say It Clean', pass: 6 },
     ],
   };
   let gxLevelSel = {};
@@ -160,8 +160,8 @@ window.BibleGames = (() => {
       feud: `A two-board match — boards ${(level - 1) * 2 + 1} and ${(level - 1) * 2 + 2} of ten. Clear both boards to beat this level.`,
       sound: 'Ten cards dealt fresh from this level of the deck. Decode 7 of 10 to beat it.',
       babel: `Catch ${GX_LEVELS.babel[level - 1].catches} falling pieces before the tower reaches ten bricks.`,
-      garden: `Cross ${GX_LEVELS.garden[level - 1].name}: fill all five Tree Gate alcoves before the lives run out. Rivers carry you; beasts, serpents, scorpions, and rolling stones end a life.`,
-      apple: `Eat every apple to clear the orchard solo; in the race, out-score your rival past ${GX_LEVELS.apple[level - 1].target} points while ${GX_LEVELS.apple[level - 1].snakes} snakes hunt the maze.`,
+      defend: `Sparring round: ${GX_LEVELS.defend[level - 1].name}. Hear the objection, say your first sentence out loud, then choose the strongest opening. Get ${GX_LEVELS.defend[level - 1].pass} right to beat the level.`,
+      doctrine: `Wording round: ${GX_LEVELS.doctrine[level - 1].name}. Learn the Church term, then choose the sentence that says it cleanly. Get ${GX_LEVELS.doctrine[level - 1].pass} right to beat the level.`,
     };
     return `${bits[show] || ''}${p.done.length ? ` Beaten so far: Level ${p.done.join(', ')}.` : ''}`;
   }
@@ -783,12 +783,12 @@ window.BibleGames = (() => {
     /* babel — ancient and ominous, hijaz color (E–F–C–E); thickens as the tower rises */
     babel: { bpm: 58, mode: 'phrygian dominant', wave: 'triangle', bassWave: 'sine', density: 0.3, stepsPerChord: 8, noteLen: 1.8, vol: 0.055, bassVol: 0.14, bassEvery: 4, bassDiv: 1, octUp: 0.1, tick: false,
       chords: [[82.41, 164.81, 207.65, 246.94], [87.31, 174.61, 220.00, 261.63], [65.41, 130.81, 164.81, 196.00], [82.41, 164.81, 207.65, 246.94]] },
-    /* garden — airy harp-like pentatonic, morning in Eden (C–G–Am–F) */
-    garden: { bpm: 96, mode: 'major pentatonic', wave: 'triangle', bassWave: 'sine', density: 0.62, stepsPerChord: 8, noteLen: 1.1, vol: 0.05, bassVol: 0.085, bassEvery: 4, bassDiv: 2, octUp: 0.42, tick: false,
-      chords: [[130.81, 261.63, 329.63, 392.00], [98.00, 196.00, 293.66, 392.00], [110.00, 220.00, 261.63, 329.63], [87.31, 174.61, 261.63, 349.23]] },
-    /* apple — quick playful orchard chase (C–F–C–G) */
-    apple: { bpm: 132, mode: 'major pentatonic', wave: 'square', bassWave: 'sine', density: 0.8, stepsPerChord: 4, noteLen: 0.35, vol: 0.032, bassVol: 0.075, bassEvery: 2, bassDiv: 2, octUp: 0.5, tick: false,
-      chords: [[130.81, 261.63, 329.63, 392.00], [174.61, 349.23, 440.00, 523.25], [130.81, 261.63, 329.63, 392.00], [98.00, 196.00, 293.66, 392.00]] },
+    /* defend — steady debate music: low strings, slow questions (Dm–Bb–F–A) */
+    defend: { bpm: 76, mode: 'natural minor', wave: 'sine', bassWave: 'sine', density: 0.42, stepsPerChord: 8, noteLen: 1.0, vol: 0.05, bassVol: 0.1, bassEvery: 4, bassDiv: 2, octUp: 0.12, tick: false,
+      chords: [[146.83, 293.66, 349.23, 440.00], [116.54, 233.08, 293.66, 349.23], [87.31, 174.61, 220.00, 261.63], [110.00, 220.00, 277.18, 329.63]] },
+    /* doctrine — clear bright wording drill (C–Am–F–G) */
+    doctrine: { bpm: 104, mode: 'major', wave: 'triangle', bassWave: 'sine', density: 0.66, stepsPerChord: 4, noteLen: 0.55, vol: 0.045, bassVol: 0.085, bassEvery: 2, bassDiv: 2, octUp: 0.4, tick: false,
+      chords: [[130.81, 261.63, 329.63, 392.00], [110.00, 220.00, 261.63, 329.63], [87.31, 174.61, 220.00, 261.63], [98.00, 196.00, 246.94, 293.66]] },
   };
   function gxSong() { return GX_SONGS[gxSongKey] || GX_SONGS.hub; }
   function gxStepMs() { return Math.round(30000 / gxSong().bpm); }
@@ -1647,874 +1647,215 @@ window.BibleGames = (() => {
   }
 
   
-  /* ================= ADAM IN THE GARDEN =================
-     A crossing adventure in the spirit of the old temple-crossing games:
-     guide Adam (and Eve in two-player) from the Garden Gate at the bottom
-     to five Tree Gate alcoves at the top. Rivers are crossed on lily pads,
-     logs, and turtles; the lower garden is patrolled by serpents,
-     scorpions, rolling stones, and wild beasts. Local multiplayer on one
-     device: solo, two-player versus (separate runs; high score wins), or
-     co-op (one shared crossing; the guide changes hands after a lost life
-     or a filled alcove). */
-  const GARDEN_COLS = 9, GARDEN_ROWS = 12, GARDEN_SLOTS = [0, 2, 4, 6, 8];
-  const GARDEN_ROW_DEFS = [
-    { type: 'goal', label: 'Tree Gates' },
-    { type: 'water', label: 'Pishon', icon: '🪷', dir: -1, speed: 0.78, width: 2, gap: 4.8, offset: 1.2 },
-    { type: 'water', label: 'Gihon', icon: '🪵', dir: 1, speed: 0.62, width: 3, gap: 5.6, offset: 2.0 },
-    { type: 'water', label: 'Tigris', icon: '🐢', dir: -1, speed: 0.52, width: 2, gap: 4.6, offset: 0.4 },
-    { type: 'safe', label: 'Riverbank' },
-    { type: 'hazard', label: 'Serpent path', icon: '🐍', dir: 1, speed: 1.02, width: 1.15, gap: 3.9, offset: 0.2 },
-    { type: 'hazard', label: 'Scorpion stones', icon: '🦂', dir: -1, speed: 1.18, width: 1, gap: 3.6, offset: 2.0 },
-    { type: 'hazard', label: 'Rolling stones', icon: '🪨', dir: 1, speed: 0.92, width: 1, gap: 4.1, offset: 1.0 },
-    { type: 'hazard', label: 'Wild beasts', icon: '🐆', dir: -1, speed: 1.10, width: 1.2, gap: 3.8, offset: 2.5 },
-    { type: 'safe', label: 'Garden path' },
-    { type: 'hazard', label: 'Thorn thicket', icon: '🐍', dir: -1, speed: 0.84, width: 1, gap: 4.2, offset: 1.0 },
-    { type: 'start', label: 'Garden Gate' },
+
+  /* ================= DEFEND THE FAITH + SAY IT RIGHT =================
+     Memory-informed apologetics games. Angel wants training that makes
+     him able to defend the faith out loud: hear the objection, retrieve
+     the first move before seeing the explanation, then say the model
+     sentence. Orthodox order throughout: Scripture and the Fathers
+     first, Western scholastic framing second. Transliteration only. */
+  function fq(tag, prompt, choices, answer, why, say) { return { tag, prompt, choices, answer, why, say }; }
+  const DEFEND_BANK = [
+    [
+      fq("Trinity", "A friend says: Three Persons means three gods. What do you clarify first?", ["The three Persons share one divine essence", "The Persons are three beings joined by love", "The word Trinity is only a symbol", "Stop asking because it is a mystery"], "The three Persons share one divine essence", "Orthodox speech is one ousia and three hypostases. The unity is not teamwork; the Father, Son, and Holy Spirit are one God because the essence is one.", "We confess one God: one divine essence, three hypostases, never three gods."),
+      fq("Christ", "Someone says Jesus was only a prophet. What is the strongest first question?", ["Why does He receive worship and forgive sins?", "Do you like the Sermon on the Mount?", "Which translation do you use?", "Can a prophet be called Lord in a poem?"], "Why does He receive worship and forgive sins?", "The New Testament does not leave Jesus as a mere messenger. He forgives sins, receives worship, and is confessed by Thomas as Lord and God. Start where His identity is revealed.", "If Jesus only pointed away from Himself, why does He forgive sins and accept worship?"),
+      fq("Scripture", "A skeptic says the Bible was changed. What should you ask before arguing?", ["Changed when, and which manuscripts show it?", "Do you believe in God at all?", "Which church do you attend?", "Why do you hate Scripture?"], "Changed when, and which manuscripts show it?", "A corruption claim needs a time, a place, and evidence. Ancient manuscripts let us test the claim instead of trading slogans.", "Before we debate the charge, name the century and show the manuscript evidence."),
+      fq("Faith and works", "A debater says Paul teaches faith alone and James contradicts him. What distinction answers first?", ["Dead profession versus living faith", "Paul wrote later than James", "Works are only for monks", "Faith means feelings"], "Dead profession versus living faith", "Paul attacks law-keeping as a rival system; James attacks empty profession. Orthodox reading: saving faith is living faith working through love and participation.", "The question is not faith or fruit; dead profession is not the living faith that saves."),
+      fq("Icons", "Someone calls icons idolatry. What distinction protects the answer?", ["Latreia belongs to God alone; dulia honors the saints", "Icons are small gods", "Images absorb prayer by themselves", "The Old Testament bans every image in every place"], "Latreia belongs to God alone; dulia honors the saints", "The Church distinguishes worship from veneration. The Incarnation matters: the invisible God became visible flesh, so matter can bear witness without becoming God.", "We worship God alone; we honor the saints as friends of God, and the icon points beyond itself."),
+      fq("Suffering", "An atheist asks why a good God permits evil. What is the best Orthodox opening?", ["Begin with Christ entering suffering, not escaping it", "Say evil is an illusion", "Say God needs evil to be glorious", "Free will ends the whole discussion"], "Begin with Christ entering suffering, not escaping it", "A slogan can sound cold at a hospital bed. The Christian answer begins with the crucified God who enters suffering, defeats death, and will heal creation.", "Christianity does not answer suffering from a distance; God entered it on the Cross."),
+    ],
+    [
+      fq("Word: homoousios", "A debater says the Son is only similar to the Father. Which word answers?", ["Homoousios: of one essence with the Father", "Homoiousios: of similar essence", "Aseity: self-existence only", "Kenosis: self-emptying only"], "Homoousios: of one essence with the Father", "Nicaea chose homoousios because similar is not enough for salvation. If the Son is less than true God, He cannot unite humanity to God.", "The Son is homoousios with the Father: true God from true God, not a similar being."),
+      fq("Word: hypostasis", "What is the clean distinction between ousia and hypostasis in Trinity talk?", ["Ousia names what God is; hypostasis names who each Person is", "Ousia is a mask; hypostasis is a mood", "Hypostasis is a separate essence", "Ousia means three gods"], "Ousia names what God is; hypostasis names who each Person is", "This is the grammar that prevents both polytheism and modalism. One what, three whos; one essence, three real hypostases.", "One ousia, three hypostases: that is how we speak without dividing God."),
+      fq("Theotokos", "Why does the title Theotokos matter so much?", ["It guards the truth that Mary bore one divine hypostasis", "It means Mary is the source of the Trinity", "It only praises her humility", "It was invented to honor women in the fifth century"], "It guards the truth that Mary bore one divine hypostasis", "Ephesus defended Theotokos because the child born of Mary is not a separate human person joined later to God. She bore a Person, and that Person is God the Word incarnate.", "Mary is Theotokos because the One born of her is God the Word in the flesh."),
+      fq("Chalcedon", "Which phrase set protects the confession of Christ?", ["Without confusion, change, division, or separation", "One nature absorbs the other", "Two persons side by side", "Humanity is only an appearance"], "Without confusion, change, division, or separation", "Chalcedon guards both truths: Christ is one hypostasis in two natures. The natures are not mixed away, and the Person is not split in two.", "One and the same Christ, in two natures, without confusion or division."),
+      fq("Holy Spirit", "The talk turns to the Filioque. What distinction should come first?", ["Eternal procession versus temporal mission", "Latin versus Greek spelling", "Which pope was stronger", "Whether the Spirit is powerful"], "Eternal procession versus temporal mission", "Orthodox argument begins by asking what kind of sending is under discussion. The mission in time is not the same question as eternal origin.", "First tell me whether we mean eternal procession or the sending in time."),
+      fq("Union of words", "How can Scripture say God suffered without saying the divine nature suffered by itself?", ["Communicatio idiomatum: properties are spoken of the one hypostasis", "The divine nature died apart from flesh", "The humanity was a costume", "Suffering means the essence changed"], "Communicatio idiomatum: properties are spoken of the one hypostasis", "Because the subject is one hypostasis, we can speak truly: God the Word suffered in the flesh. The suffering is real, and it is according to the human nature He made His own.", "The Word suffered in the flesh; we name the Person, not a confused nature."),
+    ],
+    [
+      fq("Islamic dilemma", "A Muslim friend says the Quran confirms the Torah and the Gospel. What is the first dilemma horn?", ["If the Bible stands, the Quran conflicts with it on Christ", "The Quran never mentions earlier books", "Manuscripts do not matter", "Only Arabic can be studied"], "If the Bible stands, the Quran conflicts with it on Christ", "The dilemma begins with affirmation. If the earlier revelation is confirmed, then denials of the crucifixion and of Christ the Son collide with that confirmed witness.", "If the Gospel is confirmed, why does the later claim deny what the Gospel proclaims about Christ?"),
+      fq("Corruption charge", "The reply comes: the Bible was corrupted after Muhammad. What evidence presses the point?", ["Major manuscripts predate Islam by centuries", "All manuscripts were copied yesterday", "The Dead Sea Scrolls are medieval", "Codex Sinaiticus was written after Muhammad"], "Major manuscripts predate Islam by centuries", "The timing matters. The Dead Sea Scrolls and early codices stand before Islam, so a late corruption theory cannot explain the text we already possess.", "Changed after Muhammad cannot work when the manuscripts are older than Muhammad."),
+      fq("Son of God", "A Muslim says God cannot have a son because that sounds physical. What do you clarify?", ["Son names eternal relation, not physical offspring", "Christians mean a biological child", "Son is only a nickname for a prophet", "Father means older in age"], "Son names eternal relation, not physical offspring", "Christian language is not pagan biology. The Son is begotten eternally of the Father; the confession protects relation without turning God into flesh before the Incarnation.", "When Christians say Son, we mean eternal relation, not physical reproduction."),
+      fq("False Trinity charge", "Someone claims Christians worship Father, Mary, and Jesus. What is the correction?", ["The Trinity is Father, Son, and Holy Spirit", "Mary is a fourth person", "The Spirit is only a force in that claim", "Christians worship three separate gods"], "The Trinity is Father, Son, and Holy Spirit", "Answer the actual Christian confession, not the caricature. Mary is honored as Theotokos; she is not a hypostasis of the Trinity.", "Christians confess Father, Son, and Holy Spirit; Mary is the Mother of God incarnate, not a member of the Trinity."),
+      fq("Prophecy claim", "A claim is made that Muhammad is predicted in the Bible. What is the disciplined response?", ["Name the exact text and read it in context", "Accept the claim if it sounds confident", "Quote any verse with the word prophet", "Refuse to look at texts"], "Name the exact text and read it in context", "Apologetics stays honest by testing claims in context. A prediction claim rises or falls by the actual passage, not by pressure or volume.", "Show me the exact passage, and let us read the whole context together."),
+      fq("Councils", "A skeptic says councils invented Christian doctrine. What is the better first answer?", ["Councils named the apostolic faith against new errors", "Councils created Christology from politics alone", "The Fathers never used Scripture", "Doctrine began in the fourth century"], "Councils named the apostolic faith against new errors", "The councils did not manufacture a new Christ. They found precise words to protect the worship and Scripture the Church already had received.", "The councils did not invent Christ; they defended the received Christ with exact words."),
+    ],
+    [
+      fq("Problem of evil", "A philosophy student says evil is a logical contradiction in Christianity. What should you separate first?", ["A logical contradiction from an emotional protest", "Evil from goodness", "God from creation", "Pain from all moral judgment"], "A logical contradiction from an emotional protest", "The argument changes shape depending on the claim. A formal contradiction must be proven; grief and protest need pastoral truth, not a trap.", "Tell me whether you mean a strict contradiction or the cry of a wounded heart."),
+      fq("Science", "Someone says evolution disproves God. What is the clean category question?", ["Does a mechanism explain away the Giver of being?", "Which fossil is your favorite?", "Can science define worship?", "Do you attend church?"], "Does a mechanism explain away the Giver of being?", "Mechanism and metaphysics are different questions. Describing how life develops does not by itself answer why being exists or why it is intelligible.", "A mechanism can describe creation; it cannot by itself remove the Creator."),
+      fq("Resurrection", "A skeptic calls the Resurrection a late legend. What evidence belongs early in the reply?", ["The early confession in First Corinthians fifteen", "Medieval miracle plays", "Modern church growth", "A feeling of hope"], "The early confession in First Corinthians fifteen", "Paul hands on an early received confession naming witnesses. Legend language must face the early testimony, the empty tomb proclamation in Jerusalem, and transformed witnesses.", "Start with the early confession Paul received and delivered, not with late legend theory."),
+      fq("Morality", "An atheist says we can be good without God. What distinction keeps the reply honest?", ["Knowing moral truth versus grounding moral truth", "Kindness versus church attendance", "Law versus custom", "Feelings versus family"], "Knowing moral truth versus grounding moral truth", "Christians can gladly affirm that unbelievers know and do real good. The deeper question is what makes goodness objective rather than preference.", "The issue is not whether you can know the good; it is what grounds the good you know."),
+      fq("Other religions", "A friend says sincere belief makes every religion equally true. What is the gentle correction?", ["Contradictory claims cannot all be true in the same sense", "Sincerity makes evidence unnecessary", "Every path has no claims", "Truth is only temperament"], "Contradictory claims cannot all be true in the same sense", "Respect persons while testing claims. Sincerity is real, but sincerity does not erase contradiction about God, Christ, and salvation.", "I honor sincerity, but claims that contradict cannot all be true at once."),
+      fq("Hard passage", "A reader brings up Judas and says the accounts contradict. What is the first careful move?", ["Ask whether different details are the same as a contradiction", "Call the reader dishonest", "Deny the texts are difficult", "Pick the shortest account"], "Ask whether different details are the same as a contradiction", "Hard passages deserve patience. Different details can trouble us, but a contradiction needs the same claim affirmed and denied in the same sense.", "A hard passage is not automatically a contradiction; show me the exact claims."),
+    ],
+    [
+      fq("Papal claims", "A Catholic friend argues for universal immediate jurisdiction. What should be distinguished first?", ["Primacy of honor from universal jurisdiction", "Rome from every other city", "Councils from bishops", "History from all doctrine"], "Primacy of honor from universal jurisdiction", "Orthodox response does not deny honor to old Rome. The disputed claim is the later universal and immediate jurisdiction over every church.", "Honor is one claim; universal immediate jurisdiction is another, and it needs first millennium evidence."),
+      fq("Oriental Orthodox", "Talk turns to miaphysite language. What misunderstanding must be avoided?", ["One united nature is not absorption of humanity", "Christ had no real humanity", "Alexandria denied Chalcedon terms only", "Nature words never matter"], "One united nature is not absorption of humanity", "Careful speech matters across old divides. Saint Cyril language protects unity without turning Christ into a mixture that erases His humanity.", "One united nature does not mean humanity vanished into divinity."),
+      fq("Visible Church", "A debater says the true Church became invisible for centuries. What promise challenges that?", ["The gates of hell shall not prevail against the Church", "Every reformer restores the Church alone", "Visibility means buildings only", "Sacraments are optional symbols"], "The gates of hell shall not prevail against the Church", "The Orthodox question is historical and sacramental: where was the apostolic faith, worship, and succession through the centuries?", "Christ promised His Church would not be overcome; show me where she lived through the centuries."),
+      fq("Burden of proof", "An atheist says only believers carry a burden of proof. What is the balanced reply?", ["Every truth claim carries reasons, including denial", "No one needs reasons", "Science has no assumptions", "Faith means no evidence"], "Every truth claim carries reasons, including denial", "A denial can be a claim too. The fair table asks each side to give reasons proportioned to what it asserts.", "If a claim is on the table, reasons belong on the table from every side."),
+      fq("Canon", "A sola scriptura argument begins. What question exposes the canon problem?", ["Where does Scripture list its own canon?", "Which Bible app is best?", "Who bound the first codex?", "Why are margins wide?"], "Where does Scripture list its own canon?", "The canon question is unavoidable. The Church received, discerned, and handed down the books; Scripture alone cannot name its own table of contents.", "Before Scripture alone settles it, show me the inspired list of the canon."),
+      fq("One sentence gospel", "Which sentence is the strongest one sentence defense of the hope in you?", ["God became man, bore the Cross, rose from the dead, and opens deified life to humanity", "Be sincere and follow your heart", "Religion is private comfort", "Ancient people liked miracles"], "God became man, bore the Cross, rose from the dead, and opens deified life to humanity", "A mature answer can be simple without being thin. Incarnation, Cross, Resurrection, and theosis hold the gospel in one breath.", "God became man, died and rose, and calls mankind into His life."),
+    ],
   ];
-  function gardenPlan(level) { return (GX_LEVELS.garden || [])[level - 1] || (GX_LEVELS.garden || [])[0] || { name: 'Dawn in Eden', speed: 1, time: 80, lives: 3 }; }
-  function gardenOverlap(a, aw, b, bw) { return Math.max(0, Math.min(a + aw, b + bw) - Math.max(a, b)); }
-  function gardenMakeEntities(def, level) {
-    if (!def || !def.icon) return [];
-    const plan = gardenPlan(level);
-    const gap = Math.max(2.7, def.gap - (level - 1) * 0.16);
-    const step = def.width + gap;
-    const count = Math.ceil((GARDEN_COLS + def.width + step) / step) + 1;
-    const speed = def.speed * plan.speed * def.dir;
-    const out = [];
-    for (let i = 0; i < count; i++) out.push({ x: -def.width + def.offset + i * step, w: def.width, speed, icon: def.icon, cycle: count * step });
-    return out;
-  }
-  function gardenMakeLanes(level) { return GARDEN_ROW_DEFS.map((def, row) => ({ ...def, row, entities: gardenMakeEntities(def, level) })); }
-  function gardenFruitFor(level) {
-    return [
-      { row: 9, col: (level + 1) % GARDEN_COLS, icon: '🍇', collected: false },
-      { row: 6, col: (level * 3) % GARDEN_COLS, icon: '🍎', collected: false },
-      { row: 4, col: (level * 5 + 2) % GARDEN_COLS, icon: '🍐', collected: false },
-    ];
-  }
-  function gardenActivePlayer() {
-    if (!G || !Array.isArray(G.players) || !G.players.length) return { name: 'Adam', icon: '🧔🏽' };
-    return G.mode === 'coop' ? (G.players[G.controller] || G.players[0]) : (G.players[G.current] || G.players[0]);
-  }
-  function gardenMenu() {
-    setHtml(`${backBar('Adam in the Garden')}
-      <p class="lead">Cross Eden from the Garden Gate to the five Tree Gate alcoves. Ride lily pads, logs, and turtles across the rivers; dodge serpents, scorpions, rolling stones, and wild beasts below. Gather fruit for bonus points before the daylight runs out.</p>
-      ${bestLine('garden', v => v + ' points')}
-      ${gxLevelChips('garden')}
-      <div class="gx-modes">
-        <button class="card gx-mode" data-gx="g-mode" data-mode="solo"><strong>Solo — Adam</strong><span>Three lives. Fill all five alcoves to beat the level.</span></button>
-        <button class="card gx-mode" data-gx="g-mode" data-mode="versus"><strong>Two players — versus</strong><span>Adam and Eve take separate runs on the same level. Highest score wins.</span></button>
-        <button class="card gx-mode" data-gx="g-mode" data-mode="race"><strong>Two players — race!</strong><span>Adam and Eve on the same board at the same time — separate pads below (or WASD vs arrow keys). First to claim all five of their own Tree Gate alcoves wins.</span></button>
-      </div>
-      <div class="gx-names">${nameInputs('2p')}</div>
-      <p class="footnote">Player one guides Adam; player two guides Eve. Same-device multiplayer — pass the phone at the turn screens. Keyboard: arrow keys or WASD.</p>`);
-  }
-  function gardenStart(mode) {
-    const lvl = gxSelectedLevel('garden');
-    if (!gxCanPlay('garden', lvl)) { showMenu('garden'); return; }
-    setSong('garden');
-    const names = readNames(['Adam', 'Eve']);
-    const mk = (i, fallback, icon) => ({ name: names[i] || fallback, icon, score: 0 });
-    const players = mode === 'solo' ? [mk(0, 'Adam', '🧔🏽')] : [mk(0, 'Adam', '🧔🏽'), mk(1, 'Eve', '👩🏽')];
-    G = Object.assign(G || {}, {
-      show: 'garden', mode, phase: 'pass', runLevel: lvl, plan: gardenPlan(lvl), players,
-      current: 0, controller: 0, results: [], levelBeaten: false, lastEvent: '',
-      timers: (G && G.timers) || [], tickId: null, pcAction: null,
-    });
-    if (mode === 'race') { gardenRaceSetup(); return; }
-    gardenBeginRun(0);
-  }
-  function gardenBeginRun(index) {
-    if (!G) return;
-    stopClock();
-    G.current = index;
-    if (G.mode !== 'coop') G.controller = index;
-    G.lanes = gardenMakeLanes(G.runLevel);
-    G.fruit = gardenFruitFor(G.runLevel);
-    G.run = {
-      lives: G.mode === 'coop' ? G.plan.lives + 2 : G.plan.lives,
-      score: 0, filled: Array(GARDEN_SLOTS.length).fill(false), fruitCount: 0,
-      crossings: 0, completed: false,
-    };
-    gardenResetLife();
-    G.phase = 'pass';
-    gardenPassScreen();
-  }
-  function gardenResetLife() {
-    if (!G) return;
-    G.player = { x: 4, y: GARDEN_ROWS - 1 };
-    G.progressRow = GARDEN_ROWS - 1;
-    G.timeLeft = G.plan.time;
-  }
-  function gardenPassScreen() {
-    if (!G || !G.run) return;
-    const p = gardenActivePlayer();
-    const first = G.mode === 'versus' && G.current === 1
-      ? `<p class="lead">${esc(G.lastEvent || '')}</p>`
-      : `<p class="lead">${esc(p.name)} guides ${p.icon} through <strong>${esc(G.plan.name)}</strong>. Fill all five Tree Gate alcoves before the lives and daylight run out.</p>`;
-    setHtml(`${backBar('Adam in the Garden')}${scoreBar(gardenSeatsForBar(), G.mode === 'coop' ? G.controller : G.current)}
-      <section class="card gx-center">
-        <span class="eyebrow">${G.mode === 'coop' ? 'TWO PLAYERS · ONE CROSSING' : G.mode === 'versus' ? `PLAYER ${G.current + 1}'S RUN` : 'SOLO CROSSING'}</span>
-        <h2>${esc(p.name)} ${p.icon} — your crossing</h2>
-        ${first}
-        <p class="muted">Rivers: step only on 🪷 lily pads, 🪵 logs, and 🐢 turtles. Land lanes: avoid 🐍 serpents, 🦂 scorpions, 🪨 stones, and 🐆 beasts.</p>
-        <button class="primary" data-gx="g-begin" data-gx-autofocus>Begin crossing</button>
-        <button class="secondary" data-gx="show-menu" data-show="garden">Change mode</button>
-      </section>`);
-  }
-  function gardenBeginPlay() {
-    if (!G || !G.run) return;
-    G.phase = 'play';
-    const p = gardenActivePlayer();
-    G.lastEvent = `${p.name} — guide ${p.icon} to an open ✦ Tree Gate alcove.`;
-    gardenRender();
-    gardenStartLoop();
-  }
-  function gardenStartLoop() {
-    if (!G) return;
-    stopClock();
-    G.tickId = setInterval(() => gardenTick(0.1), 100);
-  }
-  function gardenSeatsForBar() {
-    if (!G || !Array.isArray(G.players)) return [];
-    if (!G.run) return G.players;
-    if (G.mode === 'coop') return G.players.map(p => ({ ...p, score: G.run.score }));
-    return G.players.map((p, i) => ({ ...p, score: i === G.current ? G.run.score : (G.results[i] ? G.results[i].score : 0) }));
-  }
-  function gardenBoardHtml() {
-    if (!G || !G.run || !G.player) return '';
-    const rowPct = 100 / GARDEN_ROWS, colPct = 100 / GARDEN_COLS;
-    const lanes = G.lanes.map(lane => `<div class="gx-garden-lane gx-garden-${lane.type}" style="top:${lane.row * rowPct}%;height:${rowPct}%"><span>${esc(lane.label)}</span></div>`).join('');
-    const homes = Array.from({ length: GARDEN_COLS }, (_, col) => {
-      const si = GARDEN_SLOTS.indexOf(col);
-      if (si < 0) return `<span class="gx-garden-hedge" style="left:${col * colPct}%;width:${colPct}%">🌿</span>`;
-      const filled = !!G.run.filled[si];
-      return `<span class="gx-garden-home${filled ? ' filled' : ''}" style="left:${col * colPct}%;width:${colPct}%" title="Tree Gate alcove">${filled ? '🍎' : '🌳✦'}</span>`;
-    }).join('');
-    const entities = G.lanes.flatMap(lane => lane.entities.map(e => `<span class="gx-garden-entity gx-garden-entity-${lane.type}" style="left:${(e.x / GARDEN_COLS) * 100}%;top:${lane.row * rowPct}%;width:${(e.w / GARDEN_COLS) * 100}%;height:${rowPct}%">${esc(e.icon.repeat(Math.max(1, Math.ceil(e.w))))}</span>`)).join('');
-    const fruit = G.fruit.filter(f => !f.collected).map(f => `<span class="gx-garden-fruit" style="left:${f.col * colPct}%;top:${f.row * rowPct}%;width:${colPct}%;height:${rowPct}%">${esc(f.icon)}</span>`).join('');
-    const p = gardenActivePlayer();
-    const player = `<span class="gx-garden-player" style="left:${(G.player.x / GARDEN_COLS) * 100}%;top:${G.player.y * rowPct}%;width:${colPct}%;height:${rowPct}%" title="${esc(p.name)}">${esc(p.icon)}</span>`;
-    return `<div class="gx-garden-board" role="img" aria-label="Garden crossing board">${lanes}${homes}${entities}${fruit}${player}</div>`;
-  }
-  function gardenRender() {
-    if (!G || !G.run || !G.player) return;
-    const p = gardenActivePlayer();
-    const filledCount = G.run.filled.filter(Boolean).length;
-    const hearts = '♥'.repeat(Math.max(0, G.run.lives)) + '♡'.repeat(Math.max(0, (G.mode === 'coop' ? G.plan.lives + 2 : G.plan.lives) - G.run.lives));
-    const actionCard = G.phase === 'between'
-      ? `<div class="gx-garden-turn"><h2>${esc(G.betweenTitle || 'Take another step')}</h2><p>${esc(G.betweenText || '')}</p><button class="primary" data-gx="g-continue" data-gx-autofocus>Continue</button></div>`
-      : G.phase === 'paused'
-        ? `<div class="gx-garden-turn"><h2>Paused</h2><p>The garden waits.</p><button class="primary" data-gx="g-pause" data-gx-autofocus>Resume</button></div>`
-        : '';
-    const controls = G.phase === 'play'
-      ? `<div class="gx-garden-controls" aria-label="Garden controls">
-          <button data-gx="g-move" data-dir="left" aria-label="Move left">◀</button>
-          <div class="gx-garden-ud"><button data-gx="g-move" data-dir="up" aria-label="Move up">▲</button><button data-gx="g-move" data-dir="down" aria-label="Move down">▼</button></div>
-          <button data-gx="g-move" data-dir="right" aria-label="Move right">▶</button>
-          <button class="secondary" data-gx="g-pause">Pause</button>
-        </div>`
-      : '';
-    setHtml(`${backBar('Adam in the Garden')}${scoreBar(gardenSeatsForBar(), G.mode === 'coop' ? G.controller : G.current)}
-      <section class="card gx-garden-card">
-        <div class="gx-garden-hud"><span>Level ${G.runLevel} · ${esc(G.plan.name)}</span><span>${esc(p.name)} guiding ${esc(p.icon)}</span><span>Lives <strong>${hearts}</strong></span><span>Groves <strong>${filledCount}/5</strong></span><span>Daylight <strong>${Math.max(0, Math.ceil(G.timeLeft || 0))}s</strong></span><span>Fruit <strong>${G.run.fruitCount}</strong></span></div>
-        ${gardenBoardHtml()}
-        <p class="gx-event" role="status">${esc(G.lastEvent || 'Reach an open Tree Gate alcove.')}</p>
-        ${actionCard}
-        ${controls}
-      </section>
-      <p class="footnote">Step on lily pads, logs, and turtles to cross the rivers — they carry you with the current. If the river pulls you past the edge, the life is lost. On land, one touch from a serpent, scorpion, stone, or beast ends the life.</p>`);
-  }
-  function gardenCollect() {
-    if (!G || !G.run || !G.player) return;
-    const col = Math.max(0, Math.min(GARDEN_COLS - 1, Math.round(G.player.x)));
-    const hit = G.fruit.find(f => !f.collected && f.row === G.player.y && f.col === col);
-    if (!hit) return;
-    hit.collected = true;
-    G.run.fruitCount++;
-    G.run.score += 30;
-    G.lastEvent = `${hit.icon} Fruit gathered — +30.`;
-    sfx('catch');
-  }
-  function gardenMove(dir) {
-    if (!G || G.show !== 'garden' || G.phase !== 'play' || !G.player) return;
-    const d = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }[dir];
-    if (!d) return;
-    const nx = Math.max(0, Math.min(GARDEN_COLS - 1, G.player.x + d[0]));
-    const ny = Math.max(0, Math.min(GARDEN_ROWS - 1, G.player.y + d[1]));
-    if (d[1] < 0 && ny === 0) { gardenTryGoal(nx); return; }
-    G.player.x = nx; G.player.y = ny;
-    if (ny < G.progressRow) { G.run.score += (G.progressRow - ny) * 10; G.progressRow = ny; }
-    sfx('select');
-    gardenAfterMove();
-  }
-  function gardenAfterMove() {
-    if (!G || G.phase !== 'play') return;
-    gardenCollect();
-    const lane = G.lanes[G.player.y];
-    if (lane && lane.type === 'hazard' && lane.entities.some(e => gardenOverlap(G.player.x, 1, e.x, e.w) > 0.22)) {
-      gardenDie(`${lane.icon || 'A garden danger'} caught ${gardenActivePlayer().name} on the ${lane.label.toLowerCase()}.`);
-      return;
-    }
-    if (lane && lane.type === 'water' && !lane.entities.some(e => gardenOverlap(G.player.x, 1, e.x, e.w) > 0.32)) {
-      gardenDie(`The ${lane.label} river swept ${gardenActivePlayer().name} away — step only on pads, logs, and turtles.`);
-      return;
-    }
-    gardenRender();
-  }
-  function gardenTryGoal(nx) {
-    if (!G || !G.run || !G.player) return;
-    const col = Math.max(0, Math.min(GARDEN_COLS - 1, Math.round(nx)));
-    G.player.x = col; G.player.y = 0;
-    const si = GARDEN_SLOTS.indexOf(col);
-    if (si < 0) { gardenDie('A thorn hedge blocked that Tree Gate. Aim for a 🌳✦ alcove.'); return; }
-    if (G.run.filled[si]) { gardenDie('That Tree Gate alcove is already filled. Choose an open ✦.'); return; }
-    G.run.filled[si] = true;
-    G.run.crossings++;
-    const bonus = 250 + Math.max(0, Math.ceil(G.timeLeft || 0)) * 2;
-    G.run.score += bonus;
-    sfx('ding');
-    if (G.run.filled.every(Boolean)) {
-      G.run.completed = true;
-      G.levelBeaten = true;
-      sfx('win');
-      gardenEndRun();
-      return;
-    }
-    stopClock();
-    if (G.mode === 'coop') G.controller = 1 - G.controller;
-    G.phase = 'between';
-    G.betweenTitle = 'A Tree Gate alcove is filled!';
-    G.betweenText = `+${bonus} points. ${G.run.filled.filter(Boolean).length} of 5 groves are filled.${G.mode === 'coop' ? ` Pass the guide to ${gardenActivePlayer().name}.` : ''}`;
-    G.lastEvent = G.betweenText;
-    gardenRender();
-  }
-  function gardenDie(reason) {
-    if (!G || !G.run || G.phase !== 'play') return;
-    stopClock();
-    sfx('wrong');
-    G.run.lives--;
-    G.lastEvent = reason;
-    if (G.run.lives > 0) {
-      if (G.mode === 'coop') G.controller = 1 - G.controller;
-      G.phase = 'between';
-      G.betweenTitle = 'A life is lost';
-      G.betweenText = `${reason} ${G.run.lives} ${G.run.lives === 1 ? 'life' : 'lives'} remain.${G.mode === 'coop' ? ` Pass the guide to ${gardenActivePlayer().name}.` : ''}`;
-      gardenRender();
-    } else {
-      gardenEndRun();
-    }
-  }
-  function gardenContinue() {
-    if (!G || !G.run || G.phase !== 'between') return;
-    gardenResetLife();
-    G.phase = 'play';
-    const p = gardenActivePlayer();
-    G.lastEvent = `${p.name} — guide ${p.icon} to an open ✦ Tree Gate alcove.`;
-    gardenRender();
-    gardenStartLoop();
-  }
-  function gardenPauseToggle() {
-    if (!G || !G.run) return;
-    if (G.phase === 'play') { stopClock(); G.phase = 'paused'; G.lastEvent = 'Paused.'; gardenRender(); }
-    else if (G.phase === 'paused') { G.phase = 'play'; G.lastEvent = 'Back to the crossing.'; gardenRender(); gardenStartLoop(); }
-  }
-  function gardenEndRun() {
-    if (!G || !G.run) return;
-    stopClock();
-    G.phase = 'runover';
-    const result = G.mode === 'coop'
-      ? { name: G.players.map(p => p.name).join(' & '), icon: '🧔🏽👩🏽', score: G.run.score, fruitCount: G.run.fruitCount, crossings: G.run.crossings, completed: G.run.completed }
-      : { name: gardenActivePlayer().name, icon: gardenActivePlayer().icon, score: G.run.score, fruitCount: G.run.fruitCount, crossings: G.run.crossings, completed: G.run.completed };
-    if (G.mode === 'coop') G.results[0] = result;
-    else G.results[G.current] = result;
-    if (G.mode === 'versus' && G.current === 0) {
-      const done = result;
-      gardenBeginRun(1);
-      G.lastEvent = `${done.name} finished with ${done.score} points and ${done.crossings} filled alcove${done.crossings === 1 ? '' : 's'}. ${G.players[1].name}, your crossing is next.`;
-      gardenPassScreen();
-      return;
-    }
-    gardenResults();
-  }
-  function gardenResults() {
-    if (!G || !G.run) return;
-    stopClock();
-    G.phase = 'over';
-    if (G.levelBeaten) gxBeatLevel('garden', G.runLevel);
-    const results = (G.results || []).filter(Boolean);
-    const bestScore = results.length ? Math.max(...results.map(r => r.score)) : G.run.score;
-    saveBest('garden', bestScore);
-    const b = bestOf('garden');
-    let title, blurb;
-    if (G.mode === 'coop') {
-      title = G.run.completed ? 'The five groves are filled!' : 'The garden crossing ends';
-      blurb = `${esc(G.players.map(p => p.name).join(' & '))} crossed together for ${G.run.score} points, gathered ${G.run.fruitCount} fruit, and filled ${G.run.crossings} of 5 alcoves.`;
-    } else if (G.mode === 'versus' && results.length > 1) {
-      const top = Math.max(...results.map(r => r.score));
-      const champs = results.filter(r => r.score === top);
-      title = champs.length > 1 ? 'A tie in the garden!' : `${esc(champs[0].name)} wins the garden!`;
-      blurb = results.map(r => `${esc(r.icon)} ${esc(r.name)}: <strong>${r.score}</strong> points · ${r.crossings}/5 alcoves · ${r.fruitCount} fruit`).join('<br>');
-    } else {
-      const r = results[0] || { name: gardenActivePlayer().name, icon: gardenActivePlayer().icon, score: G.run.score, fruitCount: G.run.fruitCount, crossings: G.run.crossings, completed: G.run.completed };
-      title = r.completed ? `${esc(r.name)} filled the five groves!` : `${esc(r.name)} — ${r.score} points`;
-      blurb = `${esc(r.icon)} ${esc(r.name)} filled ${r.crossings} of 5 alcoves and gathered ${r.fruitCount} fruit.`;
-    }
-    setHtml(`${backBar('Adam in the Garden')}
-      <section class="card gx-center">
-        <span class="eyebrow">LEVEL ${G.runLevel} · ${esc(G.plan.name).toUpperCase()}</span>
-        <h2>${title}</h2>
-        <p>${blurb}</p>
-        ${gxLevelBanner('garden', G.runLevel, !!G.levelBeaten)}
-        ${G.levelBeaten ? '' : `<p class="muted">Fill all five Tree Gate alcoves in one run to beat Level ${G.runLevel}.</p>`}
-        ${G.levelBeaten && G.runLevel >= 5 ? `<p class="lead">👑 Keeper of the Garden — all five levels beaten.</p>` : ''}
-        <p class="muted">Best garden score on this device: <strong>${b.best} points</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'}.</p>
-        <button class="primary" data-gx="show-menu" data-show="garden">Play again</button>
-        <button class="secondary" data-gx="hub">All games</button>
-      </section>`);
-  }
-
-  /* ---- Garden race: Adam and Eve on one board at the same time.
-     Separate alcove claims per racer (apple = Adam, pear = Eve); five
-     lives each; shared fruit. First to claim all five wins; running out
-     of lives hands the race to the other; the race clock settles it by
-     alcoves claimed, then score. */
-  function gardenRaceSetup() {
-    if (!G) return;
-    stopClock();
-    G.lanes = gardenMakeLanes(G.runLevel);
-    G.fruit = gardenFruitFor(G.runLevel).map(f => ({ ...f, takenBy: -1 }));
-    G.racers = G.players.map((pl, i) => ({
-      name: pl.name, icon: pl.icon, x: i === 0 ? 3 : 5, y: GARDEN_ROWS - 1,
-      lives: 5, filled: Array(GARDEN_SLOTS.length).fill(false), score: 0,
-      fruitCount: 0, crossings: 0, progressRow: GARDEN_ROWS - 1,
-    }));
-    G.timeLeft = 240;
-    G.phase = 'racepass';
-    G.lastEvent = '';
-    gardenRacePass();
-  }
-  function gardenRacePass() {
-    if (!G || !G.racers) return;
-    const seats = G.racers.map(r => ({ name: r.name, score: 0 }));
-    setHtml(`${backBar('Adam in the Garden')}${scoreBar(seats, -1)}
-      <section class="card gx-center">
-        <span class="eyebrow">TWO PLAYERS · SAME BOARD · SAME TIME</span>
-        <h2>🧔🏽 ${esc(G.racers[0].name)} vs 👩🏽 ${esc(G.racers[1].name)}</h2>
-        <p class="lead">Race to the Tree Gates! Each of you claims your own alcoves — ${esc(G.racers[0].name)} fills his with 🍎, ${esc(G.racers[1].name)} fills hers with 🍐. First to claim all five wins. Five lives each; the rivers and beasts are shared, and so is the fruit — grab it first.</p>
-        <p class="muted">${esc(G.racers[0].name)}: left pad or WASD keys. ${esc(G.racers[1].name)}: right pad or arrow keys.</p>
-        <button class="primary" data-gx="g-race-begin" data-gx-autofocus>Begin the race</button>
-        <button class="secondary" data-gx="show-menu" data-show="garden">Change mode</button>
-      </section>`);
-  }
-  function gardenRaceBegin() {
-    if (!G || !G.racers) return;
-    G.phase = 'raceplay';
-    G.lastEvent = 'Race! First to claim all five Tree Gate alcoves wins.';
-    gardenRaceRender();
-    stopClock();
-    G.tickId = setInterval(() => gardenRaceTick(0.1), 100);
-  }
-  function gardenRaceRespawn(r, idx) { r.x = idx === 0 ? 3 : 5; r.y = GARDEN_ROWS - 1; r.progressRow = GARDEN_ROWS - 1; }
-  function gardenRaceBoardHtml() {
-    if (!G || !G.racers) return '';
-    const rowPct = 100 / GARDEN_ROWS, colPct = 100 / GARDEN_COLS;
-    const lanes = G.lanes.map(lane => `<div class="gx-garden-lane gx-garden-${lane.type}" style="top:${lane.row * rowPct}%;height:${rowPct}%"><span>${esc(lane.label)}</span></div>`).join('');
-    const homes = Array.from({ length: GARDEN_COLS }, (_, col) => {
-      const si = GARDEN_SLOTS.indexOf(col);
-      if (si < 0) return `<span class="gx-garden-hedge" style="left:${col * colPct}%;width:${colPct}%">🌿</span>`;
-      const a = !!G.racers[0].filled[si], e = !!G.racers[1].filled[si];
-      return `<span class="gx-garden-home${a || e ? ' filled' : ''}" style="left:${col * colPct}%;width:${colPct}%">${a && e ? '🍎🍐' : a ? '🍎' : e ? '🍐' : '🌳✦'}</span>`;
-    }).join('');
-    const entities = G.lanes.flatMap(lane => lane.entities.map(e => `<span class="gx-garden-entity gx-garden-entity-${lane.type}" style="left:${(e.x / GARDEN_COLS) * 100}%;top:${lane.row * rowPct}%;width:${(e.w / GARDEN_COLS) * 100}%;height:${rowPct}%">${esc(e.icon.repeat(Math.max(1, Math.ceil(e.w))))}</span>`)).join('');
-    const fruit = G.fruit.filter(f => !f.collected).map(f => `<span class="gx-garden-fruit" style="left:${f.col * colPct}%;top:${f.row * rowPct}%;width:${colPct}%;height:${rowPct}%">${esc(f.icon)}</span>`).join('');
-    const players = G.racers.map(r => `<span class="gx-garden-player" style="left:${(r.x / GARDEN_COLS) * 100}%;top:${r.y * rowPct}%;width:${colPct}%;height:${rowPct}%">${esc(r.icon)}</span>`).join('');
-    return `<div class="gx-garden-board" role="img" aria-label="Garden race board">${lanes}${homes}${entities}${fruit}${players}</div>`;
-  }
-  function gardenRacePad(idx) {
-    const r = G.racers[idx];
-    return `<div class="gx-race-pad"><strong>${esc(r.icon)} ${esc(r.name)}</strong>
-      <div class="gx-race-pad-grid"><span></span><button data-gx="g-race-move" data-racer="${idx}" data-dir="up" aria-label="${esc(r.name)} up">▲</button><span></span><button data-gx="g-race-move" data-racer="${idx}" data-dir="left" aria-label="${esc(r.name)} left">◀</button><button data-gx="g-race-move" data-racer="${idx}" data-dir="down" aria-label="${esc(r.name)} down">▼</button><button data-gx="g-race-move" data-racer="${idx}" data-dir="right" aria-label="${esc(r.name)} right">▶</button></div></div>`;
-  }
-  function gardenRaceRender() {
-    if (!G || !G.racers) return;
-    const seats = G.racers.map(r => ({ name: r.name, score: r.score }));
-    const lines = G.racers.map(r => `<span>${esc(r.icon)} ${esc(r.name)} · Lives <strong>${'♥'.repeat(Math.max(0, r.lives))}</strong> · Groves <strong>${r.crossings}/5</strong> · Fruit <strong>${r.fruitCount}</strong></span>`).join('');
-    setHtml(`${backBar('Adam in the Garden')}${scoreBar(seats, -1)}
-      <section class="card gx-garden-card">
-        <div class="gx-garden-hud"><span>Level ${G.runLevel} · ${esc(G.plan.name)}</span><span>Race clock <strong>${Math.max(0, Math.ceil(G.timeLeft || 0))}s</strong></span>${lines}</div>
-        ${gardenRaceBoardHtml()}
-        <p class="gx-event" role="status">${esc(G.lastEvent || 'Race to the Tree Gates!')}</p>
-        ${G.phase === 'raceplay' ? `<div class="gx-race-pads">${gardenRacePad(0)}${gardenRacePad(1)}</div>` : ''}
-      </section>
-      <p class="footnote">Claim your own alcoves at the top — 🍎 for ${esc(G.racers[0].name)}, 🍐 for ${esc(G.racers[1].name)}. A filled alcove sends you back to the gate for the next one.</p>`);
-  }
-  function gardenRaceCollect(idx) {
-    const r = G.racers[idx]; if (!r) return;
-    const col = Math.max(0, Math.min(GARDEN_COLS - 1, Math.round(r.x)));
-    const hit = G.fruit.find(f => !f.collected && f.row === r.y && f.col === col);
-    if (!hit) return;
-    hit.collected = true; hit.takenBy = idx;
-    r.fruitCount++; r.score += 30;
-    G.lastEvent = `${r.icon} ${r.name} grabbed the ${hit.icon} — +30.`;
-    sfx('catch');
-  }
-  function gardenRaceMove(idx, dir) {
-    if (!G || G.mode !== 'race' || G.phase !== 'raceplay' || !G.racers) return;
-    const r = G.racers[idx]; if (!r) return;
-    const d = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }[dir];
-    if (!d) return;
-    const nx = Math.max(0, Math.min(GARDEN_COLS - 1, r.x + d[0]));
-    const ny = Math.max(0, Math.min(GARDEN_ROWS - 1, r.y + d[1]));
-    if (d[1] < 0 && ny === 0) { gardenRaceGoal(idx, nx); return; }
-    r.x = nx; r.y = ny;
-    if (ny < r.progressRow) { r.score += (r.progressRow - ny) * 10; r.progressRow = ny; }
-    sfx('select');
-    gardenRaceCollect(idx);
-    if (G.phase === 'raceplay') gardenRaceCheck(idx, true);
-  }
-  function gardenRaceCheck(idx, renderAfter) {
-    const r = G.racers[idx]; if (!r) return false;
-    const lane = G.lanes[r.y];
-    if (lane && lane.type === 'hazard' && lane.entities.some(e => gardenOverlap(r.x, 1, e.x, e.w) > 0.22)) {
-      gardenRaceDie(idx, `${lane.icon || 'A garden danger'} caught ${r.name} on the ${lane.label.toLowerCase()}.`);
-      return true;
-    }
-    if (lane && lane.type === 'water' && !lane.entities.some(e => gardenOverlap(r.x, 1, e.x, e.w) > 0.32)) {
-      gardenRaceDie(idx, `The ${lane.label} river swept ${r.name} away.`);
-      return true;
-    }
-    if (renderAfter) gardenRaceRender();
-    return false;
-  }
-  function gardenRaceGoal(idx, nx) {
-    const r = G.racers[idx]; if (!r) return;
-    const col = Math.max(0, Math.min(GARDEN_COLS - 1, Math.round(nx)));
-    r.x = col; r.y = 0;
-    const si = GARDEN_SLOTS.indexOf(col);
-    if (si < 0) { gardenRaceDie(idx, 'A thorn hedge blocked that Tree Gate.'); return; }
-    if (r.filled[si]) { gardenRaceDie(idx, `${r.name} had already claimed that alcove.`); return; }
-    r.filled[si] = true; r.crossings++; r.score += 250;
-    sfx('ding');
-    if (r.filled.every(Boolean)) { gardenRaceFinish(idx, `${r.name} claimed all five Tree Gate alcoves.`); return; }
-    gardenRaceRespawn(r, idx);
-    G.lastEvent = `${r.icon} ${r.name} claimed an alcove — +250, ${r.crossings}/5. Back to the gate for the next one!`;
-    gardenRaceRender();
-  }
-  function gardenRaceDie(idx, reason) {
-    if (!G || G.phase !== 'raceplay') return;
-    const r = G.racers[idx]; if (!r) return;
-    sfx('wrong');
-    r.lives--;
-    if (r.lives <= 0) { gardenRaceFinish(1 - idx, `${r.name} is out of lives.`); return; }
-    gardenRaceRespawn(r, idx);
-    G.lastEvent = `${reason} ${r.icon} ${r.name} has ${r.lives} ${r.lives === 1 ? 'life' : 'lives'} left.`;
-    gardenRaceRender();
-  }
-  function gardenRaceFinish(winner, reason) {
-    if (!G || !G.racers) return;
-    stopClock();
-    G.phase = 'raceover';
-    const won = winner >= 0 ? G.racers[winner] : null;
-    G.levelBeaten = !!(won && won.filled.every(Boolean));
-    if (G.levelBeaten) { gxBeatLevel('garden', G.runLevel); sfx('win'); }
-    saveBest('garden', Math.max(...G.racers.map(r => r.score)));
-    const b = bestOf('garden');
-    const stats = G.racers.map(r => `${esc(r.icon)} ${esc(r.name)}: <strong>${r.score}</strong> points · ${r.crossings}/5 alcoves · ${r.fruitCount} fruit`).join('<br>');
-    setHtml(`${backBar('Adam in the Garden')}
-      <section class="card gx-center">
-        <span class="eyebrow">THE RACE IS RUN · LEVEL ${G.runLevel} · ${esc(G.plan.name).toUpperCase()}</span>
-        <h2>${won ? `${esc(won.icon)} ${esc(won.name)} wins the race!` : 'A dead heat in the garden!'}</h2>
-        <p>${esc(reason)}</p>
-        <p>${stats}</p>
-        ${gxLevelBanner('garden', G.runLevel, !!G.levelBeaten)}
-        ${G.levelBeaten ? '' : `<p class="muted">Claim all five of your own alcoves to beat Level ${G.runLevel}.</p>`}
-        <p class="muted">Best garden score on this device: <strong>${b.best} points</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'}.</p>
-        <button class="primary" data-gx="show-menu" data-show="garden">Play again</button>
-        <button class="secondary" data-gx="hub">All games</button>
-      </section>`);
-  }
-  function gardenRaceTick(step) {
-    if (!G || G.mode !== 'race' || G.phase !== 'raceplay' || !G.racers) return;
-    const dt = Number.isFinite(step) ? step : 0.1;
-    G.timeLeft = (G.timeLeft || 0) - dt;
-    G.lanes.forEach(lane => lane.entities.forEach(e => {
-      e.x += e.speed * dt;
-      if (e.speed > 0 && e.x > GARDEN_COLS) e.x -= e.cycle;
-      if (e.speed < 0 && e.x + e.w < 0) e.x += e.cycle;
-    }));
-    for (let idx = 0; idx < 2; idx++) {
-      const r = G.racers[idx];
-      const lane = G.lanes[r.y];
-      if (lane && lane.type === 'water') {
-        const carrier = lane.entities.find(e => gardenOverlap(r.x, 1, e.x, e.w) > 0.32);
-        if (!carrier) { gardenRaceDie(idx, `The ${lane.label} river swept ${r.name} away.`); if (G.phase !== 'raceplay') return; continue; }
-        r.x += carrier.speed * dt;
-        if (r.x + 1 <= 0 || r.x >= GARDEN_COLS) { gardenRaceDie(idx, 'The current carried the crossing beyond the garden edge.'); if (G.phase !== 'raceplay') return; continue; }
-      }
-      if (lane && lane.type === 'hazard' && lane.entities.some(e => gardenOverlap(r.x, 1, e.x, e.w) > 0.22)) {
-        gardenRaceDie(idx, `${lane.icon || 'A garden danger'} caught ${r.name} on the ${lane.label.toLowerCase()}.`);
-        if (G.phase !== 'raceplay') return;
-        continue;
-      }
-      gardenRaceCollect(idx);
-    }
-    if (G.phase !== 'raceplay') return;
-    if (G.timeLeft <= 0) {
-      const [a, b2] = G.racers;
-      const winner = a.crossings !== b2.crossings ? (a.crossings > b2.crossings ? 0 : 1) : a.score !== b2.score ? (a.score > b2.score ? 0 : 1) : -1;
-      gardenRaceFinish(winner, winner < 0 ? 'The race clock ran out on equal terms.' : 'The race clock ran out.');
-      return;
-    }
-    gardenRaceRender();
-  }
-
-  function gardenTick(step) {
-    if (!G || G.show !== 'garden' || G.phase !== 'play' || !G.run || !G.player) return;
-    const dt = Number.isFinite(step) ? step : 0.1;
-    G.timeLeft = (G.timeLeft || 0) - dt;
-    G.lanes.forEach(lane => lane.entities.forEach(e => {
-      e.x += e.speed * dt;
-      if (e.speed > 0 && e.x > GARDEN_COLS) e.x -= e.cycle;
-      if (e.speed < 0 && e.x + e.w < 0) e.x += e.cycle;
-    }));
-    const lane = G.lanes[G.player.y];
-    if (lane && lane.type === 'water') {
-      const carrier = lane.entities.find(e => gardenOverlap(G.player.x, 1, e.x, e.w) > 0.32);
-      if (!carrier) { gardenDie(`The ${lane.label} river swept ${gardenActivePlayer().name} away — step only on pads, logs, and turtles.`); return; }
-      G.player.x += carrier.speed * dt;
-      if (G.player.x + 1 <= 0 || G.player.x >= GARDEN_COLS) { gardenDie('The current carried the crossing beyond the garden edge.'); return; }
-    }
-    if (lane && lane.type === 'hazard' && lane.entities.some(e => gardenOverlap(G.player.x, 1, e.x, e.w) > 0.22)) {
-      gardenDie(`${lane.icon || 'A garden danger'} caught ${gardenActivePlayer().name} on the ${lane.label.toLowerCase()}.`);
-      return;
-    }
-    gardenCollect();
-    if (G.timeLeft <= 0) { gardenDie('The daylight faded before the crossing was finished.'); return; }
-    gardenRender();
-  }
-
-
-  /* ================= ADAM & EVE APPLE MAZE =================
-     An original orchard maze chase. Adam (and Eve, racing him on the
-     same board) eats apples while snakes — the garden's ghosts — hunt
-     through the maze. A grape of power turns the hunt for a few
-     seconds: the snakes flee and can be eaten for bonus points.
-     Solo: clear the orchard. Race: shared apples, one clock, the
-     higher score wins when time or apples run out — or when a rival
-     loses their last life. */
-  const APPLE_W = 15, APPLE_H = 11;
-  const APPLE_BASE = [
-    '###############',
-    '#o....#......o#',
-    '#.##..#..##.#.#',
-    '#..#......#.#.#',
-    '##.#.##.##.#.##',
-    '#....#...#....#',
-    '#.##..#..##.#.#',
-    '#....#......#.#',
-    '#.##...##...#.#',
-    '#o.....P.....o#',
-    '###############',
+  const DOCTRINE_BANK = [
+    [
+      fq("Term: ousia", "What does ousia name?", ["What a thing is: essence or being", "A temporary mask", "A feeling of awe", "A church building"], "What a thing is: essence or being", "Ousia answers the question of what. In Trinity speech, God is one ousia; in Christology, we ask what natures are united in the one hypostasis.", "Ousia tells us what; hypostasis tells us who."),
+      fq("Term: hypostasis", "What does hypostasis name in Trinity speech?", ["A concrete who: Father, Son, or Holy Spirit", "A second essence", "A role played on turns", "A human opinion"], "A concrete who: Father, Son, or Holy Spirit", "Hypostasis is not a mask or a part. Each divine hypostasis is fully God, distinct by relation, never a separate god.", "The Father is not the Son, yet both are one God."),
+      fq("Term: physis", "What does physis mean?", ["Nature: the kind of being something has", "A physical object only", "A rank in heaven", "A prayer rule"], "Nature: the kind of being something has", "Physis overlaps with essence in many contexts. In Christ, we confess two natures because He is truly God and truly man.", "Christ has the divine nature and our human nature, complete."),
+      fq("Term: logos", "In John, who is the Logos?", ["The eternal Word who was with God and was God", "A created poem", "Only a written page", "An angel with a message"], "The eternal Word who was with God and was God", "John begins with being, relation, and creation. The Logos is not an idea about God; He is God the Son who becomes flesh.", "The Logos was with God, and the Logos was God."),
+      fq("Term: Theotokos", "Theotokos means what?", ["God-bearer: she bore God the Word incarnate", "Mother of the Trinity by origin", "Queen above the Trinity", "Only a respectful nickname"], "God-bearer: she bore God the Word incarnate", "The title protects Christology. It says the One born of Mary is personally God the Word, while Mary remains a creature and mother according to the flesh.", "Mary is Theotokos because her Son is God in the flesh."),
+      fq("Term: theosis", "What is theosis?", ["Participation in the divine life by grace", "Becoming God by essence", "A reward for the proud", "Escape from the body as evil"], "Participation in the divine life by grace", "Theosis is salvation as communion. We become by grace what Christ is by nature, without ceasing to be creatures.", "By grace we share the life that is God by nature."),
+    ],
+    [
+      fq("Say it: Trinity", "Which sentence says the Trinity cleanly?", ["One essence, three hypostases", "Three essences in agreement", "One person with three masks", "Three gods in one family"], "One essence, three hypostases", "This sentence blocks polytheism and modalism at once. The Persons are distinct; the Godhead is undivided.", "One essence, three hypostases: one God, Father, Son, and Holy Spirit."),
+      fq("Say it: begotten", "What does begotten, not made protect?", ["The Son is eternal and not a creature", "The Father is older in time", "The Son began at Bethlehem", "Made means respected"], "The Son is eternal and not a creature", "Begotten names eternal relation in God. Made would place the Son among creatures and break the confession of salvation.", "Begotten, not made: the Son is no creature."),
+      fq("Say it: procession", "Which sentence is Orthodox for the Spirit origin?", ["The Spirit proceeds from the Father", "The Spirit is a created wind", "The Spirit proceeds from two sources in the same way", "The Spirit is only a symbol of love"], "The Spirit proceeds from the Father", "Precision matters here. The Church confesses the Father as source in the Trinity, while also proclaiming the Spirit sent through the Son in the economy.", "The Holy Spirit proceeds from the Father and is worshipped with Father and Son."),
+      fq("Say it: homoousios", "What does homoousios rule out?", ["The Son is a lesser, similar being", "The Father has a body", "The Son is a mask", "The Spirit is an angel"], "The Son is a lesser, similar being", "Similar sounds close, but close is not salvation. Only true God can join humanity to God without remainder.", "The Son is of one essence with the Father, not a near copy."),
+      fq("Say it: distinction", "Which sentence keeps the Persons distinct without dividing God?", ["The Father begets, the Son is begotten, the Spirit proceeds", "Each Person owns a separate essence", "The Persons take turns being God", "Distinction means disagreement"], "The Father begets, the Son is begotten, the Spirit proceeds", "Relations distinguish the hypostases. The distinction is real, eternal, and without division in essence, will, or glory.", "Distinct by relation, undivided in essence."),
+      fq("Say it: mystery", "Which use of mystery is faithful?", ["Mystery names depth beyond mastery, not contradiction", "Mystery means stop thinking", "Mystery cancels evidence", "Mystery means three and one in the same sense"], "Mystery names depth beyond mastery, not contradiction", "Orthodox mystery is not a shrug. It receives revealed truth with reverence while refusing to pretend the mind has enclosed God.", "We speak truly, and we bow because God is greater than our speech."),
+    ],
+    [
+      fq("Say it: Christ", "Which sentence is the Chalcedonian center?", ["One hypostasis in two natures", "Two hypostases in one nature", "One nature after mixture", "A man inspired like a prophet"], "One hypostasis in two natures", "Chalcedon holds unity and distinction together. Christ is one who, and He is complete in divinity and complete in humanity.", "One and the same Christ, true God and true man."),
+      fq("Say it: Theotokos", "Which spoken line uses Theotokos rightly?", ["Mary bore God the Word in the flesh", "Mary created the divine nature", "Mary is mother of only a separate man", "Mary outranks the Trinity"], "Mary bore God the Word in the flesh", "The title begins from the child. Because Jesus Christ is one divine hypostasis, His mother is rightly called God-bearer.", "Theotokos protects who Jesus is."),
+      fq("Say it: suffering", "Which sentence handles the Cross carefully?", ["God the Word suffered in the flesh", "The divine nature suffered apart from flesh", "Only a man suffered and God watched", "Suffering changed the essence of God"], "God the Word suffered in the flesh", "This is communicatio idiomatum in action. The Person who suffers is divine; the suffering is undergone in the human nature He assumed.", "The Impassible suffered in passible flesh, and death was trampled down."),
+      fq("Say it: full humanity", "Which sentence rejects a costume Christ?", ["Christ assumed a complete human nature, including a human mind", "The Logos replaced the human mind", "Humanity was only appearance", "Flesh was sin by definition"], "Christ assumed a complete human nature, including a human mind", "What is not assumed is not healed, as Saint Gregory teaches. Christ saves humanity by truly becoming what we are, without sin.", "He became fully man so man could be fully healed."),
+      fq("Say it: adverbs", "Which list belongs to Chalcedon?", ["Without confusion, change, division, separation", "With mixture, alteration, distance, rivalry", "Only symbol, shadow, story, silence", "Partly divine, partly human, partly angel"], "Without confusion, change, division, separation", "The four adverbs are fences around the mystery. They tell us what not to say so the gospel can be said rightly.", "In two natures: unconfused, unchanged, undivided, inseparable."),
+      fq("Say it: communion of idioms", "Why can we say the Lord of glory was crucified?", ["Because the crucified One is one hypostasis", "Because glory is a created thing", "Because natures trade places", "Because language means anything"], "Because the crucified One is one hypostasis", "Predicate follows person. The flesh suffers and dies; the subject is God the Word incarnate, so Scripture can speak with holy boldness.", "The Lord of glory was crucified in the flesh He made His own."),
+    ],
+    [
+      fq("Church word: latreia", "What is latreia?", ["Worship due to God alone", "Respect for elders", "Honor for saints", "Praise for angels only"], "Worship due to God alone", "Keeping latreia for God alone answers the idolatry charge before it starts. Honor can be real without becoming worship.", "Latreia is for God alone; honor is not worship."),
+      fq("Church word: intercession", "Why ask saints to pray?", ["The Church is one living communion in Christ", "Saints replace Christ the Mediator", "The dead are unconscious and gone", "Prayer needs no Church"], "The Church is one living communion in Christ", "Intercession flows from communion, not competition. The saints are alive in Christ and join the prayer of the Church.", "We ask their prayers as we ask one another, because death does not exile the saints from Christ."),
+      fq("Church word: baptism", "Which sentence fits infant baptism?", ["Baptism is gift and entrance into Christ, not only a public speech", "Infants must first lecture on doctrine", "Water is a bare photograph", "Baptism is magic without faith of the Church"], "Baptism is gift and entrance into Christ, not only a public speech", "The Orthodox answer begins with gift. Infants are received into the covenant life of the Church and grow into the faith that surrounds them.", "Baptism is birth into Christ, received before it is explained."),
+      fq("Church word: Eucharist", "Which line refuses to shrink the Eucharist to a bare reminder?", ["This is my body calls for faith, worship, and communion", "The bread is only a visual aid", "The words of Christ are theater", "Communion separates us from the saints"], "This is my body calls for faith, worship, and communion", "The Church hears the Lord plainly and receives the gift with reverence. A bare symbol cannot carry the weight of the institution words and apostolic practice.", "We receive the gift Christ names, not a bare picture of an absent Christ."),
+      fq("Church word: Tradition", "What is Holy Tradition in clean speech?", ["The life of the Holy Spirit in the Church handing down the faith", "Any old custom men prefer", "A second Bible competing with Scripture", "Permission to ignore the apostles"], "The life of the Holy Spirit in the Church handing down the faith", "Tradition is not nostalgia. It is the Church remembering Christ in Scripture, worship, councils, saints, and sacramental life.", "Tradition is the faith once delivered, alive in the Church."),
+      fq("Church word: succession", "Why does apostolic succession matter?", ["It embodies historical continuity with the apostles", "It is a chain of magic hands", "It replaces repentance", "It makes history unnecessary"], "It embodies historical continuity with the apostles", "Succession is not a talisman. It is one visible sign that the faith confessed today is the faith received from the apostles.", "The Church today stands where the apostles stood, in the same faith."),
+    ],
+    [
+      fq("Clean reply: atheist", "An atheist asks for one reason God is not a myth. Which opening is strongest?", ["Begin with being itself: why is there something intelligible at all?", "Myths feel ancient too", "Believe because fear helps", "Science is fake"], "Begin with being itself: why is there something intelligible at all?", "A mature opening chooses a real question. Contingency, intelligibility, goodness, and Christ give the conversation ground to stand on.", "Start deeper than a slogan: why does anything exist, and why can the mind know it?"),
+      fq("Clean reply: Muslim friend", "Which sentence keeps friendship and truth together?", ["I honor your zeal for one God; let us test what each book says about Christ", "Your prophet is false so we are done", "All religions say the same thing", "Arabic grammar settles every claim"], "I honor your zeal for one God; let us test what each book says about Christ", "Witness can be firm without contempt. The Islamic dilemma is strongest when the texts lead and tempers stay low.", "Let us honor the one God by reading the claims about Christ carefully."),
+      fq("Clean reply: Protestant friend", "Which sentence opens the faith and works debate without caricature?", ["Paul and James together reject a dead faith that does not love", "James cancels Paul", "Works buy heaven by themselves", "Faith is only agreement with facts"], "Paul and James together reject a dead faith that does not love", "This sentence refuses false war between apostles. It lets Angel argue for living faith with love, repentance, and participation.", "Saving faith lives, loves, repents, and bears fruit."),
+      fq("Clean reply: Catholic friend", "Which sentence is firm but fair on Rome?", ["We can honor a primacy while asking for first millennium proof of universal jurisdiction", "Rome has no history", "Every council obeyed one bishop alone", "The East invented tradition yesterday"], "We can honor a primacy while asking for first millennium proof of universal jurisdiction", "Fairness strengthens an argument. Concede what can be conceded, then press the exact claim that needs evidence.", "Honor we can discuss; universal jurisdiction must be shown, not assumed."),
+      fq("Clean reply: skeptic", "Which sentence invites evidence without sounding afraid?", ["Name the claim, name the standard, and let us weigh the earliest sources", "Skepticism needs no standards", "Miracles are impossible because I said so", "Feelings settle history"], "Name the claim, name the standard, and let us weigh the earliest sources", "Good apologetics welcomes a fair standard. It asks for consistency, then brings Scripture, history, and the Fathers into the light.", "Set the standard first; then the evidence can speak."),
+      fq("Clean reply: one sentence", "Which final sentence best sounds like trained Orthodox witness?", ["The Word became flesh, trampled down death by death, and bestows life on those in the tombs", "Be nice and vague", "My team wins every debate", "Stop asking questions"], "The Word became flesh, trampled down death by death, and bestows life on those in the tombs", "The Paschal proclamation is doctrine with a heartbeat. It names Incarnation, death, victory, and gift in one breath.", "Christ is risen, and life reigns because God became man for us."),
+    ],
   ];
-  const APPLE_DIRS = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
-  function appleGridFor(level) {
-    let grid = APPLE_BASE.map(r => r.split(''));
-    const v = ((level - 1) % 3 + 3) % 3;
-    if (v === 1) grid = grid.map(row => row.slice().reverse());
-    if (v === 2) grid = grid.slice().reverse();
-    return grid;
-  }
-  function applePointFor(level, pt) {
-    const v = ((level - 1) % 3 + 3) % 3;
-    let x = pt[0], y = pt[1];
-    if (v === 1) x = APPLE_W - 1 - x;
-    if (v === 2) y = APPLE_H - 1 - y;
-    return [x, y];
-  }
-  function appleOpen(grid, x, y) { return x >= 0 && y >= 0 && x < APPLE_W && y < APPLE_H && grid[y][x] !== '#'; }
-  function applePellets(grid) {
-    const set = new Set(), pow = new Set();
-    grid.forEach((row, y) => row.forEach((c, x) => {
-      if (c === '.') set.add(x + ',' + y);
-      if (c === 'o') pow.add(x + ',' + y);
-    }));
-    return { set, pow };
-  }
-  function appleFindSpawn(grid) {
-    for (let y = 0; y < APPLE_H; y++) for (let x = 0; x < APPLE_W; x++) if (grid[y][x] === 'P') return [x, y];
-    return [7, 9];
-  }
-  function appleMenu() {
-    setHtml(`${backBar('Adam & Eve Apple Maze')}
-      <p class="lead">Eat the apples, dodge the snakes. The 🍇 grape of power turns the hunt for a few seconds — frightened snakes flee, and eating one is worth 150. Clear the orchard solo, or race on the same board: shared apples, one clock, highest score wins.</p>
-      ${bestLine('apple', v => v + ' points')}
-      ${gxLevelChips('apple')}
+  const FAITH_CFG = {
+    defend: {
+      title: 'Defend the Faith',
+      icon: '🛡',
+      intro: 'Real objections, first moves, and one sentence you can say out loud. Hear the challenge, speak before you tap, then learn why the strong reply works.',
+      start: 'Start sparring',
+      bank: DEFEND_BANK,
+    },
+    doctrine: {
+      title: 'Say It Right',
+      icon: '✦',
+      intro: 'The Church words that keep an answer clean: ousia, hypostasis, physis, homoousios, Theotokos, theosis. Learn the term, then choose the sentence that carries it without bending it.',
+      start: 'Start wording round',
+      bank: DOCTRINE_BANK,
+    },
+  };
+  function faithCfg(show) { return FAITH_CFG[show] || FAITH_CFG.defend; }
+  function faithMenu() {
+    const show = G && G.show;
+    const cfg = faithCfg(show);
+    setHtml(`${backBar(cfg.title)}
+      <p class="lead">${cfg.intro}</p>
+      ${bestLine(show, v => v + ' points')}
+      ${gxLevelChips(show)}
       <div class="gx-modes">
-        <button class="card gx-mode" data-gx="a-mode" data-mode="solo"><strong>Solo — Mr. Adam</strong><span>Three lives against the snakes. Eat every apple to clear the orchard and beat the level.</span></button>
-        <button class="card gx-mode" data-gx="a-mode" data-mode="race"><strong>Two players — Mr. &amp; Ms. race!</strong><span>Adam and Eve in the same maze at the same time. Separate pads (or WASD vs arrow keys). Out-eat your rival before the clock or the apples run out.</span></button>
+        <button class="card gx-mode" data-gx="fth-start"><strong>${cfg.start}</strong><span>Six cards from the level above. Say your answer out loud before choosing; every card ends with the reason and a sentence to keep.</span></button>
       </div>
-      <div class="gx-names">${nameInputs('2p')}</div>
-      <p class="footnote">Player one is Mr. Adam 🧔🏽; player two is Ms. Eve 👩🏽. The snakes 🐍 are the ghosts of the garden — they hunt the nearest eater.</p>`);
+      <p class="footnote">Built from your study rule: Scripture and the Fathers first, exact terms in transliteration, and a spoken sentence at the end of every card.</p>`);
   }
-  function appleStart(mode) {
-    const lvl = gxSelectedLevel('apple');
-    if (!gxCanPlay('apple', lvl)) { showMenu('apple'); return; }
-    setSong('apple');
-    const names = readNames(['Adam', 'Eve']);
-    const grid = appleGridFor(lvl);
-    const made = applePellets(grid);
-    const plan = GX_LEVELS.apple[lvl - 1];
-    const aSpawn = appleFindSpawn(grid);
-    const eSpawn = applePointFor(lvl, [9, 9]);
-    const mk = (name, icon, spawn) => ({ name, icon, x: spawn[0], y: spawn[1], sx: spawn[0], sy: spawn[1], dir: 'left', nextDir: 'left', lives: 3, score: 0, apples: 0, active: true });
-    const players = mode === 'solo'
-      ? [mk(names[0] || 'Adam', '🧔🏽', aSpawn)]
-      : [mk(names[0] || 'Adam', '🧔🏽', aSpawn), mk(names[1] || 'Eve', '👩🏽', eSpawn)];
-    const snakePts = [[6, 5], [7, 5], [8, 5], [7, 4], [7, 6]].slice(0, plan.snakes).map(pt => applePointFor(lvl, pt));
-    const snakes = snakePts.map((pt, i) => ({ x: pt[0], y: pt[1], hx: pt[0], hy: pt[1], dir: i % 2 ? 'left' : 'right' }));
+  function defendMenu() { faithMenu(); }
+  function doctrineMenu() { faithMenu(); }
+  function faithDeck(show, level) {
+    const bank = faithCfg(show).bank[level - 1] || faithCfg(show).bank[0] || [];
+    return shuffle(bank.map(q => ({ ...q, options: shuffle(q.choices.slice()) })));
+  }
+  function faithStart() {
+    if (!G) return;
+    const show = G.show;
+    const lvl = gxSelectedLevel(show);
+    if (!gxCanPlay(show, lvl)) { showMenu(show); return; }
+    setSong(show);
+    const cfg = faithCfg(show);
     G = Object.assign(G || {}, {
-      show: 'apple', mode, phase: 'pass', runLevel: lvl, plan, grid,
-      pellets: made.set, powers: made.pow, pelletsLeft: made.set.size + made.pow.size,
-      players, snakes, fright: 0, tickCount: 0, timeLeft: plan.time,
-      lastEvent: '', timers: (G && G.timers) || [], tickId: null, pcAction: null,
+      show, mode: 'solo', phase: 'question', runLevel: lvl,
+      plan: (GX_LEVELS[show] || [])[lvl - 1] || { name: cfg.title, pass: 5 },
+      deck: faithDeck(show, lvl), idx: 0, score: 0, correct: 0, streak: 0,
+      picked: null, timers: (G && G.timers) || [], tickId: null, pcAction: null,
     });
-    applePass();
+    faithRender();
   }
-  function applePass() {
-    if (!G) return;
-    const seats = G.players.map(pl => ({ name: pl.name, score: 0 }));
-    setHtml(`${backBar('Adam & Eve Apple Maze')}${scoreBar(seats, -1)}
-      <section class="card gx-center">
-        <span class="eyebrow">${G.mode === 'race' ? 'TWO PLAYERS · SAME MAZE · SAME TIME' : 'SOLO ORCHARD'} · LEVEL ${G.runLevel} · ${esc(G.plan.name).toUpperCase()}</span>
-        <h2>${G.mode === 'race' ? `🧔🏽 ${esc(G.players[0].name)} vs 👩🏽 ${esc(G.players[1].name)}` : `🧔🏽 ${esc(G.players[0].name)} in the orchard`}</h2>
-        <p class="lead">${G.mode === 'race' ? `Shared apples, one ${G.plan.time}-second clock. Apples 10 points, the 🍇 grape 50 — and a frightened snake 150. Highest score wins; beat ${G.plan.target} to take the level.` : `Eat every apple to clear the orchard. Three lives; the snakes get faster as the levels climb.`}</p>
-        <p class="muted">${G.mode === 'race' ? `${esc(G.players[0].name)}: left pad or WASD. ${esc(G.players[1].name)}: right pad or arrow keys.` : 'Steer with the pad or WASD / arrow keys.'} Snakes 🐍 hunt the nearest eater — grab a 🍇 to turn the hunt.</p>
-        <button class="primary" data-gx="a-begin" data-gx-autofocus>Into the orchard</button>
-        <button class="secondary" data-gx="show-menu" data-show="apple">Change mode</button>
-      </section>`);
-  }
-  function appleLoopStart() {
-    if (!G) return;
-    stopClock();
-    G.tickId = setInterval(() => appleTick(), 150);
-  }
-  function appleBegin() {
-    if (!G) return;
-    G.phase = 'play';
-    G.lastEvent = 'Eat! And mind the snakes.';
-    appleRender();
-    appleLoopStart();
-  }
-  function appleBoardHtml() {
-    if (!G) return '';
-    const cells = [];
-    for (let y = 0; y < APPLE_H; y++) {
-      for (let x = 0; x < APPLE_W; x++) {
-        if (G.grid[y][x] === '#') { cells.push('<div class="gx-apple-cell gx-apple-wall"></div>'); continue; }
-        const pl = G.players.find(pl2 => pl2.active && pl2.x === x && pl2.y === y);
-        const sn = G.snakes.find(sn2 => sn2.x === x && sn2.y === y);
-        let content = '', cls = 'gx-apple-cell';
-        if (pl) { content = pl.icon; cls += ' gx-apple-player'; }
-        else if (sn) { content = '🐍'; cls += G.fright > 0 ? ' gx-apple-snake gx-apple-fright' : ' gx-apple-snake'; }
-        else if (G.powers.has(x + ',' + y)) { content = '🍇'; cls += ' gx-apple-power'; }
-        else if (G.pellets.has(x + ',' + y)) { content = '<i></i>'; cls += ' gx-apple-dot'; }
-        cells.push(`<div class="${cls}">${content}</div>`);
-      }
-    }
-    return `<div class="gx-apple-board" role="img" aria-label="Orchard maze">${cells.join('')}</div>`;
-  }
-  function applePad(idx) {
-    const pl = G.players[idx];
-    return `<div class="gx-race-pad"><strong>${esc(pl.icon)} ${esc(pl.name)}</strong>
-      <div class="gx-race-pad-grid"><span></span><button data-gx="a-dir" data-player="${idx}" data-dir="up" aria-label="${esc(pl.name)} up">▲</button><span></span><button data-gx="a-dir" data-player="${idx}" data-dir="left" aria-label="${esc(pl.name)} left">◀</button><button data-gx="a-dir" data-player="${idx}" data-dir="down" aria-label="${esc(pl.name)} down">▼</button><button data-gx="a-dir" data-player="${idx}" data-dir="right" aria-label="${esc(pl.name)} right">▶</button></div></div>`;
-  }
-  function appleRender() {
-    if (!G) return;
-    const seats = G.players.map(pl => ({ name: pl.name, score: pl.score }));
-    const lines = G.players.map(pl => `<span>${esc(pl.icon)} ${esc(pl.name)} · Lives <strong>${'♥'.repeat(Math.max(0, pl.lives))}</strong> · Apples <strong>${pl.apples}</strong></span>`).join('');
-    const between = G.phase === 'between'
-      ? `<div class="gx-garden-turn"><h2>${esc(G.betweenTitle || 'Caught!')}</h2><p>${esc(G.betweenText || '')}</p><button class="primary" data-gx="a-continue" data-gx-autofocus>Back into the orchard</button></div>`
-      : '';
-    const pads = G.phase === 'play'
-      ? (G.mode === 'race' ? `<div class="gx-race-pads">${applePad(0)}${applePad(1)}</div>` : `<div class="gx-race-pads gx-race-pads-one">${applePad(0)}</div>`)
-      : '';
-    setHtml(`${backBar('Adam & Eve Apple Maze')}${scoreBar(seats, -1)}
-      <section class="card gx-garden-card">
-        <div class="gx-garden-hud"><span>Level ${G.runLevel} · ${esc(G.plan.name)}</span><span>Apples left <strong>${G.pelletsLeft}</strong></span>${G.mode === 'race' ? `<span>Clock <strong>${Math.max(0, Math.ceil(G.timeLeft || 0))}s</strong></span>` : ''}${G.fright > 0 ? `<span>Snakes fleeing <strong>${Math.ceil(G.fright / 6.7)}s</strong></span>` : ''}${lines}</div>
-        ${appleBoardHtml()}
-        <p class="gx-event" role="status">${esc(G.lastEvent || 'Eat the apples. Dodge the snakes.')}</p>
-        ${between}
-        ${pads}
-      </section>
-      <p class="footnote">Apples 10 · 🍇 grape of power 50 and turns the hunt · a frightened snake 150. Three lives each.</p>`);
-  }
-  function appleSetDir(idx, dir) {
-    if (!G || G.show !== 'apple') return;
-    const pl = G.players[idx];
-    if (pl && APPLE_DIRS[dir]) pl.nextDir = dir;
-  }
-  function appleTick() {
-    if (!G || G.show !== 'apple' || G.phase !== 'play') return;
-    G.tickCount++;
-    for (let i = 0; i < G.players.length; i++) {
-      appleStepPlayer(i);
-      if (!G || G.phase !== 'play') return;
-    }
-    if (G.fright > 0) G.fright--;
-    const every = (G.plan.snakeEvery || 2) + (G.fright > 0 ? 1 : 0);
-    if (G.tickCount % every === 0) appleStepSnakes();
-    if (!G || G.phase !== 'play') return;
-    if (G.mode === 'race') {
-      G.timeLeft = (G.timeLeft || 0) - 0.15;
-      if (G.timeLeft <= 0) { appleRaceEnd('time'); return; }
-    }
-    appleRender();
-  }
-  function appleStepPlayer(idx) {
-    const pl = G.players[idx];
-    if (!pl || !pl.active || !G || G.phase !== 'play') return;
-    const nd = APPLE_DIRS[pl.nextDir];
-    if (nd && appleOpen(G.grid, pl.x + nd[0], pl.y + nd[1])) pl.dir = pl.nextDir;
-    const d = APPLE_DIRS[pl.dir];
-    if (d && appleOpen(G.grid, pl.x + d[0], pl.y + d[1])) { pl.x += d[0]; pl.y += d[1]; }
-    appleEatAt(idx);
-    if (G.phase === 'play') appleCollide(idx);
-  }
-  function appleEatAt(idx) {
-    const pl = G.players[idx];
-    if (!pl || !G) return;
-    const k = pl.x + ',' + pl.y;
-    if (G.powers.has(k)) {
-      G.powers.delete(k); G.pelletsLeft--;
-      pl.score += 50; pl.apples++;
-      G.fright = 45;
-      G.lastEvent = `${pl.icon} ${pl.name} ate the 🍇 grape of power — the snakes flee!`;
+  function faithAnswer(choice) {
+    if (!G || G.phase !== 'question' || !G.deck) return;
+    const q = G.deck[G.idx];
+    if (!q) return;
+    G.picked = choice;
+    const ok = choice === q.answer;
+    if (ok) {
+      G.correct++;
+      G.streak++;
+      G.score += 100 + Math.min(50, (G.streak - 1) * 10);
       sfx('ding');
-    } else if (G.pellets.has(k)) {
-      G.pellets.delete(k); G.pelletsLeft--;
-      pl.score += 10; pl.apples++;
-      sfx('select');
-    }
-    if (G.pelletsLeft <= 0 && G.phase === 'play') {
-      if (G.mode === 'solo') appleSoloClear();
-      else appleRaceEnd('apples');
-    }
-  }
-  function appleCollide(idx) {
-    if (!G || G.phase !== 'play') return;
-    const pl = G.players[idx];
-    if (!pl || !pl.active) return;
-    const sn = G.snakes.find(sn2 => sn2.x === pl.x && sn2.y === pl.y);
-    if (!sn) return;
-    if (G.fright > 0) {
-      pl.score += 150;
-      G.lastEvent = `${pl.icon} ${pl.name} caught a fleeing snake — +150!`;
-      sfx('catch');
-      sn.x = sn.hx; sn.y = sn.hy;
     } else {
-      applePlayerDown(idx);
+      G.streak = 0;
+      sfx('wrong');
     }
+    G.phase = 'feedback';
+    faithRender();
   }
-  function appleStepSnakes() {
-    if (!G) return;
-    const rev = { up: 'down', down: 'up', left: 'right', right: 'left' };
-    for (const sn of G.snakes) {
-      const opts = Object.entries(APPLE_DIRS).filter(([, d]) => appleOpen(G.grid, sn.x + d[0], sn.y + d[1]));
-      if (!opts.length) continue;
-      let cand = opts.filter(([name]) => name !== rev[sn.dir]);
-      if (!cand.length) cand = opts;
-      const targets = G.players.filter(pl => pl.active);
-      if (!targets.length) return;
-      const dist = (x, y) => Math.min(...targets.map(pl => Math.abs(pl.x - x) + Math.abs(pl.y - y)));
-      cand.sort((a, b) => {
-        const da = dist(sn.x + a[1][0], sn.y + a[1][1]);
-        const db = dist(sn.x + b[1][0], sn.y + b[1][1]);
-        return G.fright > 0 ? db - da : da - db;
-      });
-      const pick = cand[0];
-      sn.dir = pick[0];
-      sn.x += pick[1][0]; sn.y += pick[1][1];
-    }
-    G.players.forEach((pl, i) => { if (pl.active) appleCollide(i); });
+  function faithRender() {
+    if (!G || !G.deck) return;
+    const show = G.show, cfg = faithCfg(show), q = G.deck[G.idx];
+    if (!q) { faithResults(); return; }
+    const total = G.deck.length;
+    const feedback = G.phase === 'feedback';
+    const ok = feedback && G.picked === q.answer;
+    const buttons = q.options.map(opt => {
+      const cls = feedback && opt === q.answer ? ' gx-faith-right' : feedback && opt === G.picked ? ' gx-faith-wrong' : '';
+      return `<button data-gx="fth-answer" data-choice="${esc(opt)}" class="${cls.trim()}" ${feedback ? 'disabled' : ''}>${esc(opt)}</button>`;
+    }).join('');
+    setHtml(`${backBar(cfg.title)}${scoreBar([{ name: 'You', score: G.score }], -1)}
+      <section class="card gx-faith-card">
+        <div class="gx-faith-hud"><span>Level ${G.runLevel} · ${esc(G.plan.name)}</span><span>Card <strong>${G.idx + 1}/${total}</strong></span><span>Right <strong>${G.correct}</strong></span><span>Streak <strong>${G.streak}</strong></span></div>
+        <span class="eyebrow">${esc(q.tag)}</span>
+        <blockquote class="gx-faith-prompt">${esc(q.prompt)}</blockquote>
+        ${feedback ? '' : `<p class="muted">Say your first sentence out loud, then choose the strongest opening.</p>`}
+        <div class="gx-choices gx-faith-choices">${buttons}</div>
+        ${feedback ? `<div class="gx-faith-feedback ${ok ? 'right' : 'wrong'}"><h3>${ok ? 'Strong reply.' : 'Not the first move.'}</h3><p>${esc(q.why)}</p><div class="gx-say"><span>Say this out loud</span><strong>${esc(q.say)}</strong></div><button class="primary" data-gx="fth-next" data-gx-autofocus>${G.idx + 1 >= total ? 'See results' : 'Next card'}</button></div>` : ''}
+      </section>`);
   }
-  function applePlayerDown(idx) {
-    if (!G) return;
-    const pl = G.players[idx];
+  function faithNext() {
+    if (!G || !G.deck) return;
+    G.idx++;
+    G.picked = null;
+    if (G.idx >= G.deck.length) { faithResults(); return; }
+    G.phase = 'question';
+    faithRender();
+  }
+  function faithResults() {
+    if (!G || !G.deck) return;
     stopClock();
-    sfx('wrong');
-    pl.lives--;
-    if (pl.lives <= 0) {
-      pl.active = false;
-      if (G.mode === 'solo') {
-        appleResults(`${esc(pl.icon)} ${esc(pl.name)} is out of lives`, `${esc(pl.name)} ate ${pl.apples} apples for ${pl.score} points before the snakes closed in.`, false);
-      } else {
-        appleRaceFinish(G.players[1 - idx], `${pl.name} is out of lives.`);
-      }
-      return;
-    }
-    G.phase = 'between';
-    G.betweenTitle = `${pl.icon} ${pl.name} was caught!`;
-    G.betweenText = `A snake got ${pl.name}. ${pl.lives} ${pl.lives === 1 ? 'life' : 'lives'} left — eaters and snakes return to their starts; the eaten apples stay eaten.`;
-    G.lastEvent = G.betweenText;
-    appleRender();
-  }
-  function appleContinue() {
-    if (!G || G.phase !== 'between') return;
-    G.players.forEach(pl => { if (pl.active) { pl.x = pl.sx; pl.y = pl.sy; pl.dir = 'left'; pl.nextDir = 'left'; } });
-    G.snakes.forEach(sn => { sn.x = sn.hx; sn.y = sn.hy; });
-    G.fright = 0;
-    G.phase = 'play';
-    G.lastEvent = 'Back into the orchard — mind the snakes.';
-    appleRender();
-    appleLoopStart();
-  }
-  function appleSoloClear() {
-    if (!G) return;
-    stopClock();
-    G.levelBeaten = true;
-    gxBeatLevel('apple', G.runLevel);
-    sfx('win');
-    const pl = G.players[0];
-    appleResults(`${esc(pl.icon)} ${esc(pl.name)} cleared the orchard!`, `${esc(pl.name)} ate every apple for ${pl.score} points with ${pl.lives} ${pl.lives === 1 ? 'life' : 'lives'} to spare.`, true);
-  }
-  function appleRaceEnd(reason) {
-    if (!G) return;
-    const [a, b] = G.players;
-    let winner = null;
-    if (a.score !== b.score) winner = a.score > b.score ? a : b;
-    else if (a.apples !== b.apples) winner = a.apples > b.apples ? a : b;
-    appleRaceFinish(winner, reason === 'apples' ? 'Every apple in the orchard is eaten.' : 'The orchard clock ran out.');
-  }
-  function appleRaceFinish(winner, reason) {
-    if (!G) return;
-    stopClock();
-    const beaten = !!(winner && winner.score >= G.plan.target);
+    const show = G.show, cfg = faithCfg(show), total = G.deck.length;
+    const beaten = G.correct >= (G.plan.pass || total);
     G.levelBeaten = beaten;
-    if (beaten) { gxBeatLevel('apple', G.runLevel); sfx('win'); }
-    const stats = G.players.map(pl => `${esc(pl.icon)} ${esc(pl.name)}: <strong>${pl.score}</strong> points · ${pl.apples} apples`).join('<br>');
-    appleResults(
-      winner ? `${esc(winner.icon)} ${esc(winner.name)} wins the apple race!` : 'A dead heat in the orchard!',
-      `${esc(reason)}<br>${stats}`,
-      beaten,
-    );
-  }
-  function appleResults(title, blurb, beaten) {
-    if (!G) return;
-    stopClock();
+    if (beaten) { gxBeatLevel(show, G.runLevel); sfx('win'); }
+    saveBest(show, G.score);
+    const b = bestOf(show);
     G.phase = 'over';
-    saveBest('apple', Math.max(...G.players.map(pl => pl.score)));
-    const b = bestOf('apple');
-    setHtml(`${backBar('Adam & Eve Apple Maze')}
+    setHtml(`${backBar(cfg.title)}
       <section class="card gx-center">
         <span class="eyebrow">LEVEL ${G.runLevel} · ${esc(G.plan.name).toUpperCase()}</span>
-        <h2>${title}</h2>
-        <p>${blurb}</p>
-        ${gxLevelBanner('apple', G.runLevel, !!beaten)}
-        ${beaten ? '' : `<p class="muted">${G.mode === 'race' ? `Score ${G.plan.target} or more as the winner to beat Level ${G.runLevel}.` : `Eat every apple to beat Level ${G.runLevel}.`}</p>`}
-        ${beaten && G.runLevel >= 5 ? `<p class="lead">👑 Keeper of the Orchard — all five levels beaten.</p>` : ''}
-        <p class="muted">Best orchard score on this device: <strong>${b.best} points</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'}.</p>
-        <button class="primary" data-gx="show-menu" data-show="apple">Play again</button>
+        <h2>${beaten ? 'You can say it clean.' : 'Keep sparring.'}</h2>
+        <p>You answered <strong>${G.correct}/${total}</strong> cards correctly for <strong>${G.score}</strong> points.</p>
+        ${gxLevelBanner(show, G.runLevel, !!beaten)}
+        ${beaten ? '' : `<p class="muted">Get ${G.plan.pass} right to beat Level ${G.runLevel}. Replay the same level until the first sentence comes fast.</p>`}
+        ${beaten && G.runLevel >= 5 ? `<p class="lead">Defender trained: all five levels beaten.</p>` : ''}
+        <p class="muted">Best score on this device: <strong>${b.best} points</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'}.</p>
+        <button class="primary" data-gx="show-menu" data-show="${show}">Play again</button>
         <button class="secondary" data-gx="hub">All games</button>
       </section>`);
   }
@@ -2529,8 +1870,8 @@ window.BibleGames = (() => {
     else if (key === 'millionaire') millionaireMenu();
     else if (key === 'sound') soundMenu();
     else if (key === 'babel') babelMenu();
-    else if (key === 'garden') gardenMenu();
-    else if (key === 'apple') appleMenu();
+    else if (key === 'defend') defendMenu();
+    else if (key === 'doctrine') doctrineMenu();
     else feudMenu();
   }
   async function loadBank() {
@@ -2598,19 +1939,10 @@ window.BibleGames = (() => {
       if (gxCanPlay(sh, n)) { gxLevelSel[sh] = n; showMenu(sh); }
       return;
     }
-    /* Adam in the Garden */
-    if (action === 'g-mode') { gardenStart(btn.dataset.mode); return; }
-    if (action === 'g-begin') { gardenBeginPlay(); return; }
-    if (action === 'g-move') { gardenMove(btn.dataset.dir); return; }
-    if (action === 'g-race-begin') { gardenRaceBegin(); return; }
-    if (action === 'g-race-move') { gardenRaceMove(Number(btn.dataset.racer), btn.dataset.dir); return; }
-    /* Adam & Eve Apple Maze */
-    if (action === 'a-mode') { appleStart(btn.dataset.mode); return; }
-    if (action === 'a-begin') { appleBegin(); return; }
-    if (action === 'a-dir') { appleSetDir(Number(btn.dataset.player), btn.dataset.dir); sfx('select'); return; }
-    if (action === 'a-continue') { appleContinue(); return; }
-    if (action === 'g-continue') { gardenContinue(); return; }
-    if (action === 'g-pause') { gardenPauseToggle(); return; }
+    /* Defend the Faith + Say It Right */
+    if (action === 'fth-start') { faithStart(); return; }
+    if (action === 'fth-answer') { faithAnswer(btn.dataset.choice); return; }
+    if (action === 'fth-next') { faithNext(); return; }
     /* Tower of Babel */
     if (action === 'b-start') { babelStart(); return; }
     if (action === 'b-answer') { babelAnswer(Number(btn.dataset.i)); return; }
@@ -2653,23 +1985,6 @@ window.BibleGames = (() => {
   }
   document.addEventListener('click', click);
   document.addEventListener('keydown', e => {
-    if (G && G.show === 'garden' && G.phase === 'raceplay') {
-      const d0 = { w: 'up', s: 'down', a: 'left', d: 'right', W: 'up', S: 'down', A: 'left', D: 'right' }[e.key];
-      const d1 = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' }[e.key];
-      if (d0) { e.preventDefault(); gardenRaceMove(0, d0); return; }
-      if (d1) { e.preventDefault(); gardenRaceMove(1, d1); return; }
-    }
-    if (G && G.show === 'garden' && G.phase === 'play') {
-      const dir = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', w: 'up', s: 'down', a: 'left', d: 'right', W: 'up', S: 'down', A: 'left', D: 'right' }[e.key];
-      if (dir) { e.preventDefault(); gardenMove(dir); return; }
-      if (e.key === ' ') { e.preventDefault(); gardenPauseToggle(); return; }
-    }
-    if (G && G.show === 'apple' && G.phase === 'play') {
-      const d0 = { w: 'up', s: 'down', a: 'left', d: 'right', W: 'up', S: 'down', A: 'left', D: 'right' }[e.key];
-      const dArrows = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' }[e.key];
-      if (d0) { e.preventDefault(); appleSetDir(0, d0); return; }
-      if (dArrows) { e.preventDefault(); appleSetDir(G.mode === 'race' ? 1 : 0, dArrows); return; }
-    }
     if (e.key !== 'Enter') return;
     const row = e.target.closest && e.target.closest('.gx-guessrow');
     if (!row) return;
@@ -2685,8 +2000,7 @@ window.BibleGames = (() => {
       gx: { GX_LEVELS, gxProgAll, gxShowProg, gxCanPlay, gxBeatLevel, gxDefaultLevel, gxSelectedLevel, gxSoundLevelDeck, babelBuildPool, babelMakeDeck, babelSeenLoad, babelSeenSave, setBank(b) { bank = b; }, audio: { sfx, startMusic, stopMusic, musicState: () => ({ musicOn: gxMusicOn, soundOn: gxSoundOn, playing: !!gxMusicTimer }), setMusicOn(v) { gxMusicOn = !!v; }, setSoundOn(v) { gxSoundOn = !!v; } } },
       setClock(seconds) { if (G) { G.clockEndsAt = Date.now() + seconds * 1000; } },
       setG(v) { G = v; },
-      garden: { gardenMakeLanes, gardenMakeEntities, gardenFruitFor, gardenOverlap, gardenMove, gardenTick, gardenDie, gardenTryGoal, gardenCollect, gardenActivePlayer, gardenSeatsForBar, gardenRaceSetup, gardenRaceMove, gardenRaceTick, gardenRaceGoal, gardenRaceDie, GARDEN_COLS, GARDEN_ROWS, GARDEN_SLOTS },
-      apple: { APPLE_BASE, appleGridFor, appleOpen, applePellets, appleFindSpawn, appleSetDir, appleTick, appleStepSnakes, appleEatAt },
+      faith: { DEFEND_BANK, DOCTRINE_BANK, FAITH_CFG, faithDeck, faithStart, faithAnswer, faithNext, faithResults },
       forcePc() { flushPc(); },
       finishBoard() { if (G && G.cats) { G.cats.forEach(c => c.clues.forEach(cl => { cl.used = true; })); jeopardyBoard(); } },
     },
