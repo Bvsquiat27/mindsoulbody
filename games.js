@@ -1954,6 +1954,23 @@ window.BibleGames = (() => {
       bank: DOCTRINE_BANK,
     },
   };
+  function gxSpeak(text, rate) {
+    try {
+      const synth = window.speechSynthesis;
+      if (!synth || typeof SpeechSynthesisUtterance === 'undefined' || !text) return false;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = rate || 0.92;
+      synth.speak(u);
+      return true;
+    } catch (e) { return false; }
+  }
+  function faithWordOf(q, show) {
+    if (show !== 'doctrine' || !q || !q.tag) return null;
+    const t = String(q.tag);
+    const m = t.match(/(?:Term|Church word|Word):\s*(.+)$/i) || t.match(/^Say it:\s*(\S+)$/i);
+    return m ? m[1].trim() : null;
+  }
   function faithCfg(show) { return FAITH_CFG[show] || FAITH_CFG.defend; }
   function faithMenu() {
     const show = G && G.show;
@@ -2018,14 +2035,17 @@ window.BibleGames = (() => {
       const cls = feedback && opt === q.answer ? ' gx-faith-right' : feedback && opt === G.picked ? ' gx-faith-wrong' : '';
       return `<button data-gx="fth-answer" data-choice="${esc(opt)}" class="${cls.trim()}" ${feedback ? 'disabled' : ''}>${esc(opt)}</button>`;
     }).join('');
+    const wordTerm = faithWordOf(q, show);
+    if (wordTerm) G.speakWord = wordTerm;
     setHtml(`${backBar(cfg.title)}${scoreBar([{ name: 'You', score: G.score }], -1)}
       <section class="card gx-faith-card">
         <div class="gx-faith-hud"><span>Level ${G.runLevel} · ${esc(G.plan.name)}</span><span>Card <strong>${G.idx + 1}/${total}</strong></span><span>Right <strong>${G.correct}</strong></span><span>Streak <strong>${G.streak}</strong></span></div>
         <span class="eyebrow">${esc(q.tag)}</span>
         <blockquote class="gx-faith-prompt">${esc(q.prompt)}</blockquote>
+        ${wordTerm && !feedback ? `<button type="button" class="secondary gx-say-word" data-gx="say-word">🔊 Hear the word: ${esc(wordTerm)}</button>` : ''}
         ${feedback ? '' : `<p class="muted">Say your first sentence out loud, then choose the strongest opening.</p>`}
         <div class="gx-choices gx-faith-choices">${buttons}</div>
-        ${feedback ? `<div class="gx-faith-feedback ${ok ? 'right' : 'wrong'}"><h3>${ok ? 'Strong reply.' : 'Not the first move.'}</h3><p>${esc(q.why)}</p><div class="gx-say"><span>Say this out loud</span><strong>${esc(q.say)}</strong></div><button class="primary" data-gx="fth-next" data-gx-autofocus>${G.idx + 1 >= total ? 'See results' : 'Next card'}</button></div>` : ''}
+        ${feedback ? `<div class="gx-faith-feedback ${ok ? 'right' : 'wrong'}"><h3>${ok ? 'Strong reply.' : 'Not the first move.'}</h3><p>${esc(q.why)}</p><div class="gx-say"><span>Say this out loud</span><strong>${esc(q.say)}</strong></div><button type="button" class="secondary gx-say-model" data-gx="say-model">🔊 Hear the sentence</button><button class="primary" data-gx="fth-next" data-gx-autofocus>${G.idx + 1 >= total ? 'See results' : 'Next card'}</button></div>` : ''}
       </section>`);
   }
   function faithNext() {
@@ -2162,6 +2182,8 @@ window.BibleGames = (() => {
     if (action === 'fth-start') { faithStart(); return; }
     if (action === 'fth-answer') { faithAnswer(btn.dataset.choice); return; }
     if (action === 'fth-next') { faithNext(); return; }
+    if (action === 'say-word') { if (G && G.speakWord && !gxSpeak(G.speakWord, 0.8) && ctx && ctx.toast) ctx.toast('Voice is not available on this device.'); return; }
+    if (action === 'say-model') { const q = G && G.deck && G.deck[G.idx]; if (q && q.say && !gxSpeak(q.say, 0.95) && ctx && ctx.toast) ctx.toast('Voice is not available on this device.'); return; }
     /* Tower of Babel */
     if (action === 'b-start') { babelStart(); return; }
     if (action === 'b-answer') { babelAnswer(Number(btn.dataset.i)); return; }

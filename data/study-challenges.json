@@ -643,6 +643,12 @@
           "correct": 1,
           "explanation": "A conciliar formula is read accurately by asking which rival interpretation it was answering."
         }
+      ],
+      "words": [
+        {
+          "term": "Theotokos",
+          "say": "theh oh toh kohs"
+        }
       ]
     },
     {
@@ -1651,6 +1657,12 @@
           "correct": 0,
           "explanation": "Cyril of Alexandria defended Christ’s unity at Ephesus."
         }
+      ],
+      "words": [
+        {
+          "term": "Theotokos",
+          "say": "theh oh toh kohs"
+        }
       ]
     },
     {
@@ -1936,6 +1948,16 @@
           "correct": 1,
           "explanation": "A nature answers the question what, but it does not by itself settle who is acting. That distinction lets the Church confess one Christ with real divine and human natures."
         }
+      ],
+      "words": [
+        {
+          "term": "ousia",
+          "say": "oo see ah"
+        },
+        {
+          "term": "hypostasis",
+          "say": "high pah stuh sis"
+        }
       ]
     },
     {
@@ -1992,6 +2014,16 @@
           ],
           "correct": 1,
           "explanation": "The first choice divides God into three beings, and the third turns the Persons into roles or masks. Orthodox teaching confesses three distinct Hypostases, one essence, and one undivided divine life."
+        }
+      ],
+      "words": [
+        {
+          "term": "homoousios",
+          "say": "hoh moh oo see ahs"
+        },
+        {
+          "term": "perichoresis",
+          "say": "peh ree koh ree sis"
         }
       ]
     },
@@ -2050,6 +2082,16 @@
           "correct": 2,
           "explanation": "Apollinarianism removes Christ's rational human mind, Eutychianism absorbs or confuses his humanity, and Docetism makes his embodied life only an appearance. The third sentence keeps his humanity complete and real."
         }
+      ],
+      "words": [
+        {
+          "term": "hypostasis",
+          "say": "high pah stuh sis"
+        },
+        {
+          "term": "Theotokos",
+          "say": "theh oh toh kohs"
+        }
       ]
     },
     {
@@ -2106,6 +2148,12 @@
           ],
           "correct": 2,
           "explanation": "The first sentence divides Christ into two persons, and the second confuses the natures into a mixture. The third keeps one subject and confesses complete divinity and complete humanity."
+        }
+      ],
+      "words": [
+        {
+          "term": "Theotokos",
+          "say": "theh oh toh kohs"
         }
       ]
     },
@@ -2167,6 +2215,16 @@
           "correct": 0,
           "explanation": "Paul's own order matters: intercessions are commanded first, then Christ is confessed as the one mediator. Shared prayer does not compete with His unique mediation."
         }
+      ],
+      "words": [
+        {
+          "term": "latreia",
+          "say": "lah tree ah"
+        },
+        {
+          "term": "dulia",
+          "say": "doo lee ah"
+        }
       ]
     },
     {
@@ -2226,6 +2284,20 @@
           ],
           "correct": 2,
           "explanation": "Mary did not create divinity. She bore the divine Son in His incarnation, so the title confesses Christ without exaggerating Mary into a source of Godhead."
+        }
+      ],
+      "words": [
+        {
+          "term": "Theotokos",
+          "say": "theh oh toh kohs"
+        },
+        {
+          "term": "hypostasis",
+          "say": "high pah stuh sis"
+        },
+        {
+          "term": "communicatio idiomatum",
+          "say": "kah myoo nih kah tee oh, ih dee oh mah tum"
         }
       ]
     },
@@ -2287,6 +2359,12 @@
           "correct": 1,
           "explanation": "The defense is real but not crude. Orthodoxy confesses the true Body and Blood while receiving the mystery sacramentally, with repentance and faith."
         }
+      ],
+      "words": [
+        {
+          "term": "koinonia",
+          "say": "koy noh nee ah"
+        }
       ]
     },
     {
@@ -2346,6 +2424,20 @@
           ],
           "correct": 2,
           "explanation": "That sentence keeps both biblical truths: Exodus guards the essence; Tabor and 2 Peter guard real participation."
+        }
+      ],
+      "words": [
+        {
+          "term": "ousia",
+          "say": "oo see ah"
+        },
+        {
+          "term": "energeia",
+          "say": "en ehr gee ah"
+        },
+        {
+          "term": "theosis",
+          "say": "theh oh sis"
         }
       ]
     },
@@ -2414,6 +2506,36 @@
           "correct": 1,
           "explanation": "The exchange of properties follows from one Person in two unconfused natures: born of Mary according to the flesh, eternal according to divinity."
         }
+      ],
+      "words": [
+        {
+          "term": "ousia",
+          "say": "oo see ah"
+        },
+        {
+          "term": "hypostasis",
+          "say": "high pah stuh sis"
+        },
+        {
+          "term": "physis",
+          "say": "fee sis"
+        },
+        {
+          "term": "homoousios",
+          "say": "hoh moh oo see ahs"
+        },
+        {
+          "term": "Theotokos",
+          "say": "theh oh toh kohs"
+        },
+        {
+          "term": "kenosis",
+          "say": "keh noh sis"
+        },
+        {
+          "term": "communicatio idiomatum",
+          "say": "kah myoo nih kah tee oh, ih dee oh mah tum"
+        }
       ]
     },
     {
@@ -2481,6 +2603,32 @@
           "correct": 0,
           "explanation": "Krasis is the body-soul mixture: one fallen condition, many dispositions — so the same wound bleeds differently in each person."
         }
+      ],
+      "words": [
+        {
+          "term": "perichoresis",
+          "say": "peh ree koh ree sis"
+        },
+        {
+          "term": "theosis",
+          "say": "theh oh sis"
+        },
+        {
+          "term": "synergeia",
+          "say": "sin ehr gee ah"
+        },
+        {
+          "term": "logismoi",
+          "say": "loh geez mee"
+        },
+        {
+          "term": "krasis",
+          "say": "krah sis"
+        },
+        {
+          "term": "thelema gnomikon",
+          "say": "theh leh mah, noh mee kon"
+        }
       ]
     },
     {
@@ -2547,6 +2695,24 @@
           ],
           "correct": 1,
           "explanation": "Nemesius on temperament, Evagrius on the logismoi, Maximus on the gnomic will: one wound, different dispositions — diagnosis before cure."
+        }
+      ],
+      "words": [
+        {
+          "term": "krasis",
+          "say": "krah sis"
+        },
+        {
+          "term": "logismoi",
+          "say": "loh geez mee"
+        },
+        {
+          "term": "thelema gnomikon",
+          "say": "theh leh mah, noh mee kon"
+        },
+        {
+          "term": "synergeia",
+          "say": "sin ehr gee ah"
         }
       ]
     }
