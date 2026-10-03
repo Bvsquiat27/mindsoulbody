@@ -137,3 +137,32 @@ h3{font-size:6.1vw}
 .section-head{margin:10vw 0 4.7vw}
 input,textarea,select{font-size:4.5vw}
 }
+
+/* MSB phone sizing v10: the v6-v9 boosts sat behind pointer/device-width/orientation conditions that may not all match inside the installed app. This block sits behind max-width:1024px only — the same condition that already shows him the mobile layout — so it cannot miss, and it scales type off screen width at pic-1 size or better. */
+@media (max-width:1024px){
+body{font-size:5.2vw}
+h1{font-size:12vw}
+h2{font-size:7.6vw}
+h3{font-size:6.9vw}
+.lead{font-size:5.4vw}
+.small{font-size:4vw}
+.eyebrow,.nav-caption{font-size:3.5vw}
+#screen{padding:7.8vw 5.6vw calc(38vw + env(safe-area-inset-bottom))}
+.topbar{height:19vw;padding:0 5.6vw}
+.mobile-brand{font-size:6.3vw}
+.mobile-brand .brand-mark{width:10vw;height:10vw;font-size:7.5vw;border-radius:3.5vw}
+.account-button{width:13vw;height:13vw;font-size:6.9vw}
+.card{padding:7.8vw;border-radius:6.9vw}
+.daily-stack{min-height:92vw;padding:8vw 7.5vw 22vw;border-radius:8.4vw}
+.daily-stack h2{font-size:13vw}
+.verse-play{width:14vw;height:14vw;right:6.3vw;bottom:5.6vw}
+.neon-stat{padding:7.3vw;min-height:49vw}
+.neon-stat strong{font-size:16.5vw}
+.primary,.secondary{min-height:14vw;padding:3.8vw 5.6vw}
+.bottom-nav{padding:2.6vw 2.6vw calc(3vw + env(safe-area-inset-bottom));border-radius:6.9vw 6.9vw 0 0}
+.bottom-nav button{min-height:17vw;border-radius:5.3vw}
+.bottom-nav button svg{width:7.2vw;height:7.2vw}
+.bottom-nav button small{font-size:3.7vw}
+.section-head{margin:11vw 0 5.3vw}
+input,textarea,select{font-size:5.2vw}
+}
