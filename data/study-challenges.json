@@ -3116,6 +3116,121 @@
       ]
     },
     {
+      "id": "ladder-2c-predication",
+      "track": "Christology Ladder",
+      "micro": true,
+      "title": "Deep Dive · Concrete vs. Abstract Predication",
+      "category": "Christology ladder",
+      "level": "Deep dive · 4 teaching cards · 6 questions",
+      "summary": "Every statement about Christ has a subject — a Person or a nature — and which one you pick determines whether the statement is true. Concrete predication names the Person and stands; abstract predication names a nature and is refused.",
+      "source": "1 Corinthians 2:8 · John 1:14 · St. John of Damascus, On the Orthodox Faith III",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20John%201%3A14&version=KJV",
+      "lessons": [
+        {
+          "heading": "The rule: find the subject",
+          "body": "Every statement about Christ has a subject, and the subject is either a person or a nature. Which one you pick determines whether the statement is true. A nature is what something is — divinity, humanity. A person is who does something — the Son, the Word, Christ. Natures do not act, speak, hunger, or suffer; persons do, according to their natures. So before you judge any sentence about Christ, ask the one question this whole deep dive runs on: who or what is the subject? If the subject is the Person, the sentence may carry the properties of both natures. If the subject is a nature itself, it may carry only its own."
+        },
+        {
+          "heading": "Concrete predication: the Person is the subject",
+          "body": "Concrete predication names the person — God, the Son, the Word, the man Christ Jesus — and it is true even when the predicate comes from the other nature. \"The Son of God died.\" \"God was born of Mary.\" \"The Lord of glory was crucified.\" These are true because the person is the subject, and the one person possesses both natures entire. Death belongs to the human nature, but the one who died is the divine Son. Born belongs to the flesh, but the one born is God the Word. This is the communicatio idiomatum at work in grammar: properties stay with their natures; the person carries both. Refusing to speak this way is not humility — it quietly splits Christ in two."
+        },
+        {
+          "heading": "Abstract predication: a nature as subject",
+          "body": "Abstract predication names a nature itself — divinity, humanity, the divine nature — and here the exchange is refused. \"Divinity was born.\" \"Humanity created the world.\" \"The divine nature suffered.\" These are false, because natures don't act or suffer — only persons do. A nature is what something is, not who does something. The divine nature as such is impassible; it does not become mortal. The human nature as such is created; it does not create the world. The correction is never to soften the claim but to fix the subject: not \"divinity suffered,\" but \"God suffered in the flesh\"; not \"humanity was crucified,\" but \"the Lord of glory was crucified.\" Same events, true grammar."
+        },
+        {
+          "heading": "The formula, the two doorways, and practice",
+          "body": "The formula carries the whole lesson: properties stay with their natures; the person carries both. You can say the person did what either nature does, but you cannot say the nature itself did it. Watch the two doorways. Abstract predication is the doorway to Eutychianism: say divinity suffered, and you have made the divine nature mortal — the natures are mixed. Refusing concrete predication is the doorway to Nestorianism: if you cannot say God died, you have split Christ into two persons. Now practice. \"The Word became flesh\" — concrete: the subject is the Word, the Person. \"The human nature was crucified\" — abstract, refused: say instead, Christ was crucified according to the flesh. \"Christ rose from the dead\" — concrete: Christ is the Person, and he rose. Sort the subject first, and you will rarely miss."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What determines whether a statement about Christ is true?",
+          "choices": [
+            "How traditional the wording sounds",
+            "Whether the subject is the Person or a nature",
+            "Which council used the sentence first",
+            "Whether the predicate sounds humble"
+          ],
+          "correct": 1,
+          "explanation": "Find the subject first. A Person as subject carries both natures' properties; a nature as subject carries only its own."
+        },
+        {
+          "prompt": "Which sentence is concrete predication — and true?",
+          "choices": [
+            "\"The divine nature suffered on the cross\"",
+            "\"The Son of God died\"",
+            "\"Humanity created the world\"",
+            "\"Divinity was born of Mary\""
+          ],
+          "correct": 1,
+          "explanation": "The subject is the Person, the Son of God; death is his according to the human nature he made his own."
+        },
+        {
+          "prompt": "Why is \"the divine nature suffered\" false?",
+          "choices": [
+            "Because suffering is beneath God's dignity in every sense",
+            "Because natures don't act or suffer — only persons do; the Person suffered in the flesh, the nature as such remains impassible",
+            "Because the cross was not real suffering",
+            "Because \"nature\" is a Latin word"
+          ],
+          "correct": 1,
+          "explanation": "A nature is what something is, not who does something. Fix the subject: God suffered — in the flesh."
+        },
+        {
+          "prompt": "Refusing concrete predication — being unable to say \"God died\" — is the doorway to...",
+          "choices": [
+            "Eutychianism",
+            "Docetism",
+            "Nestorianism: Christ split into two persons",
+            "Apollinarianism"
+          ],
+          "correct": 2,
+          "explanation": "If God did not die, then someone else did — a man alongside God. Two subjects, two persons: the Nestorian split."
+        },
+        {
+          "prompt": "Abstract predication — \"divinity suffered\" — is the doorway to...",
+          "choices": [
+            "Nestorianism",
+            "Eutychianism: the divine nature made mortal, the natures mixed",
+            "Monothelitism",
+            "Adoptionism"
+          ],
+          "correct": 1,
+          "explanation": "Transfer a human property into the divine nature itself and the natures blend. Properties stay with their natures."
+        },
+        {
+          "prompt": "Classify this one: \"The human nature was crucified.\"",
+          "choices": [
+            "Concrete and true",
+            "Abstract and refused — say instead: the Lord of glory was crucified, according to the flesh",
+            "Concrete but false",
+            "Abstract and true"
+          ],
+          "correct": 1,
+          "explanation": "The subject names a nature. Natures are not crucified; persons are. The Person was crucified in the nature that can be crucified."
+        }
+      ],
+      "words": [
+        {
+          "term": "concrete predication",
+          "say": "kon kreet pred ih kay shun"
+        },
+        {
+          "term": "abstract predication",
+          "say": "ab strakt pred ih kay shun"
+        },
+        {
+          "term": "hypostasis",
+          "say": "high pah stuh sis"
+        },
+        {
+          "term": "idiom",
+          "say": "ih dee um"
+        }
+      ]
+    },
+    {
       "id": "ladder-3-heresies",
       "track": "Christology Ladder",
       "micro": true,
