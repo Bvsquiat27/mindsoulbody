@@ -65,4 +65,6 @@ html{background:var(--bg)}body{color:var(--text);font-family:Outfit,system-ui,sa
   .bottom-nav button svg{width:20px;height:20px}
   .bottom-nav button small{font-size:10.5px;line-height:1;white-space:nowrap;letter-spacing:-.02em}
 }
-
+/* Scripture Library results sit directly under the theme buttons and receive focus/scroll on tap. */
+.library-results{scroll-margin-top:76px}
+.library-results .section-head{margin-top:20px}
