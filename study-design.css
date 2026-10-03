@@ -50,3 +50,32 @@ h3{font-size:48px}
 .bottom-nav button svg{width:50px;height:50px}
 .bottom-nav button small{font-size:26px}
 }
+
+/* MSB phone sizing v7: when a phone renders the app at desktop width, size type in vw so it lands at true phone scale at any layout width. Matches Angel's reference render. Dormant at true device width. */
+@media (min-width:701px) and (max-device-width:540px) and (orientation:portrait), (min-width:701px) and (max-width:1150px) and (pointer:coarse) and (orientation:portrait){
+body{font-size:3.9vw}
+h1{font-size:9.2vw}
+h2{font-size:5.8vw}
+h3{font-size:5.3vw}
+.lead{font-size:4.1vw}
+.small{font-size:3.2vw}
+.eyebrow,.nav-caption{font-size:2.7vw}
+#screen{padding:6vw 4.4vw calc(30vw + env(safe-area-inset-bottom))}
+.topbar{height:16vw;padding:0 4.4vw}
+.mobile-brand{font-size:4.9vw}
+.mobile-brand .brand-mark{width:7.8vw;height:7.8vw;font-size:5.8vw;border-radius:2.7vw}
+.account-button{width:10.2vw;height:10.2vw;font-size:5.3vw}
+.card{padding:6vw;border-radius:5.3vw}
+.daily-stack{min-height:75vw;padding:6.3vw 6vw 17.5vw;border-radius:6.5vw}
+.daily-stack h2{font-size:10vw}
+.verse-play{width:10.7vw;height:10.7vw;right:4.9vw;bottom:4.4vw}
+.neon-stat{padding:5.8vw;min-height:38vw}
+.neon-stat strong{font-size:13vw}
+.primary,.secondary{min-height:11vw;padding:2.9vw 4.4vw}
+.bottom-nav{padding:2vw 2vw calc(2.4vw + env(safe-area-inset-bottom));border-radius:5.3vw 5.3vw 0 0}
+.bottom-nav button{min-height:13.6vw;border-radius:4.1vw}
+.bottom-nav button svg{width:5.6vw;height:5.6vw}
+.bottom-nav button small{font-size:2.9vw}
+.section-head{margin:8.7vw 0 4.1vw}
+input,textarea,select{font-size:3.9vw}
+}
