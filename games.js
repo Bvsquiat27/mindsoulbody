@@ -64,7 +64,7 @@ window.BibleGames = (() => {
     if (target) setTimeout(() => { try { target.focus(); } catch { /* noop */ } }, 30);
   }
   function backBar(title) {
-    return `<button class="text-button" data-gx="hub">← Games</button><button class="text-button gx-snd" data-gx="sound-toggle" aria-label="${gxSoundOn ? 'Mute game sound' : 'Unmute game sound'}">${gxSoundOn ? '🔊' : '🔇'}</button><span class="eyebrow">GAME SHOW</span><h1>${esc(title)}</h1>`;
+    return `<button class="text-button" data-gx="hub">← Games</button><button class="text-button gx-snd" data-gx="sound-toggle" aria-label="${gxSoundOn ? 'Mute sound effects' : 'Unmute sound effects'}">${gxSoundOn ? '🔊' : '🔇'}</button><button class="text-button gx-snd${gxMusicOn ? '' : ' gx-snd-off'}" data-gx="music-toggle" aria-label="${gxMusicOn ? 'Turn music off' : 'Turn music on'}">🎵</button><span class="eyebrow">GAME SHOW</span><h1>${esc(title)}</h1>`;
   }
   function scoreBar(seats, activeIdx) {
     return `<div class="gx-scorebar">${seats.map((s, i) => `<div class="gx-seat ${i === activeIdx ? 'active' : ''} ${s.pc ? 'pc' : ''}"><span>${esc(s.name)}</span><strong>${s.score}</strong></div>`).join('')}</div>`;
@@ -89,12 +89,85 @@ window.BibleGames = (() => {
     return b.plays ? `<p class="small muted">Your best here: <strong>${format(b.best)}</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'} on this device.</p>` : '';
   }
 
+  /* ================= LEVELS =================
+     Five saved levels per show. Angel's rule: beat a level and it should
+     save and give you new questions. Progress lives in localStorage
+     'msb_gx_progress' as { show: { unlocked: 1..5, done: [levels] } }.
+     Beating a level unlocks the next one; every level deals questions the
+     player has not seen at earlier levels — new boards in Jeopardy and
+     Feud, fresh card slices in Sound It Out, new rung plans in Millionaire,
+     unseen-first draws in Tower of Babel. */
+  const GX_LEVELS = {
+    /* Millionaire: level -> questions to climb (target rung) + tier per rung */
+    millionaire: [
+      { target: 5, seq: ['easy', 'easy', 'easy', 'easy', 'easy'] },
+      { target: 8, seq: ['easy', 'easy', 'easy', 'medium', 'medium', 'medium', 'medium', 'medium'] },
+      { target: 11, seq: ['easy', 'easy', 'medium', 'medium', 'medium', 'medium', 'medium', 'medium', 'hard', 'hard', 'hard'] },
+      { target: 13, seq: ['medium', 'medium', 'medium', 'medium', 'hard', 'hard', 'hard', 'hard', 'hard', 'hard', 'hard', 'hard', 'hard'] },
+      { target: 15, seq: ['medium', 'medium', 'hard', 'hard', 'hard', 'hard', 'hard', 'hard', 'hard', 'hard', 'hard', 'hard', 'hard', 'hard', 'hard'] },
+    ],
+    /* Tower of Babel: level -> pieces to catch + the brick's starting fall time */
+    babel: [
+      { catches: 10, fallMs: 9000 }, { catches: 12, fallMs: 8400 }, { catches: 15, fallMs: 7800 },
+      { catches: 18, fallMs: 7200 }, { catches: 20, fallMs: 6600 },
+    ],
+  };
+  let gxLevelSel = {};
+  function gxProgAll() { try { const p = JSON.parse(localStorage.getItem('msb_gx_progress')); return p && typeof p === 'object' ? p : {}; } catch { return {}; } }
+  function gxShowProg(show) {
+    const raw = gxProgAll()[show] || {};
+    return {
+      unlocked: Math.min(5, Math.max(1, Number(raw.unlocked) || 1)),
+      done: [...new Set((Array.isArray(raw.done) ? raw.done : []).filter(n => Number.isInteger(n) && n >= 1 && n <= 5))].sort((a, b) => a - b),
+    };
+  }
+  function gxCanPlay(show, level) { return Number.isInteger(level) && level >= 1 && level <= 5 && level <= gxShowProg(show).unlocked; }
+  function gxBeatLevel(show, level) {
+    if (!(level >= 1 && level <= 5)) return gxShowProg(show);
+    const all = gxProgAll(); const cur = gxShowProg(show);
+    const next = { unlocked: Math.min(5, Math.max(cur.unlocked, level + 1)), done: [...new Set([...cur.done, level])].sort((a, b) => a - b) };
+    all[show] = next;
+    try { localStorage.setItem('msb_gx_progress', JSON.stringify(all)); } catch { /* private mode */ }
+    return next;
+  }
+  function gxDefaultLevel(show) {
+    const p = gxShowProg(show);
+    const open = [1, 2, 3, 4, 5].find(n => n <= p.unlocked && !p.done.includes(n));
+    return open || p.unlocked;
+  }
+  function gxSelectedLevel(show) { return gxCanPlay(show, gxLevelSel[show]) ? gxLevelSel[show] : gxDefaultLevel(show); }
+  function gxLevelNote(show, level) {
+    const p = gxShowProg(show);
+    const bits = {
+      jeopardy: 'Each level is a fresh board — five new categories, twenty-five new clues, and its own Final Jeopardy.',
+      millionaire: `Reach question ${GX_LEVELS.millionaire[level - 1].target} of the ladder and bank the money to beat this level.`,
+      feud: `A two-board match — boards ${(level - 1) * 2 + 1} and ${(level - 1) * 2 + 2} of ten. Clear both boards to beat this level.`,
+      sound: 'Ten cards dealt fresh from this level of the deck. Decode 7 of 10 to beat it.',
+      babel: `Catch ${GX_LEVELS.babel[level - 1].catches} falling pieces before the tower reaches ten bricks.`,
+    };
+    return `${bits[show] || ''}${p.done.length ? ` Beaten so far: Level ${p.done.join(', ')}.` : ''}`;
+  }
+  function gxLevelChips(show) {
+    const p = gxShowProg(show); const sel = gxSelectedLevel(show);
+    return `<div class="gx-levels gx-lvlrow" role="group" aria-label="Choose a level">${[1, 2, 3, 4, 5].map(n => {
+      const locked = n > p.unlocked, beaten = p.done.includes(n);
+      return `<button class="secondary gx-level${n === sel ? ' active' : ''}" data-gx="lvl-pick" data-show-key="${show}" data-level="${n}"${locked ? ' disabled' : ''}>${locked ? '🔒 ' : ''}Level ${n}${beaten ? ' ✓' : ''}</button>`;
+    }).join('')}</div><p class="small muted gx-levelnote">${esc(gxLevelNote(show, sel))}</p>`;
+  }
+  function gxLevelBanner(show, level, beaten) {
+    if (!beaten || !level) return '';
+    return level >= 5
+      ? `<p class="lead gx-leveldone">Level complete — all five levels beaten! 🏆</p>`
+      : `<p class="lead gx-leveldone">Level complete — Level ${level + 1} unlocked!</p>`;
+  }
+
   /* ================= JEOPARDY ================= */
   function jeopardyMenu() {
     const b = bestOf('jeopardy');
     setHtml(`${backBar('Jeopardy')}
       <p class="lead">Five categories, twenty-five clues, and one final wager. Answer in question form — thirty seconds on the clock once you buzz.</p>
       ${bestLine('jeopardy', v => v + ' points')}
+      ${gxLevelChips('jeopardy')}
       <div class="gx-modes">
         <button class="card gx-mode" data-gx="j-mode" data-mode="solo"><strong>Solo</strong><span>You against the board. Every clue is yours to win — or lose.</span></button>
         <button class="card gx-mode" data-gx="j-mode" data-mode="pc"><strong>You vs the PC</strong><span>The PC buzzes in too, faster on the big-money clues. Beat it to the buzzer.</span></button>
@@ -104,6 +177,8 @@ window.BibleGames = (() => {
       <p class="footnote">For two-player games, set both names above. In solo and PC games only your name is used.</p>`);
   }
   function jeopardyStart(mode) {
+    const lvl = gxSelectedLevel('jeopardy');
+    if (!gxCanPlay('jeopardy', lvl)) { showMenu('jeopardy'); return; }
     setSong('jeopardy');
     const usedNames = readNames(['You', 'Player 2']);
     const seats = mode === 'solo'
@@ -113,7 +188,8 @@ window.BibleGames = (() => {
         : [{ name: usedNames[0] || 'Player 1', pc: false, score: 0 }, { name: usedNames[1] || 'Player 2', pc: false, score: 0 }];
     G = Object.assign(G || {}, {
       show: 'jeopardy', phase: 'pick', mode, seats, control: 0,
-      cats: bank.jeopardy.map(c => ({ name: c.category, clues: c.clues.map(cl => ({ ...cl, used: false })) })),
+      runLevel: lvl, fin: (lvl === 1 ? bank.jeopardyFinal : ((bank.jeopardyBoards || [])[lvl - 2] || {}).final) || bank.jeopardyFinal,
+      cats: (lvl === 1 ? bank.jeopardy : ((bank.jeopardyBoards || [])[lvl - 2] || {}).categories || bank.jeopardy).map(c => ({ name: c.category, clues: c.clues.map(cl => ({ ...cl, used: false })) })),
       current: null, buzzedBy: null, tried: [], finalists: null, wagers: {}, finalAnswers: {},
     });
     jeopardyBoard();
@@ -122,7 +198,7 @@ window.BibleGames = (() => {
     G.phase = 'pick'; G.current = null; G.buzzedBy = null; G.tried = [];
     const done = G.cats.every(c => c.clues.every(cl => cl.used));
     setHtml(`${backBar('Jeopardy')}${scoreBar(G.seats, G.control)}
-      ${done ? `<section class="card gx-center"><h2>The board is clear.</h2><p>Time for Final Jeopardy — wager on one last clue from Church History.</p><button class="primary" data-gx="j-final">Play Final Jeopardy</button></section>`
+      ${done ? `<section class="card gx-center"><h2>The board is clear.</h2><p>Time for Final Jeopardy — wager on one last clue from ${esc((G.fin || bank.jeopardyFinal).category)}.</p><button class="primary" data-gx="j-final">Play Final Jeopardy</button></section>`
         : `<p class="lead gx-turn">${G.mode === 'solo' ? 'Pick any clue on the board.' : `<strong>${esc(G.seats[G.control].name)}</strong> ${G.seats[G.control].pc ? 'is choosing a clue…' : '— pick a clue.'}`}</p>
       <div class="gx-jboard">${G.cats.map((c, ci) => `<div class="gx-jcol"><h3>${esc(c.name)}</h3>${c.clues.map((cl, ri) => `<button class="gx-jcell" data-gx="j-pick" data-cat="${ci}" data-row="${ri}" ${cl.used || (G.seats[G.control].pc) ? 'disabled' : ''}>${cl.used ? '✓' : cl.value}</button>`).join('')}</div>`).join('')}</div>`}
       ${G.feedback ? `<div class="card gx-feedback ${G.feedback.good ? 'good' : 'bad'}" role="status"><strong>${esc(G.feedback.title)}</strong><p>${esc(G.feedback.body)}</p></div>` : ''}`);
@@ -257,7 +333,7 @@ window.BibleGames = (() => {
   }
   function jeopardyFinalSetup() {
     stopClock();
-    const fin = bank.jeopardyFinal;
+    const fin = G.fin || bank.jeopardyFinal;
     let finalists = G.seats.map((s, i) => i).filter(i => G.seats[i].score > 0);
     if (!finalists.length) finalists = [0]; /* solo with a rough night still gets the final */
     G.finalists = finalists; G.wagers = {}; G.finalAnswers = {};
@@ -285,7 +361,7 @@ window.BibleGames = (() => {
     finalAnswerTurn();
   }
   function finalAnswerTurn() {
-    const fin = bank.jeopardyFinal;
+    const fin = G.fin || bank.jeopardyFinal;
     const pending = G.finalists.filter(i => !(i in G.finalAnswers));
     if (!pending.length) { jeopardyFinalResults(); return; }
     const seatIdx = pending[0];
@@ -309,7 +385,7 @@ window.BibleGames = (() => {
   }
   function jeopardyFinalResults() {
     stopClock();
-    const fin = bank.jeopardyFinal;
+    const fin = G.fin || bank.jeopardyFinal;
     G.finalists.forEach(i => {
       const ok = G.finalAnswers[i] === fin.answer;
       G.seats[i].score += ok ? G.wagers[i] : -G.wagers[i];
@@ -321,13 +397,17 @@ window.BibleGames = (() => {
     const best = Math.max(...G.seats.map(s => s.score));
     const winners = G.seats.filter(s => s.score === best);
     const youScore = G.seats[0].score;
+    const lvl = G.runLevel || 0;
+    const beat = lvl > 0 && youScore > 0;
+    if (beat) { gxBeatLevel('jeopardy', lvl); sfx('win'); }
     saveBest('jeopardy', youScore);
     setHtml(`${backBar('Jeopardy')}${scoreBar(G.seats, -1)}
       <section class="card gx-center">
         <span class="eyebrow">FINAL SCORES</span>
         <h2>${winners.length > 1 ? 'A tie game!' : `${esc(winners[0].name)} ${G.seats.length > 1 ? 'wins' : '— board cleared'}!`}</h2>
         <p>${G.seats.map(s => `${esc(s.name)}: <strong>${s.score}</strong>`).join(' · ')}</p>
-        <p class="muted">The final response was: ${esc(bank.jeopardyFinal.answer)} (${esc(bank.jeopardyFinal.reference)})</p>
+        <p class="muted">The final response was: ${esc((G.fin || bank.jeopardyFinal).answer)} (${esc((G.fin || bank.jeopardyFinal).reference)})</p>
+        ${gxLevelBanner('jeopardy', lvl, beat)}${lvl && !beat ? `<p class="muted">Finish above zero after Final Jeopardy to beat Level ${lvl}.</p>` : ''}
         <button class="primary" data-gx="show-menu" data-show="jeopardy">Play again</button>
         <button class="secondary" data-gx="hub">All games</button>
       </section>`);
@@ -338,20 +418,26 @@ window.BibleGames = (() => {
     setHtml(`${backBar('Who Wants to Be a Millionaire')}
       <p class="lead">Fifteen questions stand between you and a million. Safe havens at questions 5 and 10. Thirty seconds a question; walk away whenever you like.</p>
       ${bestLine('millionaire', v => money(v))}
+      ${gxLevelChips('millionaire')}
       <div class="gx-names">${nameInputs('solo')}</div>
       <p class="lead">Lifelines, once each: <strong>50:50</strong> · <strong>Ask a Friend</strong> · <strong>Skip the Question</strong>.</p>
       <button class="primary" data-gx="m-start">Take the hot seat</button>`);
   }
   function tierFor(rung) { return rung <= 5 ? 'easy' : rung <= 10 ? 'medium' : 'hard'; }
   function millionaireStart() {
+    const lvl = gxSelectedLevel('millionaire');
+    if (!gxCanPlay('millionaire', lvl)) { showMenu('millionaire'); return; }
     setSong('millionaire');
     const usedNames = readNames(['You']);
+    const plan = GX_LEVELS.millionaire[lvl - 1];
     const pools = { easy: shuffle(bank.millionaire.easy), medium: shuffle(bank.millionaire.medium), hard: shuffle(bank.millionaire.hard) };
+    const usedCount = { easy: 0, medium: 0, hard: 0 };
+    const questions = plan.seq.map(t => pools[t][usedCount[t]++]);
     G = Object.assign(G || {}, {
       show: 'millionaire', phase: 'question', name: usedNames[0] || 'You',
-      rung: 1,
-      questions: [...pools.easy.slice(0, 5), ...pools.medium.slice(0, 5), ...pools.hard.slice(0, 5)],
-      spares: { easy: pools.easy.slice(5), medium: pools.medium.slice(5), hard: pools.hard.slice(5) },
+      rung: 1, runLevel: lvl, targetRung: plan.target, tierSeq: plan.seq,
+      questions,
+      spares: { easy: pools.easy.slice(usedCount.easy), medium: pools.medium.slice(usedCount.medium), hard: pools.hard.slice(usedCount.hard) },
       lifelines: { fifty: true, friend: true, skip: true }, hidden: [], friendNote: null, locked: null,
     });
     nextMillionaireQuestion();
@@ -377,7 +463,7 @@ window.BibleGames = (() => {
     setHtml(`${backBar('Who Wants to Be a Millionaire')}
       <div class="gx-millionaire">
         <section class="card gx-question">
-          <span class="eyebrow">QUESTION ${G.rung} OF 15 · ${money(ladder[G.rung - 1])}</span>
+          <span class="eyebrow">${G.runLevel ? `LEVEL ${G.runLevel} · ` : ''}QUESTION ${G.rung} OF ${G.targetRung || 15} · ${money(ladder[G.rung - 1])}</span>
           <h2>${esc(q.q)}</h2>
           ${clockHtml('Thirty seconds')}
           <div class="gx-choices gx-mchoices">${G.options.map((opt, i) => G.hidden.includes(i) ? `<button disabled class="gx-hidden-opt">·</button>` : `<button data-gx="m-answer" data-choice="${esc(opt)}" ${G.locked !== null ? 'disabled' : ''}><b>${'ABCD'[i]}.</b> ${esc(opt)}</button>`).join('')}</div>
@@ -405,7 +491,7 @@ window.BibleGames = (() => {
     later(() => {
       if (G.locked) {
         sfx('correct');
-        if (G.rung === 15) { millionaireEnd(true, false); return; }
+        if (G.rung >= (G.targetRung || 15)) { millionaireEnd(G.rung >= 15, false, true); return; }
         G.rung++;
         nextMillionaireQuestion();
       } else {
@@ -423,7 +509,7 @@ window.BibleGames = (() => {
       G.hidden = shuffle(wrong).slice(0, 2);
     } else if (kind === 'friend') {
       G.lifelines.friend = false;
-      const tier = tierFor(G.rung);
+      const tier = (G.tierSeq && G.tierSeq[G.rung - 1]) || tierFor(G.rung);
       const rightChance = tier === 'easy' ? 0.9 : tier === 'medium' ? 0.75 : 0.5;
       const pickRight = Math.random() < rightChance;
       const text = pickRight ? q.answer : G.options.find(o => o !== q.answer);
@@ -431,7 +517,7 @@ window.BibleGames = (() => {
       G.friendNote = { text, confidence };
     } else if (kind === 'skip') {
       G.lifelines.skip = false;
-      const tier = tierFor(G.rung);
+      const tier = (G.tierSeq && G.tierSeq[G.rung - 1]) || tierFor(G.rung);
       if (G.spares[tier].length) G.questions[G.rung - 1] = G.spares[tier].shift();
       nextMillionaireQuestion();
       return;
@@ -439,17 +525,20 @@ window.BibleGames = (() => {
     renderMillionaire();
     paintClock();
   }
-  function millionaireEnd(wonAll, timedOut) {
+  function millionaireEnd(wonAll, timedOut, levelComplete) {
     stopClock();
     G.phase = 'over';
     const ladder = bank.millionaire.ladder;
-    const won = wonAll ? ladder[14] : guaranteedAmount();
+    const won = wonAll ? ladder[14] : levelComplete ? ladder[(G.targetRung || 15) - 1] : guaranteedAmount();
     saveBest('millionaire', won);
+    const beat = !!levelComplete && !!G.runLevel;
+    if (beat) { gxBeatLevel('millionaire', G.runLevel); sfx('win'); }
     setHtml(`${backBar('Who Wants to Be a Millionaire')}
       <section class="card gx-center">
-        <span class="eyebrow">${wonAll ? 'MILLIONAIRE' : timedOut ? 'TIME RAN OUT' : 'GAME OVER'}</span>
-        <h2>${wonAll ? `${esc(G.name)} — you did it!` : `You leave with ${money(won)}`}</h2>
-        <p>${wonAll ? 'Fifteen questions, answered in faith and knowledge. A perfect game.' : `You reached question ${G.rung} of 15. The guaranteed amount is yours to keep.`}</p>
+        <span class="eyebrow">${wonAll ? 'MILLIONAIRE' : beat ? 'LEVEL COMPLETE' : timedOut ? 'TIME RAN OUT' : 'GAME OVER'}</span>
+        <h2>${wonAll ? `${esc(G.name)} — you did it!` : beat ? `${esc(G.name)} banked ${money(won)}` : `You leave with ${money(won)}`}</h2>
+        <p>${wonAll ? 'Fifteen questions, answered in faith and knowledge. A perfect game.' : beat ? `You reached question ${G.targetRung} of the ladder — Level ${G.runLevel} is beaten and the money is yours to keep.` : `You reached question ${G.rung}${G.runLevel ? ` of ${G.targetRung}` : ' of 15'}. The guaranteed amount is yours to keep.`}</p>
+        ${gxLevelBanner('millionaire', G.runLevel, beat)}
         <button class="primary" data-gx="show-menu" data-show="millionaire">Play again</button>
         <button class="secondary" data-gx="hub">All games</button>
       </section>`);
@@ -477,21 +566,24 @@ window.BibleGames = (() => {
     setHtml(`${backBar('Family Feud')}
       <p class="lead">We asked the board — well, we wrote the board: our own house rankings, made for this app. Every answer starts hidden. Type a guess: if it's up there, the board flips it over with its points. Three strikes, and the other side gets one guess to steal the pot.</p>
       ${bestLine('feud', v => v + ' points')}
+      ${gxLevelChips('feud')}
       <div class="gx-modes">
-        <button class="card gx-mode" data-gx="f-mode" data-mode="pc"><strong>Your team vs the PC</strong><span>Face off against the machine across three rounds. Round three counts double.</span></button>
+        <button class="card gx-mode" data-gx="f-mode" data-mode="pc"><strong>Your team vs the PC</strong><span>Face off against the machine across this level's two boards.</span></button>
         <button class="card gx-mode" data-gx="f-mode" data-mode="teams"><strong>Two teams, one device</strong><span>Pass and play. Each team guesses on its own turns.</span></button>
       </div>
       <div class="gx-names">${nameInputs('teams')}</div>
       <p class="footnote">Team names above are used in two-team games; against the PC only your team name is used.</p>`);
   }
   function feudStart(mode) {
+    const lvl = gxSelectedLevel('feud');
+    if (!gxCanPlay('feud', lvl)) { showMenu('feud'); return; }
     setSong('feud');
     const usedNames = readNames(['Your Team', 'Team Two']);
     const seats = mode === 'pc'
       ? [{ name: usedNames[0] || 'Your Team', pc: false, score: 0 }, { name: 'PC Team', pc: true, score: 0 }]
       : [{ name: usedNames[0] || 'Team One', pc: false, score: 0 }, { name: usedNames[1] || 'Team Two', pc: false, score: 0 }];
     G = Object.assign(G || {}, {
-      show: 'feud', mode, seats, round: 0, order: shuffle(bank.feud.map((_, i) => i)),
+      show: 'feud', mode, seats, round: 0, runLevel: lvl, totalRounds: 2, order: [(lvl - 1) * 2, (lvl - 1) * 2 + 1], levelBoards: [], levelDone: false, matchOver: false, clearPlay: false,
       q: null, revealed: new Set(), pot: 0, multiplier: 1, strikes: 0,
       playing: 0, faceTurn: 0, faceHits: {}, faceMissed: {}, phase: 'splash', lastEvent: '',
     });
@@ -499,7 +591,8 @@ window.BibleGames = (() => {
   }
   function feudBeginRound() {
     G.round++;
-    G.q = bank.feud[G.order[(G.round - 1) % bank.feud.length]];
+    G.q = bank.feud[G.order[(G.round - 1) % G.order.length]];
+    G.clearPlay = false;
     G.revealed = new Set(); G.pot = 0; G.strikes = 0;
     G.multiplier = G.round === 3 ? 2 : 1;
     G.faceHits = {}; G.faceMissed = {};
@@ -517,7 +610,7 @@ window.BibleGames = (() => {
   }
   function feudHeader() {
     return `${backBar('Family Feud')}${scoreBar(G.seats, G.phase === 'faceoff' ? G.faceTurn : G.playing)}
-      <p class="gx-roundline">Round ${G.round} of 3${G.multiplier > 1 ? ' · DOUBLE POINTS' : ''} · Pot: <strong>${G.pot}</strong> · Strikes: <strong class="gx-strikes">${'✕'.repeat(G.strikes)}${'·'.repeat(Math.max(0, 3 - G.strikes))}</strong></p>`;
+      <p class="gx-roundline">Board ${G.round} of ${G.totalRounds || 3}${G.runLevel ? ` · Level ${G.runLevel}` : ''}${G.multiplier > 1 ? ' · DOUBLE POINTS' : ''} · Pot: <strong>${G.pot}</strong> · Strikes: <strong class="gx-strikes">${'✕'.repeat(G.strikes)}${'·'.repeat(Math.max(0, 3 - G.strikes))}</strong></p>`;
   }
   function feudGuessRow(label) {
     return `<div class="gx-guessrow"><input data-gx-guess data-gx-autofocus placeholder="Type your guess…" maxlength="60" aria-label="Your guess"><button class="primary" data-gx="f-guess">${esc(label || 'Guess')}</button></div>`;
@@ -585,12 +678,14 @@ window.BibleGames = (() => {
   }
   /* ---------- games audio: shared sfx engine + a soft generative music loop.
      WebAudio only, no audio files. Sound is garnish: everything is wrapped in
-     try/catch and nothing here may ever block or break a game. The toggle is
-     persisted in localStorage 'msb_gx_sound' ('off' mutes music and sfx). */
+     try/catch and nothing here may ever block or break a game. Two switches
+     live in the back bar: 'msb_gx_sound' gates the sound effects and
+     'msb_gx_music' gates the songs; each is persisted and independent. */
   let gxAudio = null, gxNoiseBuf = null, gxMusicBus = null;
   let gxSoundOn = (() => { try { return localStorage.getItem('msb_gx_sound') !== 'off'; } catch { return true; } })();
+  let gxMusicOn = (() => { try { return localStorage.getItem('msb_gx_music') !== 'off'; } catch { return true; } })();
   function gxCtx() {
-    if (!gxSoundOn) return null;
+    if (!gxSoundOn && !gxMusicOn) return null;
     try {
       const AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return null;
@@ -600,6 +695,7 @@ window.BibleGames = (() => {
     } catch { return null; }
   }
   function sfx(kind) {
+    if (!gxSoundOn) return;
     const ac = gxCtx(); if (!ac) return;
     try {
       const t = ac.currentTime;
@@ -705,7 +801,7 @@ window.BibleGames = (() => {
     gxMusicStep++;
   }
   function startMusic() {
-    if (!gxSoundOn || gxMusicTimer) return;
+    if (!gxMusicOn || gxMusicTimer) return;
     const ac = gxCtx(); if (!ac) return;
     try {
       if (!gxMusicBus) { gxMusicBus = ac.createGain(); gxMusicBus.connect(ac.destination); }
@@ -726,7 +822,7 @@ window.BibleGames = (() => {
       gxSongKey = next; gxMusicStep = 0;
       if (!gxMusicTimer) return;
       clearInterval(gxMusicTimer); gxMusicTimer = null;
-      const restart = () => { gxFadeTimer = null; if (gxSoundOn && gxAudio) gxMusicTimer = setInterval(gxMusicTick, gxStepMs()); };
+      const restart = () => { gxFadeTimer = null; if (gxMusicOn && gxAudio) gxMusicTimer = setInterval(gxMusicTick, gxStepMs()); };
       if (gxAudio && gxMusicBus) {
         const t = gxAudio.currentTime, g = gxMusicBus.gain;
         g.cancelScheduledValues(t); g.setValueAtTime(Math.max(0.02, g.value), t);
@@ -902,7 +998,7 @@ window.BibleGames = (() => {
     G.lastEvent = message;
     G.justRevealed = idx;
     sfx('ding');
-    if (G.revealed.size >= G.q.answers.length) { feudSettle(G.playing, 'The board is cleared!'); return; }
+    if (G.revealed.size >= G.q.answers.length) { G.clearPlay = true; feudSettle(G.playing, 'The board is cleared!'); return; }
     feudRender();
     feudMaybePcPlay();
   }
@@ -962,11 +1058,23 @@ window.BibleGames = (() => {
     G.seats[winner].score += G.pot;
     G.roundWinner = winner;
     G.lastEvent = `${message} ${G.seats[winner].name} takes the pot of ${G.pot}.`;
-    if (G.round >= 3) {
+    const totalRounds = G.totalRounds || 3;
+    /* Level matches: a board counts as cleared only when its last hidden
+       answer falls during play — not on a steal, not during the leftover
+       flip-through — and, against the PC, only when your team cleared it. */
+    if (G.runLevel) {
+      const cleared = !!G.clearPlay && (G.mode !== 'pc' || winner === 0);
+      G.levelBoards = G.levelBoards || [];
+      G.levelBoards[G.round - 1] = cleared;
+      G.levelDone = cleared && G.round >= totalRounds;
+      G.matchOver = !cleared || G.round >= totalRounds;
+      if (G.levelDone) gxBeatLevel('feud', G.runLevel);
+      if (G.matchOver) { const top = Math.max(...G.seats.map(s => s.score)); saveBest('feud', top); }
+    } else if (G.round >= totalRounds) {
       const top = Math.max(...G.seats.map(s => s.score));
       saveBest('feud', top);
     }
-    sfx('win');
+    sfx(G.runLevel && G.matchOver && !G.levelDone ? 'lose' : 'win');
     const left = G.q.answers.map((a, i) => i).filter(i => !G.revealed.has(i));
     if (left.length) {
       /* Show-style: flip whatever is left, one at a time, before the splash. */
@@ -975,7 +1083,7 @@ window.BibleGames = (() => {
       feudRender();
       later(feudRevealNext, 850);
     } else {
-      G.phase = G.round >= 3 ? 'over' : 'splash';
+      G.phase = (G.matchOver || G.round >= totalRounds) ? 'over' : 'splash';
       feudSplash();
     }
   }
@@ -983,7 +1091,7 @@ window.BibleGames = (() => {
     if (!G || G.phase !== 'reveal') return;
     const idx = G.leftToReveal.shift();
     if (idx === undefined) {
-      G.phase = G.round >= 3 ? 'over' : 'splash';
+      G.phase = (G.matchOver || G.round >= (G.totalRounds || 3)) ? 'over' : 'splash';
       feudSplash();
       return;
     }
@@ -995,6 +1103,7 @@ window.BibleGames = (() => {
   }
   function feudSplash() {
     const over = G.phase === 'over';
+    const lvlLine = !G.runLevel ? '' : G.levelDone ? gxLevelBanner('feud', G.runLevel, true) : over ? `<p class="muted">Clear both boards to beat Level ${G.runLevel} — a board counts when its last hidden answer falls while your team is playing it.</p>` : '';
     const top = Math.max(...G.seats.map(s => s.score));
     const champs = G.seats.filter(s => s.score === top);
     setHtml(`${feudHeader()}
@@ -1002,10 +1111,11 @@ window.BibleGames = (() => {
         <span class="eyebrow">${over ? 'THAT IS THE GAME' : `ROUND ${G.round} COMPLETE`}</span>
         <h2>${over ? (champs.length > 1 ? 'A tie game!' : `${esc(champs[0].name)} win${G.seats.length > 1 && champs[0].pc ? 's' : ''} the Feud!`) : `${esc(G.seats[G.roundWinner].name)} take round ${G.round}`}</h2>
         <p>${esc(G.lastEvent)}</p>
+        ${lvlLine}
         <p>${G.seats.map(s => `${esc(s.name)}: <strong>${s.score}</strong>`).join(' · ')}</p>
         ${over
           ? `<button class="primary" data-gx="show-menu" data-show="feud">Play again</button> <button class="secondary" data-gx="hub">All games</button>`
-          : `<button class="primary" data-gx="f-next">Start round ${G.round + 1}</button>`}
+          : `<button class="primary" data-gx="f-next">Start ${G.runLevel ? 'board' : 'round'} ${G.round + 1}</button>`}
       </section>`);
   }
 
@@ -1017,16 +1127,32 @@ window.BibleGames = (() => {
     if (level === 'hard') return all.filter(c => c.level === 'hard');
     return all;
   }
+  /* Solo level journey — five disjoint sets of ten, so every level deals
+     cards the player has not seen at earlier levels. Slices of the tiered
+     bank (in bank order):
+       L1 easy 1-10 · L2 easy 11-20 · L3 medium 1-10
+       L4 medium 11-15 + hard 1-5 · L5 hard 6-15
+     (medium 16-20 and hard 16-20 stay in the free race/party pools.) */
+  function gxSoundLevelDeck(level) {
+    const all = bank.soundItOut || [];
+    const tier = t => all.filter(c => c.level === t);
+    const e = tier('easy'), m = tier('medium'), h = tier('hard');
+    const slices = [e.slice(0, 10), e.slice(10, 20), m.slice(0, 10), [...m.slice(10, 15), ...h.slice(0, 5)], h.slice(5, 15)];
+    return slices[level - 1] ? [...slices[level - 1]] : [];
+  }
   function soundMenu() {
     const lvl = (G && G.level) || 'mixed';
     setHtml(`${backBar('Sound It Out')}
       <p class="lead">Lines of Scripture, hidden in phonetic gibberish. Sound the card out — aloud works best — and decode the real phrase. Two or three readings is the point now: the ear gets it before the eye does.</p>
+      <p class="small muted gx-levelcap">Solo journey — beaten levels save</p>
+      ${gxLevelChips('sound')}
+      <p class="small muted gx-levelcap">Race &amp; party — free-play difficulty</p>
       <div class="gx-levels" role="group" aria-label="Difficulty">
         ${[['easy', 'Easy'], ['mixed', 'Mixed'], ['hard', 'Hard']].map(([k, l]) => `<button class="secondary gx-level ${lvl === k ? 'active' : ''}" data-gx="s-level" data-level="${k}">${l}</button>`).join('')}
       </div>
       ${bestLine('sound', v => v + ' points')}
       <div class="gx-modes">
-        <button class="card gx-mode" data-gx="s-mode" data-mode="solo"><strong>Solo decode</strong><span>Ten cards against the clock. Reveal when you're ready, then score yourself honestly.</span></button>
+        <button class="card gx-mode" data-gx="s-mode" data-mode="solo"><strong>Solo decode — level run</strong><span>Ten fresh cards from the level picked above. Reveal when you're ready, score yourself honestly, and decode 7 of 10 to beat the level.</span></button>
         <button class="card gx-mode" data-gx="s-mode" data-mode="race"><strong>Race the PC</strong><span>Four phrases, one true card. Tap the real line before the PC cracks it — a wrong tap hands it the steal.</span></button>
         <button class="card gx-mode" data-gx="s-mode" data-mode="party"><strong>Party — pass and play</strong><span>One reader sounds the gibberish aloud; everyone else decodes by ear. Twelve cards, reader rotates.</span></button>
       </div>
@@ -1041,15 +1167,17 @@ window.BibleGames = (() => {
     const base = { show: 'sound', level: lvl, phase: 'card', idx: 0, streak: 0, timedOut: false, timeLeft: 0 };
     if (mode === 'race') {
       G = Object.assign(G || {}, base, {
-        mode: 'race',
+        mode: 'race', runLevel: 0,
         seats: [{ name: usedNames[0] || 'You', pc: false, score: 0 }, { name: 'The PC', pc: true, score: 0 }],
         deck: sample(soundDeck(lvl), 10),
       });
     } else {
+      const slvl = gxSelectedLevel('sound');
+      if (!gxCanPlay('sound', slvl)) { showMenu('sound'); return; }
       G = Object.assign(G || {}, base, {
-        mode: 'solo',
+        mode: 'solo', runLevel: slvl, decoded: 0,
         seats: [{ name: usedNames[0] || 'You', pc: false, score: 0 }],
-        deck: sample(soundDeck(lvl), 10),
+        deck: sample(gxSoundLevelDeck(slvl), 10),
       });
     }
     soundCard();
@@ -1131,6 +1259,7 @@ window.BibleGames = (() => {
   }
   function soundSoloScore(got) {
     if (!G || G.phase !== 'reveal' || G.mode !== 'solo') return;
+    if (got) G.decoded = (G.decoded || 0) + 1;
     const c = soundCardData();
     if (got) {
       const bonus = Math.min(G.streak, 5) * 10;
@@ -1199,7 +1328,7 @@ window.BibleGames = (() => {
   }
   function soundPartySetup() {
     const lvl = (G && G.level) || 'mixed';
-    G = Object.assign(G || {}, { show: 'sound', mode: 'party', level: lvl, phase: 'setup' });
+    G = Object.assign(G || {}, { show: 'sound', mode: 'party', level: lvl, runLevel: 0, phase: 'setup' });
     setHtml(`${backBar('Sound It Out')}
       <p class="lead">Two to four players, one device. The reader sounds the gibberish aloud — no showing the card. Twelve cards; the reader rotates every card.</p>
       <div class="gx-names">
@@ -1236,10 +1365,14 @@ window.BibleGames = (() => {
     G.phase = 'over';
     saveBest('sound', G.mode === 'party' ? Math.max(...G.seats.map(s => s.score)) : G.seats[0].score);
     const b = bestOf('sound');
-    let title, blurb;
+    let title, blurb, extra = '';
     if (G.mode === 'solo') {
+      const got = G.decoded || 0, slvl = G.runLevel || 0;
+      const beat = slvl > 0 && got >= 7;
+      if (beat) { gxBeatLevel('sound', slvl); sfx('win'); }
       title = `${esc(G.seats[0].name)} — ${G.seats[0].score} points`;
-      blurb = `Ten cards decoded by ear. Best on this device: ${b.best} over ${b.plays} game${b.plays === 1 ? '' : 's'}.`;
+      blurb = `${G.deck.length} cards by ear — you decoded ${got}. Best on this device: ${b.best} over ${b.plays} game${b.plays === 1 ? '' : 's'}.`;
+      extra = gxLevelBanner('sound', slvl, beat) || (slvl ? `<p class="muted">Decode 7 of ${G.deck.length} to beat Level ${slvl}.</p>` : '');
     } else {
       const top = Math.max(...G.seats.map(s => s.score));
       const champs = G.seats.filter(s => s.score === top);
@@ -1252,6 +1385,7 @@ window.BibleGames = (() => {
         <h2>${title}</h2>
         <p>${G.seats.map(s => `${esc(s.name)}: <strong>${s.score}</strong>`).join(' · ')}</p>
         <p class="muted">${blurb}</p>
+        ${extra}
         <button class="primary" data-gx="show-menu" data-show="sound">Play again</button>
         <button class="secondary" data-gx="hub">All games</button>
       </section>`);
@@ -1304,14 +1438,30 @@ window.BibleGames = (() => {
     });
     return pool;
   }
+  /* Unseen-first deck assembly: questions never asked (the list persists
+     across sessions) are dealt before repeats; once the whole pool has been
+     seen, the seen list starts over. */
+  function babelMakeDeck(pool) {
+    let seenList = babelSeenLoad();
+    const seenSet = new Set(seenList);
+    let unseen = pool.filter(q => !seenSet.has(q.prompt));
+    if (!unseen.length) { seenList = []; seenSet.clear(); unseen = pool.slice(); babelSeenSave(seenList); }
+    return { deck: [...shuffle(unseen), ...shuffle(pool.filter(q => seenSet.has(q.prompt)))], seenList, seenSet };
+  }
+  const GX_BABEL_SEEN_KEY = 'msb_gx_babel_seen';
+  function babelSeenLoad() { try { const a = JSON.parse(localStorage.getItem(GX_BABEL_SEEN_KEY)); return Array.isArray(a) ? a.filter(x => typeof x === 'string') : []; } catch { return []; } }
+  function babelSeenSave(list) { try { localStorage.setItem(GX_BABEL_SEEN_KEY, JSON.stringify(list)); } catch { /* private mode */ } }
   function babelMenu() {
     setHtml(`${backBar('Tower of Babel')}
       <p class="lead">A brick is always falling toward the tower. Answer the question before it lands: right, and you catch the piece mid-air; wrong — or too slow — and the wall grows by one. Reach ten bricks and the whole tower topples.</p>
       ${bestLine('babel', v => v + ' points')}
+      ${gxLevelChips('babel')}
       <div class="gx-names">${nameInputs('solo')}</div>
       <button class="primary" data-gx="b-start" data-gx-autofocus>Start building</button>`);
   }
   async function babelStart() {
+    const lvl = gxSelectedLevel('babel');
+    if (!gxCanPlay('babel', lvl)) { showMenu('babel'); return; }
     setSong('babel');
     const usedNames = readNames(['You']);
     const name = usedNames[0] || 'You';
@@ -1320,9 +1470,14 @@ window.BibleGames = (() => {
       const chData = await loadChallenges();
       const pool = babelBuildPool(bank, chData);
       if (pool.length < 10) { setHtml(`${backBar('Tower of Babel')}<div class="empty error">Not enough questions loaded to build a tower. <button class="secondary" data-gx="hub">Back to games</button></div>`); return; }
+      const plan = GX_LEVELS.babel[lvl - 1];
+      const made = babelMakeDeck(pool);
+      const deck = made.deck, seenList = made.seenList, seenSet = made.seenSet;
       G = Object.assign(G || {}, {
         show: 'babel', name, score: 0, streak: 0, right: 0, height: 0,
-        fallMs: 9000, pool, deck: shuffle(pool), di: 0, phase: 'fall', q: null,
+        runLevel: lvl, catchTarget: plan.catches, victory: false,
+        fallMs: plan.fallMs, pool, deck, di: 0, phase: 'fall', q: null,
+        babelSeen: seenList, babelSeenSet: seenSet,
         timers: (G && G.timers) || [], tickId: null, pcAction: null,
       });
       babelQuestion();
@@ -1338,6 +1493,7 @@ window.BibleGames = (() => {
     if (!G) return;
     stopClock();
     const item = babelNextItem();
+    if (G.babelSeenSet && !G.babelSeenSet.has(item.prompt)) { G.babelSeenSet.add(item.prompt); G.babelSeen.push(item.prompt); babelSeenSave(G.babelSeen); }
     const cs = shuffle(item.choices);
     G.q = { prompt: item.prompt, choices: cs, correct: cs.indexOf(item.answer), answer: item.answer, source: item.source };
     G.phase = 'fall';
@@ -1354,7 +1510,7 @@ window.BibleGames = (() => {
     const fbHtml = fb ? `<p class="lead gx-babel-fb">${esc(fb.text)}</p>` : '';
     setHtml(`${backBar('Tower of Babel')}
       <section class="card gx-babel-card">
-        <div class="gx-babel-hud"><span>Score <strong>${G.score}</strong></span><span>Streak <strong>${G.streak}</strong></span><span class="${danger ? 'gx-babel-danger-text' : ''}">Tower <strong>${h}/${BABEL_MAX}</strong></span></div>
+        <div class="gx-babel-hud"><span>Score <strong>${G.score}</strong></span><span>Streak <strong>${G.streak}</strong></span>${G.runLevel ? `<span>Level ${G.runLevel} · Caught <strong>${G.right}/${G.catchTarget}</strong></span>` : ''}<span class="${danger ? 'gx-babel-danger-text' : ''}">Tower <strong>${h}/${BABEL_MAX}</strong></span></div>
         <div class="gx-babel-stage${danger ? ' gx-babel-danger' : ''}${fb && fb.slam ? ' gx-babel-shake' : ''}">
           ${piece}
           <div class="gx-babel-tower">${bricks}</div>
@@ -1391,6 +1547,12 @@ window.BibleGames = (() => {
       G.score += 100 + bonus;
       G.fallMs = Math.max(4500, G.fallMs - 250);
       sfx('catch'); sfx('correct');
+      if (G.runLevel && G.right >= G.catchTarget) {
+        G.phase = 'feedback';
+        babelRender({ caught: true, text: `Caught it! That's ${G.right} catches — Level ${G.runLevel} complete!` });
+        later(babelVictory, 1000);
+        return;
+      }
       G.phase = 'feedback';
       babelRender({ caught: true, text: `Caught it! +${100 + bonus}${bonus ? ' — streak bonus included' : ''}. The piece never lands.` });
       later(babelQuestion, 800);
@@ -1433,17 +1595,27 @@ window.BibleGames = (() => {
       </section>`);
     later(babelOver, 1450);
   }
+  function babelVictory() {
+    if (!G) return;
+    stopClock();
+    G.phase = 'over'; G.victory = true;
+    if (G.runLevel) { gxBeatLevel('babel', G.runLevel); sfx('win'); }
+    babelOver();
+  }
   function babelOver() {
     if (!G) return;
     stopClock();
     G.phase = 'over';
     saveBest('babel', G.score);
     const b = bestOf('babel');
+    const vic = !!G.victory;
     setHtml(`${backBar('Tower of Babel')}
       <section class="card gx-center">
-        <span class="eyebrow">THE TOWER HAS FALLEN</span>
+        <span class="eyebrow">${vic ? `LEVEL ${G.runLevel} COMPLETE` : 'THE TOWER HAS FALLEN'}</span>
         <h2>${esc(G.name)} — ${G.score} points</h2>
-        <p>You caught <strong>${G.right}</strong> piece${G.right === 1 ? '' : 's'} with right answers before the wall came down.</p>
+        <p>${vic ? `You caught <strong>${G.right}</strong> piece${G.right === 1 ? '' : 's'} and the tower held at ${G.height} of ${BABEL_MAX} bricks.` : `You caught <strong>${G.right}</strong> piece${G.right === 1 ? '' : 's'} with right answers before the wall came down.`}</p>
+        ${vic ? gxLevelBanner('babel', G.runLevel, true) : ''}
+        ${vic && G.runLevel >= 5 ? `<p class="lead">👑 Babel master — all five levels beaten.</p>` : ''}
         <p class="muted">Best on this device: <strong>${b.best} points</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'}.</p>
         <button class="primary" data-gx="show-menu" data-show="babel">Build again</button>
         <button class="secondary" data-gx="hub">All games</button>
@@ -1472,7 +1644,7 @@ window.BibleGames = (() => {
     root = el; ctx = options || {};
     if (el && !el._gxAudioKick) {
       el._gxAudioKick = true;
-      el.addEventListener('pointerdown', () => { if (gxSoundOn && gxCtx()) startMusic(); });
+      el.addEventListener('pointerdown', () => { if (gxCtx()) startMusic(); });
     }
     const key = pendingShow || 'jeopardy';
     pendingShow = null;
@@ -1506,10 +1678,25 @@ window.BibleGames = (() => {
       try { localStorage.setItem('msb_gx_sound', gxSoundOn ? 'on' : 'off'); } catch { /* private mode */ }
       root.querySelectorAll('[data-gx="sound-toggle"]').forEach(b => {
         b.textContent = gxSoundOn ? '🔊' : '🔇';
-        b.setAttribute('aria-label', gxSoundOn ? 'Mute game sound' : 'Unmute game sound');
+        b.setAttribute('aria-label', gxSoundOn ? 'Mute sound effects' : 'Unmute sound effects');
       });
-      if (!gxSoundOn) stopMusic();
-      else if (gxCtx()) { startMusic(); sfx('select'); }
+      if (gxSoundOn) sfx('select');
+      return;
+    }
+    if (action === 'music-toggle') {
+      gxMusicOn = !gxMusicOn;
+      try { localStorage.setItem('msb_gx_music', gxMusicOn ? 'on' : 'off'); } catch { /* private mode */ }
+      root.querySelectorAll('[data-gx="music-toggle"]').forEach(b => {
+        b.classList.toggle('gx-snd-off', !gxMusicOn);
+        b.setAttribute('aria-label', gxMusicOn ? 'Turn music off' : 'Turn music on');
+      });
+      if (!gxMusicOn) stopMusic();
+      else if (gxCtx()) startMusic();
+      return;
+    }
+    if (action === 'lvl-pick') {
+      const sh = btn.dataset.showKey, n = Number(btn.dataset.level);
+      if (gxCanPlay(sh, n)) { gxLevelSel[sh] = n; showMenu(sh); }
       return;
     }
     /* Tower of Babel */
@@ -1566,6 +1753,7 @@ window.BibleGames = (() => {
     _test: {
       get G() { return G; },
       get bank() { return bank; },
+      gx: { GX_LEVELS, gxProgAll, gxShowProg, gxCanPlay, gxBeatLevel, gxDefaultLevel, gxSelectedLevel, gxSoundLevelDeck, babelBuildPool, babelMakeDeck, babelSeenLoad, babelSeenSave, setBank(b) { bank = b; }, audio: { sfx, startMusic, stopMusic, musicState: () => ({ musicOn: gxMusicOn, soundOn: gxSoundOn, playing: !!gxMusicTimer }), setMusicOn(v) { gxMusicOn = !!v; }, setSoundOn(v) { gxSoundOn = !!v; } } },
       setClock(seconds) { if (G) { G.clockEndsAt = Date.now() + seconds * 1000; } },
       forcePc() { flushPc(); },
       finishBoard() { if (G && G.cats) { G.cats.forEach(c => c.clues.forEach(cl => { cl.used = true; })); jeopardyBoard(); } },

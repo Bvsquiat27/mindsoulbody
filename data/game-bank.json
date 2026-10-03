@@ -1042,6 +1042,1372 @@
     "clue": "This council in A.D. 325 confessed the Son as homoousios — of one essence with the Father.",
     "reference": "The Nicene Creed, A.D. 325"
   },
+  "jeopardyBoards": [
+    {
+      "categories": [
+        {
+          "category": "Books of Moses",
+          "clues": [
+            {
+              "answer": "What is Mount Sinai?",
+              "choices": [
+                "What is Mount Sinai?",
+                "What is Mount Zion?",
+                "What is the Mount of Olives?",
+                "What is Mount Nebo?"
+              ],
+              "clue": "This mountain is where God came down and gave Moses the Ten Commandments.",
+              "reference": "Exodus 19:20",
+              "value": 200
+            },
+            {
+              "answer": "What is a serpent of brass?",
+              "choices": [
+                "What is a golden calf?",
+                "What is a serpent of brass?",
+                "What is a bronze altar?",
+                "What is a wooden staff?"
+              ],
+              "clue": "Moses lifted up this creature on a pole in the wilderness, and everyone who looked at it lived.",
+              "reference": "Numbers 21:9",
+              "value": 400
+            },
+            {
+              "answer": "Who is Joshua?",
+              "choices": [
+                "Who is Joshua?",
+                "Who is Caleb?",
+                "Who is Aaron?",
+                "Who is Eleazar?"
+              ],
+              "clue": "This son of Nun was Moses' servant, full of the spirit of wisdom because Moses had laid his hands on him; he led Israel into Canaan.",
+              "reference": "Deuteronomy 34:9",
+              "value": 600
+            },
+            {
+              "answer": "What is Numbers?",
+              "choices": [
+                "What is Exodus?",
+                "What is Leviticus?",
+                "What is Numbers?",
+                "What is Deuteronomy?"
+              ],
+              "clue": "Named for a census of Israel in the wilderness of Sinai, this book opens with God commanding Moses to number the people.",
+              "reference": "Numbers 1:2",
+              "value": 800
+            },
+            {
+              "answer": "What is Moab?",
+              "choices": [
+                "What is Edom?",
+                "What is Ammon?",
+                "What is Moab?",
+                "What is Midian?"
+              ],
+              "clue": "Moses died in the land of this people, east of the Jordan, after viewing the promised land from Mount Nebo.",
+              "reference": "Deuteronomy 34:5",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Parables of Jesus",
+          "clues": [
+            {
+              "answer": "What is the Parable of the Sower?",
+              "choices": [
+                "What is the Parable of the Mustard Seed?",
+                "What is the Parable of the Sower?",
+                "What is the Parable of the Lost Sheep?",
+                "What is the Parable of the Prodigal Son?"
+              ],
+              "clue": "In this parable the seed falls on four kinds of ground, and only the good soil bears fruit.",
+              "reference": "Matthew 13:3",
+              "value": 200
+            },
+            {
+              "answer": "Who is the Good Samaritan?",
+              "choices": [
+                "Who is a priest?",
+                "Who is a Levite?",
+                "Who is the innkeeper?",
+                "Who is the Good Samaritan?"
+              ],
+              "clue": "A man beaten and left half dead on the road from Jerusalem to Jericho is rescued when this traveler stops to help him.",
+              "reference": "Luke 10:33",
+              "value": 400
+            },
+            {
+              "answer": "What is the Parable of the Prodigal Son?",
+              "choices": [
+                "What is the Parable of the Rich Fool?",
+                "What is the Parable of the Prodigal Son?",
+                "What is the Parable of the Unjust Steward?",
+                "What is the Parable of the Pharisee and the Publican?"
+              ],
+              "clue": "A younger son asks for his inheritance early, wastes it in a far country, and comes home to a running father in this parable.",
+              "reference": "Luke 15:13",
+              "value": 600
+            },
+            {
+              "answer": "What is oil?",
+              "choices": [
+                "What are wicks?",
+                "What are coins?",
+                "What is oil?",
+                "What are torches?"
+              ],
+              "clue": "In the parable of the ten virgins, the five wise ones carried an extra supply of this for their lamps.",
+              "reference": "Matthew 25:4",
+              "value": 800
+            },
+            {
+              "answer": "What are talents?",
+              "choices": [
+                "What are denarii?",
+                "What are shekels?",
+                "What are minas?",
+                "What are talents?"
+              ],
+              "clue": "A king forgives his servant a debt of ten thousand of these great sums, but the servant will not forgive a fellow servant a hundred pence.",
+              "reference": "Matthew 18:24",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Kings of Israel",
+          "clues": [
+            {
+              "answer": "Who is David?",
+              "choices": [
+                "Who is Saul?",
+                "Who is David?",
+                "Who is Solomon?",
+                "Who is Samuel?"
+              ],
+              "clue": "Still a shepherd boy when Samuel anointed him, he brought down Goliath with a sling and a stone.",
+              "reference": "1 Samuel 17:50",
+              "value": 200
+            },
+            {
+              "answer": "Who is Solomon?",
+              "choices": [
+                "Who is Rehoboam?",
+                "Who is Solomon?",
+                "Who is Hezekiah?",
+                "Who is Jeroboam?"
+              ],
+              "clue": "David's son asked God for wisdom, judged between two mothers, and began to build the house of the LORD in Jerusalem.",
+              "reference": "1 Kings 6:1",
+              "value": 400
+            },
+            {
+              "answer": "Who is Jeroboam?",
+              "choices": [
+                "Who is Rehoboam?",
+                "Who is Ahab?",
+                "Who is Jeroboam?",
+                "Who is Jehu?"
+              ],
+              "clue": "When the kingdom split after Solomon, this man was made king over all Israel — every tribe except Judah.",
+              "reference": "1 Kings 12:20",
+              "value": 600
+            },
+            {
+              "answer": "Who is Josiah?",
+              "choices": [
+                "Who is Hezekiah?",
+                "Who is Jehoshaphat?",
+                "Who is Asa?",
+                "Who is Josiah?"
+              ],
+              "clue": "During this young king's repair of the temple, Hilkiah the priest found the book of the law in the house of the LORD.",
+              "reference": "2 Kings 22:8",
+              "value": 800
+            },
+            {
+              "answer": "Who is Hoshea?",
+              "choices": [
+                "Who is Pekah?",
+                "Who is Hoshea?",
+                "Who is Menahem?",
+                "Who is Shallum?"
+              ],
+              "clue": "He was the last king of the northern kingdom; in his days the king of Assyria took Samaria and carried Israel away captive.",
+              "reference": "2 Kings 17:1-6",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Paul's Letters",
+          "clues": [
+            {
+              "answer": "What is Romans?",
+              "choices": [
+                "What is Romans?",
+                "What is Galatians?",
+                "What is Ephesians?",
+                "What is Colossians?"
+              ],
+              "clue": "Addressed 'to all that be in Rome, beloved of God, called to be saints,' this is Paul's longest letter.",
+              "reference": "Romans 1:7",
+              "value": 200
+            },
+            {
+              "answer": "What is 1 Corinthians?",
+              "choices": [
+                "What is Romans?",
+                "What is Philippians?",
+                "What is 1 Corinthians?",
+                "What is Colossians?"
+              ],
+              "clue": "The great hymn that begins 'Charity suffereth long, and is kind' stands in the thirteenth chapter of this letter.",
+              "reference": "1 Corinthians 13:4",
+              "value": 400
+            },
+            {
+              "answer": "What is Philippians?",
+              "choices": [
+                "What is Ephesians?",
+                "What is Colossians?",
+                "What is Philippians?",
+                "What is Philemon?"
+              ],
+              "clue": "Written from prison yet full of rejoicing, this letter says, 'I can do all things through Christ which strengtheneth me.'",
+              "reference": "Philippians 4:13",
+              "value": 600
+            },
+            {
+              "answer": "What is Philemon?",
+              "choices": [
+                "What is Titus?",
+                "What is Philemon?",
+                "What is Jude?",
+                "What is 2 Timothy?"
+              ],
+              "clue": "This shortest of Paul's letters pleads with a slave owner for the runaway Onesimus, 'not now as a servant, but... a brother beloved.'",
+              "reference": "Philemon 1:16",
+              "value": 800
+            },
+            {
+              "answer": "What is Ephesians?",
+              "choices": [
+                "What is Ephesians?",
+                "What is Romans?",
+                "What is Galatians?",
+                "What is Hebrews?"
+              ],
+              "clue": "This letter commands, 'Put on the whole armour of God, that ye may be able to stand against the wiles of the devil.'",
+              "reference": "Ephesians 6:11",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "The Prophets",
+          "clues": [
+            {
+              "answer": "Who is Jonah?",
+              "choices": [
+                "Who is Amos?",
+                "Who is Jonah?",
+                "Who is Joel?",
+                "Who is Micah?"
+              ],
+              "clue": "He fled from God's call, was cast into the sea, and spent three days in the belly of a great fish before preaching to Nineveh.",
+              "reference": "Jonah 1:17",
+              "value": 200
+            },
+            {
+              "answer": "Who is Isaiah?",
+              "choices": [
+                "Who is Jeremiah?",
+                "Who is Ezekiel?",
+                "Who is Isaiah?",
+                "Who is Daniel?"
+              ],
+              "clue": "'The wolf also shall dwell with the lamb' — this prophet foresaw the peaceable kingdom and a shoot from the stem of Jesse.",
+              "reference": "Isaiah 11:6",
+              "value": 400
+            },
+            {
+              "answer": "Who is Hosea?",
+              "choices": [
+                "Who is Hosea?",
+                "Who is Amos?",
+                "Who is Joel?",
+                "Who is Obadiah?"
+              ],
+              "clue": "God told this prophet to marry an unfaithful wife as a living sign of Israel's unfaithfulness to the LORD.",
+              "reference": "Hosea 1:2",
+              "value": 600
+            },
+            {
+              "answer": "Who is Ezekiel?",
+              "choices": [
+                "Who is Isaiah?",
+                "Who is Ezekiel?",
+                "Who is Jeremiah?",
+                "Who is Zechariah?"
+              ],
+              "clue": "This prophet watched a valley of very dry bones come together, bone to his bone, receive breath, and live.",
+              "reference": "Ezekiel 37:7",
+              "value": 800
+            },
+            {
+              "answer": "Who is Daniel?",
+              "choices": [
+                "Who is Ezekiel?",
+                "Who is Jeremiah?",
+                "Who is Daniel?",
+                "Who is Habakkuk?"
+              ],
+              "clue": "At the court of Babylon this prophet interpreted Nebuchadnezzar's dream of a great image: head of gold, breast and arms of silver.",
+              "reference": "Daniel 2:32",
+              "value": 1000
+            }
+          ]
+        }
+      ],
+      "final": {
+        "answer": "What is Pentecost?",
+        "category": "The Holy Spirit",
+        "choices": [
+          "What is Passover?",
+          "What is the Ascension?",
+          "What is Pentecost?",
+          "What is the Transfiguration?"
+        ],
+        "clue": "On this day the Spirit came with a sound from heaven as of a rushing mighty wind, and about three thousand souls were baptized.",
+        "reference": "Acts 2:41"
+      }
+    },
+    {
+      "categories": [
+        {
+          "category": "Women of Scripture",
+          "clues": [
+            {
+              "answer": "Who is Sarah?",
+              "choices": [
+                "Who is Sarah?",
+                "Who is Rebekah?",
+                "Who is Rachel?",
+                "Who is Hagar?"
+              ],
+              "clue": "She laughed at the promise of a son in her old age, then said, 'God hath made me to laugh,' and named the boy Isaac.",
+              "reference": "Genesis 21:6",
+              "value": 200
+            },
+            {
+              "answer": "Who is Ruth?",
+              "choices": [
+                "Who is Orpah?",
+                "Who is Ruth?",
+                "Who is Esther?",
+                "Who is Rahab?"
+              ],
+              "clue": "This Moabite widow would not leave her mother-in-law Naomi: 'Whither thou goest, I will go; and where thou lodgest, I will lodge.'",
+              "reference": "Ruth 1:16",
+              "value": 400
+            },
+            {
+              "answer": "Who is Hannah?",
+              "choices": [
+                "Who is Peninnah?",
+                "Who is Hannah?",
+                "Who is Miriam?",
+                "Who is Deborah?"
+              ],
+              "clue": "She prayed in the temple with only her lips moving, and God gave her Samuel, whom she lent to the LORD all the days of his life.",
+              "reference": "1 Samuel 1:20",
+              "value": 600
+            },
+            {
+              "answer": "Who is Esther?",
+              "choices": [
+                "Who is Vashti?",
+                "Who is Esther?",
+                "Who is Bathsheba?",
+                "Who is Abigail?"
+              ],
+              "clue": "This queen came before King Ahasuerus unsummoned — at the risk of death — saying, 'If I perish, I perish.'",
+              "reference": "Esther 4:16",
+              "value": 800
+            },
+            {
+              "answer": "Who is Lydia?",
+              "choices": [
+                "Who is Priscilla?",
+                "Who is Phoebe?",
+                "Who is Dorcas?",
+                "Who is Lydia?"
+              ],
+              "clue": "A seller of purple at Philippi, she listened to Paul by the riverside; the Lord opened her heart, and her household was baptized.",
+              "reference": "Acts 16:14",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Miracles",
+          "clues": [
+            {
+              "answer": "What is wine?",
+              "choices": [
+                "What is wine?",
+                "What is oil?",
+                "What is milk?",
+                "What is honey?"
+              ],
+              "clue": "At a wedding in Cana of Galilee, Jesus turned the water in six stone waterpots into this.",
+              "reference": "John 2:9",
+              "value": 200
+            },
+            {
+              "answer": "What are fishes?",
+              "choices": [
+                "What are cakes?",
+                "What are fishes?",
+                "What are olives?",
+                "What are figs?"
+              ],
+              "clue": "Five thousand were fed from five barley loaves and two small ones of these.",
+              "reference": "John 6:9",
+              "value": 400
+            },
+            {
+              "answer": "Who is Lazarus?",
+              "choices": [
+                "Who is Jairus?",
+                "Who is Nicodemus?",
+                "Who is Lazarus?",
+                "Who is Bartimaeus?"
+              ],
+              "clue": "This friend of Jesus had been dead four days when Jesus stood at the tomb and cried, 'Lazarus, come forth!'",
+              "reference": "John 11:43",
+              "value": 600
+            },
+            {
+              "answer": "What is the hem of His garment?",
+              "choices": [
+                "What is His hand?",
+                "What is the hem of His garment?",
+                "What is His sandal?",
+                "What is His cloak?"
+              ],
+              "clue": "A woman who had suffered an issue of blood twelve years was healed the moment she touched this part of Jesus' clothing.",
+              "reference": "Matthew 9:20",
+              "value": 800
+            },
+            {
+              "answer": "Who is the Shunammite woman?",
+              "choices": [
+                "Who is the widow of Nain?",
+                "Who is the Syrophoenician woman?",
+                "Who is the Shunammite woman?",
+                "Who is the woman of Tekoa?"
+              ],
+              "clue": "Elisha raised from the dead the son of this great woman of Shunem, who had made him a little chamber on the wall.",
+              "reference": "2 Kings 4:12",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Bible Geography",
+          "clues": [
+            {
+              "answer": "What is the Jordan River?",
+              "choices": [
+                "What is the Jordan River?",
+                "What is the Nile?",
+                "What is the Euphrates?",
+                "What is the Tigris?"
+              ],
+              "clue": "John baptized Jesus in this river, and the Spirit descended like a dove as He came up out of the water.",
+              "reference": "Matthew 3:16",
+              "value": 200
+            },
+            {
+              "answer": "What is the Red Sea?",
+              "choices": [
+                "What is the Sea of Galilee?",
+                "What is the Dead Sea?",
+                "What is the Red Sea?",
+                "What is the Great Sea?"
+              ],
+              "clue": "God drove this sea back with a strong east wind so Israel crossed on dry ground and Pharaoh's host was swallowed.",
+              "reference": "Exodus 14:22",
+              "value": 400
+            },
+            {
+              "answer": "What is Ararat?",
+              "choices": [
+                "What is Sinai?",
+                "What is Ararat?",
+                "What is Zion?",
+                "What is Hermon?"
+              ],
+              "clue": "After 150 days the ark rested upon the mountains of this place, and Noah sent out the raven and the dove.",
+              "reference": "Genesis 8:4",
+              "value": 600
+            },
+            {
+              "answer": "What is Melita (Malta)?",
+              "choices": [
+                "What is Crete?",
+                "What is Cyprus?",
+                "What is Sicily?",
+                "What is Melita (Malta)?"
+              ],
+              "clue": "Paul's ship broke up off this island — called Melita in the King James — where a viper fastened on his hand and he shook it off unharmed.",
+              "reference": "Acts 28:1",
+              "value": 800
+            },
+            {
+              "answer": "What is Moriah?",
+              "choices": [
+                "What is Moriah?",
+                "What is Gerizim?",
+                "What is Horeb?",
+                "What is Carmel?"
+              ],
+              "clue": "Abraham was sent to offer Isaac on a mountain in this land — the same mount where Solomon later built the temple.",
+              "reference": "Genesis 22:2",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "The Twelve Apostles",
+          "clues": [
+            {
+              "answer": "Who is Peter?",
+              "choices": [
+                "Who is Andrew?",
+                "Who is Peter?",
+                "Who is John?",
+                "Who is James?"
+              ],
+              "clue": "This fisherman of Capernaum confessed, 'Thou art the Christ, the Son of the living God,' and received the name Peter.",
+              "reference": "Matthew 16:16",
+              "value": 200
+            },
+            {
+              "answer": "What are the sons of thunder?",
+              "choices": [
+                "What are the sons of thunder?",
+                "What are the pillars?",
+                "What are the zealots?",
+                "What are the beloved?"
+              ],
+              "clue": "James and John, the sons of Zebedee, were surnamed Boanerges — which is to say, this.",
+              "reference": "Mark 3:17",
+              "value": 400
+            },
+            {
+              "answer": "Who is Matthew?",
+              "choices": [
+                "Who is Zacchaeus?",
+                "Who is Matthew?",
+                "Who is Thomas?",
+                "Who is Philip?"
+              ],
+              "clue": "This apostle was sitting at the receipt of custom when Jesus said, 'Follow me'; tradition credits him with the first Gospel.",
+              "reference": "Matthew 9:9",
+              "value": 600
+            },
+            {
+              "answer": "Who is Matthias?",
+              "choices": [
+                "Who is Barsabas?",
+                "Who is Justus?",
+                "Who is Matthias?",
+                "Who is Stephen?"
+              ],
+              "clue": "After the fall of Judas, the apostles prayed and cast lots, and the lot fell on this man, numbered with the eleven.",
+              "reference": "Acts 1:26",
+              "value": 800
+            },
+            {
+              "answer": "Who is Thomas?",
+              "choices": [
+                "Who is Nathanael?",
+                "Who is Thomas?",
+                "Who is Bartholomew?",
+                "Who is Thaddaeus?"
+              ],
+              "clue": "Surnamed Didymus, 'the Twin,' this apostle said of the journey to Bethany, 'Let us also go, that we may die with him.'",
+              "reference": "John 11:16",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Feasts & Seasons",
+          "clues": [
+            {
+              "answer": "What is Passover?",
+              "choices": [
+                "What is Passover?",
+                "What is Pentecost?",
+                "What is Purim?",
+                "What is the Feast of Tabernacles?"
+              ],
+              "clue": "Israel still keeps this feast of unleavened bread, remembering the night the LORD passed over their houses in Egypt.",
+              "reference": "Exodus 12:27",
+              "value": 200
+            },
+            {
+              "answer": "What is the Feast of Tabernacles?",
+              "choices": [
+                "What is the Day of Atonement?",
+                "What is the Feast of Tabernacles?",
+                "What is the Feast of Weeks?",
+                "What is the Feast of Trumpets?"
+              ],
+              "clue": "For seven days of this feast Israel lived in booths of branches, remembering the journey through the wilderness.",
+              "reference": "Leviticus 23:42",
+              "value": 400
+            },
+            {
+              "answer": "What is the Day of Atonement?",
+              "choices": [
+                "What is the Day of Atonement?",
+                "What is the Sabbath?",
+                "What is the New Moon?",
+                "What is the Feast of Dedication?"
+              ],
+              "clue": "On this most solemn day of the year the high priest alone entered the Holy of Holies, not without blood, to make atonement.",
+              "reference": "Leviticus 23:27",
+              "value": 600
+            },
+            {
+              "answer": "What is Purim?",
+              "choices": [
+                "What is Hanukkah?",
+                "What is Purim?",
+                "What is Passover?",
+                "What is the Feast of Ingathering?"
+              ],
+              "clue": "This feast of lots was ordained in the days of Esther and Mordecai to celebrate Israel's deliverance from Haman.",
+              "reference": "Esther 9:26",
+              "value": 800
+            },
+            {
+              "answer": "What is Passover?",
+              "choices": [
+                "What is the Feast of Tabernacles?",
+                "What is the Day of Atonement?",
+                "What is the Feast of Weeks?",
+                "What is Passover?"
+              ],
+              "clue": "John cried, 'Behold the Lamb of God, which taketh away the sin of the world' — and at this feast that Lamb was crucified for us.",
+              "reference": "John 1:29",
+              "value": 1000
+            }
+          ]
+        }
+      ],
+      "final": {
+        "answer": "What is Psalm 23?",
+        "category": "The Psalms",
+        "choices": [
+          "What is Psalm 1?",
+          "What is Psalm 51?",
+          "What is Psalm 23?",
+          "What is Psalm 91?"
+        ],
+        "clue": "Numbered Psalm 23 in the King James and Hebrew, and Psalm 22 in the Septuagint, it opens, 'The LORD is my shepherd; I shall not want.'",
+        "reference": "Psalms 23:1"
+      }
+    },
+    {
+      "categories": [
+        {
+          "category": "Early Church & Fathers",
+          "clues": [
+            {
+              "answer": "Who is Stephen?",
+              "choices": [
+                "Who is Stephen?",
+                "Who is James?",
+                "Who is Antipas?",
+                "Who is Philip?"
+              ],
+              "clue": "The first martyr, stoned outside Jerusalem, saw heaven opened and prayed, 'Lord, lay not this sin to their charge.'",
+              "reference": "Acts 7:60",
+              "value": 200
+            },
+            {
+              "answer": "Who is Barnabas?",
+              "choices": [
+                "Who is Barnabas?",
+                "Who is Ananias?",
+                "Who is Gamaliel?",
+                "Who is Mnason?"
+              ],
+              "clue": "This Cypriot Levite, surnamed by the apostles 'the son of consolation,' sold his land and laid the price at their feet.",
+              "reference": "Acts 4:36",
+              "value": 400
+            },
+            {
+              "answer": "Who is Timothy?",
+              "choices": [
+                "Who is Titus?",
+                "Who is Timothy?",
+                "Who is Silas?",
+                "Who is Luke?"
+              ],
+              "clue": "Paul's 'own son in the faith' was left at Ephesus, charged to let no one teach a different doctrine.",
+              "reference": "1 Timothy 1:3",
+              "value": 600
+            },
+            {
+              "answer": "Who is Polycarp?",
+              "choices": [
+                "Who is Ignatius?",
+                "Who is Clement?",
+                "Who is Polycarp?",
+                "Who is Irenaeus?"
+              ],
+              "clue": "Bishop of Smyrna and hearer of the Apostle John, this aged martyr was given to the fire; his church had been promised a crown of life for faithfulness unto death.",
+              "reference": "Revelation 2:10",
+              "value": 800
+            },
+            {
+              "answer": "Who is Irenaeus?",
+              "choices": [
+                "Who is Justin Martyr?",
+                "Who is Irenaeus?",
+                "Who is Tertullian?",
+                "Who is Origen?"
+              ],
+              "clue": "A disciple of Polycarp, this bishop of Lyons wrote Against Heresies and traced the faith handed down 'from the apostles' — as Paul charged, commit it 'to faithful men, who shall be able to teach others also.'",
+              "reference": "2 Timothy 2:2",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Family Lines",
+          "clues": [
+            {
+              "answer": "Who is Jacob?",
+              "choices": [
+                "Who is Esau?",
+                "Who is Jacob?",
+                "Who is Joseph?",
+                "Who is Judah?"
+              ],
+              "clue": "'Abraham begat Isaac; and Isaac begat Jacob' — this son, renamed Israel at the Jabbok, fathered the twelve tribes.",
+              "reference": "Genesis 35:10",
+              "value": 200
+            },
+            {
+              "answer": "Who is Bathsheba?",
+              "choices": [
+                "Who is Abigail?",
+                "Who is Michal?",
+                "Who is Bathsheba?",
+                "Who is Tamar?"
+              ],
+              "clue": "She bore David a son in Jerusalem after her husband Uriah's death; the boy was named Solomon, and the LORD loved him.",
+              "reference": "2 Samuel 12:24",
+              "value": 400
+            },
+            {
+              "answer": "Who is David?",
+              "choices": [
+                "Who is Saul?",
+                "Who is David?",
+                "Who is Solomon?",
+                "Who is Hezekiah?"
+              ],
+              "clue": "'Obed begat Jesse, and Jesse begat David' — so this king of Israel was the great-grandson of Ruth the Moabite.",
+              "reference": "Ruth 4:22",
+              "value": 600
+            },
+            {
+              "answer": "Who is Jezebel?",
+              "choices": [
+                "Who is Athaliah?",
+                "Who is Jezebel?",
+                "Who is Maachah?",
+                "Who is Vashti?"
+              ],
+              "clue": "Daughter of Ethbaal king of the Sidonians and wife of Ahab, this queen cut off the prophets of the LORD and fed Baal's prophets at her table.",
+              "reference": "1 Kings 16:31",
+              "value": 800
+            },
+            {
+              "answer": "Who is Uriah the Hittite?",
+              "choices": [
+                "Who is Uriah the Hittite?",
+                "Who is Boaz?",
+                "Who is Salmon?",
+                "Who is Amnon?"
+              ],
+              "clue": "Before Mary, Matthew's genealogy of Jesus names four women: Tamar, Rahab, Ruth — and 'her that had been the wife of' this man.",
+              "reference": "Matthew 1:6",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Angels & the Unseen",
+          "clues": [
+            {
+              "answer": "Who is Gabriel?",
+              "choices": [
+                "Who is Michael?",
+                "Who is Gabriel?",
+                "Who is Raphael?",
+                "Who is Uriel?"
+              ],
+              "clue": "This angel stood before Mary in Nazareth: 'Fear not, Mary... thou shalt conceive in thy womb, and bring forth a son.'",
+              "reference": "Luke 1:26",
+              "value": 200
+            },
+            {
+              "answer": "Who is Michael?",
+              "choices": [
+                "Who is Gabriel?",
+                "Who is Michael?",
+                "Who is Raphael?",
+                "Who is Azrael?"
+              ],
+              "clue": "In Revelation this archangel and his angels fight against the dragon and cast him down to the earth.",
+              "reference": "Revelation 12:7",
+              "value": 400
+            },
+            {
+              "answer": "What are the seraphim?",
+              "choices": [
+                "What are the cherubim?",
+                "What are the seraphim?",
+                "What are the archangels?",
+                "What are the watchers?"
+              ],
+              "clue": "Above the throne, each with six wings, these beings in Isaiah's vision cry to one another, 'Holy, holy, holy, is the LORD of hosts.'",
+              "reference": "Isaiah 6:3",
+              "value": 600
+            },
+            {
+              "answer": "What are the cherubim?",
+              "choices": [
+                "What are the cherubim?",
+                "What are the seraphim?",
+                "What are the ophanim?",
+                "What are the elders?"
+              ],
+              "clue": "God set these guardians, with a flaming sword turning every way, at the east of Eden to keep the way of the tree of life.",
+              "reference": "Genesis 3:24",
+              "value": 800
+            },
+            {
+              "answer": "Who is the prince of the kingdom of Persia?",
+              "choices": [
+                "Who is the king of Persia?",
+                "Who is the prince of the kingdom of Persia?",
+                "Who is Gabriel?",
+                "Who is the prince of Grecia?"
+              ],
+              "clue": "Daniel's messenger was withstood twenty-one days by this unseen power, 'the prince of the kingdom of Persia,' until Michael came to help.",
+              "reference": "Daniel 10:13",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Objects & Symbols",
+          "clues": [
+            {
+              "answer": "What is the bow (rainbow)?",
+              "choices": [
+                "What is a dove?",
+                "What is an olive leaf?",
+                "What is the bow (rainbow)?",
+                "What is an altar?"
+              ],
+              "clue": "After the flood God set this in the cloud as the token of His covenant with Noah and every living creature.",
+              "reference": "Genesis 9:13",
+              "value": 200
+            },
+            {
+              "answer": "What is the Ark of the Covenant?",
+              "choices": [
+                "What is the Ark of the Covenant?",
+                "What is the table of showbread?",
+                "What is the bronze laver?",
+                "What is the altar of incense?"
+              ],
+              "clue": "Over this golden chest, between the two cherubim of the mercy seat, God promised to meet with Moses.",
+              "reference": "Exodus 25:22",
+              "value": 400
+            },
+            {
+              "answer": "What is the golden candlestick?",
+              "choices": [
+                "What is the golden candlestick?",
+                "What is the bronze serpent?",
+                "What is the ephod?",
+                "What is the mercy seat?"
+              ],
+              "clue": "This seven-branched golden lampstand, beaten from a single talent of gold, lit the Holy Place of the tabernacle.",
+              "reference": "Exodus 25:31",
+              "value": 600
+            },
+            {
+              "answer": "What is Nehushtan?",
+              "choices": [
+                "What is Nehushtan?",
+                "What is the Urim?",
+                "What are the teraphim?",
+                "What is the ephod?"
+              ],
+              "clue": "Hezekiah broke in pieces the brazen serpent Moses had made, 'for unto those days Israel did burn incense to it,' and called it this — a mere piece of brass.",
+              "reference": "2 Kings 18:4",
+              "value": 800
+            },
+            {
+              "answer": "What is the breastplate of judgment?",
+              "choices": [
+                "What is the ephod?",
+                "What is the breastplate of judgment?",
+                "What is the mitre?",
+                "What is the golden plate?"
+              ],
+              "clue": "Set with twelve stones over Aaron's heart, this part of the high priest's garments bore the names of the tribes 'for a memorial before the LORD continually.'",
+              "reference": "Exodus 28:29",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Prayer in Scripture",
+          "clues": [
+            {
+              "answer": "What is the Lord's Prayer?",
+              "choices": [
+                "What is the Lord's Prayer?",
+                "What is the Jesus Prayer?",
+                "What is the Prayer of Manasseh?",
+                "What is the Magnificat?"
+              ],
+              "clue": "Jesus taught His disciples to pray with these words: 'Our Father which art in heaven, Hallowed be thy name.'",
+              "reference": "Matthew 6:9",
+              "value": 200
+            },
+            {
+              "answer": "Who is Hezekiah?",
+              "choices": [
+                "Who is Hezekiah?",
+                "Who is Josiah?",
+                "Who is Manasseh?",
+                "Who is Jehoshaphat?"
+              ],
+              "clue": "Told by Isaiah that he must die, this king turned his face to the wall and wept sore in prayer — and God added fifteen years to his life.",
+              "reference": "2 Kings 20:5-6",
+              "value": 400
+            },
+            {
+              "answer": "What is the Mount of Olives?",
+              "choices": [
+                "What is Mount Zion?",
+                "What is the Mount of Olives?",
+                "What is Mount Tabor?",
+                "What is Golgotha?"
+              ],
+              "clue": "On the Mount of Olives He prayed, 'Father, if thou be willing, remove this cup from me: nevertheless not my will, but thine, be done.'",
+              "reference": "Luke 22:42",
+              "value": 600
+            },
+            {
+              "answer": "Who is the publican?",
+              "choices": [
+                "Who is the Pharisee?",
+                "Who is Zacchaeus?",
+                "Who is the publican?",
+                "Who is Matthew?"
+              ],
+              "clue": "In Jesus' parable this man would not lift his eyes to heaven, but smote his breast, saying, 'God be merciful to me a sinner' — and went home justified.",
+              "reference": "Luke 18:13",
+              "value": 800
+            },
+            {
+              "answer": "What is Psalm 51?",
+              "choices": [
+                "What is Psalm 32?",
+                "What is Psalm 51?",
+                "What is Psalm 38?",
+                "What is Psalm 130?"
+              ],
+              "clue": "David's great psalm of confession after Nathan's rebuke pleads, 'Create in me a clean heart, O God' — Psalm 50 in the Septuagint, this in the King James.",
+              "reference": "Psalms 51:10",
+              "value": 1000
+            }
+          ]
+        }
+      ],
+      "final": {
+        "answer": "What is the Book of Revelation?",
+        "category": "The Apocalypse",
+        "choices": [
+          "What is the Book of Daniel?",
+          "What is the Book of Revelation?",
+          "What is the Book of Isaiah?",
+          "What is the Book of Malachi?"
+        ],
+        "clue": "The last book of the Bible closes with this promise and its answer: 'Surely I come quickly. Amen. Even so, come, Lord Jesus.'",
+        "reference": "Revelation 22:20"
+      }
+    },
+    {
+      "categories": [
+        {
+          "category": "Revelation & Last Things",
+          "clues": [
+            {
+              "answer": "What is seven?",
+              "choices": [
+                "What is twelve?",
+                "What is ten?",
+                "What is seven?",
+                "What is four?"
+              ],
+              "clue": "Revelation opens as John is told to write to this many churches in Asia — Ephesus, Smyrna, Pergamos, and the rest.",
+              "reference": "Revelation 1:11",
+              "value": 200
+            },
+            {
+              "answer": "What is LORD OF LORDS?",
+              "choices": [
+                "What is LORD OF LORDS?",
+                "What is Alpha and Omega?",
+                "What is the Lion of Judah?",
+                "What is the Morning Star?"
+              ],
+              "clue": "On the vesture and thigh of the rider on the white horse is written this name: 'KING OF KINGS, AND...' this.",
+              "reference": "Revelation 19:16",
+              "value": 400
+            },
+            {
+              "answer": "What is 666?",
+              "choices": [
+                "What is 777?",
+                "What is 666?",
+                "What is 616?",
+                "What is 144,000?"
+              ],
+              "clue": "'Here is wisdom': the number of the beast in Revelation 13, six hundred threescore and six, is written this way.",
+              "reference": "Revelation 13:18",
+              "value": 600
+            },
+            {
+              "answer": "What is the Lamb?",
+              "choices": [
+                "What is the Lamb?",
+                "What is the temple?",
+                "What is the river of life?",
+                "What is the tree of life?"
+              ],
+              "clue": "The holy city has no need of sun or moon, 'for the glory of God did lighten it, and this is the light thereof.'",
+              "reference": "Revelation 21:23",
+              "value": 800
+            },
+            {
+              "answer": "What is Jerusalem?",
+              "choices": [
+                "What is Babylon?",
+                "What is Rome?",
+                "What is Jerusalem?",
+                "What is Tyre?"
+              ],
+              "clue": "Revelation says this great city 'spiritually is called Sodom and Egypt, where also our Lord was crucified.'",
+              "reference": "Revelation 11:8",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Covenant & Law",
+          "clues": [
+            {
+              "answer": "What is the covenant?",
+              "choices": [
+                "What is the covenant?",
+                "What is the blessing?",
+                "What is the promise?",
+                "What is the kingdom?"
+              ],
+              "clue": "God told Abraham, 'Ye shall circumcise the flesh of your foreskin; and it shall be a token' of this between God and Abraham's seed.",
+              "reference": "Genesis 17:11",
+              "value": 200
+            },
+            {
+              "answer": "What is Mount Sinai?",
+              "choices": [
+                "What is Mount Sinai?",
+                "What is Mount Gerizim?",
+                "What is Mount Zion?",
+                "What is Mount Ebal?"
+              ],
+              "clue": "'I am the LORD thy God, which have brought thee out of the land of Egypt' — so open the Ten Commandments given through Moses on this mountain.",
+              "reference": "Exodus 20:2",
+              "value": 400
+            },
+            {
+              "answer": "Who is Jeremiah?",
+              "choices": [
+                "Who is Isaiah?",
+                "Who is Ezekiel?",
+                "Who is Jeremiah?",
+                "Who is Hosea?"
+              ],
+              "clue": "'I will put my law in their inward parts, and write it in their hearts' — this promise of a new covenant came through this weeping prophet.",
+              "reference": "Jeremiah 31:33",
+              "value": 600
+            },
+            {
+              "answer": "What is a covenant?",
+              "choices": [
+                "What is a covenant?",
+                "What is a sacrifice?",
+                "What is a kingdom?",
+                "What is a prophecy?"
+              ],
+              "clue": "At the Last Supper Jesus took the cup, saying, 'This cup is the new testament in my blood' — 'testament' here meaning this.",
+              "reference": "Luke 22:20",
+              "value": 800
+            },
+            {
+              "answer": "Who is Melchizedek?",
+              "choices": [
+                "Who is Melchizedek?",
+                "Who is Enoch?",
+                "Who is Eliezer?",
+                "Who is Jethro?"
+              ],
+              "clue": "King of Salem and priest of the most high God, with no father, mother, or genealogy in Scripture, he blessed Abraham and received a tenth of all.",
+              "reference": "Genesis 14:18",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Temple & Worship",
+          "clues": [
+            {
+              "answer": "Who is Solomon?",
+              "choices": [
+                "Who is Solomon?",
+                "Who is David?",
+                "Who is Hezekiah?",
+                "Who is Zerubbabel?"
+              ],
+              "clue": "At the dedication of the temple this king prayed, 'But will God indeed dwell on the earth? behold, the heaven and heaven of heavens cannot contain thee.'",
+              "reference": "1 Kings 8:27",
+              "value": 200
+            },
+            {
+              "answer": "What is the veil of the temple?",
+              "choices": [
+                "What is the veil of the temple?",
+                "What is the curtain of the ark?",
+                "What is the mercy seat?",
+                "What is the outer curtain?"
+              ],
+              "clue": "At the moment Jesus yielded up the ghost, this temple hanging was rent in twain from the top to the bottom.",
+              "reference": "Matthew 27:51",
+              "value": 400
+            },
+            {
+              "answer": "Who is Zerubbabel?",
+              "choices": [
+                "Who is Ezra?",
+                "Who is Nehemiah?",
+                "Who is Zerubbabel?",
+                "Who is Joshua the high priest?"
+              ],
+              "clue": "Returned from exile, this governor of Judah 'began to build the house of God which is at Jerusalem,' raising the second temple.",
+              "reference": "Ezra 5:2",
+              "value": 600
+            },
+            {
+              "answer": "What is the Court of the Gentiles?",
+              "choices": [
+                "What is the Court of the Gentiles?",
+                "What is the Court of the Women?",
+                "What is the Court of Israel?",
+                "What is the Holy Place?"
+              ],
+              "clue": "Jesus found the outer court of Herod's temple full of oxen, sheep, and money changers, and drove them out with a scourge of small cords.",
+              "reference": "John 2:15",
+              "value": 800
+            },
+            {
+              "answer": "What is the Dead Sea (the salt sea)?",
+              "choices": [
+                "What is the Sea of Galilee?",
+                "What is the Dead Sea (the salt sea)?",
+                "What is the Red Sea?",
+                "What is the Mediterranean (the Great Sea)?"
+              ],
+              "clue": "In Ezekiel's vision, waters flow from the threshold of the house eastward, and wherever the river comes, this sea's waters are healed.",
+              "reference": "Ezekiel 47:8",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "Tough Names & Places",
+          "clues": [
+            {
+              "answer": "Who is Caleb?",
+              "choices": [
+                "Who is Caleb?",
+                "Who is Hur?",
+                "Who is Bezalel?",
+                "Who is Othniel?"
+              ],
+              "clue": "Of the twelve spies, only Joshua and this man of Judah urged Israel to go up at once and possess the land.",
+              "reference": "Numbers 13:30",
+              "value": 200
+            },
+            {
+              "answer": "What is the land of Uz?",
+              "choices": [
+                "What is the land of Uz?",
+                "What is Edom?",
+                "What is Tema?",
+                "What is Midian?"
+              ],
+              "clue": "Job lived in this land, where the LORD asked Satan, 'Hast thou considered my servant Job?'",
+              "reference": "Job 1:1",
+              "value": 400
+            },
+            {
+              "answer": "Who is Deborah?",
+              "choices": [
+                "Who is Deborah?",
+                "Who is Jael?",
+                "Who is Huldah?",
+                "Who is Miriam?"
+              ],
+              "clue": "This prophetess judged Israel under a palm tree and sang the victory song with Barak after Sisera's fall.",
+              "reference": "Judges 4:4",
+              "value": 600
+            },
+            {
+              "answer": "Who is Balak?",
+              "choices": [
+                "Who is Balak?",
+                "Who is Og?",
+                "Who is Sihon?",
+                "Who is Eglon?"
+              ],
+              "clue": "This king of Moab took Balaam up to the top of Pisgah hoping for a curse, and heard blessing instead.",
+              "reference": "Numbers 23:14",
+              "value": 800
+            },
+            {
+              "answer": "Who is King Agrippa?",
+              "choices": [
+                "Who is King Agrippa?",
+                "Who is Festus?",
+                "Who is Felix?",
+                "Who is Herod Antipas?"
+              ],
+              "clue": "Hearing Paul's defense at Caesarea, this king answered, 'Almost thou persuadest me to be a Christian.'",
+              "reference": "Acts 26:28",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "category": "From the Septuagint",
+          "clues": [
+            {
+              "answer": "Who is Raphael?",
+              "choices": [
+                "Who is Raphael?",
+                "Who is Michael?",
+                "Who is Gabriel?",
+                "Who is Raguel?"
+              ],
+              "clue": "Guided on his journey by this angel in disguise, young Tobias married Sarah and drove away the demon that had slain her seven husbands.",
+              "reference": "Tobit 12:15",
+              "value": 200
+            },
+            {
+              "answer": "Who is Judith?",
+              "choices": [
+                "Who is Judith?",
+                "Who is Susanna?",
+                "Who is Esther?",
+                "Who is Jael?"
+              ],
+              "clue": "This widow of Bethulia prayed, went into the Assyrian camp, and cut off the head of the general Holofernes.",
+              "reference": "Judith 13:8",
+              "value": 400
+            },
+            {
+              "answer": "What is the Wisdom of Solomon?",
+              "choices": [
+                "What is the Wisdom of Solomon?",
+                "What is Ecclesiasticus (Sirach)?",
+                "What is Baruch?",
+                "What is Tobit?"
+              ],
+              "clue": "'The souls of the righteous are in the hand of God, and there shall no torment touch them' — this promise stands in this book.",
+              "reference": "Wisdom of Solomon 3:1",
+              "value": 600
+            },
+            {
+              "answer": "What is Ecclesiasticus (Sirach)?",
+              "choices": [
+                "What is Ecclesiasticus (Sirach)?",
+                "What is the Wisdom of Solomon?",
+                "What is 1 Maccabees?",
+                "What is the Letter of Jeremiah?"
+              ],
+              "clue": "'Let us now praise famous men, and our fathers that begat us' — so opens the great roll of Israel's heroes in this book.",
+              "reference": "Ecclesiasticus 44:1",
+              "value": 800
+            },
+            {
+              "answer": "Who is Jeremiah?",
+              "choices": [
+                "Who is Jeremiah?",
+                "Who is Isaiah?",
+                "Who is Elijah?",
+                "Who is Samuel?"
+              ],
+              "clue": "In 2 Maccabees, Judas sees the high priest Onias praying and beside him this prophet, 'who prayeth much for the people and the holy city.'",
+              "reference": "2 Maccabees 15:14",
+              "value": 1000
+            }
+          ]
+        }
+      ],
+      "final": {
+        "answer": "Who is the mother of the seven brothers?",
+        "category": "The Maccabees",
+        "choices": [
+          "Who is the mother of the seven brothers?",
+          "Who is Hannah?",
+          "Who is the Shunammite woman?",
+          "Who is Salome?"
+        ],
+        "clue": "She watched her seven sons die one by one for the Law rather than eat swine's flesh, urging each: the King of the world shall raise us up who die for His laws.",
+        "reference": "2 Maccabees 7:22"
+      }
+    }
+  ],
   "meta": {
     "note": "Authored for private play. Scripture references use KJV numbering; Orthodox (Septuagint) psalm numbers are noted where they differ. Family Feud boards are our own house rankings, not a real survey.",
     "title": "Mind Soul & Body — Game Show Question Bank"

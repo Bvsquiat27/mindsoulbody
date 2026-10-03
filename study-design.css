@@ -75,6 +75,11 @@ html{background:var(--bg)}body{color:var(--text);font-family:Outfit,system-ui,sa
 
 /* Games sound toggle in the back bar */
 .gx-snd{font-size:17px;line-height:1;padding:10px 8px}
+.gx-snd-off{opacity:.35;filter:grayscale(1)}
+.gx-levelcap{margin:18px 0 0;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.gx-levelnote{margin-top:6px}
+.gx-leveldone{color:#8ff5d2;font-weight:700}
+.gx-lvlrow .gx-level:disabled{opacity:.45;cursor:not-allowed}
 
 /* Tower of Babel */
 .gx-babel-hud{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px;color:var(--muted);font-size:14px}
