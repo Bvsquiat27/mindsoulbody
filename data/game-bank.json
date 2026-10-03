@@ -4,45 +4,6 @@
       "answers": [
         {
           "aliases": [
-            "josue"
-          ],
-          "points": 9,
-          "text": "Joshua"
-        },
-        {
-          "aliases": [
-            "judge",
-            "book of judges"
-          ],
-          "points": 6,
-          "text": "Judges"
-        },
-        {
-          "aliases": [],
-          "points": 5,
-          "text": "Job"
-        },
-        {
-          "aliases": [
-            "jonas"
-          ],
-          "points": 14,
-          "text": "Jonah"
-        },
-        {
-          "aliases": [],
-          "points": 6,
-          "text": "Joel"
-        },
-        {
-          "aliases": [
-            "jeremias"
-          ],
-          "points": 10,
-          "text": "Jeremiah"
-        },
-        {
-          "aliases": [
             "gospel of john",
             "gospel according to john",
             "fourth gospel"
@@ -59,16 +20,55 @@
         },
         {
           "aliases": [
-            "book of jude",
-            "epistle of jude"
+            "jonas"
           ],
-          "points": 3,
-          "text": "Jude"
+          "points": 14,
+          "text": "Jonah"
+        },
+        {
+          "aliases": [
+            "jeremias"
+          ],
+          "points": 10,
+          "text": "Jeremiah"
+        },
+        {
+          "aliases": [
+            "josue"
+          ],
+          "points": 9,
+          "text": "Joshua"
+        },
+        {
+          "aliases": [
+            "judge",
+            "book of judges"
+          ],
+          "points": 6,
+          "text": "Judges"
+        },
+        {
+          "aliases": [],
+          "points": 6,
+          "text": "Joel"
+        },
+        {
+          "aliases": [],
+          "points": 5,
+          "text": "Job"
         },
         {
           "aliases": [],
           "points": 4,
           "text": "Judith"
+        },
+        {
+          "aliases": [
+            "book of jude",
+            "epistle of jude"
+          ],
+          "points": 3,
+          "text": "Jude"
         }
       ],
       "prompt": "Name a book of the Bible that starts with the letter J",
@@ -409,6 +409,16 @@
       "answers": [
         {
           "aliases": [
+            "firstborn",
+            "death of firstborn",
+            "slaying of the firstborn",
+            "tenth plague"
+          ],
+          "points": 16,
+          "text": "Death of the firstborn"
+        },
+        {
+          "aliases": [
             "blood",
             "water to blood",
             "river to blood",
@@ -424,14 +434,6 @@
           ],
           "points": 13,
           "text": "Frogs"
-        },
-        {
-          "aliases": [
-            "lice",
-            "gnat"
-          ],
-          "points": 5,
-          "text": "Gnats"
         },
         {
           "aliases": [
@@ -455,6 +457,21 @@
         },
         {
           "aliases": [
+            "locust"
+          ],
+          "points": 9,
+          "text": "Locusts"
+        },
+        {
+          "aliases": [
+            "three days of darkness",
+            "darkness over egypt"
+          ],
+          "points": 9,
+          "text": "Darkness"
+        },
+        {
+          "aliases": [
             "boil",
             "sores",
             "festering boils"
@@ -471,28 +488,11 @@
         },
         {
           "aliases": [
-            "locust"
+            "lice",
+            "gnat"
           ],
-          "points": 9,
-          "text": "Locusts"
-        },
-        {
-          "aliases": [
-            "three days of darkness",
-            "darkness over egypt"
-          ],
-          "points": 9,
-          "text": "Darkness"
-        },
-        {
-          "aliases": [
-            "firstborn",
-            "death of firstborn",
-            "slaying of the firstborn",
-            "tenth plague"
-          ],
-          "points": 16,
-          "text": "Death of the firstborn"
+          "points": 5,
+          "text": "Gnats"
         }
       ],
       "prompt": "Name one of the Ten Plagues of Egypt",
