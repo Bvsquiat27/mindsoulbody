@@ -4,45 +4,66 @@
       "answers": [
         {
           "aliases": [
+            "josue"
+          ],
+          "points": 9,
+          "text": "Joshua"
+        },
+        {
+          "aliases": [
+            "judge",
+            "book of judges"
+          ],
+          "points": 6,
+          "text": "Judges"
+        },
+        {
+          "aliases": [],
+          "points": 5,
+          "text": "Job"
+        },
+        {
+          "aliases": [
+            "jonas"
+          ],
+          "points": 14,
+          "text": "Jonah"
+        },
+        {
+          "aliases": [],
+          "points": 6,
+          "text": "Joel"
+        },
+        {
+          "aliases": [
+            "jeremias"
+          ],
+          "points": 10,
+          "text": "Jeremiah"
+        },
+        {
+          "aliases": [
             "gospel of john",
             "gospel according to john",
             "fourth gospel"
           ],
-          "points": 30,
+          "points": 24,
           "text": "John"
         },
         {
           "aliases": [
             "epistle of james"
           ],
-          "points": 22,
+          "points": 19,
           "text": "James"
         },
         {
           "aliases": [
-            "jonas"
+            "book of jude",
+            "epistle of jude"
           ],
-          "points": 16,
-          "text": "Jonah"
-        },
-        {
-          "aliases": [
-            "jeremias"
-          ],
-          "points": 12,
-          "text": "Jeremiah"
-        },
-        {
-          "aliases": [
-            "josue"
-          ],
-          "points": 10,
-          "text": "Joshua"
-        },
-        {
-          "aliases": [],
-          "points": 6,
-          "text": "Job"
+          "points": 3,
+          "text": "Jude"
         },
         {
           "aliases": [],
@@ -52,9 +73,9 @@
       ],
       "prompt": "Name a book of the Bible that starts with the letter J",
       "decoys": [
-        "Joel",
-        "Jude",
-        "Judges"
+        "Jasher",
+        "Jubilees",
+        "Judea"
       ]
     },
     {
@@ -66,22 +87,32 @@
             "st peter",
             "cephas"
           ],
-          "points": 34,
+          "points": 28,
           "text": "Peter"
         },
         {
           "aliases": [
             "st john"
           ],
-          "points": 24,
+          "points": 21,
           "text": "John"
+        },
+        {
+          "aliases": [
+            "saul",
+            "saul of tarsus",
+            "apostle paul",
+            "st paul"
+          ],
+          "points": 13,
+          "text": "Paul"
         },
         {
           "aliases": [
             "james son of zebedee",
             "st james"
           ],
-          "points": 14,
+          "points": 12,
           "text": "James"
         },
         {
@@ -89,7 +120,7 @@
             "levi",
             "st matthew"
           ],
-          "points": 10,
+          "points": 9,
           "text": "Matthew"
         },
         {
@@ -97,7 +128,7 @@
             "st andrew",
             "apostle andrew"
           ],
-          "points": 8,
+          "points": 7,
           "text": "Andrew"
         },
         {
@@ -120,10 +151,10 @@
       ],
       "prompt": "Name one of the Twelve Apostles",
       "decoys": [
-        "Paul",
         "Barnabas",
         "Luke",
-        "Mark"
+        "Mark",
+        "Stephen"
       ]
     },
     {
@@ -378,68 +409,97 @@
       "answers": [
         {
           "aliases": [
-            "firstborn",
-            "death of firstborn",
-            "slaying of the firstborn",
-            "tenth plague"
-          ],
-          "points": 22,
-          "text": "Death of the firstborn"
-        },
-        {
-          "aliases": [
-            "frog"
-          ],
-          "points": 18,
-          "text": "Frogs"
-        },
-        {
-          "aliases": [
             "blood",
             "water to blood",
             "river to blood",
             "bloody water",
             "nile to blood"
           ],
-          "points": 16,
+          "points": 13,
           "text": "Water turned to blood"
         },
         {
           "aliases": [
-            "three days of darkness",
-            "darkness over egypt"
+            "frog"
           ],
-          "points": 12,
-          "text": "Darkness"
-        },
-        {
-          "aliases": [
-            "locust"
-          ],
-          "points": 12,
-          "text": "Locusts"
-        },
-        {
-          "aliases": [
-            "hail and fire"
-          ],
-          "points": 10,
-          "text": "Hail"
+          "points": 13,
+          "text": "Frogs"
         },
         {
           "aliases": [
             "lice",
             "gnat"
           ],
-          "points": 10,
+          "points": 5,
           "text": "Gnats"
+        },
+        {
+          "aliases": [
+            "fly",
+            "swarms of flies",
+            "swarm of flies"
+          ],
+          "points": 12,
+          "text": "Flies"
+        },
+        {
+          "aliases": [
+            "diseased livestock",
+            "death of livestock",
+            "cattle plague",
+            "murrain",
+            "pestilence"
+          ],
+          "points": 9,
+          "text": "Livestock disease"
+        },
+        {
+          "aliases": [
+            "boil",
+            "sores",
+            "festering boils"
+          ],
+          "points": 7,
+          "text": "Boils"
+        },
+        {
+          "aliases": [
+            "hail and fire"
+          ],
+          "points": 7,
+          "text": "Hail"
+        },
+        {
+          "aliases": [
+            "locust"
+          ],
+          "points": 9,
+          "text": "Locusts"
+        },
+        {
+          "aliases": [
+            "three days of darkness",
+            "darkness over egypt"
+          ],
+          "points": 9,
+          "text": "Darkness"
+        },
+        {
+          "aliases": [
+            "firstborn",
+            "death of firstborn",
+            "slaying of the firstborn",
+            "tenth plague"
+          ],
+          "points": 16,
+          "text": "Death of the firstborn"
         }
       ],
       "prompt": "Name one of the Ten Plagues of Egypt",
       "decoys": [
-        "Boils",
-        "Flies",
-        "Livestock disease"
+        "Ants",
+        "Scorpions",
+        "Famine"
       ]
     },
     {
@@ -514,22 +574,33 @@
           "aliases": [
             "romans"
           ],
-          "points": 28,
+          "points": 26,
           "text": "Romans"
         },
         {
-          "aliases": [],
-          "points": 16,
-          "text": "Ephesians"
+          "aliases": [
+            "1 corinthians",
+            "2 corinthians",
+            "first corinthians",
+            "second corinthians",
+            "corinth"
+          ],
+          "points": 20,
+          "text": "Corinthians"
         },
         {
           "aliases": [],
           "points": 14,
-          "text": "Galatians"
+          "text": "Ephesians"
         },
         {
           "aliases": [],
           "points": 12,
+          "text": "Galatians"
+        },
+        {
+          "aliases": [],
+          "points": 10,
           "text": "Philippians"
         },
         {
@@ -538,7 +609,7 @@
             "2 timothy",
             "first timothy"
           ],
-          "points": 12,
+          "points": 8,
           "text": "Timothy"
         },
         {
@@ -546,18 +617,17 @@
             "1 thessalonians",
             "2 thessalonians"
           ],
-          "points": 10,
+          "points": 6,
           "text": "Thessalonians"
         },
         {
           "aliases": [],
-          "points": 8,
+          "points": 4,
           "text": "Colossians"
         }
       ],
       "prompt": "Name a letter (epistle) written by the apostle Paul",
       "decoys": [
-        "Corinthians",
         "Hebrews",
         "Titus",
         "Philemon"
