@@ -3121,7 +3121,7 @@
       "micro": true,
       "title": "Deep Dive · Concrete vs. Abstract Predication",
       "category": "Christology ladder",
-      "level": "Deep dive · 4 teaching cards · 6 questions",
+      "level": "Deep dive · 4 teaching cards · 7 questions",
       "summary": "Every statement about Christ has a subject — a Person or a nature — and which one you pick determines whether the statement is true. Concrete predication names the Person and stands; abstract predication names a nature and is refused.",
       "source": "1 Corinthians 2:8 · John 1:14 · St. John of Damascus, On the Orthodox Faith III",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20John%201%3A14&version=KJV",
@@ -3136,11 +3136,11 @@
         },
         {
           "heading": "Abstract predication: a nature as subject",
-          "body": "Abstract predication names a nature itself — divinity, humanity, the divine nature — and here the exchange is refused. \"Divinity was born.\" \"Humanity created the world.\" \"The divine nature suffered.\" These are false, because natures don't act or suffer — only persons do. A nature is what something is, not who does something. The divine nature as such is impassible; it does not become mortal. The human nature as such is created; it does not create the world. The correction is never to soften the claim but to fix the subject: not \"divinity suffered,\" but \"God suffered in the flesh\"; not \"humanity was crucified,\" but \"the Lord of glory was crucified.\" Same events, true grammar."
+          "body": "Abstract predication names a nature itself — divinity, humanity, the divine nature — and here the exchange is refused. \"Divinity was born.\" \"Humanity created the world.\" \"The divine nature suffered.\" These are false, because natures don't act or suffer — only persons do. A nature is what something is, not who does something. The divine nature as such is impassible; it does not become mortal. The human nature as such is created; it does not create the world. The correction is never to soften the claim but to fix the subject: not \"divinity suffered,\" but \"God suffered in the flesh\"; not \"humanity was crucified,\" but \"the Lord of glory was crucified.\" Same events, true grammar. Here is the exchange where you will meet this most often. Someone asks: \"How many gods died?\" They are treating \"God\" as a nature — the divine nature — and asking whether that nature died. That is abstract predication, and the answer is zero: no nature died. Death belongs to the human nature, and the divine nature is immortal. Abstract predication applies a property to a nature instead of to the person; the nature isn't the proper subject — the person is."
         },
         {
           "heading": "The formula, the two doorways, and practice",
-          "body": "The formula carries the whole lesson: properties stay with their natures; the person carries both. You can say the person did what either nature does, but you cannot say the nature itself did it. Watch the two doorways. Abstract predication is the doorway to Eutychianism: say divinity suffered, and you have made the divine nature mortal — the natures are mixed. Refusing concrete predication is the doorway to Nestorianism: if you cannot say God died, you have split Christ into two persons. Now practice. \"The Word became flesh\" — concrete: the subject is the Word, the Person. \"The human nature was crucified\" — abstract, refused: say instead, Christ was crucified according to the flesh. \"Christ rose from the dead\" — concrete: Christ is the Person, and he rose. Sort the subject first, and you will rarely miss."
+          "body": "The formula carries the whole lesson: properties stay with their natures; the person carries both. You can say the person did what either nature does, but you cannot say the nature itself did it. Watch the two doorways. Abstract predication is the doorway to Eutychianism: say divinity suffered, and you have made the divine nature mortal — the natures are mixed. Refusing concrete predication is the doorway to Nestorianism: if you cannot say God died, you have split Christ into two persons. When you hear the abstract move, do not just refuse it — redirect it. The correct move is to redirect to concrete predication: one Person died — the Son, who is God. The property of dying belongs to his human nature, but the subject is the Person. For your notes: abstract predication names a nature as the subject; concrete predication names the person. Properties stay with their natures; the person carries both. Now practice. \"The Word became flesh\" — concrete: the subject is the Word, the Person. \"The human nature was crucified\" — abstract, refused: say instead, Christ was crucified according to the flesh. \"Christ rose from the dead\" — concrete: Christ is the Person, and he rose. Sort the subject first, and you will rarely miss."
         }
       ],
       "questions": [
@@ -3209,6 +3209,17 @@
           ],
           "correct": 1,
           "explanation": "The subject names a nature. Natures are not crucified; persons are. The Person was crucified in the nature that can be crucified."
+        },
+        {
+          "prompt": "\"How many gods died?\" What is wrong with the question, and what is the answer?",
+          "choices": [
+            "Nothing is wrong; the answer is one god",
+            "It treats \"God\" as a nature and asks if that nature died — abstract predication. The answer: zero natures died; one Person died, the Son who is God, in his human nature",
+            "It is concrete predication, and the answer is three",
+            "The question is fine, but unanswerable, so we stay silent"
+          ],
+          "correct": 1,
+          "explanation": "Abstract predication applies a property to a nature instead of to the person. Redirect: one Person died — the Son, who is God; dying belongs to his human nature, the subject is the Person."
         }
       ],
       "words": [
