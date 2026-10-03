@@ -1,9 +1,9 @@
-/* Mind Soul and Body — service worker
+/* Mind Soul & Body — service worker
    Shell: precached lightly, but HTML/JS/CSS are NETWORK-FIRST at runtime so
    deploys land immediately (no stale-build trap). Bible/study JSON under
    bible/ and data/ is CACHE-FIRST (versioned with the deploy) and lazy-cached
    per book on first read. Bump CACHE_VERSION to force a clean precache. */
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 
@@ -17,6 +17,7 @@ const SHELL = [
   './icon-maskable-512.png',
   './aura.css',
   './study-design.css',
+  './games.js',
 ];
 
 self.addEventListener('install', (event) => {

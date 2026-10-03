@@ -1,4 +1,4 @@
-/* Mind Soul and Body — nocturnal study UI. Profile themes control the canvas; components and type remain stable. */
+/* Mind Soul & Body — nocturnal study UI. Profile themes control the canvas; components and type remain stable. */
 :root{--bg:#14111c;--surface:#201c29;--surface2:#292334;--line:#b9a8d02e;--text:#faf7ff;--muted:#b9b1c4;--gold:#6ee8d1;--teal:#6ee8d1;--serif:'Cormorant Garamond',Georgia,serif;--app-glow:#7650a74d;--app-card:#231e2c;--app-card-end:#1b1823;--app-bible:#19171f;--app-input:#1d1a25;color-scheme:dark}
 :root[data-theme="grey"]{--bg:#19191d;--app-glow:#77708942}
 :root[data-theme="navy"]{--bg:#10182a;--app-glow:#4f659d50}

@@ -1,0 +1,1384 @@
+{
+ "feud": [
+  {
+   "answers": [
+    {
+     "aliases": [
+      "gospel of john"
+     ],
+     "points": 30,
+     "text": "John"
+    },
+    {
+     "aliases": [
+      "epistle of james"
+     ],
+     "points": 22,
+     "text": "James"
+    },
+    {
+     "aliases": [],
+     "points": 16,
+     "text": "Jonah"
+    },
+    {
+     "aliases": [],
+     "points": 12,
+     "text": "Jeremiah"
+    },
+    {
+     "aliases": [],
+     "points": 10,
+     "text": "Joshua"
+    },
+    {
+     "aliases": [],
+     "points": 6,
+     "text": "Job"
+    },
+    {
+     "aliases": [],
+     "points": 4,
+     "text": "Judith"
+    }
+   ],
+   "prompt": "Name a book of the Bible that starts with the letter J"
+  },
+  {
+   "answers": [
+    {
+     "aliases": [
+      "simon peter",
+      "simon",
+      "st peter"
+     ],
+     "points": 34,
+     "text": "Peter"
+    },
+    {
+     "aliases": [
+      "st john"
+     ],
+     "points": 24,
+     "text": "John"
+    },
+    {
+     "aliases": [
+      "james son of zebedee"
+     ],
+     "points": 14,
+     "text": "James"
+    },
+    {
+     "aliases": [
+      "levi"
+     ],
+     "points": 10,
+     "text": "Matthew"
+    },
+    {
+     "aliases": [],
+     "points": 8,
+     "text": "Andrew"
+    },
+    {
+     "aliases": [
+      "doubting thomas"
+     ],
+     "points": 6,
+     "text": "Thomas"
+    },
+    {
+     "aliases": [
+      "judas"
+     ],
+     "points": 4,
+     "text": "Judas Iscariot"
+    }
+   ],
+   "prompt": "Name one of the Twelve Apostles"
+  },
+  {
+   "answers": [
+    {
+     "aliases": [
+      "animals",
+      "pairs of animals",
+      "the animals",
+      "two of every kind"
+     ],
+     "points": 40,
+     "text": "Two of every animal"
+    },
+    {
+     "aliases": [
+      "shem ham and japheth",
+      "his family",
+      "family"
+     ],
+     "points": 18,
+     "text": "His sons"
+    },
+    {
+     "aliases": [
+      "food",
+      "provisions"
+     ],
+     "points": 15,
+     "text": "Food and drink"
+    },
+    {
+     "aliases": [
+      "wife"
+     ],
+     "points": 12,
+     "text": "His wife"
+    },
+    {
+     "aliases": [
+      "fowls",
+      "doves",
+      "ravens"
+     ],
+     "points": 9,
+     "text": "Birds"
+    },
+    {
+     "aliases": [
+      "seven pairs",
+      "clean animals"
+     ],
+     "points": 6,
+     "text": "Clean beasts by sevens"
+    }
+   ],
+   "prompt": "Name something Noah took with him on the ark"
+  },
+  {
+   "answers": [
+    {
+     "aliases": [
+      "shepherds"
+     ],
+     "points": 38,
+     "text": "The shepherds"
+    },
+    {
+     "aliases": [
+      "wise men",
+      "the wise men",
+      "three wise men",
+      "kings"
+     ],
+     "points": 34,
+     "text": "The Magi"
+    },
+    {
+     "aliases": [
+      "angels",
+      "angel"
+     ],
+     "points": 12,
+     "text": "The angels"
+    },
+    {
+     "aliases": [
+      "righteous simeon"
+     ],
+     "points": 8,
+     "text": "Simeon"
+    },
+    {
+     "aliases": [
+      "anna"
+     ],
+     "points": 5,
+     "text": "Anna the prophetess"
+    },
+    {
+     "aliases": [
+      "herod"
+     ],
+     "points": 3,
+     "text": "Herod's messengers"
+    }
+   ],
+   "prompt": "Name someone who visited the newborn Jesus"
+  },
+  {
+   "answers": [
+    {
+     "aliases": [
+      "grape",
+      "vine"
+     ],
+     "points": 26,
+     "text": "Grapes"
+    },
+    {
+     "aliases": [
+      "fig"
+     ],
+     "points": 22,
+     "text": "Figs"
+    },
+    {
+     "aliases": [
+      "olive"
+     ],
+     "points": 15,
+     "text": "Olives"
+    },
+    {
+     "aliases": [
+      "pomegranate"
+     ],
+     "points": 13,
+     "text": "Pomegranates"
+    },
+    {
+     "aliases": [
+      "apple"
+     ],
+     "points": 11,
+     "text": "Apples"
+    },
+    {
+     "aliases": [
+      "date"
+     ],
+     "points": 7,
+     "text": "Dates"
+    },
+    {
+     "aliases": [
+      "almond"
+     ],
+     "points": 6,
+     "text": "Almonds"
+    }
+   ],
+   "prompt": "Name a fruit mentioned in the Bible"
+  },
+  {
+   "answers": [
+    {
+     "aliases": [
+      "cana of galilee"
+     ],
+     "points": 22,
+     "text": "Cana"
+    },
+    {
+     "aliases": [],
+     "points": 19,
+     "text": "Jerusalem"
+    },
+    {
+     "aliases": [],
+     "points": 15,
+     "text": "Capernaum"
+    },
+    {
+     "aliases": [],
+     "points": 14,
+     "text": "Bethsaida"
+    },
+    {
+     "aliases": [],
+     "points": 12,
+     "text": "Bethany"
+    },
+    {
+     "aliases": [],
+     "points": 12,
+     "text": "Jericho"
+    },
+    {
+     "aliases": [],
+     "points": 6,
+     "text": "Bethlehem"
+    }
+   ],
+   "prompt": "Name a town where Jesus worked a miracle"
+  },
+  {
+   "answers": [
+    {
+     "aliases": [
+      "firstborn",
+      "death of firstborn"
+     ],
+     "points": 22,
+     "text": "Death of the firstborn"
+    },
+    {
+     "aliases": [
+      "frog"
+     ],
+     "points": 18,
+     "text": "Frogs"
+    },
+    {
+     "aliases": [
+      "blood",
+      "water to blood",
+      "river to blood"
+     ],
+     "points": 16,
+     "text": "Water turned to blood"
+    },
+    {
+     "aliases": [
+      "three days of darkness"
+     ],
+     "points": 12,
+     "text": "Darkness"
+    },
+    {
+     "aliases": [
+      "locust"
+     ],
+     "points": 12,
+     "text": "Locusts"
+    },
+    {
+     "aliases": [
+      "hail and fire"
+     ],
+     "points": 10,
+     "text": "Hail"
+    },
+    {
+     "aliases": [
+      "lice",
+      "gnat"
+     ],
+     "points": 10,
+     "text": "Gnats"
+    }
+   ],
+   "prompt": "Name one of the Ten Plagues of Egypt"
+  },
+  {
+   "answers": [
+    {
+     "aliases": [
+      "mary the theotokos",
+      "theotokos",
+      "virgin mary"
+     ],
+     "points": 36,
+     "text": "Mary"
+    },
+    {
+     "aliases": [],
+     "points": 18,
+     "text": "Ruth"
+    },
+    {
+     "aliases": [],
+     "points": 14,
+     "text": "Esther"
+    },
+    {
+     "aliases": [
+      "sarai"
+     ],
+     "points": 12,
+     "text": "Sarah"
+    },
+    {
+     "aliases": [],
+     "points": 10,
+     "text": "Hannah"
+    },
+    {
+     "aliases": [],
+     "points": 6,
+     "text": "Eve"
+    },
+    {
+     "aliases": [],
+     "points": 4,
+     "text": "Martha"
+    }
+   ],
+   "prompt": "Name a woman of the Bible you might name a daughter after"
+  },
+  {
+   "answers": [
+    {
+     "aliases": [
+      "romans"
+     ],
+     "points": 28,
+     "text": "Romans"
+    },
+    {
+     "aliases": [],
+     "points": 16,
+     "text": "Ephesians"
+    },
+    {
+     "aliases": [],
+     "points": 14,
+     "text": "Galatians"
+    },
+    {
+     "aliases": [],
+     "points": 12,
+     "text": "Philippians"
+    },
+    {
+     "aliases": [
+      "1 timothy",
+      "2 timothy",
+      "first timothy"
+     ],
+     "points": 12,
+     "text": "Timothy"
+    },
+    {
+     "aliases": [
+      "1 thessalonians",
+      "2 thessalonians"
+     ],
+     "points": 10,
+     "text": "Thessalonians"
+    },
+    {
+     "aliases": [],
+     "points": 8,
+     "text": "Colossians"
+    }
+   ],
+   "prompt": "Name a letter (epistle) written by the apostle Paul"
+  },
+  {
+   "answers": [
+    {
+     "aliases": [
+      "fasting",
+      "abstain from meat",
+      "give up meat"
+     ],
+     "points": 40,
+     "text": "Fast"
+    },
+    {
+     "aliases": [
+      "prayer",
+      "pray"
+     ],
+     "points": 22,
+     "text": "Pray more"
+    },
+    {
+     "aliases": [
+      "alms",
+      "charity",
+      "give to the poor"
+     ],
+     "points": 14,
+     "text": "Give alms"
+    },
+    {
+     "aliases": [
+      "go to church",
+      "services",
+      "presanctified liturgy",
+      "church"
+     ],
+     "points": 12,
+     "text": "Attend more services"
+    },
+    {
+     "aliases": [
+      "confession",
+      "confess"
+     ],
+     "points": 8,
+     "text": "Go to confession"
+    },
+    {
+     "aliases": [
+      "forgiveness",
+      "forgiveness sunday",
+      "forgive"
+     ],
+     "points": 4,
+     "text": "Ask forgiveness"
+    }
+   ],
+   "prompt": "Name something the faithful do during Great Lent"
+  }
+ ],
+ "jeopardy": [
+  {
+   "category": "Genesis",
+   "clues": [
+    {
+     "answer": "Who is Adam?",
+     "choices": [
+      "Who is Adam?",
+      "Who is Noah?",
+      "Who is Abraham?",
+      "Who is Seth?"
+     ],
+     "clue": "Formed from the dust of the ground, he is the first man.",
+     "reference": "Genesis 2:7",
+     "value": 200
+    },
+    {
+     "answer": "Who is Noah?",
+     "choices": [
+      "Who is Moses?",
+      "Who is Noah?",
+      "Who is Enoch?",
+      "Who is Japheth?"
+     ],
+     "clue": "Commanded to build an ark, he and his house were saved through the flood.",
+     "reference": "Genesis 6:13-18",
+     "value": 400
+    },
+    {
+     "answer": "Who is Joseph?",
+     "choices": [
+      "Who is Benjamin?",
+      "Who is Judah?",
+      "Who is Joseph?",
+      "Who is Reuben?"
+     ],
+     "clue": "Sold by his brothers for twenty pieces of silver, he rose to govern Egypt under Pharaoh.",
+     "reference": "Genesis 37:28; 41:40",
+     "value": 600
+    },
+    {
+     "answer": "What is Babel?",
+     "choices": [
+      "What is Bethel?",
+      "What is Babel?",
+      "What is Sinai?",
+      "What is Beersheba?"
+     ],
+     "clue": "At this place the LORD confused the language of all the earth and scattered men abroad.",
+     "reference": "Genesis 11:9",
+     "value": 800
+    },
+    {
+     "answer": "What is Abram?",
+     "choices": [
+      "What is Terah?",
+      "What is Nahor?",
+      "What is Abram?",
+      "What is Lot?"
+     ],
+     "clue": "Before God renamed him Abraham, the father of many nations bore this name.",
+     "reference": "Genesis 17:5",
+     "value": 1000
+    }
+   ]
+  },
+  {
+   "category": "Life of Jesus",
+   "clues": [
+    {
+     "answer": "What is Bethlehem?",
+     "choices": [
+      "What is Nazareth?",
+      "What is Bethlehem?",
+      "What is Bethany?",
+      "What is Capernaum?"
+     ],
+     "clue": "The town of David where Jesus was born.",
+     "reference": "Matthew 2:1",
+     "value": 200
+    },
+    {
+     "answer": "Who is John the Baptist?",
+     "choices": [
+      "Who is Simeon?",
+      "Who is Andrew?",
+      "Who is John the Baptist?",
+      "Who is Nicodemus?"
+     ],
+     "clue": "He baptized Jesus in the river Jordan and saw the Spirit descend like a dove.",
+     "reference": "Matthew 3:13-16",
+     "value": 400
+    },
+    {
+     "answer": "What is Cana?",
+     "choices": [
+      "What is Cana?",
+      "What is Nain?",
+      "What is Jericho?",
+      "What is Emmaus?"
+     ],
+     "clue": "Jesus turned water into wine at a wedding in this Galilean town — His first sign.",
+     "reference": "John 2:1-11",
+     "value": 600
+    },
+    {
+     "answer": "Who is Peter?",
+     "choices": [
+      "Who is Judas Iscariot?",
+      "Who is Thomas?",
+      "Who is John?",
+      "Who is Peter?"
+     ],
+     "clue": "Though he swore he did not know the Lord, this disciple wept bitterly after the cock crew.",
+     "reference": "Matthew 26:69-75",
+     "value": 800
+    },
+    {
+     "answer": "What is Mount Tabor?",
+     "choices": [
+      "What is Mount Sinai?",
+      "What is Mount Tabor?",
+      "What is the Mount of Olives?",
+      "What is Mount Gerizim?"
+     ],
+     "clue": "By Orthodox tradition, the mountain of the Transfiguration, where Moses and Elijah appeared with Christ.",
+     "reference": "Matthew 17:1-9",
+     "value": 1000
+    }
+   ]
+  },
+  {
+   "category": "Psalms & Wisdom",
+   "clues": [
+    {
+     "answer": "What is Psalm 23?",
+     "choices": [
+      "What is Psalm 1?",
+      "What is Psalm 51?",
+      "What is Psalm 23?",
+      "What is Psalm 91?"
+     ],
+     "clue": "This psalm opens, 'The Lord is my shepherd; I shall not want.' (Psalm 22 in the Septuagint numbering.)",
+     "reference": "Psalm 23:1 (22 LXX)",
+     "value": 200
+    },
+    {
+     "answer": "What is wisdom?",
+     "choices": [
+      "What is knowledge?",
+      "What is riches?",
+      "What is long life?",
+      "What is wisdom?"
+     ],
+     "clue": "Proverbs teaches that the fear of the LORD is the beginning of this.",
+     "reference": "Proverbs 9:10",
+     "value": 400
+    },
+    {
+     "answer": "Who is David?",
+     "choices": [
+      "Who is Solomon?",
+      "Who is David?",
+      "Who is Asaph?",
+      "Who is Samuel?"
+     ],
+     "clue": "A shepherd boy who slew Goliath, he became king and is remembered as the sweet psalmist of Israel.",
+     "reference": "1 Samuel 17; 2 Samuel 23:1",
+     "value": 600
+    },
+    {
+     "answer": "What is Ecclesiastes?",
+     "choices": [
+      "What is Job?",
+      "What is Ecclesiastes?",
+      "What is Lamentations?",
+      "What is the Song of Solomon?"
+     ],
+     "clue": "'Vanity of vanities; all is vanity,' sighs the Preacher in this book.",
+     "reference": "Ecclesiastes 1:2",
+     "value": 800
+    },
+    {
+     "answer": "What is the whirlwind?",
+     "choices": [
+      "What is a burning bush?",
+      "What is a pillar of cloud?",
+      "What is the whirlwind?",
+      "What is an earthquake?"
+     ],
+     "clue": "After long silence, the LORD finally answered Job out of this.",
+     "reference": "Job 38:1",
+     "value": 1000
+    }
+   ]
+  },
+  {
+   "category": "Apostles & Acts",
+   "clues": [
+    {
+     "answer": "What is Pentecost?",
+     "choices": [
+      "What is Pentecost?",
+      "What is the Ascension?",
+      "What is Tabernacles?",
+      "What is the Transfiguration?"
+     ],
+     "clue": "Fifty days after Pascha, the Holy Spirit descended with tongues as of fire on this feast.",
+     "reference": "Acts 2:1-4",
+     "value": 200
+    },
+    {
+     "answer": "Who is Stephen?",
+     "choices": [
+      "Who is James?",
+      "Who is Stephen?",
+      "Who is Barnabas?",
+      "Who is Philip?"
+     ],
+     "clue": "The first martyr, he saw the Son of man standing at the right hand of God as the stones flew.",
+     "reference": "Acts 7:55-60",
+     "value": 400
+    },
+    {
+     "answer": "What is Damascus?",
+     "choices": [
+      "What is Tarsus?",
+      "What is Antioch?",
+      "What is Damascus?",
+      "What is Caesarea?"
+     ],
+     "clue": "'Saul, Saul, why persecutest thou me?' — the voice found Saul on the road to this city.",
+     "reference": "Acts 9:3-5",
+     "value": 600
+    },
+    {
+     "answer": "Who is Luke?",
+     "choices": [
+      "Who is Luke?",
+      "Who is Mark?",
+      "Who is Timothy?",
+      "Who is Titus?"
+     ],
+     "clue": "Paul's beloved companion, a physician who also wrote a Gospel and the Acts.",
+     "reference": "Colossians 4:14; Luke 1:3",
+     "value": 800
+    },
+    {
+     "answer": "What is Jerusalem?",
+     "choices": [
+      "What is Antioch?",
+      "What is Corinth?",
+      "What is Ephesus?",
+      "What is Jerusalem?"
+     ],
+     "clue": "The apostles gathered in council in this city to settle the question of Gentile believers.",
+     "reference": "Acts 15:6",
+     "value": 1000
+    }
+   ]
+  },
+  {
+   "category": "Deuterocanon",
+   "clues": [
+    {
+     "answer": "Who is Tobit?",
+     "choices": [
+      "Who is Tobit?",
+      "Who is Raguel?",
+      "Who is Azarias?",
+      "Who is Gabael?"
+     ],
+     "clue": "A righteous Israelite in Nineveh, blinded yet faithful — his son Tobias journeys with the angel Raphael.",
+     "reference": "Tobit 1:3; 2:9-10",
+     "value": 200
+    },
+    {
+     "answer": "Who is Judith?",
+     "choices": [
+      "Who is Esther?",
+      "Who is Judith?",
+      "Who is Susanna?",
+      "Who is Jael?"
+     ],
+     "clue": "She saved her city by cutting off the head of Holofernes, the Assyrian general.",
+     "reference": "Judith 13:8",
+     "value": 400
+    },
+    {
+     "answer": "What is 2 Maccabees?",
+     "choices": [
+      "What is 1 Maccabees?",
+      "What is Sirach?",
+      "What is 2 Maccabees?",
+      "What is Baruch?"
+     ],
+     "clue": "Seven brothers and their mother chose death rather than eat swine's flesh, as told in this book.",
+     "reference": "2 Maccabees 7",
+     "value": 600
+    },
+    {
+     "answer": "What is the burning fiery furnace?",
+     "choices": [
+      "What is a lion's den?",
+      "What is the burning fiery furnace?",
+      "What is a great fish?",
+      "What is a prison?"
+     ],
+     "clue": "Hananiah, Mishael, and Azariah sang praise to God from inside this, in the Prayer of Azariah.",
+     "reference": "Prayer of Azariah 1-27 (Daniel 3, LXX)",
+     "value": 800
+    },
+    {
+     "answer": "What is the hand of God?",
+     "choices": [
+      "What is angels?",
+      "What is Sheol?",
+      "What is the hand of God?",
+      "What is the grave?"
+     ],
+     "clue": "Completing the sentence from Wisdom: 'The souls of the righteous are in the hand of ____.'",
+     "reference": "Wisdom of Solomon 3:1",
+     "value": 1000
+    }
+   ]
+  }
+ ],
+ "meta": {
+  "note": "Authored for private play. Scripture references use KJV numbering; Orthodox (Septuagint) psalm numbers are noted where they differ. Family Feud boards are our own house rankings, not a real survey.",
+  "title": "Mind Soul & Body — Game Show Question Bank"
+ },
+ "millionaire": {
+  "easy": [
+   {
+    "answer": "Noah",
+    "choices": [
+     "Noah",
+     "Moses",
+     "Abraham",
+     "David"
+    ],
+    "q": "Who built the ark at God's command?",
+    "reference": "Genesis 6"
+   },
+   {
+    "answer": "Six",
+    "choices": [
+     "Five",
+     "Six",
+     "Seven",
+     "Forty"
+    ],
+    "q": "In how many days did God make heaven and earth before He rested?",
+    "reference": "Genesis 1-2"
+   },
+   {
+    "answer": "Adam",
+    "choices": [
+     "Enoch",
+     "Adam",
+     "Seth",
+     "Abel"
+    ],
+    "q": "Who was the first man?",
+    "reference": "Genesis 2"
+   },
+   {
+    "answer": "Bethlehem",
+    "choices": [
+     "Nazareth",
+     "Jerusalem",
+     "Bethlehem",
+     "Bethany"
+    ],
+    "q": "In what town was Jesus born?",
+    "reference": "Matthew 2:1"
+   },
+   {
+    "answer": "Moses",
+    "choices": [
+     "Aaron",
+     "Joshua",
+     "Moses",
+     "Joseph"
+    ],
+    "q": "Who led the Israelites out of Egypt?",
+    "reference": "Exodus 3"
+   },
+   {
+    "answer": "Goliath",
+    "choices": [
+     "Og",
+     "Goliath",
+     "Sihon",
+     "Nimrod"
+    ],
+    "q": "Which giant did the young David defeat with a sling?",
+    "reference": "1 Samuel 17"
+   },
+   {
+    "answer": "Jonah",
+    "choices": [
+     "Elijah",
+     "Jonah",
+     "Amos",
+     "Peter"
+    ],
+    "q": "Which prophet spent three days inside a great fish?",
+    "reference": "Jonah 1:17"
+   },
+   {
+    "answer": "Twelve",
+    "choices": [
+     "Seven",
+     "Ten",
+     "Twelve",
+     "Seventy"
+    ],
+    "q": "How many apostles did Jesus choose?",
+    "reference": "Matthew 10:1-4"
+   },
+   {
+    "answer": "Genesis",
+    "choices": [
+     "Exodus",
+     "Genesis",
+     "Psalms",
+     "Matthew"
+    ],
+    "q": "What is the first book of the Bible?",
+    "reference": "Genesis 1:1"
+   },
+   {
+    "answer": "John the Baptist",
+    "choices": [
+     "Peter",
+     "Andrew",
+     "John the Baptist",
+     "Simeon"
+    ],
+    "q": "Who baptized Jesus in the Jordan?",
+    "reference": "Matthew 3"
+   },
+   {
+    "answer": "Eve",
+    "choices": [
+     "Sarah",
+     "Eve",
+     "Rebekah",
+     "Leah"
+    ],
+    "q": "Who was Adam's wife?",
+    "reference": "Genesis 3:20"
+   },
+   {
+    "answer": "A serpent",
+    "choices": [
+     "A donkey",
+     "A dove",
+     "A lion",
+     "A serpent"
+    ],
+    "q": "What creature tempted Eve in the garden?",
+    "reference": "Genesis 3"
+   },
+   {
+    "answer": "Two",
+    "choices": [
+     "Two",
+     "Three",
+     "Five",
+     "Seven"
+    ],
+    "q": "Jesus fed five thousand with five loaves and how many fish?",
+    "reference": "Matthew 14:17"
+   },
+   {
+    "answer": "The seventh",
+    "choices": [
+     "The first",
+     "The third",
+     "The sixth",
+     "The seventh"
+    ],
+    "q": "On which day of creation week did God rest?",
+    "reference": "Genesis 2:2"
+   },
+   {
+    "answer": "Moses",
+    "choices": [
+     "Joshua",
+     "Moses",
+     "Aaron",
+     "Caleb"
+    ],
+    "q": "Who received the Ten Commandments on Mount Sinai?",
+    "reference": "Exodus 20"
+   }
+  ],
+  "hard": [
+   {
+    "answer": "Nicaea I",
+    "choices": [
+     "Ephesus",
+     "Nicaea I",
+     "Chalcedon",
+     "Constantinople I"
+    ],
+    "q": "At which council in A.D. 325 was the Son confessed as homoousios, of one essence with the Father?",
+    "reference": "The Nicene Creed"
+   },
+   {
+    "answer": "150",
+    "choices": [
+     "100",
+     "120",
+     "150",
+     "151"
+    ],
+    "q": "How many psalms are in the Psalter?",
+    "reference": "The Book of Psalms"
+   },
+   {
+    "answer": "Abraham",
+    "choices": [
+     "Moses",
+     "David",
+     "Enoch",
+     "Abraham"
+    ],
+    "q": "Which man is called 'the friend of God' in the epistle of James?",
+    "reference": "James 2:23"
+   },
+   {
+    "answer": "Greek",
+    "choices": [
+     "Latin",
+     "Greek",
+     "Aramaic",
+     "Coptic"
+    ],
+    "q": "The Septuagint is the ancient translation of the Hebrew Scriptures into which language?",
+    "reference": "The LXX tradition"
+   },
+   {
+    "answer": "Caiaphas",
+    "choices": [
+     "Annas",
+     "Caiaphas",
+     "Ananias",
+     "Theophilus"
+    ],
+    "q": "Who was high priest in Jerusalem at the time of Christ's trial?",
+    "reference": "Matthew 26:57"
+   },
+   {
+    "answer": "Ezekiel",
+    "choices": [
+     "Isaiah",
+     "Jeremiah",
+     "Ezekiel",
+     "Daniel"
+    ],
+    "q": "Which prophet saw the vision of the valley of dry bones?",
+    "reference": "Ezekiel 37"
+   },
+   {
+    "answer": "Saul",
+    "choices": [
+     "Silas",
+     "Saul",
+     "Barnabas",
+     "Gamaliel"
+    ],
+    "q": "What was the apostle Paul's name before his conversion?",
+    "reference": "Acts 13:9"
+   },
+   {
+    "answer": "Laodicea",
+    "choices": [
+     "Smyrna",
+     "Thyatira",
+     "Laodicea",
+     "Philadelphia"
+    ],
+    "q": "In the book of Revelation, which church is rebuked for being lukewarm?",
+    "reference": "Revelation 3:15-16"
+   },
+   {
+    "answer": "Incorruption",
+    "choices": [
+     "Incorruption",
+     "Dominion",
+     "Sorrow",
+     "Sacrifice"
+    ],
+    "q": "According to the Wisdom of Solomon, God created man for what?",
+    "reference": "Wisdom of Solomon 2:23"
+   },
+   {
+    "answer": "Constantine",
+    "choices": [
+     "Diocletian",
+     "Julian",
+     "Constantine",
+     "Theodosius"
+    ],
+    "q": "Which emperor issued the Edict of Milan in A.D. 313, granting Christians freedom to worship?",
+    "reference": "Church history, A.D. 313"
+   },
+   {
+    "answer": "Philip",
+    "choices": [
+     "Peter",
+     "Philip",
+     "John",
+     "Ananias"
+    ],
+    "q": "Who baptized the Ethiopian eunuch on the Gaza road?",
+    "reference": "Acts 8:38"
+   },
+   {
+    "answer": "Salem",
+    "choices": [
+     "Salem",
+     "Hebron",
+     "Sodom",
+     "Ur"
+    ],
+    "q": "Melchizedek, priest of the most high God, was king of which city?",
+    "reference": "Genesis 14:18"
+   },
+   {
+    "answer": "Athanasius",
+    "choices": [
+     "Basil the Great",
+     "Athanasius",
+     "John Chrysostom",
+     "Cyril"
+    ],
+    "q": "Which saint and bishop of Alexandria wrote the treatise 'On the Incarnation'?",
+    "reference": "On the Incarnation, c. A.D. 318"
+   },
+   {
+    "answer": "The falling asleep of the Mother of God",
+    "choices": [
+     "The birth of Mary",
+     "The Annunciation",
+     "The falling asleep of the Mother of God",
+     "The Ascension of Christ"
+    ],
+    "q": "The feast of the Dormition celebrates what event?",
+    "reference": "Feast of August 15"
+   },
+   {
+    "answer": "Nebuchadnezzar",
+    "choices": [
+     "Sennacherib",
+     "Nebuchadnezzar",
+     "Cyrus",
+     "Artaxerxes"
+    ],
+    "q": "In the book of Judith, the story opens in the reign of which king of Assyria (as the book presents it)?",
+    "reference": "Judith 1:1"
+   }
+  ],
+  "ladder": [
+   100,
+   200,
+   300,
+   500,
+   1000,
+   2000,
+   4000,
+   8000,
+   16000,
+   32000,
+   64000,
+   125000,
+   250000,
+   500000,
+   1000000
+  ],
+  "medium": [
+   {
+    "answer": "Elijah",
+    "choices": [
+     "Elisha",
+     "Isaiah",
+     "Elijah",
+     "Jeremiah"
+    ],
+    "q": "Which prophet was taken up to heaven in a whirlwind with a chariot of fire?",
+    "reference": "2 Kings 2:11"
+   },
+   {
+    "answer": "Joseph",
+    "choices": [
+     "Daniel",
+     "Joseph",
+     "Aaron",
+     "Samuel"
+    ],
+    "q": "Who interpreted Pharaoh's dreams of fat and lean cattle?",
+    "reference": "Genesis 41"
+   },
+   {
+    "answer": "Elisabeth",
+    "choices": [
+     "Mary",
+     "Elisabeth",
+     "Anna",
+     "Martha"
+    ],
+    "q": "Who was the mother of John the Baptist?",
+    "reference": "Luke 1:13"
+   },
+   {
+    "answer": "John",
+    "choices": [
+     "Matthew",
+     "Mark",
+     "Luke",
+     "John"
+    ],
+    "q": "Which Gospel opens with the words, 'In the beginning was the Word'?",
+    "reference": "John 1:1"
+   },
+   {
+    "answer": "Peter",
+    "choices": [
+     "Judas Iscariot",
+     "Peter",
+     "Thomas",
+     "Andrew"
+    ],
+    "q": "Which disciple denied Christ three times before the cock crew?",
+    "reference": "Luke 22:61"
+   },
+   {
+    "answer": "Golgotha",
+    "choices": [
+     "Olivet",
+     "Golgotha",
+     "Zion",
+     "Carmel"
+    ],
+    "q": "What was the name of the hill where Christ was crucified?",
+    "reference": "Matthew 27:33"
+   },
+   {
+    "answer": "David",
+    "choices": [
+     "Solomon",
+     "Moses",
+     "David",
+     "Asaph"
+    ],
+    "q": "Traditionally, who is remembered as the author of most of the Psalms?",
+    "reference": "Psalm superscriptions"
+   },
+   {
+    "answer": "Thomas",
+    "choices": [
+     "Thomas",
+     "Philip",
+     "Bartholomew",
+     "Matthew"
+    ],
+    "q": "Which apostle would not believe in the Resurrection until he saw the wounds?",
+    "reference": "John 20:24-29"
+   },
+   {
+    "answer": "Stephen",
+    "choices": [
+     "James",
+     "Stephen",
+     "Barnabas",
+     "Antipas"
+    ],
+    "q": "Who was the first Christian martyr, stoned while Saul watched?",
+    "reference": "Acts 7"
+   },
+   {
+    "answer": "Zacchaeus",
+    "choices": [
+     "Matthew",
+     "Zacchaeus",
+     "Nicodemus",
+     "Bartimaeus"
+    ],
+    "q": "Which tax collector climbed a sycamore tree to see Jesus?",
+    "reference": "Luke 19"
+   },
+   {
+    "answer": "Solomon",
+    "choices": [
+     "David",
+     "Hezekiah",
+     "Solomon",
+     "Josiah"
+    ],
+    "q": "Which king built the first Temple in Jerusalem?",
+    "reference": "1 Kings 6"
+   },
+   {
+    "answer": "Deborah",
+    "choices": [
+     "Deborah",
+     "Jael",
+     "Huldah",
+     "Miriam"
+    ],
+    "q": "Which woman judged Israel and sang a victory song with Barak?",
+    "reference": "Judges 4-5"
+   },
+   {
+    "answer": "Lazarus",
+    "choices": [
+     "Jairus's daughter",
+     "The widow's son",
+     "Lazarus",
+     "Tabitha"
+    ],
+    "q": "Whom did Jesus raise after he had been four days in the tomb?",
+    "reference": "John 11"
+   },
+   {
+    "answer": "The Jordan",
+    "choices": [
+     "The Euphrates",
+     "The Jordan",
+     "The Abana",
+     "The Nile"
+    ],
+    "q": "In which river did Naaman wash and recover from his leprosy?",
+    "reference": "2 Kings 5:14"
+   },
+   {
+    "answer": "Acts of the Apostles",
+    "choices": [
+     "Romans",
+     "Revelation",
+     "Acts of the Apostles",
+     "Hebrews"
+    ],
+    "q": "Which book comes right after the four Gospels?",
+    "reference": "Acts 1:1"
+   }
+  ],
+  "safeHavens": [
+   5,
+   10
+  ]
+ },
+ "jeopardyFinal": {
+  "answer": "What is the First Council of Nicaea?",
+  "category": "Church History",
+  "choices": [
+   "What is the First Council of Nicaea?",
+   "What is the Council of Ephesus?",
+   "What is the Council of Chalcedon?",
+   "What is the First Council of Constantinople?"
+  ],
+  "clue": "This council in A.D. 325 confessed the Son as homoousios — of one essence with the Father.",
+  "reference": "The Nicene Creed, A.D. 325"
+ }
+}
