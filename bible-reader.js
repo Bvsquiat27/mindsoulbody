@@ -143,6 +143,7 @@
           render();
           reader.context.toast(logged ? 'Chapter un-logged.' : 'Chapter logged as read. It counts on Home now.');
           if (!logged && reader.context.celebrate) { const check = await reader.context.api('/bible/achievements/check', 'POST', {}).catch(() => null); if (check && check.newly && check.newly.length) reader.context.celebrate(check.newly); }
+          if (logged && reader.context.celebrate) await reader.context.api('/bible/achievements/check', 'POST', {}).catch(() => null);
         } catch (error) { target.disabled = false; reader.context.toast(error.message); }
         break;
       }

@@ -233,12 +233,17 @@ async function msbAchievementsCompute(){
   return MSB_ACHIEVEMENTS.map(a=>{const raw=cur[a.id];const current=Array.isArray(raw)?raw[0]:raw||0;const target=Array.isArray(raw)?raw[1]:targets[a.id]||1;return{...a,current:Math.min(current,target),target,unlocked:current>=target,unlockedAt:(store.achievements||{})[a.id]||null}});
 }
 async function msbAchievementsCheck(){
-  const store=msbStore();store.achievements=store.achievements||{};
-  const list=await msbAchievementsCompute();const newly=[];
-  for(const a of list){if(a.unlocked&&!store.achievements[a.id]){store.achievements[a.id]=Math.floor(Date.now()/1000);newly.push(a)}}
-  if(newly.length)msbSave(store);
-  const marked=list.map(a=>({...a,unlockedAt:store.achievements[a.id]||a.unlockedAt}));
-  return{list:marked,newly,score:marked.filter(a=>a.unlockedAt).reduce((n,a)=>n+a.points,0)};
+  /* Achievements sit on the real counter: unlocked state is recomputed from
+     the live numbers every check. Un-log a chapter (or un-finish a study)
+     below a threshold and the achievement locks again, score included. */
+  const store=msbStore();const prev=store.achievements||{};
+  const raw=await msbAchievementsCompute();const newly=[];const next={};
+  for(const a of raw){
+    if(a.unlocked){next[a.id]=prev[a.id]||Math.floor(Date.now()/1000);if(!prev[a.id])newly.push(a)}
+  }
+  store.achievements=next;msbSave(store);
+  const list=raw.map(a=>({...a,unlocked:!!next[a.id],unlockedAt:next[a.id]||null}));
+  return{list,newly,score:list.filter(a=>a.unlockedAt).reduce((n,a)=>n+a.points,0)};
 }
 function showAchievement(a){
   const pop=document.createElement('div');pop.className='ach-pop';pop.setAttribute('role','status');
