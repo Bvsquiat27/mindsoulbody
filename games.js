@@ -882,7 +882,7 @@ window.BibleGames = (() => {
   function soundMenu() {
     const lvl = (G && G.level) || 'mixed';
     setHtml(`${backBar('Sound It Out')}
-      <p class="lead">Famous lines of Scripture, hidden in phonetic gibberish. Sound the card out — aloud works best — and decode the real phrase. Two or three readings is normal: the ear gets it before the eye does.</p>
+      <p class="lead">Lines of Scripture, hidden in phonetic gibberish. Sound the card out — aloud works best — and decode the real phrase. Two or three readings is the point now: the ear gets it before the eye does.</p>
       <div class="gx-levels" role="group" aria-label="Difficulty">
         ${[['easy', 'Easy'], ['mixed', 'Mixed'], ['hard', 'Hard']].map(([k, l]) => `<button class="secondary gx-level ${lvl === k ? 'active' : ''}" data-gx="s-level" data-level="${k}">${l}</button>`).join('')}
       </div>
@@ -935,17 +935,22 @@ window.BibleGames = (() => {
       return;
     }
     if (G.mode === 'race') {
-      const decoys = sample((bank.soundItOut || []).filter(x => x.phrase !== c.phrase), 3).map(x => x.phrase);
+      const pool = (bank.soundItOut || []).filter(x => x.phrase !== c.phrase);
+      const sameLevel = pool.filter(x => x.level === c.level);
+      const decoyCards = sameLevel.length >= 3
+        ? sample(sameLevel, 3)
+        : [...sameLevel, ...sample(pool.filter(x => x.level !== c.level), 3 - sameLevel.length)];
+      const decoys = decoyCards.map(x => x.phrase);
       G.options = shuffle([c.phrase, ...decoys]);
       setHtml(`${backBar('Sound It Out')}${scoreBar(G.seats, 0)}
         <section class="card gx-clue">
           <span class="eyebrow">${eyebrow}</span>
           <h2 class="gx-gibberish">${esc(c.gibberish)}</h2>
           <p class="lead">Which line of Scripture is this? Tap it before the PC decodes it.</p>
-          ${clockHtml('Twenty-five seconds')}
+          ${clockHtml('Twenty seconds')}
           <div class="gx-choices">${G.options.map(o => `<button data-gx="s-pick" data-choice="${esc(o)}">${esc(o)}</button>`).join('')}</div>
         </section>`);
-      startClock(25, () => soundPcSteal(true));
+      startClock(20, () => soundPcSteal(true));
       return;
     }
     setHtml(`${backBar('Sound It Out')}${scoreBar(G.seats, 0)}
@@ -1028,7 +1033,7 @@ window.BibleGames = (() => {
     if (!G || G.mode !== 'race' || (G.phase !== 'card' && G.phase !== 'steal')) return;
     stopClock();
     const c = soundCardData();
-    const chance = c.level === 'easy' ? 0.55 : c.level === 'medium' ? 0.45 : 0.35;
+    const chance = c.level === 'easy' ? 0.62 : c.level === 'medium' ? 0.52 : 0.42;
     if (Math.random() < chance) {
       G.seats[1].score += SOUND_BASE[c.level];
       soundRaceEnd(`The PC decoded it — +${SOUND_BASE[c.level]} to the machine.`, false);
