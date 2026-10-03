@@ -146,3 +146,25 @@ body{background:radial-gradient(ellipse 58% 25% at 50% -6%,var(--app-glow),trans
 .friend-note-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .friend-note-body{white-space:pre-wrap;margin:8px 0}
 .friend-note .note-actions{display:flex;flex-wrap:wrap;gap:8px}
+
+/* Live rooms, public scores, friend messages, shared notes (SW v31) */
+.gx-online{margin:18px 0}
+.gx-online .gx-modes{margin:10px 0}
+.gx-joinrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.gx-joinrow .text-input{flex:1 1 160px;text-transform:uppercase;letter-spacing:.06em}
+#gx-roombar{position:sticky;bottom:8px;z-index:5;display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#17262a;color:#f3ead6;border:1px solid #dcbf84;border-radius:12px;padding:8px 12px;margin:12px 0;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+#gx-roombar .gx-seat{background:rgba(255,255,255,.08);border-radius:8px;padding:2px 10px;display:flex;gap:8px;align-items:center}
+#gx-roombar .gx-seat.active{outline:1px solid #dcbf84}
+.gx-roombar-code{font-weight:700;letter-spacing:.05em}
+.gx-roombar-win{color:#dcbf84}
+.gx-roomcode{font-size:1.5rem;text-align:center}
+.friend-row-btns{display:flex;flex-direction:column;gap:6px}
+.friend-unread{background:#dcbf84;color:#17262a}
+.msg-thread{max-height:50vh;overflow-y:auto;padding:6px 2px;margin-bottom:12px}
+.msg-row{display:flex;margin:6px 0}
+.msg-mine{justify-content:flex-end}
+.msg-theirs{justify-content:flex-start}
+.msg-bubble{max-width:82%;border-radius:14px;padding:8px 12px;background:rgba(127,127,127,.14)}
+.msg-mine .msg-bubble{background:#17262a;color:#f3ead6}
+.msg-bubble p{margin:0 0 4px;white-space:pre-wrap}
+.msg-bubble small{opacity:.75}

@@ -22,6 +22,181 @@ window.BibleGames = (() => {
     const e = s.gameScores[show] || (s.gameScores[show] = { best: 0, plays: 0 });
     e.plays++; if (score > e.best) e.best = score;
     try { localStorage.setItem('msb_local_v1', JSON.stringify(s)); } catch { /* private mode */ }
+    /* Online hooks: post the final score to the live room this run belongs
+       to; otherwise a solo run joins the public scores. Both silent offline. */
+    try {
+      const social = ctx && ctx.social;
+      if (social) {
+        if (gxRoom && gxRoom.show === show && !gxRoom.finished) {
+          gxRoom.finished = true;
+          social.roomScore(gxRoom.code, score, true).then(st => { if (st) { gxRoom.state = st; renderRoomBar(); } }).catch(() => {});
+        } else if (!gxRoom && gxIsSoloRun(show)) {
+          social.submitScore(show, score, (G && G.runLevel) || gxSelectedLevel(show)).catch(() => {});
+        }
+      }
+    } catch { /* offline or no social layer — the local best above still saved */ }
+  }
+
+  /* ---------- live rooms (friend vs friend) + public solo scores ---------- */
+  let gxRoom = null;        // {code, show, level, state} while a room run is live
+  let gxRoomTimer = null;   // polling interval id (lobby wait or in-game sync)
+  let gxRoomLaunching = false;
+
+  function gxIsSoloRun(show) {
+    if (!G) return false;
+    switch (show) {
+      case 'jeopardy': return G.mode === 'solo';
+      case 'millionaire': return true;
+      case 'feud': return G.mode === 'pc';
+      case 'sound': return G.mode === 'solo';
+      case 'babel': return true;
+      case 'defend': case 'doctrine': return true;
+      default: return false;
+    }
+  }
+  function gxRoomScore() {
+    if (!G || !gxRoom) return 0;
+    switch (gxRoom.show) {
+      case 'jeopardy': case 'feud': case 'sound': return (G.seats && G.seats[0] ? G.seats[0].score : 0) || 0;
+      case 'millionaire': return G.rung > 1 && bank ? bank.millionaire.ladder[Math.min(G.rung - 2, bank.millionaire.ladder.length - 1)] : 0;
+      case 'babel': case 'defend': case 'doctrine': return G.score || 0;
+      default: return 0;
+    }
+  }
+  function roomButtons(show) {
+    return `<div class="gx-online">
+      <p class="small muted">Play a friend online — you both need the app open with internet. Solo finishes also join the public scores.</p>
+      <div class="gx-modes">
+        <button class="card gx-mode" data-gx="room-create" data-show-key="${show}"><strong>🟢 Live room vs a friend</strong><span>Open a room at the level picked above, send your friend the room code, then race live — scores update as you play and the higher score wins.</span></button>
+      </div>
+      <p class="gx-joinrow"><input class="text-input" data-gx-room-input placeholder="ROOM-XXXXXX" autocapitalize="characters" maxlength="12"><button class="secondary" data-gx="room-join">Join room</button><button class="secondary" data-gx="scores" data-show-key="${show}">🌍 Public scores</button></p>
+      <p class="small muted" data-gx-room-status></p>
+    </div>`;
+  }
+  function roomStatus(text) {
+    const el = root && root.querySelector('[data-gx-room-status]');
+    if (el) el.textContent = text || '';
+  }
+  function stopRoomTimer() { if (gxRoomTimer) { clearInterval(gxRoomTimer); gxRoomTimer = null; } }
+  function leaveRoomQuiet() {
+    stopRoomTimer();
+    if (gxRoom && ctx && ctx.social) ctx.social.roomLeave(gxRoom.code).catch(() => {});
+    gxRoom = null;
+  }
+  function roomPlayerLine(players, me) {
+    return players.map(p => `<div class="gx-seat ${p.code === me ? 'active' : ''}"><span>${esc(p.name)}${p.code === me ? ' (you)' : ''}</span><strong>${p.score || 0}${p.finished ? ' ✓' : ''}</strong></div>`).join('');
+  }
+  function renderRoomBar() {
+    if (!root || !gxRoom || !gxRoom.state) return;
+    let bar = root.querySelector('#gx-roombar');
+    if (!bar) { bar = document.createElement('div'); bar.id = 'gx-roombar'; root.appendChild(bar); }
+    const st = gxRoom.state, me = ctx.social.identity() ? ctx.social.identity().code : '';
+    const done = st.status === 'done';
+    const winner = done ? st.players.slice().sort((a, b) => (b.score || 0) - (a.score || 0))[0] : null;
+    bar.innerHTML = `<span class="gx-roombar-code">🟢 ${esc(st.room)}</span>${roomPlayerLine(st.players, me)}${done ? `<strong class="gx-roombar-win">${winner && winner.code === me ? '🏆 You win the room!' : `🏆 ${esc(winner ? winner.name : '')} wins the room`}</strong>` : '<span class="small muted">live scores</span>'}`;
+  }
+  function roomLobby() {
+    if (!gxRoom) return;
+    const st = gxRoom.state;
+    if (!st) { setHtml(`${backBar('Live room')}<div class="loading">Opening your room…</div>`); return; }
+    const me = ctx.social.identity() ? ctx.social.identity().code : '';
+    const host = st.host === me;
+    const cfg = { jeopardy: 'Jeopardy', millionaire: 'Millionaire', feud: 'Family Feud', sound: 'Sound It Out', babel: 'Tower of Babel', defend: 'Defend the Faith', doctrine: 'Say It Right' }[st.show] || st.show;
+    setHtml(`${backBar('Live room')}
+      <p class="lead">Room for <strong>${esc(cfg)} · Level ${st.level}</strong>. Send this code to your friend — they tap <em>Join room</em> on the same game's screen and type it in.</p>
+      <p class="friend-code gx-roomcode">${esc(st.room)}</p>
+      <div class="gx-scorebar">${roomPlayerLine(st.players, me)}</div>
+      ${st.status === 'waiting' ? (host
+        ? `<button class="primary" data-gx="room-start" ${st.players.length < 2 ? 'disabled' : ''}>Start the match</button><p class="small muted">${st.players.length < 2 ? 'Waiting for your friend to join…' : 'Your friend is in. Start when ready — you both play at the same time.'}</p>`
+        : '<p class="lead">You are in. Waiting for the host to start…</p>')
+      : st.status === 'active' ? `<button class="primary" data-gx="room-play">Play my run now</button><p class="small muted">Scores update live for everyone in the room. Highest score when all finish wins.</p>`
+      : '<p class="lead">This room is finished.</p>'}
+      <p><button class="secondary" data-gx="room-leave">Leave room</button></p>`);
+  }
+  function pollRoomLobby() {
+    stopRoomTimer();
+    gxRoomTimer = setInterval(async () => {
+      if (!gxRoom || !root) { stopRoomTimer(); return; }
+      try {
+        const st = await ctx.social.roomState(gxRoom.code);
+        gxRoom.state = st;
+        if (G && G.show === 'room') roomLobby();
+      } catch { /* a missed poll is fine — the next one retries */ }
+    }, 1500);
+  }
+  async function roomCreate(show) {
+    if (!ctx.social || !ctx.social.identity()) { roomStatus('Get your friend code first (Profile → Friends), then come back and open a room.'); return; }
+    roomStatus('Opening your room…');
+    try {
+      const st = await ctx.social.createRoom(show, gxSelectedLevel(show));
+      gxRoom = { code: st.room, show: st.show, level: st.level, state: st, finished: false };
+      G = { show: 'room', timers: [], tickId: null, clockEndsAt: 0, clockTotal: 0 };
+      roomLobby();
+      pollRoomLobby();
+    } catch (err) { roomStatus(err.message); }
+  }
+  async function roomJoin() {
+    const input = root && root.querySelector('[data-gx-room-input]');
+    const code = (input ? input.value : '').trim().toUpperCase();
+    if (!code) { roomStatus('Type the room code your friend sent you first.'); return; }
+    if (!ctx.social || !ctx.social.identity()) { roomStatus('Get your friend code first (Profile → Friends), then come back and join.'); return; }
+    roomStatus('Joining…');
+    try {
+      const st = await ctx.social.joinRoom(code);
+      gxRoom = { code: st.room, show: st.show, level: st.level, state: st, finished: false };
+      G = { show: 'room', timers: [], tickId: null, clockEndsAt: 0, clockTotal: 0 };
+      roomLobby();
+      pollRoomLobby();
+    } catch (err) { roomStatus(err.message); }
+  }
+  async function roomStartMatch() {
+    try {
+      const st = await ctx.social.roomStart(gxRoom.code);
+      gxRoom.state = st;
+      roomLobby();
+    } catch (err) { if (ctx.toast) ctx.toast(err.message); }
+  }
+  function roomPlay() {
+    if (!gxRoom) return;
+    const show = gxRoom.show;
+    gxLevelSel[show] = gxRoom.level;
+    gxRoomLaunching = true;
+    showMenu(show);
+    gxRoomLaunching = false;
+    if (show === 'jeopardy') jeopardyStart('solo');
+    else if (show === 'millionaire') millionaireStart();
+    else if (show === 'feud') feudStart('pc');
+    else if (show === 'sound') soundStart('solo');
+    else if (show === 'babel') babelStart();
+    else faithStart();
+    renderRoomBar();
+    startRoomSync();
+  }
+  function startRoomSync() {
+    stopRoomTimer();
+    gxRoomTimer = setInterval(async () => {
+      if (!gxRoom || !root || !G || G.show !== gxRoom.show) return;
+      try {
+        if (!gxRoom.finished) await ctx.social.roomScore(gxRoom.code, gxRoomScore(), false);
+        const st = await ctx.social.roomState(gxRoom.code);
+        gxRoom.state = st;
+        renderRoomBar();
+      } catch { /* silent — live sync retries every two seconds */ }
+    }, 2000);
+  }
+  async function scoresScreen(show) {
+    clearTimers();
+    G = { show: 'scores', timers: [], tickId: null, clockEndsAt: 0, clockTotal: 0 };
+    const title = { jeopardy: 'Jeopardy', millionaire: 'Millionaire', feud: 'Family Feud', sound: 'Sound It Out', babel: 'Tower of Babel', defend: 'Defend the Faith', doctrine: 'Say It Right' }[show] || show;
+    setHtml(`${backBar('Public scores')}<div class="loading">Gathering the ${esc(title)} board…</div>`);
+    try {
+      const scores = await ctx.social.publicScores(show);
+      const me = ctx.social.identity() ? ctx.social.identity().code : '';
+      const rows = scores.length ? scores.map((s, i) => `<div class="card friend-row"><div><strong>${i + 1}. ${esc(s.name || 'Friend')}</strong>${s.code === me ? ' <span class="friend-chip">you</span>' : ''}<br><small class="muted">Level ${s.level || 1} · ${new Date(s.ts || Date.now()).toLocaleDateString()}</small></div><strong>${show === 'millionaire' ? money(s.score) : s.score}</strong></div>`).join('') : '<p class="muted">No solo scores yet. Finish a solo run of this game and you will open the board.</p>';
+      setHtml(`${backBar('Public scores')}<p class="lead">🌍 ${esc(title)} — best solo scores from everyone playing Mind Soul & Body.</p>${rows}<p><button class="secondary" data-gx="show-menu" data-show="${show}">← Back to ${esc(title)}</button></p>`);
+    } catch (err) {
+      setHtml(`${backBar('Public scores')}<div class="empty error">${esc(err.message)} <button class="secondary" data-gx="show-menu" data-show="${show}">Back to the game</button></div>`);
+    }
   }
 
   /* ---------- timing: one countdown + a queue of scheduled PC steps ---------- */
@@ -192,7 +367,8 @@ window.BibleGames = (() => {
         <button class="card gx-mode" data-gx="j-mode" data-mode="2p"><strong>Two players</strong><span>Pass and play on this device. Tap your side to buzz.</span></button>
       </div>
       <div class="gx-names">${nameInputs('2p')}</div>
-      <p class="footnote">For two-player games, set both names above. In solo and PC games only your name is used.</p>`);
+      <p class="footnote">For two-player games, set both names above. In solo and PC games only your name is used.</p>
+      ${roomButtons('jeopardy')}`);
   }
   function jeopardyStart(mode) {
     const lvl = gxSelectedLevel('jeopardy');
@@ -439,7 +615,8 @@ window.BibleGames = (() => {
       ${gxLevelChips('millionaire')}
       <div class="gx-names">${nameInputs('solo')}</div>
       <p class="lead">Lifelines, once each: <strong>50:50</strong> · <strong>Ask a Friend</strong> · <strong>Skip the Question</strong>.</p>
-      <button class="primary" data-gx="m-start">Take the hot seat</button>`);
+      <button class="primary" data-gx="m-start">Take the hot seat</button>
+      ${roomButtons('millionaire')}`);
   }
   function tierFor(rung) { return rung <= 5 ? 'easy' : rung <= 10 ? 'medium' : 'hard'; }
   function millionaireStart() {
@@ -590,7 +767,8 @@ window.BibleGames = (() => {
         <button class="card gx-mode" data-gx="f-mode" data-mode="teams"><strong>Two teams, one device</strong><span>Pass and play. Each team guesses on its own turns.</span></button>
       </div>
       <div class="gx-names">${nameInputs('teams')}</div>
-      <p class="footnote">Team names above are used in two-team games; against the PC only your team name is used.</p>`);
+      <p class="footnote">Team names above are used in two-team games; against the PC only your team name is used.</p>
+      ${roomButtons('feud')}`);
   }
   function feudStart(mode) {
     const lvl = gxSelectedLevel('feud');
@@ -1181,7 +1359,8 @@ window.BibleGames = (() => {
         <button class="card gx-mode" data-gx="s-mode" data-mode="party"><strong>Party — pass and play</strong><span>One reader sounds the gibberish aloud; everyone else decodes by ear. Twelve cards, reader rotates.</span></button>
       </div>
       <div class="gx-names">${nameInputs('solo')}</div>
-      <p class="footnote">Your name is used in solo and race games. Party names are set on the next screen.</p>`);
+      <p class="footnote">Your name is used in solo and race games. Party names are set on the next screen.</p>
+      ${roomButtons('sound')}`);
   }
   function soundStart(mode) {
     setSong('sound');
@@ -1481,7 +1660,8 @@ window.BibleGames = (() => {
       ${bestLine('babel', v => v + ' points')}
       ${gxLevelChips('babel')}
       <div class="gx-names">${nameInputs('solo')}</div>
-      <button class="primary" data-gx="b-start" data-gx-autofocus>Start building</button>`);
+      <button class="primary" data-gx="b-start" data-gx-autofocus>Start building</button>
+      ${roomButtons('babel')}`);
   }
   async function babelStart() {
     const lvl = gxSelectedLevel('babel');
@@ -1766,7 +1946,8 @@ window.BibleGames = (() => {
       <div class="gx-modes">
         <button class="card gx-mode" data-gx="fth-start"><strong>${cfg.start}</strong><span>Six cards from the level above. Say your answer out loud before choosing; every card ends with the reason and a sentence to keep.</span></button>
       </div>
-      <p class="footnote">Built from your study rule: Scripture and the Fathers first, exact terms in transliteration, and a spoken sentence at the end of every card.</p>`);
+      <p class="footnote">Built from your study rule: Scripture and the Fathers first, exact terms in transliteration, and a spoken sentence at the end of every card.</p>
+      ${roomButtons(show)}`);
   }
   function defendMenu() { faithMenu(); }
   function doctrineMenu() { faithMenu(); }
@@ -1864,6 +2045,7 @@ window.BibleGames = (() => {
   let pendingShow = null;
   function showMenu(key) {
     clearTimers();
+    if (gxRoom && !gxRoomLaunching) leaveRoomQuiet();
     setSong('hub');
     G = { show: key, timers: [], tickId: null, clockEndsAt: 0, clockTotal: 0 };
     if (key === 'jeopardy') jeopardyMenu();
@@ -1896,6 +2078,8 @@ window.BibleGames = (() => {
   }
   function hide() {
     stopMusic();
+    stopRoomTimer();
+    gxRoom = null;
     if (G) { stopClock(); (G.timers || []).forEach(clearTimeout); }
     G = null; root = null; ctx = null;
   }
@@ -1934,6 +2118,12 @@ window.BibleGames = (() => {
       else if (gxCtx()) startMusic();
       return;
     }
+    if (action === 'room-create') { roomCreate(btn.dataset.showKey); return; }
+    if (action === 'room-join') { roomJoin(); return; }
+    if (action === 'room-start') { roomStartMatch(); return; }
+    if (action === 'room-play') { roomPlay(); return; }
+    if (action === 'room-leave') { const show = gxRoom ? gxRoom.show : null; leaveRoomQuiet(); if (show) showMenu(show); return; }
+    if (action === 'scores') { scoresScreen(btn.dataset.showKey); return; }
     if (action === 'lvl-pick') {
       const sh = btn.dataset.showKey, n = Number(btn.dataset.level);
       if (gxCanPlay(sh, n)) { gxLevelSel[sh] = n; showMenu(sh); }
