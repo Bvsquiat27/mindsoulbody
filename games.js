@@ -119,6 +119,14 @@ window.BibleGames = (() => {
       { name: 'Thorns and Stones', speed: 1.20, time: 72, lives: 3 },
       { name: 'The Eastern Gate', speed: 1.34, time: 68, lives: 3 },
     ],
+    /* Adam & Eve Apple Maze: level -> orchard name, snake count, snake cadence, race clock + winner target */
+    apple: [
+      { name: 'First Orchard', snakes: 3, snakeEvery: 2, time: 120, target: 600 },
+      { name: 'Fig and Vine', snakes: 4, snakeEvery: 2, time: 130, target: 750 },
+      { name: 'Serpents at Noon', snakes: 4, snakeEvery: 1, time: 140, target: 900 },
+      { name: 'The Walled Garden', snakes: 5, snakeEvery: 1, time: 150, target: 1050 },
+      { name: 'Eden at Dusk', snakes: 5, snakeEvery: 1, time: 160, target: 1200 },
+    ],
   };
   let gxLevelSel = {};
   function gxProgAll() { try { const p = JSON.parse(localStorage.getItem('msb_gx_progress')); return p && typeof p === 'object' ? p : {}; } catch { return {}; } }
@@ -153,6 +161,7 @@ window.BibleGames = (() => {
       sound: 'Ten cards dealt fresh from this level of the deck. Decode 7 of 10 to beat it.',
       babel: `Catch ${GX_LEVELS.babel[level - 1].catches} falling pieces before the tower reaches ten bricks.`,
       garden: `Cross ${GX_LEVELS.garden[level - 1].name}: fill all five Tree Gate alcoves before the lives run out. Rivers carry you; beasts, serpents, scorpions, and rolling stones end a life.`,
+      apple: `Eat every apple to clear the orchard solo; in the race, out-score your rival past ${GX_LEVELS.apple[level - 1].target} points while ${GX_LEVELS.apple[level - 1].snakes} snakes hunt the maze.`,
     };
     return `${bits[show] || ''}${p.done.length ? ` Beaten so far: Level ${p.done.join(', ')}.` : ''}`;
   }
@@ -777,6 +786,9 @@ window.BibleGames = (() => {
     /* garden — airy harp-like pentatonic, morning in Eden (C–G–Am–F) */
     garden: { bpm: 96, mode: 'major pentatonic', wave: 'triangle', bassWave: 'sine', density: 0.62, stepsPerChord: 8, noteLen: 1.1, vol: 0.05, bassVol: 0.085, bassEvery: 4, bassDiv: 2, octUp: 0.42, tick: false,
       chords: [[130.81, 261.63, 329.63, 392.00], [98.00, 196.00, 293.66, 392.00], [110.00, 220.00, 261.63, 329.63], [87.31, 174.61, 261.63, 349.23]] },
+    /* apple — quick playful orchard chase (C–F–C–G) */
+    apple: { bpm: 132, mode: 'major pentatonic', wave: 'square', bassWave: 'sine', density: 0.8, stepsPerChord: 4, noteLen: 0.35, vol: 0.032, bassVol: 0.075, bassEvery: 2, bassDiv: 2, octUp: 0.5, tick: false,
+      chords: [[130.81, 261.63, 329.63, 392.00], [174.61, 349.23, 440.00, 523.25], [130.81, 261.63, 329.63, 392.00], [98.00, 196.00, 293.66, 392.00]] },
   };
   function gxSong() { return GX_SONGS[gxSongKey] || GX_SONGS.hub; }
   function gxStepMs() { return Math.round(30000 / gxSong().bpm); }
@@ -1692,7 +1704,7 @@ window.BibleGames = (() => {
       <div class="gx-modes">
         <button class="card gx-mode" data-gx="g-mode" data-mode="solo"><strong>Solo — Adam</strong><span>Three lives. Fill all five alcoves to beat the level.</span></button>
         <button class="card gx-mode" data-gx="g-mode" data-mode="versus"><strong>Two players — versus</strong><span>Adam and Eve take separate runs on the same level. Highest score wins.</span></button>
-        <button class="card gx-mode" data-gx="g-mode" data-mode="coop"><strong>Two players — co-op</strong><span>One shared crossing and shared lives. The guide changes hands after every lost life or filled alcove.</span></button>
+        <button class="card gx-mode" data-gx="g-mode" data-mode="race"><strong>Two players — race!</strong><span>Adam and Eve on the same board at the same time — separate pads below (or WASD vs arrow keys). First to claim all five of their own Tree Gate alcoves wins.</span></button>
       </div>
       <div class="gx-names">${nameInputs('2p')}</div>
       <p class="footnote">Player one guides Adam; player two guides Eve. Same-device multiplayer — pass the phone at the turn screens. Keyboard: arrow keys or WASD.</p>`);
@@ -1709,6 +1721,7 @@ window.BibleGames = (() => {
       current: 0, controller: 0, results: [], levelBeaten: false, lastEvent: '',
       timers: (G && G.timers) || [], tickId: null, pcAction: null,
     });
+    if (mode === 'race') { gardenRaceSetup(); return; }
     gardenBeginRun(0);
   }
   function gardenBeginRun(index) {
@@ -1960,6 +1973,202 @@ window.BibleGames = (() => {
         <button class="secondary" data-gx="hub">All games</button>
       </section>`);
   }
+
+  /* ---- Garden race: Adam and Eve on one board at the same time.
+     Separate alcove claims per racer (apple = Adam, pear = Eve); five
+     lives each; shared fruit. First to claim all five wins; running out
+     of lives hands the race to the other; the race clock settles it by
+     alcoves claimed, then score. */
+  function gardenRaceSetup() {
+    if (!G) return;
+    stopClock();
+    G.lanes = gardenMakeLanes(G.runLevel);
+    G.fruit = gardenFruitFor(G.runLevel).map(f => ({ ...f, takenBy: -1 }));
+    G.racers = G.players.map((pl, i) => ({
+      name: pl.name, icon: pl.icon, x: i === 0 ? 3 : 5, y: GARDEN_ROWS - 1,
+      lives: 5, filled: Array(GARDEN_SLOTS.length).fill(false), score: 0,
+      fruitCount: 0, crossings: 0, progressRow: GARDEN_ROWS - 1,
+    }));
+    G.timeLeft = 240;
+    G.phase = 'racepass';
+    G.lastEvent = '';
+    gardenRacePass();
+  }
+  function gardenRacePass() {
+    if (!G || !G.racers) return;
+    const seats = G.racers.map(r => ({ name: r.name, score: 0 }));
+    setHtml(`${backBar('Adam in the Garden')}${scoreBar(seats, -1)}
+      <section class="card gx-center">
+        <span class="eyebrow">TWO PLAYERS · SAME BOARD · SAME TIME</span>
+        <h2>🧔🏽 ${esc(G.racers[0].name)} vs 👩🏽 ${esc(G.racers[1].name)}</h2>
+        <p class="lead">Race to the Tree Gates! Each of you claims your own alcoves — ${esc(G.racers[0].name)} fills his with 🍎, ${esc(G.racers[1].name)} fills hers with 🍐. First to claim all five wins. Five lives each; the rivers and beasts are shared, and so is the fruit — grab it first.</p>
+        <p class="muted">${esc(G.racers[0].name)}: left pad or WASD keys. ${esc(G.racers[1].name)}: right pad or arrow keys.</p>
+        <button class="primary" data-gx="g-race-begin" data-gx-autofocus>Begin the race</button>
+        <button class="secondary" data-gx="show-menu" data-show="garden">Change mode</button>
+      </section>`);
+  }
+  function gardenRaceBegin() {
+    if (!G || !G.racers) return;
+    G.phase = 'raceplay';
+    G.lastEvent = 'Race! First to claim all five Tree Gate alcoves wins.';
+    gardenRaceRender();
+    stopClock();
+    G.tickId = setInterval(() => gardenRaceTick(0.1), 100);
+  }
+  function gardenRaceRespawn(r, idx) { r.x = idx === 0 ? 3 : 5; r.y = GARDEN_ROWS - 1; r.progressRow = GARDEN_ROWS - 1; }
+  function gardenRaceBoardHtml() {
+    if (!G || !G.racers) return '';
+    const rowPct = 100 / GARDEN_ROWS, colPct = 100 / GARDEN_COLS;
+    const lanes = G.lanes.map(lane => `<div class="gx-garden-lane gx-garden-${lane.type}" style="top:${lane.row * rowPct}%;height:${rowPct}%"><span>${esc(lane.label)}</span></div>`).join('');
+    const homes = Array.from({ length: GARDEN_COLS }, (_, col) => {
+      const si = GARDEN_SLOTS.indexOf(col);
+      if (si < 0) return `<span class="gx-garden-hedge" style="left:${col * colPct}%;width:${colPct}%">🌿</span>`;
+      const a = !!G.racers[0].filled[si], e = !!G.racers[1].filled[si];
+      return `<span class="gx-garden-home${a || e ? ' filled' : ''}" style="left:${col * colPct}%;width:${colPct}%">${a && e ? '🍎🍐' : a ? '🍎' : e ? '🍐' : '🌳✦'}</span>`;
+    }).join('');
+    const entities = G.lanes.flatMap(lane => lane.entities.map(e => `<span class="gx-garden-entity gx-garden-entity-${lane.type}" style="left:${(e.x / GARDEN_COLS) * 100}%;top:${lane.row * rowPct}%;width:${(e.w / GARDEN_COLS) * 100}%;height:${rowPct}%">${esc(e.icon.repeat(Math.max(1, Math.ceil(e.w))))}</span>`)).join('');
+    const fruit = G.fruit.filter(f => !f.collected).map(f => `<span class="gx-garden-fruit" style="left:${f.col * colPct}%;top:${f.row * rowPct}%;width:${colPct}%;height:${rowPct}%">${esc(f.icon)}</span>`).join('');
+    const players = G.racers.map(r => `<span class="gx-garden-player" style="left:${(r.x / GARDEN_COLS) * 100}%;top:${r.y * rowPct}%;width:${colPct}%;height:${rowPct}%">${esc(r.icon)}</span>`).join('');
+    return `<div class="gx-garden-board" role="img" aria-label="Garden race board">${lanes}${homes}${entities}${fruit}${players}</div>`;
+  }
+  function gardenRacePad(idx) {
+    const r = G.racers[idx];
+    return `<div class="gx-race-pad"><strong>${esc(r.icon)} ${esc(r.name)}</strong>
+      <div class="gx-race-pad-grid"><span></span><button data-gx="g-race-move" data-racer="${idx}" data-dir="up" aria-label="${esc(r.name)} up">▲</button><span></span><button data-gx="g-race-move" data-racer="${idx}" data-dir="left" aria-label="${esc(r.name)} left">◀</button><button data-gx="g-race-move" data-racer="${idx}" data-dir="down" aria-label="${esc(r.name)} down">▼</button><button data-gx="g-race-move" data-racer="${idx}" data-dir="right" aria-label="${esc(r.name)} right">▶</button></div></div>`;
+  }
+  function gardenRaceRender() {
+    if (!G || !G.racers) return;
+    const seats = G.racers.map(r => ({ name: r.name, score: r.score }));
+    const lines = G.racers.map(r => `<span>${esc(r.icon)} ${esc(r.name)} · Lives <strong>${'♥'.repeat(Math.max(0, r.lives))}</strong> · Groves <strong>${r.crossings}/5</strong> · Fruit <strong>${r.fruitCount}</strong></span>`).join('');
+    setHtml(`${backBar('Adam in the Garden')}${scoreBar(seats, -1)}
+      <section class="card gx-garden-card">
+        <div class="gx-garden-hud"><span>Level ${G.runLevel} · ${esc(G.plan.name)}</span><span>Race clock <strong>${Math.max(0, Math.ceil(G.timeLeft || 0))}s</strong></span>${lines}</div>
+        ${gardenRaceBoardHtml()}
+        <p class="gx-event" role="status">${esc(G.lastEvent || 'Race to the Tree Gates!')}</p>
+        ${G.phase === 'raceplay' ? `<div class="gx-race-pads">${gardenRacePad(0)}${gardenRacePad(1)}</div>` : ''}
+      </section>
+      <p class="footnote">Claim your own alcoves at the top — 🍎 for ${esc(G.racers[0].name)}, 🍐 for ${esc(G.racers[1].name)}. A filled alcove sends you back to the gate for the next one.</p>`);
+  }
+  function gardenRaceCollect(idx) {
+    const r = G.racers[idx]; if (!r) return;
+    const col = Math.max(0, Math.min(GARDEN_COLS - 1, Math.round(r.x)));
+    const hit = G.fruit.find(f => !f.collected && f.row === r.y && f.col === col);
+    if (!hit) return;
+    hit.collected = true; hit.takenBy = idx;
+    r.fruitCount++; r.score += 30;
+    G.lastEvent = `${r.icon} ${r.name} grabbed the ${hit.icon} — +30.`;
+    sfx('catch');
+  }
+  function gardenRaceMove(idx, dir) {
+    if (!G || G.mode !== 'race' || G.phase !== 'raceplay' || !G.racers) return;
+    const r = G.racers[idx]; if (!r) return;
+    const d = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }[dir];
+    if (!d) return;
+    const nx = Math.max(0, Math.min(GARDEN_COLS - 1, r.x + d[0]));
+    const ny = Math.max(0, Math.min(GARDEN_ROWS - 1, r.y + d[1]));
+    if (d[1] < 0 && ny === 0) { gardenRaceGoal(idx, nx); return; }
+    r.x = nx; r.y = ny;
+    if (ny < r.progressRow) { r.score += (r.progressRow - ny) * 10; r.progressRow = ny; }
+    sfx('select');
+    gardenRaceCollect(idx);
+    if (G.phase === 'raceplay') gardenRaceCheck(idx, true);
+  }
+  function gardenRaceCheck(idx, renderAfter) {
+    const r = G.racers[idx]; if (!r) return false;
+    const lane = G.lanes[r.y];
+    if (lane && lane.type === 'hazard' && lane.entities.some(e => gardenOverlap(r.x, 1, e.x, e.w) > 0.22)) {
+      gardenRaceDie(idx, `${lane.icon || 'A garden danger'} caught ${r.name} on the ${lane.label.toLowerCase()}.`);
+      return true;
+    }
+    if (lane && lane.type === 'water' && !lane.entities.some(e => gardenOverlap(r.x, 1, e.x, e.w) > 0.32)) {
+      gardenRaceDie(idx, `The ${lane.label} river swept ${r.name} away.`);
+      return true;
+    }
+    if (renderAfter) gardenRaceRender();
+    return false;
+  }
+  function gardenRaceGoal(idx, nx) {
+    const r = G.racers[idx]; if (!r) return;
+    const col = Math.max(0, Math.min(GARDEN_COLS - 1, Math.round(nx)));
+    r.x = col; r.y = 0;
+    const si = GARDEN_SLOTS.indexOf(col);
+    if (si < 0) { gardenRaceDie(idx, 'A thorn hedge blocked that Tree Gate.'); return; }
+    if (r.filled[si]) { gardenRaceDie(idx, `${r.name} had already claimed that alcove.`); return; }
+    r.filled[si] = true; r.crossings++; r.score += 250;
+    sfx('ding');
+    if (r.filled.every(Boolean)) { gardenRaceFinish(idx, `${r.name} claimed all five Tree Gate alcoves.`); return; }
+    gardenRaceRespawn(r, idx);
+    G.lastEvent = `${r.icon} ${r.name} claimed an alcove — +250, ${r.crossings}/5. Back to the gate for the next one!`;
+    gardenRaceRender();
+  }
+  function gardenRaceDie(idx, reason) {
+    if (!G || G.phase !== 'raceplay') return;
+    const r = G.racers[idx]; if (!r) return;
+    sfx('wrong');
+    r.lives--;
+    if (r.lives <= 0) { gardenRaceFinish(1 - idx, `${r.name} is out of lives.`); return; }
+    gardenRaceRespawn(r, idx);
+    G.lastEvent = `${reason} ${r.icon} ${r.name} has ${r.lives} ${r.lives === 1 ? 'life' : 'lives'} left.`;
+    gardenRaceRender();
+  }
+  function gardenRaceFinish(winner, reason) {
+    if (!G || !G.racers) return;
+    stopClock();
+    G.phase = 'raceover';
+    const won = winner >= 0 ? G.racers[winner] : null;
+    G.levelBeaten = !!(won && won.filled.every(Boolean));
+    if (G.levelBeaten) { gxBeatLevel('garden', G.runLevel); sfx('win'); }
+    saveBest('garden', Math.max(...G.racers.map(r => r.score)));
+    const b = bestOf('garden');
+    const stats = G.racers.map(r => `${esc(r.icon)} ${esc(r.name)}: <strong>${r.score}</strong> points · ${r.crossings}/5 alcoves · ${r.fruitCount} fruit`).join('<br>');
+    setHtml(`${backBar('Adam in the Garden')}
+      <section class="card gx-center">
+        <span class="eyebrow">THE RACE IS RUN · LEVEL ${G.runLevel} · ${esc(G.plan.name).toUpperCase()}</span>
+        <h2>${won ? `${esc(won.icon)} ${esc(won.name)} wins the race!` : 'A dead heat in the garden!'}</h2>
+        <p>${esc(reason)}</p>
+        <p>${stats}</p>
+        ${gxLevelBanner('garden', G.runLevel, !!G.levelBeaten)}
+        ${G.levelBeaten ? '' : `<p class="muted">Claim all five of your own alcoves to beat Level ${G.runLevel}.</p>`}
+        <p class="muted">Best garden score on this device: <strong>${b.best} points</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'}.</p>
+        <button class="primary" data-gx="show-menu" data-show="garden">Play again</button>
+        <button class="secondary" data-gx="hub">All games</button>
+      </section>`);
+  }
+  function gardenRaceTick(step) {
+    if (!G || G.mode !== 'race' || G.phase !== 'raceplay' || !G.racers) return;
+    const dt = Number.isFinite(step) ? step : 0.1;
+    G.timeLeft = (G.timeLeft || 0) - dt;
+    G.lanes.forEach(lane => lane.entities.forEach(e => {
+      e.x += e.speed * dt;
+      if (e.speed > 0 && e.x > GARDEN_COLS) e.x -= e.cycle;
+      if (e.speed < 0 && e.x + e.w < 0) e.x += e.cycle;
+    }));
+    for (let idx = 0; idx < 2; idx++) {
+      const r = G.racers[idx];
+      const lane = G.lanes[r.y];
+      if (lane && lane.type === 'water') {
+        const carrier = lane.entities.find(e => gardenOverlap(r.x, 1, e.x, e.w) > 0.32);
+        if (!carrier) { gardenRaceDie(idx, `The ${lane.label} river swept ${r.name} away.`); if (G.phase !== 'raceplay') return; continue; }
+        r.x += carrier.speed * dt;
+        if (r.x + 1 <= 0 || r.x >= GARDEN_COLS) { gardenRaceDie(idx, 'The current carried the crossing beyond the garden edge.'); if (G.phase !== 'raceplay') return; continue; }
+      }
+      if (lane && lane.type === 'hazard' && lane.entities.some(e => gardenOverlap(r.x, 1, e.x, e.w) > 0.22)) {
+        gardenRaceDie(idx, `${lane.icon || 'A garden danger'} caught ${r.name} on the ${lane.label.toLowerCase()}.`);
+        if (G.phase !== 'raceplay') return;
+        continue;
+      }
+      gardenRaceCollect(idx);
+    }
+    if (G.phase !== 'raceplay') return;
+    if (G.timeLeft <= 0) {
+      const [a, b2] = G.racers;
+      const winner = a.crossings !== b2.crossings ? (a.crossings > b2.crossings ? 0 : 1) : a.score !== b2.score ? (a.score > b2.score ? 0 : 1) : -1;
+      gardenRaceFinish(winner, winner < 0 ? 'The race clock ran out on equal terms.' : 'The race clock ran out.');
+      return;
+    }
+    gardenRaceRender();
+  }
+
   function gardenTick(step) {
     if (!G || G.show !== 'garden' || G.phase !== 'play' || !G.run || !G.player) return;
     const dt = Number.isFinite(step) ? step : 0.1;
@@ -1985,6 +2194,331 @@ window.BibleGames = (() => {
     gardenRender();
   }
 
+
+  /* ================= ADAM & EVE APPLE MAZE =================
+     An original orchard maze chase. Adam (and Eve, racing him on the
+     same board) eats apples while snakes — the garden's ghosts — hunt
+     through the maze. A grape of power turns the hunt for a few
+     seconds: the snakes flee and can be eaten for bonus points.
+     Solo: clear the orchard. Race: shared apples, one clock, the
+     higher score wins when time or apples run out — or when a rival
+     loses their last life. */
+  const APPLE_W = 15, APPLE_H = 11;
+  const APPLE_BASE = [
+    '###############',
+    '#o....#......o#',
+    '#.##..#..##.#.#',
+    '#..#......#.#.#',
+    '##.#.##.##.#.##',
+    '#....#...#....#',
+    '#.##..#..##.#.#',
+    '#....#......#.#',
+    '#.##...##...#.#',
+    '#o.....P.....o#',
+    '###############',
+  ];
+  const APPLE_DIRS = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+  function appleGridFor(level) {
+    let grid = APPLE_BASE.map(r => r.split(''));
+    const v = ((level - 1) % 3 + 3) % 3;
+    if (v === 1) grid = grid.map(row => row.slice().reverse());
+    if (v === 2) grid = grid.slice().reverse();
+    return grid;
+  }
+  function applePointFor(level, pt) {
+    const v = ((level - 1) % 3 + 3) % 3;
+    let x = pt[0], y = pt[1];
+    if (v === 1) x = APPLE_W - 1 - x;
+    if (v === 2) y = APPLE_H - 1 - y;
+    return [x, y];
+  }
+  function appleOpen(grid, x, y) { return x >= 0 && y >= 0 && x < APPLE_W && y < APPLE_H && grid[y][x] !== '#'; }
+  function applePellets(grid) {
+    const set = new Set(), pow = new Set();
+    grid.forEach((row, y) => row.forEach((c, x) => {
+      if (c === '.') set.add(x + ',' + y);
+      if (c === 'o') pow.add(x + ',' + y);
+    }));
+    return { set, pow };
+  }
+  function appleFindSpawn(grid) {
+    for (let y = 0; y < APPLE_H; y++) for (let x = 0; x < APPLE_W; x++) if (grid[y][x] === 'P') return [x, y];
+    return [7, 9];
+  }
+  function appleMenu() {
+    setHtml(`${backBar('Adam & Eve Apple Maze')}
+      <p class="lead">Eat the apples, dodge the snakes. The 🍇 grape of power turns the hunt for a few seconds — frightened snakes flee, and eating one is worth 150. Clear the orchard solo, or race on the same board: shared apples, one clock, highest score wins.</p>
+      ${bestLine('apple', v => v + ' points')}
+      ${gxLevelChips('apple')}
+      <div class="gx-modes">
+        <button class="card gx-mode" data-gx="a-mode" data-mode="solo"><strong>Solo — Mr. Adam</strong><span>Three lives against the snakes. Eat every apple to clear the orchard and beat the level.</span></button>
+        <button class="card gx-mode" data-gx="a-mode" data-mode="race"><strong>Two players — Mr. &amp; Ms. race!</strong><span>Adam and Eve in the same maze at the same time. Separate pads (or WASD vs arrow keys). Out-eat your rival before the clock or the apples run out.</span></button>
+      </div>
+      <div class="gx-names">${nameInputs('2p')}</div>
+      <p class="footnote">Player one is Mr. Adam 🧔🏽; player two is Ms. Eve 👩🏽. The snakes 🐍 are the ghosts of the garden — they hunt the nearest eater.</p>`);
+  }
+  function appleStart(mode) {
+    const lvl = gxSelectedLevel('apple');
+    if (!gxCanPlay('apple', lvl)) { showMenu('apple'); return; }
+    setSong('apple');
+    const names = readNames(['Adam', 'Eve']);
+    const grid = appleGridFor(lvl);
+    const made = applePellets(grid);
+    const plan = GX_LEVELS.apple[lvl - 1];
+    const aSpawn = appleFindSpawn(grid);
+    const eSpawn = applePointFor(lvl, [9, 9]);
+    const mk = (name, icon, spawn) => ({ name, icon, x: spawn[0], y: spawn[1], sx: spawn[0], sy: spawn[1], dir: 'left', nextDir: 'left', lives: 3, score: 0, apples: 0, active: true });
+    const players = mode === 'solo'
+      ? [mk(names[0] || 'Adam', '🧔🏽', aSpawn)]
+      : [mk(names[0] || 'Adam', '🧔🏽', aSpawn), mk(names[1] || 'Eve', '👩🏽', eSpawn)];
+    const snakePts = [[6, 5], [7, 5], [8, 5], [7, 4], [7, 6]].slice(0, plan.snakes).map(pt => applePointFor(lvl, pt));
+    const snakes = snakePts.map((pt, i) => ({ x: pt[0], y: pt[1], hx: pt[0], hy: pt[1], dir: i % 2 ? 'left' : 'right' }));
+    G = Object.assign(G || {}, {
+      show: 'apple', mode, phase: 'pass', runLevel: lvl, plan, grid,
+      pellets: made.set, powers: made.pow, pelletsLeft: made.set.size + made.pow.size,
+      players, snakes, fright: 0, tickCount: 0, timeLeft: plan.time,
+      lastEvent: '', timers: (G && G.timers) || [], tickId: null, pcAction: null,
+    });
+    applePass();
+  }
+  function applePass() {
+    if (!G) return;
+    const seats = G.players.map(pl => ({ name: pl.name, score: 0 }));
+    setHtml(`${backBar('Adam & Eve Apple Maze')}${scoreBar(seats, -1)}
+      <section class="card gx-center">
+        <span class="eyebrow">${G.mode === 'race' ? 'TWO PLAYERS · SAME MAZE · SAME TIME' : 'SOLO ORCHARD'} · LEVEL ${G.runLevel} · ${esc(G.plan.name).toUpperCase()}</span>
+        <h2>${G.mode === 'race' ? `🧔🏽 ${esc(G.players[0].name)} vs 👩🏽 ${esc(G.players[1].name)}` : `🧔🏽 ${esc(G.players[0].name)} in the orchard`}</h2>
+        <p class="lead">${G.mode === 'race' ? `Shared apples, one ${G.plan.time}-second clock. Apples 10 points, the 🍇 grape 50 — and a frightened snake 150. Highest score wins; beat ${G.plan.target} to take the level.` : `Eat every apple to clear the orchard. Three lives; the snakes get faster as the levels climb.`}</p>
+        <p class="muted">${G.mode === 'race' ? `${esc(G.players[0].name)}: left pad or WASD. ${esc(G.players[1].name)}: right pad or arrow keys.` : 'Steer with the pad or WASD / arrow keys.'} Snakes 🐍 hunt the nearest eater — grab a 🍇 to turn the hunt.</p>
+        <button class="primary" data-gx="a-begin" data-gx-autofocus>Into the orchard</button>
+        <button class="secondary" data-gx="show-menu" data-show="apple">Change mode</button>
+      </section>`);
+  }
+  function appleLoopStart() {
+    if (!G) return;
+    stopClock();
+    G.tickId = setInterval(() => appleTick(), 150);
+  }
+  function appleBegin() {
+    if (!G) return;
+    G.phase = 'play';
+    G.lastEvent = 'Eat! And mind the snakes.';
+    appleRender();
+    appleLoopStart();
+  }
+  function appleBoardHtml() {
+    if (!G) return '';
+    const cells = [];
+    for (let y = 0; y < APPLE_H; y++) {
+      for (let x = 0; x < APPLE_W; x++) {
+        if (G.grid[y][x] === '#') { cells.push('<div class="gx-apple-cell gx-apple-wall"></div>'); continue; }
+        const pl = G.players.find(pl2 => pl2.active && pl2.x === x && pl2.y === y);
+        const sn = G.snakes.find(sn2 => sn2.x === x && sn2.y === y);
+        let content = '', cls = 'gx-apple-cell';
+        if (pl) { content = pl.icon; cls += ' gx-apple-player'; }
+        else if (sn) { content = '🐍'; cls += G.fright > 0 ? ' gx-apple-snake gx-apple-fright' : ' gx-apple-snake'; }
+        else if (G.powers.has(x + ',' + y)) { content = '🍇'; cls += ' gx-apple-power'; }
+        else if (G.pellets.has(x + ',' + y)) { content = '<i></i>'; cls += ' gx-apple-dot'; }
+        cells.push(`<div class="${cls}">${content}</div>`);
+      }
+    }
+    return `<div class="gx-apple-board" role="img" aria-label="Orchard maze">${cells.join('')}</div>`;
+  }
+  function applePad(idx) {
+    const pl = G.players[idx];
+    return `<div class="gx-race-pad"><strong>${esc(pl.icon)} ${esc(pl.name)}</strong>
+      <div class="gx-race-pad-grid"><span></span><button data-gx="a-dir" data-player="${idx}" data-dir="up" aria-label="${esc(pl.name)} up">▲</button><span></span><button data-gx="a-dir" data-player="${idx}" data-dir="left" aria-label="${esc(pl.name)} left">◀</button><button data-gx="a-dir" data-player="${idx}" data-dir="down" aria-label="${esc(pl.name)} down">▼</button><button data-gx="a-dir" data-player="${idx}" data-dir="right" aria-label="${esc(pl.name)} right">▶</button></div></div>`;
+  }
+  function appleRender() {
+    if (!G) return;
+    const seats = G.players.map(pl => ({ name: pl.name, score: pl.score }));
+    const lines = G.players.map(pl => `<span>${esc(pl.icon)} ${esc(pl.name)} · Lives <strong>${'♥'.repeat(Math.max(0, pl.lives))}</strong> · Apples <strong>${pl.apples}</strong></span>`).join('');
+    const between = G.phase === 'between'
+      ? `<div class="gx-garden-turn"><h2>${esc(G.betweenTitle || 'Caught!')}</h2><p>${esc(G.betweenText || '')}</p><button class="primary" data-gx="a-continue" data-gx-autofocus>Back into the orchard</button></div>`
+      : '';
+    const pads = G.phase === 'play'
+      ? (G.mode === 'race' ? `<div class="gx-race-pads">${applePad(0)}${applePad(1)}</div>` : `<div class="gx-race-pads gx-race-pads-one">${applePad(0)}</div>`)
+      : '';
+    setHtml(`${backBar('Adam & Eve Apple Maze')}${scoreBar(seats, -1)}
+      <section class="card gx-garden-card">
+        <div class="gx-garden-hud"><span>Level ${G.runLevel} · ${esc(G.plan.name)}</span><span>Apples left <strong>${G.pelletsLeft}</strong></span>${G.mode === 'race' ? `<span>Clock <strong>${Math.max(0, Math.ceil(G.timeLeft || 0))}s</strong></span>` : ''}${G.fright > 0 ? `<span>Snakes fleeing <strong>${Math.ceil(G.fright / 6.7)}s</strong></span>` : ''}${lines}</div>
+        ${appleBoardHtml()}
+        <p class="gx-event" role="status">${esc(G.lastEvent || 'Eat the apples. Dodge the snakes.')}</p>
+        ${between}
+        ${pads}
+      </section>
+      <p class="footnote">Apples 10 · 🍇 grape of power 50 and turns the hunt · a frightened snake 150. Three lives each.</p>`);
+  }
+  function appleSetDir(idx, dir) {
+    if (!G || G.show !== 'apple') return;
+    const pl = G.players[idx];
+    if (pl && APPLE_DIRS[dir]) pl.nextDir = dir;
+  }
+  function appleTick() {
+    if (!G || G.show !== 'apple' || G.phase !== 'play') return;
+    G.tickCount++;
+    for (let i = 0; i < G.players.length; i++) {
+      appleStepPlayer(i);
+      if (!G || G.phase !== 'play') return;
+    }
+    if (G.fright > 0) G.fright--;
+    const every = (G.plan.snakeEvery || 2) + (G.fright > 0 ? 1 : 0);
+    if (G.tickCount % every === 0) appleStepSnakes();
+    if (!G || G.phase !== 'play') return;
+    if (G.mode === 'race') {
+      G.timeLeft = (G.timeLeft || 0) - 0.15;
+      if (G.timeLeft <= 0) { appleRaceEnd('time'); return; }
+    }
+    appleRender();
+  }
+  function appleStepPlayer(idx) {
+    const pl = G.players[idx];
+    if (!pl || !pl.active || !G || G.phase !== 'play') return;
+    const nd = APPLE_DIRS[pl.nextDir];
+    if (nd && appleOpen(G.grid, pl.x + nd[0], pl.y + nd[1])) pl.dir = pl.nextDir;
+    const d = APPLE_DIRS[pl.dir];
+    if (d && appleOpen(G.grid, pl.x + d[0], pl.y + d[1])) { pl.x += d[0]; pl.y += d[1]; }
+    appleEatAt(idx);
+    if (G.phase === 'play') appleCollide(idx);
+  }
+  function appleEatAt(idx) {
+    const pl = G.players[idx];
+    if (!pl || !G) return;
+    const k = pl.x + ',' + pl.y;
+    if (G.powers.has(k)) {
+      G.powers.delete(k); G.pelletsLeft--;
+      pl.score += 50; pl.apples++;
+      G.fright = 45;
+      G.lastEvent = `${pl.icon} ${pl.name} ate the 🍇 grape of power — the snakes flee!`;
+      sfx('ding');
+    } else if (G.pellets.has(k)) {
+      G.pellets.delete(k); G.pelletsLeft--;
+      pl.score += 10; pl.apples++;
+      sfx('select');
+    }
+    if (G.pelletsLeft <= 0 && G.phase === 'play') {
+      if (G.mode === 'solo') appleSoloClear();
+      else appleRaceEnd('apples');
+    }
+  }
+  function appleCollide(idx) {
+    if (!G || G.phase !== 'play') return;
+    const pl = G.players[idx];
+    if (!pl || !pl.active) return;
+    const sn = G.snakes.find(sn2 => sn2.x === pl.x && sn2.y === pl.y);
+    if (!sn) return;
+    if (G.fright > 0) {
+      pl.score += 150;
+      G.lastEvent = `${pl.icon} ${pl.name} caught a fleeing snake — +150!`;
+      sfx('catch');
+      sn.x = sn.hx; sn.y = sn.hy;
+    } else {
+      applePlayerDown(idx);
+    }
+  }
+  function appleStepSnakes() {
+    if (!G) return;
+    const rev = { up: 'down', down: 'up', left: 'right', right: 'left' };
+    for (const sn of G.snakes) {
+      const opts = Object.entries(APPLE_DIRS).filter(([, d]) => appleOpen(G.grid, sn.x + d[0], sn.y + d[1]));
+      if (!opts.length) continue;
+      let cand = opts.filter(([name]) => name !== rev[sn.dir]);
+      if (!cand.length) cand = opts;
+      const targets = G.players.filter(pl => pl.active);
+      if (!targets.length) return;
+      const dist = (x, y) => Math.min(...targets.map(pl => Math.abs(pl.x - x) + Math.abs(pl.y - y)));
+      cand.sort((a, b) => {
+        const da = dist(sn.x + a[1][0], sn.y + a[1][1]);
+        const db = dist(sn.x + b[1][0], sn.y + b[1][1]);
+        return G.fright > 0 ? db - da : da - db;
+      });
+      const pick = cand[0];
+      sn.dir = pick[0];
+      sn.x += pick[1][0]; sn.y += pick[1][1];
+    }
+    G.players.forEach((pl, i) => { if (pl.active) appleCollide(i); });
+  }
+  function applePlayerDown(idx) {
+    if (!G) return;
+    const pl = G.players[idx];
+    stopClock();
+    sfx('wrong');
+    pl.lives--;
+    if (pl.lives <= 0) {
+      pl.active = false;
+      if (G.mode === 'solo') {
+        appleResults(`${esc(pl.icon)} ${esc(pl.name)} is out of lives`, `${esc(pl.name)} ate ${pl.apples} apples for ${pl.score} points before the snakes closed in.`, false);
+      } else {
+        appleRaceFinish(G.players[1 - idx], `${pl.name} is out of lives.`);
+      }
+      return;
+    }
+    G.phase = 'between';
+    G.betweenTitle = `${pl.icon} ${pl.name} was caught!`;
+    G.betweenText = `A snake got ${pl.name}. ${pl.lives} ${pl.lives === 1 ? 'life' : 'lives'} left — eaters and snakes return to their starts; the eaten apples stay eaten.`;
+    G.lastEvent = G.betweenText;
+    appleRender();
+  }
+  function appleContinue() {
+    if (!G || G.phase !== 'between') return;
+    G.players.forEach(pl => { if (pl.active) { pl.x = pl.sx; pl.y = pl.sy; pl.dir = 'left'; pl.nextDir = 'left'; } });
+    G.snakes.forEach(sn => { sn.x = sn.hx; sn.y = sn.hy; });
+    G.fright = 0;
+    G.phase = 'play';
+    G.lastEvent = 'Back into the orchard — mind the snakes.';
+    appleRender();
+    appleLoopStart();
+  }
+  function appleSoloClear() {
+    if (!G) return;
+    stopClock();
+    G.levelBeaten = true;
+    gxBeatLevel('apple', G.runLevel);
+    sfx('win');
+    const pl = G.players[0];
+    appleResults(`${esc(pl.icon)} ${esc(pl.name)} cleared the orchard!`, `${esc(pl.name)} ate every apple for ${pl.score} points with ${pl.lives} ${pl.lives === 1 ? 'life' : 'lives'} to spare.`, true);
+  }
+  function appleRaceEnd(reason) {
+    if (!G) return;
+    const [a, b] = G.players;
+    let winner = null;
+    if (a.score !== b.score) winner = a.score > b.score ? a : b;
+    else if (a.apples !== b.apples) winner = a.apples > b.apples ? a : b;
+    appleRaceFinish(winner, reason === 'apples' ? 'Every apple in the orchard is eaten.' : 'The orchard clock ran out.');
+  }
+  function appleRaceFinish(winner, reason) {
+    if (!G) return;
+    stopClock();
+    const beaten = !!(winner && winner.score >= G.plan.target);
+    G.levelBeaten = beaten;
+    if (beaten) { gxBeatLevel('apple', G.runLevel); sfx('win'); }
+    const stats = G.players.map(pl => `${esc(pl.icon)} ${esc(pl.name)}: <strong>${pl.score}</strong> points · ${pl.apples} apples`).join('<br>');
+    appleResults(
+      winner ? `${esc(winner.icon)} ${esc(winner.name)} wins the apple race!` : 'A dead heat in the orchard!',
+      `${esc(reason)}<br>${stats}`,
+      beaten,
+    );
+  }
+  function appleResults(title, blurb, beaten) {
+    if (!G) return;
+    stopClock();
+    G.phase = 'over';
+    saveBest('apple', Math.max(...G.players.map(pl => pl.score)));
+    const b = bestOf('apple');
+    setHtml(`${backBar('Adam & Eve Apple Maze')}
+      <section class="card gx-center">
+        <span class="eyebrow">LEVEL ${G.runLevel} · ${esc(G.plan.name).toUpperCase()}</span>
+        <h2>${title}</h2>
+        <p>${blurb}</p>
+        ${gxLevelBanner('apple', G.runLevel, !!beaten)}
+        ${beaten ? '' : `<p class="muted">${G.mode === 'race' ? `Score ${G.plan.target} or more as the winner to beat Level ${G.runLevel}.` : `Eat every apple to beat Level ${G.runLevel}.`}</p>`}
+        ${beaten && G.runLevel >= 5 ? `<p class="lead">👑 Keeper of the Orchard — all five levels beaten.</p>` : ''}
+        <p class="muted">Best orchard score on this device: <strong>${b.best} points</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'}.</p>
+        <button class="primary" data-gx="show-menu" data-show="apple">Play again</button>
+        <button class="secondary" data-gx="hub">All games</button>
+      </section>`);
+  }
+
   /* ================= CORE ================= */
   let pendingShow = null;
   function showMenu(key) {
@@ -1996,6 +2530,7 @@ window.BibleGames = (() => {
     else if (key === 'sound') soundMenu();
     else if (key === 'babel') babelMenu();
     else if (key === 'garden') gardenMenu();
+    else if (key === 'apple') appleMenu();
     else feudMenu();
   }
   async function loadBank() {
@@ -2067,6 +2602,13 @@ window.BibleGames = (() => {
     if (action === 'g-mode') { gardenStart(btn.dataset.mode); return; }
     if (action === 'g-begin') { gardenBeginPlay(); return; }
     if (action === 'g-move') { gardenMove(btn.dataset.dir); return; }
+    if (action === 'g-race-begin') { gardenRaceBegin(); return; }
+    if (action === 'g-race-move') { gardenRaceMove(Number(btn.dataset.racer), btn.dataset.dir); return; }
+    /* Adam & Eve Apple Maze */
+    if (action === 'a-mode') { appleStart(btn.dataset.mode); return; }
+    if (action === 'a-begin') { appleBegin(); return; }
+    if (action === 'a-dir') { appleSetDir(Number(btn.dataset.player), btn.dataset.dir); sfx('select'); return; }
+    if (action === 'a-continue') { appleContinue(); return; }
     if (action === 'g-continue') { gardenContinue(); return; }
     if (action === 'g-pause') { gardenPauseToggle(); return; }
     /* Tower of Babel */
@@ -2111,10 +2653,22 @@ window.BibleGames = (() => {
   }
   document.addEventListener('click', click);
   document.addEventListener('keydown', e => {
+    if (G && G.show === 'garden' && G.phase === 'raceplay') {
+      const d0 = { w: 'up', s: 'down', a: 'left', d: 'right', W: 'up', S: 'down', A: 'left', D: 'right' }[e.key];
+      const d1 = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' }[e.key];
+      if (d0) { e.preventDefault(); gardenRaceMove(0, d0); return; }
+      if (d1) { e.preventDefault(); gardenRaceMove(1, d1); return; }
+    }
     if (G && G.show === 'garden' && G.phase === 'play') {
       const dir = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', w: 'up', s: 'down', a: 'left', d: 'right', W: 'up', S: 'down', A: 'left', D: 'right' }[e.key];
       if (dir) { e.preventDefault(); gardenMove(dir); return; }
       if (e.key === ' ') { e.preventDefault(); gardenPauseToggle(); return; }
+    }
+    if (G && G.show === 'apple' && G.phase === 'play') {
+      const d0 = { w: 'up', s: 'down', a: 'left', d: 'right', W: 'up', S: 'down', A: 'left', D: 'right' }[e.key];
+      const dArrows = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' }[e.key];
+      if (d0) { e.preventDefault(); appleSetDir(0, d0); return; }
+      if (dArrows) { e.preventDefault(); appleSetDir(G.mode === 'race' ? 1 : 0, dArrows); return; }
     }
     if (e.key !== 'Enter') return;
     const row = e.target.closest && e.target.closest('.gx-guessrow');
@@ -2131,7 +2685,8 @@ window.BibleGames = (() => {
       gx: { GX_LEVELS, gxProgAll, gxShowProg, gxCanPlay, gxBeatLevel, gxDefaultLevel, gxSelectedLevel, gxSoundLevelDeck, babelBuildPool, babelMakeDeck, babelSeenLoad, babelSeenSave, setBank(b) { bank = b; }, audio: { sfx, startMusic, stopMusic, musicState: () => ({ musicOn: gxMusicOn, soundOn: gxSoundOn, playing: !!gxMusicTimer }), setMusicOn(v) { gxMusicOn = !!v; }, setSoundOn(v) { gxSoundOn = !!v; } } },
       setClock(seconds) { if (G) { G.clockEndsAt = Date.now() + seconds * 1000; } },
       setG(v) { G = v; },
-      garden: { gardenMakeLanes, gardenMakeEntities, gardenFruitFor, gardenOverlap, gardenMove, gardenTick, gardenDie, gardenTryGoal, gardenCollect, gardenActivePlayer, gardenSeatsForBar, GARDEN_COLS, GARDEN_ROWS, GARDEN_SLOTS },
+      garden: { gardenMakeLanes, gardenMakeEntities, gardenFruitFor, gardenOverlap, gardenMove, gardenTick, gardenDie, gardenTryGoal, gardenCollect, gardenActivePlayer, gardenSeatsForBar, gardenRaceSetup, gardenRaceMove, gardenRaceTick, gardenRaceGoal, gardenRaceDie, GARDEN_COLS, GARDEN_ROWS, GARDEN_SLOTS },
+      apple: { APPLE_BASE, appleGridFor, appleOpen, applePellets, appleFindSpawn, appleSetDir, appleTick, appleStepSnakes, appleEatAt },
       forcePc() { flushPc(); },
       finishBoard() { if (G && G.cats) { G.cats.forEach(c => c.clues.forEach(cl => { cl.used = true; })); jeopardyBoard(); } },
     },
