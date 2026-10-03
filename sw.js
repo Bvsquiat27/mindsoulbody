@@ -3,7 +3,7 @@
    deploys land immediately (no stale-build trap). Bible/study JSON under
    bible/ and data/ is CACHE-FIRST (versioned with the deploy) and lazy-cached
    per book on first read. Bump CACHE_VERSION to force a clean precache. */
-const CACHE_VERSION = 'v43';
+const CACHE_VERSION = 'v44';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 

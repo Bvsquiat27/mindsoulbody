@@ -3001,6 +3001,121 @@
       ]
     },
     {
+      "id": "ladder-2b-communicatio",
+      "track": "Christology Ladder",
+      "micro": true,
+      "title": "Deep Dive · Communicatio Idiomatum",
+      "category": "Christology ladder",
+      "level": "Deep dive · 4 teaching cards · 6 questions",
+      "summary": "The sharing of properties, in full: because the natures are united in one Person, what belongs to either nature can be said of that one Person — while the properties themselves never leave their natures.",
+      "source": "1 Corinthians 2:8 · Acts 20:28 · St. Cyril of Alexandria · St. John of Damascus, On the Orthodox Faith III",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20Acts%2020%3A28&version=KJV",
+      "lessons": [
+        {
+          "heading": "The rule",
+          "body": "Communicatio idiomatum (kah-myoo-nih-KAH-tee-oh ih-dee-OH-mah-tum) is Latin for the sharing of properties, and the rule is one sentence: because the divine and human natures are united in one Person, what belongs to either nature can be said of that one Person. The union is in the hypostasis, so predication follows the hypostasis. Whoever Jesus is — and he is God the Word — everything true of his divinity and everything true of his humanity is true of him. That is why Scripture speaks with such holy boldness: \"they crucified the Lord of glory\" (1 Corinthians 2:8); the church of God was \"purchased with his own blood\" (Acts 20:28). The sentences are not exaggerations. They are the grammar of the incarnation."
+        },
+        {
+          "heading": "What is shared — and what is not",
+          "body": "Here is where most people slip. What is shared is not the natures, and not the properties between them. The properties stay distinct, each with its own nature: divine idioms like eternal and uncreated; human idioms like born, hungry, and died. Divinity does not become hungry; flesh does not become uncreated. What is shared is the Person: the Son is the one subject of both sets of properties. Keep the formula by heart: properties stay with their natures; the Person carries both. If the properties themselves were shared between the natures, the natures would be mixed — and Chalcedon's first fence, \"without confusion,\" would fall."
+        },
+        {
+          "heading": "What you can say, and what you cannot",
+          "body": "Because the Person carries both, you can say: \"God was born of Mary.\" \"The Lord of glory was crucified.\" \"The blood of God.\" Each names the Person — God, the Lord of glory — and predicates of him what is his according to the flesh. What you cannot say: \"Divinity was born.\" \"Humanity created the world.\" That is abstract predication, naming a nature itself, and it is refused — you never transfer a property from one nature into the other. The test in any sentence is one question: does it name the Person (concrete: God, man, Christ, the Word), or a nature (abstract: divinity, humanity)? Concrete takes both idioms. Abstract takes only its own."
+        },
+        {
+          "heading": "The key distinction, the two ditches, and the memory hook",
+          "body": "Natures don't die. Death is a property of the human nature. The Person dies in his human nature. So when you say \"God died,\" you mean the Person who is God died — not that the divine nature became mortal. Cross the lines and you land in one of two ditches: say the divine nature itself died, and you have mixed the natures — Eutychianism. Say a man died who was separate from God, and you have split the Person — Nestorianism. The rule threads between them. And the memory hook: communicate means sharing; idiom means a distinctive property. The phrase literally means sharing of properties — and the sharing happens at the level of the Person, not the natures."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "State the rule of communicatio idiomatum precisely:",
+          "choices": [
+            "The natures share their properties with each other in the union",
+            "Because the natures are united in one Person, what belongs to either nature can be said of that one Person",
+            "Divine properties are transferred into the human nature at the incarnation",
+            "We may speak of Christ only in terms of his divinity"
+          ],
+          "correct": 1,
+          "explanation": "Predication follows the hypostasis. The union is personal, so the one subject carries both sets of properties."
+        },
+        {
+          "prompt": "What exactly is shared in the communicatio idiomatum?",
+          "choices": [
+            "The properties, which pass between the natures",
+            "The natures, which merge into one",
+            "The Person: the Son is the one subject of both sets of properties, while the properties stay with their natures",
+            "Only the divine properties, given to the humanity"
+          ],
+          "correct": 2,
+          "explanation": "Properties stay with their natures; the Person carries both. Sharing happens at the level of the Person, not the natures."
+        },
+        {
+          "prompt": "Which sentence is refused, and why?",
+          "choices": [
+            "\"God was born of Mary\" — God cannot be born",
+            "\"The Lord of glory was crucified\" — glory cannot suffer",
+            "\"Divinity was born\" — abstract predication names a nature, and properties are never transferred between natures",
+            "\"The blood of God\" — blood is too lowly for God"
+          ],
+          "correct": 2,
+          "explanation": "\"God was born\" names the Person and stands. \"Divinity was born\" names the nature in the abstract and is refused."
+        },
+        {
+          "prompt": "When we say \"God died,\" we mean...",
+          "choices": [
+            "The divine nature became mortal and died",
+            "The Person who is God died in his human nature; natures don't die, persons do",
+            "A man died while God watched from a distance",
+            "Death is an illusion, so nothing really died"
+          ],
+          "correct": 1,
+          "explanation": "Death is an idiom of the human nature. The subject who undergoes it is God the Word — that is the whole wonder of the confession."
+        },
+        {
+          "prompt": "Saying the divine nature itself died falls into which ditch?",
+          "choices": [
+            "Nestorianism — splitting the Person",
+            "Docetism — denying the flesh",
+            "Eutychianism — mixing the natures",
+            "Adoptionism — promoting a man"
+          ],
+          "correct": 2,
+          "explanation": "If divinity as divinity dies, the natures have been blended. The other ditch — a separate man dying — is Nestorianism."
+        },
+        {
+          "prompt": "The memory hook: communicatio idiomatum literally means...",
+          "choices": [
+            "The union of two natures into one",
+            "Sharing of properties — and the sharing happens at the level of the Person, not the natures",
+            "God speaking through a man",
+            "The exchange of natures at the incarnation"
+          ],
+          "correct": 1,
+          "explanation": "Communicate, sharing; idiom, a distinctive property. Properties stay home; the Person carries both."
+        }
+      ],
+      "words": [
+        {
+          "term": "communicatio idiomatum",
+          "say": "kah myoo nih kah tee oh, ih dee oh mah tum"
+        },
+        {
+          "term": "idiom",
+          "say": "ih dee um"
+        },
+        {
+          "term": "concrete predication",
+          "say": "kon kreet pred ih kay shun"
+        },
+        {
+          "term": "abstract predication",
+          "say": "ab strakt pred ih kay shun"
+        }
+      ]
+    },
+    {
       "id": "ladder-3-heresies",
       "track": "Christology Ladder",
       "micro": true,
