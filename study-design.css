@@ -199,3 +199,36 @@ input,textarea,select{font-size:7.3vw}
 .profile-stats strong{font-size:11vw}
 .profile-stats small{font-size:4.2vw}
 }
+
+/* MSB phone sizing v13: v11 (old-app scale x1.4) overshot on the phone — Angel: "too zoomed in". Pulled back to ~0.85 of v11, the midpoint between v10 (too far back) and v11 (too zoomed). Zoom lock stays. */
+@media (max-width:1024px){
+body{font-size:6.2vw}
+h1{font-size:14vw}
+h2{font-size:8.9vw}
+h3{font-size:8.1vw}
+.lead{font-size:6.4vw}
+.small{font-size:4.8vw}
+.eyebrow,.nav-caption{font-size:4.2vw}
+#screen{padding:9.4vw 6.6vw calc(45vw + env(safe-area-inset-bottom))}
+.topbar{height:22vw;padding:0 6.6vw}
+.mobile-brand{font-size:7.5vw}
+.mobile-brand .brand-mark{width:11.9vw;height:11.9vw;font-size:8.9vw;border-radius:4.2vw}
+.account-button{width:15.3vw;height:15.3vw;font-size:8.1vw}
+.card{padding:9.4vw;border-radius:8.1vw}
+.daily-stack{min-height:109vw;padding:9.4vw 8.9vw 26vw;border-radius:10vw}
+.daily-stack h2{font-size:13.6vw}
+.verse-play{width:16vw;height:16vw;right:7.5vw;bottom:6.6vw}
+.neon-stat{padding:8.7vw;min-height:58vw}
+.neon-stat strong{font-size:19.6vw}
+.primary,.secondary{min-height:16vw;padding:4.5vw 6.6vw}
+.bottom-nav{padding:3.1vw 3.1vw calc(3.6vw + env(safe-area-inset-bottom));border-radius:8.1vw 8.1vw 0 0}
+.bottom-nav button{min-height:20.4vw;border-radius:6.3vw}
+.bottom-nav button svg{width:8.5vw;height:8.5vw}
+.bottom-nav button small{font-size:4.4vw}
+.section-head{margin:12.8vw 0 6.3vw}
+input,textarea,select{font-size:6.2vw}
+.theme-swatches{gap:3.8vw}
+.theme-swatch{min-height:16vw;padding:3.8vw 4.3vw;font-size:4vw;border-radius:4.7vw}
+.profile-stats strong{font-size:9.4vw}
+.profile-stats small{font-size:3.6vw}
+}
