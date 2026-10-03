@@ -168,3 +168,4 @@ body{background:radial-gradient(ellipse 58% 25% at 50% -6%,var(--app-glow),trans
 .msg-mine .msg-bubble{background:#17262a;color:#f3ead6}
 .msg-bubble p{margin:0 0 4px;white-space:pre-wrap}
 .msg-bubble small{opacity:.75}
+.bible-log-btn.bible-logged{background:#dcbf84;color:#17262a;border-color:#dcbf84}
