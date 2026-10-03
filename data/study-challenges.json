@@ -2715,6 +2715,789 @@
           "say": "sin ehr gee ah"
         }
       ]
+    },
+    {
+      "id": "ladder-1-union",
+      "track": "Christology Ladder",
+      "micro": true,
+      "title": "Ladder 1 · The Union Itself",
+      "category": "Christology ladder",
+      "level": "Session 1 of 6 · 4 teaching cards · 8 questions",
+      "summary": "Ladder session 1 of 6. One Person, two natures: hypostatic union, enhypostasia, the Logos before and in the flesh, kenosis, and the Chalcedonian definition.",
+      "source": "John 1:1-14 · Philippians 2:5-11 · the Definition of Chalcedon (451)",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=John%201%3A1-14%3B%20Philippians%202%3A5-11&version=KJV",
+      "lessons": [
+        {
+          "heading": "One Person, two natures",
+          "body": "Start with the two questions every Christology term answers. Hypostasis (high-PAH-stuh-sis) answers who: the concrete subject, the one who acts and speaks. Physis (FEE-sis), nature, answers what: the kind of being, with its powers and limits. In Christ there is one who — God the Word, the second hypostasis of the Trinity — and two whats: the full divine nature and a complete human nature, body and rational soul. This is the hypostatic union: the natures are united not in a mixture and not side by side, but in the one Person of the Word. Say it clean: \"One and the same Christ: true God and true man, one Person in two natures.\""
+        },
+        {
+          "heading": "Enhypostasia: whose person is the human nature?",
+          "body": "Ask the sharp question: Jesus' human nature — does it have its own human person? Enhypostasia (en-hee-pah-STAH-see-ah) answers: the human nature is real and complete, but it has no hypostasis of its own; it exists in the hypostasis of the Word. Enhypostasia names that positive fact. Anhypostasia (an-hee-pah-STAH-see-ah) is its shadow side, and it cuts two ways: rightly used, it says the human nature never existed as a separate person (anhypostatic in itself); wrongly imagined, it would mean a human person of its own — and that is the doorway to Nestorianism. St. Leontius and St. Maximus hold both together: not its own person (anhypostasia), yet not floating loose — personally grounded in the Word (enhypostasia)."
+        },
+        {
+          "heading": "The Word before the flesh, and in the flesh",
+          "body": "Logos (LOH-gohs) is the Word, the second Person of the Trinity, eternally begotten of the Father. The Fathers distinguish the Logos asarkos (ah-SAHR-kohs), the Word before the flesh — the eternal Son as he is without our nature — from the Logos ensarkos (en-SAHR-kohs), the same Word enfleshed, after he took flesh from the Virgin. One and the same subject in both names: the one who is eternal is the one who is born. This taking is the incarnation (in-kar-NAY-shun), and the manner of it is called the assumption: the Word assumed, took into himself, a human nature — he did not meet a ready-made man and move in. Theotokos (theh-oh-TOH-kohs), God-bearer, is Mary's title because the one she bore according to the flesh is personally God the Word."
+        },
+        {
+          "heading": "Kenosis and the Chalcedonian fence",
+          "body": "Kenosis (keh-NOH-sis) is the self-emptying of Philippians 2:7: the Son emptied himself \"taking the form of a servant\" — not by shedding divinity, which is impossible, but by adding humility, veiling glory under flesh that could hunger, suffer, and die. Against every shortcut, the Council of Chalcedon (451) set four fences around the mystery: the two natures are united without confusion (against mixing), without change (the divine nature is not converted into flesh), without division (against splitting Christ into two sons), and without separation (the union never comes apart, not even in death). One Person, two natures, four fences: that is the Chalcedonian definition, and everything in this ladder hangs on it."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What does hypostasis name, as distinct from physis (nature)?",
+          "choices": [
+            "The who: the concrete Person who acts; nature names the what",
+            "The what; nature names the who",
+            "A third thing between person and nature",
+            "The appearance a nature shows to others"
+          ],
+          "correct": 0,
+          "explanation": "Hypostasis = the subject, the who (God the Word). Physis = the what, the kind of being. Christ: one who, two whats."
+        },
+        {
+          "prompt": "What is the hypostatic union?",
+          "choices": [
+            "Two natures blended into one new nature",
+            "Two persons cooperating closely",
+            "Two complete natures united in the one Person of the Word",
+            "The divine nature replacing the human mind"
+          ],
+          "correct": 2,
+          "explanation": "Union in the hypostasis of the Word: not mixture (Eutyches), not partnership (Nestorius), not replacement (Apollinaris)."
+        },
+        {
+          "prompt": "Enhypostasia teaches that Christ's human nature...",
+          "choices": [
+            "Has its own human person alongside the Word",
+            "Exists in the Person of the Word; it has no hypostasis of its own",
+            "Is only an appearance of a person",
+            "Became a person at the resurrection"
+          ],
+          "correct": 1,
+          "explanation": "The human nature is complete and real, but personally grounded in the Word — enhypostatic in him."
+        },
+        {
+          "prompt": "What error opens the door when the human nature is imagined as its own separate person?",
+          "choices": [
+            "Docetism",
+            "Monothelitism",
+            "Nestorianism: a man plus God, two persons",
+            "Adoptionism only at the baptism"
+          ],
+          "correct": 2,
+          "explanation": "A separately-personed human nature gives you two subjects — a man and God side by side. That is the Nestorian split."
+        },
+        {
+          "prompt": "The difference between Logos asarkos and Logos ensarkos is...",
+          "choices": [
+            "Two different beings, before and after",
+            "The same Word, named before the flesh and enfleshed",
+            "A title for the Father and a title for the Son",
+            "The written word and the spoken word"
+          ],
+          "correct": 1,
+          "explanation": "One subject, two states: the eternal Word without flesh, and the same Word having taken flesh. No change of person."
+        },
+        {
+          "prompt": "What does kenosis (Philippians 2) actually describe?",
+          "choices": [
+            "The Son emptying himself of divinity to become only man",
+            "The Son emptying himself by taking a servant's form — adding humility, not losing deity",
+            "The Father emptying heaven of angels",
+            "Believers emptying their minds in prayer"
+          ],
+          "correct": 1,
+          "explanation": "He emptied himself by taking, not by dropping: the form of a servant added to the form of God."
+        },
+        {
+          "prompt": "Why is Mary called Theotokos in this session's frame?",
+          "choices": [
+            "Because she is the origin of the divine nature",
+            "Because the one born of her according to the flesh is God the Word — the title names the child",
+            "As an honor higher than worship",
+            "Because she is mother of the whole Trinity"
+          ],
+          "correct": 1,
+          "explanation": "Theotokos is Christology before it is Mariology: it confesses who was born, not where divinity comes from."
+        },
+        {
+          "prompt": "Which list gives Chalcedon's four fences?",
+          "choices": [
+            "Without confusion, without change, without division, without separation",
+            "With mixture, with conversion, with distance, with rivalry",
+            "One will, one nature, one energy, one operation by nature",
+            "Begotten, made, proceeded, sent"
+          ],
+          "correct": 0,
+          "explanation": "Inconfusedly, unchangeably, indivisibly, inseparably — the four adverbs guard one Person in two natures."
+        }
+      ],
+      "words": [
+        {
+          "term": "hypostatic union",
+          "say": "high pah stah tik yoon yun"
+        },
+        {
+          "term": "hypostasis",
+          "say": "high pah stuh sis"
+        },
+        {
+          "term": "physis",
+          "say": "fee sis"
+        },
+        {
+          "term": "enhypostasia",
+          "say": "en hee pah stah see ah"
+        },
+        {
+          "term": "anhypostasia",
+          "say": "an hee pah stah see ah"
+        },
+        {
+          "term": "Theotokos",
+          "say": "theh oh toh kohs"
+        },
+        {
+          "term": "incarnation",
+          "say": "in kar nay shun"
+        },
+        {
+          "term": "Logos",
+          "say": "loh gohs"
+        },
+        {
+          "term": "Logos ensarkos",
+          "say": "loh gohs en sahr kohs"
+        },
+        {
+          "term": "Logos asarkos",
+          "say": "loh gohs ah sahr kohs"
+        },
+        {
+          "term": "kenosis",
+          "say": "keh noh sis"
+        },
+        {
+          "term": "assumption",
+          "say": "uh sump shun"
+        },
+        {
+          "term": "Chalcedonian definition",
+          "say": "kal seh doh nee un"
+        }
+      ]
+    },
+    {
+      "id": "ladder-2-properties",
+      "track": "Christology Ladder",
+      "micro": true,
+      "title": "Ladder 2 · The Properties",
+      "category": "Christology ladder",
+      "level": "Session 2 of 6 · 3 teaching cards · 6 questions",
+      "summary": "Ladder session 2 of 6. Idioms of each nature, the communicatio idiomatum, and why we name the Person concretely but never predicate abstractly of a nature.",
+      "source": "1 Corinthians 2:8 · Acts 20:28 · St. Cyril of Alexandria, Third Letter to Nestorius",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20Acts%2020%3A28&version=KJV",
+      "lessons": [
+        {
+          "heading": "Idioms: what belongs to each nature",
+          "body": "An idiom (IH-dee-um) is a distinctive attribute, a property proper to one nature. The divine idioms: eternal, uncreated, omnipotent, omnipresent, impassible (unable to suffer in the divine nature itself). The human idioms: born, hungry, weary, crucified, died. Keep the two lists clean in your mind, because the whole art of speaking about Christ is knowing which list a word belongs to — and then daring to say it of the one Person anyway. Scripture does this constantly: \"they crucified the Lord of glory\" (1 Corinthians 2:8); the church of God \"purchased with his own blood\" (Acts 20:28). Born and died are human idioms; Lord of glory and God are divine names; the sentences are true because the subject is one."
+        },
+        {
+          "heading": "The rule: communicatio idiomatum",
+          "body": "Communicatio idiomatum (kah-myoo-nih-KAH-tee-oh ih-dee-OH-mah-tum) means the exchange or sharing of properties, and it is a rule of speech that follows from the hypostatic union. Because the two natures are united in one Person, the idioms of either nature may be predicated of the Person. So we say, without blinking: God was born of a virgin (according to the flesh). The man Jesus is eternal (according to divinity). God suffered and died (according to the human nature he made his own). The rule does not mix the natures — the divinity does not become passible, the flesh does not become uncreated. It assigns every predicate to the one subject, and lets the natures keep their own properties untouched."
+        },
+        {
+          "heading": "Concrete names yes, abstract names no",
+          "body": "Here is the precision tool, taught by the Fathers and sharpened by St. John of Damascus. Concrete predication names the Person by either nature, and it is always allowed: \"God\" and \"man\" are concrete terms, so \"God died\" and \"this man is uncreated\" can both be confessed — of the one Christ, each according to the other nature. Abstract predication names a nature itself — \"the divinity,\" \"the humanity\" — and here we refuse the exchange: we never say \"the divinity died\" or \"the humanity is uncreated,\" because the natures as such do not trade properties. When a debate gets tangled, ask one question: are we naming the Person, or a nature? That single distinction unties most knots."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which set is entirely divine idioms?",
+          "choices": [
+            "Born, hungry, crucified",
+            "Eternal, uncreated, omnipotent, impassible",
+            "Weary, died, buried",
+            "Begotten of Mary, tempted, forsaken"
+          ],
+          "correct": 1,
+          "explanation": "Properties of the divine nature: eternal, uncreated, omnipotent, omnipresent, impassible in itself."
+        },
+        {
+          "prompt": "Why can Scripture say \"they crucified the Lord of glory\"?",
+          "choices": [
+            "Because the divine nature suffered by itself",
+            "Because the one Person crucified in the flesh is the Lord of glory — idioms are predicated of the Person",
+            "Because glory is a created quality",
+            "It is poetry and not meant to be true"
+          ],
+          "correct": 1,
+          "explanation": "Concrete predication: the subject is God the Word; crucifixion is his according to the flesh he made his own."
+        },
+        {
+          "prompt": "The communicatio idiomatum does NOT mean...",
+          "choices": [
+            "That both natures' idioms can be said of the one Person",
+            "That the natures exchange or trade their properties with each other",
+            "That \"God suffered in the flesh\" is true speech",
+            "That Acts 20:28 can speak of God's own blood"
+          ],
+          "correct": 1,
+          "explanation": "The natures never swap properties — divinity stays impassible, flesh stays created. The Person receives both sets of predicates."
+        },
+        {
+          "prompt": "Which sentence uses abstract predication wrongly?",
+          "choices": [
+            "\"God was born of the Virgin, according to the flesh\"",
+            "\"The divinity died on the cross\"",
+            "\"This man is the eternal Word\"",
+            "\"The Lord of glory was crucified\""
+          ],
+          "correct": 1,
+          "explanation": "\"The divinity\" names the nature in the abstract; natures do not die. The Person died, according to his human nature."
+        },
+        {
+          "prompt": "What question unties most tangled Christology arguments?",
+          "choices": [
+            "\"Who wrote this first?\"",
+            "\"Are we naming the Person, or a nature?\"",
+            "\"Which council was latest?\"",
+            "\"Is this word Greek or Latin?\""
+          ],
+          "correct": 1,
+          "explanation": "Concrete terms (God, man, Christ, the Word) take both idioms; abstract terms (divinity, humanity) never trade them."
+        },
+        {
+          "prompt": "The human idioms — born, hungry, crucified, died — belong to Christ...",
+          "choices": [
+            "Only in appearance",
+            "According to his human nature, and are truly said of God the Word",
+            "Only before the resurrection",
+            "As metaphors for spiritual states"
+          ],
+          "correct": 1,
+          "explanation": "Really his, according to the flesh — and because the flesh is the Word's own, truly predicated of God the Son."
+        }
+      ],
+      "words": [
+        {
+          "term": "idiom",
+          "say": "ih dee um"
+        },
+        {
+          "term": "communicatio idiomatum",
+          "say": "kah myoo nih kah tee oh, ih dee oh mah tum"
+        },
+        {
+          "term": "concrete predication",
+          "say": "kon kreet pred ih kay shun"
+        },
+        {
+          "term": "abstract predication",
+          "say": "ab strakt pred ih kay shun"
+        }
+      ]
+    },
+    {
+      "id": "ladder-3-heresies",
+      "track": "Christology Ladder",
+      "micro": true,
+      "title": "Ladder 3 · The Heresies to Avoid",
+      "category": "Christology ladder",
+      "level": "Session 3 of 6 · 3 teaching cards · 7 questions",
+      "summary": "Ladder session 3 of 6. Seven ways to miss Christ: splitting him in two, mixing him into a third thing, shrinking his humanity, or making him a man promoted. Each error names the truth it endangers.",
+      "source": "the councils of Ephesus (431), Chalcedon (451), and Constantinople III (680-681)",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=Luke%201%3A35%3B%20Hebrews%204%3A15&version=KJV",
+      "lessons": [
+        {
+          "heading": "Splitting Christ in two: Nestorianism and Adoptionism",
+          "body": "Nestorianism (nes-TOR-ee-un-iz-um), named for Nestorius of Constantinople, protects God's transcendence by dividing the subject: the Word dwells in the man Jesus as in a temple — two persons, a man plus God, joined by will and honor rather than by union. Its tell: resisting Theotokos, preferring \"Christ-bearer,\" so that Mary bore only the man. Adoptionism (uh-DOP-shun-iz-um) runs the same split through time: Jesus was a mere man whom God adopted — at his baptism, say — and promoted to divine sonship. Both keep a man at the center who is not personally God, and both leave us with a mediator who is, at bottom, one of us reaching up, not God come down. Ephesus answered: the one born of Mary is God the Word; sonship is by nature and eternal, not by promotion."
+        },
+        {
+          "heading": "Mixing him into a third thing: Eutychianism and Monophysitism",
+          "body": "Eutychianism (yoo-TIK-ee-un-iz-um), from the archimandrite Eutyches, confessed the union so strongly that the natures blurred: after the union, Christ's humanity is absorbed into divinity like a drop of wine in the sea — one mixed nature, neither truly God's nor ours. Monophysitism (moh-noh-FIZ-ih-tiz-um) is its family name: one nature (mono-physis) after the union. The cost is double: his divinity is changed by mixture, and his humanity is no longer consubstantial with us — so it cannot heal us. Chalcedon's first two fences answer directly: without confusion, without change. The Orthodox confession is sometimes called miaphysite language in St. Cyril — \"one incarnate nature of God the Word\" — but Cyril means one Person, with the natures unconfused; the difference is whether \"one\" names the Person or a blended nature."
+        },
+        {
+          "heading": "Shrinking the humanity: Apollinarianism, Monothelitism, Docetism",
+          "body": "Apollinarianism (ah-pah-lih-NAIR-ee-un-iz-um) kept a real body but cut the crown: Apollinaris gave Christ a human body and animal soul, with the Logos replacing the human mind (nous). St. Gregory Nazianzen's axe falls: \"What is not assumed is not healed\" — a mind not assumed is a mind not saved. Monothelitism (moh-noh-THEL-ih-tiz-um) repeated the cut one level down: one will (mono-thelema) in Christ, as if a human will would compete with God's. Constantinople III (681) answered with two natural wills, the human will freely following the divine — Gethsemane's \"not my will\" only makes sense if a real human will speaks. Docetism (DOH-seh-tiz-um), the oldest of the seven, denied the flesh itself: Christ only seemed (dokein, to appear) human; the suffering was theater. Against all three: complete humanity, body, mind, and will — assumed, and therefore healed."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Nestorianism's core error is...",
+          "choices": [
+            "One nature after the union",
+            "Two persons: a man plus God, joined by honor rather than union",
+            "Christ had no human mind",
+            "Christ only appeared human"
+          ],
+          "correct": 1,
+          "explanation": "Two subjects where there is one. Its tell is refusing Theotokos so that Mary bears only the man."
+        },
+        {
+          "prompt": "Why is Adoptionism a cousin of Nestorianism?",
+          "choices": [
+            "Both deny the Spirit's divinity",
+            "Both end with a man who is not personally God — united or promoted, never the Word himself",
+            "Both mix the natures",
+            "Both were condemned at Nicaea"
+          ],
+          "correct": 1,
+          "explanation": "Whether by indwelling or by promotion at baptism, Jesus remains a man other than God the Word. Sonship becomes a reward, not his eternal nature."
+        },
+        {
+          "prompt": "Eutychianism endangers salvation because...",
+          "choices": [
+            "It makes Christ too human to save",
+            "The humanity is absorbed and changed, so it is no longer truly ours to be healed",
+            "It divides Christ into two sons",
+            "It denies the resurrection body"
+          ],
+          "correct": 1,
+          "explanation": "A drop of wine lost in the sea: what is not consubstantial with us cannot heal us, and what is mixed is no longer fully either nature."
+        },
+        {
+          "prompt": "How does Orthodox use of Cyril's \"one incarnate nature of God the Word\" differ from Monophysitism?",
+          "choices": [
+            "It does not differ at all",
+            "\"One\" names the one Person (the incarnate Word), with the natures unconfused; Monophysitism makes one blended nature",
+            "Cyril meant the humanity was unreal",
+            "It refers to the Trinity, not Christ"
+          ],
+          "correct": 1,
+          "explanation": "Same phrase family, different referent: one hypostasis, confessed with unconfused natures — which is why Chalcedon could receive Cyril."
+        },
+        {
+          "prompt": "What does Gregory Nazianzen's \"what is not assumed is not healed\" destroy?",
+          "choices": [
+            "Docetism only",
+            "Apollinarianism: a Christ without a human mind leaves our minds unhealed",
+            "Adoptionism",
+            "Monothelitism only"
+          ],
+          "correct": 1,
+          "explanation": "If the Logos replaced the human nous, the very faculty that fell first would be the one thing not saved."
+        },
+        {
+          "prompt": "Monothelitism claimed one will in Christ. Why does Gethsemane refute it?",
+          "choices": [
+            "Jesus never prayed about his will",
+            "\"Not my will, but thine\" shows a real human will, distinct and freely following the divine",
+            "The disciples heard only one voice",
+            "Wills belong to natures, and Christ has one nature"
+          ],
+          "correct": 1,
+          "explanation": "Two natural wills (dyotheletism): the human will is real, and its glory is free obedience, not absence. Condemned and settled at Constantinople III, 681."
+        },
+        {
+          "prompt": "Docetism is the claim that...",
+          "choices": [
+            "Christ is two persons",
+            "Christ only appeared human; the flesh and suffering were seeming",
+            "Christ had one will",
+            "Christ was adopted at his baptism"
+          ],
+          "correct": 1,
+          "explanation": "From dokein, to seem. The oldest error in the list — against it, John insists the Word became flesh, and invites Thomas to touch."
+        }
+      ],
+      "words": [
+        {
+          "term": "Nestorianism",
+          "say": "nes tor ee un iz um"
+        },
+        {
+          "term": "Eutychianism",
+          "say": "yoo tik ee un iz um"
+        },
+        {
+          "term": "Apollinarianism",
+          "say": "ah pah lih nair ee un iz um"
+        },
+        {
+          "term": "Monophysitism",
+          "say": "moh noh fiz ih tiz um"
+        },
+        {
+          "term": "Monothelitism",
+          "say": "moh noh thel ih tiz um"
+        },
+        {
+          "term": "Docetism",
+          "say": "doh seh tiz um"
+        },
+        {
+          "term": "Adoptionism",
+          "say": "uh dop shun iz um"
+        }
+      ]
+    },
+    {
+      "id": "ladder-4-councils",
+      "track": "Christology Ladder",
+      "micro": true,
+      "title": "Ladder 4 · The Councils",
+      "category": "Christology ladder",
+      "level": "Session 4 of 6 · 3 teaching cards · 6 questions",
+      "summary": "Ladder session 4 of 6. Five councils, five sentences to remember: Nicaea 325, Constantinople 381, Ephesus 431, Chalcedon 451, Constantinople III 681 — what each one settled and why.",
+      "source": "the acts and definitions of the first five ecumenical councils",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=John%201%3A1%3B%20Luke%201%3A43%3B%20Matthew%2026%3A39&version=KJV",
+      "lessons": [
+        {
+          "heading": "Nicaea 325 and Constantinople 381: the Godhead defended",
+          "body": "Nicaea (ny-SEE-ah), 325: Arius taught that the Son was the first and greatest creature — \"there was when he was not.\" The council answered with one surgical word, homoousios (hoh-moh-OO-see-ahs): the Son is of one essence with the Father, begotten not made. If the Son were a creature, no creature could unite creatures to God; the whole gospel stood on one word. Constantinople (kon-stan-tih-NOH-pul), 381, finished the sentence for the Spirit: against those who made the Holy Spirit a servant or force, the council confessed him as Lord and Giver of life, who proceeds from the Father, worshipped and glorified together with Father and Son — God, not a gift God gives. Together these two councils give the Creed its spine: one God, three Persons, each fully God."
+        },
+        {
+          "heading": "Ephesus 431 and Chalcedon 451: the union defined",
+          "body": "Ephesus (EF-eh-sus), 431, faced Nestorius, who would not call Mary Theotokos for fear of making her mother of divinity. St. Cyril's logic prevailed: the title is not about Mary's power but the child's identity — the one born of her is God the Word, so she is God-bearer. One Person, from the first moment of conception. Chalcedon (KAL-seh-dun), 451, then drew the map both errors demanded: against Nestorius, one and the same Christ, one Person and one hypostasis; against Eutyches, in two natures, without confusion, change, division, or separation, the distinction of the natures in no way abolished by the union. Chalcedon's definition is mostly fences — it tells us where the mystery is not, so that worship can find where he is."
+        },
+        {
+          "heading": "Constantinople III 681: the last cut answered",
+          "body": "Two and a half centuries after Chalcedon, the question narrowed to a point: if Christ has two natures, does he have two wills? Monothelitism said one will, to protect unity. Constantinople III (680–681) saw the trap: will belongs to nature, so one will would mean one nature — Eutyches returning through the back door — and a Christ without a human will could not heal ours. The council confessed two natural wills and two natural operations, indivisibly and without confusion, the human will following and subject not by force but in free obedience to the divine. With that, the ladder of councils is complete: God the Son is who Nicaea said (true God), born of whom Ephesus said (Theotokos), united as Chalcedon said (one Person, two natures), and willing as Constantinople III said (his human will, freely ours and freely surrendered)."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What single word did Nicaea (325) stake everything on?",
+          "choices": [
+            "Theotokos",
+            "Homoousios: of one essence with the Father",
+            "Perichoresis",
+            "Enhypostasia"
+          ],
+          "correct": 1,
+          "explanation": "Against Arius: begotten, not made, of one essence with the Father. A creature cannot unite creatures to God."
+        },
+        {
+          "prompt": "Constantinople (381) chiefly settled what?",
+          "choices": [
+            "The date of Pascha",
+            "The divinity of the Holy Spirit, worshipped and glorified with Father and Son",
+            "Mary's title",
+            "The two wills of Christ"
+          ],
+          "correct": 1,
+          "explanation": "The Spirit is Lord and Giver of life, proceeding from the Father — God himself, not a force or a servant."
+        },
+        {
+          "prompt": "Ephesus (431) confessed Mary as Theotokos in order to confess what about Christ?",
+          "choices": [
+            "That Mary is the source of divinity",
+            "That the one born of her is personally God the Word — one Person from conception",
+            "That Christ became God at his baptism",
+            "That Mary should receive latreia"
+          ],
+          "correct": 1,
+          "explanation": "The title guards the child's identity. Nestorius's refusal split Christ into a man born and a God indwelling."
+        },
+        {
+          "prompt": "Chalcedon (451) protected the union with which four adverbs?",
+          "choices": [
+            "Begotten, unbegotten, proceeding, sent",
+            "Without confusion, without change, without division, without separation",
+            "One will, one nature, one energy, one person by mixture",
+            "Truly, really, substantially, sacramentally"
+          ],
+          "correct": 1,
+          "explanation": "The four fences: no mixing (Eutyches), no converting, no splitting (Nestorius), no separating — ever."
+        },
+        {
+          "prompt": "Why did Constantinople III (681) insist on two wills?",
+          "choices": [
+            "To give Jesus inner conflict",
+            "Because will belongs to nature: one will would mean one nature, and an unassumed human will would be unhealed",
+            "To honor the emperor's theology",
+            "Because Scripture lists two wills by name"
+          ],
+          "correct": 1,
+          "explanation": "Dyotheletism: two natural wills, the human freely following the divine — Gethsemane's obedience made dogma."
+        },
+        {
+          "prompt": "Put the five councils in order:",
+          "choices": [
+            "Ephesus, Nicaea, Chalcedon, Constantinople I, Constantinople III",
+            "Nicaea (325), Constantinople I (381), Ephesus (431), Chalcedon (451), Constantinople III (681)",
+            "Nicaea, Ephesus, Constantinople I, Constantinople III, Chalcedon",
+            "Chalcedon, Ephesus, Nicaea, Constantinople III, Constantinople I"
+          ],
+          "correct": 1,
+          "explanation": "325 Godhead of the Son; 381 Godhead of the Spirit; 431 one Person born of Mary; 451 two natures defined; 681 two wills confessed."
+        }
+      ],
+      "words": [
+        {
+          "term": "Nicaea",
+          "say": "ny see ah"
+        },
+        {
+          "term": "Constantinople",
+          "say": "kon stan tih noh pul"
+        },
+        {
+          "term": "Ephesus",
+          "say": "ef eh sus"
+        },
+        {
+          "term": "Chalcedon",
+          "say": "kal seh dun"
+        },
+        {
+          "term": "homoousios",
+          "say": "hoh moh oo see ahs"
+        },
+        {
+          "term": "Theotokos",
+          "say": "theh oh toh kohs"
+        }
+      ]
+    },
+    {
+      "id": "ladder-5-figures",
+      "track": "Christology Ladder",
+      "micro": true,
+      "title": "Ladder 5 · The Key Figures",
+      "category": "Christology ladder",
+      "level": "Session 5 of 6 · 3 teaching cards · 6 questions",
+      "summary": "Ladder session 5 of 6. Cyril and Nestorius at Ephesus, Eutyches the counterweight, Maximus who paid with his tongue and hand, and John of Damascus who wrote the summary the Church still uses.",
+      "source": "St. Cyril's Letters to Nestorius · St. Maximus, Disputation with Pyrrhus · St. John of Damascus, On the Orthodox Faith III",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=Luke%201%3A43%3B%20John%201%3A14&version=KJV",
+      "lessons": [
+        {
+          "heading": "Cyril against Nestorius: the fight over one word for Mary",
+          "body": "Nestorius (nes-TOR-ee-us), patriarch of Constantinople, balked at calling Mary Theotokos: God cannot be born, he reasoned, so Mary bore the man in whom the Word dwelt. St. Cyril of Alexandria (SEER-il) saw the split instantly. If the one born of Mary is not God the Word himself, then Jesus is two subjects — a man inspired, indwelt, honored — and the cross becomes the death of a man near God, not God's own death for us in the flesh. Cyril pressed the communicatio idiomatum relentlessly: because the Person is one, Scripture's bold sentences stand — God born, God crucified in the flesh. His Twelve Anathemas and the Second and Third Letters to Nestorius became Ephesus's yardstick: whoever will not confess the one incarnate Word, and Mary as Theotokos, has already divided Christ."
+        },
+        {
+          "heading": "Eutyches and Maximus: the opposite ditch, and the confessor",
+          "body": "Eutyches (YOO-tih-keez), an elderly Constantinople archimandrite, hated Nestorius so much he fell off the other side: before the union, two natures; after the union, one — with the humanity so swallowed by divinity that Christ was not consubstantial with us. Chalcedon deposed him and confessed the natures unconfused. Two centuries later St. Maximus the Confessor (MAK-sih-mus) fought the subtler sequel, monothelitism. His tools were the ones from session 1: the human nature is enhypostatic in the Word, real in every faculty — mind, will, energy — and precisely therefore healed. When emperor and patriarchs demanded silence, Maximus would not trade Christ's human will for peace; they cut out his tongue and cut off his right hand, and he died in exile in 662. Constantinople III vindicated him nineteen years after his death."
+        },
+        {
+          "heading": "John of Damascus: the summary that closed the age",
+          "body": "St. John of Damascus (duh-MAS-kus), writing in the 8th century from the monastery of St. Sabbas, gathered the whole patristic settlement into On the Orthodox Faith — the first great summary, and still the Church's handbook. Book III gives Christology its classic form: one hypostasis, two natures, two wills and energies, the communicatio idiomatum with its concrete and abstract rules, and the phrase that threads everything: the Word \"became flesh\" without ceasing to be what he was, and the flesh became the Word's own without ceasing to be ours. When you meet a new Christological claim, the Damascene is the test bench: does it keep Cyril's one Person, Chalcedon's unconfused natures, and Maximus's complete humanity — mind, will, and all? If it fails any one, it is one of the seven ditches with new paint."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What did Cyril see at stake in the word Theotokos?",
+          "choices": [
+            "Mary's personal honor in the empire",
+            "Whether the one born of Mary is God the Word himself, or a man merely indwelt by God",
+            "Whether bishops may preach about Mary",
+            "The date of the Annunciation feast"
+          ],
+          "correct": 1,
+          "explanation": "Split the child, and the cross is a man's death near God — not God's own saving death in the flesh. Ephesus agreed with Cyril."
+        },
+        {
+          "prompt": "Nestorius preferred to protect God by...",
+          "choices": [
+            "Denying Christ's humanity",
+            "Joining the Word and the man by will and honor rather than by personal union",
+            "Making the Spirit a creature",
+            "Blaming the council system"
+          ],
+          "correct": 1,
+          "explanation": "Indwelling instead of incarnation: two subjects in close alliance. That is precisely what hypostatic union denies."
+        },
+        {
+          "prompt": "Eutyches's error, in one line:",
+          "choices": [
+            "Two persons in Christ",
+            "After the union, one nature, with the humanity absorbed so Christ is not consubstantial with us",
+            "No human mind in Christ",
+            "Sonship by adoption"
+          ],
+          "correct": 1,
+          "explanation": "The anti-Nestorian overcorrection. Chalcedon: the natures remain, unconfused and unchanged, in one Person."
+        },
+        {
+          "prompt": "What did Maximus the Confessor lose for confessing Christ's human will?",
+          "choices": [
+            "His monastery only",
+            "His tongue and his right hand, dying in exile — vindicated at Constantinople III",
+            "A debate in Alexandria",
+            "His books were edited, nothing more"
+          ],
+          "correct": 1,
+          "explanation": "Mutilated in 662 for refusing to silence the two wills; the council of 681 confessed exactly what he died for."
+        },
+        {
+          "prompt": "Maximus's word for how Christ's human nature personally exists is...",
+          "choices": [
+            "Anhypostasia alone, floating free",
+            "Enhypostasia: it exists in the hypostasis of the Word",
+            "A second hypostasis beside the Word",
+            "A prosopon added at the resurrection"
+          ],
+          "correct": 1,
+          "explanation": "Not its own person, and not ungrounded: enhypostatic in the Word, complete in mind, will, and energy — and so healed."
+        },
+        {
+          "prompt": "Why does the Church still test claims by John of Damascus's On the Orthodox Faith?",
+          "choices": [
+            "It is the newest book on the subject",
+            "It is the classic summary: Cyril's one Person, Chalcedon's unconfused natures, Maximus's complete humanity in one bench-test",
+            "It replaced the councils",
+            "It explains Christ in Latin categories"
+          ],
+          "correct": 1,
+          "explanation": "Written after the councils, gathering them. A claim that fails any of the three has fallen into one of the seven ditches."
+        }
+      ],
+      "words": [
+        {
+          "term": "Cyril of Alexandria",
+          "say": "seer il of al ig zan dree ah"
+        },
+        {
+          "term": "Nestorius",
+          "say": "nes tor ee us"
+        },
+        {
+          "term": "Eutyches",
+          "say": "yoo tih keez"
+        },
+        {
+          "term": "Maximus the Confessor",
+          "say": "mak sih mus the kun fes or"
+        },
+        {
+          "term": "John of Damascus",
+          "say": "jon of duh mas kus"
+        },
+        {
+          "term": "communicatio idiomatum",
+          "say": "kah myoo nih kah tee oh, ih dee oh mah tum"
+        },
+        {
+          "term": "enhypostasia",
+          "say": "en hee pah stah see ah"
+        }
+      ]
+    },
+    {
+      "id": "ladder-6-orthodox-terms",
+      "track": "Christology Ladder",
+      "micro": true,
+      "title": "Ladder 6 · The Orthodox Terms",
+      "category": "Christology ladder",
+      "level": "Session 6 of 6 · 3 teaching cards · 6 questions",
+      "summary": "Ladder session 6 of 6. The wider Orthodox vocabulary the Christology stands in: Panagia, ousia and energies, the essence-energies distinction, theosis, perichoresis, and prosopon.",
+      "source": "2 Peter 1:4 · John 17:21-23 · St. Gregory Palamas, the Triads",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=2%20Peter%201%3A4%3B%20John%2017%3A21-23&version=KJV",
+      "lessons": [
+        {
+          "heading": "Panagia, and the map of essence and energies",
+          "body": "Panagia (pah-nah-GEE-ah) means All-Holy, the Church's beloved title for Mary — the one whose holiness is wholly gift, as ours is meant to be. Around her, the Damascene and St. Gregory Palamas draw the map this whole ladder stands in. Ousia (oo-SEE-ah), essence, answers what God is: the divine being itself, utterly beyond creaturely comprehension — no one has known, or can know, what God is in himself (Exodus 33:20; 1 Timothy 6:16). The energies (EN-er-jeez) answer what God does: his uncreated operations and gifts — life, light, grace, the glory of Tabor — truly God, truly given. The essence-energies distinction holds both: God is unknowable in essence and genuinely knowable in his energies, as the sun is untouchable in its core and warm on your skin."
+        },
+        {
+          "heading": "Theosis and perichoresis: where the map leads",
+          "body": "Theosis (theh-OH-sis) is the destination: becoming by grace what God is by nature — \"partakers of the divine nature\" (2 Peter 1:4). Not absorption (the Eutychian ditch in mystical dress) and not moral improvement alone: real participation in the uncreated life, while we remain creatures forever. Perichoresis (peh-ree-koh-REE-sis) names the shape of that life in God himself: the mutual indwelling of the Persons — the Father in the Son, the Son in the Father, the Spirit in both — distinct without distance, one without confusion. The same word serves Christology (the natures interpenetrate in the one Person without mixing) and the Trinity, and it is why salvation is pictured as being drawn into a communion that already exists, not admitted to a crowd: \"that they all may be one, as thou, Father, art in me, and I in thee\" (John 17:21)."
+        },
+        {
+          "heading": "Prosopon: the face of the Person",
+          "body": "Prosopon (PROH-soh-pon) is the Greek word for face, and in theology for the person as presented — the one you meet, address, and love. It carries both riches and a warning from the ladder's first rungs: in sloppy hands prosopon shrank toward mask or role (the old Sabellian danger, as if the Persons were faces God wears). The councils therefore anchored it: prosopon is true speech when it means hypostasis — a real, distinct who, not a costume. Say the whole ladder back now: one God, one ousia, three hypostases (never three prosopa as masks); in Christ, one hypostasis and prosopon of the Word, two natures with all their idioms, two wills, and the energies of God given to us for theosis. That is the faith of the sessions — hold it, and you can hear any new claim and know within a sentence which ditch it leans toward."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Panagia means...",
+          "choices": [
+            "Mother of the Trinity",
+            "All-Holy — the beloved title of Mary, whose holiness is wholly gift",
+            "Queen above the angels by nature",
+            "A name for the Church building"
+          ],
+          "correct": 1,
+          "explanation": "Panagia, All-Holy: the first fruit of the grace the rest of this session describes."
+        },
+        {
+          "prompt": "The essence-energies distinction confesses...",
+          "choices": [
+            "God is partly knowable in his essence if we try hard",
+            "God is unknowable in his essence, and truly knowable in his uncreated energies — both, without division",
+            "The energies are created effects, so we never meet God himself",
+            "Essence and energies are two gods"
+          ],
+          "correct": 1,
+          "explanation": "Untouchable core, real warmth: we participate in God himself by his energies, while his essence remains forever beyond creatures."
+        },
+        {
+          "prompt": "What is theosis?",
+          "choices": [
+            "Becoming God by essence",
+            "Participation in the divine life by grace — becoming by grace what God is by nature, while remaining creatures",
+            "Escaping the body and the world as evil",
+            "A reward only for monks"
+          ],
+          "correct": 1,
+          "explanation": "2 Peter 1:4: partakers of the divine nature. Union without confusion — Chalcedon's pattern applied to our salvation."
+        },
+        {
+          "prompt": "Perichoresis names...",
+          "choices": [
+            "A council procedure",
+            "The mutual indwelling of the divine Persons — and, in Christ, of the natures in the one Person — without confusion",
+            "The procession of the Spirit only",
+            "A style of Byzantine chant"
+          ],
+          "correct": 1,
+          "explanation": "Distinct without distance, one without confusion. Salvation is being drawn into that existing communion (John 17:21)."
+        },
+        {
+          "prompt": "Why did the councils treat prosopon carefully?",
+          "choices": [
+            "It is a Latin word they distrusted",
+            "It can shrink toward mask or role; it is safe only when it means hypostasis, a real distinct who",
+            "It refers to the human nature only",
+            "It was invented by Nestorius"
+          ],
+          "correct": 1,
+          "explanation": "Face and person — true when anchored to hypostasis, dangerous when it slides toward three masks of one actor."
+        },
+        {
+          "prompt": "Which sentence recites the whole ladder cleanly?",
+          "choices": [
+            "One God in three masks; Christ a God-filled man; salvation by example",
+            "One ousia, three hypostases; in Christ one hypostasis of the Word in two natures, two wills, all idioms predicated of the Person; God known in his energies, and we deified by grace",
+            "Two persons, one nature, one will; Mary bore a man; God is unknowable entirely",
+            "One nature after the union; the essence is given to us as we cease to be creatures"
+          ],
+          "correct": 1,
+          "explanation": "That is the six sessions in one breath — Godhead, union, properties, heresies avoided, councils, figures, and terms all held together."
+        }
+      ],
+      "words": [
+        {
+          "term": "Panagia",
+          "say": "pah nah gee ah"
+        },
+        {
+          "term": "ousia",
+          "say": "oo see ah"
+        },
+        {
+          "term": "energies",
+          "say": "en er jeez"
+        },
+        {
+          "term": "essence-energies distinction",
+          "say": "es ens en er jeez dis tink shun"
+        },
+        {
+          "term": "theosis",
+          "say": "theh oh sis"
+        },
+        {
+          "term": "perichoresis",
+          "say": "peh ree koh ree sis"
+        },
+        {
+          "term": "prosopon",
+          "say": "proh soh pon"
+        }
+      ]
     }
   ],
   "games": [
