@@ -2108,6 +2108,246 @@
      "explanation": "The first sentence divides Christ into two persons, and the second confuses the natures into a mixture. The third keeps one subject and confesses complete divinity and complete humanity."
     }
    ]
+  },
+  {
+   "id": "defense-saints-intercession",
+   "track": "Biblical Defense",
+   "micro": true,
+   "title": "Asking the saints to pray for us",
+   "category": "Biblical defense lesson",
+   "level": "3 teaching cards · 3 questions",
+   "summary": "A biblical defense of asking the departed saints for intercession without turning prayer into worship or necromancy.",
+   "source": "Revelation 5:8; 8:3-4 · Hebrews 12:1 · 1 Timothy 2:1-5 · the early Church",
+   "sourceUrl": "https://www.biblegateway.com/passage/?search=Revelation%205%3A8%3B%20Revelation%208%3A3-4%3B%20Hebrews%2012%3A1%3B%201%20Timothy%202%3A1-5&version=KJV",
+   "lessons": [
+    {
+     "heading": "The departed saints are alive in Christ",
+     "body": "The defense begins with life, not with death. Christ says God is not the God of the dead, but of the living (Luke 20:37-38). Hebrews places us before a great cloud of witnesses (Hebrews 12:1), and Revelation shows the martyrs conscious before God, crying out for justice (Revelation 6:9-10). If the saints live in Christ, asking them to pray is not trying to reach people who vanished; it is asking living members of Christ's body to do what living Christians are told to do."
+    },
+    {
+     "heading": "Scripture commands intercession and pictures it in heaven",
+     "body": "Paul commands that intercessions be made for all people (1 Timothy 2:1-3), and James says the prayer of a righteous person has great power (James 5:16). Revelation gives the same pattern a heavenly picture: the elders hold golden bowls full of incense, which are the prayers of the saints (Revelation 5:8), and an angel offers incense with the prayers of all the saints before the throne (Revelation 8:3-4). Asking a saint to pray is not a new kind of religion; it is intercession received inside the communion of Christ."
+    },
+    {
+     "heading": "Not worship, and not necromancy",
+     "body": "Orthodox teaching keeps the line clean: worship, latreia, belongs to God alone. Honor toward the saints, often called dulia, is the honor given to God's friends and members of Christ. Necromancy seeks hidden knowledge or control from the dead; the Church asks the saints for prayer to God. Christ remains the one mediator between God and man by nature (1 Timothy 2:5), while His members share in intercession by grace, just as they do on earth."
+    }
+   ],
+   "questions": [
+    {
+     "prompt": "In Revelation 5:8, the incense in the golden bowls is identified as what?",
+     "choices": [
+      "The praises of angels only",
+      "The prayers of the saints",
+      "The smoke of the temple altar",
+      "The merits of the apostles"
+     ],
+     "correct": 1,
+     "explanation": "Revelation 5:8 calls the incense the prayers of the saints. That image gives a biblical frame for heavenly intercession."
+    },
+    {
+     "prompt": "What is the clean distinction when Orthodox Christians ask a saint to pray?",
+     "choices": [
+      "Saints receive latreia because they are lesser gods",
+      "The saint replaces Christ as mediator by nature",
+      "We ask a living member of Christ to intercede, while worship belongs to God alone",
+      "The dead are contacted for secret information"
+     ],
+     "correct": 2,
+     "explanation": "Asking for intercession is not worship and not necromancy. Christ alone is mediator by nature; His members intercede by grace."
+    },
+    {
+     "prompt": "Why does 1 Timothy 2:5 not cancel 1 Timothy 2:1?",
+     "choices": [
+      "Because Paul commands intercessions in the same passage where he names Christ the one mediator",
+      "Because mediator means only an earthly priest",
+      "Because saints are mediators by nature too",
+      "Because prayer to God is optional after baptism"
+     ],
+     "correct": 0,
+     "explanation": "Paul's own order matters: intercessions are commanded first, then Christ is confessed as the one mediator. Shared prayer does not compete with His unique mediation."
+    }
+   ]
+  },
+  {
+   "id": "defense-theotokos",
+   "track": "Biblical Defense",
+   "micro": true,
+   "title": "Calling Mary Theotokos",
+   "category": "Biblical defense lesson",
+   "level": "3 teaching cards · 3 questions",
+   "summary": "Why God-bearer is first a confession about Jesus: the child born of Mary is truly God the Word made flesh.",
+   "source": "Luke 1:43 · John 1:1-14 · Galatians 4:4 · St. Cyril of Alexandria and Ephesus, 431",
+   "sourceUrl": "https://www.biblegateway.com/passage/?search=Luke%201%3A39-45%3B%20John%201%3A1-14%3B%20Galatians%204%3A4&version=KJV",
+   "lessons": [
+    {
+     "heading": "Elizabeth already calls her the mother of my Lord",
+     "body": "When Mary visits Elizabeth, Elizabeth cries out, why is this granted to me, that the mother of my Lord should come to me? (Luke 1:43). In that setting, Lord is not a polite title for a merely human baby. The question is not first about Mary. It is about who the child is. If the child in her womb is the Lord, then Mary is rightly named by relation to Him."
+    },
+    {
+     "heading": "The Word became flesh; the Son was born of a woman",
+     "body": "John confesses that the Word was God and that the Word became flesh (John 1:1, 14). Paul says God sent forth his Son, born of a woman (Galatians 4:4). The Church does not say Mary created the divine nature. She bore, according to the flesh, the one Person who is God the Son. The word Theotokos means God-bearer; it guards the unity of Jesus Christ against splitting Him into God over here and a separate man over there."
+    },
+    {
+     "heading": "Ephesus protected Christ, not a rivalry with Him",
+     "body": "At Ephesus in 431, St. Cyril of Alexandria defended Theotokos because denying it threatened the confession that Emmanuel is truly God. The title does not make Mary the source of the Trinity. It says that the same Son who is eternally begotten of the Father was truly born of Mary in time. Keep the phrase according to the flesh close by: Mary is mother of God incarnate, not mother of divinity as an abstract nature."
+    }
+   ],
+   "questions": [
+    {
+     "prompt": "What does Elizabeth call Mary in Luke 1:43?",
+     "choices": [
+      "The mother of my Lord",
+      "The queen above the Trinity",
+      "The mother of a prophet only",
+      "The source of the divine nature"
+     ],
+     "correct": 0,
+     "explanation": "Luke 1:43 gives the biblical seed of the title: mother of my Lord. The title follows from the identity of the child."
+    },
+    {
+     "prompt": "What danger does the title Theotokos guard against?",
+     "choices": [
+      "Saying Jesus had a real mother",
+      "Splitting Christ into a separate God and a separate man loosely joined together",
+      "Calling Mary blessed among women",
+      "Confessing that Christ was born in Bethlehem"
+     ],
+     "correct": 1,
+     "explanation": "Theotokos protects the one Person of Christ. It refuses a Jesus who is partly attached to God from outside."
+    },
+    {
+     "prompt": "What does Theotokos not mean?",
+     "choices": [
+      "Mary bore God the Word according to the flesh",
+      "Jesus is truly God and truly man",
+      "Mary is the origin or creator of the divine nature",
+      "Elizabeth spoke by the Holy Spirit"
+     ],
+     "correct": 2,
+     "explanation": "Mary did not create divinity. She bore the divine Son in His incarnation, so the title confesses Christ without exaggerating Mary into a source of Godhead."
+    }
+   ]
+  },
+  {
+   "id": "defense-true-body-blood",
+   "track": "Biblical Defense",
+   "micro": true,
+   "title": "The true Body and Blood",
+   "category": "Biblical defense lesson",
+   "level": "3 teaching cards · 3 questions",
+   "summary": "Why Orthodox Christians receive the Eucharist as real communion in Christ's Body and Blood, not as a bare reminder.",
+   "source": "Matthew 26:26-28 · John 6:53-56 · 1 Corinthians 10:16; 11:23-29 · St. Ignatius of Antioch",
+   "sourceUrl": "https://www.biblegateway.com/passage/?search=Matthew%2026%3A26-28%3B%20John%206%3A53-56%3B%201%20Corinthians%2010%3A16%3B%201%20Corinthians%2011%3A23-29&version=KJV",
+   "lessons": [
+    {
+     "heading": "Take the words of institution at full weight",
+     "body": "At the Mystical Supper Christ does not say, this only pictures my body. He says, This is my body, and, This is my blood of the new covenant (Matthew 26:26-28). Paul hands on the same words as a received tradition and warns the Corinthians to examine themselves and discern the body (1 Corinthians 11:23-29). A defense can be simple: the Church believes the Eucharist is what Christ calls it, received by faith in the mystery He gives."
+    },
+    {
+     "heading": "John 6 and the language of participation",
+     "body": "In John 6 Christ says His flesh is true food and His blood is true drink, and that the one who eats and drinks abides in Him. Paul uses the word koinonia for the cup and the bread: a participation or communion in the blood and body of Christ (1 Corinthians 10:16). That is stronger than a mental reminder. Communion joins the faithful to Christ and to one another in His body."
+    },
+    {
+     "heading": "Real, sacramental, and approached with fear and faith",
+     "body": "Orthodox teaching does not reduce the mystery to a laboratory object, and it does not turn the Eucharist into crude cannibalism. The gifts are truly the Body and Blood of Christ by the action of the Holy Spirit, received sacramentally under the forms of bread and wine. St. Ignatius of Antioch already called the Eucharist the medicine of immortality. Because the gift is real, Paul joins communion to repentance, reconciliation, and discernment."
+    }
+   ],
+   "questions": [
+    {
+     "prompt": "In 1 Corinthians 10:16, Paul calls the cup and bread a participation in what?",
+     "choices": [
+      "A church picnic and a memory aid",
+      "The blood and body of Christ",
+      "The opinions of the Corinthians",
+      "A symbol with no gift given"
+     ],
+     "correct": 1,
+     "explanation": "Paul's word is koinonia: participation or communion. The cup is participation in the blood of Christ; the bread is participation in the body of Christ."
+    },
+    {
+     "prompt": "Which words of Christ stand behind the Orthodox defense?",
+     "choices": [
+      "This represents my body from a distance",
+      "This is my body; this is my blood",
+      "This is only a teaching illustration",
+      "Do this until symbols are no longer useful"
+     ],
+     "correct": 1,
+     "explanation": "The institution words are the anchor: This is my body, and, This is my blood. Orthodoxy receives them as gift and mystery, not as a bare sign."
+    },
+    {
+     "prompt": "What does a reverent defense avoid claiming?",
+     "choices": [
+      "That communion is a real participation in Christ",
+      "That the Eucharist is a crude physical object lesson rather than a sacramental mystery",
+      "That believers should examine themselves before communion",
+      "That John 6 speaks of eating and drinking"
+     ],
+     "correct": 1,
+     "explanation": "The defense is real but not crude. Orthodoxy confesses the true Body and Blood while receiving the mystery sacramentally, with repentance and faith."
+    }
+   ]
+  },
+  {
+   "id": "defense-essence-energies",
+   "track": "Biblical Defense",
+   "micro": true,
+   "title": "Essence and energies: truly knowing God",
+   "category": "Biblical defense lesson",
+   "level": "3 teaching cards · 3 questions",
+   "summary": "How St. Gregory Palamas defended real participation in God's life while guarding that the divine essence remains beyond creatures.",
+   "source": "Exodus 33 · Matthew 17 · Psalm 36:9 · 2 Peter 1:4 · St. Gregory Palamas",
+   "sourceUrl": "https://www.biblegateway.com/passage/?search=Exodus%2033%3A18-23%3B%20Matthew%2017%3A1-8%3B%20Psalm%2036%3A9%3B%202%20Peter%201%3A4&version=KJV",
+   "lessons": [
+    {
+     "heading": "The Bible holds two truths together",
+     "body": "Moses asks to see God's glory and hears that no one can see God's face and live (Exodus 33:20). Paul says God dwells in unapproachable light (1 Timothy 6:16). Yet the same Bible says God reveals Himself, saves, fills, and gives life. A Christian answer has to protect both: God is not a creature we can comprehend, and God is not absent from the creatures He saves."
+    },
+    {
+     "heading": "Tabor shows uncreated light, and Peter speaks of participation",
+     "body": "At the Transfiguration the disciples see Christ shining with divine glory (Matthew 17:1-8). The Psalm says, in thy light shall we see light (Psalm 36:9). Peter says believers become partakers of the divine nature (2 Peter 1:4). Orthodoxy reads these together: grace is not a created thing placed between us and God. It is God's own life and glory given to creatures, often named His energies."
+    },
+    {
+     "heading": "Palamas: essence beyond us, energies truly God with us",
+     "body": "St. Gregory Palamas defended the hesychast monks by teaching a real distinction: God's essence is what God is in Himself and remains imparticipable to creatures; God's energies are His uncreated activities and life, truly God going forth to create, illumine, and deify. This is not two gods and not a created buffer. We participate in God by grace through His energies, while we never become God by essence."
+    }
+   ],
+   "questions": [
+    {
+     "prompt": "In the essence-energies distinction, what remains imparticipable to creatures?",
+     "choices": [
+      "God's essence",
+      "God's energies",
+      "God's glory at Tabor",
+      "The life given in grace"
+     ],
+     "correct": 0,
+     "explanation": "Palamas guards divine transcendence: creatures never comprehend or participate in God's essence as what God is in Himself."
+    },
+    {
+     "prompt": "What do believers participate in by grace?",
+     "choices": [
+      "A created substitute for God",
+      "God's uncreated energies and life",
+      "The divine essence as a fourth part",
+      "Only information about God"
+     ],
+     "correct": 1,
+     "explanation": "The energies are uncreated: God's own life, glory, and activity. Participation is real, but it is by grace, not by essence."
+    },
+    {
+     "prompt": "Which statement states the distinction without breaking it?",
+     "choices": [
+      "The energies are a second god beside the essence",
+      "Grace is only a created gift and not God's own life",
+      "God is unknowable in essence and truly known and shared by His energies",
+      "To know God means to comprehend the essence"
+     ],
+     "correct": 2,
+     "explanation": "That sentence keeps both biblical truths: Exodus guards the essence; Tabor and 2 Peter guard real participation."
+    }
+   ]
   }
  ],
  "games": [
