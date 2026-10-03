@@ -169,3 +169,25 @@ body{background:radial-gradient(ellipse 58% 25% at 50% -6%,var(--app-glow),trans
 .msg-bubble p{margin:0 0 4px;white-space:pre-wrap}
 .msg-bubble small{opacity:.75}
 .bible-log-btn.bible-logged{background:#dcbf84;color:#17262a;border-color:#dcbf84}
+.bible-log-btn{background:linear-gradient(135deg,#f0d9a0,#dcbf84 55%,#b8934a);color:#17262a;border:2px solid #dcbf84;border-radius:999px;padding:12px 22px;font-weight:800;font-size:1.02rem;letter-spacing:.02em;box-shadow:0 6px 18px rgba(220,191,132,.45),inset 0 1px 0 rgba(255,255,255,.6);cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}
+.bible-log-btn:hover{box-shadow:0 8px 22px rgba(220,191,132,.6),inset 0 1px 0 rgba(255,255,255,.6)}
+.bible-log-btn:active{transform:scale(.96)}
+.bible-log-btn.bible-logged{background:linear-gradient(135deg,#22383f,#17262a);color:#dcbf84;border-color:#dcbf84;box-shadow:0 0 0 2px rgba(220,191,132,.25)}
+.ach-pop{position:fixed;top:14px;left:50%;transform:translate(-50%,-140%);z-index:9999;display:flex;gap:12px;align-items:center;max-width:min(92vw,430px);background:linear-gradient(135deg,#22383f,#17262a);color:#f3ead6;border:2px solid #dcbf84;border-radius:16px;padding:12px 16px;box-shadow:0 14px 34px rgba(0,0,0,.5);transition:transform .45s cubic-bezier(.2,1.4,.4,1),opacity .3s ease;opacity:0}
+.ach-pop-in{transform:translate(-50%,0);opacity:1}
+.ach-pop-out{transform:translate(-50%,-140%);opacity:0}
+.ach-pop-icon{font-size:2rem;line-height:1}
+.ach-pop-body{display:flex;flex-direction:column;gap:1px}
+.ach-pop-body small{letter-spacing:.14em;font-size:.62rem;color:#dcbf84;font-weight:700}
+.ach-pop-body strong{font-size:1.05rem}
+.ach-pop-body span{font-size:.8rem;opacity:.85}
+.ach-pop-points{margin-left:auto;font-weight:800;color:#dcbf84;white-space:nowrap}
+.ach-card{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.ach-card.ach-unlocked{border:1px solid #dcbf84}
+.ach-card.ach-locked{opacity:.75}
+.ach-icon{font-size:1.7rem;line-height:1.2}
+.ach-main{flex:1}
+.ach-main p{margin:2px 0 6px}
+.ach-bar{height:8px;border-radius:99px;background:rgba(127,127,127,.25);overflow:hidden;margin-bottom:4px}
+.ach-bar i{display:block;height:100%;background:linear-gradient(90deg,#dcbf84,#b8934a);border-radius:99px}
+.ach-points{font-weight:800;color:#dcbf84;white-space:nowrap}

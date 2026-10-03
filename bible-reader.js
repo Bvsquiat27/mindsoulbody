@@ -140,6 +140,7 @@
           reader.readLog = result.readLog || reader.readLog;
           render();
           reader.context.toast(logged ? 'Chapter un-logged.' : 'Chapter logged as read. It counts on Home now.');
+          if (!logged && reader.context.celebrate) { const check = await reader.context.api('/bible/achievements/check', 'POST', {}).catch(() => null); if (check && check.newly && check.newly.length) reader.context.celebrate(check.newly); }
         } catch (error) { target.disabled = false; reader.context.toast(error.message); }
         break;
       }
@@ -153,6 +154,7 @@
           reader.verseNotes = result.verseNotes || reader.verseNotes;
           render();
           reader.context.toast(text ? 'Your note is saved on this verse.' : 'Your note on this verse was cleared.');
+          if (text && reader.context.celebrate) { const check = await reader.context.api('/bible/achievements/check', 'POST', {}).catch(() => null); if (check && check.newly && check.newly.length) reader.context.celebrate(check.newly); }
         } catch (error) { target.disabled = false; reader.context.toast(error.message); }
         break;
       }
