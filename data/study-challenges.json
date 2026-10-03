@@ -2717,6 +2717,147 @@
       ]
     },
     {
+      "id": "explain-christus-victor-psa",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Christus Victor, PSA, and the Orthodox understanding",
+      "category": "Apologetics lesson",
+      "level": "4 teaching cards · 8 questions",
+      "summary": "What is Christ saving us from, and how? Christus Victor names the ancient center — Christ invades death and breaks it. Penal substitution names a later legal account. The Orthodox understanding keeps the victory, the sacrifice, and the healing together without splitting the Father from the Son.",
+      "source": "Colossians 2:15 · Hebrews 2:14-15 · Isaiah 53 · Galatians 3:13 · 2 Corinthians 5:19-21 · St. Irenaeus · St. Athanasius, On the Incarnation",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=Colossians%202%3A15%3B%20Hebrews%202%3A14-15%3B%20Isaiah%2053%3B%20Galatians%203%3A13%3B%202%20Corinthians%205%3A19-21&version=KJV",
+      "lessons": [
+        {
+          "heading": "First fix the enemy: death, not the Father",
+          "body": "Every account of the cross answers one question first: what is Christ saving us from? The Orthodox answer starts with the fall. God made humanity for life; sin opened the door to death and corruption, and the devil holds the power of death (Hebrews 2:14) over a race that cannot climb out of the grave. The enemy line is sin, death, corruption, and the powers that feed on them. The Father is not on that list. God is not the problem the cross has to solve; God is the rescuer who comes. So the Church sings Pascha as war news: Christ is risen from the dead, trampling down death by death, and upon those in the tombs bestowing life."
+        },
+        {
+          "heading": "Christus Victor: the King wins by entering death",
+          "body": "Christus Victor — Christ the Victor — is the ancient Church's own headline: in His incarnation, cross, descent, and resurrection, Christ defeats the powers that held humanity captive. He does it from inside. St. Irenaeus calls it recapitulation: Christ retraces Adam's story in obedience, gathers our wounded human nature into Himself, and heals it where Adam broke it. St. Athanasius presses the logic of death itself: the Word took a mortal body so that death, meeting Life in that body, would be destroyed. Ransom language belongs here too — Christ gives His life to free captives (Mark 10:45) — not as a business deal with the devil, and never as a payment that changes God. Sacrifice belongs here as well: the Lamb of God takes away the sin of the world (John 1:29). Victory is not instead of sacrifice; the sacrifice is how the King wins."
+        },
+        {
+          "heading": "PSA: what penal substitution actually says",
+          "body": "Penal substitutionary atonement — PSA — is a later, mostly Reformation-era account, and it should be stated fairly before it is answered. Penal means punishment; substitution means Christ suffers it in our place. In this account our sins are laid on Christ, He bears God's wrath and curse under judgment — Isaiah 53, \"the chastisement of our peace was upon him\"; Galatians 3:13, \"made a curse for us\" — and because the punishment is fully paid, God declares sinners righteous. PSA rightly refuses a cheap cross: sin is real, judgment is real, and Christ truly acts for us and in our place. Its roots run through Anselm's satisfaction account, sharpened afterward into a courtroom frame. The Orthodox question is not whether the cross is serious. It is whether the courtroom is the whole house."
+        },
+        {
+          "heading": "The Orthodox line: receive the words, refuse the split",
+          "body": "Orthodoxy keeps every biblical word — for us, in our place, bore our sins, became a curse, sacrifice, Lamb, ransom — and refuses one move: turning them into the Father punishing the Son so that God can finally love us. The Trinity acts undivided. The Father sends in love, the Son offers Himself freely, the Spirit is not a spectator; God was in Christ reconciling the world to Himself (2 Corinthians 5:19), not reconciling Himself to the world. Christ bears the full consequence of sin — death itself — and destroys it from within; He is not a third party absorbing the Father's anger. And salvation is bigger than a verdict: forgiveness, healing of the wounded nature, adoption, and theosis — becoming by grace what God is by nature (2 Peter 1:4). Here is the test for any account of the cross: if the resurrection becomes an appendix, the account is too small. Say it this way: the Son bears our death to destroy death; He is not punished by the Father so the Father can begin to love us."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "In the Orthodox account, who or what is the enemy Christ saves us from?",
+          "choices": [
+            "The Father, whose anger keeps Him from loving us",
+            "Sin, death, corruption, and the devil who holds the power of death",
+            "Only the Roman Empire",
+            "Our bodies, which God wants us to escape"
+          ],
+          "correct": 1,
+          "explanation": "Hebrews 2:14: the devil holds the power of death, and Christ came to destroy him and free those enslaved by fear of death. God is the rescuer, not the enemy."
+        },
+        {
+          "prompt": "What does Christus Victor name?",
+          "choices": [
+            "Christ avoiding death by escaping to heaven",
+            "Christ paying the devil an agreed purchase price",
+            "Christ defeating sin, death, and the powers through His incarnation, cross, descent, and resurrection",
+            "Christ winning a political kingdom by force"
+          ],
+          "correct": 2,
+          "explanation": "Christus Victor — Christ the Victor — is the ancient headline: the King wins by entering death in our flesh and breaking it from inside."
+        },
+        {
+          "prompt": "Recapitulation, in St. Irenaeus, means...",
+          "choices": [
+            "Christ summarizing His teaching in one sentence",
+            "Christ retracing Adam’s story in obedience and healing human nature where Adam broke it",
+            "Christ repeating Adam’s sin to understand it",
+            "Humanity saving itself by copying Christ’s example"
+          ],
+          "correct": 1,
+          "explanation": "Recapitulation: Christ gathers our whole story into Himself and lives it rightly, healing the nature from inside — more than example, though never less."
+        },
+        {
+          "prompt": "How does Christ destroy death, in St. Athanasius’s logic?",
+          "choices": [
+            "By taking a mortal body and letting death meet Life in it, so death is destroyed from within",
+            "By refusing ever to die",
+            "By persuading the Father to cancel death by decree",
+            "By teaching that death is an illusion"
+          ],
+          "correct": 0,
+          "explanation": "Athanasius: the Word took a body able to die so that death, striking at Life itself, would be broken — trampling down death by death."
+        },
+        {
+          "prompt": "Which sentence states PSA fairly, without strawmanning it?",
+          "choices": [
+            "PSA says the cross was a minor legal formality",
+            "PSA says Christ bore God’s wrath and curse as our substitute, so sinners can be declared righteous — and it rightly insists sin and judgment are real",
+            "PSA says Christ paid the devil because the devil owned God",
+            "PSA says the resurrection matters more than the cross"
+          ],
+          "correct": 1,
+          "explanation": "Penal: punishment. Substitution: in our place. Isaiah 53 and Galatians 3:13 are its anchor texts, and its seriousness about sin is a genuine strength."
+        },
+        {
+          "prompt": "What is the central Orthodox objection when PSA is made the whole account?",
+          "choices": [
+            "That it mentions Scripture too often",
+            "That it sets the Father against the Son and shrinks salvation into a legal transaction, leaving the nature unhealed",
+            "That it takes the cross seriously",
+            "That it was written in the West"
+          ],
+          "correct": 1,
+          "explanation": "The Trinity acts undivided: the Father sends in love, the Son offers Himself freely. And a verdict alone does not heal — Orthodoxy expects forgiveness, healing, adoption, and theosis together."
+        },
+        {
+          "prompt": "Which sentence can Orthodoxy say cleanly and completely?",
+          "choices": [
+            "The Father could not forgive us until He had punished someone",
+            "The cross changed God from hating us to loving us",
+            "Christ bore our sins and our death for us, and by His cross and resurrection He destroys death, reconciles us, and heals our nature",
+            "Forgiveness is only a declared status; nothing in us needs to change"
+          ],
+          "correct": 2,
+          "explanation": "Every word PSA leans on — for us, in our place, bore our sins, became a curse — is kept, and set inside the wider victory: reconciliation and healing, sealed by the resurrection."
+        },
+        {
+          "prompt": "Say the whole lesson back: which line recites it cleanly?",
+          "choices": [
+            "The Son bears our death to destroy death; He is not punished by the Father so the Father can begin to love us — and the risen Christ heals and deifies those He forgives",
+            "God loved us only after the cross made Him able to",
+            "Christ is a moral example whose death inspires us to save ourselves",
+            "The resurrection is a happy ending added after the real work was finished"
+          ],
+          "correct": 0,
+          "explanation": "That is the formula: victory over death at the center, sacrifice and substitution kept, the Trinity undivided, and salvation as healing unto theosis."
+        }
+      ],
+      "words": [
+        {
+          "term": "Christus Victor",
+          "say": "kris tus vik tor"
+        },
+        {
+          "term": "penal substitution",
+          "say": "pee nal sub stih too shun"
+        },
+        {
+          "term": "atonement",
+          "say": "uh tone ment"
+        },
+        {
+          "term": "recapitulation",
+          "say": "ree kah pit yoo lay shun"
+        },
+        {
+          "term": "theosis",
+          "say": "theh oh sis"
+        }
+      ]
+    },
+    {
       "id": "ladder-1-union",
       "track": "Christology Ladder",
       "micro": true,
