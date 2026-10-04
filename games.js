@@ -65,7 +65,7 @@ window.BibleGames = (() => {
   }
   function roomButtons(show) {
     return `<div class="gx-online">
-      <p class="small muted">Play a friend online — you both need the app open with internet. Solo finishes also join the public scores.</p>
+      <p class="small muted">Play a friend online — you both need the app open with internet. Solo scores are saved on this device. The public board lists names and scores only.</p>
       <div class="gx-modes">
         <button class="card gx-mode" data-gx="room-create" data-show-key="${show}"><strong>🟢 Live room vs a friend</strong><span>Open a room at the level picked above, send your friend the room code, then race live — scores update as you play and the higher score wins.</span></button>
       </div>
@@ -192,8 +192,11 @@ window.BibleGames = (() => {
     try {
       const scores = await ctx.social.publicScores(show);
       const me = ctx.social.identity() ? ctx.social.identity().code : '';
-      const rows = scores.length ? scores.map((s, i) => `<div class="card friend-row"><div><strong>${i + 1}. ${esc(s.name || 'Friend')}</strong>${s.code === me ? ' <span class="friend-chip">you</span>' : ''}<br><small class="muted">Level ${s.level || 1} · ${new Date(s.ts || Date.now()).toLocaleDateString()}</small></div><strong>${show === 'millionaire' ? money(s.score) : s.score}</strong></div>`).join('') : '<p class="muted">No solo scores yet. Finish a solo run of this game and you will open the board.</p>';
-      setHtml(`${backBar('Public scores')}<p class="lead">🌍 ${esc(title)} — best solo scores from everyone playing Mind Soul & Body.</p>${rows}<p><button class="secondary" data-gx="show-menu" data-show="${show}">← Back to ${esc(title)}</button></p>`);
+      const rows = scores.length ? scores.map((s, i) => {
+        const mine = !!(s && s.code && me && s.code === me);
+        return `<div class="card friend-row"><div><strong>${i + 1}. ${esc(s.name || 'Friend')}</strong>${mine ? ' <span class="friend-chip">you</span>' : ''}<br><small class="muted">Level ${s.level || 1} · ${new Date(s.ts || Date.now()).toLocaleDateString()}</small></div><strong>${show === 'millionaire' ? money(s.score) : s.score}</strong></div>`;
+      }).join('') : '<p class="muted">No solo scores yet. Finish a solo run of this game and you will open the board.</p>';
+      setHtml(`${backBar('Public scores')}<p class="lead">🌍 ${esc(title)} — names and scores only. Friend codes are not shown.</p>${rows}<p><button class="secondary" data-gx="show-menu" data-show="${show}">← Back to ${esc(title)}</button></p>`);
     } catch (err) {
       setHtml(`${backBar('Public scores')}<div class="empty error">${esc(err.message)} <button class="secondary" data-gx="show-menu" data-show="${show}">Back to the game</button></div>`);
     }
@@ -265,7 +268,7 @@ window.BibleGames = (() => {
   }
 
   /* ================= LEVELS =================
-     Five saved levels per show. Angel's rule: beat a level and it should
+     Five saved levels per show. Rule: beat a level and it should
      save and give you new questions. Progress lives in localStorage
      'msb_gx_progress' as { show: { unlocked: 1..5, done: [levels] } }.
      Beating a level unlocks the next one; every level deals questions the
@@ -1613,7 +1616,7 @@ window.BibleGames = (() => {
   }
 
   /* ================= TOWER OF BABEL =================
-     Angel's design: no countdown bar. A brick falls slowly toward the tower;
+     Design: no countdown bar. A brick falls slowly toward the tower;
      a right answer catches it mid-air, a wrong answer (or letting it land)
      slams it onto the wall. Ten bricks and the tower topples. */
   const BABEL_MAX = 10;
@@ -1848,8 +1851,8 @@ window.BibleGames = (() => {
   
 
   /* ================= DEFEND THE FAITH + SAY IT RIGHT =================
-     Memory-informed apologetics games. Angel wants training that makes
-     him able to defend the faith out loud: hear the objection, retrieve
+     Memory-informed apologetics games. The player wants training that makes
+     them able to defend the faith out loud: hear the objection, retrieve
      the first move before seeing the explanation, then say the model
      sentence. Orthodox order throughout: Scripture and the Fathers
      first, Western scholastic framing second. Transliteration only. */
@@ -1932,7 +1935,7 @@ window.BibleGames = (() => {
     [
       fq("Clean reply: atheist", "An atheist asks for one reason God is not a myth. Which opening is strongest?", ["Begin with being itself: why is there something intelligible at all?", "Myths feel ancient too", "Believe because fear helps", "Science is fake"], "Begin with being itself: why is there something intelligible at all?", "A mature opening chooses a real question. Contingency, intelligibility, goodness, and Christ give the conversation ground to stand on.", "Start deeper than a slogan: why does anything exist, and why can the mind know it?"),
       fq("Clean reply: Muslim friend", "Which sentence keeps friendship and truth together?", ["I honor your zeal for one God; let us test what each book says about Christ", "Your prophet is false so we are done", "All religions say the same thing", "Arabic grammar settles every claim"], "I honor your zeal for one God; let us test what each book says about Christ", "Witness can be firm without contempt. The Islamic dilemma is strongest when the texts lead and tempers stay low.", "Let us honor the one God by reading the claims about Christ carefully."),
-      fq("Clean reply: Protestant friend", "Which sentence opens the faith and works debate without caricature?", ["Paul and James together reject a dead faith that does not love", "James cancels Paul", "Works buy heaven by themselves", "Faith is only agreement with facts"], "Paul and James together reject a dead faith that does not love", "This sentence refuses false war between apostles. It lets Angel argue for living faith with love, repentance, and participation.", "Saving faith lives, loves, repents, and bears fruit."),
+      fq("Clean reply: Protestant friend", "Which sentence opens the faith and works debate without caricature?", ["Paul and James together reject a dead faith that does not love", "James cancels Paul", "Works buy heaven by themselves", "Faith is only agreement with facts"], "Paul and James together reject a dead faith that does not love", "This sentence refuses false war between apostles. It lets you argue for living faith with love, repentance, and participation.", "Saving faith lives, loves, repents, and bears fruit."),
       fq("Clean reply: Catholic friend", "Which sentence is firm but fair on Rome?", ["We can honor a primacy while asking for first millennium proof of universal jurisdiction", "Rome has no history", "Every council obeyed one bishop alone", "The East invented tradition yesterday"], "We can honor a primacy while asking for first millennium proof of universal jurisdiction", "Fairness strengthens an argument. Concede what can be conceded, then press the exact claim that needs evidence.", "Honor we can discuss; universal jurisdiction must be shown, not assumed."),
       fq("Clean reply: skeptic", "Which sentence invites evidence without sounding afraid?", ["Name the claim, name the standard, and let us weigh the earliest sources", "Skepticism needs no standards", "Miracles are impossible because I said so", "Feelings settle history"], "Name the claim, name the standard, and let us weigh the earliest sources", "Good apologetics welcomes a fair standard. It asks for consistency, then brings Scripture, history, and the Fathers into the light.", "Set the standard first; then the evidence can speak."),
       fq("Clean reply: one sentence", "Which final sentence best sounds like trained Orthodox witness?", ["The Word became flesh, trampled down death by death, and bestows life on those in the tombs", "Be nice and vague", "My team wins every debate", "Stop asking questions"], "The Word became flesh, trampled down death by death, and bestows life on those in the tombs", "The Paschal proclamation is doctrine with a heartbeat. It names Incarnation, death, victory, and gift in one breath.", "Christ is risen, and life reigns because God became man for us."),
