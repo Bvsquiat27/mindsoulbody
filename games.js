@@ -65,7 +65,7 @@ window.BibleGames = (() => {
   }
   function roomButtons(show) {
     return `<div class="gx-online">
-      <p class="small muted">Play a friend online — you both need the app open with internet. Solo scores are saved on this device. The public board lists names and scores only.</p>
+      <p class="small muted">Play a friend online — you both need the app open with internet. A solo finish is saved on this device and joins the public scores once you have a friend code. The public board lists names and scores only.</p>
       <div class="gx-modes">
         <button class="card gx-mode" data-gx="room-create" data-show-key="${show}"><strong>🟢 Live room vs a friend</strong><span>Open a room at the level picked above, send your friend the room code, then race live — scores update as you play and the higher score wins.</span></button>
       </div>

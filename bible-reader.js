@@ -45,8 +45,8 @@
     reader.bookData.set(id, data);
   }
   async function loadAccount() {
-    const userId = reader.context.userId();
-    if (!userId || reader.loadedUser === userId) return;
+    const userId = reader.context.userId() || 'device';
+    if (reader.loadedUser === userId) return;
     const result = await reader.context.api('/bible/state');
     reader.highlights = result.highlights || [];
     reader.verseNotes = result.verseNotes || [];
@@ -73,7 +73,7 @@
         if (!response.ok) throw Error('Study notes are unavailable. Please try again.');
         reader.notes = await response.json();
       }
-      if (context.userId()) await loadAccount();
+      await loadAccount();
       if (!reader.index.books[reader.book - 1] || reader.chapter < (reader.index.books[reader.book - 1].chapterStart || 1) || reader.chapter > reader.index.books[reader.book - 1].chapters) { reader.book = 43; reader.chapter = 1; }
       await ensureBook(reader.book);
       if (requestId === reader.requestId && root.isConnected) {
