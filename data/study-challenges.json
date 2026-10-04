@@ -2028,6 +2028,212 @@
       ]
     },
     {
+      "id": "explain-godhead-without-heresy",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Speaking About the Godhead Without Heresy",
+      "category": "Apologetics lesson",
+      "level": "4 teaching cards · 8 questions · Match the Word",
+      "summary": "How to speak about Father, Son, and Holy Spirit without making the essence a fourth thing. The persons are the who; the essence is the what. Relations of origin distinguish the persons; they never divide the one essence.",
+      "source": "Deuteronomy 6:4 · Isaiah 44:6 · Matthew 28:19 · John 1:1 · John 8:42 · John 15:26 · John 20:28",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=Deuteronomy%206%3A4%3B%20Isaiah%2044%3A6%3B%20Matthew%2028%3A19%3B%20John%201%3A1%3B%20John%208%3A42%3B%20John%2015%3A26%3B%20John%2020%3A28&version=KJV",
+      "lessons": [
+        {
+          "heading": "Not a fourth thing",
+          "body": "Begin with the mistake this lesson exists to prevent. When we say Father, Son, and Holy Spirit share one divine essence, the essence is not a fourth item standing behind them: not a container they sit inside, not a committee member, not a lump of God-stuff divided three ways. The essence is simply what God is. The persons are who God is. Say the formula until it steadies your speech: the persons are the who; the essence is the what. Three persons, one essence — not four things."
+        },
+        {
+          "heading": "The essence is not a subject",
+          "body": "A subject acts, wills, speaks, and loves. The divine essence, as such, does none of those things apart from the persons. We never pray to the essence; we pray to the Father, through the Son, in the Holy Spirit. God acts personally: the Father sends, the Son becomes flesh, the Spirit sanctifies — each according to the one undivided divine nature. This protects the faith both ways. It stops us inventing a nameless fourth god behind the Trinity, and it stops us shrinking the persons into masks, because real subjects are the ones who act."
+        },
+        {
+          "heading": "Distinguished by origin, not by pieces",
+          "body": "What distinguishes the persons is not parts of the essence, rank, or size. It is relations of origin. The Father is unbegotten: he is the source without origin. The Son is begotten: eternally from the Father, not made. The Spirit proceeds: eternally from the Father. Those relations do not slice the essence; each person is fully God, possessing the whole divine nature, not a third of it. Origin tells us who is who. It never turns one God into three gods, and it never makes the Son or Spirit lesser gods."
+        },
+        {
+          "heading": "Say it clean",
+          "body": "Use the grammar this lesson trains. You may say: one God, because one essence; three persons, because Father, Son, and Spirit are really distinct; the Son is God, the Spirit is God, and the Father is God — each fully, not partly. Do not say: the essence decided, the Godhead as a fourth being acted, the Son is one third of God, or the persons are three roles. Carry the same grammar into Christology: in the hypostatic union the same who/what distinction keeps you from splitting Christ or mixing his natures. First fix the subject, then speak."
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple-choice",
+          "prompt": "If the divine essence is not a fourth thing, what is it?",
+          "choices": [
+            "A container that holds the three persons",
+            "The one what that Father, Son, and Spirit fully share",
+            "A fourth member of the Trinity",
+            "A quantity of divine material divided into thirds"
+          ],
+          "correct": 1,
+          "explanation": "The persons are the who; the essence is the what. One essence, three persons — not four things."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "The formula “the persons are the who, the essence is the what” mainly guards against...",
+          "choices": [
+            "Saying anything about God at all",
+            "Turning the essence into a separate subject behind the persons",
+            "Calling the Son God",
+            "Distinguishing Father, Son, and Spirit"
+          ],
+          "correct": 1,
+          "explanation": "The essence names what God is; the persons are the real subjects who act, will, and love."
+        },
+        {
+          "type": "true-false",
+          "prompt": "True or false: the divine essence acts and wills by itself apart from the Father, Son, and Holy Spirit.",
+          "choices": [
+            "True",
+            "False"
+          ],
+          "correct": 1,
+          "explanation": "False. The essence is not a subject. The persons act according to the one divine nature."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "What distinguishes the Father, Son, and Holy Spirit?",
+          "choices": [
+            "Each owns a different third of the essence",
+            "Relations of origin: the Father is unbegotten, the Son is begotten, the Spirit proceeds",
+            "The Father is more God than the Son and Spirit",
+            "They are three temporary roles"
+          ],
+          "correct": 1,
+          "explanation": "Relations of origin distinguish the persons within the one essence; they do not divide it or rank it."
+        },
+        {
+          "type": "true-false",
+          "prompt": "True or false: each person is fully God, not one third of God.",
+          "choices": [
+            "True",
+            "False"
+          ],
+          "correct": 0,
+          "explanation": "True. The essence is undivided. Each person possesses the whole divine nature."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "A friend says, “The Godhead decided to send Jesus,” as if the Godhead were a fourth actor behind the Father. What is the cleaner statement?",
+          "choices": [
+            "The essence sent the Son",
+            "The Father sent the Son in the Holy Spirit",
+            "The Godhead voted and the Son obeyed",
+            "No one sent him; sending is only a metaphor"
+          ],
+          "correct": 1,
+          "explanation": "Sending is personal action: the Father sends, the Son is sent, the Spirit is given. The essence is not a fourth actor."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "Why do relations of origin not divide the essence?",
+          "choices": [
+            "Because origin is only about time, not eternity",
+            "Because begotten and proceeding name who each person is, not pieces or amounts of what God is",
+            "Because the Son and Spirit are not fully God",
+            "Because essence and person are the same word"
+          ],
+          "correct": 1,
+          "explanation": "Origin distinguishes the who. It does not cut the what into parts."
+        },
+        {
+          "type": "true-false",
+          "prompt": "True or false: “Three persons, one essence” means three gods who agree with each other.",
+          "choices": [
+            "True",
+            "False"
+          ],
+          "correct": 1,
+          "explanation": "False. There is one undivided divine essence. Agreement among three gods would be tritheism, not Trinity."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: Godhead grammar",
+        "intro": "Drag each verse to the claim it guards. Round 1 gives you the words; round 2 gives only the reference.",
+        "categories": [
+          {
+            "id": "one-essence",
+            "label": "One essence: God is one"
+          },
+          {
+            "id": "son-god",
+            "label": "The Son is fully God"
+          },
+          {
+            "id": "three-persons-one-name",
+            "label": "Three Persons, one Name"
+          },
+          {
+            "id": "relations-origin",
+            "label": "Persons distinguished by origin"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Deuteronomy 6:4",
+            "text": "Hear, O Israel: The LORD our God is one LORD",
+            "category": "one-essence"
+          },
+          {
+            "ref": "Isaiah 44:6",
+            "text": "beside me there is no God",
+            "category": "one-essence"
+          },
+          {
+            "ref": "John 1:1",
+            "text": "the Word was with God, and the Word was God",
+            "category": "son-god"
+          },
+          {
+            "ref": "John 20:28",
+            "text": "My Lord and my God",
+            "category": "son-god"
+          },
+          {
+            "ref": "Matthew 28:19",
+            "text": "in the name of the Father, and of the Son, and of the Holy Ghost",
+            "category": "three-persons-one-name"
+          },
+          {
+            "ref": "John 15:26",
+            "text": "the Spirit of truth, which proceedeth from the Father",
+            "category": "relations-origin"
+          },
+          {
+            "ref": "John 8:42",
+            "text": "I proceeded forth and came from God",
+            "category": "relations-origin"
+          }
+        ]
+      },
+      "words": [
+        {
+          "term": "ousia",
+          "say": "oo see ah"
+        },
+        {
+          "term": "hypostasis",
+          "say": "high pah stuh sis"
+        },
+        {
+          "term": "homoousios",
+          "say": "hoh moh oo see os"
+        },
+        {
+          "term": "unbegotten",
+          "say": "un beh got en"
+        },
+        {
+          "term": "begotten",
+          "say": "beh got en"
+        },
+        {
+          "term": "proceeds",
+          "say": "proh seeds"
+        }
+      ]
+    },
+    {
       "id": "explain-hypostatic-union",
       "title": "The hypostatic union: one Christ, two natures",
       "summary": "Use Chalcedon's guardrails to confess one hypostasis of God the Word in complete divinity and complete humanity.",
@@ -2050,7 +2256,7 @@
       "track": "Explain the Faith",
       "micro": true,
       "category": "Explain the Faith lesson",
-      "level": "3 steps",
+      "level": "3 steps · Match the Word",
       "questions": [
         {
           "prompt": "Who is the subject born of Mary?",
@@ -2092,7 +2298,62 @@
           "term": "Theotokos",
           "say": "theh oh toh kohs"
         }
-      ]
+      ],
+      "drag": {
+        "title": "Match the Word: one Christ, two natures",
+        "intro": "Drag each verse to what it proves about Christ. Round 2 removes the verse text.",
+        "categories": [
+          {
+            "id": "one-person",
+            "label": "One Person"
+          },
+          {
+            "id": "true-god",
+            "label": "True God"
+          },
+          {
+            "id": "true-man",
+            "label": "True man"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "John 1:14",
+            "text": "the Word was made flesh",
+            "category": "one-person"
+          },
+          {
+            "ref": "Colossians 2:9",
+            "text": "in him dwelleth all the fulness of the Godhead bodily",
+            "category": "one-person"
+          },
+          {
+            "ref": "John 1:1",
+            "text": "the Word was with God, and the Word was God",
+            "category": "true-god"
+          },
+          {
+            "ref": "John 20:28",
+            "text": "My Lord and my God",
+            "category": "true-god"
+          },
+          {
+            "ref": "Hebrews 2:14",
+            "text": "he also himself likewise took part of the same",
+            "category": "true-man"
+          },
+          {
+            "ref": "Galatians 4:4",
+            "text": "God sent forth his Son, made of a woman",
+            "category": "true-man"
+          },
+          {
+            "ref": "Philippians 2:7",
+            "text": "took upon him the form of a servant",
+            "category": "true-man"
+          }
+        ]
+      }
     },
     {
       "id": "explain-say-it-right",
@@ -2163,7 +2424,7 @@
       "micro": true,
       "title": "Asking the saints to pray for us",
       "category": "Biblical defense lesson",
-      "level": "3 teaching cards · 3 questions",
+      "level": "3 teaching cards · 3 questions · Match the Word",
       "summary": "A biblical defense of asking the departed saints for intercession without turning prayer into worship or necromancy.",
       "source": "Revelation 5:8; 8:3-4 · Hebrews 12:1 · 1 Timothy 2:1-5 · the early Church",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=Revelation%205%3A8%3B%20Revelation%208%3A3-4%3B%20Hebrews%2012%3A1%3B%201%20Timothy%202%3A1-5&version=KJV",
@@ -2225,7 +2486,57 @@
           "term": "dulia",
           "say": "doo lee ah"
         }
-      ]
+      ],
+      "drag": {
+        "title": "Match the Word: latria versus dulia",
+        "intro": "Latria is worship for God alone. Dulia honors the saints and asks their prayers. Sort the verses by the line they guard.",
+        "categories": [
+          {
+            "id": "latria-god-alone",
+            "label": "Latria: worship to God alone"
+          },
+          {
+            "id": "saints-alive",
+            "label": "The saints are alive in Christ"
+          },
+          {
+            "id": "ask-intercession",
+            "label": "Ask for intercession"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Exodus 20:3",
+            "text": "Thou shalt have no other gods before me",
+            "category": "latria-god-alone"
+          },
+          {
+            "ref": "Matthew 4:10",
+            "text": "Thou shalt worship the Lord thy God, and him only shalt thou serve",
+            "category": "latria-god-alone"
+          },
+          {
+            "ref": "Luke 20:38",
+            "text": "he is not a God of the dead, but of the living",
+            "category": "saints-alive"
+          },
+          {
+            "ref": "Hebrews 12:1",
+            "text": "compassed about with so great a cloud of witnesses",
+            "category": "saints-alive"
+          },
+          {
+            "ref": "1 Timothy 2:1",
+            "text": "supplications, prayers, intercessions, and giving of thanks, be made for all men",
+            "category": "ask-intercession"
+          },
+          {
+            "ref": "James 5:16",
+            "text": "pray one for another, that ye may be healed",
+            "category": "ask-intercession"
+          }
+        ]
+      }
     },
     {
       "id": "defense-theotokos",
@@ -2722,7 +3033,7 @@
       "micro": true,
       "title": "Christus Victor, PSA, and the Orthodox understanding",
       "category": "Apologetics lesson",
-      "level": "4 teaching cards · 8 questions",
+      "level": "4 teaching cards · 8 questions · Match the Word",
       "summary": "What is Christ saving us from, and how? Christus Victor names the ancient center — Christ invades death and breaks it. Penal substitution names a later legal account. The Orthodox understanding keeps the victory, the sacrifice, and the healing together without splitting the Father from the Son.",
       "source": "Colossians 2:15 · Hebrews 2:14-15 · Isaiah 53 · Galatians 3:13 · 2 Corinthians 5:19-21 · St. Irenaeus · St. Athanasius, On the Incarnation",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=Colossians%202%3A15%3B%20Hebrews%202%3A14-15%3B%20Isaiah%2053%3B%20Galatians%203%3A13%3B%202%20Corinthians%205%3A19-21&version=KJV",
@@ -2855,7 +3166,57 @@
           "term": "theosis",
           "say": "theh oh sis"
         }
-      ]
+      ],
+      "drag": {
+        "title": "Match the Word: what the cross does",
+        "intro": "Victory, sin borne, and reconciliation with healing. Sort the verses by the work they name.",
+        "categories": [
+          {
+            "id": "victory",
+            "label": "Victory over death and the powers"
+          },
+          {
+            "id": "sin-borne",
+            "label": "Sin borne for us"
+          },
+          {
+            "id": "reconciled-healed",
+            "label": "Reconciled and healed"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Colossians 2:15",
+            "text": "having spoiled principalities and powers",
+            "category": "victory"
+          },
+          {
+            "ref": "Hebrews 2:14",
+            "text": "through death he might destroy him that had the power of death",
+            "category": "victory"
+          },
+          {
+            "ref": "Isaiah 53:5",
+            "text": "he was wounded for our transgressions",
+            "category": "sin-borne"
+          },
+          {
+            "ref": "Galatians 3:13",
+            "text": "being made a curse for us",
+            "category": "sin-borne"
+          },
+          {
+            "ref": "2 Corinthians 5:19",
+            "text": "God was in Christ, reconciling the world unto himself",
+            "category": "reconciled-healed"
+          },
+          {
+            "ref": "1 Peter 2:24",
+            "text": "by whose stripes ye were healed",
+            "category": "reconciled-healed"
+          }
+        ]
+      }
     },
     {
       "id": "ladder-1-union",
@@ -2863,7 +3224,7 @@
       "micro": true,
       "title": "Ladder 1 · The Union Itself",
       "category": "Christology ladder",
-      "level": "Session 1 of 6 · 4 teaching cards · 8 questions",
+      "level": "Session 1 of 6 · 4 teaching cards · 8 questions · Match the Word",
       "summary": "Ladder session 1 of 6. One Person, two natures: hypostatic union, enhypostasia, the Logos before and in the flesh, kenosis, and the Chalcedonian definition.",
       "source": "John 1:1-14 · Philippians 2:5-11 · the Definition of Chalcedon (451)",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=John%201%3A1-14%3B%20Philippians%202%3A5-11&version=KJV",
@@ -3028,7 +3389,57 @@
           "term": "Chalcedonian definition",
           "say": "kal seh doh nee un"
         }
-      ]
+      ],
+      "drag": {
+        "title": "Match the Word: the union in Scripture",
+        "intro": "One Person, true God and true man. Later the references stand alone.",
+        "categories": [
+          {
+            "id": "one-person",
+            "label": "One Person"
+          },
+          {
+            "id": "true-god",
+            "label": "True God"
+          },
+          {
+            "id": "true-man",
+            "label": "True man"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Luke 1:35",
+            "text": "that holy thing which shall be born of thee shall be called the Son of God",
+            "category": "one-person"
+          },
+          {
+            "ref": "Colossians 1:19",
+            "text": "in him should all fulness dwell",
+            "category": "one-person"
+          },
+          {
+            "ref": "John 10:30",
+            "text": "I and my Father are one",
+            "category": "true-god"
+          },
+          {
+            "ref": "Revelation 22:13",
+            "text": "I am Alpha and Omega, the beginning and the end",
+            "category": "true-god"
+          },
+          {
+            "ref": "Hebrews 4:15",
+            "text": "in all points tempted like as we are, yet without sin",
+            "category": "true-man"
+          },
+          {
+            "ref": "Luke 2:7",
+            "text": "she brought forth her firstborn son",
+            "category": "true-man"
+          }
+        ]
+      }
     },
     {
       "id": "ladder-2-properties",
@@ -3147,7 +3558,7 @@
       "micro": true,
       "title": "Deep Dive · Communicatio Idiomatum",
       "category": "Christology ladder",
-      "level": "Deep dive · 4 teaching cards · 6 questions",
+      "level": "Deep dive · 4 teaching cards · 6 questions · Match the Word",
       "summary": "The sharing of properties, in full: because the natures are united in one Person, what belongs to either nature can be said of that one Person — while the properties themselves never leave their natures.",
       "source": "1 Corinthians 2:8 · Acts 20:28 · St. Cyril of Alexandria · St. John of Damascus, On the Orthodox Faith III",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20Acts%2020%3A28&version=KJV",
@@ -3254,7 +3665,57 @@
           "term": "abstract predication",
           "say": "ab strakt pred ih kay shun"
         }
-      ]
+      ],
+      "drag": {
+        "title": "Match the Word: the Person carries both",
+        "intro": "Properties stay with their natures; the Person carries both. Sort the verses by the exchange they show.",
+        "categories": [
+          {
+            "id": "god-in-flesh",
+            "label": "God comes in the flesh"
+          },
+          {
+            "id": "lord-suffers",
+            "label": "The Lord suffers in the flesh"
+          },
+          {
+            "id": "eternal-son",
+            "label": "The eternal Son speaks as man"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Luke 1:43",
+            "text": "the mother of my Lord",
+            "category": "god-in-flesh"
+          },
+          {
+            "ref": "1 Timothy 3:16",
+            "text": "God was manifest in the flesh",
+            "category": "god-in-flesh"
+          },
+          {
+            "ref": "Acts 20:28",
+            "text": "the church of God, which he hath purchased with his own blood",
+            "category": "lord-suffers"
+          },
+          {
+            "ref": "1 Corinthians 2:8",
+            "text": "they would not have crucified the Lord of glory",
+            "category": "lord-suffers"
+          },
+          {
+            "ref": "John 8:58",
+            "text": "Before Abraham was, I am",
+            "category": "eternal-son"
+          },
+          {
+            "ref": "John 3:13",
+            "text": "even the Son of man which is in heaven",
+            "category": "eternal-son"
+          }
+        ]
+      }
     },
     {
       "id": "ladder-2c-predication",
@@ -3262,7 +3723,7 @@
       "micro": true,
       "title": "Deep Dive · Concrete vs. Abstract Predication",
       "category": "Christology ladder",
-      "level": "Deep dive · 4 teaching cards · 7 questions",
+      "level": "Deep dive · 4 teaching cards · 7 questions · Match the Word",
       "summary": "Every statement about Christ has a subject — a Person or a nature — and which one you pick determines whether the statement is true. Concrete predication names the Person and stands; abstract predication names a nature and is refused.",
       "source": "1 Corinthians 2:8 · John 1:14 · St. John of Damascus, On the Orthodox Faith III",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20John%201%3A14&version=KJV",
@@ -3380,7 +3841,57 @@
           "term": "idiom",
           "say": "ih dee um"
         }
-      ]
+      ],
+      "drag": {
+        "title": "Match the Word: find the subject",
+        "intro": "Sort each verse: said of the Person, true according to the flesh, or guarding the divine nature itself.",
+        "categories": [
+          {
+            "id": "concrete-person",
+            "label": "Concrete: the Person is the subject"
+          },
+          {
+            "id": "according-to-flesh",
+            "label": "True according to the human nature"
+          },
+          {
+            "id": "divine-nature",
+            "label": "The divine nature as such"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "John 1:14",
+            "text": "the Word was made flesh",
+            "category": "concrete-person"
+          },
+          {
+            "ref": "Acts 20:28",
+            "text": "the church of God, which he hath purchased with his own blood",
+            "category": "concrete-person"
+          },
+          {
+            "ref": "1 Corinthians 2:8",
+            "text": "they would not have crucified the Lord of glory",
+            "category": "concrete-person"
+          },
+          {
+            "ref": "John 19:28",
+            "text": "saith, I thirst",
+            "category": "according-to-flesh"
+          },
+          {
+            "ref": "Matthew 4:2",
+            "text": "he was afterward an hungred",
+            "category": "according-to-flesh"
+          },
+          {
+            "ref": "1 Timothy 1:17",
+            "text": "the King eternal, immortal, invisible",
+            "category": "divine-nature"
+          }
+        ]
+      }
     },
     {
       "id": "ladder-3-heresies",
