@@ -1,0 +1,9 @@
+name = "mindsoulbody-recovery-email"
+main = "recovery-email.mjs"
+compatibility_date = "2026-10-04"
+
+# MAIL_FROM must be a sender the mailbox has verified, for example:
+# Mind Soul & Body <recovery@your-domain>
+# The sending key is not stored here. Set it with: wrangler secret put RESEND_API_KEY
+[vars]
+MAIL_FROM = ""
