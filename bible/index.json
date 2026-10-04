@@ -1,5 +1,4 @@
 {
-  "edition": "King James Version with Apocrypha (YouVersion KJV / KJVA text)",
   "books": [
     {
       "id": 1,
@@ -471,7 +470,5 @@
       "verseStart": 4,
       "section": "Deuterocanon / Apocrypha"
     }
-  ],
-  "source": "https://www.bible.com",
-  "notice": "This reading shelf contains 78 books. The text is the King James Version exactly as served by YouVersion (bible.com): the standard KJV (version 1) for the Old and New Testaments, and the King James Version with Apocrypha, American Edition (version 546) for the Deuterocanon, including Rest of Esther chapters 10-16 (listed there as \"Esther (Additions)\"). Spelling and punctuation follow those modernized texts, not the spelling of the original King James printing. 1 Esdras, 2 Esdras, and the Prayer of Manasseh are not included, because YouVersion's KJVA does not carry them. This is not the Orthodox Study Bible, and its books and numbering differ from some Orthodox editions."
+  ]
 }
