@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
-  const reader = { index:null, notes:null, bookData:new Map(), book:43, chapter:1, highlights:[], verseNotes:[], readLog:[], pendingVerse:null, place:null, loadedUser:null, selectedVerse:null, rotated:false, fontSize:19, requestId:0, root:null, context:null };
+  const reader = { index:null, notes:null, bookData:new Map(), book:43, chapter:1, highlights:[], verseNotes:[], readLog:[], pendingVerse:null, place:null, loadedUser:null, accountRequest:0, selectedVerse:null, rotated:false, fontSize:19, requestId:0, root:null, context:null };
   const fileName = id => `bible/${String(id).padStart(2, '0')}.json`;
   const bookInfo = () => reader.index?.books.find(book => book.id === reader.book);
   const currentVerses = () => reader.bookData.get(reader.book)?.chapters[reader.chapter - 1] || [];
@@ -46,14 +46,20 @@
   }
   async function loadAccount() {
     const userId = reader.context.userId() || 'device';
-    if (reader.loadedUser === userId) return;
+    const firstLoad = reader.loadedUser !== userId;
+    const generation = ++reader.accountRequest;
     const result = await reader.context.api('/bible/state');
+    if (generation !== reader.accountRequest) return;
     reader.highlights = result.highlights || [];
     reader.verseNotes = result.verseNotes || [];
     reader.readLog = result.readLog || [];
     reader.place = result.place || null;
     reader.loadedUser = userId;
-    if (reader.place && !reader.explicitOpen) { reader.book = reader.place.book_id; reader.chapter = reader.place.chapter; }
+    // Stored place is the last signed-in chapter. Signed-out reading stays on this device's chapter.
+    if (firstLoad && reader.context.userId() && reader.place && !reader.explicitOpen) {
+      reader.book = reader.place.book_id;
+      reader.chapter = reader.place.chapter;
+    }
   }
   async function show(root, context) {
     reader.root = root; reader.context = context;
@@ -104,7 +110,13 @@
     } catch(error) { if (requestId === reader.requestId) reader.root.innerHTML = `<div class="empty error">${esc(error.message)} <button class="secondary" data-bible="retry">Try again</button></div>`; }
   }
   function open(book, chapter, verse) { reader.book = book; reader.chapter = chapter; reader.explicitOpen = true; reader.pendingVerse = verse || null; }
-  function resetAccount() { reader.loadedUser = null; reader.highlights = []; reader.verseNotes = []; reader.readLog = []; reader.place = null; }
+  function applyVerseNotes(notes) {
+    if (!Array.isArray(notes)) return;
+    reader.accountRequest++;
+    reader.verseNotes = notes;
+    if (reader.root?.isConnected && reader.index) render();
+  }
+  function resetAccount() { reader.accountRequest++; reader.loadedUser = null; reader.highlights = []; reader.verseNotes = []; reader.readLog = []; reader.place = null; }
   function hide() { reader.requestId++; reader.root = null; clearRotation(); }
   document.addEventListener('change', event => {
     if (!event.target.closest('.bible-app')) return;
@@ -179,5 +191,5 @@
       case 'next': if (reader.chapter < bookInfo().chapters) move(reader.book, reader.chapter + 1); else if (reader.book < reader.index.books.length) move(reader.book + 1, reader.index.books[reader.book].chapterStart || 1); break;
     }
   });
-  window.BibleReader = { show, open, hide, resetAccount };
+  window.BibleReader = { show, open, hide, resetAccount, applyVerseNotes };
 })();
