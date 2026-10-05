@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img">
+<title>Chrysostom</title>
+<desc>Original portrait drawn for Mind Soul and Body. Not a copy of an existing icon.</desc>
+<circle cx="32" cy="32" r="32" fill="#1a1424"/>
+<circle cx="32" cy="31" r="23.5" fill="#e4c36a"/>
+<circle cx="32" cy="31" r="21.6" fill="none" stroke="#f6e7b4" stroke-width="0.8"/>
+<defs><clipPath id="disc"><circle cx="32" cy="32" r="32"/></clipPath></defs><g clip-path="url(#disc)">
+<path d="M8 66c6-18 12-24 24-24s18 6 24 24H8z" fill="#8a6a32"/>
+<path d="M32 44v20" stroke="#e4c36a" stroke-width="1.15" opacity="0.9"/>
+
+
+
+<path d="M22.6 30.5C22.2 18 26 14.5 32 14.5s9.8 3.6 9.4 16c-.2 2.2-1.2 3.4-2.2 3.2 1.2-5 .4-10-7.2-10s-8.4 5-7.2 10c-1 .2-2-1-2.2-3.2z" fill="#4a3424"/>
+
+  <rect x="27.2" y="34" width="9.6" height="8" fill="#efd0ae"/>
+  <ellipse cx="32" cy="28.2" rx="8.4" ry="10.4" fill="#efd0ae"/>
+  <path d="M26.2 27.6c1.3-.8 2.6-.7 3.6.2" fill="none" stroke="#3a2a22" stroke-width="0.9" stroke-linecap="round"/>
+  <path d="M34.2 27.8c1-.9 2.3-.9 3.6-.1" fill="none" stroke="#3a2a22" stroke-width="0.9" stroke-linecap="round"/>
+  <circle cx="28" cy="28.4" r="0.7" fill="#3a2a22"/>
+  <circle cx="35.9" cy="28.4" r="0.7" fill="#3a2a22"/>
+  <path d="M32 29.2v3.6" stroke="#c4956a" stroke-width="0.7" stroke-linecap="round"/>
+  <path d="M30 35.6h4" stroke="#a85a4a" stroke-width="0.75" stroke-linecap="round"/>
+<path d="M25.6 35.2c.6 5.2 3 8 6.4 8s5.8-2.8 6.4-8c-1.6 1.4-3.6 2-6.4 2s-4.8-.6-6.4-2z" fill="#efe6d8"/>
+
+
+<g transform="translate(24 46)"><rect width="16" height="11" rx="1" fill="#f3e6c4" stroke="#c4a15a" stroke-width="0.7"/><path d="M8 1.2v8.6M5 5.4h6" stroke="#8e2436" stroke-width="0.8"/></g>
+</g>
+</svg>

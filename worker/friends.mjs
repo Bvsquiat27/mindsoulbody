@@ -137,11 +137,20 @@ function applyImage(user, body, nested, storedKey, aliases) {
   else delete user[storedKey];
 }
 
+function applySaint(user, body, nested) {
+  const values = fieldValues(body, nested, 'avatar_saint');
+  if (!values.length) return;
+  const id = String(values[0] ?? '').trim().toLowerCase();
+  if (/^[a-z0-9-]{1,32}$/.test(id)) user.avatar_saint = id;
+  else delete user.avatar_saint;
+}
+
 function applyProfile(user, body) {
   const nested = body && body.profile && typeof body.profile === 'object' && !Array.isArray(body.profile) ? body.profile : null;
   for (const key of ['handle', 'city', 'bio']) applyText(user, body, nested, key);
   applyImage(user, body, nested, 'avatar_data', ['avatar_data', 'avatar', 'avatarUrl']);
   applyImage(user, body, nested, 'cover_data', ['cover_data', 'cover', 'coverUrl']);
+  applySaint(user, body, nested);
 }
 
 function friendView(user, unread = 0) {
@@ -153,7 +162,7 @@ function friendView(user, unread = 0) {
     unread
   };
   const profile = {};
-  for (const key of ['handle', 'city', 'bio', 'avatar_data', 'cover_data']) {
+  for (const key of ['handle', 'city', 'bio', 'avatar_data', 'cover_data', 'avatar_saint']) {
     if (typeof user[key] === 'string' && user[key]) {
       view[key] = user[key];
       profile[key] = user[key];
