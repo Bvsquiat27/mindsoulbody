@@ -75,7 +75,7 @@
         if (match && !reader.explicitOpen) { reader.book = Number(match[1]); reader.chapter = Number(match[2]); }
       }
       if (!reader.notes) {
-        const response = await fetch('bible/study-notes.json', { cache:'force-cache' });
+        const response = await fetch('bible/study-notes.json', { cache:'no-store' });
         if (!response.ok) throw Error('Study notes are unavailable. Please try again.');
         reader.notes = await response.json();
       }

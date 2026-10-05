@@ -195,6 +195,33 @@
           ],
           "correct": 1,
           "explanation": "Pascha centrally proclaims Christ’s actual resurrection and victory over death."
+        },
+        {
+          "prompt": "What did the Cross become, in this reading?",
+          "choices": [
+            "The instrument of salvation, though it had been an instrument of death",
+            "A symbol the Church no longer uses",
+            "A sign that Christ did not really die"
+          ],
+          "correct": 0,
+          "explanation": "An instrument of death became the instrument of salvation. The Church still signs, blesses, and prays with it."
+        },
+        {
+          "prompt": "How does St Basil read the sign of the Son of Man?",
+          "choices": [
+            "As the arms of the Cross",
+            "As a sign that the Cross is finished and forgotten",
+            "As a rejection of the Old Testament"
+          ],
+          "correct": 0,
+          "explanation": "Basil links Matthew 24:30 with the Cross. It joins the Testaments and points toward the age to come."
+        }
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "The cross",
+          "body": "The Cross was an instrument of death. In Christ’s hands it became the instrument of salvation. St Basil connects the “sign of the Son of Man” at the Second Coming with the arms of the Cross: the Cross is not only a past event but the sign under which the Lord returns. Christians sign themselves with it, bless with it, and are guarded by it in travel, work, sleep, and prayer. It ties the Old Testament to the New, and the New to the age to come, when material signs will no longer be needed because God will be all in all. Until then, the Cross is how the Church touches that victory in the body."
         }
       ]
     },
@@ -288,6 +315,10 @@
         {
           "heading": "Handle the hard texts honestly",
           "body": "Jesus prays, learns, suffers, and says the Father is greater (John 14:28). These are genuine data, not verses to hide. The Incarnation means the Son acts and speaks in a real human life; passages of dependence must be read alongside texts of preexistence and divine identity. The argument requires a theological synthesis; it is not a mathematical proof forced by one verse."
+        },
+        {
+          "heading": "The Christ of the Gospels: God and man",
+          "body": "In the Gospels the same Jesus is shown as God and as man in one life. He is born as children are born, and yet not from a human father: from the Holy Spirit and the Virgin. He hungers, sleeps, weeps, and asks, and the same narratives have Him forgive sins, command the sea, and rise. Do not divide the portrait into a human half and a divine half kept in separate chapters. The Church reads one Lord whose human actions carry the divine imprint, and whose divine works are done in a real human life."
         }
       ],
       "furtherReading": [
@@ -388,8 +419,29 @@
           ],
           "correct": 2,
           "explanation": "One isolated English verse does not by itself compel every reader to accept the entire later conciliar formula; the case is cumulative."
+        },
+        {
+          "prompt": "How is Jesus’ birth told in this reading?",
+          "choices": [
+            "As an ordinary birth from a human father only",
+            "He is born as a real child, and from the Holy Spirit and the Virgin",
+            "He appears fully grown and never has a human birth"
+          ],
+          "correct": 1,
+          "explanation": "The Gospels show a real human birth that is also from the Holy Spirit and the Virgin, not from a human father."
+        },
+        {
+          "prompt": "What mistake does this reading warn against?",
+          "choices": [
+            "Splitting Jesus into a human half and a divine half kept apart",
+            "Saying the Gospels mention His hunger",
+            "Reading more than one Gospel"
+          ],
+          "correct": 0,
+          "explanation": "One Lord acts in both registers. The human actions carry the divine imprint, and the divine works are done in a real human life."
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "trinity-case",
@@ -415,6 +467,10 @@
         {
           "heading": "Respect the limits of “proof”",
           "body": "The word “Trinity” is a later theological term. The developed vocabulary is not printed as a single New Testament sentence. The Christian case is an inference from multiple passages and the Church’s worship: one God, the Son’s divine identity, the Spirit’s personal divine action, and distinction among them. A serious defense explains each premise and its rival readings."
+        },
+        {
+          "heading": "How to explain the mystery of the Holy Trinity",
+          "body": "The catechism tells two old stories of St Spyridon at Nicaea, and both refuse to turn the Trinity into a puzzle you solve. In one, he presses a brick and speaks of fire and water in the one clay: an image of three in one, not a mechanism. In the other, a shepherd stops a long argument with a philosopher and says, in effect: God is one, the Creator, who made all things by the Son and the Holy Spirit; the Son became incarnate, died, and rose. Do not labor for evidence of what faith alone can receive. Answer instead: do you believe in the Son of God? The Trinity is the One to whom we pray, and also the communion of three in whose image human community is meant to be built. Explanation serves prayer. It does not replace it."
         }
       ],
       "furtherReading": [
@@ -515,8 +571,29 @@
           ],
           "correct": 1,
           "explanation": "The baptism scene shows distinction, but the full doctrine also needs texts and reasoning about unity, divinity, and worship."
+        },
+        {
+          "prompt": "What is St Spyridon’s brick meant to be?",
+          "choices": [
+            "A scientific proof that explains the Trinity away",
+            "An image of three in one, not a mechanism that solves the mystery",
+            "A denial that the Son is consubstantial with the Father"
+          ],
+          "correct": 1,
+          "explanation": "The brick is a reported image — fire and water in one clay — not a proof that replaces faith."
+        },
+        {
+          "prompt": "What does the shepherd tell the philosopher to stop seeking?",
+          "choices": [
+            "Evidence for what is received by faith alone",
+            "Any mention of the Son",
+            "The church, because argument is holier than worship"
+          ],
+          "correct": 0,
+          "explanation": "The story’s point is: do not labor for proofs of what faith receives. Believe the Son, and come into the Church’s communion."
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "council-depth",
@@ -1323,8 +1400,8 @@
       "micro": true,
       "title": "Genesis: beginnings and promise",
       "category": "Scripture lesson",
-      "level": "3 steps",
-      "summary": "Creation, the human image, and Abraham’s promise.",
+      "level": "6 teaching cards · 9 questions · Match the Word",
+      "summary": "Creation, the human image, and Abraham’s promise. God created from overflowing goodness, not from need.",
       "source": "Genesis 1–3; 12:1–3",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=Genesis%201-3%3B%20Genesis%2012%3A1-3&version=KJV",
       "lessons": [
@@ -1339,6 +1416,21 @@
         {
           "heading": "The promise",
           "body": "God calls Abraham and promises blessing to the families of the earth. Paul connects that promise with the Gospel in Galatians 3:8."
+        },
+        {
+          "heading": "God the Creator",
+          "body": "God’s love was already perfect inside the Trinity, so creation was not a need. In the communion of the Father, the Son, and the Holy Spirit, each Person is already lover and beloved. Nothing was missing, and nothing outside God could complete Him. Creation is the overflow of a goodness that, by its nature, wants to be shared. St John of Damascus puts it this way: the good God was not content to contemplate Himself, but by a superabundance of goodness willed that others should benefit from that goodness and share it, and so He brings all things from nothing into being. Say it in your own words before you go on: God did not create because He was lonely or incomplete. He created because perfect love overflows. The world is that sharing, called out of nothing — not a repair of God, and not a craftsman shaping matter that was already there.",
+          "step": 3
+        },
+        {
+          "heading": "The universe",
+          "body": "The six days of Genesis are not six ordinary sunsets. They are successive stages in which the visible world is called out of non-being. That world will not be thrown away at the end. It will not slide back into nothing. It is destined to be taken up into a higher mode of being. And it is not abandoned now. The Holy Spirit broods over the material world as a mother bird over the waters, breathing the spirit of life into it. Matter is loved. It is not a mistake.",
+          "step": 5
+        },
+        {
+          "heading": "The six days of creation",
+          "body": "“Let there be light” is not the creation of the sun. Sun and moon come on the fourth day. The light of the first day is the light of God reflected in what He has made. The days then unfold: heaven and the waters, dry land and plants, the lights of the sky, the living creatures of sea and air, and on the sixth day the animals and humanity. St Anthony, asked how he could live without books, answered that the created world itself was his book. Read Genesis as the Church’s story of a good world brought into being by God’s word, and read the world as that story still speaking.",
+          "step": 7
         }
       ],
       "questions": [
@@ -1371,8 +1463,105 @@
           ],
           "correct": 0,
           "explanation": "Abraham receives the promise that all families of the earth will be blessed in him."
+        },
+        {
+          "prompt": "Say it back: why was creation not something God needed?",
+          "choices": [
+            "His love was already perfect inside the Trinity, so nothing was missing; creation is goodness overflowing to be shared",
+            "He was lonely and incomplete until the world existed",
+            "The angels required Him to make a world"
+          ],
+          "correct": 0,
+          "explanation": "Love was already perfect among Father, Son, and Holy Spirit, each lover and beloved. Creation was not a need. It was the overflow of a goodness that wants to be shared."
+        },
+        {
+          "prompt": "How does St John of Damascus say it?",
+          "choices": [
+            "The good God was not content to contemplate Himself, but willed others to share His goodness",
+            "God created because He was dissatisfied with His own life",
+            "God became a creature in order to know Himself"
+          ],
+          "correct": 0,
+          "explanation": "Damascus: the good God was not content to contemplate Himself. By a superabundance of goodness He brings things from nothing so they may share that goodness."
+        },
+        {
+          "prompt": "How should the six days be heard in this reading?",
+          "choices": [
+            "As six ordinary twenty-four-hour days and nothing more",
+            "As successive stages by which God calls the visible world out of non-being",
+            "As a myth meaning God did not create"
+          ],
+          "correct": 1,
+          "explanation": "The days are stages of creation, not a denial of creation and not merely six ordinary evenings."
+        },
+        {
+          "prompt": "What happens to the universe at the end, in this reading?",
+          "choices": [
+            "It returns to non-being",
+            "It is taken up into a higher mode of being rather than discarded",
+            "It replaces God"
+          ],
+          "correct": 1,
+          "explanation": "What God called out of nothing is not thrown back into nothing. It is destined for a higher mode of being."
+        },
+        {
+          "prompt": "What is the light of the first day?",
+          "choices": [
+            "Sunlight, which is created on the first day",
+            "The light of God reflected in created being, before sun and moon",
+            "Only a metaphor for human reason"
+          ],
+          "correct": 1,
+          "explanation": "Sun and moon appear on the fourth day. The first light is God’s light reflected in creation."
+        },
+        {
+          "prompt": "What did St Anthony call his book in the desert?",
+          "choices": [
+            "The created world itself",
+            "A library he kept hidden",
+            "Only the Psalms, never creation"
+          ],
+          "correct": 0,
+          "explanation": "Anthony’s answer is that creation itself consoles and teaches. The world is a book."
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "drag": {
+        "title": "Match the Word: why God created",
+        "intro": "Sort each line. One side is the love already perfect in God. The other is goodness shared because it overflows.",
+        "categories": [
+          {
+            "id": "already",
+            "label": "Already perfect, so not a need"
+          },
+          {
+            "id": "overflow",
+            "label": "Goodness that wants to be shared"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "The Trinity",
+            "text": "love already perfect inside the Trinity",
+            "category": "already"
+          },
+          {
+            "ref": "No lack",
+            "text": "creation was not a need",
+            "category": "already"
+          },
+          {
+            "ref": "John of Damascus",
+            "text": "not content to contemplate Himself",
+            "category": "overflow"
+          },
+          {
+            "ref": "Superabundance",
+            "text": "goodness overflows so others may share it",
+            "category": "overflow"
+          }
+        ]
+      }
     },
     {
       "id": "track-gospels",
@@ -1380,7 +1569,7 @@
       "micro": true,
       "title": "The Gospels: Christ’s life and Pascha",
       "category": "Scripture lesson",
-      "level": "3 steps",
+      "level": "4 teaching cards · 5 questions",
       "summary": "Four witnesses, incarnation, and resurrection.",
       "source": "John 1; Luke 24",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=John%201%3B%20Luke%2024&version=KJV",
@@ -1396,6 +1585,11 @@
         {
           "heading": "Pascha",
           "body": "The risen Christ meets Mary Magdalene and the disciples. Luke 24 and John 20 narrate encounters, not merely a remembered idea."
+        },
+        {
+          "heading": "Jesus Christ, the New Adam",
+          "body": "The first Adam was called to grow into likeness with God and to bring the visible world to God with him. He did not. After the commandment was broken, the way back was closed from our side. Christ takes up the vocation Adam dropped. He is the New Adam: the one human who does not turn the gift back into self-love, and who carries our nature where Adam could not take it. Read the Gospels as that repair from inside the race, not as the story of a teacher who left our nature where He found it.",
+          "step": 3
         }
       ],
       "questions": [
@@ -1428,8 +1622,29 @@
           ],
           "correct": 0,
           "explanation": "Luke tells of two disciples meeting the risen Jesus on the road to Emmaus."
+        },
+        {
+          "prompt": "What vocation did the first Adam not fulfill?",
+          "choices": [
+            "To attain likeness with God and bring the visible world to God",
+            "To become an angel and leave the body behind",
+            "To build a city away from God"
+          ],
+          "correct": 0,
+          "explanation": "Adam was called to deification and to offer the world to God. He did not complete that calling."
+        },
+        {
+          "prompt": "Who takes up the vocation Adam left?",
+          "choices": [
+            "Christ, the New Adam, from inside our nature",
+            "Each person alone, with no need of Christ",
+            "The devil, who finishes Adam’s work"
+          ],
+          "correct": 0,
+          "explanation": "The New Adam carries the human vocation Adam broke, from within the human race."
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "track-psalms",
@@ -1683,12 +1898,17 @@
         {
           "heading": "The Fathers",
           "body": "St Cyril’s emphasis on the one incarnate Son and the Fathers’ insistence on real humanity both shape careful reading of Chalcedon."
+        },
+        {
+          "heading": "The unity of natures",
+          "body": "Eutyches said that before the union there were two natures, and after it only one. Dioscorus backed him. Chalcedon answered in 451: one hypostasis of God the Word in two natures, divine and human. Each nature keeps its own fullness. Christ is not split into two persons. The definition says it with four fences — without confusion, without change, without division, without separation — because the Fathers were trying to speak the inexpressible without breaking it. “One nature after the union,” if it means the humanity disappeared into the divinity, is the error Chalcedon closed.",
+          "step": 3
         }
       ],
       "track": "Seven Councils",
       "micro": true,
       "category": "Council lesson",
-      "level": "3 steps",
+      "level": "4 teaching cards · 5 questions",
       "questions": [
         {
           "prompt": "How many persons does Chalcedon confess in Christ?",
@@ -1719,8 +1939,29 @@
           ],
           "correct": 0,
           "explanation": "Philippians 2:7 speaks of Christ taking the form of a servant."
+        },
+        {
+          "prompt": "What did Eutyches confess about the natures?",
+          "choices": [
+            "Two natures before the union, and one nature after it",
+            "Two persons after the union",
+            "That Christ had no divinity"
+          ],
+          "correct": 0,
+          "explanation": "Eutyches: two natures before the union, one after. Chalcedon refused the merger that would leave only one nature."
+        },
+        {
+          "prompt": "Which four words fence the Chalcedonian union?",
+          "choices": [
+            "Without confusion, without change, without division, without separation",
+            "Without body, without soul, without will, without birth",
+            "Without Father, without Spirit, without Church, without Cross"
+          ],
+          "correct": 0,
+          "explanation": "The definition confesses one Christ in two natures without confusion, change, division, or separation."
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "track-constantinople2",
@@ -1797,12 +2038,17 @@
         {
           "heading": "The Father",
           "body": "St Maximus the Confessor defended the two natural wills and activities of the one Christ before the Sixth Council."
+        },
+        {
+          "heading": "Two actions and two wills",
+          "body": "Some, while still saying “two natures,” spoke of one divine-human action. That is Monoenergism. Monothelitism went on to say Christ had only a divine will, the human will swallowed up. The hope was a compromise with the Monophysites. St Maximus refused it. Christ, God by nature, wills with the divine will He shares with the Father; Christ, man by nature, wills with a human will that does not fight the Father. Gethsemane is the proof in the Gospel: “not as I will, but as Thou wilt” is a real human will consenting, not a will that has already vanished. Constantinople III (680–681) followed Maximus: two natural wills and two natural energies, without confusion. Maximus paid with his tongue and his hand. The Church kept his confession.",
+          "step": 3
         }
       ],
       "track": "Seven Councils",
       "micro": true,
       "category": "Council lesson",
-      "level": "3 steps",
+      "level": "4 teaching cards · 5 questions",
       "questions": [
         {
           "prompt": "How many natural wills did the Sixth Council confess in Christ?",
@@ -1833,8 +2079,29 @@
           ],
           "correct": 0,
           "explanation": "Maximus the Confessor defended Christ’s complete human willing."
+        },
+        {
+          "prompt": "What did Monothelitism claim?",
+          "choices": [
+            "Christ has only a divine will; the human will is swallowed up",
+            "Christ has no divine will",
+            "Christ is two persons"
+          ],
+          "correct": 0,
+          "explanation": "Monothelitism kept two natures in words and then denied a human will. Maximus and the sixth council refused that."
+        },
+        {
+          "prompt": "Why does Gethsemane matter for the two wills?",
+          "choices": [
+            "The prayer shows a real human will consenting to the Father, which could not be said if that will had vanished",
+            "The prayer shows Christ refusing the Cross",
+            "The prayer shows the Father and the Son are the same Person"
+          ],
+          "correct": 0,
+          "explanation": "“Not as I will, but as Thou wilt” is the human will speaking. A swallowed will could not pray that prayer."
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "track-nicaea2",
@@ -1854,12 +2121,17 @@
         {
           "heading": "The Father",
           "body": "St John of Damascus defended holy images by pointing to the God who had become visible in human life."
+        },
+        {
+          "heading": "The holy icons",
+          "body": "An icon is not decoration and not a visual aid you may take or leave. Orthodox Christians pray before it, kiss it, and treat it as holy. That honor has been attacked more than once, and the Church answered by refusing both idolatry and the ban on images of the incarnate Lord. Fr Paul Florensky’s line is the one to keep: the icon is a window onto the other world. Through it a person comes into contact with the spiritual world and with those who live there. The wood is not God. The person shown is truly approached. Veneration passes to the prototype; worship stays with God.",
+          "step": 3
         }
       ],
       "track": "Seven Councils",
       "micro": true,
       "category": "Council lesson",
-      "level": "3 steps",
+      "level": "4 teaching cards · 5 questions",
       "questions": [
         {
           "prompt": "What makes an icon of Christ possible in Orthodox teaching?",
@@ -1890,8 +2162,29 @@
           ],
           "correct": 0,
           "explanation": "John of Damascus argued from the Incarnation for holy icons."
+        },
+        {
+          "prompt": "What is an icon, in Florensky’s image?",
+          "choices": [
+            "A window onto the other world",
+            "A god made of wood",
+            "Mere decoration with no place in prayer"
+          ],
+          "correct": 0,
+          "explanation": "The icon is a window. People pray before it because of the person it makes present, not because the panel is divine."
+        },
+        {
+          "prompt": "Which practice does this reading describe?",
+          "choices": [
+            "Praying before icons, kissing them, and treating them as sacred",
+            "Worshipping the paint as a second god",
+            "Forbidding every image of Christ"
+          ],
+          "correct": 0,
+          "explanation": "The icon is venerated as holy. That is not the same as worshipping the material as God."
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "explain-the-words",
@@ -1911,12 +2204,17 @@
         {
           "heading": "Physis names a nature",
           "body": "Physis and ousia can overlap, so context matters. Speaking of God, one physis means one divine nature. Speaking of Christ, he has two physeis: complete divinity and complete humanity. A nature is not automatically a separate person. Nature answers what kind of life and powers someone has; hypostasis identifies who is acting."
+        },
+        {
+          "heading": "The word 'God'",
+          "body": "The catechism begins with the word itself. Peoples named God out of an encounter, not out of a theory, and the names in their languages still carry that meeting. To Israel God gave the name Yahweh, “The One Who Is”: the One who truly has being. Israel’s refusal to pronounce that Name was not forgetfulness. It was reverence. The lesson to keep is that a person can be at one with God by a trembling silence as truly as by a definition. Say “God” carefully. The word points past every word.",
+          "step": 3
         }
       ],
       "track": "Explain the Faith",
       "micro": true,
       "category": "Explain the Faith lesson",
-      "level": "3 steps",
+      "level": "4 teaching cards · 5 questions",
       "questions": [
         {
           "prompt": "When you say God has one ousia, what are you talking about?",
@@ -1947,6 +2245,26 @@
           ],
           "correct": 1,
           "explanation": "A nature answers the question what, but it does not by itself settle who is acting. That distinction lets the Church confess one Christ with real divine and human natures."
+        },
+        {
+          "prompt": "What does the name Yahweh mean in this reading?",
+          "choices": [
+            "“The One Who Is,” the One who truly has being",
+            "“The highest angel,” a creature God promoted",
+            "“The world itself,” so that God and creation are the same"
+          ],
+          "correct": 0,
+          "explanation": "Yahweh is taken as “The One Who Is”: God is the One who truly has being, not a promoted creature and not the world itself."
+        },
+        {
+          "prompt": "Why did Israel refrain from pronouncing the divine Name?",
+          "choices": [
+            "Because God had not yet revealed anything",
+            "As reverence: union with God can come through trembling silence, not only through words",
+            "Because the Name was considered a magic spell"
+          ],
+          "correct": 1,
+          "explanation": "The silence is reverent. A person can be at one with God through trembling silence as well as through descriptions."
         }
       ],
       "words": [
@@ -1958,7 +2276,8 @@
           "term": "hypostasis",
           "say": "high pah stuh sis"
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "explain-one-god-three-hypostases",
@@ -1978,12 +2297,22 @@
         {
           "heading": "Perichoresis: communion without confusion",
           "body": "John of Damascus uses perichoresis for the mutual indwelling of the divine Persons. The Father, Son, and Holy Spirit are distinct, yet they are never separate, divided, or acting as three independent gods. Their unity is not a blur: the Persons remain distinct while sharing one undivided divine life."
+        },
+        {
+          "heading": "'Father' as a divine name",
+          "body": "“Father” is the Bible’s own name for God. Isaiah 63:16 already puts it on Israel’s lips: “Thou, O Lord, art our Father.” The Eastern tradition keeps masculine names for the Father and the Son because that is how God has named Himself in Scripture, not because God is male in the creaturely sense. There is a difference worth guarding. Biblical anthropomorphism comes from a real meeting with the personal God. It is not the same thing as a modern habit of rebuilding God in the image of our preferences. Call Him Father because He has called Himself Father.",
+          "step": 3
+        },
+        {
+          "heading": "The mystery of the Trinity",
+          "body": "Christians confess one God: Father, Son, and Holy Spirit. That is one God in three Hypostases, not three gods and not one person changing masks. Arithmetic will call “one and three” absurd. Faith calls it the cornerstone. The Lord speaks of His unity with the Father and, in the same breath, of being sent by the Father. Distinction and unity arrive together. The Trinity was not a late addition pasted onto a simple monotheism. It lay hidden in the heart of the confession that God is one, until the Son and the Spirit made it known.",
+          "step": 5
         }
       ],
       "track": "Explain the Faith",
       "micro": true,
       "category": "Explain the Faith lesson",
-      "level": "3 steps",
+      "level": "5 teaching cards · 7 questions",
       "questions": [
         {
           "prompt": "What does homoousios protect?",
@@ -2014,6 +2343,46 @@
           ],
           "correct": 1,
           "explanation": "The first choice divides God into three beings, and the third turns the Persons into roles or masks. Orthodox teaching confesses three distinct Hypostases, one essence, and one undivided divine life."
+        },
+        {
+          "prompt": "Why does the Eastern tradition keep the name Father for God?",
+          "choices": [
+            "Because God is a male creature",
+            "Because Father is the biblical name, given in God’s own revelation",
+            "Because later philosophy invented it to replace Yahweh"
+          ],
+          "correct": 1,
+          "explanation": "Father is the traditional biblical name. Isaiah 63:16 already calls the Lord “our Father.”"
+        },
+        {
+          "prompt": "What distinguishes biblical anthropomorphism in this reading?",
+          "choices": [
+            "It is based on the experience of the personal God in revelation",
+            "It means God has a human body by nature",
+            "It is the same as rebuilding God to match modern taste"
+          ],
+          "correct": 0,
+          "explanation": "Biblical anthropomorphism comes from revelation and encounter. It is not a license to remake God in our image."
+        },
+        {
+          "prompt": "What does “one God in three Hypostases” deny?",
+          "choices": [
+            "That the Father and the Son are distinct",
+            "Both three gods and one person wearing three masks",
+            "That Jesus was sent by the Father"
+          ],
+          "correct": 1,
+          "explanation": "The confession keeps one God and three real Hypostases. It refuses tritheism and modalism together."
+        },
+        {
+          "prompt": "Where does this reading locate the Trinity in Israel’s faith?",
+          "choices": [
+            "As a foreign idea with no root in the confession of the one God",
+            "Hidden in the heart of the dogma of divine unity, then made known in the Son and the Spirit",
+            "As three gods Israel already worshipped by name"
+          ],
+          "correct": 1,
+          "explanation": "The Trinity is not an extra god beside the God of Israel. It was hidden within the confession of the one God."
         }
       ],
       "words": [
@@ -2025,7 +2394,8 @@
           "term": "perichoresis",
           "say": "peh ree koh ree sis"
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "explain-godhead-without-heresy",
@@ -2033,7 +2403,7 @@
       "micro": true,
       "title": "Speaking About the Godhead Without Heresy",
       "category": "Apologetics lesson",
-      "level": "4 teaching cards · 8 questions · Match the Word",
+      "level": "5 teaching cards · 10 questions · Match the Word",
       "summary": "How to speak about Father, Son, and Holy Spirit without making the essence a fourth thing. The persons are the who; the essence is the what. Relations of origin distinguish the persons; they never divide the one essence.",
       "source": "Deuteronomy 6:4 · Isaiah 44:6 · Matthew 28:19 · John 1:1 · John 8:42 · John 15:26 · John 20:28",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=Deuteronomy%206%3A4%3B%20Isaiah%2044%3A6%3B%20Matthew%2028%3A19%3B%20John%201%3A1%3B%20John%208%3A42%3B%20John%2015%3A26%3B%20John%2020%3A28&version=KJV",
@@ -2053,6 +2423,11 @@
         {
           "heading": "Say it clean",
           "body": "Use the grammar this lesson trains. You may say: one God, because one essence; three persons, because Father, Son, and Spirit are really distinct; the Son is God, the Spirit is God, and the Father is God — each fully, not partly. Do not say: the essence decided, the Godhead as a fourth being acted, the Son is one third of God, or the persons are three roles. Carry the same grammar into Christology: in the hypostatic union the same who/what distinction keeps you from splitting Christ or mixing his natures. First fix the subject, then speak."
+        },
+        {
+          "heading": "Unity of love",
+          "body": "The Trinity is not a frozen object. In God there is the fullness of life and of love. “God is love” (1 John 4:8) cannot mean a lonely monad, because love has no beloved if there is no other. The Persons give and receive: the Son has all that the Father has, and the Spirit takes what is the Son’s and declares it (John 16:15). St Philaret of Moscow named the Cross in a Trinitarian way: the crucifying love of the Father, the crucified love of the Son, and the love of the Holy Spirit triumphing by the power of the Cross. Speak of one essence without turning God into a solitary will that has no one to love.",
+          "step": 8
         }
       ],
       "questions": [
@@ -2145,6 +2520,26 @@
           ],
           "correct": 1,
           "explanation": "False. There is one undivided divine essence. Agreement among three gods would be tritheism, not Trinity."
+        },
+        {
+          "prompt": "Why can “God is love” not mean a lonely single person?",
+          "choices": [
+            "Because love needs the beloved, and the Persons eternally love",
+            "Because love is only a feeling creatures have",
+            "Because the Father began to love only after the Cross"
+          ],
+          "correct": 0,
+          "explanation": "A lonely monad would have no beloved. The Trinity is the fullness of life and love."
+        },
+        {
+          "prompt": "How does St Philaret name the love of the Cross?",
+          "choices": [
+            "The Father punishing a different god",
+            "The crucifying love of the Father, the crucified love of the Son, and the Spirit’s love triumphing by the Cross",
+            "Three loves that divide God into three wills at war"
+          ],
+          "correct": 1,
+          "explanation": "Philaret keeps one love in three: the Father, the Son, and the Spirit each acting in the one Cross."
         }
       ],
       "drag": {
@@ -2231,7 +2626,8 @@
           "term": "proceeds",
           "say": "proh seeds"
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "explain-hypostatic-union",
@@ -2251,12 +2647,17 @@
         {
           "heading": "Complete humanity, complete divinity",
           "body": "Cyril of Alexandria guards the unity of Christ, while Maximus the Confessor and the later councils guard his complete humanity. Christ has a real rational human mind and will; his humanity is not swallowed by divinity. He is not a divine appearance, not a body animated directly by divinity instead of a human soul, and not a mixture that leaves him neither fully God nor fully man."
+        },
+        {
+          "heading": "The Christ of faith: one Person in two natures",
+          "body": "The Gospels already show a Christ who is divine and human. The Church still had to say how that is one Lord and not two. From the fourth century to the seventh, the arguments were about that “how.” The faith that emerged is not a new Christ. It is a guard around the Christ of the Gospels: one Person, the Son of God, in two complete natures. When a formula makes Him less than God or less than man, it has left the portrait the Gospels actually draw.",
+          "step": 3
         }
       ],
       "track": "Explain the Faith",
       "micro": true,
       "category": "Explain the Faith lesson",
-      "level": "3 steps · Match the Word",
+      "level": "4 teaching cards · 5 questions · Match the Word",
       "questions": [
         {
           "prompt": "Who is the subject born of Mary?",
@@ -2287,6 +2688,26 @@
           ],
           "correct": 2,
           "explanation": "Apollinarianism removes Christ's rational human mind, Eutychianism absorbs or confuses his humanity, and Docetism makes his embodied life only an appearance. The third sentence keeps his humanity complete and real."
+        },
+        {
+          "prompt": "What task did church Tradition face after the Gospels?",
+          "choices": [
+            "To invent a Christ the Gospels do not know",
+            "To say how divinity and humanity are one Lord, not two Christs",
+            "To deny that Jesus was human"
+          ],
+          "correct": 1,
+          "explanation": "The dogma guards the Gospel portrait: one Person in two natures, forged through the Christological debates of the fourth to the seventh century."
+        },
+        {
+          "prompt": "When has a Christological formula left the Gospels, in this reading?",
+          "choices": [
+            "When it makes Christ less than God or less than man",
+            "When it says He was born",
+            "When it uses the word nature at all"
+          ],
+          "correct": 0,
+          "explanation": "The formulas exist to keep Him fully God and fully man, one Lord. A formula that shrinks either nature has left the text."
         }
       ],
       "words": [
@@ -2353,7 +2774,8 @@
             "category": "true-man"
           }
         ]
-      }
+      },
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "explain-say-it-right",
@@ -2544,7 +2966,7 @@
       "micro": true,
       "title": "Calling Mary Theotokos",
       "category": "Biblical defense lesson",
-      "level": "3 teaching cards · 3 questions",
+      "level": "4 teaching cards · 5 questions",
       "summary": "Why God-bearer is first a confession about Jesus: the child born of Mary is truly God the Word made flesh.",
       "source": "Luke 1:43 · John 1:1-14 · Galatians 4:4 · St. Cyril of Alexandria and Ephesus, 431",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=Luke%201%3A39-45%3B%20John%201%3A1-14%3B%20Galatians%204%3A4&version=KJV",
@@ -2560,6 +2982,11 @@
         {
           "heading": "Ephesus protected Christ, not a rivalry with Him",
           "body": "At Ephesus in 431, St. Cyril of Alexandria defended Theotokos because denying it threatened the confession that Emmanuel is truly God. The title does not make Mary the source of the Trinity. It says that the same Son who is eternally begotten of the Father was truly born of Mary in time. Keep the phrase according to the flesh close by: Mary is mother of God incarnate, not mother of divinity as an abstract nature."
+        },
+        {
+          "heading": "The Mother of God and the saints",
+          "body": "The Church’s honor of women is shown first in the place she gives the Mother of God: higher than the saints, higher than the angels, “more honorable than the cherubim and beyond compare more glorious than the seraphim.” That glory is Christ’s. The saints are not a crowd of independent patrons. They are bound to Christ and therefore to one another. A Christian community that has no living communion with them does not yet know the Church as the whole mystical Body, the living and the departed in one Christ. Ask the saints to pray because they are alive in Him. Do not give them the worship that belongs to God alone.",
+          "step": 3
         }
       ],
       "questions": [
@@ -2595,6 +3022,26 @@
           ],
           "correct": 2,
           "explanation": "Mary did not create divinity. She bore the divine Son in His incarnation, so the title confesses Christ without exaggerating Mary into a source of Godhead."
+        },
+        {
+          "prompt": "Where does this reading place the Mother of God?",
+          "choices": [
+            "Above the saints and the angels, because of the Child she bore",
+            "As a fourth Person of the Trinity",
+            "As an ordinary believer the Church does not single out"
+          ],
+          "correct": 0,
+          "explanation": "She is glorified above saints and angels. The glory is about Christ, whose mother she is."
+        },
+        {
+          "prompt": "What is missing where the saints are not in living communion with the Church?",
+          "choices": [
+            "Nothing; the Body of Christ is only the people in one building",
+            "The fullness of the Church as the one Body joining the living and the departed in Christ",
+            "The right to worship the saints as God"
+          ],
+          "correct": 1,
+          "explanation": "The saints belong to the Church’s fullness. Communion with them is not worship of them as God."
         }
       ],
       "words": [
@@ -2610,7 +3057,8 @@
           "term": "communicatio idiomatum",
           "say": "kah myoo nih kah tee oh, ih dee oh mah tum"
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "defense-true-body-blood",
@@ -2684,7 +3132,7 @@
       "micro": true,
       "title": "Essence and energies: truly knowing God",
       "category": "Biblical defense lesson",
-      "level": "3 teaching cards · 3 questions",
+      "level": "5 teaching cards · 7 questions",
       "summary": "How St. Gregory Palamas defended real participation in God's life while guarding that the divine essence remains beyond creatures.",
       "source": "Exodus 33 · Matthew 17 · Psalm 36:9 · 2 Peter 1:4 · St. Gregory Palamas",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=Exodus%2033%3A18-23%3B%20Matthew%2017%3A1-8%3B%20Psalm%2036%3A9%3B%202%20Peter%201%3A4&version=KJV",
@@ -2700,6 +3148,16 @@
         {
           "heading": "Palamas: essence beyond us, energies truly God with us",
           "body": "St. Gregory Palamas defended the hesychast monks by teaching a real distinction: God's essence is what God is in Himself and remains imparticipable to creatures; God's energies are His uncreated activities and life, truly God going forth to create, illumine, and deify. This is not two gods and not a created buffer. We participate in God by grace through His energies, while we never become God by essence."
+        },
+        {
+          "heading": "The divine names",
+          "body": "Dionysius asks the obvious question: how can anyone name the God who is beyond speech and knowledge? Scripture answers by giving names anyway — Wisdom, Truth, Light, Life, Salvation, Righteousness, Love — not because a list of titles equals God, but because people who have met Him must speak. Earthly words and images are the only speech we have. They are true as far as they come from revelation, and they remain too small. Hold both: God is named, and God is never exhausted by the name.",
+          "step": 3
+        },
+        {
+          "heading": "Cataphatic and apophatic theology",
+          "body": "Cataphatic speech says what God has shown: the names and attributes revelation gives. Apophatic speech then refuses to stop there. To call God “being” is already to discover that He is beyond being; every affirmation must be exceeded. The divine darkness is not a mood and not ignorance for its own sake. It is the point past which the intellect cannot carry you. God is met in the depths of prayerful silence — incomprehensible, inaccessible, invisible — and yet truly near. Speculation does not take that last step. Prayer does.",
+          "step": 5
         }
       ],
       "questions": [
@@ -2735,6 +3193,46 @@
           ],
           "correct": 2,
           "explanation": "That sentence keeps both biblical truths: Exodus guards the essence; Tabor and 2 Peter guard real participation."
+        },
+        {
+          "prompt": "Why does Scripture give God many names if no name is enough?",
+          "choices": [
+            "Because each name is a separate god",
+            "Because those who have met God must speak, even though earthly words cannot exhaust Him",
+            "Because the names were invented to replace prayer"
+          ],
+          "correct": 1,
+          "explanation": "The names come from encounter and revelation. They let us speak of God without ever summing Him up."
+        },
+        {
+          "prompt": "Which claim matches this reading of the divine names?",
+          "choices": [
+            "A complete list of attributes would be God Himself",
+            "God is named truly, and still remains beyond every name",
+            "God should never be called Light or Love"
+          ],
+          "correct": 1,
+          "explanation": "Scripture’s names are real, and none of them, even all together, captures God."
+        },
+        {
+          "prompt": "What is the apophatic move with the names of God?",
+          "choices": [
+            "To deny that God has revealed anything",
+            "To say the revealed names, then confess that God transcends every one of them",
+            "To treat the sum of the attributes as a definition that captures God"
+          ],
+          "correct": 1,
+          "explanation": "Apophatic theology does not discard revelation. It confesses that God is beyond every name revelation gives."
+        },
+        {
+          "prompt": "Where does this reading say the soul meets the God who is beyond everything?",
+          "choices": [
+            "In speculative knowledge alone",
+            "In prayerful silence",
+            "By refusing to pray until every term is defined"
+          ],
+          "correct": 1,
+          "explanation": "The meeting is in prayerful silence, not in speculation that tries to finish God."
         }
       ],
       "words": [
@@ -2750,7 +3248,8 @@
           "term": "theosis",
           "say": "theh oh sis"
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "mini-say-the-words-1",
@@ -2948,7 +3447,7 @@
       "micro": true,
       "title": "Freedom with a dominant difference",
       "category": "Apologetics lesson",
-      "level": "3 teaching cards · 3 questions",
+      "level": "4 teaching cards · 6 questions",
       "summary": "You are free to act on your strongest motive, but you do not choose the will itself: the will follows what the intellect presents as best. Liberty of spontaneity, not liberty of indifference — with ancestral sin, prevenient grace, and synergy held together.",
       "source": "Romans 7:15-25 · John 8:34-36 · Galatians 5:17 · St. Maximus the Confessor · St. Augustine, anti-Pelagian writings",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=Romans%207%3A15-25%3B%20John%208%3A34-36%3B%20Galatians%205%3A17&version=KJV",
@@ -2964,6 +3463,11 @@
         {
           "heading": "Why sin pulls different people different ways",
           "body": "The fall is one, but its wounds show up differently in each person. Nemesius of Emesa (On the Nature of Man) teaches that the soul's movements follow the body's temperament (krasis): different mixtures produce different dispositions, so the same fallen condition expresses itself through different dominant passions. Evagrius's eight logismoi are not eight sins everyone commits equally; they are eight urges that take turns ruling different souls — which is why the Philokalia's whole method is diagnostic first: discern your ruling passion before prescribing the cure. St. Maximus adds the personal depth: the gnomic will (thelema gnomikon) is each person's own mode of deliberating, shaped by disposition and history. No two are alike, so no two cures are alike."
+        },
+        {
+          "heading": "Consequences of Adam’s sin",
+          "body": "After the Fall, sin is not a private accident that stops with Adam. Cain’s murder shows how quickly pride becomes bloodshed, and Cain’s city shows a life organized away from God. The Fathers speak of human nature itself falling ill with sin: Cyril of Alexandria says the nature has fallen ill; Macarius speaks of a leaven of evil passions that entered a nature that had been pure. The bent is hereditary. Psalm 51 and Exodus 20 are heard in that light — not as punishment of innocent children for a crime they did not commit, but as the truth that our own sin is rooted in a wounded nature. Reason calls this unjust. The dogma is not solved by reason. It becomes clear only beside the other dogma: the New Adam heals the nature Adam wounded.",
+          "step": 4
         }
       ],
       "questions": [
@@ -3006,6 +3510,26 @@
           ],
           "correct": 1,
           "explanation": "Nemesius on temperament, Evagrius on the logismoi, Maximus on the gnomic will: one wound, different dispositions — diagnosis before cure."
+        },
+        {
+          "prompt": "What do Cyril and Macarius say sin did to human nature?",
+          "choices": [
+            "Nothing; each person starts as healthy as Adam before the Fall",
+            "The nature itself fell ill, and a bent toward sin became hereditary",
+            "It destroyed the image of God so completely that nothing human remains"
+          ],
+          "correct": 1,
+          "explanation": "The nature fell ill with sin. The predisposition is hereditary. The image is wounded, not treated as if it had never existed."
+        },
+        {
+          "prompt": "Beside which dogma does this reading say ancestral sin becomes clear?",
+          "choices": [
+            "The healing of the nature in the New Adam, Christ",
+            "A claim that God is the author of evil",
+            "The idea that reason can fully explain every dogma"
+          ],
+          "correct": 0,
+          "explanation": "Ancestral sin is not a bare legal puzzle. It is revealed alongside atonement: Christ, the New Adam, heals the nature."
         }
       ],
       "words": [
@@ -3025,7 +3549,8 @@
           "term": "synergeia",
           "say": "sin ehr gee ah"
         }
-      ]
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "explain-christus-victor-psa",
@@ -3033,7 +3558,7 @@
       "micro": true,
       "title": "Christus Victor, PSA, and the Orthodox understanding",
       "category": "Apologetics lesson",
-      "level": "4 teaching cards · 8 questions · Match the Word",
+      "level": "5 teaching cards · 10 questions · Match the Word",
       "summary": "What is Christ saving us from, and how? Christus Victor names the ancient center — Christ invades death and breaks it. Penal substitution names a later legal account. The Orthodox understanding keeps the victory, the sacrifice, and the healing together without splitting the Father from the Son.",
       "source": "Colossians 2:15 · Hebrews 2:14-15 · Isaiah 53 · Galatians 3:13 · 2 Corinthians 5:19-21 · St. Irenaeus · St. Athanasius, On the Incarnation",
       "sourceUrl": "https://www.biblegateway.com/passage/?search=Colossians%202%3A15%3B%20Hebrews%202%3A14-15%3B%20Isaiah%2053%3B%20Galatians%203%3A13%3B%202%20Corinthians%205%3A19-21&version=KJV",
@@ -3053,6 +3578,11 @@
         {
           "heading": "The Orthodox line: receive the words, refuse the split",
           "body": "Orthodoxy keeps every biblical word — for us, in our place, bore our sins, became a curse, sacrifice, Lamb, ransom — and refuses one move: turning them into the Father punishing the Son so that God can finally love us. The Trinity acts undivided. The Father sends in love, the Son offers Himself freely, the Spirit is not a spectator; God was in Christ reconciling the world to Himself (2 Corinthians 5:19), not reconciling Himself to the world. Christ bears the full consequence of sin — death itself — and destroys it from within; He is not a third party absorbing the Father's anger. And salvation is bigger than a verdict: forgiveness, healing of the wounded nature, adoption, and theosis — becoming by grace what God is by nature (2 Peter 1:4). Here is the test for any account of the cross: if the resurrection becomes an appendix, the account is too small. Say it this way: the Son bears our death to destroy death; He is not punished by the Father so the Father can begin to love us."
+        },
+        {
+          "heading": "Redemption",
+          "body": "The New Testament calls Christ a ransom, lytrosis: the price that frees a slave or a person condemned to die. We had fallen into the slavery of sin and needed freeing. The early question was: paid to whom? Origen pictured the soul given to the devil. Gregory the Theologian recoiled: the evil one would then receive not only a price but God Himself. Gregory of Nyssa spoke of the devil swallowing Christ’s flesh like bait and choking on the hook of His divinity — a bold image, not a contract the devil was owed. Later Western teaching, especially Anselm, moved the payment onto the Father’s offended honor: death satisfies anger, and grace returns as a legal credit. A council at Constantinople in 1157 answered from the East: Christ offered Himself to the Trinity — to the Father, to Himself as God, and to the Spirit — not to the Father alone as a creditor. Many Fathers skip the bookkeeping entirely. Redemption is God reconciling the race and adopting us, because He loves us. The Cross does not persuade God to begin loving.",
+          "step": 8
         }
       ],
       "questions": [
@@ -3143,6 +3673,26 @@
           ],
           "correct": 0,
           "explanation": "That is the formula: victory over death at the center, sacrifice and substitution kept, the Trinity undivided, and salvation as healing unto theosis."
+        },
+        {
+          "prompt": "Why did St Gregory the Theologian reject Origen’s ransom-to-the-devil?",
+          "choices": [
+            "Because the devil would then receive God Himself as the price",
+            "Because Christ never died",
+            "Because sin is not slavery"
+          ],
+          "correct": 0,
+          "explanation": "Gregory’s protest: if the glorious blood is paid to the evil one, the brigand receives God Himself."
+        },
+        {
+          "prompt": "To whom did the Council of Constantinople in 1157 say Christ offered His sacrifice?",
+          "choices": [
+            "To the devil, as a debt",
+            "To the Trinity: the Father, Himself as God, and the Spirit",
+            "To no one, because the Cross was only an example"
+          ],
+          "correct": 1,
+          "explanation": "Christ offered Himself to the Father, to Himself as God, and to the Spirit — the Trinity, not the Father alone as an offended creditor."
         }
       ],
       "words": [
@@ -3216,7 +3766,8 @@
             "category": "reconciled-healed"
           }
         ]
-      }
+      },
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
       "id": "ladder-1-union",
@@ -4391,6 +4942,2310 @@
           "say": "proh soh pon"
         }
       ]
+    },
+    {
+      "id": "explain-dogma-and-life",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Dogma and spirituality",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "Dogma is not an optional preface to Christian life. Faith and a moral life belong together, and so do doctrine and prayer.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Dogma and spirituality",
+          "body": "A common modern habit treats dogma as optional history and keeps morality or social programs as the real Christian work. That split contradicts the faith itself. James says faith without works is dead. Paul says a person is justified by faith apart from works of the law — meaning the old rites and sacrifices, not mercy and obedience. Good deeds do not purchase salvation, and faith does not float free of a moral life. The same is true of doctrine and prayer. Dogma and mysticism lead to the one Truth, who is Christ. Orthodox theology, from Paul and Ignatius to Theophan and Silouan, starts in spiritual experience rather than in a system that never prays. Christianity does not answer every curiosity. It opens a reality before which the soul grows quiet."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What does this reading refuse to separate?",
+          "choices": [
+            "Dogma from moral life, and doctrine from prayer",
+            "Christ from the Gospels",
+            "The Father from any mention of love"
+          ],
+          "correct": 0,
+          "explanation": "Dogma and life belong together. Faith without works is dead, and works without faith do not save. Doctrine and spirituality are the same life."
+        },
+        {
+          "prompt": "What did Paul mean by “works of the law” in this reading?",
+          "choices": [
+            "The Old Testament rites and sacrifices, which Christ’s offering fulfills",
+            "Every good deed, which Paul forbids",
+            "Prayer, which he treats as optional"
+          ],
+          "correct": 0,
+          "explanation": "“Works of the law” names the rites that followed the old covenant, not mercy. Justification by faith still walks with a moral life."
+        },
+        {
+          "prompt": "Where does Orthodox theology start, in this reading?",
+          "choices": [
+            "In spiritual experience, from the apostles to the recent saints",
+            "In a system that never needs to pray",
+            "In answering every question the mind can invent"
+          ],
+          "correct": 0,
+          "explanation": "The Fathers’ theology proceeds from life with God. Christianity opens a mystery; it does not close every curiosity."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: dogma and life",
+        "intro": "Sort each line by what it guards.",
+        "categories": [
+          {
+            "id": "together",
+            "label": "Faith and life belong together"
+          },
+          {
+            "id": "experience",
+            "label": "Theology from experience"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "James 2:26",
+            "text": "faith without works is dead",
+            "category": "together"
+          },
+          {
+            "ref": "Romans 3:28",
+            "text": "justified by faith apart from works of the law",
+            "category": "together"
+          },
+          {
+            "ref": "John 8:32",
+            "text": "the truth will make you free",
+            "category": "experience"
+          },
+          {
+            "ref": "John 14:6",
+            "text": "the way, the truth, and the life",
+            "category": "experience"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-coming-to-faith",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Faith, the call, and conversion",
+      "category": "Apologetics lesson",
+      "level": "3 teaching cards · 3 questions · Match the Word",
+      "summary": "Faith is an encounter God begins. The call can be heard in a noisy life, and conversion has as many paths as there are persons.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "What is faith?",
+          "body": "Faith is the path on which we meet God, and God takes the first step. He believes in us before we believe in Him, and gives some sign of His presence. Our first move is an answer. The Galilean fishermen drop their nets at “Follow me.” The rich young man hears the same call and goes away sad, because he has treasure on earth. Poverty of spirit is the blessing: to know that nothing you own can stand in for God, and to hunger for Him with soul, mind, and will."
+        },
+        {
+          "heading": "The call",
+          "body": "The call is easy to miss. A life filled with work can leave no silence in which God is heard, and religion can shrink to a holiday kept for the sake of roots. Even so, the call still comes — sometimes only as restlessness. Augustine’s line belongs here: we were made for God, and our hearts are restless until they rest in Him. The costly mistake is to recognize the voice years after it spoke. Answer when He speaks. That answer can transfigure a whole life."
+        },
+        {
+          "heading": "Conversion to God",
+          "body": "No two people come to God by the same road. The meeting may be sudden or slow, in childhood or in old age. Often the seeker thinks he has found God, and later sees that God found him. Augustine’s long reading, a collapse of health or hope, the face of a believer, or a religious family — all of these are real paths, and none of them is automatic. Faith received from one’s parents still has to become one’s own. Faith is a gift. It is often given through the effort of the person who asked for it."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Who takes the first step in faith?",
+          "choices": [
+            "God, who gives a sign of His presence",
+            "The believer, who must become worthy first",
+            "No one; faith is a guess"
+          ],
+          "correct": 0,
+          "explanation": "Faith is an encounter God opens. Our first step is a response."
+        },
+        {
+          "prompt": "How may God’s call arrive in a noisy life?",
+          "choices": [
+            "As restlessness or inner unease, not only as a voice we already understand",
+            "Only through a holiday custom",
+            "It cannot be heard at all in the modern world"
+          ],
+          "correct": 0,
+          "explanation": "The call can feel like dissatisfaction or a search, and only later be recognized as God. Augustine: the heart is restless until it rests in Him."
+        },
+        {
+          "prompt": "What is true of conversion?",
+          "choices": [
+            "There is one approved path, and every believer must copy it",
+            "Every path is personal, and even a family faith must become one’s own",
+            "God never seeks; only the energetic find Him"
+          ],
+          "correct": 1,
+          "explanation": "No two roads are the same. Faith is a gift, often given through the seeker’s own effort, and inherited faith still has to be personally lived."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: coming to faith",
+        "intro": "Place each line with the moment it names.",
+        "categories": [
+          {
+            "id": "encounter",
+            "label": "God begins the meeting"
+          },
+          {
+            "id": "answer",
+            "label": "A person answers"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Matthew 4:19",
+            "text": "Follow me, and they left their nets",
+            "category": "answer"
+          },
+          {
+            "ref": "Matthew 19:22",
+            "text": "he went away sorrowful",
+            "category": "answer"
+          },
+          {
+            "ref": "Psalm 63:1",
+            "text": "O God, thou art my God",
+            "category": "encounter"
+          },
+          {
+            "ref": "Augustine",
+            "text": "our hearts are restless until they rest in Thee",
+            "category": "encounter"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-seeking-god",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "From philosophy to revelation",
+      "category": "Apologetics lesson",
+      "level": "2 teaching cards · 3 questions · Match the Word",
+      "summary": "Greek thought came near the truth and then stopped. Israel knew God because God spoke and walked with a people.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Philosophy in search of a supreme Good",
+          "body": "From the beginning, people have hunted for the meaning of being. Greek philosophy studied the world, the mind, and the first causes, and often joined that study to ascetic discipline, a purification of mind and body. The order of things — the cosmos, as against chaos — suggested a Maker. Plato could speak of Creator, Father, and Craftsman, and of the Logos. Plotinus pressed further: the One beyond every definition, then Intelligence and Soul, a triad, with the world as a reflection of the divine. Early Christian writers could call such philosophers Christians before Christ. Near is not the same as arrival. Philosophy can see the foothills. It cannot climb the mountain by itself."
+        },
+        {
+          "heading": "The Old Testament: divine revelation",
+          "body": "Most of the ancient world worshipped many gods. Israel was entrusted with something else: knowledge of God, of creation, and of why we exist, learned not only from books but from a long experience. Noah, Abraham, Moses, Elijah, and the righteous of Israel spoke with God and walked before Him. This God is not an abstract force. He speaks, hears, and acts. He goes before the people as fire, and He consents to dwell in the house they build, though heaven and earth cannot contain Him. The God of the philosophers stays distant and lifeless by comparison. Both paths confess that God is a mystery. Philosophy stops at the foothills. Revelation takes people up the mountain."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Why did some early Christians call Greek philosophers “Christians before Christ”?",
+          "choices": [
+            "Because Plato and Plotinus had already come near the one God, the Logos, and a divine triad",
+            "Because Greek religion was already the Church",
+            "Because philosophy replaces the Bible"
+          ],
+          "correct": 0,
+          "explanation": "They came near: one Maker, the Logos, a triad, the vision of God. Near is not yet revelation."
+        },
+        {
+          "prompt": "How did Israel know God, in this reading?",
+          "choices": [
+            "By age-long encounter: God spoke, led, and dwelt among them",
+            "Only by copying Greek metaphysics",
+            "By concluding that God is an impersonal law"
+          ],
+          "correct": 0,
+          "explanation": "Revelation is personal. The God of Israel is living and near, and still mysterious."
+        },
+        {
+          "prompt": "Where does philosophy stop, and revelation go on?",
+          "choices": [
+            "Philosophy remains at the foothills; revelation leads up the mountain",
+            "They teach exactly the same thing",
+            "Revelation forbids anyone to think"
+          ],
+          "correct": 0,
+          "explanation": "Both confess the mystery. Only revelation brings a person into the presence of the living God."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: two ways toward God",
+        "intro": "Sort each line by the path it belongs to.",
+        "categories": [
+          {
+            "id": "philosophy",
+            "label": "Philosophy comes near"
+          },
+          {
+            "id": "revelation",
+            "label": "Revelation brings a person in"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Plato",
+            "text": "Creator, Father, and Craftsman",
+            "category": "philosophy"
+          },
+          {
+            "ref": "Plotinus",
+            "text": "the One beyond every definition",
+            "category": "philosophy"
+          },
+          {
+            "ref": "Exodus 13",
+            "text": "God goes before the people",
+            "category": "revelation"
+          },
+          {
+            "ref": "Isaiah 6",
+            "text": "heaven and earth cannot contain Him, yet He draws near",
+            "category": "revelation"
+          }
+        ]
+      },
+      "words": [
+        {
+          "term": "Logos",
+          "say": "LOH-gohs"
+        },
+        {
+          "term": "cosmos",
+          "say": "KOZ-moss"
+        }
+      ]
+    },
+    {
+      "id": "track-angels",
+      "track": "Scripture",
+      "micro": true,
+      "title": "The angels",
+      "category": "Scripture lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "“Heavens and earth” names two creations: the invisible spiritual world and the visible world. The angels worship, serve, and remain distinct from humanity.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "The angels",
+          "body": "“In the beginning God created the heavens and the earth” has long been heard as two worlds: one invisible, spiritual, and intelligible, and one visible and material. The angels belong to the first. Isaiah sees seraphim around the Lord crying “Holy, holy, holy.” They are not a decoration of the vision. They are creatures who worship. Gregory of Nyssa reads the parable of the lost sheep with the same map: the ninety-nine who never left the hills are the angels, and the one sheep the shepherd seeks is the human race. Human beings are not angels, and angels are not a substitute for the Incarnation. God assumed human nature, not an angelic one. Honor the angels as fellow servants who praise God and care for the race He came to save."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What do “the heavens and the earth” name in this reading?",
+          "choices": [
+            "The invisible spiritual creation and the visible material creation",
+            "Two equal gods",
+            "Only the sky and the soil, with no spiritual world"
+          ],
+          "correct": 0,
+          "explanation": "The traditional reading hears two worlds in Genesis 1:1. The angels belong to the invisible one."
+        },
+        {
+          "prompt": "How does Gregory of Nyssa read the ninety-nine sheep?",
+          "choices": [
+            "As the angels",
+            "As the lost human race",
+            "As the demons"
+          ],
+          "correct": 0,
+          "explanation": "The ninety-nine who stayed in the hills are the angels. The lost sheep is humanity."
+        },
+        {
+          "prompt": "Which nature did God assume in the Incarnation?",
+          "choices": [
+            "Human nature, not angelic nature",
+            "Angelic nature, instead of ours",
+            "Neither; God only appeared"
+          ],
+          "correct": 0,
+          "explanation": "The angels remain creatures who worship and serve. The Son took our nature, not theirs."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: angels",
+        "intro": "Place each line with what it shows.",
+        "categories": [
+          {
+            "id": "worship",
+            "label": "They worship before God"
+          },
+          {
+            "id": "care",
+            "label": "They are distinct from the human race"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Isaiah 6:3",
+            "text": "Holy, holy, holy is the Lord of hosts",
+            "category": "worship"
+          },
+          {
+            "ref": "Genesis 1:1",
+            "text": "the heavens and the earth",
+            "category": "care"
+          },
+          {
+            "ref": "Luke 15:4",
+            "text": "ninety-nine sheep and one lost",
+            "category": "care"
+          },
+          {
+            "ref": "Hebrews 1:14",
+            "text": "ministering spirits",
+            "category": "worship"
+          }
+        ]
+      }
+    },
+    {
+      "id": "track-origin-of-evil",
+      "track": "Scripture",
+      "micro": true,
+      "title": "The origin of evil",
+      "category": "Scripture lesson",
+      "level": "2 teaching cards · 3 questions · Match the Word",
+      "summary": "Evil is not a second god and not a substance. It begins in a created will that turns away, and it becomes active in the devil and the demons.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "The origin of evil",
+          "body": "Before the visible world, and after the angels were made, a catastrophe struck, known now by its wreckage. Angels were meant to grow in virtue until they were as like God as a creature can be. Some refused. From then on the world is a field of two unequal powers: God, and the devil who is not His rival equal. Dualism is the mistake to refuse — the idea that light and darkness, spirit and matter, are two eternal kingdoms. Matter is not evil. Evil is not a substance that has always existed. Basil says it plainly: evil is not a living substance but a condition of the soul, as shadow is the absence of light. Lucifer was created good. He ruined his own goodness by the freedom he was given, and fell from the Source of good."
+        },
+        {
+          "heading": "The evil-doer",
+          "body": "Evil has no being of its own. It becomes an agent of ruin when it is taken up into a person: the devil and the demons. That is what it means to say evil was “hypostasized.” It is still a parasite on good. Scripture can speak of God “creating evil” or sending a lying spirit, and those lines have to be read without making God the author of wickedness. He remains Lord over good and evil in the sense that He can allow an evil will and bend its consequences toward good. His thoughts are not our thoughts. The devil is real, defeated in advance, and not a second creator."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What is evil, according to St Basil in this reading?",
+          "choices": [
+            "Not a living substance, but a condition of the soul — the absence of good",
+            "A god equal to the God of light, ruling matter forever",
+            "The material world itself"
+          ],
+          "correct": 0,
+          "explanation": "Evil is a falling away from good, not a coeternal substance. Matter is not the evil kingdom."
+        },
+        {
+          "prompt": "How did the devil become the devil?",
+          "choices": [
+            "A good angel abused his freedom and fell from the Source of goodness",
+            "God created him evil from the start",
+            "Human beings invented him as a symbol"
+          ],
+          "correct": 0,
+          "explanation": "Lucifer was created good. The fall of the angels is a misuse of freedom, not God’s design."
+        },
+        {
+          "prompt": "What does it mean that evil was “hypostasized”?",
+          "choices": [
+            "It became active in persons — the devil and the demons — without ever becoming a real substance of its own",
+            "It became a second god",
+            "It ceased to exist"
+          ],
+          "correct": 0,
+          "explanation": "Evil has no independent being. It becomes an agent only in a created will that has turned."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: evil",
+        "intro": "Sort each line by the claim it guards.",
+        "categories": [
+          {
+            "id": "not-substance",
+            "label": "Evil is not a substance"
+          },
+          {
+            "id": "a-will",
+            "label": "Evil is a will turned away"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Basil",
+            "text": "evil is not a living substance",
+            "category": "not-substance"
+          },
+          {
+            "ref": "Genesis 1",
+            "text": "matter is created good",
+            "category": "not-substance"
+          },
+          {
+            "ref": "Isaiah 14",
+            "text": "the morning star fallen",
+            "category": "a-will"
+          },
+          {
+            "ref": "Isaiah 55:8",
+            "text": "My thoughts are not your thoughts",
+            "category": "a-will"
+          }
+        ]
+      }
+    },
+    {
+      "id": "track-human-person",
+      "track": "Scripture",
+      "micro": true,
+      "title": "The human person",
+      "category": "Scripture lesson",
+      "level": "3 teaching cards · 3 questions · Match the Word",
+      "summary": "Humanity is the crown of creation: one nature of soul and body, free, made in the image of God, and called onward to likeness.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "The human person",
+          "body": "Human beings are the crown of the making of the world. Before Adam, the Persons take counsel: “Let us make man in our image, after our likeness.” The body is formed from the ground, and then God breathes the breath of life. We are not angels housed in a costume, and we are not animals with no spirit. The honor is shown by what the Son later assumed: not an angelic nature, but ours. Every human person stands at the center of the creation God loves."
+        },
+        {
+          "heading": "Image and likeness",
+          "body": "God did not make a solitary self. He made male and female, because a closed monad cannot love, and love is what the image is for. The image includes freedom. God will not force a person into good or into evil; that force would cancel the image. Likeness is the calling still ahead: Gregory of Nyssa says the limit of a life of virtue is becoming like God. You are already the image. You are not yet finished. The Christian life is the road from image to likeness, and it is walked in freedom."
+        },
+        {
+          "heading": "Soul and body",
+          "body": "Christian faith agrees that the person is soul and body, and refuses the dualist conclusion that matter is evil and the body a prison. When Paul speaks of flesh warring against spirit, he is naming disordered desire, not condemning the body God made and will raise. Asceticism trains the body; it does not hate it. The end is higher than escape. The human person is called to become god by grace — not by nature, and not by leaving the body behind, but by union with God in the whole person He created."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What does “Let us make” reveal about the human person?",
+          "choices": [
+            "The Trinity’s counsel, and a creature made in God’s image",
+            "A bargain among the angels",
+            "That humanity is an accident of matter"
+          ],
+          "correct": 0,
+          "explanation": "The Persons take counsel together. Humanity is the crown of creation, breathed into life by God."
+        },
+        {
+          "prompt": "How do image and likeness differ here?",
+          "choices": [
+            "The image is given, including freedom; likeness is the virtue we are called to grow into",
+            "They are opposites, and the image is lost forever",
+            "Likeness means God forces the will"
+          ],
+          "correct": 0,
+          "explanation": "Freedom belongs to the image. Gregory of Nyssa: the limit of virtue is assimilation to God. God does not force the choice."
+        },
+        {
+          "prompt": "What does this reading refuse about the body?",
+          "choices": [
+            "That matter is originally evil and the body a prison",
+            "That soul and body are both real",
+            "That desire can be disordered"
+          ],
+          "correct": 0,
+          "explanation": "Christianity rejects the dualist hatred of matter. The body is for salvation. Flesh against spirit names disordered desire, not a cursed creation."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: the person",
+        "intro": "Sort each line by the truth it carries.",
+        "categories": [
+          {
+            "id": "image",
+            "label": "Made in the image"
+          },
+          {
+            "id": "whole",
+            "label": "Soul and body together"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Genesis 1:26",
+            "text": "let us make man in our image",
+            "category": "image"
+          },
+          {
+            "ref": "Genesis 1:27",
+            "text": "male and female",
+            "category": "image"
+          },
+          {
+            "ref": "Genesis 2:7",
+            "text": "the breath of life",
+            "category": "whole"
+          },
+          {
+            "ref": "Galatians 5:17",
+            "text": "flesh and spirit in conflict",
+            "category": "whole"
+          }
+        ]
+      },
+      "words": [
+        {
+          "term": "theosis",
+          "say": "theh-OH-sis"
+        }
+      ]
+    },
+    {
+      "id": "track-the-fall",
+      "track": "Scripture",
+      "micro": true,
+      "title": "Before the Fall, and the Fall",
+      "category": "Scripture lesson",
+      "level": "2 teaching cards · 3 questions · Match the Word",
+      "summary": "The first humans were blessed and able to praise God. The Fall is their misuse of freedom, by pride, not a defect God built into them.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Primordial humanity before the Fall",
+          "body": "A materialist picture says the first humans were simply clever animals, without God and without morality. The Church confesses the opposite: a first blessedness, a life with God in Paradise, a nature able to praise Him in words — something no other creature does. That original integrity is not a fairy tale tacked onto history. It is the memory of what we were made to be. Evil was not woven into the design. The possibility of turning away was the shadow side of a real freedom."
+        },
+        {
+          "heading": "The Fall",
+          "body": "The story of the Fall is the pattern of our whole history: who we were, and what we became. Evil entered the world not because God willed it but because human beings preferred the devil’s lie to God’s command. Freedom made them the image of the Maker, and freedom held the possibility of falling. God would not override that freedom, and the devil could not force the sin. The fault is ours. Augustine names the sin as disobedience. Most of the early Fathers name it as pride: the self turning in on itself. The tree is suddenly “good for food” and “a delight to the eyes,” and God is pushed out of the center. Every generation repeats the swap — my desire first, God forgotten."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What does the Church confess about the first humans?",
+          "choices": [
+            "A blessed life with God, able to praise Him, not a merely bestial beginning",
+            "That God created them already fallen",
+            "That they were angels who later became animals"
+          ],
+          "correct": 0,
+          "explanation": "Against the materialist picture, the faith confesses original blessedness and a real capacity to praise God."
+        },
+        {
+          "prompt": "Who bears responsibility for the Fall?",
+          "choices": [
+            "Human beings, who misused a freedom God would not override",
+            "God, who willed the evil",
+            "The devil, who forced them"
+          ],
+          "correct": 0,
+          "explanation": "God did not will the evil and would not cancel freedom. The devil could not compel it. The misuse is human."
+        },
+        {
+          "prompt": "What do most early Fathers name as Adam’s sin?",
+          "choices": [
+            "Pride, the self turned inward",
+            "A lack of intelligence",
+            "The creation of the body"
+          ],
+          "correct": 0,
+          "explanation": "Augustine stresses disobedience. The wider early tradition stresses pride: God is no longer the center; one’s own desire is."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: the Fall",
+        "intro": "Sort each line by what it shows.",
+        "categories": [
+          {
+            "id": "made-good",
+            "label": "Made able to praise"
+          },
+          {
+            "id": "turned",
+            "label": "A will that turned"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Genesis 2",
+            "text": "the breath of life in the garden",
+            "category": "made-good"
+          },
+          {
+            "ref": "Genesis 1:31",
+            "text": "God saw that it was very good",
+            "category": "made-good"
+          },
+          {
+            "ref": "Genesis 3:6",
+            "text": "good for food, a delight to the eyes",
+            "category": "turned"
+          },
+          {
+            "ref": "Romans 5:12",
+            "text": "by one man sin entered",
+            "category": "turned"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-church-kingdom",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "The Church as the Kingdom of Christ",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "There is no Christianity without the Church. She is the Kingdom Christ bought, and believers are living stones in one house.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Church as the Kingdom of Christ",
+          "body": "A martyred Russian bishop wrote, at the start of the last century, that there can be no Christianity without the Church. The Church is Christ’s Kingdom, purchased by His blood. He leads into it those He has chosen, who have also chosen Him. Belonging is not a club membership beside a private faith. The person united to Christ is united to the others who are in Christ, and the house is built of those stones. Leave the Church out, and what remains is not the faith the apostles handed on."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What is the Church in this reading?",
+          "choices": [
+            "Christ’s Kingdom, bought by His blood",
+            "A later invention with no tie to Christ",
+            "Only a building"
+          ],
+          "correct": 0,
+          "explanation": "The Church is the Kingdom Christ purchased. There is no Christianity that leaves her out."
+        },
+        {
+          "prompt": "How is the house of the Church formed?",
+          "choices": [
+            "From persons united to Christ and therefore to one another, like stones in one house",
+            "From a private faith that needs no one else",
+            "From the state"
+          ],
+          "correct": 0,
+          "explanation": "Union with Christ joins a person to the others who are His. The Church is that house."
+        },
+        {
+          "prompt": "Which sentence matches the reading?",
+          "choices": [
+            "There can be no Christianity without the Church",
+            "The Church is optional for anyone who likes Jesus",
+            "Christ purchased a kingdom and then left it empty"
+          ],
+          "correct": 0,
+          "explanation": "The claim is stark on purpose: the faith and the Church are not two projects."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: the Church",
+        "intro": "Sort each line by the claim it makes.",
+        "categories": [
+          {
+            "id": "kingdom",
+            "label": "Christ’s Kingdom"
+          },
+          {
+            "id": "house",
+            "label": "One house of living people"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Acts 20:28",
+            "text": "the church of God, which he hath purchased",
+            "category": "kingdom"
+          },
+          {
+            "ref": "1 Peter 1:19",
+            "text": "the precious blood of Christ",
+            "category": "kingdom"
+          },
+          {
+            "ref": "1 Peter 2:5",
+            "text": "lively stones",
+            "category": "house"
+          },
+          {
+            "ref": "Ephesians 2:21",
+            "text": "the building fitly framed together",
+            "category": "house"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-church-attributes",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "One, holy, catholic, and apostolic",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "The Creed’s four words name the Church as a divine-human organism: one as the Trinity is one, holy, catholic, and sent.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "The attributes of the Church",
+          "body": "“I believe in one, holy, catholic, and apostolic Church” is not a slogan. It names a divine-human organism. She is one because she is built in the image of the Trinity: unity of essence, and real persons who are not dissolved. She is holy because the Holy One dwells in her, even while her members are still being healed. She is catholic because she holds the whole faith for the whole world, not because she is merely large. She is apostolic because she continues the apostles’ teaching and mission. Christians are in patria and in via at once — already home, and still on the way. Lands that were once Christian can become mission fields again. The four marks are a confession, not a boast that the members have finished becoming holy."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Why is the Church called one?",
+          "choices": [
+            "She is constituted in the image of the Trinity: unity without dissolving persons",
+            "Because only one congregation exists on earth",
+            "Because disagreement is impossible"
+          ],
+          "correct": 0,
+          "explanation": "Oneness images the Trinity. It is unity of life, not the claim that every member already agrees about everything."
+        },
+        {
+          "prompt": "What does in patria et in via mean here?",
+          "choices": [
+            "Already in the Church, and still on the way toward her fullness",
+            "Either saved or lost, with no journey",
+            "At home in the world and finished with heaven"
+          ],
+          "correct": 0,
+          "explanation": "Christians are in the homeland and on the way at the same time. Holiness is given and still being lived into."
+        },
+        {
+          "prompt": "What can happen to a land that was once Christian?",
+          "choices": [
+            "It can need the Gospel preached again",
+            "It can never fall away",
+            "It replaces the Creed"
+          ],
+          "correct": 0,
+          "explanation": "Apostolic mission is not finished. Countries can return to unbelief and need new apostles."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: the four marks",
+        "intro": "Place each mark with what it guards.",
+        "categories": [
+          {
+            "id": "one-holy",
+            "label": "One and holy"
+          },
+          {
+            "id": "catholic-apostolic",
+            "label": "Catholic and apostolic"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Creed",
+            "text": "one Church",
+            "category": "one-holy"
+          },
+          {
+            "ref": "Ephesians 5:27",
+            "text": "a glorious church, holy",
+            "category": "one-holy"
+          },
+          {
+            "ref": "Matthew 28:19",
+            "text": "teach all nations",
+            "category": "catholic-apostolic"
+          },
+          {
+            "ref": "Acts 2:42",
+            "text": "the apostles’ doctrine",
+            "category": "catholic-apostolic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-church-hierarchy",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "The church hierarchy",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "From the apostles the Church has had a hierarchical priesthood: deacons, presbyters, and bishops, ordered to the Eucharist and the care of the people.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "The church hierarchy",
+          "body": "From the beginning, some were set apart to celebrate the Eucharist and to lead. Acts 6 tells of seven deacons chosen and ordained. The threefold order — deacon, presbyter, bishop — is how the Church has received that apostolic charge. The faithful are told to honor it: deacons as servants of Christ’s commandments, bishops as those who stand in the Church in a way that Ignatius can even say “as Jesus Christ” in the sense of representing His authority, not of replacing Him. Honor is not a free pass. Paul tells Timothy, newly ordained, to be an example in speech, conduct, love, faith, and purity. The hierarchy exists for the altar and the flock. A leader who will not serve has forgotten the order he was given."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Why were people set apart in the apostolic Church?",
+          "choices": [
+            "To celebrate the Eucharist and to lead the people",
+            "To replace Christ",
+            "To end the need for baptism"
+          ],
+          "correct": 0,
+          "explanation": "Hierarchical priesthood exists for the Eucharist and the care of the people, from the apostles onward."
+        },
+        {
+          "prompt": "What does Paul require of the newly ordained Timothy?",
+          "choices": [
+            "To be an example in speech, conduct, love, faith, and purity",
+            "To avoid the people",
+            "To treat ordination as a private honor with no duties"
+          ],
+          "correct": 0,
+          "explanation": "The office is to be honored, and the person who holds it is commanded to be an example."
+        },
+        {
+          "prompt": "Where does Acts show the choosing of deacons?",
+          "choices": [
+            "Acts 6",
+            "Acts 1 only, with no service",
+            "Nowhere; deacons are medieval"
+          ],
+          "correct": 0,
+          "explanation": "Acts 6: the seven are chosen and set apart. The diaconate is apostolic."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: holy orders",
+        "intro": "Sort each line by the order it touches.",
+        "categories": [
+          {
+            "id": "serve",
+            "label": "Service at the altar"
+          },
+          {
+            "id": "example",
+            "label": "A life that matches the office"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Acts 6:6",
+            "text": "they laid their hands on the deacons",
+            "category": "serve"
+          },
+          {
+            "ref": "1 Timothy 4:14",
+            "text": "the laying on of the hands of the presbytery",
+            "category": "serve"
+          },
+          {
+            "ref": "1 Timothy 4:12",
+            "text": "be thou an example",
+            "category": "example"
+          },
+          {
+            "ref": "1 Peter 5:2",
+            "text": "feed the flock of God",
+            "category": "example"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-women-in-the-church",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Women in the Church",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "The catechism teaches why the priesthood is reserved to men, and insists that women already carry ministries the Church cannot do without.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Women in the Church",
+          "body": "The catechism states a fact of the Church’s whole history: only men have been ordained priests and bishops. It denies that this is merely a leftover of ancient inequality. Priesthood is received as a service of spiritual fatherhood, following Christ, who chose the apostles as He did, and following the way Scripture speaks of husband and wife in Ephesians 5 — love that gives itself, and a respect that is not contempt. That is not a doctrine of women’s uselessness. Women bake the Eucharistic bread, read, sing, and carry works as necessary as those of the early deaconesses. The Mother of God is the Church’s measure of how highly a woman is honored. The argument is about the shape of the priestly office, not about the worth of women."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What does this catechism claim about ordination to the priesthood and episcopate?",
+          "choices": [
+            "Only men have been ordained, and this is not dismissed as a mere relic of ancient inequality",
+            "The apostles ordained women as bishops",
+            "Women may not sing, read, or bake the bread"
+          ],
+          "correct": 0,
+          "explanation": "The restriction is presented as the Church’s consistent practice and as a theological shape of priesthood, not as a claim that women have no ministry."
+        },
+        {
+          "prompt": "Which ministries does the reading say women carry?",
+          "choices": [
+            "Baking the Eucharistic bread, reading, singing, and service like that of the early deaconesses",
+            "None; women are absent from church life",
+            "Replacing the Eucharist with private prayer only"
+          ],
+          "correct": 0,
+          "explanation": "The catechism names concrete, irreplaceable work. Honor of women is also measured by the Church’s honor of the Mother of God."
+        },
+        {
+          "prompt": "What is the reading not saying?",
+          "choices": [
+            "That women are of lesser worth as persons",
+            "That priesthood has a received shape",
+            "That Ephesians 5 speaks about marriage"
+          ],
+          "correct": 0,
+          "explanation": "The argument is about the priestly office. It is not a denial of women’s dignity or of their necessary service."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: ministry",
+        "intro": "Sort each line by what it describes.",
+        "categories": [
+          {
+            "id": "office",
+            "label": "The received priestly office"
+          },
+          {
+            "id": "service",
+            "label": "Ministries women carry"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Ephesians 5:25",
+            "text": "husbands, love your wives",
+            "category": "office"
+          },
+          {
+            "ref": "Luke 6:13",
+            "text": "he chose twelve",
+            "category": "office"
+          },
+          {
+            "ref": "Romans 16:1",
+            "text": "Phoebe, a servant of the church",
+            "category": "service"
+          },
+          {
+            "ref": "Luke 1:46",
+            "text": "my soul doth magnify the Lord",
+            "category": "service"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-church-time",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Church time",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "The Church lives in time and breathes eternity. The calendar makes Christ’s life the personal experience of the people who keep it.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Church time",
+          "body": "The Church is on earth and turned toward heaven; she lives in time and breathes eternity. That double life is why there is a calendar. The year, the week, and the day are not empty schedules. They are how communion with eternity is practiced. In the feasts, the events of Christ’s life become the experience of the person who is praying, not only a memory of someone else’s past. As an icon carries the presence of the one depicted, church time carries the presence of Christ, His Mother, the angels, and the saints whose memory is kept. Skip the calendar and you do not become more spiritual. You become deaf to the way the Church has learned to stand in both time and eternity."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What is church time for?",
+          "choices": [
+            "Communion with eternity, so that Christ’s life becomes our own experience",
+            "A way to avoid prayer",
+            "Only a record of ancient events with no presence in them"
+          ],
+          "correct": 0,
+          "explanation": "The calendar is how a Church that lives in time breathes eternity. The feasts are participatory."
+        },
+        {
+          "prompt": "What comparison does this reading use for feast days?",
+          "choices": [
+            "Like an icon, they carry the presence of the one who is commemorated",
+            "Like a lock that keeps heaven out",
+            "Like a myth no one is meant to enter"
+          ],
+          "correct": 0,
+          "explanation": "Church time is full of the presence of Christ, His Mother, the angels, and the saints, as an icon carries presence."
+        },
+        {
+          "prompt": "Which pair names the Church’s life?",
+          "choices": [
+            "On earth and turned toward heaven; in time and breathing eternity",
+            "Only in heaven, with no life on earth",
+            "Only in the past, with no feast still kept"
+          ],
+          "correct": 0,
+          "explanation": "The Church does not choose between time and eternity. She lives in one and breathes the other."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: church time",
+        "intro": "Sort each line by the life it belongs to.",
+        "categories": [
+          {
+            "id": "time",
+            "label": "Lived in time"
+          },
+          {
+            "id": "presence",
+            "label": "Open to eternity"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Luke 2:41",
+            "text": "the feast of the passover",
+            "category": "time"
+          },
+          {
+            "ref": "Acts 20:7",
+            "text": "the first day of the week",
+            "category": "time"
+          },
+          {
+            "ref": "Matthew 18:20",
+            "text": "there am I in the midst",
+            "category": "presence"
+          },
+          {
+            "ref": "Hebrews 12:1",
+            "text": "a cloud of witnesses",
+            "category": "presence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-one-church",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "The Church and the churches",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "The Creed confesses one Church. Christian divisions are real. So is the warning not to draw God’s boundaries for Him.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Divisions and reconciliation",
+          "body": "The Creed says one Church. The world is full of communities that use the name and often refuse one another Communion. The early Church was severe with heresy: no shared Eucharist, no shared prayer, because Arius, Sabellius, and Eutyches denied the foundations — Christ’s divinity, the equality of the Persons, the fullness of the two natures. Most communities Christians meet today are not in that category. They accept the basic dogmas. Philaret of Moscow said that treating Catholicism as if it were Arianism is harsh and useless. Separated communities can be regarded as branches cut from the trunk, and at the same time an Orthodox Christian must not announce that God is forbidden to act outside the Orthodox Church. That would cage the Almighty. Augustine’s caution belongs with Philaret’s: on the day of judgment, some who seemed outside will be found within, and some who seemed within will not. God knows the limits of the Church. We do not get to finish His sentence."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Why were ancient heresies treated so strictly?",
+          "choices": [
+            "They denied foundations: Christ’s divinity, the Trinity, or the fullness of His natures",
+            "They used a different calendar only",
+            "They prayed too often"
+          ],
+          "correct": 0,
+          "explanation": "Arianism, Sabellianism, and Eutychianism struck at the faith itself. That is why the canons were severe."
+        },
+        {
+          "prompt": "What did St Philaret warn against?",
+          "choices": [
+            "Putting Catholicism on the same footing as Arianism",
+            "Ever speaking to a non-Orthodox Christian",
+            "The Nicene Creed"
+          ],
+          "correct": 0,
+          "explanation": "He called that equation rigorous and counterproductive. Non-Orthodoxy is not automatically the old heresies."
+        },
+        {
+          "prompt": "What would it mean to say grace cannot exist outside the Orthodox Church?",
+          "choices": [
+            "To limit God’s freedom to act",
+            "To quote the Creed accurately and stop",
+            "To honor the saints"
+          ],
+          "correct": 0,
+          "explanation": "The Church confesses her own unity and still refuses to imprison God. He knows her limits. We must not pretend we have mapped them."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: one Church",
+        "intro": "Sort each line by the care it teaches.",
+        "categories": [
+          {
+            "id": "foundations",
+            "label": "Guard the foundations"
+          },
+          {
+            "id": "humility",
+            "label": "Do not cage God"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "1 Corinthians 1:13",
+            "text": "is Christ divided?",
+            "category": "foundations"
+          },
+          {
+            "ref": "Galatians 1:8",
+            "text": "another gospel",
+            "category": "foundations"
+          },
+          {
+            "ref": "John 10:16",
+            "text": "other sheep I have",
+            "category": "humility"
+          },
+          {
+            "ref": "Romans 11:33",
+            "text": "how unsearchable are his judgments",
+            "category": "humility"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-sacraments",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "A life in the sacraments",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "A sacrament is an encounter: a visible rite and a material gift, and an invisible rebirth of the whole person, body and soul.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "A life in the sacraments",
+          "body": "The sacraments are sacred actions in which God and a person meet. Grace descends and sanctifies. The Orthodox Church speaks of seven — Baptism, Chrismation, Eucharist, Penance, Anointing, Marriage, and Priesthood — and treats other sacred actions as rites. That numbering was learned from Latin scholasticism. The Fathers of the first millennium did not anxiously count. What they did know is the shape of each mystery: a visible side (words, gestures, and a material — water, bread, wine, oil) and an invisible side, the person’s transfiguration, which is the mystery proper. The body is not left outside. Immersion, anointing, and communion are bodily because the body is meant for salvation and deification. In the age to come the material signs will no longer be needed in the same way. Here, they are how God gives Himself to people who are still body and soul."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What is the invisible side of a sacrament?",
+          "choices": [
+            "The person’s spiritual and bodily transfiguration, beyond what the senses can measure",
+            "Only the words printed in the book",
+            "A feeling the priest must manufacture"
+          ],
+          "correct": 0,
+          "explanation": "The rite and the material are visible. The mystery is the hidden rebirth of the person for whom the rite is done."
+        },
+        {
+          "prompt": "Where did the practice of numbering seven sacraments come from, in this reading?",
+          "choices": [
+            "It was borrowed from Latin scholasticism; the early Fathers did not fix a number",
+            "It is a list written by the apostles as a closed count",
+            "It excludes baptism"
+          ],
+          "correct": 0,
+          "explanation": "Seven is the Church’s received practice now. The catechism is honest that counting them was a later, Western habit. The mysteries themselves are not late."
+        },
+        {
+          "prompt": "Why does the body take part?",
+          "choices": [
+            "Because the body, too, is destined for salvation and deification",
+            "Because the soul is irrelevant",
+            "Because matter is evil and must be displayed"
+          ],
+          "correct": 0,
+          "explanation": "Immersion, anointing, and communion are bodily on purpose. The whole person enters the gift."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: visible and hidden",
+        "intro": "Sort each line by the side of the mystery it names.",
+        "categories": [
+          {
+            "id": "visible",
+            "label": "The visible rite"
+          },
+          {
+            "id": "hidden",
+            "label": "The hidden gift"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Matthew 28:19",
+            "text": "baptizing them",
+            "category": "visible"
+          },
+          {
+            "ref": "Matthew 26:26",
+            "text": "Take, eat; this is my body",
+            "category": "visible"
+          },
+          {
+            "ref": "Titus 3:5",
+            "text": "the washing of regeneration",
+            "category": "hidden"
+          },
+          {
+            "ref": "2 Peter 1:4",
+            "text": "partakers of the divine nature",
+            "category": "hidden"
+          }
+        ]
+      },
+      "words": [
+        {
+          "term": "mysterion",
+          "say": "mee-STEE-ree-on"
+        }
+      ]
+    },
+    {
+      "id": "explain-baptism",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Baptism",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "Baptism is the door into the Church. It is new birth in Christ for the whole of life, from infancy to old age.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Baptism",
+          "body": "Baptism is the door into the Church, the Kingdom of grace, and the frontier between those who are in Christ’s Body and those still outside. Christian life begins here, not after a probation. The person is clothed in Christ. Irenaeus says Christ came to save, through rebirth in God, infants, children, adolescents, and the elderly — the whole age of the race, not a class of adults who have already understood everything. The grace given in the water is a pledge and a seed. It grows where a person struggles toward Christ, lives in the Church, and keeps the commandments. Baptism is not magic that replaces that life, and life does not replace baptism. The door and the road belong together."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What is Baptism in this reading?",
+          "choices": [
+            "The door into the Church and the beginning of Christian life",
+            "A reward for a finished spiritual life",
+            "An optional symbol after someone already belongs"
+          ],
+          "correct": 0,
+          "explanation": "Baptism begins Christian life. It is the frontier of Christ’s Body, not a diploma at the end."
+        },
+        {
+          "prompt": "Whom does Irenaeus say Christ saves through rebirth?",
+          "choices": [
+            "Infants, children, adolescents, and the elderly",
+            "Only adults who can explain the Creed",
+            "Only monks"
+          ],
+          "correct": 0,
+          "explanation": "The whole span of human age is included. Rebirth is not restricted to those who already understand."
+        },
+        {
+          "prompt": "What is the grace of Baptism compared to?",
+          "choices": [
+            "A seed or pledge that grows when the person lives toward Christ in the Church",
+            "A finished castle that needs no obedience",
+            "A feeling that fades and leaves nothing"
+          ],
+          "correct": 0,
+          "explanation": "The gift is real at the font and is meant to grow in a life of faithfulness."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: baptism",
+        "intro": "Sort each line by what it says baptism is.",
+        "categories": [
+          {
+            "id": "door",
+            "label": "The door and the new birth"
+          },
+          {
+            "id": "life",
+            "label": "A life that follows"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "John 3:5",
+            "text": "born of water and of the Spirit",
+            "category": "door"
+          },
+          {
+            "ref": "Galatians 3:27",
+            "text": "put on Christ",
+            "category": "door"
+          },
+          {
+            "ref": "Romans 6:4",
+            "text": "walk in newness of life",
+            "category": "life"
+          },
+          {
+            "ref": "Matthew 28:19",
+            "text": "baptizing them",
+            "category": "life"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-chrismation",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Chrismation",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "Chrismation continues the apostles’ laying on of hands. The gift is the Holy Spirit Himself, and the life that follows has to agree with the gift.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Chrismation",
+          "body": "In the apostles’ days, the newly baptized received the Holy Spirit by the laying on of hands. Acts shows Peter and John doing this for the Samaritans who had been baptized but had not yet received the Spirit in that way. The Church continues that gift by holy chrism, consecrated by the bishop, so that the Spirit’s seal is not limited to the places an apostle can stand. Alexander Schmemann’s distinction is the one to keep: this is not one charism among others. It is the Holy Spirit Himself, given as a gift. The gift can be neglected. Every sacrament saves in the life that agrees with it. Chrismation is Pentecost made personal, not a ceremony with no aftermath."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What apostolic action does Chrismation continue?",
+          "choices": [
+            "The laying on of hands for the gift of the Holy Spirit",
+            "The election of a king",
+            "A replacement for baptism"
+          ],
+          "correct": 0,
+          "explanation": "Acts shows the apostles laying hands on the newly baptized. Chrism continues that gift."
+        },
+        {
+          "prompt": "What is given, in Schmemann’s explanation?",
+          "choices": [
+            "The Holy Spirit Himself, not merely one gift among others",
+            "Only a symbol with no Giver",
+            "A talent for preaching and nothing more"
+          ],
+          "correct": 0,
+          "explanation": "The seal is the Spirit as gift. Particular charisms are a different subject."
+        },
+        {
+          "prompt": "When does the gift do its saving work?",
+          "choices": [
+            "When the Christian’s life agrees with what was received",
+            "Automatically, no matter how one lives",
+            "Only if Chrismation is repeated yearly"
+          ],
+          "correct": 0,
+          "explanation": "The catechism ties every sacrament’s fruit to a life in harmony with the gift."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: the seal",
+        "intro": "Sort each line by the moment it names.",
+        "categories": [
+          {
+            "id": "given",
+            "label": "The Spirit is given"
+          },
+          {
+            "id": "lived",
+            "label": "The gift is lived"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Acts 8:17",
+            "text": "then laid they their hands on them",
+            "category": "given"
+          },
+          {
+            "ref": "2 Corinthians 1:21",
+            "text": "anointed us",
+            "category": "given"
+          },
+          {
+            "ref": "Galatians 5:25",
+            "text": "walk in the Spirit",
+            "category": "lived"
+          },
+          {
+            "ref": "Ephesians 4:30",
+            "text": "sealed unto the day of redemption",
+            "category": "lived"
+          }
+        ]
+      },
+      "words": [
+        {
+          "term": "chrism",
+          "say": "KRIZ-um"
+        }
+      ]
+    },
+    {
+      "id": "explain-penance",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Penance",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "Christianity opens with a call to repentance. In confession the priest is a witness; God is the one who forgives and heals.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Penance",
+          "body": "“Repent, for the kingdom of heaven is at hand.” John the Baptist began there, and so did Jesus. Christianity is a call to metanoia, a change of mind, not a small regret. The obvious question is why tell one’s sins to a priest. The answer in this reading is that the priest is a witness of God’s presence. God Himself acts. The priest does not manufacture forgiveness and does not stand in God’s place as a rival. Confession also heals by light. While a soul stays a dark room, sins remain unrecognized and therefore unhealed. Spoken repentance is how the room is opened. The kingdom’s nearness and the honesty of confession belong to the same invitation."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What does metanoia mean in this reading?",
+          "choices": [
+            "A change of mind, a real conversion",
+            "A fine paid to the church",
+            "A public speech with no repentance"
+          ],
+          "correct": 0,
+          "explanation": "Repentance is a change of mind. It is how the Gospel begins, in both John and Jesus."
+        },
+        {
+          "prompt": "Who acts in the sacrament of Penance?",
+          "choices": [
+            "God; the priest is a witness of His presence",
+            "The priest alone, instead of God",
+            "No one; confession is only a conversation"
+          ],
+          "correct": 0,
+          "explanation": "The priest does not replace God. He witnesses what God does."
+        },
+        {
+          "prompt": "Why do unspoken sins stay unhealed?",
+          "choices": [
+            "While they stay in the dark they stay unrecognized",
+            "Because God cannot hear thoughts",
+            "Because only public punishment heals"
+          ],
+          "correct": 0,
+          "explanation": "The image is a dark room. What is never brought to light is never treated."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: repentance",
+        "intro": "Sort each line by the work it names.",
+        "categories": [
+          {
+            "id": "call",
+            "label": "The call to turn"
+          },
+          {
+            "id": "heal",
+            "label": "Healing in the light"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Matthew 4:17",
+            "text": "repent: for the kingdom of heaven is at hand",
+            "category": "call"
+          },
+          {
+            "ref": "Mark 1:15",
+            "text": "repent ye, and believe",
+            "category": "call"
+          },
+          {
+            "ref": "John 20:23",
+            "text": "whose soever sins ye remit",
+            "category": "heal"
+          },
+          {
+            "ref": "James 5:16",
+            "text": "confess your faults one to another",
+            "category": "heal"
+          }
+        ]
+      },
+      "words": [
+        {
+          "term": "metanoia",
+          "say": "meh-tah-NOY-ah"
+        }
+      ]
+    },
+    {
+      "id": "explain-anointing",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Anointing with oil",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "The body was made incorruptible and became mortal. Anointing is the Church’s prayer for the sick, body and soul together.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Anointing with oil",
+          "body": "The human body was created incorruptible and immortal. After the Fall it became subject to decay and death. Gregory the Theologian can speak of our “coarse flesh” as the garment sin put on us — not because the body is trash, but because mortality is a wound. James gives the Church her answer at the bedside: call the presbyters, let them pray, anoint with oil in the Lord’s name. The prayer of faith will save the sick; the Lord will raise him up; if he has sinned, he will be forgiven. Healing and forgiveness are one visit. Sometimes the illness ends in death anyway, and even then it can turn a life toward repentance. The sacrament does not promise that every sick person will stand up. It promises that the Church will not leave body or soul unprayed."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What happened to the body after the Fall, in this reading?",
+          "choices": [
+            "It lost incorruption and immortality and became subject to death",
+            "It became evil by nature and should be escaped",
+            "It stayed exactly as it was in Paradise"
+          ],
+          "correct": 0,
+          "explanation": "Mortality is a wound of the Fall. The body itself remains God’s creation, meant for healing."
+        },
+        {
+          "prompt": "What does James tell the sick to do?",
+          "choices": [
+            "Call the elders to pray and anoint with oil in the Lord’s name",
+            "Hide the illness from the Church",
+            "Seek forgiveness only, never prayer for the body"
+          ],
+          "correct": 0,
+          "explanation": "James 5 joins prayer, oil, healing, and forgiveness. The presbyters come to the sick."
+        },
+        {
+          "prompt": "What can illness become, even when it leads to death?",
+          "choices": [
+            "A path of repentance toward God",
+            "Proof that God has abandoned the person",
+            "A reason to refuse the sacrament"
+          ],
+          "correct": 0,
+          "explanation": "Not every illness ends in recovery. It can still turn a life around. The Church prays either way."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: the sick",
+        "intro": "Sort each line by the gift it names.",
+        "categories": [
+          {
+            "id": "body",
+            "label": "Prayer for the body"
+          },
+          {
+            "id": "soul",
+            "label": "Forgiveness with the healing"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "James 5:14",
+            "text": "anointing him with oil",
+            "category": "body"
+          },
+          {
+            "ref": "James 5:15",
+            "text": "the prayer of faith shall save the sick",
+            "category": "body"
+          },
+          {
+            "ref": "James 5:15",
+            "text": "if he have committed sins, they shall be forgiven",
+            "category": "soul"
+          },
+          {
+            "ref": "Mark 6:13",
+            "text": "anointed with oil many that were sick",
+            "category": "soul"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-marriage",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Marriage",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "Scripture’s holy couples, and the wedding at Cana, show marriage as a miracle: daily life turned into festival, and a child who is the fruit of love.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Marriage",
+          "body": "Scripture lingers on the love of husband and wife: Abraham and Sarah, Isaac and Rebecca, Jacob and Rachel, and the blessing that rests on those unions. A human being is meant to be the fruit of love, not of use. Christian marriage asks God to crown that love and to make the home a small church. At the wedding the Church reads Cana, where water became wine, because marriage is that kind of miracle: the water of ordinary days turned into the wine of a feast that does not run out. The catechism does not romanticize every feeling. It treats faithful love as a way of salvation, beside the other ways, when two people will walk it to the end."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Why is the wedding at Cana read at a Christian marriage?",
+          "choices": [
+            "Marriage is the miracle of ordinary life turned into festival, as water became wine",
+            "To say Jesus discouraged marriage",
+            "To replace the couple’s vows with a parable about money"
+          ],
+          "correct": 0,
+          "explanation": "Cana is the image: daily water becomes the wine of a feast. Marriage is that transformation under God’s blessing."
+        },
+        {
+          "prompt": "What should a person’s birth be, in this reading?",
+          "choices": [
+            "The fruit of love between the parents",
+            "An accident outside of blessing",
+            "The end of the parents’ salvation"
+          ],
+          "correct": 0,
+          "explanation": "Love is not decoration. A human being is meant to come from love that God blesses."
+        },
+        {
+          "prompt": "Which couples does the reading hold up from Genesis?",
+          "choices": [
+            "Abraham and Sarah, Isaac and Rebecca, Jacob and Rachel",
+            "Adam alone, with no Eve",
+            "Only kings who never married"
+          ],
+          "correct": 0,
+          "explanation": "Genesis’ holy couples are the pattern the Church blesses, not a contrast to Christian marriage."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: marriage",
+        "intro": "Sort each line by the gift it names.",
+        "categories": [
+          {
+            "id": "love",
+            "label": "Faithful love"
+          },
+          {
+            "id": "feast",
+            "label": "Ordinary life made a feast"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Genesis 2:24",
+            "text": "they shall be one flesh",
+            "category": "love"
+          },
+          {
+            "ref": "Ephesians 5:32",
+            "text": "this is a great mystery",
+            "category": "love"
+          },
+          {
+            "ref": "John 2:9",
+            "text": "the water that was made wine",
+            "category": "feast"
+          },
+          {
+            "ref": "John 2:11",
+            "text": "the beginning of miracles",
+            "category": "feast"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-priesthood",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Priesthood",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "Ordination is a sacrament in three degrees: bishop, priest, and deacon. It is God’s act, not a license to give speeches.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Priesthood",
+          "body": "The sacrament of priesthood is conferred in three rites: to the episcopate, to the priesthood, and to the diaconate. In present Orthodox practice bishops are chosen from the monks. The early Church also had married bishops; the later discipline is a received rule of life, not a denial that marriage is holy. At the ordination the Church sings “Lord, have mercy” while the bishop reads the prayers. The point of those prayers is that the gift comes from God. A contrast makes it sharp: in some Protestant settings the only difference between lay and ordained is a license to preach. Orthodox ordination is not that. It sets a man at the altar to offer the Eucharist and to shepherd, by a gift he cannot give himself."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What are the three rites of the sacrament of priesthood?",
+          "choices": [
+            "Ordination to the episcopate, the priesthood, and the diaconate",
+            "Baptism, marriage, and burial",
+            "A license, a contract, and a vote"
+          ],
+          "correct": 0,
+          "explanation": "One sacrament, three degrees. Each is conferred by ordination, not by a preaching permit."
+        },
+        {
+          "prompt": "What does this reading say about married bishops?",
+          "choices": [
+            "The early Church had them; choosing bishops from the monks is a later discipline",
+            "Marriage was always forbidden to every clergyman including deacons",
+            "Bishops were never ordained at all"
+          ],
+          "correct": 0,
+          "explanation": "The catechism distinguishes present monastic practice for bishops from the early Church’s married bishops. Marriage itself is not despised."
+        },
+        {
+          "prompt": "What is ordination not, in the contrast drawn here?",
+          "choices": [
+            "Only a license to preach",
+            "A prayer in which God gives the gift",
+            "A setting apart for the Eucharist"
+          ],
+          "correct": 0,
+          "explanation": "The Orthodox rite asks God for a gift. It is more than permission to speak."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: ordination",
+        "intro": "Sort each line by the degree it touches.",
+        "categories": [
+          {
+            "id": "altar",
+            "label": "Set apart for the altar"
+          },
+          {
+            "id": "gift",
+            "label": "A gift asked of God"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Acts 6:6",
+            "text": "whom they set before the apostles",
+            "category": "altar"
+          },
+          {
+            "ref": "1 Timothy 5:22",
+            "text": "lay hands suddenly on no man",
+            "category": "altar"
+          },
+          {
+            "ref": "2 Timothy 1:6",
+            "text": "the gift of God, which is in thee",
+            "category": "gift"
+          },
+          {
+            "ref": "Hebrews 5:4",
+            "text": "he that is called of God, as was Aaron",
+            "category": "gift"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-monasticism",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Monasticism",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "Tonsure is treated as a mystery: a death like baptism, a return toward Paradise, and one path among others to salvation.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Monasticism",
+          "body": "The Orthodox rite of monastic tonsure has a sacramental character. Dionysius and the rite itself call it a mystery. Like baptism, it is a death to a merely fleshly life and a new beginning. Its aim is the chastity and wholeness Adam and Eve had before the Fall — “a life according to the Gospel,” the Fathers said, and “a true philosophy.” The Lord’s own words are its rule: sell what you have, deny yourself, take up the cross, love Him more than father and mother. A monk is the merchant who sells everything for the one pearl. Monasticism was in the Church early and came to the fore in the fourth century, when martyrdom was no longer the ordinary threat and the empire made peace with the faith. The desert became a way to die to the world without waiting for a persecutor. It is one path, as marriage and priesthood are paths. Walked to the end, it leads to salvation and deification. It is not a higher caste of Christians, and it is not an escape from love."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "How is monastic tonsure described?",
+          "choices": [
+            "As a mystery, a death to fleshly life like baptism",
+            "As a hobby with no rite",
+            "As a denial that marriage can save anyone"
+          ],
+          "correct": 0,
+          "explanation": "The rite and Dionysius call tonsure a sacrament. It is a death and a beginning, akin to baptism."
+        },
+        {
+          "prompt": "What Gospel words carry the philosophy of monasticism?",
+          "choices": [
+            "Sell what you have, deny yourself, take up the cross, and follow",
+            "Build bigger barns",
+            "Avoid the poor"
+          ],
+          "correct": 0,
+          "explanation": "Matthew 19:21, 16:24, and 10:37 are the rule: perfection as following Christ at the cost of everything else."
+        },
+        {
+          "prompt": "What is monasticism among the ways of salvation?",
+          "choices": [
+            "One way, beside marriage and priesthood, if it is walked to the end",
+            "The only way",
+            "A way that cannot lead to deification"
+          ],
+          "correct": 0,
+          "explanation": "It is a path, not the only path. Faithfulness to the end is what makes the path saving."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: the monastic path",
+        "intro": "Sort each line by the call it carries.",
+        "categories": [
+          {
+            "id": "follow",
+            "label": "Follow at a cost"
+          },
+          {
+            "id": "goal",
+            "label": "The goal of the path"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Matthew 19:21",
+            "text": "sell what thou hast, and follow me",
+            "category": "follow"
+          },
+          {
+            "ref": "Matthew 16:24",
+            "text": "take up his cross",
+            "category": "follow"
+          },
+          {
+            "ref": "Matthew 13:46",
+            "text": "one pearl of great price",
+            "category": "goal"
+          },
+          {
+            "ref": "Matthew 5:48",
+            "text": "be ye therefore perfect",
+            "category": "goal"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-second-coming",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "The end of history",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "The Church has always expected Christ’s return. The end is His victory over death, not only a catastrophe to fear.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "The end of history",
+          "body": "From the first days the Church has waited for the Lord to come again, because He promised it. That hope is not a hobby for the anxious. It is how Christians read history: it is going somewhere, and the somewhere is a Person. The end is often pictured only as fear — catastrophe, devastation, a world burned down. The catechism will not leave it there. Paul gives the other face: the perishable puts on the imperishable, the mortal puts on immortality, and the saying comes true, “Death is swallowed up in victory.” Expectation of the Second Coming should make a person watchful and merciful, not fascinated by wreckage. The last word is Christ’s, and the last word is life."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Why has the Church expected the Second Coming from the beginning?",
+          "choices": [
+            "Because the Lord Himself promised He would come again",
+            "Because the apostles invented an ending to replace the Cross",
+            "Because history has no direction"
+          ],
+          "correct": 0,
+          "explanation": "The hope rests on Christ’s promise, not on a taste for disaster."
+        },
+        {
+          "prompt": "What does this reading refuse to make the eschaton?",
+          "choices": [
+            "Only a realm of fear and catastrophe",
+            "The victory in which death is swallowed up",
+            "A reason to stay watchful"
+          ],
+          "correct": 0,
+          "explanation": "Fear of wreckage is not the whole hope. Paul ends on victory: the mortal puts on immortality."
+        },
+        {
+          "prompt": "Which line is the hope Paul names?",
+          "choices": [
+            "Death is swallowed up in victory",
+            "Death is the last god",
+            "No one will be raised"
+          ],
+          "correct": 0,
+          "explanation": "1 Corinthians 15: the perishable puts on the imperishable. That is the Christian end of history."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: the end",
+        "intro": "Sort each line by the hope it names.",
+        "categories": [
+          {
+            "id": "promise",
+            "label": "He promised to come"
+          },
+          {
+            "id": "victory",
+            "label": "Death does not win"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "John 14:3",
+            "text": "I will come again",
+            "category": "promise"
+          },
+          {
+            "ref": "Matthew 24:42",
+            "text": "watch therefore",
+            "category": "promise"
+          },
+          {
+            "ref": "1 Corinthians 15:54",
+            "text": "death is swallowed up in victory",
+            "category": "victory"
+          },
+          {
+            "ref": "Revelation 21:4",
+            "text": "no more death",
+            "category": "victory"
+          }
+        ]
+      },
+      "words": [
+        {
+          "term": "eschaton",
+          "say": "ESS-kah-ton"
+        }
+      ]
+    },
+    {
+      "id": "explain-death-and-resurrection",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "Death and resurrection",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "Death is a mystery and a birth into eternity. The soul waits the Judgment, and mercy remains possible before that day.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "Death and resurrection",
+          "body": "St Ignatius Brianchaninov calls death a great mystery: the birth of a person out of passing life into eternity. Christianity does not treat death as the end. Earthly life is preparation for what death opens. The soul does not go out like a candle. The righteous are carried by the angels to the threshold of Paradise, Abraham’s bosom, and they wait there for the Last Judgment. The reading is sober about hell as well: before the Judgment, release is still possible; after it, that possibility closes. Death is serious, and it is not yet the final sentence. Pray for the dead because the story is not finished when the body is buried."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "How does St Ignatius Brianchaninov name death?",
+          "choices": [
+            "A birth from passing life into eternity",
+            "The extinction of the person",
+            "A punishment with no mystery"
+          ],
+          "correct": 0,
+          "explanation": "Death is a great mystery and a birth. Earthly life prepares for it; it does not merely stop."
+        },
+        {
+          "prompt": "Where do righteous souls wait, in this reading?",
+          "choices": [
+            "At the threshold of Paradise, called Abraham’s bosom, until the Judgment",
+            "Nowhere; they are already judged and gone",
+            "In their graves with no soul remaining"
+          ],
+          "correct": 0,
+          "explanation": "The angels bring them to Abraham’s bosom. They wait for the Last Judgment. They are not annihilated."
+        },
+        {
+          "prompt": "When does the possibility of release from hell come to an end?",
+          "choices": [
+            "After the Last Judgment",
+            "At the moment of baptism",
+            "It never existed"
+          ],
+          "correct": 0,
+          "explanation": "Before the Judgment, release remains possible. After it, the reading says that possibility closes. That is why the Church prays for the departed now."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: death",
+        "intro": "Sort each line by the hope it guards.",
+        "categories": [
+          {
+            "id": "birth",
+            "label": "Death as a beginning"
+          },
+          {
+            "id": "wait",
+            "label": "Waiting for the Judgment"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "John 11:25",
+            "text": "I am the resurrection, and the life",
+            "category": "birth"
+          },
+          {
+            "ref": "1 Corinthians 15:20",
+            "text": "Christ the firstfruits",
+            "category": "birth"
+          },
+          {
+            "ref": "Luke 16:22",
+            "text": "Abraham’s bosom",
+            "category": "wait"
+          },
+          {
+            "ref": "Hebrews 9:27",
+            "text": "after this the judgment",
+            "category": "wait"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-last-judgment",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "The Last Judgment",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "At death the soul keeps memory and responsibility. Christ’s preaching to the dead means every person is brought to a real choice.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "The Last Judgment",
+          "body": "At death the soul leaves the body and does not lose memory, thought, or feeling. It enters the other world carrying the weight of its life. Judgment is not a surprise quiz about forgotten facts. It is the truth of a life, told in the presence of God. The reading lingers on Christ’s descent to the dead. Peter says He preached to those who died in the flood, the righteous for the unrighteous. The point drawn here is astonishing and moral at once: Christ preached in hell so that every person He made might choose good or evil and, with that choice, be saved or condemned. No one is discarded unaddressed. The Judgment honors freedom. It does not sneak up on a soul that was never asked."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What does the soul carry out of this life?",
+          "choices": [
+            "Memory, thought, feeling, and accountability for its sins",
+            "Nothing; personality ends",
+            "Only its best public reputation"
+          ],
+          "correct": 0,
+          "explanation": "Death changes the mode of existence. It does not wipe memory or responsibility."
+        },
+        {
+          "prompt": "Why does this reading say Christ preached in hell?",
+          "choices": [
+            "So that every person might make a real choice for good or evil",
+            "To cancel human freedom",
+            "Because the Cross had failed"
+          ],
+          "correct": 0,
+          "explanation": "The descent is preached as Christ’s refusal to leave anyone unaddressed. The choice remains real, and so does the consequence."
+        },
+        {
+          "prompt": "Which text is used for the preaching to the dead?",
+          "choices": [
+            "1 Peter: Christ preached to those who perished in the flood",
+            "A claim that Peter denied the descent",
+            "Only a medieval poem"
+          ],
+          "correct": 0,
+          "explanation": "1 Peter 3 is the text. Christ, the righteous one, died for the unrighteous and preached to the dead."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: the Judgment",
+        "intro": "Sort each line by what it shows.",
+        "categories": [
+          {
+            "id": "account",
+            "label": "A life accounted for"
+          },
+          {
+            "id": "descent",
+            "label": "Christ seeks the dead"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Hebrews 9:27",
+            "text": "once to die, but after this the judgment",
+            "category": "account"
+          },
+          {
+            "ref": "Matthew 25:32",
+            "text": "before him shall be gathered all nations",
+            "category": "account"
+          },
+          {
+            "ref": "1 Peter 3:19",
+            "text": "he went and preached unto the spirits in prison",
+            "category": "descent"
+          },
+          {
+            "ref": "1 Peter 4:6",
+            "text": "the gospel preached also to them that are dead",
+            "category": "descent"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-what-is-hell",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "What is hell?",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "Hell is the suffering of a soul that can no longer love. Christ descends into it, and the pedagogy of fear is not the Gospel’s picture.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "What is hell?",
+          "body": "Dostoyevsky’s Elder Zosima asks, “What is hell?” and answers: suffering because one can no longer love. That is the image this catechism trusts more than Dante’s catalogue of torments or a medieval pedagogy of fear, with its stress on satisfaction and punishment. Sophrony says he does not see Christ as Michelangelo painted Him, hurling people into the abyss. He sees Christ immensely powerful with the power of unassuming love — and if God is love, He is love even while He judges. Hell is bound to Holy Week and Pascha: Christ descends into the abyss, as He descended into the Jordan, and hell cannot bear His light. It surrenders its prisoners. Hell is real. It is also already sentenced to death. Fear is a poor teacher beside that invasion of love."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "How does Zosima answer “What is hell?”",
+          "choices": [
+            "Suffering because one can no longer love",
+            "A dungeon God enjoys",
+            "A symbol that nothing is wrong"
+          ],
+          "correct": 0,
+          "explanation": "The catechism takes hell with full seriousness and names it as the ruin of love, not as a spectacle of cruelty."
+        },
+        {
+          "prompt": "What picture of Christ does Sophrony refuse?",
+          "choices": [
+            "Christ hurling His enemies into the abyss as raw force",
+            "Christ powerful in unassuming love, even in judgment",
+            "Christ descending to the dead"
+          ],
+          "correct": 0,
+          "explanation": "Judgment is real, and it is the judgment of love. Michelangelo’s furious Christ is not the revelation Sophrony trusts."
+        },
+        {
+          "prompt": "What does Christ’s descent do to hell?",
+          "choices": [
+            "He illumines it and breaks its hold; hell is sentenced to death",
+            "He makes peace with the devil as an equal",
+            "He discovers hell is stronger than He is"
+          ],
+          "correct": 0,
+          "explanation": "As the Jordan was sanctified by His entering it, hell is invaded by His light and cannot keep its prisoners. Hell remains real, and it does not have the last word."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: hell",
+        "intro": "Sort each line by the truth it guards.",
+        "categories": [
+          {
+            "id": "love",
+            "label": "Hell is the loss of love"
+          },
+          {
+            "id": "victory",
+            "label": "Christ enters and breaks it"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "1 John 4:8",
+            "text": "God is love",
+            "category": "love"
+          },
+          {
+            "ref": "Matthew 22:13",
+            "text": "outer darkness",
+            "category": "love"
+          },
+          {
+            "ref": "1 Peter 3:19",
+            "text": "preached unto the spirits in prison",
+            "category": "victory"
+          },
+          {
+            "ref": "Hosea 13:14",
+            "text": "O death, I will be thy plagues",
+            "category": "victory"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-new-creation",
+      "track": "Explain the Faith",
+      "micro": true,
+      "title": "A new heaven and a new earth",
+      "category": "Apologetics lesson",
+      "level": "1 teaching card · 3 questions · Match the Word",
+      "summary": "Paradise is a state of the soul in the abundance of love and light. Union with Christ is that life, and not all share it in the same measure.",
+      "source": "The Mystery of Faith by Bishop Hilarion Alfeyev",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "lessons": [
+        {
+          "heading": "A new heaven and a new earth",
+          "body": "Paradise is not first a place on a map. It is a condition of the soul. As hell is the suffering of being unable to love, Paradise is the bliss of love and light in abundance. The person united to Christ shares that life wholly. The Father’s house has many rooms: some will rest in a higher measure and some in a lower one, and the difference is not God’s stinginess but the capacity love has grown. The promise of a new heaven and a new earth is the promise that creation itself is not discarded. It is renewed around the people who have become able to live in love. Hope is concrete. It is Christ, shared without end."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What is Paradise in this reading?",
+          "choices": [
+            "A state of the soul: bliss from the abundance of love and light",
+            "Only a location with no change in the person",
+            "The same thing as hell"
+          ],
+          "correct": 0,
+          "explanation": "Paradise answers hell. One is the inability to love; the other is love and light without lack."
+        },
+        {
+          "prompt": "Why are there many rooms in the Father’s house?",
+          "choices": [
+            "People share Christ’s life in different measures, according to the capacity love has grown",
+            "God plays favorites with no reason",
+            "Most rooms are empty because almost no one is saved"
+          ],
+          "correct": 0,
+          "explanation": "The difference is real and it is not cruelty. Union with Christ is full for the person who is united to Him, and measures still differ."
+        },
+        {
+          "prompt": "What happens to creation in this hope?",
+          "choices": [
+            "It is renewed, not thrown away",
+            "It is abandoned as a mistake",
+            "It replaces Christ"
+          ],
+          "correct": 0,
+          "explanation": "A new heaven and a new earth means the world God made is transfigured around those who can live in love."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: the life to come",
+        "intro": "Sort each line by the hope it names.",
+        "categories": [
+          {
+            "id": "soul",
+            "label": "A state of the soul"
+          },
+          {
+            "id": "world",
+            "label": "Creation renewed"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Luke 23:43",
+            "text": "today shalt thou be with me in paradise",
+            "category": "soul"
+          },
+          {
+            "ref": "John 14:2",
+            "text": "in my Father’s house are many mansions",
+            "category": "soul"
+          },
+          {
+            "ref": "Revelation 21:1",
+            "text": "a new heaven and a new earth",
+            "category": "world"
+          },
+          {
+            "ref": "Romans 8:21",
+            "text": "the creature itself shall be delivered",
+            "category": "world"
+          }
+        ]
+      }
     }
   ],
   "games": [

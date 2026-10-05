@@ -1,9 +1,9 @@
 /* Mind Soul & Body — service worker
    Shell: precached lightly, but HTML/JS/CSS are NETWORK-FIRST at runtime so
-   deploys land immediately (no stale-build trap). Bible/study JSON under
-   bible/ and data/ is CACHE-FIRST (versioned with the deploy) and lazy-cached
-   per book on first read. Bump CACHE_VERSION to force a clean precache. */
-const CACHE_VERSION = 'v53';
+   deploys land immediately (no stale-build trap). Verse JSON under bible/
+   is CACHE-FIRST. study-notes.json and data/ are NETWORK-FIRST so lesson
+   notes update immediately. Bump CACHE_VERSION to force a clean precache. */
+const CACHE_VERSION = 'v54';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 
@@ -40,6 +40,7 @@ self.addEventListener('activate', (event) => {
 });
 
 const isBibleRequest = (url) => url.pathname.includes('/bible/');
+const isStudyNotes = (url) => url.pathname.endsWith('/study-notes.json');
 const isDataRequest = (url) => url.pathname.includes('/data/');
 
 self.addEventListener('fetch', (event) => {
@@ -47,6 +48,22 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+
+  if (isStudyNotes(url) || isDataRequest(url)) {
+    // Network-first so lesson notes and study JSON update immediately.
+    event.respondWith(
+      fetch(request)
+        .then((res) => {
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(DATA_CACHE).then((cache) => cache.put(request, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
 
   if (isBibleRequest(url)) {
     // Cache-first for verse JSON (the text never changes); populate on first fetch.
@@ -58,23 +75,6 @@ self.addEventListener('fetch', (event) => {
         }
         return res;
       }))
-    );
-    return;
-  }
-
-  if (isDataRequest(url)) {
-    // Network-first for study/game JSON so content and answer-key updates
-    // can never be served stale; fall back to cache when offline.
-    event.respondWith(
-      fetch(request)
-        .then((res) => {
-          if (res.ok) {
-            const copy = res.clone();
-            caches.open(DATA_CACHE).then((cache) => cache.put(request, copy));
-          }
-          return res;
-        })
-        .catch(() => caches.match(request))
     );
     return;
   }
