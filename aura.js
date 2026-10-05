@@ -72,7 +72,7 @@ const LESSON_TRACKS=[
   {id:'councils',label:'Councils',lead:'One short lesson for each council, from Nicaea I to Nicaea II.',track:'Seven Councils',ids:['track-nicaea1','track-constantinople1','track-ephesus','track-chalcedon','track-constantinople2','track-constantinople3','track-nicaea2']},
   {id:'catechism',label:'Catechism',lead:'The Mystery of Faith, in catechism order: seeking God, the Trinity, Christ, the Church, the sacraments, and the last things.',track:'Explain the Faith',groups:[
     {title:'Seeking God',ids:['explain-dogma-and-life','explain-coming-to-faith','explain-seeking-god']},
-    {title:'God, one and three',ids:['explain-the-words','explain-one-god-three-hypostases','explain-godhead-without-heresy','explain-say-it-right']},
+    {title:'God, one and three',ids:['explain-the-words','explain-one-god-three-hypostases','explain-eternal-manifestation','explain-godhead-without-heresy','explain-say-it-right']},
     {title:'Christ and the Cross',ids:['explain-hypostatic-union','explain-christus-victor-psa']},
     {title:'The human will',ids:['mini-dominant-difference']},
     {title:'The Church',ids:['explain-church-kingdom','explain-church-attributes','explain-church-hierarchy','explain-women-in-the-church','explain-church-time','explain-one-church']},

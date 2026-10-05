@@ -4600,6 +4600,106 @@
     "lessonId": "explain-one-god-three-hypostases"
   },
   {
+    "id": "lesson-explain-eternal-manifestation-0",
+    "book": 43,
+    "chapter": 1,
+    "verse": 1,
+    "kind": "Teaching",
+    "title": "Eternal relations are not events",
+    "body": "The Son and the Holy Spirit are eternally manifested from the Father. The Son is eternally begotten, and the Spirit eternally proceeds. There was never a time when the Son was not, and never a time when the Spirit was not. Basil the Great, Gregory of Nyssa, and Gregory the Theologian taught these as relations inside the one God, not as episodes on a timeline. John 1:1 says the Word “was” with God. That “was” has no starting day.",
+    "author": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev",
+    "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-doctrine-of-the-holy-trinity",
+    "sourceLabel": "Open source ↗",
+    "links": [
+      {
+        "book": 43,
+        "chapter": 1,
+        "verse": 14
+      }
+    ],
+    "lessonId": "explain-eternal-manifestation"
+  },
+  {
+    "id": "lesson-explain-eternal-manifestation-1",
+    "book": 43,
+    "chapter": 15,
+    "verse": 26,
+    "kind": "Teaching",
+    "title": "One source, two modes",
+    "body": "The Father is the one source within the Trinity, the monarchy. The Son is begotten. The Spirit proceeds. Those are two modes of coming from the Father, not two names for one relation, and not a second begetting of the Spirit. Coming from the Father does not make the Son or the Spirit a lesser essence. Each is fully God, with the Father, before all ages.",
+    "author": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev",
+    "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-doctrine-of-the-holy-trinity",
+    "sourceLabel": "Open source ↗",
+    "links": [
+      {
+        "book": 43,
+        "chapter": 14,
+        "verse": 26
+      }
+    ],
+    "lessonId": "explain-eternal-manifestation"
+  },
+  {
+    "id": "lesson-explain-eternal-manifestation-2",
+    "book": 43,
+    "chapter": 1,
+    "verse": 3,
+    "kind": "Teaching",
+    "title": "Not creation",
+    "body": "John 1:3 says all things were made by the Word, and without him was not anything made that was made. If everything made was made through him, he is not one of the things that were made. Begetting is not making, and procession is not creating. Speak of eternal manifestation as if it were creation, and the speech has already slipped into Arianism: the Son or the Spirit becomes a creature, however high.",
+    "author": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev",
+    "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-doctrine-of-the-holy-trinity",
+    "sourceLabel": "Open source ↗",
+    "links": [
+      {
+        "book": 51,
+        "chapter": 1,
+        "verse": 16
+      }
+    ],
+    "lessonId": "explain-eternal-manifestation"
+  },
+  {
+    "id": "lesson-explain-eternal-manifestation-3",
+    "book": 48,
+    "chapter": 4,
+    "verse": 4,
+    "kind": "Teaching",
+    "title": "Temporal mission is another grammar",
+    "body": "The Father sends the Son when the fullness of time has come (Galatians 4:4). The Spirit is sent at Pentecost. John 1:1 names the Word who already was God. John 1:14 names the Word made flesh: that is the mission in time. John 15:26 holds both grammars in one verse: “which proceedeth from the Father” is the eternal relation, and “whom I will send” is the mission. The sending reveals the relation. It does not begin it. Mission asks when he came to us. Origin asks from whom he is, eternally.",
+    "author": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev",
+    "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-doctrine-of-the-holy-trinity",
+    "sourceLabel": "Open source ↗",
+    "links": [
+      {
+        "book": 43,
+        "chapter": 1,
+        "verse": 14
+      }
+    ],
+    "lessonId": "explain-eternal-manifestation"
+  },
+  {
+    "id": "lesson-explain-eternal-manifestation-4",
+    "book": 43,
+    "chapter": 16,
+    "verse": 14,
+    "kind": "Teaching",
+    "title": "Manifested through the Son, not a second source",
+    "body": "The Council of Blachernae in 1285, following Gregory of Cyprus, confessed that the Holy Spirit proceeds from the Father alone and is eternally manifested through the Son. The Spirit shines forth and rests in the Son. That shining is not a second birth, and it does not make the Son a cause of the Spirit’s person. The Filioque names the Son as a cause of that person. This confession does not. St Gregory Palamas keeps a further line: what God manifests to creatures is uncreated energy, not the Spirit’s hypostasis. The same fence is the one kept in this catechesis. Eternal manifestation through the Son is not a second source, and it is not the sending in time.",
+    "author": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev",
+    "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-doctrine-of-the-holy-trinity",
+    "sourceLabel": "Open source ↗",
+    "links": [
+      {
+        "book": 43,
+        "chapter": 16,
+        "verse": 15
+      }
+    ],
+    "lessonId": "explain-eternal-manifestation"
+  },
+  {
     "id": "lesson-explain-godhead-without-heresy-0",
     "book": 5,
     "chapter": 6,
