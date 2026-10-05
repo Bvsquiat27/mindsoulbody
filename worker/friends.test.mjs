@@ -203,6 +203,45 @@ test('only the list owner receives friend records, and those records omit everyo
   assert.equal(stolen.text.includes(angel.code), false);
 });
 
+test('a saint portrait id is saved for friends, and a bad id is dropped', async () => {
+  const kv = memoryKv();
+  const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  await call(kv, '/sync', {
+    code: mary.code,
+    secret: mary.secret,
+    name: 'Mary',
+    avatar_data: AVATAR,
+    avatar_saint: 'nicholas'
+  });
+  let stored = await kv.get(`user:${mary.code}`, 'json');
+  assert.equal(stored.avatar_data, AVATAR);
+  assert.equal(stored.avatar_saint, 'nicholas');
+
+  await call(kv, '/sync', {
+    code: mary.code,
+    secret: mary.secret,
+    avatar_data: '',
+    avatar_saint: 'Nicholas',
+    profile: { avatar_saint: '../saints/nicholas.svg' }
+  });
+  stored = await kv.get(`user:${mary.code}`, 'json');
+  assert.equal(stored.avatar_data, undefined);
+  assert.equal(stored.avatar_saint, 'nicholas');
+
+  await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code });
+  const friends = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  assert.equal(friends.data[0].avatar_saint, 'nicholas');
+  assert.equal(friends.data[0].profile.avatar_saint, 'nicholas');
+  assert.equal(friends.data[0].avatar_data, undefined);
+
+  await call(kv, '/sync', { code: mary.code, secret: mary.secret, avatar_saint: 'javascript:alert(1)' });
+  stored = await kv.get(`user:${mary.code}`, 'json');
+  assert.equal(stored.avatar_saint, undefined);
+  const cleared = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  assert.equal(cleared.data[0].avatar_saint, undefined);
+});
+
 test('wrong secret does not echo the secret, and friend responses stay public', async () => {
   const kv = memoryKv();
   const user = (await read(await call(kv, '/register', { name: 'Mary' }))).data;

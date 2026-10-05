@@ -3,7 +3,7 @@
    deploys land immediately (no stale-build trap). Verse JSON under bible/
    is CACHE-FIRST. study-notes.json and data/ are NETWORK-FIRST so lesson
    notes update immediately. Bump CACHE_VERSION to force a clean precache. */
-const CACHE_VERSION = 'v58';
+const CACHE_VERSION = 'v59';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 
@@ -18,6 +18,18 @@ const SHELL = [
   './aura.css',
   './study-design.css',
   './games.js',
+  './saints/theotokos.svg',
+  './saints/john-baptist.svg',
+  './saints/peter.svg',
+  './saints/paul.svg',
+  './saints/andrew.svg',
+  './saints/nicholas.svg',
+  './saints/george.svg',
+  './saints/catherine.svg',
+  './saints/basil.svg',
+  './saints/chrysostom.svg',
+  './saints/seraphim.svg',
+  './saints/mary-of-egypt.svg',
 ];
 
 self.addEventListener('install', (event) => {
