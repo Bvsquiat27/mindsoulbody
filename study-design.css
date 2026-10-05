@@ -66,8 +66,23 @@ html{background:var(--bg)}body{color:var(--text);font-family:Outfit,system-ui,sa
   .bottom-nav button small{font-size:10.5px;line-height:1;white-space:nowrap;letter-spacing:-.02em}
 }
 /* Scripture Library results sit directly under the theme buttons and receive focus/scroll on tap. */
-.library-results{scroll-margin-top:76px}
+.library-results{scroll-margin-top:128px}
 .library-results .section-head{margin-top:20px}
+.browse-bar{position:sticky;top:0;z-index:8;margin:0 0 8px;padding:2px 0 10px;background:color-mix(in srgb, var(--bg) 92%, transparent);backdrop-filter:blur(16px)}
+.browse-bar .filters{margin:8px 0 0}
+.hub-switch .filter{min-width:104px;font-weight:700}
+.track-filters .filter{min-height:40px}
+.browse-section{margin-top:8px}
+.browse-section+.browse-section{margin-top:28px}
+.browse-subsection .section-head{margin-top:18px}
+.subsection-head h3{margin:0}
+.track-lead{margin:0 0 14px;max-width:68ch;color:var(--muted)}
+@media(max-width:1024px){
+  .track-filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+  .track-filters::-webkit-scrollbar{display:none}
+  .track-filters .filter{flex:0 0 auto}
+  .challenge-grid{grid-template-columns:1fr}
+}
 
 /* Share buttons on notes (journal list + study note panel) */
 .note-open{display:block;width:100%;background:none;border:0;color:inherit;text-align:left;padding:0;cursor:pointer;font:inherit}
