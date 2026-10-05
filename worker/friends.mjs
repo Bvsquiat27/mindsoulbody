@@ -14,7 +14,7 @@ const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const SECRET_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 const IMAGE_DATA = /^data:image\/(?:jpeg|png|webp);base64,[a-z0-9+/]+={0,2}$/i;
 const IMAGE_HTTPS = /^https:\/\/[^\s"'<>]+$/i;
-const PRIVATE_KEYS = new Set(['secret', 'password', 'passwordHash', 'recovery', 'recoveryHash', 'recovery_code', 'email']);
+const PRIVATE_KEYS = new Set(['secret', 'password', 'passwordHash', 'recovery', 'recoveryHash', 'recovery_code', 'email', 'friends']);
 
 const CORS = {
   'access-control-allow-origin': 'https://bvsquiat27.github.io',
@@ -184,6 +184,17 @@ async function loadUser(kv, code) {
 async function saveUser(kv, user) {
   const stored = { ...user };
   delete stored.secret;
+  delete stored.email;
+  delete stored.password;
+  delete stored.passwordHash;
+  delete stored.recovery;
+  delete stored.recoveryHash;
+  delete stored.recovery_code;
+  if (stored.profile && typeof stored.profile === 'object' && !Array.isArray(stored.profile)) {
+    for (const key of PRIVATE_KEYS) delete stored.profile[key];
+    if (!Object.keys(stored.profile).length) delete stored.profile;
+  }
+  stored.friends = (Array.isArray(stored.friends) ? stored.friends : []).filter(code => friendCode(code));
   await kv.put(`user:${user.code}`, JSON.stringify(stored));
 }
 
@@ -285,9 +296,16 @@ export async function handleFriends(request, env) {
   const me = auth.user;
 
   if (path === '/sync') {
+    const friends = (Array.isArray(me.friends) ? me.friends : []).filter(code => friendCode(code));
     if (typeof body.name === 'string' && body.name.trim()) me.name = clip(body.name, 40);
     if (body.stats && typeof body.stats === 'object') me.stats = normalizeStats(body.stats);
     applyProfile(me, body);
+    if (me.profile && typeof me.profile === 'object') {
+      delete me.profile.friends;
+      delete me.profile.secret;
+      delete me.profile.email;
+    }
+    me.friends = friends;
     me.updatedAt = Date.now();
     await saveUser(kv, me);
     return json({ ok: true });
