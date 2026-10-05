@@ -2398,6 +2398,190 @@
       "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
     },
     {
+      "id": "explain-eternal-manifestation",
+      "title": "Eternal manifestation: from the Father, not from time",
+      "summary": "The Son is eternally begotten and the Spirit eternally proceeds from the Father. Eternal manifestation through the Son is not creation and not the temporal sending.",
+      "source": "Cappadocian Fathers and the Council of Blachernae · OCA · The Holy Trinity",
+      "sourceUrl": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-doctrine-of-the-holy-trinity",
+      "lessons": [
+        {
+          "heading": "Eternal relations are not events",
+          "body": "The Son and the Holy Spirit are eternally manifested from the Father. The Son is eternally begotten, and the Spirit eternally proceeds. There was never a time when the Son was not, and never a time when the Spirit was not. Basil the Great, Gregory of Nyssa, and Gregory the Theologian taught these as relations inside the one God, not as episodes on a timeline. John 1:1 says the Word “was” with God. That “was” has no starting day."
+        },
+        {
+          "heading": "One source, two modes",
+          "body": "The Father is the one source within the Trinity, the monarchy. The Son is begotten. The Spirit proceeds. Those are two modes of coming from the Father, not two names for one relation, and not a second begetting of the Spirit. Coming from the Father does not make the Son or the Spirit a lesser essence. Each is fully God, with the Father, before all ages."
+        },
+        {
+          "heading": "Not creation",
+          "body": "John 1:3 says all things were made by the Word, and without him was not anything made that was made. If everything made was made through him, he is not one of the things that were made. Begetting is not making, and procession is not creating. Speak of eternal manifestation as if it were creation, and the speech has already slipped into Arianism: the Son or the Spirit becomes a creature, however high."
+        },
+        {
+          "heading": "Temporal mission is another grammar",
+          "body": "The Father sends the Son when the fullness of time has come (Galatians 4:4). The Spirit is sent at Pentecost. John 1:1 names the Word who already was God. John 1:14 names the Word made flesh: that is the mission in time. John 15:26 holds both grammars in one verse: “which proceedeth from the Father” is the eternal relation, and “whom I will send” is the mission. The sending reveals the relation. It does not begin it. Mission asks when he came to us. Origin asks from whom he is, eternally."
+        },
+        {
+          "heading": "Manifested through the Son, not a second source",
+          "body": "The Council of Blachernae in 1285, following Gregory of Cyprus, confessed that the Holy Spirit proceeds from the Father alone and is eternally manifested through the Son. The Spirit shines forth and rests in the Son. That shining is not a second birth, and it does not make the Son a cause of the Spirit’s person. The Filioque names the Son as a cause of that person. This confession does not. St Gregory Palamas keeps a further line: what God manifests to creatures is uncreated energy, not the Spirit’s hypostasis. The same fence is the one kept in this catechesis. Eternal manifestation through the Son is not a second source, and it is not the sending in time."
+        }
+      ],
+      "track": "Explain the Faith",
+      "micro": true,
+      "category": "Explain the Faith lesson",
+      "level": "5 teaching cards · 6 questions · Match the Word",
+      "questions": [
+        {
+          "type": "multiple-choice",
+          "prompt": "What does “eternally begotten” deny?",
+          "choices": [
+            "That the Son is truly God",
+            "That there was a time when the Son began",
+            "That the Father is the source"
+          ],
+          "correct": 1,
+          "explanation": "Eternal begetting means there was never a time when the Son was not. It is a relation in God, not an event on a timeline."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "As to his person, from whom does the Holy Spirit proceed?",
+          "choices": [
+            "From the Father alone",
+            "From the Father and the Son as two causes of his person",
+            "From creation, once the Church began to pray"
+          ],
+          "correct": 0,
+          "explanation": "Hypostatic procession is from the Father alone. The Son is not a second cause of the Spirit’s person."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "What is eternal manifestation through the Son?",
+          "choices": [
+            "A second cause of the Spirit’s hypostasis",
+            "The Spirit’s eternal shining forth and resting in the Son, from the Father alone",
+            "Only the sending of the Spirit at Pentecost"
+          ],
+          "correct": 1,
+          "explanation": "Blachernae and Gregory of Cyprus distinguish procession from the Father alone from eternal manifestation through the Son. Manifestation is not a second cause, and it is not only the day of Pentecost."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "What is Pentecost in this grammar?",
+          "choices": [
+            "The moment the Spirit began to exist",
+            "The temporal mission of the Spirit",
+            "The creation of the Spirit through the Son"
+          ],
+          "correct": 1,
+          "explanation": "Pentecost is the Spirit’s mission in time. The Spirit already proceeds eternally from the Father."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "Why must the Son’s origin not be called creation?",
+          "choices": [
+            "John 1:3 says everything that was made was made through the Word, so the Word is not a creature",
+            "The Son appeared only after the world was finished",
+            "Creatures are begotten in the same sense as the Son"
+          ],
+          "correct": 0,
+          "explanation": "If everything made was made through him, he is not one of the things made. Confusing manifestation with creation is the Arian slide."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "How do John 1:1 and John 1:14 belong together?",
+          "choices": [
+            "John 1:1 is the eternal relation (“was”); John 1:14 is the mission in time (“was made flesh”)",
+            "Both verses describe one and the same moment in history",
+            "John 1:14 cancels the claim of John 1:1"
+          ],
+          "correct": 0,
+          "explanation": "“Was” names the Word with God before any sending. “Was made flesh” names the temporal mission. The mission does not start the relation."
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: eternal or in time",
+        "intro": "Drag each line to what it is guarding. Round 1 gives you the words; round 2 gives only the reference.",
+        "categories": [
+          {
+            "id": "eternal-origin",
+            "label": "Eternal origin from the Father"
+          },
+          {
+            "id": "not-creation",
+            "label": "Not a creature"
+          },
+          {
+            "id": "temporal-mission",
+            "label": "Sent in time"
+          },
+          {
+            "id": "through-the-son",
+            "label": "Manifested through the Son"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "John 1:1",
+            "text": "the Word was with God, and the Word was God",
+            "category": "eternal-origin"
+          },
+          {
+            "ref": "John 15:26",
+            "text": "which proceedeth from the Father",
+            "category": "eternal-origin"
+          },
+          {
+            "ref": "John 1:3",
+            "text": "All things were made by him",
+            "category": "not-creation"
+          },
+          {
+            "ref": "Colossians 1:16",
+            "text": "by him were all things created",
+            "category": "not-creation"
+          },
+          {
+            "ref": "Galatians 4:4",
+            "text": "God sent forth his Son",
+            "category": "temporal-mission"
+          },
+          {
+            "ref": "John 14:26",
+            "text": "whom the Father will send in my name",
+            "category": "temporal-mission"
+          },
+          {
+            "ref": "John 16:14",
+            "text": "He shall glorify me: for he shall receive of mine",
+            "category": "through-the-son"
+          },
+          {
+            "ref": "John 16:15",
+            "text": "All things that the Father hath are mine",
+            "category": "through-the-son"
+          }
+        ]
+      },
+      "words": [
+        {
+          "term": "monarchy",
+          "say": "mon ar kee"
+        },
+        {
+          "term": "begotten",
+          "say": "beh got en"
+        },
+        {
+          "term": "procession",
+          "say": "pro seh shun"
+        },
+        {
+          "term": "manifestation",
+          "say": "man ih fes tay shun"
+        }
+      ],
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+    },
+    {
       "id": "explain-godhead-without-heresy",
       "track": "Explain the Faith",
       "micro": true,
