@@ -203,7 +203,7 @@ test('only the list owner receives friend records, and those records omit everyo
   assert.equal(stolen.text.includes(angel.code), false);
 });
 
-test('a saint portrait id is saved for friends, and a bad id is dropped', async () => {
+test('a stored saint portrait id is stripped and does not replace a photo', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
   const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
@@ -216,30 +216,36 @@ test('a saint portrait id is saved for friends, and a bad id is dropped', async 
   });
   let stored = await kv.get(`user:${mary.code}`, 'json');
   assert.equal(stored.avatar_data, AVATAR);
-  assert.equal(stored.avatar_saint, 'nicholas');
+  assert.equal(stored.avatar_saint, undefined);
+
+  stored.avatar_saint = 'nicholas';
+  stored.profile = { ...(stored.profile || {}), avatar_saint: 'nicholas' };
+  await kv.put(`user:${mary.code}`, JSON.stringify(stored));
+  await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code });
+  const legacy = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  assert.equal(legacy.data[0].avatar_saint, undefined);
+  assert.equal(legacy.data[0].profile.avatar_saint, undefined);
+  assert.equal(legacy.data[0].avatar_data, AVATAR);
+  assert.equal(legacy.data[0].profile.avatar_data, AVATAR);
 
   await call(kv, '/sync', {
     code: mary.code,
     secret: mary.secret,
-    avatar_data: '',
     avatar_saint: 'Nicholas',
     profile: { avatar_saint: '../saints/nicholas.svg' }
   });
   stored = await kv.get(`user:${mary.code}`, 'json');
-  assert.equal(stored.avatar_data, undefined);
-  assert.equal(stored.avatar_saint, 'nicholas');
-
-  await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code });
-  const friends = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
-  assert.equal(friends.data[0].avatar_saint, 'nicholas');
-  assert.equal(friends.data[0].profile.avatar_saint, 'nicholas');
-  assert.equal(friends.data[0].avatar_data, undefined);
+  assert.equal(stored.avatar_data, AVATAR);
+  assert.equal(stored.avatar_saint, undefined);
+  assert.equal(stored.profile && stored.profile.avatar_saint, undefined);
 
   await call(kv, '/sync', { code: mary.code, secret: mary.secret, avatar_saint: 'javascript:alert(1)' });
   stored = await kv.get(`user:${mary.code}`, 'json');
   assert.equal(stored.avatar_saint, undefined);
   const cleared = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
   assert.equal(cleared.data[0].avatar_saint, undefined);
+  assert.equal(JSON.stringify(cleared.data).includes('nicholas'), false);
+  assert.equal(JSON.stringify(cleared.data).includes('saints/'), false);
 });
 
 test('wrong secret does not echo the secret, and friend responses stay public', async () => {
