@@ -25,7 +25,9 @@
                   author, authorName, updatedBy, updatedByName, ts }]
      }
      rate:verse:<code> → { start, n }  30 sends per hour
+     rate:verse-read:<code> → { start, n }  200 reads per hour
      rate:study:<code> → { start, n }  40 writes per hour
+     rate:study-delete:<code> → { start, n }  200 deletes per hour
 
    The account secret is a random 32-hex string returned once at register.
    Only its SHA-256 hex digest is stored. Compare it in constant time.
@@ -56,20 +58,25 @@ const IMAGE_DATA = /^data:image\/(?:jpeg|png|webp);base64,[a-z0-9+/]+={0,2}$/i;
 const IMAGE_HTTPS = /^https:\/\/[^\s"'<>]+$/i;
 const PUBLIC_ID = /^[a-f0-9]{16}$/;
 
-let responseOrigin = ORIGIN;
-function corsHeaders() {
+function allowedOrigin(request) {
+  const requestOrigin = request.headers.get('origin') || '';
+  return requestOrigin === ORIGIN || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(requestOrigin) ? requestOrigin : ORIGIN;
+}
+
+function corsHeaders(origin) {
   return {
-    'access-control-allow-origin': responseOrigin,
+    'access-control-allow-origin': origin,
+    vary: 'Origin',
     'access-control-allow-methods': 'GET, POST, OPTIONS',
     'access-control-allow-headers': 'content-type',
     'access-control-max-age': '86400',
   };
 }
 
-function json(data, status = 200) {
+function json(data, status = 200, origin = ORIGIN) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'content-type': 'application/json', ...corsHeaders() },
+    headers: { 'content-type': 'application/json', ...corsHeaders(origin) },
   });
 }
 
@@ -413,7 +420,17 @@ const STUDY_ANSWER_MAX = 2000;
 const STUDY_VERSES_MAX = 6;
 const STUDY_ENTRIES_MAX = 100;
 const STUDY_RATE = 40;
+const VERSE_READ_RATE = 200;
+const STUDY_DELETE_RATE = 200;
 const HOUR_MS = 60 * 60 * 1000;
+
+function verseNumber(value, min, max) {
+  if (typeof value === 'boolean' || value == null) return null;
+  if (typeof value === 'string' && value.trim() === '') return null;
+  const n = typeof value === 'number' ? value : Number(value);
+  if (!Number.isInteger(n) || n < min || n > max) return null;
+  return n;
+}
 
 function boundedText(value, max) {
   const raw = String(value ?? '');
@@ -484,10 +501,10 @@ function cleanStudyVerses(input) {
   const verses = [];
   for (const item of input) {
     if (!item || typeof item !== 'object') return { error: 'Verse links are not valid' };
-    const book = Math.floor(Number(item.book));
-    const chapter = Math.floor(Number(item.chapter));
-    const verse = Math.floor(Number(item.verse));
-    if (book < 1 || book > 78 || chapter < 1 || chapter > 200 || verse < 1 || verse > 200) return { error: 'Verse link is not valid' };
+    const book = verseNumber(item.book, 1, 78);
+    const chapter = verseNumber(item.chapter, 1, 200);
+    const verse = verseNumber(item.verse, 1, 200);
+    if (book == null || chapter == null || verse == null) return { error: 'Verse link is not valid' };
     const reference = boundedText(item.reference, VERSE_REF_MAX);
     if (reference.error) return { error: 'Reference is too long' };
     verses.push({ book, chapter, verse, reference: reference.text });
@@ -496,14 +513,14 @@ function cleanStudyVerses(input) {
 }
 
 export async function handleFriends(request, env) {
+  const origin = allowedOrigin(request);
+  const reply = (data, status = 200) => json(data, status, origin);
   try {
-    const requestOrigin = request.headers.get('origin') || '';
-    responseOrigin = requestOrigin === ORIGIN || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(requestOrigin) ? requestOrigin : ORIGIN;
     const url = new URL(request.url);
-    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders() });
-    if (url.pathname === '/health' && request.method === 'GET') return json({ ok: true });
+    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders(origin) });
+    if (url.pathname === '/health' && request.method === 'GET') return reply({ ok: true });
     if (url.pathname === '/recovery-email' && (request.method === 'GET' || request.method === 'POST')) {
-      return json({
+      return reply({
         ready: false,
         configured: false,
         sent: false,
@@ -514,17 +531,17 @@ export async function handleFriends(request, env) {
       const board = await loadBoard(env);
       const want = String(url.searchParams.get('show') || '').toLowerCase();
       if (want) {
-        if (!SHOWS.includes(want)) return json({ error: 'Unknown game' }, 400);
-        return json({ show: want, scores: await presentScoreList(env, board[want], 20) });
+        if (!SHOWS.includes(want)) return reply({ error: 'Unknown game' }, 400);
+        return reply({ show: want, scores: await presentScoreList(env, board[want], 20) });
       }
       const all = {};
       for (const s of SHOWS) all[s] = await presentScoreList(env, board[s], 10);
-      return json({ scores: all });
+      return reply({ scores: all });
     }
-    if (request.method !== 'POST') return json({ error: 'Not found' }, 404);
+    if (request.method !== 'POST') return reply({ error: 'Not found' }, 404);
 
     const { body, error, status } = await readBody(request);
-    if (error) return json({ error }, status);
+    if (error) return reply({ error }, status);
 
     if (url.pathname === '/register') {
       const name = cleanName(body?.name) || 'Friend';
@@ -533,7 +550,7 @@ export async function handleFriends(request, env) {
         const candidate = newCode();
         if (!(await env.FRIENDS.get(`user:${candidate}`))) code = candidate;
       }
-      if (!code) return json({ error: 'Could not allocate a friend code' }, 500);
+      if (!code) return reply({ error: 'Could not allocate a friend code' }, 500);
       const secret = randomHex(16);
       const user = {
         code, name, secretHash: await sha256hex(secret), publicId: randomHex(8),
@@ -541,12 +558,12 @@ export async function handleFriends(request, env) {
         requestsIn: [], requestsOut: [], updatedAt: Date.now(),
       };
       await env.FRIENDS.put(`user:${code}`, JSON.stringify(user));
-      return json({ code, secret, publicId: user.publicId });
+      return reply({ code, secret, publicId: user.publicId });
     }
 
     if (url.pathname === '/sync') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       if (body?.name !== undefined) a.user.name = cleanName(body.name) || a.user.name;
       if (body && Object.prototype.hasOwnProperty.call(body, 'stats')) a.user.stats = cleanStats(body.stats);
       const warnings = applyProfile(a.user, body || {});
@@ -554,46 +571,46 @@ export async function handleFriends(request, env) {
       if (a.user.publicId !== publicId) a.user.publicId = publicId;
       await saveUser(env, a.user);
       await stampBoardId(env, a.user.code, publicId);
-      return json({ ok: true, publicId, ...(warnings.length ? { warning: warnings.join(' ') } : {}) });
+      return reply({ ok: true, publicId, ...(warnings.length ? { warning: warnings.join(' ') } : {}) });
     }
 
     if (url.pathname === '/account/public-id') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const publicId = await ensurePublicId(env, a.user);
       if (a.user.publicId !== publicId) a.user.publicId = publicId;
       await saveUser(env, a.user);
       await stampBoardId(env, a.user.code, publicId);
-      return json({ ok: true, publicId });
+      return reply({ ok: true, publicId });
     }
 
     if (url.pathname === '/friends') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const out = [];
       for (const code of a.user.friends || []) {
         const friend = hydrate(await loadUser(env, code));
         if (friend) out.push(friendView(a.user, friend));
       }
-      return json(out);
+      return reply(out);
     }
 
     if (url.pathname === '/friend/add') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const friendCode = String(body?.friendCode || '').trim().toUpperCase();
-      if (!friendCode) return json({ error: 'Missing friendCode' }, 400);
-      if (friendCode === a.user.code) return json({ error: 'You cannot add yourself' }, 400);
+      if (!friendCode) return reply({ error: 'Missing friendCode' }, 400);
+      if (friendCode === a.user.code) return reply({ error: 'You cannot add yourself' }, 400);
       const friend = hydrate(await loadUser(env, friendCode));
-      if (!friend) return json({ error: 'No user with that friend code' }, 404);
-      if ((a.user.friends || []).includes(friendCode)) return json({ ok: true, status: 'friends' });
+      if (!friend) return reply({ error: 'No user with that friend code' }, 404);
+      if ((a.user.friends || []).includes(friendCode)) return reply({ ok: true, status: 'friends' });
       const theyAsked = hasRequest(a.user.requestsIn, friendCode) || hasRequest(friend.requestsOut, a.user.code);
       if (theyAsked) {
         linkFriends(a.user, friend);
         clearRequestPair(a.user, friend);
         await saveUser(env, a.user);
         await saveUser(env, friend);
-        return json({ ok: true, status: 'friends' });
+        return reply({ ok: true, status: 'friends' });
       }
       if (hasRequest(a.user.requestsOut, friendCode)) {
         if (!hasRequest(friend.requestsIn, a.user.code)) {
@@ -601,46 +618,46 @@ export async function handleFriends(request, env) {
           friend.requestsIn = [{ code: a.user.code, name: a.user.name || 'Friend', ts: existing?.ts || Date.now() }, ...withoutCode(friend.requestsIn, a.user.code)];
           await saveUser(env, friend);
         }
-        return json({ ok: true, status: 'pending' });
+        return reply({ ok: true, status: 'pending' });
       }
-      if (cleanRequests(friend.requestsIn).length >= REQUEST_MAX) return json({ error: INBOX_FULL }, 409);
-      if (cleanRequests(a.user.requestsOut).length >= REQUEST_MAX) return json({ error: OUTBOX_FULL }, 409);
+      if (cleanRequests(friend.requestsIn).length >= REQUEST_MAX) return reply({ error: INBOX_FULL }, 409);
+      if (cleanRequests(a.user.requestsOut).length >= REQUEST_MAX) return reply({ error: OUTBOX_FULL }, 409);
       const ts = Date.now();
       a.user.requestsOut = [{ code: friend.code, name: friend.name || 'Friend', ts }, ...withoutCode(a.user.requestsOut, friend.code)];
       friend.requestsIn = [{ code: a.user.code, name: a.user.name || 'Friend', ts }, ...withoutCode(friend.requestsIn, a.user.code)];
       await saveUser(env, a.user);
       await saveUser(env, friend);
-      return json({ ok: true, status: 'pending' });
+      return reply({ ok: true, status: 'pending' });
     }
 
     if (url.pathname === '/friend/requests') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
-      return json({ incoming: cleanRequests(a.user.requestsIn), outgoing: cleanRequests(a.user.requestsOut) });
+      if (a.error) return reply({ error: a.error }, a.status);
+      return reply({ incoming: cleanRequests(a.user.requestsIn), outgoing: cleanRequests(a.user.requestsOut) });
     }
 
     if (url.pathname === '/friend/accept') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const friendCode = String(body?.friendCode || '').trim().toUpperCase();
-      if (!friendCode) return json({ error: 'Missing friendCode' }, 400);
-      if ((a.user.friends || []).includes(friendCode)) return json({ ok: true, status: 'friends' });
-      if (!hasRequest(a.user.requestsIn, friendCode)) return json({ error: 'Request not found' }, 404);
+      if (!friendCode) return reply({ error: 'Missing friendCode' }, 400);
+      if ((a.user.friends || []).includes(friendCode)) return reply({ ok: true, status: 'friends' });
+      if (!hasRequest(a.user.requestsIn, friendCode)) return reply({ error: 'Request not found' }, 404);
       const friend = hydrate(await loadUser(env, friendCode));
-      if (!friend) return json({ error: 'No user with that friend code' }, 404);
+      if (!friend) return reply({ error: 'No user with that friend code' }, 404);
       linkFriends(a.user, friend);
       clearRequestPair(a.user, friend);
       await saveUser(env, a.user);
       await saveUser(env, friend);
-      return json({ ok: true, status: 'friends' });
+      return reply({ ok: true, status: 'friends' });
     }
 
     if (url.pathname === '/friend/decline') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const friendCode = String(body?.friendCode || '').trim().toUpperCase();
-      if (!friendCode) return json({ error: 'Missing friendCode' }, 400);
-      if (!hasRequest(a.user.requestsIn, friendCode)) return json({ error: 'Request not found' }, 404);
+      if (!friendCode) return reply({ error: 'Missing friendCode' }, 400);
+      if (!hasRequest(a.user.requestsIn, friendCode)) return reply({ error: 'Request not found' }, 404);
       a.user.requestsIn = withoutCode(a.user.requestsIn, friendCode);
       await saveUser(env, a.user);
       const friend = hydrate(await loadUser(env, friendCode));
@@ -648,15 +665,15 @@ export async function handleFriends(request, env) {
         friend.requestsOut = withoutCode(friend.requestsOut, a.user.code);
         await saveUser(env, friend);
       }
-      return json({ ok: true });
+      return reply({ ok: true });
     }
 
     if (url.pathname === '/friend/cancel') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const friendCode = String(body?.friendCode || '').trim().toUpperCase();
-      if (!friendCode) return json({ error: 'Missing friendCode' }, 400);
-      if (!hasRequest(a.user.requestsOut, friendCode)) return json({ error: 'Request not found' }, 404);
+      if (!friendCode) return reply({ error: 'Missing friendCode' }, 400);
+      if (!hasRequest(a.user.requestsOut, friendCode)) return reply({ error: 'Request not found' }, 404);
       a.user.requestsOut = withoutCode(a.user.requestsOut, friendCode);
       await saveUser(env, a.user);
       const friend = hydrate(await loadUser(env, friendCode));
@@ -664,14 +681,14 @@ export async function handleFriends(request, env) {
         friend.requestsIn = withoutCode(friend.requestsIn, a.user.code);
         await saveUser(env, friend);
       }
-      return json({ ok: true });
+      return reply({ ok: true });
     }
 
     if (url.pathname === '/friend/remove') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const friendCode = String(body?.friendCode || '').trim().toUpperCase();
-      if (!friendCode) return json({ error: 'Missing friendCode' }, 400);
+      if (!friendCode) return reply({ error: 'Missing friendCode' }, 400);
       a.user.friends = (a.user.friends || []).filter((c) => c !== friendCode);
       a.user.requestsIn = withoutCode(a.user.requestsIn, friendCode);
       a.user.requestsOut = withoutCode(a.user.requestsOut, friendCode);
@@ -683,20 +700,20 @@ export async function handleFriends(request, env) {
         friend.requestsOut = withoutCode(friend.requestsOut, a.user.code);
         await saveUser(env, friend);
       }
-      return json({ ok: true });
+      return reply({ ok: true });
     }
 
     if (url.pathname === '/note/send') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const to = String(body?.to || '').trim().toUpperCase();
-      if (!to) return json({ error: 'Missing recipient code' }, 400);
-      if (to === a.user.code) return json({ error: 'You cannot send a note to yourself' }, 400);
-      if (!(a.user.friends || []).includes(to)) return json({ error: 'Add that person as a friend first' }, 403);
+      if (!to) return reply({ error: 'Missing recipient code' }, 400);
+      if (to === a.user.code) return reply({ error: 'You cannot send a note to yourself' }, 400);
+      if (!(a.user.friends || []).includes(to)) return reply({ error: 'Add that person as a friend first' }, 403);
       const friend = hydrate(await loadUser(env, to));
-      if (!friend) return json({ error: 'No user with that friend code' }, 404);
+      if (!friend) return reply({ error: 'No user with that friend code' }, 404);
       const text = String(body?.body ?? '').trim().slice(0, NOTE_BODY_MAX);
-      if (!text) return json({ error: 'Write the note first' }, 400);
+      if (!text) return reply({ error: 'Write the note first' }, 400);
       const note = {
         id: randomHex(8),
         from: a.user.code,
@@ -713,48 +730,48 @@ export async function handleFriends(request, env) {
       a.user.outbox = [note, ...(a.user.outbox || [])].slice(0, NOTE_BOX_MAX);
       await env.FRIENDS.put(`user:${friend.code}`, JSON.stringify(friend));
       await saveUser(env, a.user);
-      return json({ ok: true, id: note.id });
+      return reply({ ok: true, id: note.id });
     }
 
     if (url.pathname === '/notes') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
-      return json({ inbox: a.user.inbox || [], sent: a.user.outbox || [] });
+      if (a.error) return reply({ error: a.error }, a.status);
+      return reply({ inbox: a.user.inbox || [], sent: a.user.outbox || [] });
     }
 
     if (url.pathname === '/note/read') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const id = String(body?.id || '');
       const note = (a.user.inbox || []).find((n) => n.id === id);
-      if (!note) return json({ error: 'Note not found' }, 404);
+      if (!note) return reply({ error: 'Note not found' }, 404);
       if (!note.read) {
         note.read = true;
         await saveUser(env, a.user);
       }
-      return json({ ok: true });
+      return reply({ ok: true });
     }
 
     if (url.pathname === '/note/delete') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const id = String(body?.id || '');
       const box = body?.box === 'sent' ? 'outbox' : 'inbox';
       const before = (a.user[box] || []).length;
       a.user[box] = (a.user[box] || []).filter((n) => n.id !== id);
-      if (a.user[box].length === before) return json({ error: 'Note not found' }, 404);
+      if (a.user[box].length === before) return reply({ error: 'Note not found' }, 404);
       await saveUser(env, a.user);
-      return json({ ok: true });
+      return reply({ ok: true });
     }
 
     if (url.pathname === '/scores/submit') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const show = String(body?.show || '').toLowerCase();
-      if (!SHOWS.includes(show)) return json({ error: 'Unknown game' }, 400);
+      if (!SHOWS.includes(show)) return reply({ error: 'Unknown game' }, 400);
       const score = Math.floor(num(body?.score));
       const level = Math.min(5, Math.max(1, Math.floor(num(body?.level)) || 1));
-      if (score <= 0) return json({ ok: true, skipped: true });
+      if (score <= 0) return reply({ ok: true, skipped: true });
       const publicId = await ensurePublicId(env, a.user);
       await stampBoardId(env, a.user.code, publicId);
       const board = await loadBoard(env);
@@ -770,68 +787,68 @@ export async function handleFriends(request, env) {
         mine.id = publicId;
         await env.FRIENDS.put(BOARD_KEY, JSON.stringify(board));
       }
-      return json({ ok: true });
+      return reply({ ok: true });
     }
 
     if (url.pathname === '/room/create') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const show = String(body?.show || '').toLowerCase();
-      if (!SHOWS.includes(show)) return json({ error: 'Unknown game' }, 400);
+      if (!SHOWS.includes(show)) return reply({ error: 'Unknown game' }, 400);
       const level = Math.min(5, Math.max(1, Math.floor(num(body?.level)) || 1));
       let roomCode = null;
       for (let i = 0; i < 6 && !roomCode; i++) {
         const candidate = newRoomCode();
         if (!(await env.FRIENDS.get(`room:${candidate}`))) roomCode = candidate;
       }
-      if (!roomCode) return json({ error: 'Could not open a room' }, 500);
+      if (!roomCode) return reply({ error: 'Could not open a room' }, 500);
       const room = {
         room: roomCode, show, level, host: a.user.code, status: 'waiting',
         createdAt: Date.now(), startedAt: null,
         players: [{ code: a.user.code, name: a.user.name, score: 0, finished: false, updatedAt: Date.now() }],
       };
       await saveRoom(env, room);
-      return json(publicRoom(room));
+      return reply(publicRoom(room));
     }
 
     if (url.pathname === '/room/join') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const roomCode = String(body?.room || '').trim().toUpperCase();
       const room = await loadRoom(env, roomCode);
-      if (!room) return json({ error: 'No room with that code' }, 404);
-      if (room.players.some((p) => p.code === a.user.code)) return json(publicRoom(room));
+      if (!room) return reply({ error: 'No room with that code' }, 404);
+      if (room.players.some((p) => p.code === a.user.code)) return reply(publicRoom(room));
       const host = await loadUser(env, room.host);
       const areFriends = host && ((host.friends || []).includes(a.user.code) || (a.user.friends || []).includes(host.code));
-      if (!areFriends) return json({ error: 'Rooms are for friends — add the host as a friend first' }, 403);
-      if (room.status !== 'waiting') return json({ error: 'That room already started' }, 409);
-      if (room.players.length >= ROOM_MAX_PLAYERS) return json({ error: 'That room is full' }, 409);
+      if (!areFriends) return reply({ error: 'Rooms are for friends — add the host as a friend first' }, 403);
+      if (room.status !== 'waiting') return reply({ error: 'That room already started' }, 409);
+      if (room.players.length >= ROOM_MAX_PLAYERS) return reply({ error: 'That room is full' }, 409);
       room.players.push({ code: a.user.code, name: a.user.name, score: 0, finished: false, updatedAt: Date.now() });
       await saveRoom(env, room);
-      return json(publicRoom(room));
+      return reply(publicRoom(room));
     }
 
     if (url.pathname === '/room/start') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const room = await loadRoom(env, String(body?.room || '').trim().toUpperCase());
-      if (!room) return json({ error: 'No room with that code' }, 404);
-      if (room.host !== a.user.code) return json({ error: 'Only the host can start the room' }, 403);
-      if (room.status !== 'waiting') return json({ error: 'That room already started' }, 409);
-      if (room.players.length < 2) return json({ error: 'Wait for a friend to join first' }, 400);
+      if (!room) return reply({ error: 'No room with that code' }, 404);
+      if (room.host !== a.user.code) return reply({ error: 'Only the host can start the room' }, 403);
+      if (room.status !== 'waiting') return reply({ error: 'That room already started' }, 409);
+      if (room.players.length < 2) return reply({ error: 'Wait for a friend to join first' }, 400);
       room.status = 'active'; room.startedAt = Date.now();
       await saveRoom(env, room);
-      return json(publicRoom(room));
+      return reply(publicRoom(room));
     }
 
     if (url.pathname === '/room/score') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const room = await loadRoom(env, String(body?.room || '').trim().toUpperCase());
-      if (!room) return json({ error: 'No room with that code' }, 404);
-      if (room.status !== 'active') return json({ error: 'That room is not active' }, 409);
+      if (!room) return reply({ error: 'No room with that code' }, 404);
+      if (room.status !== 'active') return reply({ error: 'That room is not active' }, 409);
       const me = room.players.find((p) => p.code === a.user.code);
-      if (!me) return json({ error: 'You are not in that room' }, 403);
+      if (!me) return reply({ error: 'You are not in that room' }, 403);
       me.score = Math.max(me.score || 0, Math.floor(num(body?.score)));
       if (body?.finished) {
         me.score = Math.floor(num(body?.score));
@@ -840,42 +857,42 @@ export async function handleFriends(request, env) {
       me.updatedAt = Date.now();
       if (room.players.length > 0 && room.players.every((p) => p.finished)) room.status = 'done';
       await saveRoom(env, room);
-      return json(publicRoom(room));
+      return reply(publicRoom(room));
     }
 
     if (url.pathname === '/room/state') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const room = await loadRoom(env, String(body?.room || '').trim().toUpperCase());
-      if (!room) return json({ error: 'No room with that code' }, 404);
-      if (!room.players.some((p) => p.code === a.user.code)) return json({ error: 'You are not in that room' }, 403);
-      return json(publicRoom(room));
+      if (!room) return reply({ error: 'No room with that code' }, 404);
+      if (!room.players.some((p) => p.code === a.user.code)) return reply({ error: 'You are not in that room' }, 403);
+      return reply(publicRoom(room));
     }
 
     if (url.pathname === '/room/leave') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const roomCode = String(body?.room || '').trim().toUpperCase();
       const room = await loadRoom(env, roomCode);
-      if (!room) return json({ ok: true });
+      if (!room) return reply({ ok: true });
       room.players = room.players.filter((p) => p.code !== a.user.code);
-      if (!room.players.length) { await env.FRIENDS.delete(`room:${roomCode}`); return json({ ok: true }); }
+      if (!room.players.length) { await env.FRIENDS.delete(`room:${roomCode}`); return reply({ ok: true }); }
       if (room.host === a.user.code) room.host = room.players[0].code;
       await saveRoom(env, room);
-      return json(publicRoom(room));
+      return reply(publicRoom(room));
     }
 
     if (url.pathname === '/msg/send') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const to = String(body?.to || '').trim().toUpperCase();
-      if (!to) return json({ error: 'Missing recipient code' }, 400);
-      if (to === a.user.code) return json({ error: 'You cannot message yourself' }, 400);
-      if (!(a.user.friends || []).includes(to)) return json({ error: 'Add that person as a friend first' }, 403);
+      if (!to) return reply({ error: 'Missing recipient code' }, 400);
+      if (to === a.user.code) return reply({ error: 'You cannot message yourself' }, 400);
+      if (!(a.user.friends || []).includes(to)) return reply({ error: 'Add that person as a friend first' }, 403);
       const friend = hydrate(await loadUser(env, to));
-      if (!friend) return json({ error: 'No user with that friend code' }, 404);
+      if (!friend) return reply({ error: 'No user with that friend code' }, 404);
       const text = String(body?.body ?? '').trim().slice(0, 2000);
-      if (!text) return json({ error: 'Write the message first' }, 400);
+      if (!text) return reply({ error: 'Write the message first' }, 400);
       const msg = { id: randomHex(8), from: a.user.code, fromName: a.user.name, body: text, ts: Date.now(), read: false };
       a.user.threads = a.user.threads || {};
       friend.threads = friend.threads || {};
@@ -883,14 +900,14 @@ export async function handleFriends(request, env) {
       friend.threads[a.user.code] = [...(friend.threads[a.user.code] || []), msg].slice(-100);
       await env.FRIENDS.put(`user:${friend.code}`, JSON.stringify(friend));
       await saveUser(env, a.user);
-      return json({ ok: true, id: msg.id });
+      return reply({ ok: true, id: msg.id });
     }
 
     if (url.pathname === '/msg/thread') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const withCode = String(body?.with || '').trim().toUpperCase();
-      if (!(a.user.friends || []).includes(withCode)) return json({ error: 'You are not friends anymore, so this conversation is hidden.' }, 403);
+      if (!(a.user.friends || []).includes(withCode)) return reply({ error: 'You are not friends anymore, so this conversation is hidden.' }, 403);
       a.user.threads = a.user.threads || {};
       const thread = a.user.threads[withCode] || [];
       let changed = false;
@@ -905,20 +922,20 @@ export async function handleFriends(request, env) {
           await env.FRIENDS.put(`user:${friend.code}`, JSON.stringify(friend));
         }
       }
-      return json({ with: withCode, messages: thread.slice(-60) });
+      return reply({ with: withCode, messages: thread.slice(-60) });
     }
 
     if (url.pathname === '/shared/create') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const to = String(body?.to || '').trim().toUpperCase();
-      if (!to) return json({ error: 'Missing friend code' }, 400);
-      if (to === a.user.code) return json({ error: 'Pick a friend to write with' }, 400);
-      if (!(a.user.friends || []).includes(to)) return json({ error: 'Add that person as a friend first' }, 403);
+      if (!to) return reply({ error: 'Missing friend code' }, 400);
+      if (to === a.user.code) return reply({ error: 'Pick a friend to write with' }, 400);
+      if (!(a.user.friends || []).includes(to)) return reply({ error: 'Add that person as a friend first' }, 403);
       const friend = hydrate(await loadUser(env, to));
-      if (!friend) return json({ error: 'No user with that friend code' }, 404);
+      if (!friend) return reply({ error: 'No user with that friend code' }, 404);
       const text = String(body?.body ?? '').trim().slice(0, NOTE_BODY_MAX);
-      if (!text) return json({ error: 'Write the first line together first' }, 400);
+      if (!text) return reply({ error: 'Write the first line together first' }, 400);
       const id = randomHex(8);
       const note = {
         id, owner: a.user.code, ownerName: a.user.name,
@@ -932,12 +949,12 @@ export async function handleFriends(request, env) {
       friend.shared = [id, ...(friend.shared || [])].slice(0, 30);
       await env.FRIENDS.put(`user:${friend.code}`, JSON.stringify(friend));
       await saveUser(env, a.user);
-      return json(note);
+      return reply(note);
     }
 
     if (url.pathname === '/shared/list') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const out = [];
       for (const id of a.user.shared || []) {
         try {
@@ -949,72 +966,72 @@ export async function handleFriends(request, env) {
         } catch { /* skip broken entries */ }
       }
       out.sort((x, y) => (y.updatedAt || 0) - (x.updatedAt || 0));
-      return json({ notes: out });
+      return reply({ notes: out });
     }
 
     if (url.pathname === '/shared/get') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const id = String(body?.id || '');
       const raw = await env.FRIENDS.get(`shared:${id}`);
-      if (!raw) return json({ error: 'Shared note not found' }, 404);
+      if (!raw) return reply({ error: 'Shared note not found' }, 404);
       const note = JSON.parse(raw);
-      if (!(note.editors || []).includes(a.user.code)) return json({ error: 'That note is not shared with you' }, 403);
-      return json(note);
+      if (!(note.editors || []).includes(a.user.code)) return reply({ error: 'That note is not shared with you' }, 403);
+      return reply(note);
     }
 
     if (url.pathname === '/shared/update') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const id = String(body?.id || '');
       const raw = await env.FRIENDS.get(`shared:${id}`);
-      if (!raw) return json({ error: 'Shared note not found' }, 404);
+      if (!raw) return reply({ error: 'Shared note not found' }, 404);
       const note = JSON.parse(raw);
-      if (!(note.editors || []).includes(a.user.code)) return json({ error: 'That note is not shared with you' }, 403);
+      if (!(note.editors || []).includes(a.user.code)) return reply({ error: 'That note is not shared with you' }, 403);
       const text = String(body?.body ?? '').trim().slice(0, NOTE_BODY_MAX);
-      if (!text) return json({ error: 'The note cannot be empty' }, 400);
+      if (!text) return reply({ error: 'The note cannot be empty' }, 400);
       note.title = String(body?.title ?? note.title ?? '').trim().slice(0, NOTE_TITLE_MAX);
       note.body = text;
       note.updatedAt = Date.now();
       note.updatedBy = a.user.code;
       note.updatedByName = a.user.name;
       await env.FRIENDS.put(`shared:${id}`, JSON.stringify(note));
-      return json(note);
+      return reply(note);
     }
 
     if (url.pathname === '/shared/delete') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const id = String(body?.id || '');
       const raw = await env.FRIENDS.get(`shared:${id}`);
-      if (!raw) return json({ error: 'Shared note not found' }, 404);
+      if (!raw) return reply({ error: 'Shared note not found' }, 404);
       const note = JSON.parse(raw);
-      if (!(note.editors || []).includes(a.user.code)) return json({ error: 'That note is not shared with you' }, 403);
+      if (!(note.editors || []).includes(a.user.code)) return reply({ error: 'That note is not shared with you' }, 403);
       await env.FRIENDS.delete(`shared:${id}`);
       for (const code of note.editors || []) {
         const u = hydrate(await loadUser(env, code));
         if (u) { u.shared = (u.shared || []).filter((x) => x !== id); await env.FRIENDS.put(`user:${u.code}`, JSON.stringify(u)); }
       }
-      return json({ ok: true });
+      return reply({ ok: true });
     }
 
     if (url.pathname === '/verse/send') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const friend = await friendsBothWays(env, a.user, body?.to);
-      if (!friend) return json({ error: 'You can only send a verse to an accepted friend' }, 403);
-      if (!(await takeRate(env, `rate:verse:${a.user.code}`, VERSE_RATE))) return json({ error: 'Too many verses this hour' }, 429);
+      if (!friend) return reply({ error: 'You can only send a verse to an accepted friend' }, 403);
+      if (!(await takeRate(env, `rate:verse:${a.user.code}`, VERSE_RATE))) return reply({ error: 'Too many verses this hour' }, 429);
       const text = boundedText(body?.text, VERSE_TEXT_MAX);
-      if (text.error) return json({ error: 'That verse is too long' }, 400);
-      if (!text.text) return json({ error: 'Missing verse text' }, 400);
+      if (text.error) return reply({ error: 'That verse is too long' }, 400);
+      if (!text.text) return reply({ error: 'Missing verse text' }, 400);
       const note = boundedText(body?.note, VERSE_NOTE_MAX);
-      if (note.error) return json({ error: 'That note is too long' }, 400);
+      if (note.error) return reply({ error: 'That note is too long' }, 400);
       const reference = boundedText(body?.reference, VERSE_REF_MAX);
-      if (reference.error) return json({ error: 'That reference is too long' }, 400);
-      const book = Math.floor(Number(body?.book));
-      const chapter = Math.floor(Number(body?.chapter));
-      const verse = Math.floor(Number(body?.verse));
-      if (book < 1 || book > 78 || chapter < 1 || chapter > 200 || verse < 1 || verse > 200) return json({ error: 'That verse is not in this Bible' }, 400);
+      if (reference.error) return reply({ error: 'That reference is too long' }, 400);
+      const book = verseNumber(body?.book, 1, 78);
+      const chapter = verseNumber(body?.chapter, 1, 200);
+      const verse = verseNumber(body?.verse, 1, 200);
+      if (book == null || chapter == null || verse == null) return reply({ error: 'That verse is not in this Bible' }, 400);
       const translation = body?.translation === 'rvr' ? 'rvr' : 'kjv';
       const id = randomHex(8);
       const ts = Date.now();
@@ -1028,16 +1045,16 @@ export async function handleFriends(request, env) {
       friendBox.unshift({ ...base, read: false, direction: 'in' });
       await saveVersebox(env, a.user.code, senderBox);
       await saveVersebox(env, friend.code, friendBox);
-      return json({ ok: true, id });
+      return reply({ ok: true, id });
     }
 
     if (url.pathname === '/verse/inbox' || url.pathname === '/verse/thread') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const withCode = String(body?.with || '').trim().toUpperCase();
       if (url.pathname === '/verse/thread') {
         const friend = await friendsBothWays(env, a.user, withCode);
-        if (!friend) return json({ error: 'You are not friends' }, 403);
+        if (!friend) return reply({ error: 'You are not friends' }, 403);
       }
       const box = await loadVersebox(env, a.user.code);
       const verses = [];
@@ -1048,45 +1065,47 @@ export async function handleFriends(request, env) {
         if (withCode && other !== withCode) continue;
         verses.push(item);
       }
-      return json({ verses });
+      return reply({ verses });
     }
 
     if (url.pathname === '/verse/read') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:verse-read:${a.user.code}`, VERSE_READ_RATE))) return reply({ error: 'Too many verse reads this hour' }, 429);
       const id = String(body?.id || '');
       const box = await loadVersebox(env, a.user.code);
       const item = box.find((row) => row && row.id === id);
-      if (!item) return json({ error: 'Verse not found' }, 404);
+      if (!item) return reply({ error: 'Verse not found' }, 404);
       const friend = await friendsBothWays(env, a.user, otherParty(item, a.user.code));
-      if (!friend) return json({ error: 'You are not friends' }, 403);
+      if (!friend) return reply({ error: 'You are not friends' }, 403);
       item.read = true;
       await saveVersebox(env, a.user.code, box);
-      return json({ ok: true });
+      return reply({ ok: true });
     }
 
     if (url.pathname === '/study/get' || url.pathname === '/study/add' || url.pathname === '/study/delete') {
       const a = await authed(env, body);
-      if (a.error) return json({ error: a.error }, a.status);
+      if (a.error) return reply({ error: a.error }, a.status);
       const friend = await friendsBothWays(env, a.user, body?.with);
-      if (!friend) return json({ error: 'You are not friends' }, 403);
+      if (!friend) return reply({ error: 'You are not friends' }, 403);
       const note = await loadStudy(env, a.user.code, friend.code);
-      if (url.pathname === '/study/get') return json(note);
+      if (url.pathname === '/study/get') return reply(note);
       if (url.pathname === '/study/delete') {
+        if (!(await takeRate(env, `rate:study-delete:${a.user.code}`, STUDY_DELETE_RATE))) return reply({ error: 'Too many study deletes this hour' }, 429);
         const entryId = String(body?.entryId || '');
         note.entries = (note.entries || []).filter((entry) => entry.id !== entryId);
         note.updatedAt = Date.now();
         await env.FRIENDS.put(note.id, JSON.stringify(note));
-        return json(note);
+        return reply(note);
       }
-      if (!(await takeRate(env, `rate:study:${a.user.code}`, STUDY_RATE))) return json({ error: 'Too many study writes this hour' }, 429);
+      if (!(await takeRate(env, `rate:study:${a.user.code}`, STUDY_RATE))) return reply({ error: 'Too many study writes this hour' }, 429);
       const question = boundedText(body?.question, STUDY_QUESTION_MAX);
-      if (question.error) return json({ error: 'That question is too long' }, 400);
-      if (!question.text) return json({ error: 'Write a question first' }, 400);
+      if (question.error) return reply({ error: 'That question is too long' }, 400);
+      if (!question.text) return reply({ error: 'Write a question first' }, 400);
       const answer = boundedText(body?.answer, STUDY_ANSWER_MAX);
-      if (answer.error) return json({ error: 'That answer is too long' }, 400);
+      if (answer.error) return reply({ error: 'That answer is too long' }, 400);
       const verses = cleanStudyVerses(body?.verses);
-      if (verses.error) return json({ error: verses.error }, 400);
+      if (verses.error) return reply({ error: verses.error }, 400);
       const requested = String(body?.entryId || '');
       const entryId = /^[a-f0-9]{8,16}$/.test(requested) ? requested : randomHex(8);
       const now = Date.now();
@@ -1099,7 +1118,7 @@ export async function handleFriends(request, env) {
         existing.updatedByName = a.user.name || 'Friend';
         existing.ts = now;
       } else {
-        if ((note.entries || []).length >= STUDY_ENTRIES_MAX) return json({ error: 'This notebook is full' }, 400);
+        if ((note.entries || []).length >= STUDY_ENTRIES_MAX) return reply({ error: 'This notebook is full' }, 400);
         note.entries.unshift({
           id: entryId, question: question.text, answer: answer.text, verses: verses.verses,
           author: a.user.code, authorName: a.user.name || 'Friend',
@@ -1108,12 +1127,12 @@ export async function handleFriends(request, env) {
       }
       note.updatedAt = now;
       await env.FRIENDS.put(note.id, JSON.stringify(note));
-      return json(note);
+      return reply(note);
     }
 
-    return json({ error: 'Not found' }, 404);
+    return reply({ error: 'Not found' }, 404);
   } catch {
-    return json({ error: 'Server error' }, 500);
+    return reply({ error: 'Server error' }, 500);
   }
 }
 
