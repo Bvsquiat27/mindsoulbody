@@ -123,9 +123,27 @@ test('Holy Spirit answers are not always first, in the same order in both langua
   assert.equal(positions.every((n) => n === 0), false);
 });
 
+test('study together notebook names verses and keeps the worker payload', () => {
+  const bridge = read('bridge.js');
+  const i18n = read('i18n.js');
+  const css = read('study-design.css');
+  assert.match(bridge, /data-study-friend/);
+  assert.match(bridge, /What did we wonder about today\?/);
+  assert.match(bridge, /study-entry-new/);
+  assert.match(bridge, /\/study\/delete/);
+  assert.match(bridge, /name="book"/);
+  assert.equal(bridge.includes('inputmode="numeric"'), false);
+  assert.match(i18n, /¿Qué nos preguntamos hoy\?/);
+  assert.match(i18n, /"today": "hoy"/);
+  assert.match(css, /prefers-reduced-motion/);
+  assert.match(css, /var\(--serif\)/);
+  assert.match(css, /var\(--teal\)/);
+  assert.equal(/#[0-9a-fA-F]{3,8}/.test(css.slice(css.indexOf('.study-notebook'))), false);
+});
+
 test('service worker refreshes Bible caches and only deletes this app', () => {
   const sw = read('sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v77'/);
+  assert.match(sw, /const CACHE_VERSION = 'v78'/);
   assert.match(sw, /const BIBLE_DATA_VERSION = 'kjv-2'/);
   assert.match(sw, /const RVR_DATA_VERSION = 'rvr1909-3'/);
   assert.match(sw, /function freshOrCached/);
