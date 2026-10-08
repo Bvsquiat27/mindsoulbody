@@ -286,12 +286,7 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .bible-offline .primary{min-height:44px}
 .daily-stack.orthodox-day{min-height:0;padding-bottom:28px}
 .daily-stack.orthodox-day h2{font-size:clamp(26px,3.4vw,42px);line-height:1.12;margin:12px 0 8px;max-width:18em}
-.orthodox-titles,.orthodox-note,.orthodox-empty{color:var(--ink-soft,var(--muted));line-height:1.45}
-.orthodox-kicker{margin:16px 0 8px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}
-.orthodox-meta{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
-.orthodox-meta span{border:1px solid color-mix(in srgb,var(--text) 35%,transparent);border-radius:999px;padding:6px 10px;font-size:13px;font-weight:700}
-.orthodox-saints{margin:0;padding-left:1.2em}
-.orthodox-saints li{margin:4px 0}
+.orthodox-note{color:var(--ink-soft,var(--muted));line-height:1.45}
 .orthodox-readings{display:grid;gap:8px}
 .orthodox-reading{min-height:44px;width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left}
 .orthodox-reading .eyebrow{display:block;margin-bottom:2px}
