@@ -6,11 +6,13 @@
    tied to CACHE_VERSION, so an app update does not wipe downloaded books.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v73';
+const CACHE_VERSION = 'v74';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-1';
 const BIBLE_CACHE = `msb-bible-${BIBLE_DATA_VERSION}`;
+const RVR_DATA_VERSION = 'rvr1909-1';
+const RVR_CACHE = `msb-bible-${RVR_DATA_VERSION}`;
 
 const SHELL = [
   './',
@@ -29,11 +31,17 @@ const SHELL = [
   './prayers.js',
   './orthodox-day.js',
   './study-tools.js',
+  './achievements-rules.js',
+  './i18n.js',
+  './moments.js',
+  './stories.js',
+  './bridge.js',
   './audio/still-waters.ogg',
   './audio/still-waters.mp3',
 ];
 
 const isBibleBook = (url) => /\/bible\/(?:index|\d\d)\.json$/.test(url.pathname);
+const isRvrBook = (url) => /\/bible\/rvr\/(?:index|\d\d)\.json$/.test(url.pathname);
 const isFatherNotes = (url) => /\/bible\/fathers\/\d\d\.json$/.test(url.pathname);
 const isStudyNotes = (url) => url.pathname.endsWith('/study-notes.json');
 const isDataRequest = (url) => url.pathname.includes('/data/');
@@ -54,6 +62,20 @@ async function preserveBibleBooks(keys) {
   }
 }
 
+async function preserveRvrBooks(keys) {
+  const bible = await caches.open(RVR_CACHE);
+  for (const key of keys) {
+    if (key === RVR_CACHE) continue;
+    const cache = await caches.open(key);
+    const requests = await cache.keys();
+    for (const request of requests) {
+      if (!isRvrBook(new URL(request.url))) continue;
+      const hit = await cache.match(request);
+      if (hit) await bible.put(request, hit.clone());
+    }
+  }
+}
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(SHELL_CACHE)
@@ -67,8 +89,9 @@ self.addEventListener('activate', (event) => {
     caches.keys()
       .then(async (keys) => {
         await preserveBibleBooks(keys);
+        await preserveRvrBooks(keys);
         await Promise.all(
-          keys.filter((k) => k !== SHELL_CACHE && k !== DATA_CACHE && k !== BIBLE_CACHE)
+          keys.filter((k) => k !== SHELL_CACHE && k !== DATA_CACHE && k !== BIBLE_CACHE && k !== RVR_CACHE)
             .map((k) => caches.delete(k))
         );
       })
@@ -93,6 +116,16 @@ self.addEventListener('fetch', (event) => {
           return res;
         })
         .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  if (isRvrBook(url)) {
+    event.respondWith(
+      caches.open(RVR_CACHE).then((cache) => cache.match(request).then((hit) => hit || fetch(request).then((res) => {
+        if (res.ok) cache.put(request, res.clone());
+        return res;
+      })))
     );
     return;
   }

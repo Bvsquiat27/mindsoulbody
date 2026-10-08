@@ -24,10 +24,10 @@ function memoryKv() {
   };
 }
 
-function call(kv, path, body, method = 'POST') {
+function call(kv, path, body, method = 'POST', origin = 'https://bvsquiat27.github.io') {
   const request = new Request(`https://friends.test${path}`, {
     method,
-    headers: { 'content-type': 'application/json', origin: 'https://bvsquiat27.github.io' },
+    headers: { 'content-type': 'application/json', origin },
     body: method === 'GET' || method === 'OPTIONS' ? undefined : JSON.stringify(body ?? {})
   });
   return handleFriends(request, { FRIENDS: kv });
@@ -801,4 +801,111 @@ test('a message thread is hidden after the two people are no longer friends', as
   assert.equal(other.text.includes('Remember the verse'), false);
   const stored = await kv.get(`user:${angel.code}`, 'json');
   assert.equal(stored.threads[mary.code][0].body, 'Remember the verse');
+});
+
+async function befriend(kv, left, right) {
+  await call(kv, '/friend/add', { code: left.code, secret: left.secret, friendCode: right.code });
+  await call(kv, '/friend/accept', { code: right.code, secret: right.secret, friendCode: left.code });
+}
+
+test('accepted friends can send a verse, and a stranger or an unfriended person cannot', async () => {
+  const kv = memoryKv();
+  const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
+  await befriend(kv, mary, angel);
+  const stranger = await read(await call(kv, '/verse/send', {
+    code: ruth.code, secret: ruth.secret, to: mary.code,
+    book: 43, chapter: 1, verse: 1, reference: 'John 1:1', text: 'In the beginning was the Word', note: 'hello'
+  }));
+  assert.equal(stranger.status, 403);
+  const tooLong = await read(await call(kv, '/verse/send', {
+    code: mary.code, secret: mary.secret, to: angel.code,
+    book: 43, chapter: 1, verse: 1, reference: 'John 1:1', text: 'In the beginning was the Word', note: 'n'.repeat(281)
+  }));
+  assert.equal(tooLong.status, 400);
+  const sent = await read(await call(kv, '/verse/send', {
+    code: mary.code, secret: mary.secret, to: angel.code,
+    book: 43, chapter: 1, verse: 1, reference: 'John 1:1', text: 'In the beginning was the Word', note: 'for your morning', translation: 'kjv'
+  }));
+  assert.equal(sent.status, 200);
+  assert.match(sent.data.id, /^[a-f0-9]{16}$/);
+  const inbox = await read(await call(kv, '/verse/inbox', { code: angel.code, secret: angel.secret }));
+  assert.equal(inbox.status, 200);
+  assert.equal(inbox.data.verses.length, 1);
+  assert.equal(inbox.data.verses[0].text, 'In the beginning was the Word');
+  assert.equal(inbox.data.verses[0].note, 'for your morning');
+  assert.equal(inbox.data.verses[0].direction, 'in');
+  assert.equal(inbox.data.verses[0].read, false);
+  const thread = await read(await call(kv, '/verse/thread', { code: mary.code, secret: mary.secret, with: angel.code }));
+  assert.equal(thread.data.verses[0].direction, 'out');
+  const user = await kv.get(`user:${angel.code}`, 'json');
+  assert.equal(JSON.stringify(user).includes('In the beginning was the Word'), false);
+  await call(kv, '/friend/remove', { code: mary.code, secret: mary.secret, friendCode: angel.code });
+  const blocked = await read(await call(kv, '/verse/send', {
+    code: mary.code, secret: mary.secret, to: angel.code,
+    book: 43, chapter: 1, verse: 1, reference: 'John 1:1', text: 'should not arrive', note: ''
+  }));
+  assert.equal(blocked.status, 403);
+  const hidden = await read(await call(kv, '/verse/inbox', { code: angel.code, secret: angel.secret }));
+  assert.equal(hidden.status, 200);
+  assert.deepEqual(hidden.data.verses, []);
+  assert.equal(hidden.text.includes('In the beginning was the Word'), false);
+  const deniedRead = await read(await call(kv, '/verse/read', { code: angel.code, secret: angel.secret, id: sent.data.id }));
+  assert.equal(deniedRead.status, 403);
+});
+
+test('verse sends are limited to 30 an hour', async () => {
+  const kv = memoryKv();
+  const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  await befriend(kv, mary, angel);
+  for (let i = 0; i < 30; i++) {
+    const ok = await read(await call(kv, '/verse/send', {
+      code: mary.code, secret: mary.secret, to: angel.code,
+      book: 19, chapter: 23, verse: 1, reference: 'Psalm 23:1', text: `line ${i}`, note: ''
+    }));
+    assert.equal(ok.status, 200);
+  }
+  const limited = await read(await call(kv, '/verse/send', {
+    code: mary.code, secret: mary.secret, to: angel.code,
+    book: 19, chapter: 23, verse: 1, reference: 'Psalm 23:1', text: 'one more', note: ''
+  }));
+  assert.equal(limited.status, 429);
+});
+
+test('a study notebook is private to the two friends and stays off the scoreboard', async () => {
+  const kv = memoryKv();
+  const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
+  await befriend(kv, mary, angel);
+  const question = 'What does the morning verse ask of us?';
+  const added = await read(await call(kv, '/study/add', {
+    code: mary.code, secret: mary.secret, with: angel.code, entryId: 'abc12345',
+    question, answer: 'To look up.', verses: [{ book: 19, chapter: 5, verse: 3, reference: 'Psalm 5:3' }]
+  }));
+  assert.equal(added.status, 200);
+  assert.equal(added.data.entries[0].id, 'abc12345');
+  assert.equal(added.data.entries[0].question, question);
+  const edited = await read(await call(kv, '/study/add', {
+    code: angel.code, secret: angel.secret, with: mary.code, entryId: 'abc12345',
+    question, answer: 'To look up, and to wait.', verses: [{ book: 19, chapter: 5, verse: 3, reference: 'Psalm 5:3' }]
+  }));
+  assert.equal(edited.status, 200);
+  assert.equal(edited.data.entries.length, 1);
+  assert.equal(edited.data.entries[0].answer, 'To look up, and to wait.');
+  assert.equal(edited.data.entries[0].updatedBy, angel.code);
+  const peek = await read(await call(kv, '/study/get', { code: ruth.code, secret: ruth.secret, with: mary.code }));
+  assert.equal(peek.status, 403);
+  assert.equal(peek.text.includes(question), false);
+  const scores = await read(await call(kv, '/scores', {}, 'GET'));
+  assert.equal(scores.status, 200);
+  assert.equal(scores.text.includes(question), false);
+  await call(kv, '/friend/remove', { code: mary.code, secret: mary.secret, friendCode: angel.code });
+  const closed = await read(await call(kv, '/study/get', { code: angel.code, secret: angel.secret, with: mary.code }));
+  assert.equal(closed.status, 403);
+  assert.equal(closed.text.includes(question), false);
+  const local = await read(await call(kv, '/verse/inbox', { code: mary.code, secret: mary.secret }, 'POST', 'http://127.0.0.1:8787'));
+  assert.equal(local.headers.get('access-control-allow-origin'), 'http://127.0.0.1:8787');
 });

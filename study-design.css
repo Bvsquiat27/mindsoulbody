@@ -350,3 +350,31 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .home-tools h2{margin:8px 0}
 .bible-note-filters{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 .bible-note-filters .filter{min-height:44px}
+.games-front{display:grid;grid-template-columns:1fr;gap:14px;margin:8px 0 28px}
+.games-front .challenge-card{min-height:168px;width:100%}
+.games-front .challenge-card h3{font-size:clamp(26px,7vw,34px);line-height:1.1}
+.games-front .challenge-card,.lang-toggle button,.moment-card button,.story-card,.story-actions button,.verse-mail,.study-entry .secondary,.study-verse-row input{min-height:44px}
+@media(min-width:900px){.games-front{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.lang-toggle{display:flex;flex-wrap:wrap;gap:8px}
+.lang-toggle button.selected{background:var(--teal);color:var(--on-accent,#04221f);border-color:var(--teal)}
+.moment-card{margin:0 0 16px}
+.moment-verse{font-family:var(--serif,Georgia,serif);font-size:clamp(22px,4vw,30px);line-height:1.35;margin:8px 0}
+.moment-prayer{font-size:1.05rem;line-height:1.5}
+.story-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:720px){.story-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.story-card{display:grid;gap:8px;text-align:left;color:var(--text)}
+.story-art{width:100%;height:auto;color:var(--teal)}
+.story-title{font-size:clamp(32px,6vw,48px);line-height:1.1}
+.story-body{font-size:clamp(22px,3.4vw,28px);line-height:1.45}
+.story-actions{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.verse-mail-list{display:grid;gap:10px}
+.verse-mail{display:grid;gap:6px;width:100%;text-align:left;padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--surface);color:var(--text)}
+.verse-mail-new{outline:2px solid var(--teal)}
+.verse-send-text{font-family:var(--serif,Georgia,serif);font-size:1.25rem;line-height:1.4}
+.study-entry{margin:0 0 12px}
+.study-verse-row{display:flex;flex-wrap:wrap;gap:8px}
+.study-verse-row label{display:grid;gap:4px;font-size:13px;font-weight:700}
+.study-verse-row input{width:88px;border-radius:12px;border:1px solid var(--line);background:var(--app-input,var(--surface));color:var(--text);padding:8px 10px}
+.bible-translation-note{color:var(--muted);margin:6px 0}
+.bible-controls{display:grid;gap:10px}
+.bible-controls select{min-height:44px}
