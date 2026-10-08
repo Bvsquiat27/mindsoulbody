@@ -9,7 +9,7 @@
 // built without that field.
 
 const SHOWS = ['jeopardy', 'millionaire', 'feud', 'sound', 'babel', 'defend', 'doctrine'];
-const TEXT_LIMITS = { handle: 24, city: 80, bio: 160 };
+const TEXT_LIMITS = { handle: 24, city: 80, bio: 160, denomination: 40 };
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const SECRET_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 const IMAGE_DATA = /^data:image\/(?:jpeg|png|webp);base64,[a-z0-9+/]+={0,2}$/i;
@@ -139,7 +139,7 @@ function applyImage(user, body, nested, storedKey, aliases) {
 
 function applyProfile(user, body) {
   const nested = body && body.profile && typeof body.profile === 'object' && !Array.isArray(body.profile) ? body.profile : null;
-  for (const key of ['handle', 'city', 'bio']) applyText(user, body, nested, key);
+  for (const key of ['handle', 'city', 'bio', 'denomination']) applyText(user, body, nested, key);
   applyImage(user, body, nested, 'avatar_data', ['avatar_data', 'avatar', 'avatarUrl']);
   applyImage(user, body, nested, 'cover_data', ['cover_data', 'cover', 'coverUrl']);
   delete user.avatar_saint;
@@ -203,7 +203,7 @@ function friendView(user, unread = 0) {
     unread
   };
   const profile = {};
-  for (const key of ['handle', 'city', 'bio', 'avatar_data', 'cover_data']) {
+  for (const key of ['handle', 'city', 'bio', 'denomination', 'avatar_data', 'cover_data']) {
     if (typeof user[key] === 'string' && user[key]) {
       view[key] = user[key];
       profile[key] = user[key];
