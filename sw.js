@@ -11,12 +11,12 @@
    deleted, so another app on the same origin keeps its own caches.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v76';
+const CACHE_VERSION = 'v77';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-2';
 const BIBLE_CACHE = `msb-bible-${BIBLE_DATA_VERSION}`;
-const RVR_DATA_VERSION = 'rvr1909-2';
+const RVR_DATA_VERSION = 'rvr1909-3';
 const RVR_CACHE = `msb-bible-${RVR_DATA_VERSION}`;
 const APP_CACHE_PREFIX = 'msb-';
 const STORIES_CACHE = 'msb-stories-1';

@@ -214,7 +214,7 @@
     const me = id();
     if (!me) { toast('Get a friend code on your profile first.'); return; }
     const withCode = document.getElementById('study-with')?.value || studyFriend;
-    if (!withCode) { toast('Add a friend first — then you can send a verse.'); return; }
+    if (!withCode) { toast('Add someone first, then you can write together.'); return; }
     studyFriend = withCode;
     const data = new FormData(form);
     const question = String(data.get('question') || '').trim();
@@ -223,7 +223,7 @@
     const book = Math.floor(Number(data.get('book')));
     const chapter = Math.floor(Number(data.get('chapter')));
     const verse = Math.floor(Number(data.get('verse')));
-    const verses = book >= 1 && chapter >= 1 && verse >= 1 ? [{ book, chapter, verse, reference: `${book} ${chapter}:${verse}` }] : [];
+    const verses = book >= 1 && chapter >= 1 && verse >= 1 ? [{ book, chapter, verse, reference: `${window.msbBookLabel ? msbBookLabel(book) : book} ${chapter}:${verse}` }] : [];
     const entryId = String(data.get('entryId') || '') || Math.random().toString(16).slice(2, 10);
     const key = pairKey(me.code, withCode);
     const note = notebookOf(key);

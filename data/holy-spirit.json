@@ -11,8 +11,8 @@
       "summary": "The Spirit who filled the room in Acts 2 gathered a people, not only a feeling.",
       "summaryEs": "El Espíritu que llenó el cuarto en Hechos 2 reunió un pueblo, no solo un sentimiento.",
       "source": "King James Version (public domain) · Acts 2",
-      "sourceEs": "Reina-Valera 1909 (public domain) · Hechos 2",
-      "sourceUrl": "https://www.newadvent.org/fathers/220129.htm",
+      "sourceEs": "Reina-Valera 1909 (dominio público) · Hechos 2",
+      "sourceUrl": "",
       "lessons": [
         {
           "heading": "A sound, a fire, a people",
@@ -26,7 +26,7 @@
       "lessonsEs": [
         {
           "heading": "Un sonido, un fuego, un pueblo",
-          "body": "El día de Pentecostés los amigos de Jesús estaban juntos. “Y de repente vino un estruendo del cielo como de un viento recio que corría, el cual hinchió toda la casa donde estaban sentados” (Hechos 2:2, RVR1909). El Espíritu Santo no era un ánimo privado. Llenó la casa, y las personas de adentro se volvieron testigos.\n\nPedro se levantó y le habló a la multitud de Jesús. No dijo: “Ve y ten tu experiencia, y guárdatela.” Dijo: “Arrepentíos, y bautícese cada uno de vosotros en el nombre de Jesucristo para perdón de los pecados; y recibiréis el don del Espíritu Santo” (Hechos 2:38). El don y el pueblo perdonado van juntos. Ese día la Iglesia nació a la vista, con la Escritura, el bautismo y una vida compartida."
+          "body": "El día de Pentecostés los amigos de Jesús estaban juntos. “Y de repente vino un estruendo del cielo como de un viento recio que corría, el cual hinchió toda la casa donde estaban sentados” (Hechos 2:2, RVR1909). El Espíritu Santo no era una emoción privada. Llenó la casa, y los que estaban adentro se volvieron testigos.\n\nPedro se levantó y le habló de Jesús a la multitud. No dijo: “Ve y ten tu experiencia, y guárdatela.” Dijo: “Arrepentíos, y bautícese cada uno de vosotros en el nombre de Jesucristo para perdón de los pecados; y recibiréis el don del Espíritu Santo” (Hechos 2:38). El don y el pueblo perdonado van juntos. Ese día la Iglesia nació a la vista, con la Escritura, el bautismo y una vida compartida."
         },
         {
           "heading": "Lo que hicieron después",
@@ -37,22 +37,22 @@
         {
           "prompt": "In Acts 2:38, what does Peter join to the gift of the Holy Spirit?",
           "choices": [
-            "Repentance and baptism in the name of Jesus",
             "A private experience with no one else",
-            "Silence about Jesus"
+            "Silence about Jesus",
+            "Repentance and baptism in the name of Jesus"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "Peter tells them to repent and be baptized in the name of Jesus Christ, and then they will receive the gift of the Holy Spirit.",
           "explanationEs": "Pedro les dice que se arrepientan y se bauticen en el nombre de Jesucristo, y entonces recibirán el don del Espíritu Santo."
         },
         {
           "prompt": "After Pentecost, what did the believers continue in?",
           "choices": [
+            "Nothing in common",
             "The apostles’ teaching, fellowship, the breaking of bread, and prayers",
-            "Only loud meetings",
-            "Nothing in common"
+            "Only loud meetings"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Acts 2:42 names teaching, fellowship, the breaking of bread, and prayers.",
           "explanationEs": "Hechos 2:42 nombra la doctrina, la comunión, el partimiento del pan y las oraciones."
         }
@@ -61,22 +61,22 @@
         {
           "prompt": "En Hechos 2:38, ¿qué une Pedro al don del Espíritu Santo?",
           "choices": [
-            "El arrepentimiento y el bautismo en el nombre de Jesús",
             "Una experiencia privada, sin nadie más",
-            "El silencio acerca de Jesús"
+            "El silencio acerca de Jesús",
+            "El arrepentimiento y el bautismo en el nombre de Jesús"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "Pedro les dice que se arrepientan y se bauticen en el nombre de Jesucristo, y entonces recibirán el don.",
           "explanationEs": "Pedro les dice que se arrepientan y se bauticen en el nombre de Jesucristo, y entonces recibirán el don."
         },
         {
           "prompt": "Después de Pentecostés, ¿en qué perseveraban?",
           "choices": [
-            "La enseñanza de los apóstoles, la comunión, el pan y las oraciones",
-            "Solo reuniones ruidosas",
-            "Nada en común"
+            "Nada en común",
+            "La doctrina de los apóstoles, la comunión, el partimiento del pan y las oraciones",
+            "Solo reuniones ruidosas"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Hechos 2:42 nombra la doctrina, la comunión, el pan y las oraciones.",
           "explanationEs": "Hechos 2:42 nombra la doctrina, la comunión, el pan y las oraciones."
         }
@@ -93,7 +93,7 @@
       "summary": "The same Spirit who came at Pentecost stayed in ordinary courage, prayer, and care.",
       "summaryEs": "El mismo Espíritu que vino en Pentecostés se quedó en el valor de cada día, la oración y el cuidado.",
       "source": "King James Version (public domain) · Acts 4 and Romans 8",
-      "sourceEs": "Reina-Valera 1909 (public domain) · Hechos 4 y Romanos 8",
+      "sourceEs": "Reina-Valera 1909 (dominio público) · Hechos 4 y Romanos 8",
       "sourceUrl": "",
       "lessons": [
         {
@@ -107,34 +107,34 @@
       ],
       "lessonsEs": [
         {
-          "heading": "Con valor, y todavía una familia",
-          "body": "Cuando amenazaron a los amigos de Jesús, oraron, y “todos fueron llenos del Espíritu Santo, y hablaban la palabra de Dios con confianza” (Hechos 4:31). El Espíritu no los separó. Las líneas siguientes dicen que tenían un solo corazón, y que ponían lo que tenían a los pies de los apóstoles para que nadie quedara en necesidad.\n\nPablo le escribe después a gente que ya ama a Dios: “El mismo Espíritu da testimonio a nuestro espíritu que somos hijos de Dios” (Romanos 8:16). Ese testimonio no es un concurso. Es la certeza quieta de que perteneces al Padre, y de que no sufres ni oras sola."
+          "heading": "Valientes, y siempre una familia",
+          "body": "Cuando amenazaron a los amigos de Jesús, oraron, y “todos fueron llenos del Espíritu Santo, y hablaron la palabra de Dios con confianza” (Hechos 4:31). El Espíritu no los separó. Los versículos siguientes dicen que tenían un solo corazón, y que ponían lo que tenían a los pies de los apóstoles para que nadie quedara en necesidad.\n\nPablo le escribe después a gente que ya ama a Dios: “El mismo Espíritu da testimonio a nuestro espíritu que somos hijos de Dios” (Romanos 8:16). Ese testimonio no es un concurso. Es la certeza serena de que perteneces al Padre, y de que no sufres ni oras sola."
         },
         {
           "heading": "Una vida, no solo una chispa",
-          "body": "Los primeros cristianos esperaban al Espíritu en la reunión de oración y también en la mesa, en la ayuda al vecino pobre, y en el valor de hablar de Jesús cuando costaba algo. Si eso se parece a la vida que ya quieres, estás cerca de ellos. Ellos solo añadirían: quédate con la enseñanza de los apóstoles, y no intentes cargar el fuego sola."
+          "body": "Los primeros cristianos esperaban al Espíritu en la reunión de oración y también en la mesa, en la ayuda al prójimo necesitado, y en el valor de hablar de Jesús cuando costaba algo. Si eso se parece a la vida que ya quieres, estás cerca de ellos. Ellos solo añadirían: quédate con la enseñanza de los apóstoles, y no intentes cargar el fuego sola."
         }
       ],
       "questions": [
         {
           "prompt": "What happened when the threatened believers prayed in Acts 4?",
           "choices": [
-            "They were filled with the Holy Spirit and spoke God’s word with boldness",
             "They scattered and stopped praying",
-            "They asked for an easier life and received one"
+            "They asked for an easier life and received one",
+            "They were filled with the Holy Spirit and spoke God’s word with boldness"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "Acts 4:31 says they were filled with the Holy Spirit and spoke the word of God with boldness.",
           "explanationEs": "Hechos 4:31 dice que fueron llenos del Espíritu Santo y hablaron la palabra de Dios con confianza."
         },
         {
           "prompt": "In Romans 8:16, what does the Spirit bear witness to?",
           "choices": [
+            "That prayer should be rare",
             "That we are the children of God",
-            "That we no longer need other Christians",
-            "That prayer should be rare"
+            "That we no longer need other Christians"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "The Spirit bears witness with our spirit that we are the children of God.",
           "explanationEs": "El Espíritu da testimonio a nuestro espíritu de que somos hijos de Dios."
         }
@@ -143,22 +143,22 @@
         {
           "prompt": "¿Qué pasó cuando los creyentes amenazados oraron en Hechos 4?",
           "choices": [
-            "Fueron llenos del Espíritu Santo y hablaron la palabra de Dios con confianza",
             "Se dispersaron y dejaron de orar",
-            "Pidieron una vida fácil y la recibieron"
+            "Pidieron una vida fácil y la recibieron",
+            "Fueron llenos del Espíritu Santo y hablaron la palabra de Dios con confianza"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "Hechos 4:31 dice que fueron llenos del Espíritu y hablaron con confianza.",
           "explanationEs": "Hechos 4:31 dice que fueron llenos del Espíritu y hablaron con confianza."
         },
         {
           "prompt": "En Romanos 8:16, ¿de qué da testimonio el Espíritu?",
           "choices": [
+            "De que la oración debe ser rara",
             "De que somos hijos de Dios",
-            "De que ya no necesitamos a otros cristianos",
-            "De que la oración debe ser rara"
+            "De que ya no necesitamos a otros cristianos"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Da testimonio de que somos hijos de Dios.",
           "explanationEs": "Da testimonio de que somos hijos de Dios."
         }
@@ -173,9 +173,9 @@
       "level": "2 readings · 2 questions",
       "levelEs": "2 lecturas · 2 preguntas",
       "summary": "Paul will not let a brighter gift make anyone small. The Giver is the same.",
-      "summaryEs": "Pablo no deja que un don más brillante haga pequeña a nadie. El que da es el mismo.",
+      "summaryEs": "Pablo no deja que un don más vistoso haga sentir menos a nadie. El Dador es el mismo.",
       "source": "John Chrysostom, Homily 29 on 1 Corinthians, in Nicene and Post-Nicene Fathers, series 1, volume 12",
-      "sourceEs": "Juan Crisóstomo, Homilía 29 sobre 1 Corintios, en Nicene and Post-Nicene Fathers, serie 1, volumen 12",
+      "sourceEs": "Juan Crisóstomo, Homilía 29 sobre 1 Corintios, en Nicene and Post-Nicene Fathers (en inglés), serie 1, volumen 12",
       "sourceUrl": "https://www.newadvent.org/fathers/220129.htm",
       "lessons": [
         {
@@ -190,33 +190,33 @@
       "lessonsEs": [
         {
           "heading": "Un don, no un rango",
-          "body": "Pablo escribe: “Empero hay repartimiento de dones; mas el mismo Espíritu es” (1 Corintios 12:4, RVR1909). Juan Crisóstomo, predicando esa línea, se queda con la persona que recibió menos y lo sintió: hay diferencia en el don, pero no en quien lo da. Luego dice: “For from the same Fountain ye are drawing, both thou and he.” De la misma fuente beben los dos.\n\nEs una palabra amable. Si has visto a Dios sanar, o hablar, o consolar por medio de alguien, no tienes que hacerte pequeña. Estás bebiendo de la misma fuente. Y si tu parte se ve más quieta, sigue siendo obra del Espíritu, dada “para provecho” (1 Corintios 12:7), para el bien de los demás."
+          "body": "Pablo escribe: “Empero hay repartimiento de dones; mas el mismo Espíritu es” (1 Corintios 12:4, RVR1909). Juan Crisóstomo, predicando sobre ese versículo, se queda con la persona que recibió menos y lo sintió: hay diferencia en el don, pero no en quien lo da. Luego dice: “Porque de la misma fuente están bebiendo, tú y él.”\n\nEs una palabra amable. Si has visto a Dios sanar, o hablar, o consolar por medio de alguien, no tienes que hacerte pequeña. Estás bebiendo de la misma fuente. Y si tu parte se ve más discreta, sigue siendo obra del Espíritu, dada “para provecho” (1 Corintios 12:7), para el bien de los demás."
         },
         {
           "heading": "El cuerpo necesita cada parte",
-          "body": "La imagen de Pablo es un cuerpo. El ojo no es la mano, y la mano no se avergüenza. La Iglesia antigua tuvo que aprender esto porque los dones eran reales y la gente los comparaba. La medicina de Crisóstomo es el agradecimiento, no la competencia. El Espíritu Santo no está juntando estrellas. Está formando un pueblo."
+          "body": "La imagen de Pablo es un cuerpo. El ojo no es la mano, y la mano no se avergüenza. La Iglesia antigua tuvo que aprender esto porque los dones eran reales y la gente los comparaba. La medicina de Crisóstomo es el agradecimiento, no la competencia. El Espíritu Santo no está repartiendo medallas. Está formando un pueblo."
         }
       ],
       "questions": [
         {
           "prompt": "What does Chrysostom say the smaller gift and the greater gift share?",
           "choices": [
-            "The same Giver, one fountain",
             "A different Spirit for each person",
-            "Nothing in common"
+            "Nothing in common",
+            "The same Giver, one fountain"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "He says there is no difference in the Giver, and both draw from the same Fountain.",
           "explanationEs": "Dice que no hay diferencia en quien da, y que los dos beben de la misma fuente."
         },
         {
           "prompt": "Why is the manifestation of the Spirit given, in 1 Corinthians 12:7?",
           "choices": [
+            "To replace love",
             "To profit the others",
-            "To prove who is the most spiritual",
-            "To replace love"
+            "To prove who is the most spiritual"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Paul says it is given to every one to profit withal.",
           "explanationEs": "Pablo dice que a cada uno le es dada para provecho."
         }
@@ -225,22 +225,22 @@
         {
           "prompt": "Según Crisóstomo, ¿qué comparten el don menor y el mayor?",
           "choices": [
-            "Al mismo que da, una sola fuente",
             "Un Espíritu distinto para cada persona",
-            "Nada en común"
+            "Nada en común",
+            "El mismo Dador, una sola fuente"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "No hay diferencia en quien da, y los dos beben de la misma fuente.",
           "explanationEs": "No hay diferencia en quien da, y los dos beben de la misma fuente."
         },
         {
           "prompt": "¿Para qué se da la manifestación del Espíritu, en 1 Corintios 12:7?",
           "choices": [
+            "Para reemplazar el amor",
             "Para el provecho de los demás",
-            "Para probar quién es más espiritual",
-            "Para reemplazar el amor"
+            "Para probar quién es más espiritual"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Se da a cada uno para provecho.",
           "explanationEs": "Se da a cada uno para provecho."
         }
@@ -255,9 +255,9 @@
       "level": "2 readings · 2 questions",
       "levelEs": "2 lecturas · 2 preguntas",
       "summary": "The early Church knew tongues and prophecy. Paul asked that love and understanding lead.",
-      "summaryEs": "La Iglesia antigua conoció las lenguas y la profecía. Pablo pidió que el amor y la comprensión guiaran.",
+      "summaryEs": "La Iglesia antigua conoció las lenguas y la profecía. Pablo pidió que el amor y el entendimiento guiaran.",
       "source": "John Chrysostom, Homily 29 on 1 Corinthians, in Nicene and Post-Nicene Fathers, series 1, volume 12 · 1 Corinthians 13–14",
-      "sourceEs": "Juan Crisóstomo, Homilía 29 sobre 1 Corintios, en Nicene and Post-Nicene Fathers, serie 1, volumen 12 · 1 Corintios 13–14",
+      "sourceEs": "Juan Crisóstomo, Homilía 29 sobre 1 Corintios, en Nicene and Post-Nicene Fathers (en inglés), serie 1, volumen 12 · 1 Corintios 13–14",
       "sourceUrl": "https://www.newadvent.org/fathers/220129.htm",
       "lessons": [
         {
@@ -283,22 +283,22 @@
         {
           "prompt": "What does Chrysostom say was abundant among the Corinthians, besides other wonders?",
           "choices": [
-            "The gift of tongues",
             "Only written creeds",
-            "No spiritual gifts at all"
+            "No spiritual gifts at all",
+            "The gift of tongues"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "He says the gift of tongues was more abundant than the rest, and that other wonders were present too.",
           "explanationEs": "Dice que el don de lenguas abundaba, y que también había otras maravillas."
         },
         {
           "prompt": "In 1 Corinthians 14, prophecy is preferred because it does what?",
           "choices": [
+            "It replaces Scripture",
             "It builds people up, exhorts, and comforts",
-            "It proves a person is above the church",
-            "It replaces Scripture"
+            "It proves a person is above the church"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Paul says the one who prophesies speaks to edification, exhortation, and comfort.",
           "explanationEs": "Pablo dice que quien profetiza habla para edificación, exhortación y consolación."
         }
@@ -307,22 +307,22 @@
         {
           "prompt": "¿Qué dice Crisóstomo que abundaba entre los corintios, junto con otras maravillas?",
           "choices": [
-            "El don de lenguas",
             "Solo credos escritos",
-            "Ningún don espiritual"
+            "Ningún don espiritual",
+            "El don de lenguas"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "El don de lenguas abundaba, y también había otras maravillas.",
           "explanationEs": "El don de lenguas abundaba, y también había otras maravillas."
         },
         {
-          "prompt": "En 1 Corintios 14, se prefiere la profecía porque ¿qué hace?",
+          "prompt": "En 1 Corintios 14, ¿por qué se prefiere la profecía?",
           "choices": [
+            "Reemplaza la Escritura",
             "Edifica, exhorta y consuela",
-            "Prueba que alguien está por encima de la iglesia",
-            "Reemplaza la Escritura"
+            "Prueba que alguien está por encima de la iglesia"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Habla para edificación, exhortación y consolación.",
           "explanationEs": "Habla para edificación, exhortación y consolación."
         }
@@ -339,7 +339,7 @@
       "summary": "The early Church asked God to heal. They did not turn mercy into a show.",
       "summaryEs": "La Iglesia antigua le pidió a Dios que sanara. No convirtieron la misericordia en un espectáculo.",
       "source": "John Chrysostom, Homily 29 on 1 Corinthians, in Nicene and Post-Nicene Fathers, series 1, volume 12 · James 5",
-      "sourceEs": "Juan Crisóstomo, Homilía 29 sobre 1 Corintios, en Nicene and Post-Nicene Fathers, serie 1, volumen 12 · Santiago 5",
+      "sourceEs": "Juan Crisóstomo, Homilía 29 sobre 1 Corintios, en Nicene and Post-Nicene Fathers (en inglés), serie 1, volumen 12 · Santiago 5",
       "sourceUrl": "https://www.newadvent.org/fathers/220129.htm",
       "lessons": [
         {
@@ -354,7 +354,7 @@
       "lessonsEs": [
         {
           "heading": "Pedían, y Dios respondía como él quería",
-          "body": "Crisóstomo recuerda que muchos en esos años hasta resucitaban muertos, echaban fuera demonios y hacían otras maravillas. Santiago le dice a la iglesia qué hacer cuando alguien está enfermo: llamar a los ancianos, orar y ungir con aceite en el nombre del Señor. “La oración de fe salvará al enfermo” (Santiago 5:15).\n\nEso no es un libreto que obliga la mano de Dios. Es un pueblo que todavía pide. Dios sanó entonces. No se ha aburrido ni se ha ido lejos. Cuando llega la sanidad, es misericordia. Cuando espera, él sigue siendo el que sana, y la oración no se perdió."
+          "body": "Crisóstomo recuerda que muchos en esos años hasta resucitaban muertos, echaban fuera demonios y hacían otras maravillas. Santiago le dice a la iglesia qué hacer cuando alguien está enfermo: llamar a los ancianos, orar y ungir con aceite en el nombre del Señor. “La oración de fe salvará al enfermo” (Santiago 5:15).\n\nEso no es una fórmula para obligar a Dios. Es un pueblo que todavía pide. Dios sanó entonces. No se ha cansado de nosotros ni se ha alejado. Cuando llega la sanidad, es misericordia. Cuando la sanidad tarda, él sigue siendo el que sana, y la oración no se perdió."
         },
         {
           "heading": "Misericordia, no un espectáculo",
@@ -365,22 +365,22 @@
         {
           "prompt": "What does James tell a sick person to do?",
           "choices": [
-            "Call the elders of the church to pray and anoint",
             "Hide the sickness",
-            "Stop praying"
+            "Stop praying",
+            "Call the elders of the church to pray and anoint"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "James 5 says to call the elders, pray, and anoint in the name of the Lord.",
           "explanationEs": "Santiago 5 dice que llamen a los ancianos, oren y unjan en el nombre del Señor."
         },
         {
           "prompt": "How does this lesson speak about healing that has not come yet?",
           "choices": [
+            "The person lacked a technique",
             "God is still the healer, and the prayer is not wasted",
-            "God has stopped hearing",
-            "The person lacked a technique"
+            "God has stopped hearing"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "The lesson says that when healing waits, God is still the healer and the prayer was not wasted.",
           "explanationEs": "Cuando la sanidad espera, Dios sigue siendo el que sana y la oración no se perdió."
         }
@@ -389,22 +389,22 @@
         {
           "prompt": "¿Qué le dice Santiago a una persona enferma?",
           "choices": [
-            "Llamar a los ancianos para que oren y unjan",
             "Esconder la enfermedad",
-            "Dejar de orar"
+            "Dejar de orar",
+            "Llamar a los ancianos para que oren y unjan"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "Santiago 5: llamar a los ancianos, orar y ungir.",
           "explanationEs": "Santiago 5: llamar a los ancianos, orar y ungir."
         },
         {
           "prompt": "¿Cómo habla esta lección de una sanidad que todavía no llega?",
           "choices": [
+            "A la persona le faltó una técnica",
             "Dios sigue siendo el que sana, y la oración no se pierde",
-            "Dios dejó de oír",
-            "A la persona le faltó una técnica"
+            "Dios dejó de oír"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Cuando espera, Dios sigue siendo el que sana.",
           "explanationEs": "Cuando espera, Dios sigue siendo el que sana."
         }
@@ -421,7 +421,7 @@
       "summary": "The early Church fasted. Chrysostom says the fast is good, and a changed life belongs with it.",
       "summaryEs": "La Iglesia antigua ayunaba. Crisóstomo dice que el ayuno es bueno, y que una vida cambiada va con él.",
       "source": "John Chrysostom, Homily 4 on 2 Corinthians, in Nicene and Post-Nicene Fathers, series 1, volume 12",
-      "sourceEs": "Juan Crisóstomo, Homilía 4 sobre 2 Corintios, en Nicene and Post-Nicene Fathers, serie 1, volumen 12",
+      "sourceEs": "Juan Crisóstomo, Homilía 4 sobre 2 Corintios, en Nicene and Post-Nicene Fathers (en inglés), serie 1, volumen 12",
       "sourceUrl": "https://www.newadvent.org/fathers/220204.htm",
       "lessons": [
         {
@@ -436,33 +436,33 @@
       "lessonsEs": [
         {
           "heading": "Un ayuno que Dios puede reconocer",
-          "body": "Jesús dijo que algunas cosas solo salen con oración y ayuno. Los primeros cristianos guardaron eso. Crisóstomo honra a quienes ya lo hacían: “Praiseworthy indeed is even that which now ye do, your fasting and lying on the ground and ashes; but except the rest be added, these are of no avail.” El ayuno es digno de alabanza, pero hace falta lo demás.\n\nSeñala a Nínive. Aplicaron el ayuno a las heridas, un ayuno extremo, y también se acostaron en tierra, con cilicio, ceniza y lamento; y aplicaron un cambio de vida. Dios vio que se apartaron de su mal camino. El ayuno era real. El cambio fue lo que los sanó."
+          "body": "Jesús dijo que algunas cosas solo salen con oración y ayuno. Los primeros cristianos guardaron eso. Crisóstomo honra a quienes ya lo hacían: “Digno de alabanza es, en verdad, lo que ahora hacen: su ayuno, el dormir en el suelo y la ceniza; pero si no se añade lo demás, de nada sirve.”\n\nSeñala a Nínive. Aplicaron el ayuno a las heridas, un ayuno extremo, y también se acostaron en tierra, con cilicio, ceniza y lamento; y aplicaron un cambio de vida. Dios vio que se apartaron de su mal camino. El ayuno era real. El cambio fue lo que los sanó."
         },
         {
-          "heading": "Una manera quieta de hacer lugar",
-          "body": "Un ayuno puede ser una comida que no tomas, una tarde más quieta, o un día en que dejas el teléfono y rezas un salmo. No es una forma de impresionar a Dios ni a nadie. Es una forma de decir, con el cuerpo, que quieres al Espíritu Santo más que la siguiente comodidad. La Iglesia antigua reconocería eso."
+          "heading": "Una manera sencilla de darle lugar",
+          "body": "Un ayuno puede ser saltarte una comida, una noche más tranquila, o un día en que dejas el celular y oras con un salmo. No es una forma de impresionar a Dios ni a nadie. Es una forma de decir, con el cuerpo, que quieres al Espíritu Santo más que la siguiente comodidad. La Iglesia antigua reconocería eso."
         }
       ],
       "questions": [
         {
           "prompt": "What does Chrysostom say must be added to fasting?",
           "choices": [
-            "The rest, including a change of life",
             "More public attention",
-            "Nothing"
+            "Nothing",
+            "The rest, including a change of life"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "He says the fasting is praiseworthy, but except the rest be added, these are of no avail. Nineveh also changed their lives.",
           "explanationEs": "El ayuno es digno de alabanza, pero hace falta lo demás. Nínive también cambió de vida."
         },
         {
           "prompt": "What did God see in Nineveh, according to the verse Chrysostom quotes?",
           "choices": [
+            "That they built a bigger city",
             "That they turned from their evil way",
-            "Only that they skipped food",
-            "That they built a bigger city"
+            "Only that they skipped food"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Jonah 3:10, which he quotes, says God saw that they turned every one from his evil way.",
           "explanationEs": "Jonás 3:10 dice que Dios vio que se apartaron de su mal camino."
         }
@@ -471,22 +471,22 @@
         {
           "prompt": "¿Qué dice Crisóstomo que hay que añadir al ayuno?",
           "choices": [
-            "Lo demás, incluso un cambio de vida",
             "Más atención pública",
-            "Nada"
+            "Nada",
+            "Lo demás, incluido un cambio de vida"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "El ayuno es bueno, pero hace falta lo demás.",
           "explanationEs": "El ayuno es bueno, pero hace falta lo demás."
         },
         {
           "prompt": "¿Qué vio Dios en Nínive, según el versículo que cita Crisóstomo?",
           "choices": [
+            "Que construyeron una ciudad más grande",
             "Que se apartaron de su mal camino",
-            "Solo que no comieron",
-            "Que construyeron una ciudad más grande"
+            "Solo que no comieron"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Dios vio que se apartaron de su mal camino.",
           "explanationEs": "Dios vio que se apartaron de su mal camino."
         }
@@ -495,7 +495,7 @@
     {
       "id": "spirit-welcome",
       "title": "Making room for the Holy Spirit",
-      "titleEs": "Hacerle lugar al Espíritu Santo",
+      "titleEs": "Darle lugar al Espíritu Santo",
       "category": "The Holy Spirit",
       "categoryEs": "El Espíritu Santo",
       "level": "2 readings · 2 questions",
@@ -522,29 +522,29 @@
         },
         {
           "heading": "Una paz que se puede reconocer",
-          "body": "El fruto que señaló se parece a la paz y al gozo que Pablo ya nombró. No tienes que actuarlo. Pides. Perdonas a alguien. Abres las Escrituras. Vuelves mañana. Un corazón que sigue haciendo eso está aprendiendo a decir, sin un lema: “Espíritu Santo, aquí hay lugar.”"
+          "body": "El fruto que señaló se parece a la paz y al gozo que Pablo ya nombró. No tienes que fingirlo. Pides. Perdonas a alguien. Abres las Escrituras. Vuelves mañana. Un corazón que sigue haciendo eso está aprendiendo a decir, sin frases hechas: “Espíritu Santo, aquí hay lugar.”"
         }
       ],
       "questions": [
         {
           "prompt": "How does this lesson speak about Seraphim’s well-known conversation?",
           "choices": [
-            "In original sentences, without quoting a modern translation",
             "By copying a copyrighted English version",
-            "By dismissing prayer"
+            "By dismissing prayer",
+            "In original sentences, without quoting a modern translation"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "The lesson says the aim in our own words and does not quote a modern translation.",
           "explanationEs": "La lección dice el fin con nuestras palabras y no cita una traducción moderna."
         },
         {
           "prompt": "What is the aim, in the words of this lesson?",
           "choices": [
+            "To avoid other Christians",
             "To welcome the Holy Spirit and not grieve him",
-            "To collect spiritual experiences",
-            "To avoid other Christians"
+            "To collect spiritual experiences"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "The lesson says the aim is to welcome the Holy Spirit and live in a way that does not grieve him.",
           "explanationEs": "El fin es recibir al Espíritu Santo y vivir sin entristecerlo."
         }
@@ -553,22 +553,22 @@
         {
           "prompt": "¿Cómo habla esta lección de la conversación conocida de Serafín?",
           "choices": [
-            "Con frases originales, sin citar una traducción moderna",
             "Copiando una versión inglesa con derechos de autor",
-            "Despreciando la oración"
+            "Despreciando la oración",
+            "Con frases originales, sin citar una traducción moderna"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "Usa palabras propias y no cita una traducción moderna.",
           "explanationEs": "Usa palabras propias y no cita una traducción moderna."
         },
         {
           "prompt": "¿Cuál es el fin, según esta lección?",
           "choices": [
+            "Evitar a otros cristianos",
             "Recibir al Espíritu Santo y no entristecerlo",
-            "Juntar experiencias espirituales",
-            "Evitar a otros cristianos"
+            "Juntar experiencias espirituales"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Recibir al Espíritu y no entristecerlo.",
           "explanationEs": "Recibir al Espíritu y no entristecerlo."
         }
@@ -585,7 +585,7 @@
       "summary": "Hands were laid on, and oil was named. The Church still prays that way. It is called chrismation.",
       "summaryEs": "Se imponían las manos, y se hablaba del aceite. La Iglesia todavía ora así. Se llama crismación.",
       "source": "King James Version (public domain) · Acts 8 and 19; 1 John 2",
-      "sourceEs": "Reina-Valera 1909 (public domain) · Hechos 8 y 19; 1 Juan 2",
+      "sourceEs": "Reina-Valera 1909 (dominio público) · Hechos 8 y 19; 1 Juan 2",
       "sourceUrl": "",
       "lessons": [
         {
@@ -599,7 +599,7 @@
       ],
       "lessonsEs": [
         {
-          "heading": "No solo un sentimiento que llegó solo",
+          "heading": "No fue solo un sentimiento que llegó por su cuenta",
           "body": "En Samaria, la gente había creído y había sido bautizada. Entonces Pedro y Juan “les impusieron las manos, y recibieron el Espíritu Santo” (Hechos 8:17, RVR1909). En Éfeso, Pablo encontró discípulos que ni siquiera habían oído que el Espíritu Santo se daba. Los bautizó en el nombre de Jesús, “y habiéndoles impuesto Pablo las manos, vino sobre ellos el Espíritu Santo” (Hechos 19:6).\n\nJuan le escribe a gente que ya pertenece: “vosotros tenéis la unción del Santo” (1 Juan 2:20), y “la unción que vosotros habéis recibido de él, mora en vosotros” (1 Juan 2:27). El Espíritu se da, y se queda. La Iglesia antigua pidió ese don con oración y con la imposición de manos."
         },
         {
@@ -611,22 +611,22 @@
         {
           "prompt": "In Acts 8, how did the Samaritans receive the Holy Spirit?",
           "choices": [
-            "The apostles laid hands on them",
             "They skipped baptism and prayer",
-            "No one prayed"
+            "No one prayed",
+            "The apostles laid hands on them"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "Acts 8:17 says they laid their hands on them, and they received the Holy Spirit.",
           "explanationEs": "Hechos 8:17 dice que les impusieron las manos y recibieron el Espíritu Santo."
         },
         {
           "prompt": "What does this lesson gently connect to the laying on of hands and anointing?",
           "choices": [
+            "A private ritual with no Scripture",
             "Chrismation, the Church’s prayer that the Spirit seals and remains",
-            "A rejection of the Spirit you already know",
-            "A private ritual with no Scripture"
+            "A rejection of the Spirit you already know"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "The lesson links the biblical prayer and anointing to chrismation, the same Spirit.",
           "explanationEs": "La lección une la oración y la unción de la Biblia con la crismación, el mismo Espíritu."
         }
@@ -635,22 +635,22 @@
         {
           "prompt": "En Hechos 8, ¿cómo recibieron el Espíritu Santo los de Samaria?",
           "choices": [
-            "Los apóstoles les impusieron las manos",
             "Saltaron el bautismo y la oración",
-            "Nadie oró"
+            "Nadie oró",
+            "Los apóstoles les impusieron las manos"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "Les impusieron las manos y recibieron el Espíritu.",
           "explanationEs": "Les impusieron las manos y recibieron el Espíritu."
         },
         {
-          "prompt": "¿Qué une esta lección, con suavidad, a la imposición de manos y la unción?",
+          "prompt": "¿Con qué relaciona esta lección la imposición de manos y la unción?",
           "choices": [
+            "Un rito privado sin Escritura",
             "La crismación, la oración de la Iglesia para que el Espíritu selle y permanezca",
-            "Un rechazo del Espíritu que ya conoces",
-            "Un rito privado sin Escritura"
+            "Un rechazo del Espíritu que ya conoces"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Une la oración bíblica con la crismación, el mismo Espíritu.",
           "explanationEs": "Une la oración bíblica con la crismación, el mismo Espíritu."
         }
@@ -667,7 +667,7 @@
       "summary": "Love, joy, and peace are not a smaller Spirit. Paul calls them the Spirit’s fruit.",
       "summaryEs": "El amor, el gozo y la paz no son un Espíritu más pequeño. Pablo los llama el fruto del Espíritu.",
       "source": "King James Version (public domain) · Galatians 5",
-      "sourceEs": "Reina-Valera 1909 (public domain) · Gálatas 5",
+      "sourceEs": "Reina-Valera 1909 (dominio público) · Gálatas 5",
       "sourceUrl": "",
       "lessons": [
         {
@@ -682,33 +682,33 @@
       "lessonsEs": [
         {
           "heading": "Lo que crece cuando él se queda",
-          "body": "Pablo lo enumera sin drama: “Mas el fruto del Espíritu es: caridad, gozo, paz, tolerancia, benignidad, bondad, fe, mansedumbre, templanza” (Gálatas 5:22–23, RVR1909). Contra estas cosas, dice, no hay ley. Una persona puede ser ruidosa en una reunión y cortante en casa. El fruto es cómo tratas a las personas que de veras viven contigo.\n\nEsto no es lo contrario de los dones. Es la manera de saber que los dones no se echaron a perder. Crisóstomo ya le había dicho a Corinto que los dones sin amor dividen la iglesia. El fruto es lento, y es obra del Espíritu, no una personalidad que se actúa."
+          "body": "Pablo lo enumera sin drama: “Mas el fruto del Espíritu es: caridad, gozo, paz, tolerancia, benignidad, bondad, fe, mansedumbre, templanza” (Gálatas 5:22–23, RVR1909). Contra estas cosas, dice, no hay ley. Una persona puede ser muy fervorosa en el culto y áspera en casa. El fruto es cómo tratas a las personas que de veras viven contigo.\n\nEsto no es lo contrario de los dones. Es la manera de saber que los dones no se echaron a perder. Crisóstomo ya le había dicho a Corinto que los dones sin amor dividen la iglesia. El fruto es lento, y es obra del Espíritu, no un papel que uno actúa."
         },
         {
           "heading": "Una buena prueba en un día largo",
-          "body": "En un día que ya pidió demasiado, el fruto puede verse como paciencia con un niño, una respuesta suave, o la decisión de no repetir un insulto. Puedes pedir eso con la misma honestidad con que pides cualquier otro don. El Espíritu Santo no se avergüenza de una bondad pequeña."
+          "body": "En un día que ya pidió demasiado, el fruto puede verse como paciencia con un niño, una respuesta suave, o la decisión de no darle vueltas a un insulto. Puedes pedir eso con la misma honestidad con que pides cualquier otro don. El Espíritu Santo no se avergüenza de una bondad pequeña."
         }
       ],
       "questions": [
         {
           "prompt": "Which list is the fruit of the Spirit in Galatians 5?",
           "choices": [
-            "Love, joy, peace, patience, and the rest of that list",
             "Only public miracles",
-            "Status in a meeting"
+            "Status in a meeting",
+            "Love, joy, peace, patience, and the rest of that list"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "Paul names love, joy, peace, longsuffering, gentleness, goodness, faith, meekness, and temperance.",
           "explanationEs": "Pablo nombra caridad, gozo, paz, tolerancia, benignidad, bondad, fe, mansedumbre y templanza."
         },
         {
           "prompt": "How does this lesson relate the fruit to spiritual gifts?",
           "choices": [
+            "The fruit is only for quiet people",
             "The fruit shows the gifts have not gone sour",
-            "The fruit replaces the Holy Spirit",
-            "The fruit is only for quiet people"
+            "The fruit replaces the Holy Spirit"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "The lesson says the fruit is how you know the gifts have not gone sour, not a smaller Spirit.",
           "explanationEs": "El fruto muestra que los dones no se echaron a perder; no es un Espíritu menor."
         }
@@ -717,22 +717,22 @@
         {
           "prompt": "¿Cuál lista es el fruto del Espíritu en Gálatas 5?",
           "choices": [
-            "Amor, gozo, paz, paciencia y el resto de esa lista",
             "Solo milagros públicos",
-            "El puesto en una reunión"
+            "El puesto en una reunión",
+            "Caridad (amor), gozo, paz, tolerancia (paciencia) y el resto de esa lista"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "Pablo nombra caridad, gozo, paz y lo demás.",
           "explanationEs": "Pablo nombra caridad, gozo, paz y lo demás."
         },
         {
           "prompt": "¿Cómo relaciona esta lección el fruto con los dones?",
           "choices": [
+            "El fruto es solo para gente callada",
             "El fruto muestra que los dones no se echaron a perder",
-            "El fruto reemplaza al Espíritu Santo",
-            "El fruto es solo para gente callada"
+            "El fruto reemplaza al Espíritu Santo"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "El fruto muestra que los dones siguen sanos.",
           "explanationEs": "El fruto muestra que los dones siguen sanos."
         }
@@ -749,7 +749,7 @@
       "summary": "Jesus tells a woman at a well that the Father wants worship in spirit and in truth.",
       "summaryEs": "Jesús le dice a una mujer junto al pozo que el Padre busca adoración en espíritu y en verdad.",
       "source": "King James Version (public domain) · John 4 and John 16",
-      "sourceEs": "Reina-Valera 1909 (public domain) · Juan 4 y Juan 16",
+      "sourceEs": "Reina-Valera 1909 (dominio público) · Juan 4 y Juan 16",
       "sourceUrl": "",
       "lessons": [
         {
@@ -764,33 +764,33 @@
       "lessonsEs": [
         {
           "heading": "No un lugar que tienes que inventar",
-          "body": "Una mujer le pregunta a Jesús cuál monte es el correcto para adorar. Él responde: “Dios es Espíritu; y los que le adoran, en espíritu y en verdad es necesario que adoren” (Juan 4:24, RVR1909). No avergüenza su sed. La encuentra. Adorar en espíritu no es un ánimo que fabricas. Es venir al Dios vivo con un corazón honesto, por el Espíritu que él da.\n\nJesús también promete: “cuando viniere aquel Espíritu de verdad, él os guiará á toda verdad” (Juan 16:13). El Espíritu no habla para entretener. Guía hacia la verdad del Hijo. La Iglesia antigua cantaba, leía y partía el pan por esa promesa, no en lugar de ella."
+          "body": "Una mujer le pregunta a Jesús cuál monte es el correcto para adorar. Él responde: “Dios es Espíritu; y los que le adoran, en espíritu y en verdad es necesario que adoren” (Juan 4:24, RVR1909). No la avergüenza por su sed. La sacia. Adorar en espíritu no es un ánimo que fabricas. Es venir al Dios vivo con un corazón honesto, por el Espíritu que él da.\n\nJesús también promete: “cuando viniere aquel Espíritu de verdad, él os guiará á toda verdad” (Juan 16:13). El Espíritu no habla para entretener. Guía hacia la verdad del Hijo. La Iglesia antigua cantaba, leía y partía el pan por esa promesa, no en lugar de ella."
         },
         {
-          "heading": "Una tarde cansada también cuenta",
-          "body": "No necesitas una hora perfecta para adorar. Un salmo en la cocina, un gracias antes de dormir, el nombre de Jesús cuando el día fue demasiado largo: el Padre busca adoradores así. El espíritu y la verdad van juntos. El calor sin la verdad de Jesús se pierde. La verdad sin el Espíritu se enfría. Él pidió los dos, y es suave con quienes están aprendiendo."
+          "heading": "Una noche de cansancio también cuenta",
+          "body": "No necesitas una hora perfecta para adorar. Un salmo en la cocina, un “gracias, Señor” antes de dormir, el nombre de Jesús cuando el día fue demasiado largo: el Padre busca adoradores así. El espíritu y la verdad van juntos. El calor sin la verdad de Jesús se pierde. La verdad sin el Espíritu se enfría. Él pidió los dos, y es paciente con quienes están aprendiendo."
         }
       ],
       "questions": [
         {
           "prompt": "What kind of worship does Jesus say the Father seeks in John 4?",
           "choices": [
-            "Worship in spirit and in truth",
             "Worship that ignores who God is",
-            "Worship only on one mountain"
+            "Worship only on one mountain",
+            "Worship in spirit and in truth"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "John 4:24 says worshipers must worship in spirit and in truth.",
           "explanationEs": "Juan 4:24 dice que hay que adorar en espíritu y en verdad."
         },
         {
           "prompt": "What does Jesus say the Spirit of truth will do in John 16:13?",
           "choices": [
+            "Replace Jesus",
             "Guide the disciples into all truth",
-            "Speak only about himself",
-            "Replace Jesus"
+            "Speak only about himself"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "He will guide you into all truth, and he will not speak of himself.",
           "explanationEs": "Guiará a toda verdad, y no hablará de sí mismo."
         }
@@ -799,22 +799,22 @@
         {
           "prompt": "¿Qué adoración dice Jesús que el Padre busca en Juan 4?",
           "choices": [
-            "Adoración en espíritu y en verdad",
             "Adoración que ignora quién es Dios",
-            "Adoración solo en un monte"
+            "Adoración solo en un monte",
+            "Adoración en espíritu y en verdad"
           ],
-          "correct": 0,
+          "correct": 2,
           "explanation": "Juan 4:24: en espíritu y en verdad.",
           "explanationEs": "Juan 4:24: en espíritu y en verdad."
         },
         {
           "prompt": "¿Qué dice Jesús que hará el Espíritu de verdad en Juan 16:13?",
           "choices": [
+            "Reemplazar a Jesús",
             "Guiar a los discípulos a toda la verdad",
-            "Hablar solo de sí mismo",
-            "Reemplazar a Jesús"
+            "Hablar solo de sí mismo"
           ],
-          "correct": 0,
+          "correct": 1,
           "explanation": "Guiará a toda verdad.",
           "explanationEs": "Guiará a toda verdad."
         }
