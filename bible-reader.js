@@ -31,15 +31,136 @@
     const sections = ['Old Testament', 'New Testament', 'Deuterocanon / Apocrypha'];
     const savedMarkup = !reader.context.isRegistered() ? '<p class="muted">Sign in to keep your highlights in this browser.</p>' : highlights.length ? `<div class="bible-saved-list">${highlights.map(item => `<button data-jump-book="${item.book_id}" data-jump-chapter="${item.chapter}" data-jump-verse="${item.verse}"><span class="bible-swatch ${esc(item.color)}"></span>${esc(books[item.book_id - 1]?.name)} ${item.chapter}:${item.verse}</button>`).join('')}</div>` : '<p class="muted">Tap a verse, choose a color, and it will appear here.</p>';
     reader.root.innerHTML = `<div class="bible-app"><header class="bible-heading"><div><span class="eyebrow">THE FULL READING SHELF</span><h1>Read the Bible.</h1><p class="lead">Choose a book and chapter. Tap a verse to highlight it.</p></div><span class="bible-edition">The Bible</span></header>
+      ${offlineMarkup()}
       <div class="bible-layout"><div class="bible-primary"><div class="bible-controls card"><label>Book<select id="bible-book">${sections.map(section => `<optgroup label="${esc(section)}">${books.filter(book => book.section === section).map(book => `<option value="${book.id}" ${book.id === reader.book ? 'selected' : ''}>${esc(book.name)}</option>`).join('')}</optgroup>`).join('')}</select></label><label>Chapter<select id="bible-chapter">${Array.from({ length:info.chapters - (info.chapterStart || 1) + 1 }, (_, i) => { const chapter = i + (info.chapterStart || 1); return `<option value="${chapter}" ${chapter === reader.chapter ? 'selected' : ''}>${chapter}</option>`; }).join('')}</select></label><div class="bible-control-buttons"><button class="secondary" data-bible="previous" aria-label="Previous chapter">←</button><button class="secondary" data-bible="next" aria-label="Next chapter">→</button><button class="secondary" data-bible="smaller" aria-label="Smaller text">A−</button><button class="secondary" data-bible="larger" aria-label="Larger text">A+</button><button class="secondary" data-bible="rotate" aria-label="Rotate reading view" aria-pressed="${reader.rotated}">⤾ <span>Rotate</span></button><button class="secondary" data-bible="notes">Study notes (${chapterNotes.length})</button></div></div>
       <article class="bible-page card" style="--reader-size:${reader.fontSize}px"><div class="bible-page-title"><span class="eyebrow">${esc(info.section)}</span><h2>${esc(info.name)} ${reader.chapter}</h2><small>${verses.filter(Boolean).length} verses</small></div>${selectedNotes.length ? `<div id="bible-verse-note" class="bible-inline-notes" aria-live="polite"><div class="bible-inline-title"><strong>Study notes · ${esc(reference(reader.book, reader.chapter, reader.selectedVerse))}</strong><button class="text-button" data-bible="close-note" aria-label="Close study note">×</button></div>${selectedNotes.map(renderNote).join('')}</div>` : ''}${myNoteBox}${reader.selectedVerse ? `<div class="bible-highlight-tools" role="group" aria-label="Highlight verse ${reader.selectedVerse}"><span>Verse ${reader.selectedVerse}</span><button data-color="teal" aria-label="Highlight teal" title="Teal"></button><button data-color="gold" aria-label="Highlight gold" title="Gold"></button><button data-color="rose" aria-label="Highlight rose" title="Rose"></button><button class="bible-clear-highlight" data-color="remove" aria-label="Clear highlight" title="Clear highlight"></button></div>` : ''}<div class="bible-verses">${verses.map((text, i) => text ? `<button class="bible-verse ${savedColor(i + 1 + verseOffset()) ? 'highlight-' + savedColor(i + 1 + verseOffset()) : ''} ${reader.selectedVerse === i + 1 + verseOffset() ? 'selected' : ''}" data-bible-verse="${i + 1 + verseOffset()}" aria-label="Verse ${i + 1 + verseOffset()}: ${esc(text)}"><sup>${i + 1 + verseOffset()}</sup>${esc(text)}${chapterNotes.some(note => note.verse === i + 1 + verseOffset()) ? '<span class="bible-annotation" aria-label="Study note available">✦</span>' : ''}${myNoteAt(i + 1 + verseOffset()) ? '<span class="bible-annotation bible-my-mark" aria-label="Your note on this verse">✎</span>' : ''}</button>` : '').join('')}</div><div class="bible-page-foot"><button class="text-button" data-bible="previous">← Previous</button><span class="bible-log-wrap"><button class="secondary bible-log-btn ${loggedHere ? 'bible-logged' : ''}" data-bible="log-read" aria-pressed="${loggedHere}">${loggedHere ? `✓ ${esc(info.name)} ${reader.chapter} logged — tap to undo` : `✓ Log ${esc(info.name)} ${reader.chapter} as read`}</button><span class="bible-log-progressbar" aria-hidden="true"><i style="width:${bookChaptersTotal ? Math.round(bookChaptersLogged / bookChaptersTotal * 100) : 0}%"></i></span><small class="bible-log-progress">${esc(info.name)}: ${bookChaptersLogged} of ${bookChaptersTotal} chapters logged</small></span><button class="text-button" data-bible="next">Next →</button></div></article></div>
       <aside class="bible-aside"><div class="card"><span class="eyebrow">YOUR MARKS</span><h3>Highlighted verses</h3>${savedMarkup}<p class="small">Your highlights stay in this browser.</p></div><div class="card" id="bible-notes"><span class="eyebrow">STUDY ALONGSIDE SCRIPTURE</span><h3>${chapterNotes.length ? `Notes on ${esc(info.name)} ${reader.chapter}` : 'Explore the study library'}</h3><p class="small">Father · Teaching · Apologetics. Summaries are editorial; use the source links to read further.</p><div class="bible-study-stack">${studyMarkup}</div></div></aside></div></div>`;
     updateRotated();
+    if (!reader.offline) refreshOffline();
+  }
+  const BIBLE_CACHE_NAME = 'msb-bible-kjv-1';
+  const BIBLE_BOOK_TOTAL = 78;
+  function bibleFile(id){ return `bible/${String(id).padStart(2,'0')}.json`; }
+  function formatBytes(bytes){
+    const n = Number(bytes) || 0;
+    if (n < 1024) return `${n} B`;
+    if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+    return `${(n / (1024 * 1024)).toFixed(1)} MB`;
+  }
+  async function openBibleCache(){
+    if (!('caches' in window)) return null;
+    return caches.open(BIBLE_CACHE_NAME);
+  }
+  async function readCached(url){
+    try {
+      const cache = await openBibleCache();
+      return cache ? await cache.match(url) : null;
+    } catch { return null; }
+  }
+  function offlineLabel(){
+    const s = reader.offline || {books:0, bytes:0, scanning:true, busy:false, done:0};
+    if (s.busy) return `Downloading ${s.done} of ${BIBLE_BOOK_TOTAL} books · ${formatBytes(s.bytes)}`;
+    if (s.unsupported) return 'This browser cannot store books for offline reading.';
+    if (s.scanning) return 'Checking saved books…';
+    if (s.books >= BIBLE_BOOK_TOTAL) return `${s.books} of ${BIBLE_BOOK_TOTAL} books · ${formatBytes(s.bytes)} downloaded`;
+    if (s.books > 0) return `${s.books} of ${BIBLE_BOOK_TOTAL} books · ${formatBytes(s.bytes)} saved`;
+    return `0 of ${BIBLE_BOOK_TOTAL} books saved for offline`;
+  }
+  function offlineButtonLabel(){
+    const s = reader.offline || {};
+    if (s.busy) return 'Downloading…';
+    if ((s.books || 0) >= BIBLE_BOOK_TOTAL) return 'Whole Bible downloaded';
+    if ((s.books || 0) > 0) return 'Download the rest for offline';
+    return 'Download whole Bible for offline';
+  }
+  function offlineMarkup(){
+    const s = reader.offline || {books:0, bytes:0, scanning:true, busy:false};
+    const books = s.books || 0;
+    const pct = Math.max(0, Math.min(100, Math.round(books / BIBLE_BOOK_TOTAL * 100)));
+    const done = (books >= BIBLE_BOOK_TOTAL) && !s.busy;
+    return `<section class="card bible-offline"><span class="eyebrow">OFFLINE</span><h3 id="bible-offline-title">Whole Bible on this device</h3><p id="bible-offline-label" aria-live="polite">${offlineLabel()}</p><div class="bible-offline-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${BIBLE_BOOK_TOTAL}" aria-valuenow="${books}" aria-label="Bible books saved on this device"><i id="bible-offline-fill" style="width:${pct}%"></i></div><button type="button" class="primary" data-bible="download-all" ${done || s.busy ? 'disabled' : ''}>${offlineButtonLabel()}</button></section>`;
+  }
+  function paintOffline(){
+    const label = reader.root?.querySelector('#bible-offline-label');
+    const fill = reader.root?.querySelector('#bible-offline-fill');
+    const bar = reader.root?.querySelector('.bible-offline-bar');
+    const button = reader.root?.querySelector('[data-bible="download-all"]');
+    if (!label || !fill || !button) return;
+    const s = reader.offline || {books:0, bytes:0};
+    const books = s.books || 0;
+    label.textContent = offlineLabel();
+    fill.style.width = `${Math.max(0, Math.min(100, Math.round(books / BIBLE_BOOK_TOTAL * 100)))}%`;
+    if (bar) bar.setAttribute('aria-valuenow', String(books));
+    button.textContent = offlineButtonLabel();
+    button.disabled = !!s.busy || books >= BIBLE_BOOK_TOTAL;
+  }
+  async function refreshOffline(){
+    if (reader.offlineBusy) return;
+    reader.offline = Object.assign({books:0, bytes:0, scanning:true, busy:false, done:0}, reader.offline, {scanning:true});
+    try {
+      const cache = await openBibleCache();
+      if (!cache) {
+        reader.offline = {books:0, bytes:0, scanning:false, busy:false, unsupported:true};
+        paintOffline();
+        return;
+      }
+      const keys = await cache.keys();
+      const books = keys.filter(request => /\/bible\/\d\d\.json$/.test(new URL(request.url).pathname));
+      let bytes = 0;
+      for (const request of keys) {
+        const path = new URL(request.url).pathname;
+        if (!/\/bible\/(?:index|\d\d)\.json$/.test(path)) continue;
+        const hit = await cache.match(request);
+        if (!hit) continue;
+        const blob = await hit.blob();
+        bytes += blob.size;
+      }
+      reader.offline = {books:books.length, bytes, scanning:false, busy:false, done:books.length};
+    } catch {
+      reader.offline = {books:0, bytes:0, scanning:false, busy:false};
+    }
+    paintOffline();
+  }
+  async function downloadBible(){
+    if (reader.offlineBusy) return;
+    if (!('caches' in window)) { reader.context.toast('This browser cannot store the Bible for offline reading.'); return; }
+    reader.offlineBusy = true;
+    reader.offline = Object.assign({books:0, bytes:0, scanning:false, busy:true, done:0}, reader.offline, {busy:true, done:reader.offline?.books || 0});
+    paintOffline();
+    const files = ['bible/index.json', ...Array.from({length:BIBLE_BOOK_TOTAL}, (_, i) => bibleFile(i + 1))];
+    let bytes = 0;
+    let bookCount = 0;
+    try {
+      const cache = await caches.open(BIBLE_CACHE_NAME);
+      for (const file of files) {
+        const url = new URL(file, location.href).href;
+        const response = await fetch(url);
+        if (!response.ok) throw Error(`Could not download ${file}.`);
+        const buffer = await response.arrayBuffer();
+        bytes += buffer.byteLength;
+        await cache.put(url, new Response(buffer, {headers:{'Content-Type':'application/json'}}));
+        if (file !== 'bible/index.json') bookCount += 1;
+        reader.offline = {books:bookCount, bytes, scanning:false, busy:true, done:bookCount};
+        paintOffline();
+      }
+      reader.offline = {books:bookCount, bytes, scanning:false, busy:false, done:bookCount};
+      reader.context.toast('The whole Bible is saved on this device.');
+    } catch (error) {
+      reader.offline = Object.assign({}, reader.offline, {busy:false, scanning:false});
+      reader.context.toast(error.message || 'The download stopped. Tap again to continue.');
+    } finally {
+      reader.offlineBusy = false;
+      if (!reader.offline?.busy) await refreshOffline();
+      else paintOffline();
+    }
   }
   async function ensureBook(id) {
     if (reader.bookData.has(id)) return;
-    const response = await fetch(fileName(id), { cache:'no-store' });
-    if (!response.ok) throw Error(`Could not open this book (${response.status}).`);
+    const url = bibleFile(id);
+    let response = null;
+    try { response = await fetch(url); } catch { response = null; }
+    if (!response || !response.ok) response = await readCached(url);
+    if (!response || !response.ok) throw Error(`Could not open this book (${response ? response.status : 'offline'}).`);
     const data = await response.json();
     if (!Array.isArray(data.chapters) || data.book !== reader.index.books[id - 1]?.name) throw Error('This book could not be verified.');
     reader.bookData.set(id, data);
@@ -67,8 +188,10 @@
     root.innerHTML = '<div class="loading">Opening the Bible…</div>';
     try {
       if (!reader.index) {
-        const response = await fetch('bible/index.json', { cache:'no-store' });
-        if (!response.ok) throw Error('The Bible index is unavailable.');
+        let response = null;
+        try { response = await fetch('bible/index.json'); } catch { response = null; }
+        if (!response || !response.ok) response = await readCached('bible/index.json');
+        if (!response || !response.ok) throw Error('The Bible index is unavailable.');
         reader.index = await response.json();
         const local = localStorage.getItem('lampstand_bible_place');
         const match = local?.match(/^(\d+):(\d+)$/);
@@ -184,6 +307,7 @@
         } catch (error) { target.disabled = false; reader.context.toast(error.message); }
         break;
       }
+      case 'download-all': downloadBible(); break;
       case 'rotate': reader.rotated = !reader.rotated; updateRotated(); break;
       case 'smaller': reader.fontSize = Math.max(15, reader.fontSize - 2); render(); break;
       case 'larger': reader.fontSize = Math.min(29, reader.fontSize + 2); render(); break;

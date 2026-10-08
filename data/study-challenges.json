@@ -1,6 +1,520 @@
 {
   "challenges": [
     {
+      "id": "idea-god-exists",
+      "micro": true,
+      "track": "Learn one idea",
+      "title": "Does God exist?",
+      "category": "Learn one idea",
+      "level": "1 reading · 2 questions",
+      "summary": "The world is ordered and not self-made. That is a reason to trust the God who gave it being.",
+      "source": "Basil the Great, Hexaemeron, Homily 1, in Nicene and Post-Nicene Fathers, series 2, volume 8",
+      "sourceUrl": "https://www.newadvent.org/fathers/32011.htm",
+      "lessons": [
+        {
+          "heading": "A world that did not invent itself",
+          "body": "Christians do not pretend that a sentence can drag God into a laboratory. We do say the world is a poor candidate for “it just happened.” Things that begin, change, and fall apart do not explain why there is anything at all. A mind that finds order, beauty, and reliable laws in that world is already meeting a gift, not a closed machine.\n\nBasil the Great, preaching on Genesis, refuses the guess that the world assembled itself: “I am about to speak of the creation of heaven and earth, which was not spontaneous, as some have imagined, but drew its origin from God.” Paul says the same from the other direction: “The invisible things of him from the creation of the world are clearly seen, being understood by the things that are made, even his eternal power and Godhead” (Romans 1:20).\n\nScience can tell how a star burns. It does not, by counting the burning, answer who gave the star a place to burn. The Church’s first answer is not a trick. It is worship: the world is creature, and God is the one who was already there."
+        },
+        {
+          "heading": "Takeaway",
+          "body": "The existence of God is not a spare part added to a world that already explains itself. The world points past itself. Basil’s line is enough to keep: creation drew its origin from God, and it was not spontaneous."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What does Basil deny about the origin of heaven and earth?",
+          "choices": [
+            "That they can be studied at all",
+            "That they came to be spontaneously, without God",
+            "That God is distinct from the world"
+          ],
+          "correct": 1,
+          "explanation": "In the Hexaemeron Basil says the creation of heaven and earth was not spontaneous, but drew its origin from God."
+        },
+        {
+          "prompt": "Romans 1:20 says God’s eternal power and Godhead are clearly seen by what?",
+          "choices": [
+            "A private feeling with no link to the world",
+            "The things that are made",
+            "A vote of the nations"
+          ],
+          "correct": 1,
+          "explanation": "Paul says the invisible things of God are understood by the things that are made."
+        }
+      ]
+    },
+    {
+      "id": "idea-trinity",
+      "micro": true,
+      "track": "Learn one idea",
+      "title": "Why the Trinity?",
+      "category": "Learn one idea",
+      "level": "1 reading · 2 questions",
+      "summary": "The Church names one God, not three gods, because the Father, the Son, and the Spirit have been shown together.",
+      "source": "Gregory of Nazianzus, Oration 40.41, in Nicene and Post-Nicene Fathers, series 2, volume 7",
+      "sourceUrl": "https://www.newadvent.org/fathers/310240.htm",
+      "lessons": [
+        {
+          "heading": "One God, not a committee",
+          "body": "A common objection says that Father, Son, and Holy Spirit must mean three gods. That would be true if “Person” meant “a separate being with a separate divine nature.” The Church says the opposite. There is one divine nature. The Father is God, the Son is God, the Spirit is God, and they are not three Gods side by side, and not one Person wearing three masks.\n\nThe Scriptures already speak this way before the later word “Trinity” was used as a summary. At the Jordan the Son is baptized, the Spirit descends, and the Father speaks. The risen Christ sends the Church to baptize “in the name of the Father, and of the Son, and of the Holy Ghost” (Matthew 28:19). One name, three Persons.\n\nGregory of Nazianzus keeps the mind from splitting what God has joined: “No sooner do I conceive of the One than I am illumined by the Splendour of the Three; no sooner do I distinguish Them than I am carried back to the One.” The Father is the source. The Son is eternally begotten of the Father. The Spirit eternally proceeds from the Father. That is not three origins of three gods. It is the one God as he has made himself known."
+        },
+        {
+          "heading": "Takeaway",
+          "body": "The Trinity is not a puzzle invented to confuse outsiders. It is the Church refusing two mistakes: collapsing the Persons into one mask, and dividing the one God into three gods."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Gregory says that as soon as he conceives of the One, he is illumined by what?",
+          "choices": [
+            "A fourth divine person",
+            "The splendour of the Three",
+            "The idea that the Persons are only names"
+          ],
+          "correct": 1,
+          "explanation": "Gregory’s Oration 40 says the thought of the One is illumined by the Splendour of the Three, and the distinction of the Three returns him to the One."
+        },
+        {
+          "prompt": "Which sentence matches the baptismal confession?",
+          "choices": [
+            "Three gods share a project",
+            "One God is Father, Son, and Holy Spirit, not three gods and not one Person in costume",
+            "Only the Father is divine, and the Son is a creature"
+          ],
+          "correct": 1,
+          "explanation": "Matthew 28:19 names the Father, the Son, and the Holy Spirit in one name. The Church confesses one divine nature and three Persons."
+        }
+      ]
+    },
+    {
+      "id": "idea-resurrection",
+      "micro": true,
+      "track": "Learn one idea",
+      "title": "The Resurrection: what is the evidence?",
+      "category": "Learn one idea",
+      "level": "1 reading · 2 questions",
+      "summary": "Paul hands on a burial, a third day, and named witnesses. The Church began from that claim.",
+      "source": "1 Corinthians 15, in the King James text read in this app",
+      "lessons": [
+        {
+          "heading": "A claim with names on it",
+          "body": "The Resurrection is not a mood the disciples later felt about Jesus. Paul passes on what he had received: “Christ died for our sins according to the scriptures; and that he was buried, and that he rose again the third day according to the scriptures: and that he was seen of Cephas, then of the twelve” (1 Corinthians 15:3–5). He goes on to the five hundred, to James, to all the apostles, and last to himself.\n\nNotice what is included. A death. A burial. A day. Names. This is the sort of claim that can be checked by people who were alive, and contradicted by people who were also alive. The Gospels add that the first witnesses at the tomb were women. In that world a story invented to sound impressive would not have started there.\n\nThe other piece of evidence is the Church herself. The same men who hid became the men who preached a crucified and risen Lord in the city where he had been killed. They did not preach “his cause lives on.” They preached that the tomb was empty and that they had seen him."
+        },
+        {
+          "heading": "Takeaway",
+          "body": "The apostolic claim is bodily and public: buried, raised, and seen. A “spiritual meaning only” reading has to erase the burial, the third day, and the witnesses Paul lists."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "In 1 Corinthians 15, what does Paul say he delivered?",
+          "choices": [
+            "A private symbol with no witnesses",
+            "What he also received: Christ’s death, burial, resurrection, and appearances",
+            "That Jesus never really died"
+          ],
+          "correct": 1,
+          "explanation": "Paul says he delivered what he received: Christ died, was buried, rose the third day, and was seen."
+        },
+        {
+          "prompt": "Why does the women’s witness matter in this argument?",
+          "choices": [
+            "It proves the Gospels were written centuries later",
+            "It is an unlikely detail for a story polished to impress that culture",
+            "It means the apostles never claimed to see him"
+          ],
+          "correct": 1,
+          "explanation": "The first witnesses at the tomb being women is a stubborn detail. It does not fit a legend designed to sound officially impressive."
+        }
+      ]
+    },
+    {
+      "id": "idea-gospels",
+      "micro": true,
+      "track": "Learn one idea",
+      "title": "Are the Gospels reliable?",
+      "category": "Learn one idea",
+      "level": "1 reading · 2 questions",
+      "summary": "Luke ties his book to eyewitnesses. Irenaeus ties the four Gospels to the apostles’ preaching.",
+      "source": "Irenaeus, Against Heresies 3.1.1, in the Ante-Nicene Fathers, volume 1",
+      "sourceUrl": "https://www.newadvent.org/fathers/0103301.htm",
+      "lessons": [
+        {
+          "heading": "Preaching that was written down",
+          "body": "A Gospel is not a modern biography, and it is not a fog of legends from centuries later. Luke tells Theophilus that he is writing “of those things which are most surely believed among us, even as they delivered them unto us, which from the beginning were eyewitnesses, and ministers of the word” (Luke 1:1–2). He expects his reader to recognize a tradition already being handed on.\n\nIrenaeus, late in the second century, still names the living link. “Mark, the disciple and interpreter of Peter, did also hand down to us in writing what had been preached by Peter. Luke also, the companion of Paul, recorded in a book the Gospel preached by him.” He says Matthew wrote for the Hebrews, and that John, “the disciple of the Lord,” published his Gospel at Ephesus. You do not have to treat every detail of that report as a modern footnote to see the point: the churches knew these books as apostolic preaching, while the preaching could still be compared with the communities that had received it.\n\nReliability here does not mean the four books are photocopies of one another. John is not Mark. It means they are early, traceable, and received by the Church as the apostolic witness to one Lord."
+        },
+        {
+          "heading": "Takeaway",
+          "body": "The Gospels stand inside a Church that could still name who preached them. They are the apostles’ witness written down, not anonymous myths invented after everyone who could object was dead."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Irenaeus says Mark wrote down the preaching of whom?",
+          "choices": [
+            "Peter",
+            "A philosopher who never met the apostles",
+            "A council that met in the Middle Ages"
+          ],
+          "correct": 0,
+          "explanation": "Against Heresies 3.1.1 calls Mark the disciple and interpreter of Peter, and says he wrote what Peter had preached."
+        },
+        {
+          "prompt": "Luke 1 says the tradition he writes down came from whom?",
+          "choices": [
+            "Eyewitnesses and ministers of the word",
+            "People who never claimed to have seen Jesus",
+            "A single unsigned scroll found centuries later"
+          ],
+          "correct": 0,
+          "explanation": "Luke says the things he records were delivered by those who from the beginning were eyewitnesses and ministers of the word."
+        }
+      ]
+    },
+    {
+      "id": "idea-evil",
+      "micro": true,
+      "track": "Learn one idea",
+      "title": "Why is there evil and suffering?",
+      "category": "Learn one idea",
+      "level": "1 reading · 2 questions",
+      "summary": "God is not the author of evil. The Cross is God’s answer from inside suffering, not a shrug.",
+      "source": "James 1:13 and the passion of Christ, in the King James text read in this app",
+      "lessons": [
+        {
+          "heading": "God is not the author of the wound",
+          "body": "The hardest objection is not a clever one. It is a hospital room. If God is good and strong, why this pain? The Church refuses two easy exits. Evil is not a second god equal to the Holy Trinity. And evil is not a tool God needed in order to be interesting. James is blunt: “Let no man say when he is tempted, I am tempted of God: for God cannot be tempted with evil, neither tempteth he any man” (James 1:13).\n\nWhat God made, he called good. A person made in his image can turn a good gift against the Giver. That turning is not a substance. It is a misuse, and it spreads: death, cruelty, a world at odds with itself. The fall is that wound. It does not make God the craftsman of cancer and war.\n\nThe Christian answer is not a diagram that makes the wound feel tidy. It is Christ. The Son takes flesh, weeps at a grave, and enters death itself. The Resurrection does not call suffering a illusion. It says death does not get the last word over the world God still loves."
+        },
+        {
+          "heading": "Takeaway",
+          "body": "Do not charge God with being the source of evil. Evil is the ruin of what he made good. His answer is not distance. It is the incarnate Son, who suffers with us and breaks death."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "James 1:13 forbids which sentence?",
+          "choices": [
+            "God can be tempted with evil, and he tempts us",
+            "God is good",
+            "Christ entered death"
+          ],
+          "correct": 0,
+          "explanation": "James says God cannot be tempted with evil, and he does not tempt anyone. Do not say the temptation came from God."
+        },
+        {
+          "prompt": "Which reply matches this lesson?",
+          "choices": [
+            "Evil is a second god, equal to the Father",
+            "Suffering is not real",
+            "God does not author evil; in Christ he enters suffering and overcomes death"
+          ],
+          "correct": 2,
+          "explanation": "The lesson refuses both a second evil god and a denial of pain. The Cross and Resurrection are God’s way with the wound."
+        }
+      ]
+    },
+    {
+      "id": "idea-tradition",
+      "micro": true,
+      "track": "Learn one idea",
+      "title": "Why Church Tradition?",
+      "category": "Learn one idea",
+      "level": "1 reading · 2 questions",
+      "summary": "The apostles handed on the faith by living speech and by letter. Basil says both have force.",
+      "source": "Basil the Great, On the Holy Spirit 27.66, in Nicene and Post-Nicene Fathers, series 2, volume 8",
+      "sourceUrl": "https://www.newadvent.org/fathers/3203.htm",
+      "lessons": [
+        {
+          "heading": "Handed on, not invented later",
+          "body": "“Tradition” sounds, to some ears, like a rumor that competes with the Bible. In the Church it means the handing on of the apostolic faith: the Gospel preached, the Scriptures read in the assembly, baptism, the Eucharist, the sign of the cross, the way the Church prays. Paul tells the Thessalonians to “stand fast, and hold the traditions which ye have been taught, whether by word, or our epistle” (2 Thessalonians 2:15). Word and letter belong together.\n\nBasil the Great says the same in the fourth century: “Of the beliefs and practices whether generally accepted or publicly enjoined which are preserved in the Church some we possess derived from written teaching; others we have received delivered to us in a mystery by the tradition of the apostles; and both of these in relation to true religion have the same force.” He is not licensing anyone to invent a new gospel. He is saying the Church did not receive a naked book and a blank life. She received a way.\n\nScripture is not embarrassed by that. Scripture itself tells the Church to hold what was taught aloud. Tradition, rightly named, is Scripture’s own home, not a rival canon of private opinions."
+        },
+        {
+          "heading": "Takeaway",
+          "body": "Tradition is the apostolic faith being handed on, in writing and in the Church’s life. Basil says those two do not cancel each other. They have the same force for true religion."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Basil says written teaching and apostolic tradition stand how?",
+          "choices": [
+            "Tradition cancels Scripture",
+            "Both have the same force in relation to true religion",
+            "Only customs invented after the apostles matter"
+          ],
+          "correct": 1,
+          "explanation": "On the Holy Spirit 27.66 says what comes from written teaching and what was delivered in a mystery by apostolic tradition have the same force."
+        },
+        {
+          "prompt": "2 Thessalonians 2:15 says to hold the traditions taught in which ways?",
+          "choices": [
+            "By word, or by epistle",
+            "By private guesswork only",
+            "By ignoring what the apostles said aloud"
+          ],
+          "correct": 0,
+          "explanation": "Paul says to hold the traditions taught whether by word or by his epistle."
+        }
+      ]
+    },
+    {
+      "id": "idea-icons",
+      "micro": true,
+      "track": "Learn one idea",
+      "title": "Why icons are not idolatry",
+      "category": "Learn one idea",
+      "level": "1 reading · 2 questions",
+      "summary": "Christ really became visible. Honour given before his icon is meant for him, not for the paint.",
+      "source": "John of Damascus, An Exact Exposition of the Orthodox Faith 4.16, in Nicene and Post-Nicene Fathers, series 2, volume 9",
+      "sourceUrl": "https://www.newadvent.org/fathers/33044.htm",
+      "lessons": [
+        {
+          "heading": "The honour does not stop at the wood",
+          "body": "Israel was forbidden to bow to a statue and call it the invisible God. That command still stands. What changed is the Incarnation. “The Word was made flesh, and dwelt among us” (John 1:14). The invisible Son became a man who could be seen. To picture him is to confess that this really happened. A faith that forbids every image of Christ is in danger of treating his humanity as an idea instead of a life.\n\nJohn of Damascus, in the public-domain Exposition of the Orthodox Faith, is plain about what the gesture means. Seeing the image of the crucifixion, “we fall down and worship not the material but that which is imaged: just as we do not worship the material of which the Gospels are made.” And: “the honour rendered to the image passes over to the prototype.” The older English says “worship” for the bow. The point of his sentences is the opposite of idolatry. Paint is not God. The honour crosses the paint and belongs to Christ.\n\nSo an icon is a form of witness, like a Gospel book you can see. We kiss the Gospel book without believing the leather is a god. We venerate an icon without offering the adoration that belongs to the Holy Trinity alone."
+        },
+        {
+          "heading": "Takeaway",
+          "body": "Icons are not idols. Idolatry treats the made thing as God. An icon of Christ sends the honour to Christ, because the Word truly took a face."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "John of Damascus says the honour rendered to the image passes where?",
+          "choices": [
+            "It stops in the paint, which is itself divine",
+            "It passes over to the prototype, the person shown",
+            "It is forbidden because Christ was never visible"
+          ],
+          "correct": 1,
+          "explanation": "He says the honour rendered to the image passes over to the prototype, and that we do not worship the material."
+        },
+        {
+          "prompt": "Which comparison does he make?",
+          "choices": [
+            "An icon is unlike a Gospel book, because only the icon is adored as wood",
+            "We do not worship the material of an image, just as we do not worship the material of the Gospels",
+            "The Incarnation made images unnecessary"
+          ],
+          "correct": 1,
+          "explanation": "He compares the image with the Gospel book: the honour is for what they present, not for leather or paint as God."
+        }
+      ]
+    },
+    {
+      "id": "idea-theotokos-saints",
+      "micro": true,
+      "track": "Learn one idea",
+      "title": "Why we honor the Theotokos and the saints",
+      "category": "Learn one idea",
+      "level": "1 reading · 2 questions",
+      "summary": "Mary is called Mother of God because of who her Child is. The saints are alive in Christ and pray.",
+      "source": "Cyril of Alexandria to Nestorius, in Nicene and Post-Nicene Fathers, series 2, volume 14; John of Damascus, Orthodox Faith 4.16",
+      "sourceUrl": "https://www.newadvent.org/fathers/3810.htm",
+      "lessons": [
+        {
+          "heading": "Honour that refers back to Christ",
+          "body": "Mary says, “From henceforth all generations shall call me blessed” (Luke 1:48). The Church does. The title Theotokos, Mother of God, is not a claim that Mary existed before God or that she is a fourth person of the Trinity. Cyril of Alexandria writes why the Fathers used it: “not as if the nature of the Word or his divinity had its beginning from the Holy Virgin, but because of her was born that holy body with a rational soul, to which the Word being personally united is said to be born according to the flesh.” The title protects Jesus. The one in her womb is the eternal Son, not a mere man later adopted.\n\nJohn of Damascus draws the line for her honour and for the saints: “the honour which we give to her is referred to Him Who was made of her incarnate.” The brave acts of holy people “stir us up to be brave and to emulate and imitate their valour and to glorify God.” We ask them to pray because death does not cut the Church in half. James already says to “pray one for another” (James 5:16). If the prayer of a righteous person matters here, it matters in the kingdom.\n\nNone of this puts Mary or a saint in the place of the Trinity. We do not offer them the adoration due to God alone. We honor what Christ has done in them, and we ask their prayers."
+        },
+        {
+          "heading": "Takeaway",
+          "body": "Theotokos means the Child is God incarnate, not that Mary is the source of the divine nature. Honour given to her and to the saints is meant to glorify Christ, and their prayers do not replace his."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Why does Cyril say the Virgin is called Mother of God?",
+          "choices": [
+            "Because the divine nature began from her",
+            "Because the body born of her is personally united to the Word",
+            "Because she is a fourth divine person"
+          ],
+          "correct": 1,
+          "explanation": "Cyril denies that the Word’s divinity began from Mary. She is called Mother of God because the Word was personally united to the body born of her."
+        },
+        {
+          "prompt": "John of Damascus says the honour we give Mary is referred to whom?",
+          "choices": [
+            "To her instead of Christ",
+            "To him who was made incarnate of her",
+            "To the paint of an icon as a god"
+          ],
+          "correct": 1,
+          "explanation": "He says the honour given to her is referred to him who was made of her incarnate, and that the saints’ lives move us to glorify God."
+        }
+      ]
+    },
+    {
+      "id": "idea-church",
+      "micro": true,
+      "track": "Learn one idea",
+      "title": "Why the Church, and not the Bible alone?",
+      "category": "Learn one idea",
+      "level": "1 reading · 2 questions",
+      "summary": "The Church preached before she bound the New Testament. Scripture is her book, not a rival to her.",
+      "source": "Irenaeus, Against Heresies 3.4.1, in the Ante-Nicene Fathers, volume 1",
+      "sourceUrl": "https://www.newadvent.org/fathers/0103304.htm",
+      "lessons": [
+        {
+          "heading": "The book was received somewhere",
+          "body": "“Bible alone” still has to answer a prior question: which books, read by whom, with which baptismal faith? The New Testament did not fall from the sky already bound. The apostles preached, baptized, and broke bread. Letters and Gospels were written inside that life, and the Church recognized them. Paul calls “the church of the living God, the pillar and ground of the truth” (1 Timothy 3:15). He does not call a private reader that pillar.\n\nIrenaeus presses the point. “For how should it be if the apostles themselves had not left us writings? Would it not be necessary to follow the course of the tradition which they handed down to those to whom they did commit the Churches?” Even with the writings, he will not separate the books from the churches that received the apostles’ teaching.\n\nSo the Orthodox answer is not “the Church instead of Scripture.” It is that Scripture is the Church’s apostolic book, read in the Church’s faith. A verse yanked free of that faith can be made to say almost anything. The same Spirit who inspired the writings gathered a people to guard them."
+        },
+        {
+          "heading": "Takeaway",
+          "body": "The Bible is not a rival to the Church that received it. Without the Church there is no canon, no baptism, and no living place where the apostolic word is heard as one faith."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Irenaeus asks what believers would follow if the apostles had left no writings. His answer is:",
+          "choices": [
+            "Each person’s newest opinion",
+            "The tradition handed down to the churches the apostles committed",
+            "No faith at all until a printing press"
+          ],
+          "correct": 1,
+          "explanation": "Against Heresies 3.4.1 says it would be necessary to follow the tradition handed down to those to whom the apostles committed the Churches."
+        },
+        {
+          "prompt": "1 Timothy 3:15 calls the Church what?",
+          "choices": [
+            "The pillar and ground of the truth",
+            "An optional club that the Bible replaced",
+            "A later invention with no link to the apostles"
+          ],
+          "correct": 0,
+          "explanation": "Paul calls the church of the living God the pillar and ground of the truth."
+        }
+      ]
+    },
+    {
+      "id": "idea-eucharist",
+      "micro": true,
+      "track": "Learn one idea",
+      "title": "The Eucharist is the real Body and Blood",
+      "category": "Learn one idea",
+      "level": "1 reading · 2 questions",
+      "summary": "Christ said “this is my body.” Ignatius says the Eucharist is the flesh of the Saviour.",
+      "source": "Ignatius of Antioch, To the Smyrnaeans 7, in the Ante-Nicene Fathers, volume 1",
+      "sourceUrl": "https://www.newadvent.org/fathers/0109.htm",
+      "lessons": [
+        {
+          "heading": "Not a bare reminder",
+          "body": "At the supper, Jesus “took bread, and blessed it, and brake it, and gave it to the disciples, and said, Take, eat; this is my body” (Matthew 26:26). In John 6 he says, “Except ye eat the flesh of the Son of man, and drink his blood, ye have no life in you.” The Church did not hear this as poetry for a feeling. She heard a gift.\n\nIgnatius of Antioch, on his way to martyrdom early in the second century, already treats a merely symbolic view as a refusal of Christ. Some, he says, “abstain from the Eucharist and from prayer, because they confess not the Eucharist to be the flesh of our Saviour Jesus Christ, which suffered for our sins, and which the Father, of His goodness, raised up again.” The same flesh that suffered and rose is the flesh he says the Eucharist is.\n\nThe Liturgy does not pretend the bread stops looking like bread. It confesses a change we do not see: by the Holy Spirit, the gifts become the Body and Blood of Christ. We do not re-sacrifice him. We receive the one sacrifice, and we adore Christ present, not the wheat as wheat."
+        },
+        {
+          "heading": "Takeaway",
+          "body": "The Orthodox Church receives the Eucharist as Christ’s true Body and Blood. Ignatius already called a refusal of that confession a turning away from the gift."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Ignatius says some abstain from the Eucharist because they will not confess it to be what?",
+          "choices": [
+            "An ordinary meal with no link to Christ",
+            "The flesh of our Saviour Jesus Christ, which suffered and was raised",
+            "A symbol that Christ is absent"
+          ],
+          "correct": 1,
+          "explanation": "To the Smyrnaeans 7 says they do not confess the Eucharist to be the flesh of our Saviour, which suffered and which the Father raised."
+        },
+        {
+          "prompt": "Which sentence fits this lesson?",
+          "choices": [
+            "Christ meant the supper only as a memory that he is absent",
+            "The Church offers a second, separate sacrifice of a different Christ",
+            "The one sacrifice is received as his real Body and Blood"
+          ],
+          "correct": 2,
+          "explanation": "The lesson confesses a real presence and the one sacrifice, not a bare symbol and not a second Christ."
+        }
+      ]
+    },
+    {
+      "id": "idea-faith-science",
+      "micro": true,
+      "track": "Learn one idea",
+      "title": "Faith and science",
+      "category": "Learn one idea",
+      "level": "1 reading · 2 questions",
+      "summary": "Creation can be studied because God made an ordered world. That study does not replace the Maker.",
+      "source": "Basil the Great, Hexaemeron, Homily 1, in Nicene and Post-Nicene Fathers, series 2, volume 8",
+      "sourceUrl": "https://www.newadvent.org/fathers/32011.htm",
+      "lessons": [
+        {
+          "heading": "Two questions, one world",
+          "body": "The Church does not ask you to despise the patient study of creation. Basil wants the hearer “eager to find in its surroundings an idea of God which may be worthy of Him,” and he denies that heaven and earth were “spontaneous.” A world that came from God is a world with order in it. Measuring that order is not atheism. It is looking at a work.\n\nTrouble starts when either side grabs the other’s question. Science, in its ordinary work, asks how things behave: what a cell does, how old a rock is, which cause follows which. It does not, by weighing and timing, settle whether the whole show is a gift, whether a person is only a machine, or whether the dead are raised. Faith does not hand out lab results by quoting Genesis as if it were that kind of manual. Faith says who the Maker is, what a human being is for, and where the world is going.\n\nWhen a Christian fears a telescope, or a scientist announces that a method has abolished God, both have changed the subject. The Orthodox posture is calmer. Study the world honestly. Do not pretend the study was the Creator."
+        },
+        {
+          "heading": "Takeaway",
+          "body": "Faith and science are not rival gods. Science describes the creation. The Church confesses the God who gave it being. Confuse the questions, and you will invent a war the Gospel did not start."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Basil wants the student of creation to be eager for what?",
+          "choices": [
+            "An idea of God worthy of God, found in the things around us",
+            "A proof that the world had no origin",
+            "A ban on asking how the world works"
+          ],
+          "correct": 0,
+          "explanation": "In the Hexaemeron he urges a soul eager to find in its surroundings an idea of God worthy of him, and he denies a spontaneous world."
+        },
+        {
+          "prompt": "Which distinction does this lesson draw?",
+          "choices": [
+            "Science replaces the question of why there is a world at all",
+            "A description of how things behave does not by itself answer who gave them being",
+            "Faith is only useful where measurement has failed"
+          ],
+          "correct": 1,
+          "explanation": "The lesson says scientific description and the confession of the Creator answer different questions about the same world."
+        }
+      ]
+    },
+    {
+      "id": "idea-miracles",
+      "micro": true,
+      "track": "Learn one idea",
+      "title": "Why miracles?",
+      "category": "Learn one idea",
+      "level": "1 reading · 2 questions",
+      "summary": "A miracle is God acting freely in the world he made. The Resurrection is the one that interprets the rest.",
+      "source": "John of Damascus, An Exact Exposition of the Orthodox Faith 4.16, in Nicene and Post-Nicene Fathers, series 2, volume 9",
+      "sourceUrl": "https://www.newadvent.org/fathers/33044.htm",
+      "lessons": [
+        {
+          "heading": "Signs, not magic",
+          "body": "A miracle is not a stunt that breaks a world God has abandoned. It is the Lord of the world acting freely in it: a healing, a storm rebuked, bread in the wilderness, and above all a dead man raised. The point is not to skip faith. John says the signs he records were written “that ye might believe that Jesus is the Christ, the Son of God” (John 20:31).\n\nJohn of Damascus ties the wonders to history, not to a fog. The Lord “worked miracles, suffered, was crucified, rose again,” and “since all these things actually took place and were seen by men, they were written for the remembrance and instruction of us who were not alive at that time.” The Church does not ask you to believe in “miracles in general” as a mood. She asks you to believe this Lord, whose greatest sign is the Resurrection.\n\nThat also sorts counterfeits. A wonder that leads away from Christ, or that treats God as a vending machine, is not the Gospel’s kind of sign. The true ones serve the kingdom. They show that death and sickness are not the owners of the world."
+        },
+        {
+          "heading": "Takeaway",
+          "body": "Miracles are God acting in his own creation, witnessed and then told. The Resurrection is the miracle that tells you what the others mean."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "John of Damascus says the miracles, the passion, and the resurrection were what?",
+          "choices": [
+            "Events that took place, were seen, and were written down for those who came later",
+            "Legends with no witnesses",
+            "Proof that the material world is an illusion"
+          ],
+          "correct": 0,
+          "explanation": "He says these things actually took place and were seen, and were written for the instruction of those who were not there."
+        },
+        {
+          "prompt": "John 20:31 says the signs were written so that the reader might what?",
+          "choices": [
+            "Believe that Jesus is the Christ, the Son of God",
+            "Treat God as a machine that owes us wonders",
+            "Stop caring whether Christ rose"
+          ],
+          "correct": 0,
+          "explanation": "John says these things are written that you might believe that Jesus is the Christ, the Son of God, and have life in his name."
+        }
+      ]
+    },
+    {
       "id": "trinity",
       "title": "The one God and the three Persons",
       "category": "Theology",
