@@ -1,0 +1,404 @@
+{
+  "translation": "Reina-Valera 1909",
+  "license": "Public domain",
+  "source": "https://ebible.org/spaRV1909",
+  "note": "Books 67-78 are not in this Protestant canon and stay in the English KJV.",
+  "books": [
+    {
+      "id": 1,
+      "name": "Génesis",
+      "chapters": 50,
+      "section": "Old Testament"
+    },
+    {
+      "id": 2,
+      "name": "Éxodo",
+      "chapters": 40,
+      "section": "Old Testament"
+    },
+    {
+      "id": 3,
+      "name": "Levítico",
+      "chapters": 27,
+      "section": "Old Testament"
+    },
+    {
+      "id": 4,
+      "name": "Números",
+      "chapters": 36,
+      "section": "Old Testament"
+    },
+    {
+      "id": 5,
+      "name": "Deuteronomio",
+      "chapters": 34,
+      "section": "Old Testament"
+    },
+    {
+      "id": 6,
+      "name": "Josué",
+      "chapters": 24,
+      "section": "Old Testament"
+    },
+    {
+      "id": 7,
+      "name": "Jueces",
+      "chapters": 21,
+      "section": "Old Testament"
+    },
+    {
+      "id": 8,
+      "name": "Rut",
+      "chapters": 4,
+      "section": "Old Testament"
+    },
+    {
+      "id": 9,
+      "name": "1 Samuel",
+      "chapters": 31,
+      "section": "Old Testament"
+    },
+    {
+      "id": 10,
+      "name": "2 Samuel",
+      "chapters": 24,
+      "section": "Old Testament"
+    },
+    {
+      "id": 11,
+      "name": "1 Reyes",
+      "chapters": 22,
+      "section": "Old Testament"
+    },
+    {
+      "id": 12,
+      "name": "2 Reyes",
+      "chapters": 25,
+      "section": "Old Testament"
+    },
+    {
+      "id": 13,
+      "name": "1 Crónicas",
+      "chapters": 29,
+      "section": "Old Testament"
+    },
+    {
+      "id": 14,
+      "name": "2 Crónicas",
+      "chapters": 36,
+      "section": "Old Testament"
+    },
+    {
+      "id": 15,
+      "name": "Esdras",
+      "chapters": 10,
+      "section": "Old Testament"
+    },
+    {
+      "id": 16,
+      "name": "Nehemías",
+      "chapters": 13,
+      "section": "Old Testament"
+    },
+    {
+      "id": 17,
+      "name": "Ester",
+      "chapters": 10,
+      "section": "Old Testament"
+    },
+    {
+      "id": 18,
+      "name": "Job",
+      "chapters": 42,
+      "section": "Old Testament"
+    },
+    {
+      "id": 19,
+      "name": "Salmos",
+      "chapters": 150,
+      "section": "Old Testament"
+    },
+    {
+      "id": 20,
+      "name": "Proverbios",
+      "chapters": 31,
+      "section": "Old Testament"
+    },
+    {
+      "id": 21,
+      "name": "Eclesiastés",
+      "chapters": 12,
+      "section": "Old Testament"
+    },
+    {
+      "id": 22,
+      "name": "Cantar de los Cantares",
+      "chapters": 8,
+      "section": "Old Testament"
+    },
+    {
+      "id": 23,
+      "name": "Isaías",
+      "chapters": 66,
+      "section": "Old Testament"
+    },
+    {
+      "id": 24,
+      "name": "Jeremías",
+      "chapters": 52,
+      "section": "Old Testament"
+    },
+    {
+      "id": 25,
+      "name": "Lamentaciones",
+      "chapters": 5,
+      "section": "Old Testament"
+    },
+    {
+      "id": 26,
+      "name": "Ezequiel",
+      "chapters": 48,
+      "section": "Old Testament"
+    },
+    {
+      "id": 27,
+      "name": "Daniel",
+      "chapters": 12,
+      "section": "Old Testament"
+    },
+    {
+      "id": 28,
+      "name": "Oseas",
+      "chapters": 14,
+      "section": "Old Testament"
+    },
+    {
+      "id": 29,
+      "name": "Joel",
+      "chapters": 3,
+      "section": "Old Testament"
+    },
+    {
+      "id": 30,
+      "name": "Amós",
+      "chapters": 9,
+      "section": "Old Testament"
+    },
+    {
+      "id": 31,
+      "name": "Abdías",
+      "chapters": 1,
+      "section": "Old Testament"
+    },
+    {
+      "id": 32,
+      "name": "Jonás",
+      "chapters": 4,
+      "section": "Old Testament"
+    },
+    {
+      "id": 33,
+      "name": "Miqueas",
+      "chapters": 7,
+      "section": "Old Testament"
+    },
+    {
+      "id": 34,
+      "name": "Nahum",
+      "chapters": 3,
+      "section": "Old Testament"
+    },
+    {
+      "id": 35,
+      "name": "Habacuc",
+      "chapters": 3,
+      "section": "Old Testament"
+    },
+    {
+      "id": 36,
+      "name": "Sofonías",
+      "chapters": 3,
+      "section": "Old Testament"
+    },
+    {
+      "id": 37,
+      "name": "Hageo",
+      "chapters": 2,
+      "section": "Old Testament"
+    },
+    {
+      "id": 38,
+      "name": "Zacarías",
+      "chapters": 14,
+      "section": "Old Testament"
+    },
+    {
+      "id": 39,
+      "name": "Malaquías",
+      "chapters": 4,
+      "section": "Old Testament"
+    },
+    {
+      "id": 40,
+      "name": "San Mateo",
+      "chapters": 28,
+      "section": "New Testament"
+    },
+    {
+      "id": 41,
+      "name": "Marcos",
+      "chapters": 16,
+      "section": "New Testament"
+    },
+    {
+      "id": 42,
+      "name": "San Lucas",
+      "chapters": 24,
+      "section": "New Testament"
+    },
+    {
+      "id": 43,
+      "name": "Juan",
+      "chapters": 21,
+      "section": "New Testament"
+    },
+    {
+      "id": 44,
+      "name": "Hechos",
+      "chapters": 28,
+      "section": "New Testament"
+    },
+    {
+      "id": 45,
+      "name": "Romanos",
+      "chapters": 16,
+      "section": "New Testament"
+    },
+    {
+      "id": 46,
+      "name": "1 Corintios",
+      "chapters": 16,
+      "section": "New Testament"
+    },
+    {
+      "id": 47,
+      "name": "2 Corintios",
+      "chapters": 13,
+      "section": "New Testament"
+    },
+    {
+      "id": 48,
+      "name": "Gálatas",
+      "chapters": 6,
+      "section": "New Testament"
+    },
+    {
+      "id": 49,
+      "name": "Efesios",
+      "chapters": 6,
+      "section": "New Testament"
+    },
+    {
+      "id": 50,
+      "name": "Filipenses",
+      "chapters": 4,
+      "section": "New Testament"
+    },
+    {
+      "id": 51,
+      "name": "Colosenses",
+      "chapters": 4,
+      "section": "New Testament"
+    },
+    {
+      "id": 52,
+      "name": "1 Tesalonicenses",
+      "chapters": 5,
+      "section": "New Testament"
+    },
+    {
+      "id": 53,
+      "name": "2 Tesalonicenses",
+      "chapters": 3,
+      "section": "New Testament"
+    },
+    {
+      "id": 54,
+      "name": "1 Timoteo",
+      "chapters": 6,
+      "section": "New Testament"
+    },
+    {
+      "id": 55,
+      "name": "2 Timoteo",
+      "chapters": 4,
+      "section": "New Testament"
+    },
+    {
+      "id": 56,
+      "name": "Tito",
+      "chapters": 3,
+      "section": "New Testament"
+    },
+    {
+      "id": 57,
+      "name": "Filemón",
+      "chapters": 1,
+      "section": "New Testament"
+    },
+    {
+      "id": 58,
+      "name": "Hebreos",
+      "chapters": 13,
+      "section": "New Testament"
+    },
+    {
+      "id": 59,
+      "name": "Santiago",
+      "chapters": 5,
+      "section": "New Testament"
+    },
+    {
+      "id": 60,
+      "name": "1 Pedro",
+      "chapters": 5,
+      "section": "New Testament"
+    },
+    {
+      "id": 61,
+      "name": "2 Pedro",
+      "chapters": 3,
+      "section": "New Testament"
+    },
+    {
+      "id": 62,
+      "name": "1 Juan",
+      "chapters": 5,
+      "section": "New Testament"
+    },
+    {
+      "id": 63,
+      "name": "2 Juan",
+      "chapters": 1,
+      "section": "New Testament"
+    },
+    {
+      "id": 64,
+      "name": "3 Juan",
+      "chapters": 1,
+      "section": "New Testament"
+    },
+    {
+      "id": 65,
+      "name": "Judas",
+      "chapters": 1,
+      "section": "New Testament"
+    },
+    {
+      "id": 66,
+      "name": "Apocalipsis",
+      "chapters": 22,
+      "section": "New Testament"
+    }
+  ]
+}

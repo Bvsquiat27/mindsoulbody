@@ -14,6 +14,18 @@
      leaderboard → { show: [{ code, id, name, score, level, ts }] } cap 50
      shared:<16 hex>
      room:ROOM-XXXXXX with a two-hour TTL
+     versebox:<code> → array, newest first, max 100. Each item:
+       { id, from, fromName, to, toName, book, chapter, verse,
+         reference, text, note, translation, ts, read, direction }
+       direction is "in" or "out". Sender copy is read:true, direction "out".
+       Recipient copy is read:false, direction "in".
+     study:<codeLow>:<codeHigh> → codes sorted. {
+       id, editors:[a,b], updatedAt,
+       entries:[{ id, question, answer, verses:[{book,chapter,verse,reference}],
+                  author, authorName, updatedBy, updatedByName, ts }]
+     }
+     rate:verse:<code> → { start, n }  30 sends per hour
+     rate:study:<code> → { start, n }  40 writes per hour
 
    The account secret is a random 32-hex string returned once at register.
    Only its SHA-256 hex digest is stored. Compare it in constant time.
@@ -44,17 +56,20 @@ const IMAGE_DATA = /^data:image\/(?:jpeg|png|webp);base64,[a-z0-9+/]+={0,2}$/i;
 const IMAGE_HTTPS = /^https:\/\/[^\s"'<>]+$/i;
 const PUBLIC_ID = /^[a-f0-9]{16}$/;
 
-const cors = {
-  'access-control-allow-origin': ORIGIN,
-  'access-control-allow-methods': 'GET, POST, OPTIONS',
-  'access-control-allow-headers': 'content-type',
-  'access-control-max-age': '86400',
-};
+let responseOrigin = ORIGIN;
+function corsHeaders() {
+  return {
+    'access-control-allow-origin': responseOrigin,
+    'access-control-allow-methods': 'GET, POST, OPTIONS',
+    'access-control-allow-headers': 'content-type',
+    'access-control-max-age': '86400',
+  };
+}
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'content-type': 'application/json', ...cors },
+    headers: { 'content-type': 'application/json', ...corsHeaders() },
   });
 }
 
@@ -388,10 +403,104 @@ async function authed(env, body) {
   return { user };
 }
 
+const VERSE_TEXT_MAX = 500;
+const VERSE_NOTE_MAX = 280;
+const VERSE_REF_MAX = 80;
+const VERSE_BOX_MAX = 100;
+const VERSE_RATE = 30;
+const STUDY_QUESTION_MAX = 400;
+const STUDY_ANSWER_MAX = 2000;
+const STUDY_VERSES_MAX = 6;
+const STUDY_ENTRIES_MAX = 100;
+const STUDY_RATE = 40;
+const HOUR_MS = 60 * 60 * 1000;
+
+function boundedText(value, max) {
+  const raw = String(value ?? '');
+  if (raw.length > max) return { error: 'That text is too long' };
+  return { text: raw.trim() };
+}
+
+async function takeRate(env, key, limit) {
+  const now = Date.now();
+  let bucket = null;
+  try { bucket = JSON.parse(await env.FRIENDS.get(key) || 'null'); } catch { bucket = null; }
+  if (!bucket || typeof bucket.start !== 'number' || now - bucket.start >= HOUR_MS) bucket = { start: now, n: 0 };
+  bucket.n += 1;
+  await env.FRIENDS.put(key, JSON.stringify(bucket));
+  return bucket.n <= limit;
+}
+
+async function friendsBothWays(env, user, otherCode) {
+  const code = String(otherCode || '').trim().toUpperCase();
+  if (!code || code === user.code) return null;
+  if (!(user.friends || []).includes(code)) return null;
+  const other = hydrate(await loadUser(env, code));
+  if (!other || !(other.friends || []).includes(user.code)) return null;
+  return other;
+}
+
+async function loadVersebox(env, code) {
+  const raw = await env.FRIENDS.get(`versebox:${code}`);
+  if (!raw) return [];
+  try {
+    const data = JSON.parse(raw);
+    return Array.isArray(data) ? data : [];
+  } catch { return []; }
+}
+
+async function saveVersebox(env, code, items) {
+  await env.FRIENDS.put(`versebox:${code}`, JSON.stringify(items.slice(0, VERSE_BOX_MAX)));
+}
+
+function otherParty(item, code) {
+  if (!item) return '';
+  return item.direction === 'out' ? item.to : item.from;
+}
+
+function studyStorageKey(a, b) {
+  const pair = [String(a || '').trim().toUpperCase(), String(b || '').trim().toUpperCase()].sort();
+  return { key: `study:${pair[0]}:${pair[1]}`, editors: pair };
+}
+
+async function loadStudy(env, a, b) {
+  const { key, editors } = studyStorageKey(a, b);
+  const raw = await env.FRIENDS.get(key);
+  if (!raw) return { id: key, editors, entries: [], updatedAt: 0 };
+  try {
+    const note = JSON.parse(raw);
+    if (!note || typeof note !== 'object') return { id: key, editors, entries: [], updatedAt: 0 };
+    note.id = key;
+    note.editors = editors;
+    note.entries = Array.isArray(note.entries) ? note.entries : [];
+    return note;
+  } catch { return { id: key, editors, entries: [], updatedAt: 0 }; }
+}
+
+function cleanStudyVerses(input) {
+  if (input == null) return { verses: [] };
+  if (!Array.isArray(input)) return { error: 'Verse links are not valid' };
+  if (input.length > STUDY_VERSES_MAX) return { error: 'Too many linked verses' };
+  const verses = [];
+  for (const item of input) {
+    if (!item || typeof item !== 'object') return { error: 'Verse links are not valid' };
+    const book = Math.floor(Number(item.book));
+    const chapter = Math.floor(Number(item.chapter));
+    const verse = Math.floor(Number(item.verse));
+    if (book < 1 || book > 78 || chapter < 1 || chapter > 200 || verse < 1 || verse > 200) return { error: 'Verse link is not valid' };
+    const reference = boundedText(item.reference, VERSE_REF_MAX);
+    if (reference.error) return { error: 'Reference is too long' };
+    verses.push({ book, chapter, verse, reference: reference.text });
+  }
+  return { verses };
+}
+
 export async function handleFriends(request, env) {
   try {
+    const requestOrigin = request.headers.get('origin') || '';
+    responseOrigin = requestOrigin === ORIGIN || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(requestOrigin) ? requestOrigin : ORIGIN;
     const url = new URL(request.url);
-    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
+    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders() });
     if (url.pathname === '/health' && request.method === 'GET') return json({ ok: true });
     if (url.pathname === '/recovery-email' && (request.method === 'GET' || request.method === 'POST')) {
       return json({
@@ -887,6 +996,119 @@ export async function handleFriends(request, env) {
         if (u) { u.shared = (u.shared || []).filter((x) => x !== id); await env.FRIENDS.put(`user:${u.code}`, JSON.stringify(u)); }
       }
       return json({ ok: true });
+    }
+
+    if (url.pathname === '/verse/send') {
+      const a = await authed(env, body);
+      if (a.error) return json({ error: a.error }, a.status);
+      const friend = await friendsBothWays(env, a.user, body?.to);
+      if (!friend) return json({ error: 'You can only send a verse to an accepted friend' }, 403);
+      if (!(await takeRate(env, `rate:verse:${a.user.code}`, VERSE_RATE))) return json({ error: 'Too many verses this hour' }, 429);
+      const text = boundedText(body?.text, VERSE_TEXT_MAX);
+      if (text.error) return json({ error: 'That verse is too long' }, 400);
+      if (!text.text) return json({ error: 'Missing verse text' }, 400);
+      const note = boundedText(body?.note, VERSE_NOTE_MAX);
+      if (note.error) return json({ error: 'That note is too long' }, 400);
+      const reference = boundedText(body?.reference, VERSE_REF_MAX);
+      if (reference.error) return json({ error: 'That reference is too long' }, 400);
+      const book = Math.floor(Number(body?.book));
+      const chapter = Math.floor(Number(body?.chapter));
+      const verse = Math.floor(Number(body?.verse));
+      if (book < 1 || book > 78 || chapter < 1 || chapter > 200 || verse < 1 || verse > 200) return json({ error: 'That verse is not in this Bible' }, 400);
+      const translation = body?.translation === 'rvr' ? 'rvr' : 'kjv';
+      const id = randomHex(8);
+      const ts = Date.now();
+      const base = {
+        id, from: a.user.code, fromName: a.user.name || 'Friend', to: friend.code, toName: friend.name || 'Friend',
+        book, chapter, verse, reference: reference.text, text: text.text, note: note.text, translation, ts,
+      };
+      const senderBox = await loadVersebox(env, a.user.code);
+      const friendBox = await loadVersebox(env, friend.code);
+      senderBox.unshift({ ...base, read: true, direction: 'out' });
+      friendBox.unshift({ ...base, read: false, direction: 'in' });
+      await saveVersebox(env, a.user.code, senderBox);
+      await saveVersebox(env, friend.code, friendBox);
+      return json({ ok: true, id });
+    }
+
+    if (url.pathname === '/verse/inbox' || url.pathname === '/verse/thread') {
+      const a = await authed(env, body);
+      if (a.error) return json({ error: a.error }, a.status);
+      const withCode = String(body?.with || '').trim().toUpperCase();
+      if (url.pathname === '/verse/thread') {
+        const friend = await friendsBothWays(env, a.user, withCode);
+        if (!friend) return json({ error: 'You are not friends' }, 403);
+      }
+      const box = await loadVersebox(env, a.user.code);
+      const verses = [];
+      for (const item of box) {
+        const other = otherParty(item, a.user.code);
+        const friend = await friendsBothWays(env, a.user, other);
+        if (!friend) continue;
+        if (withCode && other !== withCode) continue;
+        verses.push(item);
+      }
+      return json({ verses });
+    }
+
+    if (url.pathname === '/verse/read') {
+      const a = await authed(env, body);
+      if (a.error) return json({ error: a.error }, a.status);
+      const id = String(body?.id || '');
+      const box = await loadVersebox(env, a.user.code);
+      const item = box.find((row) => row && row.id === id);
+      if (!item) return json({ error: 'Verse not found' }, 404);
+      const friend = await friendsBothWays(env, a.user, otherParty(item, a.user.code));
+      if (!friend) return json({ error: 'You are not friends' }, 403);
+      item.read = true;
+      await saveVersebox(env, a.user.code, box);
+      return json({ ok: true });
+    }
+
+    if (url.pathname === '/study/get' || url.pathname === '/study/add' || url.pathname === '/study/delete') {
+      const a = await authed(env, body);
+      if (a.error) return json({ error: a.error }, a.status);
+      const friend = await friendsBothWays(env, a.user, body?.with);
+      if (!friend) return json({ error: 'You are not friends' }, 403);
+      const note = await loadStudy(env, a.user.code, friend.code);
+      if (url.pathname === '/study/get') return json(note);
+      if (url.pathname === '/study/delete') {
+        const entryId = String(body?.entryId || '');
+        note.entries = (note.entries || []).filter((entry) => entry.id !== entryId);
+        note.updatedAt = Date.now();
+        await env.FRIENDS.put(note.id, JSON.stringify(note));
+        return json(note);
+      }
+      if (!(await takeRate(env, `rate:study:${a.user.code}`, STUDY_RATE))) return json({ error: 'Too many study writes this hour' }, 429);
+      const question = boundedText(body?.question, STUDY_QUESTION_MAX);
+      if (question.error) return json({ error: 'That question is too long' }, 400);
+      if (!question.text) return json({ error: 'Write a question first' }, 400);
+      const answer = boundedText(body?.answer, STUDY_ANSWER_MAX);
+      if (answer.error) return json({ error: 'That answer is too long' }, 400);
+      const verses = cleanStudyVerses(body?.verses);
+      if (verses.error) return json({ error: verses.error }, 400);
+      const requested = String(body?.entryId || '');
+      const entryId = /^[a-f0-9]{8,16}$/.test(requested) ? requested : randomHex(8);
+      const now = Date.now();
+      const existing = (note.entries || []).find((entry) => entry.id === entryId);
+      if (existing) {
+        existing.question = question.text;
+        existing.answer = answer.text;
+        existing.verses = verses.verses;
+        existing.updatedBy = a.user.code;
+        existing.updatedByName = a.user.name || 'Friend';
+        existing.ts = now;
+      } else {
+        if ((note.entries || []).length >= STUDY_ENTRIES_MAX) return json({ error: 'This notebook is full' }, 400);
+        note.entries.unshift({
+          id: entryId, question: question.text, answer: answer.text, verses: verses.verses,
+          author: a.user.code, authorName: a.user.name || 'Friend',
+          updatedBy: a.user.code, updatedByName: a.user.name || 'Friend', ts: now,
+        });
+      }
+      note.updatedAt = now;
+      await env.FRIENDS.put(note.id, JSON.stringify(note));
+      return json(note);
     }
 
     return json({ error: 'Not found' }, 404);

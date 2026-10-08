@@ -21,7 +21,15 @@ window.BibleGames = (() => {
     const s = storeGet(); s.gameScores = s.gameScores || {};
     const e = s.gameScores[show] || (s.gameScores[show] = { best: 0, plays: 0 });
     e.plays++; if (score > e.best) e.best = score;
+    const finishedOn = window.msbBadgeLocalDay ? msbBadgeLocalDay() : '';
+    if (finishedOn) {
+      e.finishedOn = finishedOn;
+      e.days = Array.isArray(e.days) ? e.days : [];
+      if (!e.days.includes(finishedOn)) e.days.push(finishedOn);
+      if (e.days.length > 400) e.days = e.days.slice(-400);
+    }
     try { localStorage.setItem('msb_local_v1', JSON.stringify(s)); } catch { /* private mode */ }
+    if (window.msbCelebrate) { try { msbCelebrate(); } catch { /* achievement toast is optional */ } }
     /* Online hooks: post the final score to the live room this run belongs
        to; otherwise a solo run joins the public scores. Both silent offline. */
     try {

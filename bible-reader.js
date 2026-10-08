@@ -1,10 +1,27 @@
 (() => {
   'use strict';
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
-  const reader = { index:null, notes:null, fatherNotes:new Map(), noteKind:'All', bookData:new Map(), book:43, chapter:1, highlights:[], verseNotes:[], readLog:[], pendingVerse:null, place:null, loadedUser:null, accountRequest:0, selectedVerse:null, rotated:false, fontSize:19, requestId:0, root:null, context:null };
+  const reader = { index:null, rvrIndex:null, translation:'kjv', notes:null, fatherNotes:new Map(), noteKind:'All', bookData:new Map(), book:43, chapter:1, highlights:[], verseNotes:[], readLog:[], pendingVerse:null, place:null, loadedUser:null, accountRequest:0, selectedVerse:null, rotated:false, fontSize:19, requestId:0, root:null, context:null };
+  const TRANSLATION_KEY = 'msb_bible_translation';
+  const RVR_CACHE_NAME = 'msb-bible-rvr1909-1';
   const fileName = id => `bible/${String(id).padStart(2, '0')}.json`;
+  function activeTranslation(id) { return reader.translation === 'rvr' && id <= 66 ? 'rvr' : 'kjv'; }
+  function dataKey(id) { return activeTranslation(id) + ':' + id; }
+  function displayBook(info) {
+    if (!info) return '';
+    if (reader.translation === 'rvr' && info.id <= 66 && reader.rvrIndex) {
+      const row = reader.rvrIndex.books.find(book => book.id === info.id);
+      if (row && row.name) return row.name;
+    }
+    return info.name;
+  }
+  function loadTranslation() {
+    try { reader.translation = localStorage.getItem(TRANSLATION_KEY) === 'rvr' ? 'rvr' : 'kjv'; }
+    catch { reader.translation = 'kjv'; }
+  }
+  function rememberTranslation() { try { localStorage.setItem(TRANSLATION_KEY, reader.translation); } catch {} }
   const bookInfo = () => reader.index?.books.find(book => book.id === reader.book);
-  const currentVerses = () => reader.bookData.get(reader.book)?.chapters[reader.chapter - 1] || [];
+  const currentVerses = () => reader.bookData.get(dataKey(reader.book))?.chapters[reader.chapter - 1] || [];
   const verseOffset = () => { const info = bookInfo(); return info && reader.chapter === (info.chapterStart || 1) ? (info.verseStart || 1) - 1 : 0; };
   const savedColor = verse => reader.highlights.find(item => item.book_id === reader.book && item.chapter === reader.chapter && item.verse === verse)?.color || '';
   function updateRotated() {
@@ -32,7 +49,7 @@
   }
   function shareLine(verse){
     const info = bookInfo();
-    return `${verseBody(verse)} — ${info ? info.name : 'Bible'} ${reader.chapter}:${verse}`.trim();
+    return `${verseBody(verse)} — ${info ? displayBook(info) : 'Bible'} ${reader.chapter}:${verse}`.trim();
   }
   function clearSpeakingClass(){ reader.root?.querySelectorAll('.bible-speaking').forEach(el => el.classList.remove('bible-speaking')); }
   function markSpeaking(verse){ reader.root?.querySelectorAll('.bible-verse').forEach(el => el.classList.toggle('bible-speaking', Number(el.dataset.bibleVerse) === verse)); }
@@ -64,6 +81,7 @@
     paintSpeechButtons();
     if (window.msbYieldAudio) { try { window.msbYieldAudio('speech', true); } catch {} }
     const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = activeTranslation(reader.book) === 'rvr' ? 'es-MX' : 'en-US';
     const advance = () => {
       if (generation !== speech.generation || speech.paused) return;
       const verses = currentVerses(), offset = verseOffset();
@@ -122,14 +140,17 @@
     const bookChaptersTotal = info ? info.chapters - (info.chapterStart || 1) + 1 : 0;
     const bookChaptersLogged = new Set((reader.readLog || []).filter(item => item.book_id === reader.book).map(item => item.chapter)).size;
     const myNoteBox = reader.selectedVerse ? `<div class="bible-inline-notes bible-my-note"><div class="bible-inline-title"><strong>Your note · ${esc(reference(reader.book, reader.chapter, reader.selectedVerse))}</strong></div>${mySelected && mySelected.from_name ? `<small class="muted">Shared by ${esc(mySelected.from_name)} — edit it freely; your copy is yours.</small>` : ''}<textarea id="bible-my-note" class="note-field" rows="3" placeholder="Write your own note on this verse…">${esc(mySelected ? mySelected.body : '')}</textarea><div class="note-actions"><button class="secondary" data-bible="save-verse-note">Save my note</button>${mySelected ? '<button class="secondary" data-bible="delete-verse-note">Delete my note</button>' : ''}</div></div>` : '';
+    const shownName = displayBook(info);
+    const translationNote = reader.translation === 'rvr' && reader.book > 66 ? '<p class="bible-translation-note">Reina-Valera 1909 does not include this book, so this chapter stays in English.</p>' : '';
     const sections = ['Old Testament', 'New Testament', 'Deuterocanon / Apocrypha'];
     const savedMarkup = !reader.context.isRegistered() ? '<p class="muted">Sign in to keep your highlights in this browser.</p>' : highlights.length ? `<div class="bible-saved-list">${highlights.map(item => `<button data-jump-book="${item.book_id}" data-jump-chapter="${item.chapter}" data-jump-verse="${item.verse}"><span class="bible-swatch ${esc(item.color)}"></span>${esc(books[item.book_id - 1]?.name)} ${item.chapter}:${item.verse}</button>`).join('')}</div>` : '<p class="muted">Tap a verse, choose a color, and it will appear here.</p>';
-    reader.root.innerHTML = `<div class="bible-app"><header class="bible-heading"><div><span class="eyebrow">THE FULL READING SHELF</span><h1>Read the Bible.</h1><p class="lead">Choose a book and chapter. Tap a verse to highlight it.</p></div><span class="bible-edition">The Bible</span></header>
+    reader.root.innerHTML = `<div class="bible-app"><header class="bible-heading"><div><span class="eyebrow">THE FULL READING SHELF</span><h1>Read the Bible.</h1><p class="lead">Choose a book and chapter. Tap a verse to highlight it.</p></div><span class="bible-edition">${reader.translation === 'rvr' ? 'Reina-Valera 1909' : 'KJV'}</span></header>
       ${offlineMarkup()}
-      <div class="bible-layout"><div class="bible-primary"><div class="bible-controls card"><label>Book<select id="bible-book">${sections.map(section => `<optgroup label="${esc(section)}">${books.filter(book => book.section === section).map(book => `<option value="${book.id}" ${book.id === reader.book ? 'selected' : ''}>${esc(book.name)}</option>`).join('')}</optgroup>`).join('')}</select></label><label>Chapter<select id="bible-chapter">${Array.from({ length:info.chapters - (info.chapterStart || 1) + 1 }, (_, i) => { const chapter = i + (info.chapterStart || 1); return `<option value="${chapter}" ${chapter === reader.chapter ? 'selected' : ''}>${chapter}</option>`; }).join('')}</select></label><div class="bible-control-buttons"><button class="secondary" data-bible="previous" aria-label="Previous chapter">←</button><button class="secondary" data-bible="next" aria-label="Next chapter">→</button><button class="secondary" data-bible="smaller" aria-label="Smaller text">A−</button><button class="secondary" data-bible="larger" aria-label="Larger text">A+</button><button class="secondary" data-bible="speak" aria-label="Read this chapter aloud">Read aloud</button><button class="secondary" data-bible="speak-pause" aria-label="Pause reading" aria-pressed="${speech.paused}">Pause</button><button class="secondary" data-bible="speak-stop" aria-label="Stop reading">Stop</button><button class="secondary" data-bible="rotate" aria-label="Rotate reading view" aria-pressed="${reader.rotated}">⤾ <span>Rotate</span></button><button class="secondary" data-bible="notes">Study notes (${chapterNotes.length})</button></div></div>
-      <article class="bible-page card" style="--reader-size:${reader.fontSize}px"><div class="bible-page-title"><span class="eyebrow">${esc(info.section)}</span><h2>${esc(info.name)} ${reader.chapter}</h2><small>${verses.filter(Boolean).length} verses</small></div>${selectedNotes.length ? `<div id="bible-verse-note" class="bible-inline-notes" aria-live="polite"><div class="bible-inline-title"><strong>Study notes · ${esc(reference(reader.book, reader.chapter, reader.selectedVerse))}</strong><button class="text-button" data-bible="close-note" aria-label="Close study note">×</button></div>${selectedNotes.map(renderNote).join('')}</div>` : ''}${myNoteBox}${reader.selectedVerse ? `<div class="bible-highlight-tools" role="group" aria-label="Highlight verse ${reader.selectedVerse}"><span>Verse ${reader.selectedVerse}</span><button data-color="teal" aria-label="Highlight teal" title="Teal"></button><button data-color="gold" aria-label="Highlight gold" title="Gold"></button><button data-color="rose" aria-label="Highlight rose" title="Rose"></button><button class="bible-clear-highlight" data-color="remove" aria-label="Clear highlight" title="Clear highlight"></button><button class="secondary" data-bible="copy-verse" aria-label="Copy verse ${reader.selectedVerse}">Copy</button><button class="secondary" data-bible="share-verse" aria-label="Share verse ${reader.selectedVerse}">Share</button></div>` : ''}<div class="bible-verses">${verses.map((text, i) => text ? `<button class="bible-verse ${savedColor(i + 1 + verseOffset()) ? 'highlight-' + savedColor(i + 1 + verseOffset()) : ''} ${reader.selectedVerse === i + 1 + verseOffset() ? 'selected' : ''}${speech.playing && speech.verse === i + 1 + verseOffset() ? ' bible-speaking' : ''}" data-bible-verse="${i + 1 + verseOffset()}" aria-label="Verse ${i + 1 + verseOffset()}: ${esc(text)}"><sup>${i + 1 + verseOffset()}</sup>${esc(text)}${chapterNotes.some(note => note.verse === i + 1 + verseOffset()) ? '<span class="bible-annotation" aria-label="Study note available">✦</span>' : ''}${myNoteAt(i + 1 + verseOffset()) ? '<span class="bible-annotation bible-my-mark" aria-label="Your note on this verse">✎</span>' : ''}</button>` : '').join('')}</div><div class="bible-page-foot"><button class="text-button" data-bible="previous">← Previous</button><span class="bible-log-wrap"><button class="secondary bible-log-btn ${loggedHere ? 'bible-logged' : ''}" data-bible="log-read" aria-pressed="${loggedHere}">${loggedHere ? `✓ ${esc(info.name)} ${reader.chapter} logged — tap to undo` : `✓ Log ${esc(info.name)} ${reader.chapter} as read`}</button><span class="bible-log-progressbar" aria-hidden="true"><i style="width:${bookChaptersTotal ? Math.round(bookChaptersLogged / bookChaptersTotal * 100) : 0}%"></i></span><small class="bible-log-progress">${esc(info.name)}: ${bookChaptersLogged} of ${bookChaptersTotal} chapters logged</small></span><button class="text-button" data-bible="next">Next →</button></div></article></div>
-      <aside class="bible-aside"><div class="card"><span class="eyebrow">YOUR MARKS</span><h3>Highlighted verses</h3>${savedMarkup}<p class="small">Your highlights stay in this browser.</p><button type="button" class="text-button" data-nav="marks">All marks</button></div><div class="card" id="bible-notes"><span class="eyebrow">STUDY ALONGSIDE SCRIPTURE</span><h3>${chapterNotes.length ? `Notes on ${esc(info.name)} ${reader.chapter}` : 'Explore the study library'}</h3><div class="bible-note-filters" role="group" aria-label="Study note kinds">${kindFilters}</div><p class="small">Father · Teaching · Apologetics. Father lines are short quotations. Use the source link to read the passage.</p><div class="bible-study-stack">${studyMarkup || '<p class="muted">No notes of this kind on this chapter.</p>'}</div></div></aside></div></div>`;
+      <div class="bible-layout"><div class="bible-primary"><div class="bible-controls card"><label>Book<select id="bible-book">${sections.map(section => `<optgroup label="${esc(section)}">${books.filter(book => book.section === section).map(book => `<option value="${book.id}" ${book.id === reader.book ? 'selected' : ''}>${esc(displayBook(book))}</option>`).join('')}</optgroup>`).join('')}</select></label><label>Chapter<select id="bible-chapter">${Array.from({ length:info.chapters - (info.chapterStart || 1) + 1 }, (_, i) => { const chapter = i + (info.chapterStart || 1); return `<option value="${chapter}" ${chapter === reader.chapter ? 'selected' : ''}>${chapter}</option>`; }).join('')}</select></label><label>Translation<select id="bible-translation"><option value="kjv" ${reader.translation !== 'rvr' ? 'selected' : ''}>KJV</option><option value="rvr" ${reader.translation === 'rvr' ? 'selected' : ''}>RVR1909</option></select></label><div class="bible-control-buttons"><button class="secondary" data-bible="previous" aria-label="Previous chapter">←</button><button class="secondary" data-bible="next" aria-label="Next chapter">→</button><button class="secondary" data-bible="smaller" aria-label="Smaller text">A−</button><button class="secondary" data-bible="larger" aria-label="Larger text">A+</button><button class="secondary" data-bible="speak" aria-label="Read this chapter aloud">Read aloud</button><button class="secondary" data-bible="speak-pause" aria-label="Pause reading" aria-pressed="${speech.paused}">Pause</button><button class="secondary" data-bible="speak-stop" aria-label="Stop reading">Stop</button><button class="secondary" data-bible="rotate" aria-label="Rotate reading view" aria-pressed="${reader.rotated}">⤾ <span>Rotate</span></button><button class="secondary" data-bible="notes">Study notes (${chapterNotes.length})</button></div></div>
+      <article class="bible-page card" style="--reader-size:${reader.fontSize}px"><div class="bible-page-title"><span class="eyebrow">${esc(info.section)}</span><h2>${esc(shownName)} ${reader.chapter}</h2>${translationNote}<small>${verses.filter(Boolean).length} verses</small></div>${selectedNotes.length ? `<div id="bible-verse-note" class="bible-inline-notes" aria-live="polite"><div class="bible-inline-title"><strong>Study notes · ${esc(reference(reader.book, reader.chapter, reader.selectedVerse))}</strong><button class="text-button" data-bible="close-note" aria-label="Close study note">×</button></div>${selectedNotes.map(renderNote).join('')}</div>` : ''}${myNoteBox}${reader.selectedVerse ? `<div class="bible-highlight-tools" role="group" aria-label="Highlight verse ${reader.selectedVerse}"><span>Verse ${reader.selectedVerse}</span><button data-color="teal" aria-label="Highlight teal" title="Teal"></button><button data-color="gold" aria-label="Highlight gold" title="Gold"></button><button data-color="rose" aria-label="Highlight rose" title="Rose"></button><button class="bible-clear-highlight" data-color="remove" aria-label="Clear highlight" title="Clear highlight"></button><button class="secondary" data-bible="copy-verse" aria-label="Copy verse ${reader.selectedVerse}">Copy</button><button class="secondary" data-bible="share-verse" aria-label="Share verse ${reader.selectedVerse}">Share</button><button class="secondary" data-bible="send-verse" aria-label="Send to a friend">Send to a friend</button></div>` : ''}<div class="bible-verses" data-i18n-skip>${verses.map((text, i) => text ? `<button class="bible-verse ${savedColor(i + 1 + verseOffset()) ? 'highlight-' + savedColor(i + 1 + verseOffset()) : ''} ${reader.selectedVerse === i + 1 + verseOffset() ? 'selected' : ''}${speech.playing && speech.verse === i + 1 + verseOffset() ? ' bible-speaking' : ''}" data-bible-verse="${i + 1 + verseOffset()}" aria-label="Verse ${i + 1 + verseOffset()}: ${esc(text)}"><sup>${i + 1 + verseOffset()}</sup>${esc(text)}${chapterNotes.some(note => note.verse === i + 1 + verseOffset()) ? '<span class="bible-annotation" aria-label="Study note available">✦</span>' : ''}${myNoteAt(i + 1 + verseOffset()) ? '<span class="bible-annotation bible-my-mark" aria-label="Your note on this verse">✎</span>' : ''}</button>` : '').join('')}</div><div class="bible-page-foot"><button class="text-button" data-bible="previous">← Previous</button><span class="bible-log-wrap"><button class="secondary bible-log-btn ${loggedHere ? 'bible-logged' : ''}" data-bible="log-read" aria-pressed="${loggedHere}">${loggedHere ? `✓ ${esc(shownName)} ${reader.chapter} logged — tap to undo` : `✓ Log ${esc(shownName)} ${reader.chapter} as read`}</button><span class="bible-log-progressbar" aria-hidden="true"><i style="width:${bookChaptersTotal ? Math.round(bookChaptersLogged / bookChaptersTotal * 100) : 0}%"></i></span><small class="bible-log-progress">${esc(shownName)}: ${bookChaptersLogged} of ${bookChaptersTotal} chapters logged</small></span><button class="text-button" data-bible="next">Next →</button></div></article></div>
+      <aside class="bible-aside"><div class="card"><span class="eyebrow">YOUR MARKS</span><h3>Highlighted verses</h3>${savedMarkup}<p class="small">Your highlights stay in this browser.</p><button type="button" class="text-button" data-nav="marks">All marks</button></div><div class="card" id="bible-notes"><span class="eyebrow">STUDY ALONGSIDE SCRIPTURE</span><h3>${chapterNotes.length ? `Notes on ${esc(shownName)} ${reader.chapter}` : 'Explore the study library'}</h3><div class="bible-note-filters" role="group" aria-label="Study note kinds">${kindFilters}</div><p class="small">Father · Teaching · Apologetics. Father lines are short quotations. Use the source link to read the passage.</p><div class="bible-study-stack">${studyMarkup || '<p class="muted">No notes of this kind on this chapter.</p>'}</div></div></aside></div></div>`;
     updateRotated();
+    if (window.MsbI18n) MsbI18n.apply(reader.root);
     if (!reader.offline) refreshOffline();
   }
   const BIBLE_CACHE_NAME = 'msb-bible-kjv-1';
@@ -145,12 +166,14 @@
     if (!('caches' in window)) return null;
     return caches.open(BIBLE_CACHE_NAME);
   }
-  async function readCached(url){
+  async function readCachedFrom(cacheName, url){
     try {
-      const cache = await openBibleCache();
+      if (!('caches' in window)) return null;
+      const cache = await caches.open(cacheName);
       return cache ? await cache.match(url) : null;
     } catch { return null; }
   }
+  async function readCached(url){ return readCachedFrom(BIBLE_CACHE_NAME, url); }
   function offlineLabel(){
     const s = reader.offline || {books:0, bytes:0, scanning:true, busy:false, done:0};
     if (s.busy) return `Downloading ${s.done} of ${BIBLE_BOOK_TOTAL} books · ${formatBytes(s.bytes)}`;
@@ -172,7 +195,7 @@
     const books = s.books || 0;
     const pct = Math.max(0, Math.min(100, Math.round(books / BIBLE_BOOK_TOTAL * 100)));
     const done = (books >= BIBLE_BOOK_TOTAL) && !s.busy;
-    return `<section class="card bible-offline"><span class="eyebrow">OFFLINE</span><h3 id="bible-offline-title">Whole Bible on this device</h3><p id="bible-offline-label" aria-live="polite">${offlineLabel()}</p><div class="bible-offline-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${BIBLE_BOOK_TOTAL}" aria-valuenow="${books}" aria-label="Bible books saved on this device"><i id="bible-offline-fill" style="width:${pct}%"></i></div><button type="button" class="primary" data-bible="download-all" ${done || s.busy ? 'disabled' : ''}>${offlineButtonLabel()}</button></section>`;
+    return `<section class="card bible-offline"><span class="eyebrow">OFFLINE</span><h3 id="bible-offline-title">Whole Bible on this device</h3><p class="small">The download also saves the Reina-Valera 1909.</p><p id="bible-offline-label" aria-live="polite">${offlineLabel()}</p><div class="bible-offline-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${BIBLE_BOOK_TOTAL}" aria-valuenow="${books}" aria-label="Bible books saved on this device"><i id="bible-offline-fill" style="width:${pct}%"></i></div><button type="button" class="primary" data-bible="download-all" ${done || s.busy ? 'disabled' : ''}>${offlineButtonLabel()}</button></section>`;
   }
   function paintOffline(){
     const label = reader.root?.querySelector('#bible-offline-label');
@@ -237,6 +260,18 @@
         reader.offline = {books:bookCount, bytes, scanning:false, busy:true, done:bookCount};
         paintOffline();
       }
+      const rvrCache = await caches.open(RVR_CACHE_NAME);
+      const rvrFiles = ['bible/rvr/index.json', ...Array.from({ length: 66 }, (_, i) => `bible/rvr/${String(i + 1).padStart(2, '0')}.json`)];
+      for (const file of rvrFiles) {
+        const url = new URL(file, location.href).href;
+        const response = await fetch(url);
+        if (!response.ok) throw Error(`Could not download ${file}.`);
+        const buffer = await response.arrayBuffer();
+        bytes += buffer.byteLength;
+        await rvrCache.put(url, new Response(buffer, { headers: { 'Content-Type': 'application/json' } }));
+        reader.offline = { books: bookCount, bytes, scanning: false, busy: true, done: bookCount };
+        paintOffline();
+      }
       reader.offline = {books:bookCount, bytes, scanning:false, busy:false, done:bookCount};
       reader.context.toast('The whole Bible is saved on this device.');
     } catch (error) {
@@ -248,16 +283,29 @@
       else paintOffline();
     }
   }
+  async function ensureRvrIndex() {
+    if (reader.rvrIndex) return;
+    let response = null;
+    try { response = await fetch('bible/rvr/index.json'); } catch { response = null; }
+    if (!response || !response.ok) response = await readCachedFrom(RVR_CACHE_NAME, 'bible/rvr/index.json');
+    if (!response || !response.ok) throw Error('The Spanish Bible index is unavailable.');
+    reader.rvrIndex = await response.json();
+  }
   async function ensureBook(id) {
-    if (reader.bookData.has(id)) return;
-    const url = bibleFile(id);
+    const key = dataKey(id);
+    if (reader.bookData.has(key)) return;
+    const rvr = activeTranslation(id) === 'rvr';
+    if (rvr) await ensureRvrIndex();
+    const url = rvr ? `bible/rvr/${String(id).padStart(2, '0')}.json` : bibleFile(id);
+    const cacheName = rvr ? RVR_CACHE_NAME : BIBLE_CACHE_NAME;
     let response = null;
     try { response = await fetch(url); } catch { response = null; }
-    if (!response || !response.ok) response = await readCached(url);
+    if (!response || !response.ok) response = await readCachedFrom(cacheName, url);
     if (!response || !response.ok) throw Error(`Could not open this book (${response ? response.status : 'offline'}).`);
     const data = await response.json();
-    if (!Array.isArray(data.chapters) || data.book !== reader.index.books[id - 1]?.name) throw Error('This book could not be verified.');
-    reader.bookData.set(id, data);
+    const expected = rvr ? reader.rvrIndex?.books?.[id - 1]?.name : reader.index.books[id - 1]?.name;
+    if (!Array.isArray(data.chapters) || data.book !== expected) throw Error('This book could not be verified.');
+    reader.bookData.set(key, data);
   }
   async function ensureFathers(id) {
     if (reader.fatherNotes.has(id)) return;
@@ -289,7 +337,7 @@
     }
   }
   async function show(root, context) {
-    reader.root = root; reader.context = context; loadFont();
+    reader.root = root; reader.context = context; loadFont(); loadTranslation();
     const requestId = ++reader.requestId;
     root.innerHTML = '<div class="loading">Opening the Bible…</div>';
     try {
@@ -303,6 +351,8 @@
         const match = local?.match(/^(\d+):(\d+)$/);
         if (match && !reader.explicitOpen) { reader.book = Number(match[1]); reader.chapter = Number(match[2]); }
       }
+      try { await ensureRvrIndex(); }
+      catch (error) { if (reader.translation === 'rvr') throw error; }
       if (!reader.notes) {
         const response = await fetch('bible/study-notes.json', { cache:'no-store' });
         if (!response.ok) throw Error('Study notes are unavailable. Please try again.');
@@ -352,6 +402,7 @@
     if (!event.target.closest('.bible-app')) return;
     if (event.target.id === 'bible-book') { const chosen = reader.index.books[Number(event.target.value) - 1]; move(chosen.id, chosen.chapterStart || 1); }
     if (event.target.id === 'bible-chapter') move(reader.book, Number(event.target.value));
+    if (event.target.id === 'bible-translation') { reader.translation = event.target.value === 'rvr' ? 'rvr' : 'kjv'; rememberTranslation(); move(reader.book, reader.chapter, reader.selectedVerse || null); }
   });
   document.addEventListener('click', async event => {
     const target = event.target.closest('[data-bible-verse],[data-bible],[data-color],[data-jump-book],[data-copy-source]');
@@ -422,6 +473,14 @@
       case 'speak-stop': stopSpeech(); break;
       case 'copy-verse': if (reader.selectedVerse) copyVerse(reader.selectedVerse); break;
       case 'share-verse': if (reader.selectedVerse) shareVerse(reader.selectedVerse); break;
+      case 'send-verse': {
+        if (!reader.selectedVerse) break;
+        const info = bookInfo();
+        const payload = { book: reader.book, chapter: reader.chapter, verse: reader.selectedVerse, text: verseBody(reader.selectedVerse), reference: `${displayBook(info)} ${reader.chapter}:${reader.selectedVerse}`, translation: activeTranslation(reader.book) === 'rvr' ? 'rvr' : 'kjv' };
+        if (window.msbOpenVerseSend) window.msbOpenVerseSend(payload);
+        else reader.context?.toast?.('Sending verses is coming soon.');
+        break;
+      }
       case 'smaller': reader.fontSize = Math.max(15, reader.fontSize - 2); rememberFont(); render(); break;
       case 'larger': reader.fontSize = Math.min(29, reader.fontSize + 2); rememberFont(); render(); break;
       case 'previous': if (reader.chapter > (bookInfo().chapterStart || 1)) move(reader.book, reader.chapter - 1); else if (reader.book > 1) move(reader.book - 1, reader.index.books[reader.book - 2].chapters); break;
