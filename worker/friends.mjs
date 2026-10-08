@@ -21,11 +21,19 @@
 
 const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const SHOWS = ['jeopardy', 'millionaire', 'feud', 'sound', 'babel', 'defend', 'doctrine'];
-const MAX_BODY = 16384;
+/* Avatar uploads are a 256px JPEG (quality 0.85) and covers are 1024px.
+   These caps fit one of each data URL, sent once. A photo past its own cap
+   is skipped; text fields in the same request are still saved. */
+const AVATAR_MAX = 250000;
+const COVER_MAX = 1500000;
+const MAX_BODY = 2000000;
+export const FRIEND_LIMITS = { MAX_BODY, AVATAR_MAX, COVER_MAX, REQUEST_MAX: 30 };
 const NOTE_TITLE_MAX = 120;
 const NOTE_BODY_MAX = 4000;
 const NOTE_BOX_MAX = 30;
-const REQUEST_MAX = 30;
+const REQUEST_MAX = FRIEND_LIMITS.REQUEST_MAX;
+const INBOX_FULL = 'Their request inbox is full. They need to accept or decline a request before yours can be delivered.';
+const OUTBOX_FULL = 'Your outgoing requests are full. Cancel a request before sending another.';
 const BOARD_MAX = 50;
 const ROOM_TTL_SECONDS = 2 * 60 * 60;
 const ROOM_MAX_PLAYERS = 4;
@@ -119,9 +127,9 @@ function cleanStudyId(v) {
   return /^[a-z0-9-]{1,60}$/.test(s) ? s : '';
 }
 
-function publicImage(value) {
+function publicImage(value, max) {
   const raw = String(value ?? '').trim();
-  if (!raw || raw.length > 12000) return '';
+  if (!raw || raw.length > max) return '';
   if (IMAGE_DATA.test(raw) || IMAGE_HTTPS.test(raw)) return raw;
   return '';
 }
@@ -146,29 +154,39 @@ function applyText(user, body, nested, key) {
   else delete user[key];
 }
 
-function applyImage(user, body, nested, storedKey, aliases) {
+function applyImage(user, body, nested, storedKey, aliases, max) {
   let seen = false;
   let chosen = '';
+  let oversize = false;
   for (const alias of aliases) {
-    const values = fieldValues(body, nested, alias);
-    if (!values.length) continue;
-    seen = true;
-    for (const value of values) {
-      const img = publicImage(value);
+    for (const value of fieldValues(body, nested, alias)) {
+      seen = true;
+      const raw = String(value ?? '').trim();
+      if (!raw) continue;
+      if (raw.length > max) { oversize = true; continue; }
+      const img = publicImage(raw, max);
       if (img) { chosen = img; break; }
     }
     if (chosen) break;
   }
-  if (!seen) return;
-  if (chosen) user[storedKey] = chosen;
-  else delete user[storedKey];
+  if (!seen) return '';
+  if (chosen) { user[storedKey] = chosen; return ''; }
+  if (oversize) {
+    return storedKey === 'avatar_data'
+      ? 'The profile photo was too large, so it was left unchanged. Your other profile details were saved.'
+      : 'The cover photo was too large, so it was left unchanged. Your other profile details were saved.';
+  }
+  delete user[storedKey];
+  return '';
 }
 
 function applyProfile(user, body) {
   const nested = nestedProfile(body);
   for (const key of ['handle', 'city', 'bio', 'denomination']) applyText(user, body, nested, key);
-  applyImage(user, body, nested, 'avatar_data', ['avatar_data', 'avatar', 'avatarUrl']);
-  applyImage(user, body, nested, 'cover_data', ['cover_data', 'cover', 'coverUrl']);
+  const warnings = [
+    applyImage(user, body, nested, 'avatar_data', ['avatar_data', 'avatar', 'avatarUrl'], AVATAR_MAX),
+    applyImage(user, body, nested, 'cover_data', ['cover_data', 'cover', 'coverUrl'], COVER_MAX),
+  ].filter(Boolean);
   delete user.avatar_saint;
   if (user.profile && typeof user.profile === 'object') {
     delete user.profile.avatar_saint;
@@ -180,6 +198,7 @@ function applyProfile(user, body) {
     if (!Object.keys(user.profile).length) delete user.profile;
   }
   delete user.profile;
+  return warnings;
 }
 
 function hydrate(user) {
@@ -204,7 +223,7 @@ function cleanRequests(list) {
     seen.add(code);
     out.push({ code, name: cleanName(item?.name) || 'Friend', ts: Number(item?.ts) || 0 });
   }
-  return out.slice(0, REQUEST_MAX);
+  return out;
 }
 
 function withoutCode(list, code) {
@@ -300,37 +319,38 @@ function publicScore(entry, id) {
   };
 }
 
-async function publishBoard(env, board) {
+async function stampBoardId(env, code, publicId) {
+  if (!code || !publicId) return;
+  const board = await loadBoard(env);
   let dirty = false;
   for (const rows of Object.values(board)) {
     if (!Array.isArray(rows)) continue;
     for (const entry of rows) {
       if (!entry || typeof entry !== 'object') continue;
-      const code = String(entry.code || '').trim().toUpperCase();
-      let id = validPublicId(entry.id);
-      if (code) {
-        const user = hydrate(await loadUser(env, code));
-        if (user) {
-          const pid = await ensurePublicId(env, user);
-          if (pid && pid !== id) {
-            entry.id = pid;
-            id = pid;
-            dirty = true;
-          }
-        }
-      }
-      if (!id) {
-        entry.id = randomHex(8);
-        dirty = true;
-      }
+      if (String(entry.code || '').trim().toUpperCase() !== code) continue;
+      if (entry.id !== publicId) { entry.id = publicId; dirty = true; }
     }
   }
   if (dirty) await env.FRIENDS.put(BOARD_KEY, JSON.stringify(board));
-  return board;
 }
 
-function scoreRows(list) {
-  return (Array.isArray(list) ? list : []).map((entry) => publicScore(entry, validPublicId(entry && entry.id)));
+async function presentScoreList(env, list, limit) {
+  const rows = Array.isArray(list) ? list : [];
+  const out = [];
+  for (const entry of rows) {
+    if (!entry || typeof entry !== 'object') continue;
+    let id = validPublicId(entry.id);
+    if (!id) {
+      const code = String(entry.code || '').trim().toUpperCase();
+      if (code) {
+        const user = await loadUser(env, code);
+        id = validPublicId(user && user.publicId);
+      }
+    }
+    out.push(publicScore(entry, id));
+    if (out.length >= limit) break;
+  }
+  return out;
 }
 
 function friendView(me, friend) {
@@ -373,15 +393,23 @@ export async function handleFriends(request, env) {
     const url = new URL(request.url);
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     if (url.pathname === '/health' && request.method === 'GET') return json({ ok: true });
+    if (url.pathname === '/recovery-email' && (request.method === 'GET' || request.method === 'POST')) {
+      return json({
+        ready: false,
+        configured: false,
+        sent: false,
+        error: 'No mailbox or sending key is configured. No recovery email was sent.',
+      });
+    }
     if (url.pathname === '/scores' && request.method === 'GET') {
-      const board = await publishBoard(env, await loadBoard(env));
+      const board = await loadBoard(env);
       const want = String(url.searchParams.get('show') || '').toLowerCase();
       if (want) {
         if (!SHOWS.includes(want)) return json({ error: 'Unknown game' }, 400);
-        return json({ show: want, scores: scoreRows(board[want]).slice(0, 20) });
+        return json({ show: want, scores: await presentScoreList(env, board[want], 20) });
       }
       const all = {};
-      for (const s of SHOWS) all[s] = scoreRows(board[s]).slice(0, 10);
+      for (const s of SHOWS) all[s] = await presentScoreList(env, board[s], 10);
       return json({ scores: all });
     }
     if (request.method !== 'POST') return json({ error: 'Not found' }, 404);
@@ -411,11 +439,22 @@ export async function handleFriends(request, env) {
       const a = await authed(env, body);
       if (a.error) return json({ error: a.error }, a.status);
       if (body?.name !== undefined) a.user.name = cleanName(body.name) || a.user.name;
-      a.user.stats = cleanStats(body?.stats);
-      applyProfile(a.user, body || {});
+      if (body && Object.prototype.hasOwnProperty.call(body, 'stats')) a.user.stats = cleanStats(body.stats);
+      const warnings = applyProfile(a.user, body || {});
       const publicId = await ensurePublicId(env, a.user);
       if (a.user.publicId !== publicId) a.user.publicId = publicId;
       await saveUser(env, a.user);
+      await stampBoardId(env, a.user.code, publicId);
+      return json({ ok: true, publicId, ...(warnings.length ? { warning: warnings.join(' ') } : {}) });
+    }
+
+    if (url.pathname === '/account/public-id') {
+      const a = await authed(env, body);
+      if (a.error) return json({ error: a.error }, a.status);
+      const publicId = await ensurePublicId(env, a.user);
+      if (a.user.publicId !== publicId) a.user.publicId = publicId;
+      await saveUser(env, a.user);
+      await stampBoardId(env, a.user.code, publicId);
       return json({ ok: true, publicId });
     }
 
@@ -447,10 +486,19 @@ export async function handleFriends(request, env) {
         await saveUser(env, friend);
         return json({ ok: true, status: 'friends' });
       }
-      if (hasRequest(a.user.requestsOut, friendCode)) return json({ ok: true, status: 'pending' });
+      if (hasRequest(a.user.requestsOut, friendCode)) {
+        if (!hasRequest(friend.requestsIn, a.user.code)) {
+          const existing = cleanRequests(a.user.requestsOut).find((item) => item.code === friendCode);
+          friend.requestsIn = [{ code: a.user.code, name: a.user.name || 'Friend', ts: existing?.ts || Date.now() }, ...withoutCode(friend.requestsIn, a.user.code)];
+          await saveUser(env, friend);
+        }
+        return json({ ok: true, status: 'pending' });
+      }
+      if (cleanRequests(friend.requestsIn).length >= REQUEST_MAX) return json({ error: INBOX_FULL }, 409);
+      if (cleanRequests(a.user.requestsOut).length >= REQUEST_MAX) return json({ error: OUTBOX_FULL }, 409);
       const ts = Date.now();
-      a.user.requestsOut = [{ code: friend.code, name: friend.name || 'Friend', ts }, ...withoutCode(a.user.requestsOut, friend.code)].slice(0, REQUEST_MAX);
-      friend.requestsIn = [{ code: a.user.code, name: a.user.name || 'Friend', ts }, ...withoutCode(friend.requestsIn, a.user.code)].slice(0, REQUEST_MAX);
+      a.user.requestsOut = [{ code: friend.code, name: friend.name || 'Friend', ts }, ...withoutCode(a.user.requestsOut, friend.code)];
+      friend.requestsIn = [{ code: a.user.code, name: a.user.name || 'Friend', ts }, ...withoutCode(friend.requestsIn, a.user.code)];
       await saveUser(env, a.user);
       await saveUser(env, friend);
       return json({ ok: true, status: 'pending' });
@@ -489,6 +537,22 @@ export async function handleFriends(request, env) {
       const friend = hydrate(await loadUser(env, friendCode));
       if (friend) {
         friend.requestsOut = withoutCode(friend.requestsOut, a.user.code);
+        await saveUser(env, friend);
+      }
+      return json({ ok: true });
+    }
+
+    if (url.pathname === '/friend/cancel') {
+      const a = await authed(env, body);
+      if (a.error) return json({ error: a.error }, a.status);
+      const friendCode = String(body?.friendCode || '').trim().toUpperCase();
+      if (!friendCode) return json({ error: 'Missing friendCode' }, 400);
+      if (!hasRequest(a.user.requestsOut, friendCode)) return json({ error: 'Request not found' }, 404);
+      a.user.requestsOut = withoutCode(a.user.requestsOut, friendCode);
+      await saveUser(env, a.user);
+      const friend = hydrate(await loadUser(env, friendCode));
+      if (friend) {
+        friend.requestsIn = withoutCode(friend.requestsIn, a.user.code);
         await saveUser(env, friend);
       }
       return json({ ok: true });
@@ -583,6 +647,7 @@ export async function handleFriends(request, env) {
       const level = Math.min(5, Math.max(1, Math.floor(num(body?.level)) || 1));
       if (score <= 0) return json({ ok: true, skipped: true });
       const publicId = await ensurePublicId(env, a.user);
+      await stampBoardId(env, a.user.code, publicId);
       const board = await loadBoard(env);
       const list = Array.isArray(board[show]) ? board[show] : [];
       const mine = list.find((e) => e.code === a.user.code);
@@ -655,6 +720,7 @@ export async function handleFriends(request, env) {
       if (a.error) return json({ error: a.error }, a.status);
       const room = await loadRoom(env, String(body?.room || '').trim().toUpperCase());
       if (!room) return json({ error: 'No room with that code' }, 404);
+      if (room.status !== 'active') return json({ error: 'That room is not active' }, 409);
       const me = room.players.find((p) => p.code === a.user.code);
       if (!me) return json({ error: 'You are not in that room' }, 403);
       me.score = Math.max(me.score || 0, Math.floor(num(body?.score)));
@@ -715,6 +781,7 @@ export async function handleFriends(request, env) {
       const a = await authed(env, body);
       if (a.error) return json({ error: a.error }, a.status);
       const withCode = String(body?.with || '').trim().toUpperCase();
+      if (!(a.user.friends || []).includes(withCode)) return json({ error: 'You are not friends anymore, so this conversation is hidden.' }, 403);
       a.user.threads = a.user.threads || {};
       const thread = a.user.threads[withCode] || [];
       let changed = false;
@@ -766,7 +833,10 @@ export async function handleFriends(request, env) {
       for (const id of a.user.shared || []) {
         try {
           const raw = await env.FRIENDS.get(`shared:${id}`);
-          if (raw) out.push(JSON.parse(raw));
+          if (!raw) continue;
+          const note = JSON.parse(raw);
+          if (!(note.editors || []).includes(a.user.code)) continue;
+          out.push(note);
         } catch { /* skip broken entries */ }
       }
       out.sort((x, y) => (y.updatedAt || 0) - (x.updatedAt || 0));

@@ -1,11 +1,16 @@
 /* Mind Soul & Body — service worker
-   Shell: precached lightly, but HTML/JS/CSS are NETWORK-FIRST at runtime so
-   deploys land immediately (no stale-build trap). Verse JSON under bible/
-   is CACHE-FIRST. study-notes.json and data/ are NETWORK-FIRST so lesson
-   notes update immediately. Bump CACHE_VERSION to force a clean precache. */
-const CACHE_VERSION = 'v67';
+   Shell: precached, but HTML/JS/CSS are NETWORK-FIRST at runtime so
+   deploys land immediately (no stale-build trap). Study JSON under data/
+   and study-notes.json are NETWORK-FIRST so lesson notes update immediately.
+   Bible book JSON lives in its own cache (BIBLE_CACHE). That cache is NOT
+   tied to CACHE_VERSION, so an app update does not wipe downloaded books.
+   Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
+   Bump CACHE_VERSION to refresh the precached shell. */
+const CACHE_VERSION = 'v70';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
+const BIBLE_DATA_VERSION = 'kjv-1';
+const BIBLE_CACHE = `msb-bible-${BIBLE_DATA_VERSION}`;
 
 const SHELL = [
   './',
@@ -17,10 +22,35 @@ const SHELL = [
   './icon-maskable-512.png',
   './aura.css',
   './study-design.css',
+  './aura.js',
+  './bible-reader.js',
+  './trivia-game.js',
   './games.js',
+  './prayers.js',
+  './orthodox-day.js',
   './audio/still-waters.ogg',
   './audio/still-waters.mp3',
 ];
+
+const isBibleBook = (url) => /\/bible\/(?:index|\d\d)\.json$/.test(url.pathname);
+const isStudyNotes = (url) => url.pathname.endsWith('/study-notes.json');
+const isDataRequest = (url) => url.pathname.includes('/data/');
+
+async function preserveBibleBooks(keys) {
+  const bible = await caches.open(BIBLE_CACHE);
+  for (const key of keys) {
+    if (key === BIBLE_CACHE) continue;
+    const cache = await caches.open(key);
+    const requests = await cache.keys();
+    for (const request of requests) {
+      const path = new URL(request.url).pathname;
+      if (!isBibleBook(new URL(request.url))) continue;
+      if (path.endsWith('/study-notes.json')) continue;
+      const hit = await cache.match(request);
+      if (hit) await bible.put(request, hit.clone());
+    }
+  }
+}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -33,17 +63,16 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(
-        keys.filter((k) => k !== SHELL_CACHE && k !== DATA_CACHE)
+      .then(async (keys) => {
+        await preserveBibleBooks(keys);
+        await Promise.all(
+          keys.filter((k) => k !== SHELL_CACHE && k !== DATA_CACHE && k !== BIBLE_CACHE)
             .map((k) => caches.delete(k))
-      ))
+        );
+      })
       .then(() => self.clients.claim())
   );
 });
-
-const isBibleRequest = (url) => url.pathname.includes('/bible/');
-const isStudyNotes = (url) => url.pathname.endsWith('/study-notes.json');
-const isDataRequest = (url) => url.pathname.includes('/data/');
 
 self.addEventListener('fetch', (event) => {
   const { request } = event;
@@ -52,7 +81,6 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
 
   if (isStudyNotes(url) || isDataRequest(url)) {
-    // Network-first so lesson notes and study JSON update immediately.
     event.respondWith(
       fetch(request)
         .then((res) => {
@@ -67,22 +95,16 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  if (isBibleRequest(url)) {
-    // Cache-first for verse JSON (the text never changes); populate on first fetch.
+  if (isBibleBook(url)) {
     event.respondWith(
-      caches.match(request).then((hit) => hit || fetch(request).then((res) => {
-        if (res.ok) {
-          const copy = res.clone();
-          caches.open(DATA_CACHE).then((cache) => cache.put(request, copy));
-        }
+      caches.open(BIBLE_CACHE).then((cache) => cache.match(request).then((hit) => hit || fetch(request).then((res) => {
+        if (res.ok) cache.put(request, res.clone());
         return res;
-      }))
+      })))
     );
     return;
   }
 
-  // Network-first for the shell so updates arrive on the next load;
-  // fall back to cache (and to index.html for navigations) when offline.
   event.respondWith(
     fetch(request)
       .then((res) => {
