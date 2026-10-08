@@ -912,6 +912,11 @@ window.BibleGames = (() => {
   function sfx(kind) {
     if (!gxSoundOn) return;
     const ac = gxCtx(); if (!ac) return;
+    if (window.msbYieldAudio) {
+      window.msbYieldAudio('game-sfx', true);
+      clearTimeout(sfx.yieldTimer);
+      sfx.yieldTimer = setTimeout(() => { if (window.msbYieldAudio) window.msbYieldAudio('game-sfx', false); }, 800);
+    }
     try {
       const t = ac.currentTime;
       const tone = (freq, start, dur, type, vol, slideTo) => {
@@ -1029,11 +1034,13 @@ window.BibleGames = (() => {
       gxMusicBus.gain.value = 0.5;
       gxMusicMiss = 0;
       gxMusicTimer = setInterval(gxMusicTick, gxStepMs());
+      if (window.msbYieldAudio) window.msbYieldAudio('game-music', true);
     } catch { /* garnish */ }
   }
   function stopMusic() {
     if (gxMusicTimer) { clearInterval(gxMusicTimer); gxMusicTimer = null; }
     if (gxFadeTimer) { clearTimeout(gxFadeTimer); gxFadeTimer = null; }
+    if (window.msbYieldAudio) window.msbYieldAudio('game-music', false);
   }
   /* Switch songs: dip the music bus, restart the scheduler on the new tempo. */
   function setSong(key) {
@@ -1964,6 +1971,9 @@ window.BibleGames = (() => {
       synth.cancel();
       const u = new SpeechSynthesisUtterance(text);
       u.rate = rate || 0.92;
+      const release = () => { if (synth.speaking) return; if (window.msbYieldAudio) window.msbYieldAudio('speech', false); };
+      u.onend = u.onerror = release;
+      if (window.msbYieldAudio) window.msbYieldAudio('speech', true);
       synth.speak(u);
       return true;
     } catch (e) { return false; }
