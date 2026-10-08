@@ -3,7 +3,7 @@
    deploys land immediately (no stale-build trap). Verse JSON under bible/
    is CACHE-FIRST. study-notes.json and data/ are NETWORK-FIRST so lesson
    notes update immediately. Bump CACHE_VERSION to force a clean precache. */
-const CACHE_VERSION = 'v62';
+const CACHE_VERSION = 'v63';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 
