@@ -186,6 +186,18 @@ html{background:var(--bg)}body{color:var(--text);font-family:Outfit,system-ui,sa
 .dialog p,.dialog label{color:var(--ink-soft)}
 .theme-card{background:linear-gradient(145deg,var(--surface2),var(--surface))}
 .theme-swatch.selected,.theme-swatch[aria-pressed="true"]{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal)}
+.tap-vibration{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:18px 0;background:linear-gradient(145deg,var(--surface2),var(--surface))}
+.tap-vibration-copy{min-width:0}
+.tap-vibration h2{margin:6px 0 4px;font-size:22px}
+.tap-vibration p{margin:0}
+.tap-vibration-toggle{flex:none;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:6px 14px 6px 6px;border-radius:999px;border:1px solid var(--border,var(--line));background:var(--surface2);color:var(--text)}
+.tap-vibration-knob{width:44px;height:26px;border-radius:999px;background:color-mix(in srgb,var(--muted) 45%,var(--surface));position:relative;display:block}
+.tap-vibration-knob::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--text);transition:transform .16s ease}
+.tap-vibration-toggle[aria-pressed="true"]{border-color:var(--teal)}
+.tap-vibration-toggle[aria-pressed="true"] .tap-vibration-knob{background:var(--teal)}
+.tap-vibration-toggle[aria-pressed="true"] .tap-vibration-knob::after{transform:translateX(18px);background:var(--on-accent,#04221f)}
+.tap-vibration-state{font-size:13px;font-weight:700;min-width:1.6em;text-align:left}
+.tap-vibration-toggle:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .profile-cover{background:linear-gradient(135deg,var(--app-hero),var(--app-hero-end))}
 .profile-avatar,.friend-profile-avatar{background:var(--app-active);color:var(--text)}
 .profile-stats{border-color:var(--line)}
