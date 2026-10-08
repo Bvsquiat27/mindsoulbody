@@ -37,6 +37,10 @@
   function clearSpeakingClass(){ reader.root?.querySelectorAll('.bible-speaking').forEach(el => el.classList.remove('bible-speaking')); }
   function markSpeaking(verse){ reader.root?.querySelectorAll('.bible-verse').forEach(el => el.classList.toggle('bible-speaking', Number(el.dataset.bibleVerse) === verse)); }
   function releaseSpeechAudio(){ if (window.msbYieldAudio) { try { window.msbYieldAudio('speech', false); } catch {} } }
+  function paintSpeechButtons(){
+    const pause = reader.root?.querySelector('[data-bible="speak-pause"]');
+    if (pause) pause.setAttribute('aria-pressed', speech.paused ? 'true' : 'false');
+  }
   function stopSpeech(){
     speech.generation++;
     speech.playing = false;
@@ -44,6 +48,7 @@
     try { window.speechSynthesis?.cancel(); } catch {}
     clearSpeakingClass();
     releaseSpeechAudio();
+    paintSpeechButtons();
   }
   function speakAt(verse){
     const synth = window.speechSynthesis;
@@ -56,6 +61,7 @@
     speech.paused = false;
     speech.verse = verse;
     markSpeaking(verse);
+    paintSpeechButtons();
     if (window.msbYieldAudio) { try { window.msbYieldAudio('speech', true); } catch {} }
     const utter = new SpeechSynthesisUtterance(text);
     const advance = () => {
@@ -71,12 +77,13 @@
     try { synth.speak(utter); } catch { speech.playing = false; releaseSpeechAudio(); }
   }
   function pauseSpeech(){
-    if (!speech.playing) return;
+    if (!speech.playing && !speech.verse) return;
     speech.paused = true;
     speech.playing = false;
     speech.generation++;
     try { window.speechSynthesis?.cancel(); } catch {}
     releaseSpeechAudio();
+    paintSpeechButtons();
   }
   async function copyVerse(verse){
     try { await navigator.clipboard.writeText(shareLine(verse)); reader.context.toast('Verse copied.'); }
