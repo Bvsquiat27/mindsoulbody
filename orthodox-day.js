@@ -1,13 +1,14 @@
-/* Today's Orthodox calendar for Home.
-   Readings, fasting, tone, and saint NAMES come from the free orthocal.info API
+/* Today's Scripture readings for Home.
+   Reading references come from the free orthocal.info API
    (https://orthocal.info/api/gregorian/YYYY/M/D/). The service sends
    Access-Control-Allow-Origin: * and its software is MIT licensed
-   (https://github.com/brianglass/orthocal-python). Saint-life prose on that
-   API is not copied here — only names and titles, with a link out.
+   (https://github.com/brianglass/orthocal-python). That response also
+   includes commemorations; this card keeps only the reading references.
    Passage text from the API is not shown; each reference opens this app's Bible. */
 (() => {
   'use strict';
-  const CACHE_KEY = 'msb_orthocal_day';
+  const CACHE_KEY = 'msb_orthocal_readings';
+  const OLD_CACHE_KEY = 'msb_orthocal_day';
   const CODES = {
     GEN:1,EXO:2,LEV:3,NUM:4,DEU:5,JOS:6,JDG:7,RUT:8,
     '1SA':9,'2SA':10,'1KI':11,'2KI':12,'1CH':13,'2CH':14,
@@ -81,21 +82,7 @@
         verse: target ? target.verse : 0
       };
     }).filter(item => item.display);
-    const saints = Array.isArray(day.saints) ? day.saints.map(name => String(name || '').trim()).filter(Boolean) : [];
-    const titles = Array.isArray(day.titles) ? day.titles.map(name => String(name || '').trim()).filter(Boolean) : [];
-    return {
-      summary: String(day.summary_title || titles[0] || 'This day in the Church'),
-      titles,
-      saints,
-      tone: Number.isInteger(day.tone) ? day.tone : null,
-      fast: String(day.fast_level_desc || '').trim(),
-      fastNote: String(day.fast_exception_desc || '').trim(),
-      rank: String(day.feast_level_description || '').trim(),
-      readings,
-      year: day.year,
-      month: day.month,
-      day: day.day
-    };
+    return { readings };
   }
   function readCache(){
     try {
@@ -105,7 +92,10 @@
     } catch { return null; }
   }
   function writeCache(day){
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify({date:dateKey(), calendar:'gregorian', day})); } catch { /* private mode */ }
+    try {
+      localStorage.removeItem(OLD_CACHE_KEY);
+      localStorage.setItem(CACHE_KEY, JSON.stringify({date:dateKey(), calendar:'gregorian', day}));
+    } catch { /* private mode */ }
   }
   function playButton(){
     return `<button class="verse-play" data-daily-read aria-label="Open today’s verse in the Bible"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m9 6 9 6-9 6z"/></svg></button>`;
@@ -116,25 +106,22 @@
     return `<section class="daily-stack" id="orthodox-day"><span class="eyebrow">TODAY IN SCRIPTURE</span><h2>${text}</h2><span>${name}</span>${playButton()}</section>`;
   }
   function cardHtml(day){
-    const tone = day.tone ? `Tone ${day.tone}` : 'No tone';
-    const fast = [day.fast || 'Fasting not listed', day.fastNote].filter(Boolean).join(' · ');
-    const titles = day.titles.filter(title => title !== day.summary);
-    const saints = day.saints.length ? `<ul class="orthodox-saints">${day.saints.map(name => `<li>${esc(name)}</li>`).join('')}</ul>` : '<p class="orthodox-empty">No named saints listed for this day.</p>';
-    const readings = day.readings.length ? `<div class="orthodox-readings">${day.readings.map(item => {
+    const readings = (day.readings || []).map(item => {
       const label = `${item.source}: ${item.display}`;
       if (!item.book || !item.chapter) return `<p class="orthodox-reading-plain"><span class="eyebrow">${esc(item.source)}</span> ${esc(item.display)}</p>`;
       return `<button type="button" class="secondary orthodox-reading" data-lection-book="${item.book}" data-lection-chapter="${item.chapter}" data-lection-verse="${item.verse || 1}" aria-label="Open ${esc(label)} in the Bible"><span><span class="eyebrow">${esc(item.source)}</span> ${esc(item.display)}</span><span aria-hidden="true">Open ↗</span></button>`;
-    }).join('')}</div>` : '';
-    const url = `https://orthocal.info/gregorian/${day.year}/${day.month}/${day.day}/`;
-    return `<section class="daily-stack orthodox-day" id="orthodox-day" data-ready="1"><span class="eyebrow">TODAY IN THE CHURCH · ${esc(weekdayLabel())}</span><h2>${esc(day.summary)}</h2>${titles.length ? `<p class="orthodox-titles">${titles.map(esc).join(' · ')}</p>` : ''}<div class="orthodox-meta"><span>${esc(tone)}</span><span>${esc(fast)}</span>${day.rank ? `<span>${esc(day.rank)}</span>` : ''}</div><p class="orthodox-kicker">Saints of the day</p>${saints}<p class="orthodox-kicker">Epistle and Gospel</p>${readings}<p class="orthodox-note">Names and titles from <a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Orthocal</a> (New Calendar). Full lives are on that page, not copied here. Each reading opens in this app’s Bible. Saved on this device for the rest of today.</p></section>`;
+    }).join('');
+    if (!readings) return '';
+    return `<section class="daily-stack orthodox-day" id="orthodox-day" data-ready="1"><span class="eyebrow">TODAY'S READINGS · ${esc(weekdayLabel())}</span><h2>Epistle and Gospel</h2><div class="orthodox-readings">${readings}</div><p class="orthodox-note">Each reading opens in this Bible.</p></section>`;
   }
   function slot(verse){
     const cached = readCache();
-    if (cached) return cardHtml(cached);
+    if (cached && cached.readings && cached.readings.length) return cardHtml(cached);
     return verseHtml(verse);
   }
   let pending = 0;
   async function hydrate(){
+    try { localStorage.removeItem(OLD_CACHE_KEY); } catch { /* private mode */ }
     const host = document.getElementById('orthodox-day');
     if (!host || host.dataset.ready === '1') return;
     const generation = ++pending;
@@ -144,10 +131,7 @@
       if (!response.ok) return;
       const data = await response.json();
       const day = slim(data);
-      if (!day.summary && !day.readings.length) return;
-      day.year = day.year || parts.y;
-      day.month = day.month || parts.m;
-      day.day = day.day || parts.day;
+      if (!day.readings.length) return;
       writeCache(day);
       if (generation !== pending) return;
       const node = document.getElementById('orthodox-day');
