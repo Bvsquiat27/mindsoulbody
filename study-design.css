@@ -362,8 +362,11 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .moment-prayer{font-size:1.05rem;line-height:1.5}
 .story-grid{display:grid;grid-template-columns:1fr;gap:14px}
 @media(min-width:720px){.story-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.story-card{display:grid;gap:8px;text-align:left;color:var(--text)}
-.story-art{width:100%;height:auto;color:var(--teal)}
+.story-card{display:grid;gap:10px;text-align:left;color:var(--text);padding:10px;overflow:hidden}
+.story-card h2{margin:0;color:var(--text);font-size:clamp(22px,5.2vw,28px);line-height:1.15}
+.story-card>span{color:var(--muted);font-weight:700}
+.story-cover,.story-hero{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:center;border-radius:18px;display:block;background:var(--surface2)}
+.story-hero{margin:8px 0 14px;border-radius:22px}
 .story-title{font-size:clamp(32px,6vw,48px);line-height:1.1}
 .story-body{font-size:clamp(22px,3.4vw,28px);line-height:1.45}
 .story-actions{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}

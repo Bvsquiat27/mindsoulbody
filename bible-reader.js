@@ -4,6 +4,8 @@
   const reader = { index:null, rvrIndex:null, translation:'kjv', notes:null, fatherNotes:new Map(), noteKind:'All', bookData:new Map(), book:43, chapter:1, highlights:[], verseNotes:[], readLog:[], pendingVerse:null, place:null, loadedUser:null, accountRequest:0, selectedVerse:null, rotated:false, fontSize:19, requestId:0, root:null, context:null };
   const TRANSLATION_KEY = 'msb_bible_translation';
   const RVR_CACHE_NAME = 'msb-bible-rvr1909-1';
+  const STORIES_CACHE_NAME = 'msb-stories-1';
+  const STORY_ART_FILES = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'].flatMap(id => [`img/stories/${id}.webp`, `img/stories/${id}-512.webp`]);
   const fileName = id => `bible/${String(id).padStart(2, '0')}.json`;
   function activeTranslation(id) { return reader.translation === 'rvr' && id <= 66 ? 'rvr' : 'kjv'; }
   function dataKey(id) { return activeTranslation(id) + ':' + id; }
@@ -269,6 +271,17 @@
         const buffer = await response.arrayBuffer();
         bytes += buffer.byteLength;
         await rvrCache.put(url, new Response(buffer, { headers: { 'Content-Type': 'application/json' } }));
+        reader.offline = { books: bookCount, bytes, scanning: false, busy: true, done: bookCount };
+        paintOffline();
+      }
+      const storyCache = await caches.open(STORIES_CACHE_NAME);
+      for (const file of STORY_ART_FILES) {
+        const url = new URL(file, location.href).href;
+        const response = await fetch(url);
+        if (!response.ok) throw Error(`Could not download ${file}.`);
+        const buffer = await response.arrayBuffer();
+        bytes += buffer.byteLength;
+        await storyCache.put(url, new Response(buffer, { headers: { 'Content-Type': 'image/webp' } }));
         reader.offline = { books: bookCount, bytes, scanning: false, busy: true, done: bookCount };
         paintOffline();
       }
