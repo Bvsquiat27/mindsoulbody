@@ -39,7 +39,7 @@ html{background:var(--bg)}body{color:var(--text);font-family:Outfit,system-ui,sa
   .daily-stack{min-height:268px;margin:16px 0 14px;padding:22px 20px 62px;border-radius:26px}
   .daily-stack .eyebrow{font-size:10px}
   .daily-stack h2{font-size:clamp(30px,8.4vw,38px);line-height:1.06;margin:13px 0 17px}
-  .verse-play{right:18px;bottom:16px;width:40px;height:40px}
+  .verse-play{right:18px;bottom:16px;width:44px;height:44px}
   .verse-play svg{width:20px;height:20px}
   .neon-stats{gap:12px}
   .neon-stat{min-height:132px;padding:18px;border-radius:23px}
@@ -326,3 +326,30 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .prayer-rubric{font-family:var(--sans,Outfit,system-ui,sans-serif);font-size:14px;font-style:italic;color:var(--muted)}
 .prayer-source{font-size:13px;color:var(--muted);line-height:1.5}
 .prayer-source cite{font-style:italic}
+
+/* Light and sepia sit beside the six dark palettes. Text, muted copy, and accents stay at least 4.5:1 on their backgrounds. */
+:root[data-theme="light"]{color-scheme:light;--bg:#f7f4ee;--surface:#fffdf8;--surface2:#efeae2;--line:#1b191426;--text:#1b1914;--muted:#3e382f;--gold:#7a4e0c;--teal:#0b5e52;--on-accent:#f7fffc;--nav-idle:#3e382f;--ink-soft:#241f18;--border:#1b191455;--app-glow:#0b5e5222;--app-glow-2:#efeae2;--app-sidebar:#f7f4eee8;--app-nav:#fffdf8f2;--app-active:#d7efe9;--app-active-border:#0b5e52;--app-card:#fffdf8;--app-card-end:#efeae2;--app-hero:#e5f3ef;--app-hero-end:#f7f4ee;--app-hero-glow:#0b5e5233;--app-reading:#efeae2;--app-reading-end:#f7f4ee;--app-lesson:#e7f3f0;--app-bible:#fffdf8;--app-input:#ffffff;--chart-warm:#7a4e0c;--chart-cool:#0b5e52}
+:root[data-theme="sepia"]{color-scheme:light;--bg:#f4e6cf;--surface:#fbf3e4;--surface2:#ead9b8;--line:#2a1c1026;--text:#2a1c10;--muted:#5c4632;--gold:#6a3410;--teal:#6a3410;--on-accent:#fff8ee;--nav-idle:#5c4632;--ink-soft:#2a1c10;--border:#2a1c1055;--app-glow:#6a341022;--app-glow-2:#ead9b8;--app-sidebar:#f4e6cfe8;--app-nav:#fbf3e4f2;--app-active:#e4cba3;--app-active-border:#6a3410;--app-card:#fbf3e4;--app-card-end:#ead9b8;--app-hero:#f0ddc0;--app-hero-end:#f4e6cf;--app-hero-glow:#6a341033;--app-reading:#ead9b8;--app-reading-end:#f4e6cf;--app-lesson:#f0ddc0;--app-bible:#fbf3e4;--app-input:#fffaf1;--chart-warm:#6a3410;--chart-cool:#8a5a32}
+:root[data-theme="light"] .mini-choice.correct,:root[data-theme="sepia"] .mini-choice.correct,:root[data-theme="light"] .mini-choice.incorrect,:root[data-theme="sepia"] .mini-choice.incorrect,:root[data-theme="light"] .mini-feedback.incorrect,:root[data-theme="sepia"] .mini-feedback.incorrect{color:#fff8f2}
+:root[data-theme="light"] .card,:root[data-theme="sepia"] .card{box-shadow:inset 0 1px #fff,0 12px 32px #1b191414}
+.bible-verse.bible-speaking{outline:2px solid var(--teal);background:color-mix(in srgb,var(--teal) 22%,transparent)}
+.bible-saved-list{max-height:280px;overflow:auto}
+.bible-highlight-tools .secondary{min-height:44px}
+.plan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0 18px}
+.plan-card{display:grid;gap:8px;text-align:left;min-height:44px;padding:16px;border-radius:24px;border:1px solid var(--line);background:linear-gradient(145deg,var(--app-card),var(--app-card-end));color:var(--text)}
+.plan-card strong{font-family:var(--serif,Georgia,serif);font-size:1.35rem;font-weight:600}
+.plan-status,.plan-progress{color:var(--muted);font-weight:700}
+.plan-readings,.stasis-list{display:grid;gap:8px;margin:12px 0}
+.plan-reading{min-height:44px;width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;border-radius:16px;border:1px solid var(--line);background:var(--surface2);color:var(--text);padding:10px 14px}
+.plan-actions,.home-tool-links,.marks-tools,.search-form{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+.plan-actions .primary,.plan-actions .secondary,.home-tool-links .secondary,.search-form .primary,.marks-tools .secondary{min-height:44px}
+.search-form input,.marks-tools input{flex:1;min-width:180px;min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--app-input);color:var(--text);padding:8px 12px}
+.search-hit{display:grid;gap:4px;width:100%;text-align:left;min-height:44px;margin:0 0 8px;padding:12px 14px;border-radius:16px;border:1px solid var(--line);background:var(--surface);color:var(--text)}
+.search-hit p,.search-hit span{color:var(--muted)}
+.review-choices{display:grid;gap:10px}
+.review-choice{min-height:44px;text-align:left;border-radius:16px;border:1px solid var(--border);background:var(--surface2);color:var(--text);padding:12px 14px}
+.kathisma{margin:0 0 12px}
+.kathisma-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.kathisma-today{outline:2px solid var(--teal)}
+.home-tools{margin-top:8px}
+.home-tools h2{margin:8px 0}

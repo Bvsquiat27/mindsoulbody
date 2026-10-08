@@ -6,7 +6,7 @@
    tied to CACHE_VERSION, so an app update does not wipe downloaded books.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v68';
+const CACHE_VERSION = 'v71';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-1';
@@ -28,6 +28,7 @@ const SHELL = [
   './games.js',
   './prayers.js',
   './orthodox-day.js',
+  './study-tools.js',
   './audio/still-waters.ogg',
   './audio/still-waters.mp3',
 ];
