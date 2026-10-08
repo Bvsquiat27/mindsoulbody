@@ -51,6 +51,7 @@ test('sync stores public profile fields and another browser receives them withou
   assert.equal(mary.name, undefined);
   assert.equal(typeof mary.secret, 'string');
   assert.equal(mary.secret.length, 32);
+  assert.match(mary.publicId, /^[a-f0-9]{16}$/);
 
   const sync = await read(await call(kv, '/sync', {
     code: mary.code,
@@ -75,13 +76,18 @@ test('sync stores public profile fields and another browser receives them withou
     }
   }));
   assert.equal(sync.status, 200);
-  assert.deepEqual(sync.data, { ok: true });
+  assert.equal(sync.data.ok, true);
+  assert.equal(sync.data.publicId, mary.publicId);
   assert.equal(sync.text.includes(mary.secret), false);
 
   const kept = await read(await call(kv, '/sync', { code: mary.code, secret: mary.secret }));
   assert.equal(kept.status, 200);
 
-  await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code.toLowerCase() });
+  const requested = await read(await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code.toLowerCase() }));
+  assert.equal(requested.data.status, 'pending');
+  const notYet = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  assert.deepEqual(notYet.data, []);
+  await call(kv, '/friend/accept', { code: mary.code, secret: mary.secret, friendCode: angel.code });
   const friends = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
   assert.equal(friends.status, 200);
   assert.equal(friends.data.length, 1);
@@ -162,7 +168,9 @@ test('only the list owner receives friend records, and those records omit everyo
   const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
 
   await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code });
+  await call(kv, '/friend/accept', { code: angel.code, secret: angel.secret, friendCode: mary.code });
   await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: ruth.code });
+  await call(kv, '/friend/accept', { code: ruth.code, secret: ruth.secret, friendCode: mary.code });
 
   const injected = 'MSB-ZZZZZZ';
   const sync = await read(await call(kv, '/sync', {
@@ -222,6 +230,7 @@ test('a stored saint portrait id is stripped and does not replace a photo', asyn
   stored.profile = { ...(stored.profile || {}), avatar_saint: 'nicholas' };
   await kv.put(`user:${mary.code}`, JSON.stringify(stored));
   await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code });
+  await call(kv, '/friend/accept', { code: mary.code, secret: mary.secret, friendCode: angel.code });
   const legacy = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
   assert.equal(legacy.data[0].avatar_saint, undefined);
   assert.equal(legacy.data[0].profile.avatar_saint, undefined);
@@ -246,6 +255,69 @@ test('a stored saint portrait id is stripped and does not replace a photo', asyn
   assert.equal(cleared.data[0].avatar_saint, undefined);
   assert.equal(JSON.stringify(cleared.data).includes('nicholas'), false);
   assert.equal(JSON.stringify(cleared.data).includes('saints/'), false);
+});
+
+test('a friend request stays pending until the other person accepts, and public scores omit friend codes', async () => {
+  const kv = memoryKv();
+  const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
+
+  const add = await read(await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code }));
+  assert.equal(add.status, 200);
+  assert.equal(add.data.status, 'pending');
+  assert.equal(add.text.includes(angel.secret), false);
+  assert.equal(add.text.includes(mary.secret), false);
+
+  const maryFriends = await read(await call(kv, '/friends', { code: mary.code, secret: mary.secret }));
+  const angelFriends = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  assert.deepEqual(maryFriends.data, []);
+  assert.deepEqual(angelFriends.data, []);
+
+  const maryRequests = await read(await call(kv, '/friend/requests', { code: mary.code, secret: mary.secret }));
+  assert.equal(maryRequests.status, 200);
+  assert.deepEqual(maryRequests.data.incoming.map(row => row.code), [angel.code]);
+  assert.equal(maryRequests.data.incoming[0].name, 'Angel');
+  assert.deepEqual(maryRequests.data.outgoing, []);
+  assert.equal(maryRequests.text.includes(ruth.code), false);
+  assert.equal(maryRequests.text.includes(angel.secret), false);
+
+  const angelRequests = await read(await call(kv, '/friend/requests', { code: angel.code, secret: angel.secret }));
+  assert.deepEqual(angelRequests.data.outgoing.map(row => row.code), [mary.code]);
+  assert.deepEqual(angelRequests.data.incoming, []);
+
+  const stolen = await read(await call(kv, '/friend/requests', { code: mary.code, secret: angel.secret }));
+  assert.equal(stolen.status, 401);
+  assert.equal(stolen.text.includes(angel.code), false);
+
+  const declined = await read(await call(kv, '/friend/decline', { code: mary.code, secret: mary.secret, friendCode: angel.code }));
+  assert.equal(declined.status, 200);
+  const afterDecline = await read(await call(kv, '/friend/requests', { code: mary.code, secret: mary.secret }));
+  assert.deepEqual(afterDecline.data.incoming, []);
+  const angelAfter = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  assert.deepEqual(angelAfter.data, []);
+
+  await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code });
+  const accepted = await read(await call(kv, '/friend/accept', { code: mary.code, secret: mary.secret, friendCode: angel.code }));
+  assert.equal(accepted.data.status, 'friends');
+  const paired = await read(await call(kv, '/friends', { code: mary.code, secret: mary.secret }));
+  assert.deepEqual(paired.data.map(row => row.code), [angel.code]);
+  assert.equal(paired.text.includes(ruth.code), false);
+  const cleared = await read(await call(kv, '/friend/requests', { code: mary.code, secret: mary.secret }));
+  assert.deepEqual(cleared.data.incoming, []);
+  assert.deepEqual(cleared.data.outgoing, []);
+
+  await call(kv, '/scores/submit', { code: mary.code, secret: mary.secret, show: 'jeopardy', score: 400, level: 2 });
+  await call(kv, '/scores/submit', { code: ruth.code, secret: ruth.secret, show: 'jeopardy', score: 100, level: 1 });
+  const board = await read(await call(kv, '/scores?show=jeopardy', null, 'GET'));
+  assert.equal(board.status, 200);
+  assert.equal(board.text.includes(mary.code), false);
+  assert.equal(board.text.includes(ruth.code), false);
+  assert.equal(board.text.includes('MSB-'), false);
+  assert.deepEqual(board.data.scores.map(row => row.name), ['Mary', 'Ruth']);
+  assert.equal(board.data.scores[0].id, mary.publicId);
+  assert.equal(board.data.scores[0].code, undefined);
+  assert.equal(board.data.scores[1].id, ruth.publicId);
 });
 
 test('wrong secret does not echo the secret, and friend responses stay public', async () => {

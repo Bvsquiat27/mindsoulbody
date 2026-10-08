@@ -145,6 +145,55 @@ function applyProfile(user, body) {
   delete user.avatar_saint;
 }
 
+function publicId(value) {
+  const id = String(value ?? '').trim().toLowerCase();
+  return /^[a-f0-9]{16}$/.test(id) ? id : '';
+}
+
+async function ensurePublicId(kv, user) {
+  const existing = publicId(user.publicId);
+  if (existing) {
+    user.publicId = existing;
+    return existing;
+  }
+  user.publicId = hexId(8);
+  await saveUser(kv, user);
+  return user.publicId;
+}
+
+function cleanRequests(list) {
+  return (Array.isArray(list) ? list : [])
+    .filter(item => item && friendCode(item.code))
+    .map(item => ({ code: friendCode(item.code), name: clip(item.name, 40), ts: num(item.ts) }));
+}
+
+async function loadRequests(kv, code) {
+  const box = (await kv.get(`requests:${code}`, 'json')) || {};
+  return { incoming: cleanRequests(box.incoming), outgoing: cleanRequests(box.outgoing) };
+}
+
+async function saveRequests(kv, code, box) {
+  await kv.put(`requests:${code}`, JSON.stringify({
+    incoming: cleanRequests(box.incoming),
+    outgoing: cleanRequests(box.outgoing)
+  }));
+}
+
+function withoutCode(list, code) {
+  return list.filter(item => item.code !== code);
+}
+
+async function clearRequestPair(kv, a, b) {
+  const boxA = await loadRequests(kv, a);
+  const boxB = await loadRequests(kv, b);
+  boxA.incoming = withoutCode(boxA.incoming, b);
+  boxA.outgoing = withoutCode(boxA.outgoing, b);
+  boxB.incoming = withoutCode(boxB.incoming, a);
+  boxB.outgoing = withoutCode(boxB.outgoing, a);
+  await saveRequests(kv, a, boxA);
+  await saveRequests(kv, b, boxB);
+}
+
 function friendView(user, unread = 0) {
   const view = {
     code: user.code,
@@ -216,6 +265,7 @@ async function requireUser(kv, body) {
   if (!user) return { error: json({ error: 'Unknown friend code' }, 404) };
   const secret = await kv.get(`auth:${code}`);
   if (!secretMatches(secret, body && body.secret)) return { error: json({ error: 'Wrong account secret' }, 401) };
+  await ensurePublicId(kv, user);
   return { user };
 }
 
@@ -271,7 +321,17 @@ export async function handleFriends(request, env) {
   if (request.method === 'GET' && path === '/scores') {
     const show = clip(url.searchParams.get('show'), 40);
     const scores = (await kv.get(`board:${show}`, 'json')) || [];
-    return json({ show, scores: scores.map(row => ({ code: row.code, name: row.name || '', score: num(row.score), level: num(row.level), ts: row.ts || 0 })) });
+    const rows = [];
+    for (const row of scores) {
+      let id = publicId(row.id);
+      const owner = friendCode(row.code);
+      if (!id && owner) {
+        const user = await loadUser(kv, owner);
+        id = user ? publicId(user.publicId) : '';
+      }
+      rows.push({ id, name: row.name || '', score: num(row.score), level: num(row.level), ts: row.ts || 0 });
+    }
+    return json({ show, scores: rows });
   }
 
   if (request.method !== 'POST') return json({ error: 'Not found' }, 404);
@@ -288,10 +348,10 @@ export async function handleFriends(request, env) {
     }
     if (!code) return json({ error: 'Not found' }, 503);
     const secret = randomFrom(SECRET_ALPHABET, 32);
-    const user = { code, name, updatedAt: Date.now(), stats: normalizeStats(null), friends: [] };
+    const user = { code, name, publicId: hexId(8), updatedAt: Date.now(), stats: normalizeStats(null), friends: [] };
     await saveUser(kv, user);
     await kv.put(`auth:${code}`, secret);
-    return new Response(JSON.stringify({ code, secret }), { status: 200, headers: CORS });
+    return new Response(JSON.stringify({ code, secret, publicId: user.publicId }), { status: 200, headers: CORS });
   }
 
   const auth = await requireUser(kv, body);
@@ -311,7 +371,7 @@ export async function handleFriends(request, env) {
     me.friends = friends;
     me.updatedAt = Date.now();
     await saveUser(kv, me);
-    return json({ ok: true });
+    return json({ ok: true, publicId: me.publicId });
   }
 
   if (path === '/friends') {
@@ -331,11 +391,48 @@ export async function handleFriends(request, env) {
     const other = await loadUser(kv, otherCode);
     if (!other) return json({ error: 'No user with that friend code' }, 404);
     me.friends = Array.isArray(me.friends) ? me.friends : [];
+    if (me.friends.includes(otherCode)) return json({ ok: true, status: 'friends' });
+    const mine = await loadRequests(kv, me.code);
+    const theirs = await loadRequests(kv, otherCode);
+    if (!mine.outgoing.some(item => item.code === otherCode)) mine.outgoing.push({ code: otherCode, name: other.name || '', ts: Date.now() });
+    if (!theirs.incoming.some(item => item.code === me.code)) theirs.incoming.push({ code: me.code, name: me.name || '', ts: Date.now() });
+    await saveRequests(kv, me.code, mine);
+    await saveRequests(kv, otherCode, theirs);
+    return json({ ok: true, status: 'pending' });
+  }
+
+  if (path === '/friend/requests') {
+    const box = await loadRequests(kv, me.code);
+    return json({ incoming: box.incoming, outgoing: box.outgoing });
+  }
+
+  if (path === '/friend/accept') {
+    const otherCode = friendCode(body.friendCode);
+    if (!otherCode || otherCode === me.code) return json({ error: 'No request from that person' }, 404);
+    const mine = await loadRequests(kv, me.code);
+    if (!mine.incoming.some(item => item.code === otherCode)) return json({ error: 'No request from that person' }, 404);
+    const other = await loadUser(kv, otherCode);
+    if (!other) return json({ error: 'No user with that friend code' }, 404);
+    me.friends = Array.isArray(me.friends) ? me.friends : [];
     other.friends = Array.isArray(other.friends) ? other.friends : [];
     if (!me.friends.includes(otherCode)) me.friends.push(otherCode);
     if (!other.friends.includes(me.code)) other.friends.push(me.code);
     await saveUser(kv, me);
     await saveUser(kv, other);
+    await clearRequestPair(kv, me.code, otherCode);
+    return json({ ok: true, status: 'friends' });
+  }
+
+  if (path === '/friend/decline') {
+    const otherCode = friendCode(body.friendCode);
+    if (otherCode && otherCode !== me.code) {
+      const mine = await loadRequests(kv, me.code);
+      const theirs = await loadRequests(kv, otherCode);
+      mine.incoming = withoutCode(mine.incoming, otherCode);
+      theirs.outgoing = withoutCode(theirs.outgoing, me.code);
+      await saveRequests(kv, me.code, mine);
+      await saveRequests(kv, otherCode, theirs);
+    }
     return json({ ok: true });
   }
 
@@ -349,6 +446,7 @@ export async function handleFriends(request, env) {
         other.friends = (other.friends || []).filter(code => code !== me.code);
         await saveUser(kv, other);
       }
+      await clearRequestPair(kv, me.code, otherCode);
     }
     return json({ ok: true });
   }
@@ -511,13 +609,13 @@ export async function handleFriends(request, env) {
   if (path === '/scores/submit') {
     const show = clip(body.show, 40);
     if (!show) return json({ error: 'Not found' }, 400);
-    const row = { code: me.code, name: me.name || '', score: num(body.score), level: num(body.level), ts: Date.now() };
+    const row = { code: me.code, id: me.publicId, name: me.name || '', score: num(body.score), level: num(body.level), ts: Date.now() };
     const board = (await kv.get(`board:${show}`, 'json')) || [];
     const next = board.filter(item => item.code !== me.code);
     const previous = board.find(item => item.code === me.code);
     next.push(!previous || row.score >= num(previous.score) ? row : previous);
     next.sort((a, b) => num(b.score) - num(a.score));
-    await kv.put(`board:${show}`, JSON.stringify(next.map(item => ({ code: item.code, name: item.name || '', score: num(item.score), level: num(item.level), ts: item.ts || 0 }))));
+    await kv.put(`board:${show}`, JSON.stringify(next.map(item => ({ code: item.code, id: publicId(item.id), name: item.name || '', score: num(item.score), level: num(item.level), ts: item.ts || 0 }))));
     return json({ ok: true });
   }
 
