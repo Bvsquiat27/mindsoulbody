@@ -204,7 +204,7 @@
     },
     {
       "id": 34,
-      "name": "Nahum",
+      "name": "Nahúm",
       "chapters": 3,
       "section": "Old Testament"
     },
@@ -240,7 +240,7 @@
     },
     {
       "id": 40,
-      "name": "San Mateo",
+      "name": "Mateo",
       "chapters": 28,
       "section": "New Testament"
     },
@@ -252,7 +252,7 @@
     },
     {
       "id": 42,
-      "name": "San Lucas",
+      "name": "Lucas",
       "chapters": 24,
       "section": "New Testament"
     },

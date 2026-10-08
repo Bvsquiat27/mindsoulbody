@@ -74,18 +74,19 @@
     const next = plan.days.findIndex((_, index) => !row.done.includes(index));
     return next < 0 ? plan.days.length - 1 : next;
   }
-  function readingLabel(item){ return `${item.name} ${item.chapter}`; }
+  function readingLabel(item){ const name = window.msbBookLabel ? msbBookLabel(item.book, item.name) : item.name; return `${name} ${item.chapter}`; }
+  function esTools(){ return window.MsbI18n && MsbI18n.lang() === 'es'; }
   function readingButton(item){
-    return `<button type="button" class="plan-reading" data-lection-book="${item.book}" data-lection-chapter="${item.chapter}"><span>${esc(readingLabel(item))}</span><span>Open</span></button>`;
+    return `<button type="button" class="plan-reading" data-lection-book="${item.book}" data-lection-chapter="${item.chapter}"><span>${esc(readingLabel(item))}</span><span>${esTools() ? 'Abrir' : 'Open'}</span></button>`;
   }
   function plansHome(){
     const cards = PLANS.map(plan => {
       const row = planState(plan.id);
       const done = row ? row.done.length : 0;
       const resume = resumeDay(plan, row);
-      const status = !row ? `${plan.days.length} days` : done >= plan.days.length ? 'Complete' : `Day ${resume + 1} of ${plan.days.length}`;
-      const action = !row ? 'Start' : done >= plan.days.length ? 'Read again' : 'Resume';
-      return `<button type="button" class="plan-card" data-nav="plans" data-plan="${esc(plan.id)}"><span class="eyebrow">READING PLAN</span><strong>${esc(plan.title)}</strong><span>${esc(plan.blurb)}</span><span class="plan-status">${esc(status)} · ${done} read</span><span class="tag">${action}</span></button>`;
+      const status = !row ? (esTools() ? `${plan.days.length} días` : `${plan.days.length} days`) : done >= plan.days.length ? (esTools() ? 'Completo' : 'Complete') : (esTools() ? `Día ${resume + 1} de ${plan.days.length}` : `Day ${resume + 1} of ${plan.days.length}`);
+      const action = !row ? (esTools() ? 'Empezar' : 'Start') : done >= plan.days.length ? (esTools() ? 'Leer de nuevo' : 'Read again') : (esTools() ? 'Seguir' : 'Resume');
+      return `<button type="button" class="plan-card" data-nav="plans" data-plan="${esc(plan.id)}"><span class="eyebrow">READING PLAN</span><strong>${esc(plan.title)}</strong><span>${esc(plan.blurb)}</span><span class="plan-status">${esc(status)} · ${done} ${esTools() ? (done === 1 ? 'leído' : 'leídos') : 'read'}</span><span class="tag">${action}</span></button>`;
     }).join('');
     const due = reviewDue().length;
     return `<section id="reading-plans" data-ready="1"><div class="section-head"><h2>Reading plans</h2></div><div class="plan-grid">${cards}</div><section class="card home-tools"><span class="eyebrow">FIND A PASSAGE</span><h2>Search and marks</h2><form id="home-search-form" class="search-form" role="search"><label class="visually-hidden" for="home-search">Search the Bible, lessons, and notes</label><input id="home-search" type="search" maxlength="80" placeholder="Search the Bible, lessons, and notes" autocomplete="off"><button class="primary" type="submit">Search</button></form><div class="home-tool-links"><button type="button" class="secondary" data-nav="marks">My marks</button><button type="button" class="secondary" data-nav="psalter">Psalter</button><button type="button" class="secondary" data-nav="review">Review${due ? ` · ${due}` : ''}</button></div></section></section>`;
@@ -98,7 +99,7 @@
     const done = row && row.done.includes(day);
     const count = row ? row.done.length : 0;
     const root = document.getElementById('screen');
-    root.innerHTML = `<button type="button" class="text-button back" data-nav="today">← Home</button><span class="eyebrow">READING PLAN</span><h1>${esc(plan.title)}</h1><p class="lead">${esc(plan.blurb)}</p><p class="plan-progress">${count} of ${plan.days.length} days read</p><section class="card"><div class="plan-day-head"><h2>Day ${day + 1} of ${plan.days.length}</h2>${done ? '<span class="tag">Read</span>' : ''}</div><div class="plan-readings">${readings.map(readingButton).join('')}</div><div class="plan-actions">${row ? '' : `<button type="button" class="primary" data-plan-start="${esc(plan.id)}">Start this plan</button>`}<button type="button" class="secondary" data-plan-done="${day}" ${row ? '' : 'disabled'}>${done ? 'Mark this day unread' : 'Mark this day read'}</button><button type="button" class="secondary" data-plan-day="${day - 1}" ${day === 0 ? 'disabled' : ''}>Previous day</button><button type="button" class="secondary" data-plan-day="${day + 1}" ${day === plan.days.length - 1 ? 'disabled' : ''}>Next day</button></div></section>`;
+    root.innerHTML = `<button type="button" class="text-button back" data-nav="today">← Home</button><span class="eyebrow">READING PLAN</span><h1>${esc(plan.title)}</h1><p class="lead">${esc(plan.blurb)}</p><p class="plan-progress">${esTools() ? `${count} de ${plan.days.length} días leídos` : `${count} of ${plan.days.length} days read`}</p><section class="card"><div class="plan-day-head"><h2>${esTools() ? `Día ${day + 1} de ${plan.days.length}` : `Day ${day + 1} of ${plan.days.length}`}</h2>${done ? `<span class="tag">${esTools() ? 'Leído' : 'Read'}</span>` : ''}</div><div class="plan-readings">${readings.map(readingButton).join('')}</div><div class="plan-actions">${row ? '' : `<button type="button" class="primary" data-plan-start="${esc(plan.id)}">Start this plan</button>`}<button type="button" class="secondary" data-plan-done="${day}" ${row ? '' : 'disabled'}>${done ? 'Mark this day unread' : 'Mark this day read'}</button><button type="button" class="secondary" data-plan-day="${day - 1}" ${day === 0 ? 'disabled' : ''}>Previous day</button><button type="button" class="secondary" data-plan-day="${day + 1}" ${day === plan.days.length - 1 ? 'disabled' : ''}>Next day</button></div></section>`;
   }
   function selectPlan(id){
     currentPlan = planById(id).id;
@@ -290,8 +291,13 @@
     try { response = await fetch(file); } catch { response = null; }
     if (!response || !response.ok){
       try {
-        const cache = await caches.open('msb-bible-kjv-1');
-        response = await cache.match(url) || await cache.match(file);
+        const present = await caches.keys();
+        for (const name of ['msb-bible-kjv-2', 'msb-bible-kjv-1']) {
+          if (!present.includes(name)) continue;
+          const cache = await caches.open(name);
+          response = await cache.match(url) || await cache.match(file);
+          if (response) break;
+        }
       } catch { response = null; }
     }
     if (!response || !response.ok) return null;
@@ -343,9 +349,14 @@
       available++;
       data.chapters.forEach((verses, index) => {
         if (!Array.isArray(verses) || hits.length >= 40) return;
+        const chapter = index + 1;
         verses.forEach((text, verseIndex) => {
           if (!text || hits.length >= 40) return;
-          if (String(text).toLowerCase().includes(q)) hits.push({ book:book.id, name:book.name, chapter:index + 1, verse:verseIndex + 1, text:snippet(text, query) });
+          const shown = book.id >= 67 && window.msbPlainBible ? window.msbPlainBible(text) : text;
+          if (String(shown).toLowerCase().includes(q)) {
+            const verse = book.id === 78 && chapter === 10 ? verseIndex + 4 : verseIndex + 1;
+            hits.push({ book:book.id, name:book.name, chapter, verse, text:snippet(shown, query) });
+          }
         });
       });
       onProgress(available, missing);

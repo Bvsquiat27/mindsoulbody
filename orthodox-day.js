@@ -45,8 +45,16 @@
     const p = dateParts(date);
     return `${p.y}-${String(p.m).padStart(2,'0')}-${String(p.day).padStart(2,'0')}`;
   }
+  function esDay(){ return window.MsbI18n && MsbI18n.lang() === 'es'; }
+  function sourceLabel(source){
+    const text = String(source || '');
+    if (!esDay()) return text;
+    if (/^epistle$/i.test(text)) return 'Epístola';
+    if (/^gospel$/i.test(text)) return 'Evangelio';
+    return window.MsbI18n.t(text);
+  }
   function weekdayLabel(date){
-    return (date || new Date()).toLocaleDateString(undefined, {weekday:'long', month:'long', day:'numeric'});
+    return (date || new Date()).toLocaleDateString(esDay() ? 'es' : 'en', {weekday:'long', month:'long', day:'numeric'});
   }
   function bookFromCode(code){
     const key = String(code || '').toUpperCase();
@@ -107,12 +115,14 @@
   }
   function cardHtml(day){
     const readings = (day.readings || []).map(item => {
-      const label = `${item.source}: ${item.display}`;
-      if (!item.book || !item.chapter) return `<p class="orthodox-reading-plain"><span class="eyebrow">${esc(item.source)}</span> ${esc(item.display)}</p>`;
-      return `<button type="button" class="secondary orthodox-reading" data-lection-book="${item.book}" data-lection-chapter="${item.chapter}" data-lection-verse="${item.verse || 1}" aria-label="Open ${esc(label)} in the Bible"><span><span class="eyebrow">${esc(item.source)}</span> ${esc(item.display)}</span><span aria-hidden="true">Open ↗</span></button>`;
+      const shown = sourceLabel(item.source);
+      const label = `${shown}: ${item.display}`;
+      if (!item.book || !item.chapter) return `<p class="orthodox-reading-plain"><span class="eyebrow">${esc(shown)}</span> ${esc(item.display)}</p>`;
+      return `<button type="button" class="secondary orthodox-reading" data-lection-book="${item.book}" data-lection-chapter="${item.chapter}" data-lection-verse="${item.verse || 1}" aria-label="${esDay() ? 'Abrir' : 'Open'} ${esc(label)} ${esDay() ? 'en la Biblia' : 'in the Bible'}"><span><span class="eyebrow">${esc(shown)}</span> ${esc(item.display)}</span><span aria-hidden="true">${esDay() ? 'Abrir ↗' : 'Open ↗'}</span></button>`;
     }).join('');
     if (!readings) return '';
-    return `<section class="daily-stack orthodox-day" id="orthodox-day" data-ready="1"><span class="eyebrow">TODAY'S READINGS · ${esc(weekdayLabel())}</span><h2>Epistle and Gospel</h2><div class="orthodox-readings">${readings}</div><p class="orthodox-note">Each reading opens in this Bible.</p></section>`;
+    const eyebrow = esDay() ? `LECTURAS DE HOY · ${esc(weekdayLabel())}` : `TODAY'S READINGS · ${esc(weekdayLabel())}`;
+    return `<section class="daily-stack orthodox-day" id="orthodox-day" data-ready="1"><span class="eyebrow">${eyebrow}</span><h2>${esDay() ? 'Epístola y Evangelio' : 'Epistle and Gospel'}</h2><div class="orthodox-readings">${readings}</div><p class="orthodox-note">${esDay() ? 'Cada lectura se abre en esta Biblia.' : 'Each reading opens in this Bible.'}</p></section>`;
   }
   function slot(verse){
     const cached = readCache();
@@ -135,7 +145,11 @@
       writeCache(day);
       if (generation !== pending) return;
       const node = document.getElementById('orthodox-day');
-      if (node && node.isConnected) node.outerHTML = cardHtml(day);
+      if (node && node.isConnected) {
+        node.outerHTML = cardHtml(day);
+        const fresh = document.getElementById('orthodox-day');
+        if (fresh && window.MsbI18n) MsbI18n.apply(fresh);
+      }
     } catch { /* leave the verse card in place */ }
   }
   window.MsbDay = { slot, hydrate, readCache };

@@ -3,22 +3,48 @@
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
   const reader = { index:null, rvrIndex:null, translation:'kjv', notes:null, fatherNotes:new Map(), noteKind:'All', bookData:new Map(), book:43, chapter:1, highlights:[], verseNotes:[], readLog:[], pendingVerse:null, place:null, loadedUser:null, accountRequest:0, selectedVerse:null, rotated:false, fontSize:19, requestId:0, root:null, context:null };
   const TRANSLATION_KEY = 'msb_bible_translation';
-  const RVR_CACHE_NAME = 'msb-bible-rvr1909-1';
+  const RVR_CACHE_NAME = 'msb-bible-rvr1909-3';
+  const STORIES_CACHE_NAME = 'msb-stories-1';
+  const STORY_ART_FILES = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'].flatMap(id => [`img/stories/${id}.webp`, `img/stories/${id}-512.webp`]);
   const fileName = id => `bible/${String(id).padStart(2, '0')}.json`;
   function activeTranslation(id) { return reader.translation === 'rvr' && id <= 66 ? 'rvr' : 'kjv'; }
   function dataKey(id) { return activeTranslation(id) + ':' + id; }
+  const DEUTERO_ES = {67:'Tobías',68:'Judit',69:'Sabiduría',70:'Eclesiástico',71:'Baruc',72:'Carta de Jeremías',73:'Oración de Azarías',74:'Susana',75:'Bel y el Dragón',76:'1 Macabeos',77:'2 Macabeos',78:'Resto de Ester'};
+  const BOOK_ES = [null,'Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantar de los Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis','Tobías','Judit','Sabiduría','Eclesiástico','Baruc','Carta de Jeremías','Oración de Azarías','Susana','Bel y el Dragón','1 Macabeos','2 Macabeos','Resto de Ester'];
+  function spanishUi() { return window.MsbI18n && MsbI18n.lang() === 'es'; }
   function displayBook(info) {
     if (!info) return '';
-    if (reader.translation === 'rvr' && info.id <= 66 && reader.rvrIndex) {
+    if ((reader.translation === 'rvr' || spanishUi()) && info.id <= 66 && reader.rvrIndex) {
       const row = reader.rvrIndex.books.find(book => book.id === info.id);
       if (row && row.name) return row.name;
     }
+    if ((reader.translation === 'rvr' || spanishUi()) && info.id <= 66 && BOOK_ES[info.id]) return BOOK_ES[info.id];
+    if (spanishUi() && DEUTERO_ES[info.id]) return DEUTERO_ES[info.id];
     return info.name;
   }
   function loadTranslation() {
-    try { reader.translation = localStorage.getItem(TRANSLATION_KEY) === 'rvr' ? 'rvr' : 'kjv'; }
-    catch { reader.translation = 'kjv'; }
+    try {
+      const saved = localStorage.getItem(TRANSLATION_KEY);
+      if (saved === 'rvr' || saved === 'kjv') { reader.translation = saved; return; }
+      reader.translation = spanishUi() ? 'rvr' : 'kjv';
+    } catch { reader.translation = 'kjv'; }
   }
+  const RVR_SPAN = {'4:13:33':'33–34','4:30:16':'16–17','7:14:20':'20–21','9:20:42':'42–43','9:24:22':'22–23','11:22:53':'53–54','13:21:30':'30–31','14:16:14':'14–15','18:39:30':'30–38','28:12:14':'14–15','32:2:10':'10–11','64:1:14':'14–15'};
+  function verseHeading(verseNumber) {
+    if (activeTranslation(reader.book) !== 'rvr') return '';
+    const map = reader.bookData.get(dataKey(reader.book))?.headings;
+    return map ? (map[reader.chapter + ':' + verseNumber] || '') : '';
+  }
+  function verseLabel(verseNumber) {
+    if (activeTranslation(reader.book) !== 'rvr') return String(verseNumber);
+    return RVR_SPAN[reader.book + ':' + reader.chapter + ':' + verseNumber] || String(verseNumber);
+  }
+  window.msbBookLabel = (id, fallback) => {
+    const n = Number(id);
+    if (spanishUi() && BOOK_ES[n]) return BOOK_ES[n];
+    const info = reader.index?.books?.find(book => book.id === n);
+    return info ? displayBook(info) : (fallback || '');
+  };
   function rememberTranslation() { try { localStorage.setItem(TRANSLATION_KEY, reader.translation); } catch {} }
   const bookInfo = () => reader.index?.books.find(book => book.id === reader.book);
   const currentVerses = () => reader.bookData.get(dataKey(reader.book))?.chapters[reader.chapter - 1] || [];
@@ -38,9 +64,17 @@
     } catch {}
   }
   function rememberFont(){ try { localStorage.setItem(FONT_KEY, String(reader.fontSize)); } catch {} }
+  function plainBible(text) {
+    return String(text ?? '').replace(/\S+/g, (token) => {
+      if (!token.includes('\u00B4')) return token;
+      return token.replace(/\u00B4/g, '').replace(/-/g, '');
+    });
+  }
+  window.msbPlainBible = plainBible;
   function verseBody(verse){
     const verses = currentVerses(), offset = verseOffset();
-    return verses[verse - 1 - offset] || '';
+    const text = verses[verse - 1 - offset] || '';
+    return reader.book >= 67 ? plainBible(text) : text;
   }
   function firstSpokenVerse(){
     const verses = currentVerses(), offset = verseOffset();
@@ -129,8 +163,8 @@
     const chapterNotes = pool.filter(note => note.book === reader.book && note.chapter === reader.chapter);
     const relatedNotes = pool.filter(note => note.book === reader.book || (note.links || []).some(link => link.book === reader.book && link.chapter === reader.chapter));
     const displayedNotes = chapterNotes.length ? chapterNotes : relatedNotes.length ? relatedNotes.slice(0, 6) : pool.filter(note => note.book === reader.book).slice(0, 6);
-    const reference = (book, chapter, verse) => `${books[book - 1]?.name || ''} ${chapter}:${verse}`;
-    const renderNote = note => `<section class="bible-study-card"><span class="tag">${esc(note.kind)} · ${esc(reference(note.book, note.chapter, note.verse))}</span><h4>${esc(note.title)}</h4><p>${esc(note.body)}</p><small>${esc(note.author)}</small><div class="bible-study-links"><button data-jump-book="${note.book}" data-jump-chapter="${note.chapter}" data-jump-verse="${note.verse}">Read ${esc(reference(note.book, note.chapter, note.verse))} →</button>${(note.links || []).map(link => `<button data-jump-book="${link.book}" data-jump-chapter="${link.chapter}" data-jump-verse="${link.verse}">${esc(reference(link.book, link.chapter, link.verse))} ↗</button>`).join('')}</div><a href="${esc(note.source)}" target="_blank" rel="noopener noreferrer">${esc(note.sourceLabel || "Open source ↗")}</a><button class="bible-copy-source" data-copy-source="${esc(note.source)}">Copy source link</button></section>`;
+    const reference = (book, chapter, verse) => `${displayBook(books[book - 1]) || ''} ${chapter}:${verse}`;
+    const renderNote = note => `<section class="bible-study-card"><span class="tag">${esc(note.kind)} · ${esc(reference(note.book, note.chapter, note.verse))}</span><h4>${esc(note.title)}</h4><p>${esc(note.body)}</p><small>${esc(note.author)}</small><div class="bible-study-links"><button data-jump-book="${note.book}" data-jump-chapter="${note.chapter}" data-jump-verse="${note.verse}">${spanishUi() ? 'Leer' : 'Read'} ${esc(reference(note.book, note.chapter, note.verse))} →</button>${(note.links || []).map(link => `<button data-jump-book="${link.book}" data-jump-chapter="${link.chapter}" data-jump-verse="${link.verse}">${esc(reference(link.book, link.chapter, link.verse))} ↗</button>`).join('')}</div><a href="${esc(note.source)}" target="_blank" rel="noopener noreferrer">${esc(note.sourceLabel || "Open source ↗")}</a><button class="bible-copy-source" data-copy-source="${esc(note.source)}">Copy source link</button></section>`;
     const kindFilters = [['All','All'],['Father','Fathers'],['Teaching','Teaching'],['Apologetics','Apologetics']].map(([id, label]) => `<button type="button" class="filter ${reader.noteKind === id ? 'active' : ''}" data-bible="note-kind" data-kind="${id}" aria-pressed="${reader.noteKind === id}">${label}</button>`).join('');
     const studyMarkup = displayedNotes.map(renderNote).join('');
     const selectedNotes = chapterNotes.filter(note => note.verse === reader.selectedVerse);
@@ -139,21 +173,29 @@
     const loggedHere = (reader.readLog || []).some(item => item.book_id === reader.book && item.chapter === reader.chapter);
     const bookChaptersTotal = info ? info.chapters - (info.chapterStart || 1) + 1 : 0;
     const bookChaptersLogged = new Set((reader.readLog || []).filter(item => item.book_id === reader.book).map(item => item.chapter)).size;
-    const myNoteBox = reader.selectedVerse ? `<div class="bible-inline-notes bible-my-note"><div class="bible-inline-title"><strong>Your note · ${esc(reference(reader.book, reader.chapter, reader.selectedVerse))}</strong></div>${mySelected && mySelected.from_name ? `<small class="muted">Shared by ${esc(mySelected.from_name)} — edit it freely; your copy is yours.</small>` : ''}<textarea id="bible-my-note" class="note-field" rows="3" placeholder="Write your own note on this verse…">${esc(mySelected ? mySelected.body : '')}</textarea><div class="note-actions"><button class="secondary" data-bible="save-verse-note">Save my note</button>${mySelected ? '<button class="secondary" data-bible="delete-verse-note">Delete my note</button>' : ''}</div></div>` : '';
+    const myNoteBox = reader.selectedVerse ? `<div class="bible-inline-notes bible-my-note"><div class="bible-inline-title"><strong>${spanishUi() ? 'Tu nota' : 'Your note'} · ${esc(reference(reader.book, reader.chapter, reader.selectedVerse))}</strong></div>${mySelected && mySelected.from_name ? `<small class="muted">Shared by ${esc(mySelected.from_name)} — edit it freely; your copy is yours.</small>` : ''}<textarea id="bible-my-note" class="note-field" rows="3" placeholder="Write your own note on this verse…">${esc(mySelected ? mySelected.body : '')}</textarea><div class="note-actions"><button class="secondary" data-bible="save-verse-note">Save my note</button>${mySelected ? '<button class="secondary" data-bible="delete-verse-note">Delete my note</button>' : ''}</div></div>` : '';
     const shownName = displayBook(info);
     const translationNote = reader.translation === 'rvr' && reader.book > 66 ? '<p class="bible-translation-note">Reina-Valera 1909 does not include this book, so this chapter stays in English.</p>' : '';
+    const subscription = info && info.subscription && reader.chapter === info.chapters && activeTranslation(reader.book) !== 'rvr' ? `<p class="bible-subscription">${esc(info.subscription)}</p>` : '';
     const sections = ['Old Testament', 'New Testament', 'Deuterocanon / Apocrypha'];
     const savedMarkup = !reader.context.isRegistered() ? '<p class="muted">Sign in to keep your highlights in this browser.</p>' : highlights.length ? `<div class="bible-saved-list">${highlights.map(item => `<button data-jump-book="${item.book_id}" data-jump-chapter="${item.chapter}" data-jump-verse="${item.verse}"><span class="bible-swatch ${esc(item.color)}"></span>${esc(books[item.book_id - 1]?.name)} ${item.chapter}:${item.verse}</button>`).join('')}</div>` : '<p class="muted">Tap a verse, choose a color, and it will appear here.</p>';
     reader.root.innerHTML = `<div class="bible-app"><header class="bible-heading"><div><span class="eyebrow">THE FULL READING SHELF</span><h1>Read the Bible.</h1><p class="lead">Choose a book and chapter. Tap a verse to highlight it.</p></div><span class="bible-edition">${reader.translation === 'rvr' ? 'Reina-Valera 1909' : 'KJV'}</span></header>
       ${offlineMarkup()}
-      <div class="bible-layout"><div class="bible-primary"><div class="bible-controls card"><label>Book<select id="bible-book">${sections.map(section => `<optgroup label="${esc(section)}">${books.filter(book => book.section === section).map(book => `<option value="${book.id}" ${book.id === reader.book ? 'selected' : ''}>${esc(displayBook(book))}</option>`).join('')}</optgroup>`).join('')}</select></label><label>Chapter<select id="bible-chapter">${Array.from({ length:info.chapters - (info.chapterStart || 1) + 1 }, (_, i) => { const chapter = i + (info.chapterStart || 1); return `<option value="${chapter}" ${chapter === reader.chapter ? 'selected' : ''}>${chapter}</option>`; }).join('')}</select></label><label>Translation<select id="bible-translation"><option value="kjv" ${reader.translation !== 'rvr' ? 'selected' : ''}>KJV</option><option value="rvr" ${reader.translation === 'rvr' ? 'selected' : ''}>RVR1909</option></select></label><div class="bible-control-buttons"><button class="secondary" data-bible="previous" aria-label="Previous chapter">←</button><button class="secondary" data-bible="next" aria-label="Next chapter">→</button><button class="secondary" data-bible="smaller" aria-label="Smaller text">A−</button><button class="secondary" data-bible="larger" aria-label="Larger text">A+</button><button class="secondary" data-bible="speak" aria-label="Read this chapter aloud">Read aloud</button><button class="secondary" data-bible="speak-pause" aria-label="Pause reading" aria-pressed="${speech.paused}">Pause</button><button class="secondary" data-bible="speak-stop" aria-label="Stop reading">Stop</button><button class="secondary" data-bible="rotate" aria-label="Rotate reading view" aria-pressed="${reader.rotated}">⤾ <span>Rotate</span></button><button class="secondary" data-bible="notes">Study notes (${chapterNotes.length})</button></div></div>
-      <article class="bible-page card" style="--reader-size:${reader.fontSize}px"><div class="bible-page-title"><span class="eyebrow">${esc(info.section)}</span><h2>${esc(shownName)} ${reader.chapter}</h2>${translationNote}<small>${verses.filter(Boolean).length} verses</small></div>${selectedNotes.length ? `<div id="bible-verse-note" class="bible-inline-notes" aria-live="polite"><div class="bible-inline-title"><strong>Study notes · ${esc(reference(reader.book, reader.chapter, reader.selectedVerse))}</strong><button class="text-button" data-bible="close-note" aria-label="Close study note">×</button></div>${selectedNotes.map(renderNote).join('')}</div>` : ''}${myNoteBox}${reader.selectedVerse ? `<div class="bible-highlight-tools" role="group" aria-label="Highlight verse ${reader.selectedVerse}"><span>Verse ${reader.selectedVerse}</span><button data-color="teal" aria-label="Highlight teal" title="Teal"></button><button data-color="gold" aria-label="Highlight gold" title="Gold"></button><button data-color="rose" aria-label="Highlight rose" title="Rose"></button><button class="bible-clear-highlight" data-color="remove" aria-label="Clear highlight" title="Clear highlight"></button><button class="secondary" data-bible="copy-verse" aria-label="Copy verse ${reader.selectedVerse}">Copy</button><button class="secondary" data-bible="share-verse" aria-label="Share verse ${reader.selectedVerse}">Share</button><button class="secondary" data-bible="send-verse" aria-label="Send to a friend">Send to a friend</button></div>` : ''}<div class="bible-verses" data-i18n-skip>${verses.map((text, i) => text ? `<button class="bible-verse ${savedColor(i + 1 + verseOffset()) ? 'highlight-' + savedColor(i + 1 + verseOffset()) : ''} ${reader.selectedVerse === i + 1 + verseOffset() ? 'selected' : ''}${speech.playing && speech.verse === i + 1 + verseOffset() ? ' bible-speaking' : ''}" data-bible-verse="${i + 1 + verseOffset()}" aria-label="Verse ${i + 1 + verseOffset()}: ${esc(text)}"><sup>${i + 1 + verseOffset()}</sup>${esc(text)}${chapterNotes.some(note => note.verse === i + 1 + verseOffset()) ? '<span class="bible-annotation" aria-label="Study note available">✦</span>' : ''}${myNoteAt(i + 1 + verseOffset()) ? '<span class="bible-annotation bible-my-mark" aria-label="Your note on this verse">✎</span>' : ''}</button>` : '').join('')}</div><div class="bible-page-foot"><button class="text-button" data-bible="previous">← Previous</button><span class="bible-log-wrap"><button class="secondary bible-log-btn ${loggedHere ? 'bible-logged' : ''}" data-bible="log-read" aria-pressed="${loggedHere}">${loggedHere ? `✓ ${esc(shownName)} ${reader.chapter} logged — tap to undo` : `✓ Log ${esc(shownName)} ${reader.chapter} as read`}</button><span class="bible-log-progressbar" aria-hidden="true"><i style="width:${bookChaptersTotal ? Math.round(bookChaptersLogged / bookChaptersTotal * 100) : 0}%"></i></span><small class="bible-log-progress">${esc(shownName)}: ${bookChaptersLogged} of ${bookChaptersTotal} chapters logged</small></span><button class="text-button" data-bible="next">Next →</button></div></article></div>
-      <aside class="bible-aside"><div class="card"><span class="eyebrow">YOUR MARKS</span><h3>Highlighted verses</h3>${savedMarkup}<p class="small">Your highlights stay in this browser.</p><button type="button" class="text-button" data-nav="marks">All marks</button></div><div class="card" id="bible-notes"><span class="eyebrow">STUDY ALONGSIDE SCRIPTURE</span><h3>${chapterNotes.length ? `Notes on ${esc(shownName)} ${reader.chapter}` : 'Explore the study library'}</h3><div class="bible-note-filters" role="group" aria-label="Study note kinds">${kindFilters}</div><p class="small">Father · Teaching · Apologetics. Father lines are short quotations. Use the source link to read the passage.</p><div class="bible-study-stack">${studyMarkup || '<p class="muted">No notes of this kind on this chapter.</p>'}</div></div></aside></div></div>`;
+      <div class="bible-layout"><div class="bible-primary"><div class="bible-controls card"><label>Book<select id="bible-book">${sections.map(section => `<optgroup label="${esc(section)}">${books.filter(book => book.section === section).map(book => `<option value="${book.id}" ${book.id === reader.book ? 'selected' : ''}>${esc(displayBook(book))}</option>`).join('')}</optgroup>`).join('')}</select></label><label>Chapter<select id="bible-chapter">${Array.from({ length:info.chapters - (info.chapterStart || 1) + 1 }, (_, i) => { const chapter = i + (info.chapterStart || 1); return `<option value="${chapter}" ${chapter === reader.chapter ? 'selected' : ''}>${chapter}</option>`; }).join('')}</select></label><label>Translation<select id="bible-translation"><option value="kjv" ${reader.translation !== 'rvr' ? 'selected' : ''}>KJV</option><option value="rvr" ${reader.translation === 'rvr' ? 'selected' : ''}>RVR1909</option></select></label><div class="bible-control-buttons"><button class="secondary" data-bible="previous" aria-label="Previous chapter">←</button><button class="secondary" data-bible="next" aria-label="Next chapter">→</button><button class="secondary" data-bible="smaller" aria-label="Smaller text">A−</button><button class="secondary" data-bible="larger" aria-label="Larger text">A+</button><button class="secondary" data-bible="speak" aria-label="Read this chapter aloud">Read aloud</button><button class="secondary" data-bible="speak-pause" aria-label="Pause reading" aria-pressed="${speech.paused}">Pause</button><button class="secondary" data-bible="speak-stop" aria-label="Stop reading">Stop</button><button class="secondary" data-bible="rotate" aria-label="Rotate reading view" aria-pressed="${reader.rotated}">⤾ <span>Rotate</span></button><button class="secondary" data-bible="notes">${spanishUi() ? 'Notas de estudio' : 'Study notes'} (${chapterNotes.length})</button></div></div>
+      <article class="bible-page card" style="--reader-size:${reader.fontSize}px"><div class="bible-page-title"><span class="eyebrow">${esc(info.section)}</span><h2>${esc(shownName)} ${reader.chapter}</h2>${translationNote}<small>${verses.filter(text => String(text || '').trim()).length} verses</small></div>${selectedNotes.length ? `<div id="bible-verse-note" class="bible-inline-notes" aria-live="polite"><div class="bible-inline-title"><strong>${spanishUi() ? 'Notas de estudio' : 'Study notes'} · ${esc(reference(reader.book, reader.chapter, reader.selectedVerse))}</strong><button class="text-button" data-bible="close-note" aria-label="Close study note">×</button></div>${selectedNotes.map(renderNote).join('')}</div>` : ''}${myNoteBox}${reader.selectedVerse ? `<div class="bible-highlight-tools" role="group" aria-label="${spanishUi() ? 'Subrayar el versículo' : 'Highlight verse'} ${reader.selectedVerse}"><span>${spanishUi() ? 'Versículo' : 'Verse'} ${reader.selectedVerse}</span><button data-color="teal" aria-label="Highlight teal" title="Teal"></button><button data-color="gold" aria-label="Highlight gold" title="Gold"></button><button data-color="rose" aria-label="Highlight rose" title="Rose"></button><button class="bible-clear-highlight" data-color="remove" aria-label="Clear highlight" title="Clear highlight"></button><button class="secondary" data-bible="copy-verse" aria-label="${spanishUi() ? 'Copiar el versículo' : 'Copy verse'} ${reader.selectedVerse}">Copy</button><button class="secondary" data-bible="share-verse" aria-label="${spanishUi() ? 'Compartir el versículo' : 'Share verse'} ${reader.selectedVerse}">Share</button><button class="secondary" data-bible="send-verse" aria-label="Send to a friend">Send to a friend</button></div>` : ''}<div class="bible-verses" data-i18n-skip>${verses.map((text, i) => {
+        if (!String(text || '').trim()) return '';
+        const n = i + 1 + verseOffset();
+        const label = verseLabel(n);
+        const heading = verseHeading(n);
+        const color = savedColor(n);
+        return `${heading ? `<p class="bible-verse-heading">${esc(heading)}</p>` : ''}<button class="bible-verse ${color ? 'highlight-' + color : ''} ${reader.selectedVerse === n ? 'selected' : ''}${speech.playing && speech.verse === n ? ' bible-speaking' : ''}" data-bible-verse="${n}" aria-label="${spanishUi() ? 'Versículo' : 'Verse'} ${esc(label)}: ${esc(text)}"><sup>${esc(label)}</sup>${esc(text)}${chapterNotes.some(note => note.verse === n) ? '<span class="bible-annotation" aria-label="Study note available">✦</span>' : ''}${myNoteAt(n) ? '<span class="bible-annotation bible-my-mark" aria-label="Your note on this verse">✎</span>' : ''}</button>`;
+      }).join('')}</div>${subscription}<div class="bible-page-foot"><button class="text-button" data-bible="previous">← Previous</button><span class="bible-log-wrap"><button class="secondary bible-log-btn ${loggedHere ? 'bible-logged' : ''}" data-bible="log-read" aria-pressed="${loggedHere}">${loggedHere ? (spanishUi() ? `✓ ${esc(shownName)} ${reader.chapter} registrado — toca para deshacer` : `✓ ${esc(shownName)} ${reader.chapter} logged — tap to undo`) : (spanishUi() ? `✓ Marcar ${esc(shownName)} ${reader.chapter} como leído` : `✓ Log ${esc(shownName)} ${reader.chapter} as read`)}</button><span class="bible-log-progressbar" aria-hidden="true"><i style="width:${bookChaptersTotal ? Math.round(bookChaptersLogged / bookChaptersTotal * 100) : 0}%"></i></span><small class="bible-log-progress">${esc(shownName)}: ${spanishUi() ? `${bookChaptersLogged} de ${bookChaptersTotal} capítulos registrados` : `${bookChaptersLogged} of ${bookChaptersTotal} chapters logged`}</small></span><button class="text-button" data-bible="next">Next →</button></div></article></div>
+      <aside class="bible-aside"><div class="card"><span class="eyebrow">YOUR MARKS</span><h3>Highlighted verses</h3>${savedMarkup}<p class="small">Your highlights stay in this browser.</p><button type="button" class="text-button" data-nav="marks">All marks</button></div><div class="card" id="bible-notes"><span class="eyebrow">STUDY ALONGSIDE SCRIPTURE</span><h3>${chapterNotes.length ? (spanishUi() ? `Notas sobre ${esc(shownName)} ${reader.chapter}` : `Notes on ${esc(shownName)} ${reader.chapter}`) : (spanishUi() ? 'Explora la biblioteca de estudio' : 'Explore the study library')}</h3><div class="bible-note-filters" role="group" aria-label="Study note kinds">${kindFilters}</div><p class="small">Father · Teaching · Apologetics. Father lines are short quotations. Use the source link to read the passage.</p><div class="bible-study-stack">${studyMarkup || '<p class="muted">No notes of this kind on this chapter.</p>'}</div></div></aside></div></div>`;
     updateRotated();
     if (window.MsbI18n) MsbI18n.apply(reader.root);
     if (!reader.offline) refreshOffline();
   }
-  const BIBLE_CACHE_NAME = 'msb-bible-kjv-1';
+  const BIBLE_CACHE_NAME = 'msb-bible-kjv-2';
   const BIBLE_BOOK_TOTAL = 78;
   function bibleFile(id){ return `bible/${String(id).padStart(2,'0')}.json`; }
   function formatBytes(bytes){
@@ -169,8 +211,16 @@
   async function readCachedFrom(cacheName, url){
     try {
       if (!('caches' in window)) return null;
-      const cache = await caches.open(cacheName);
-      return cache ? await cache.match(url) : null;
+      const previous = { 'msb-bible-kjv-2': ['msb-bible-kjv-1'], 'msb-bible-rvr1909-3': ['msb-bible-rvr1909-2', 'msb-bible-rvr1909-1'] };
+      const names = [cacheName].concat(previous[cacheName] || []);
+      const present = await caches.keys();
+      for (const name of names) {
+        if (!present.includes(name)) continue;
+        const cache = await caches.open(name);
+        const hit = cache ? await cache.match(url) : null;
+        if (hit) return hit;
+      }
+      return null;
     } catch { return null; }
   }
   async function readCached(url){ return readCachedFrom(BIBLE_CACHE_NAME, url); }
@@ -272,6 +322,17 @@
         reader.offline = { books: bookCount, bytes, scanning: false, busy: true, done: bookCount };
         paintOffline();
       }
+      const storyCache = await caches.open(STORIES_CACHE_NAME);
+      for (const file of STORY_ART_FILES) {
+        const url = new URL(file, location.href).href;
+        const response = await fetch(url);
+        if (!response.ok) throw Error(`Could not download ${file}.`);
+        const buffer = await response.arrayBuffer();
+        bytes += buffer.byteLength;
+        await storyCache.put(url, new Response(buffer, { headers: { 'Content-Type': 'image/webp' } }));
+        reader.offline = { books: bookCount, bytes, scanning: false, busy: true, done: bookCount };
+        paintOffline();
+      }
       reader.offline = {books:bookCount, bytes, scanning:false, busy:false, done:bookCount};
       reader.context.toast('The whole Bible is saved on this device.');
     } catch (error) {
@@ -305,6 +366,7 @@
     const data = await response.json();
     const expected = rvr ? reader.rvrIndex?.books?.[id - 1]?.name : reader.index.books[id - 1]?.name;
     if (!Array.isArray(data.chapters) || data.book !== expected) throw Error('This book could not be verified.');
+    if (!rvr && id >= 67) data.chapters = data.chapters.map(chapter => Array.isArray(chapter) ? chapter.map(verse => typeof verse === 'string' ? plainBible(verse) : verse) : chapter);
     reader.bookData.set(key, data);
   }
   async function ensureFathers(id) {
