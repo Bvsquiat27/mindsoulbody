@@ -184,6 +184,12 @@ html{background:var(--bg)}body{color:var(--text);font-family:Outfit,system-ui,sa
 .bible-inline-notes,.bible-inline-notes .bible-study-card{background:var(--surface);border-color:var(--border)}
 .dialog{background:var(--surface);border-color:var(--border)}
 .dialog p,.dialog label{color:var(--ink-soft)}
+.denom-field{margin:0 0 16px}
+.denom-choices{display:grid;gap:8px;margin-top:10px}
+.denom-choice{width:100%;min-height:44px;text-align:left;padding:10px 14px}
+.denom-actions{display:flex;gap:10px;margin-top:8px}
+.denom-actions button{flex:1;min-height:44px}
+.profile-denomination{margin:8px 0 0;font-weight:700;color:var(--teal)}
 .theme-card{background:linear-gradient(145deg,var(--surface2),var(--surface))}
 .theme-swatch.selected,.theme-swatch[aria-pressed="true"]{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal)}
 .tap-vibration{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:18px 0;background:linear-gradient(145deg,var(--surface2),var(--surface))}

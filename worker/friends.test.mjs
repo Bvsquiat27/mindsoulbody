@@ -61,6 +61,7 @@ test('sync stores public profile fields and another browser receives them withou
     handle: 'maryh',
     city: 'Antioch',
     bio: 'Reads in the morning',
+    denomination: 'Basically Orthodox',
     avatar_data: AVATAR,
     cover_data: COVER,
     email: 'mary@example.com',
@@ -68,6 +69,7 @@ test('sync stores public profile fields and another browser receives them withou
       handle: 'maryh',
       city: 'Antioch',
       bio: 'Reads in the morning',
+      denomination: 'Basically Orthodox',
       avatar_data: AVATAR,
       cover_data: COVER,
       secret: mary.secret,
@@ -97,11 +99,13 @@ test('sync stores public profile fields and another browser receives them withou
   assert.equal(row.handle, 'maryh');
   assert.equal(row.city, 'Antioch');
   assert.equal(row.bio, 'Reads in the morning');
+  assert.equal(row.denomination, 'Basically Orthodox');
   assert.equal(row.avatar_data, AVATAR);
   assert.equal(row.cover_data, COVER);
   assert.equal(row.profile.handle, 'maryh');
   assert.equal(row.profile.city, 'Antioch');
   assert.equal(row.profile.bio, 'Reads in the morning');
+  assert.equal(row.profile.denomination, 'Basically Orthodox');
   assert.equal(row.profile.avatar_data, AVATAR);
   assert.equal(row.profile.cover_data, COVER);
   assert.equal(row.stats.studies, 1);
