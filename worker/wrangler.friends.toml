@@ -1,10 +1,11 @@
 name = "mindsoulbody-api"
 main = "friends.mjs"
-compatibility_date = "2026-10-04"
+compatibility_date = "2024-11-01"
+account_id = "9dfa3f6855e752c53df1b9b8632cf51e"
+workers_dev = true
+preview_urls = false
 
-# Bind FRIENDS to the existing production KV namespace before deploying.
-# Do not create a new namespace here: current friend accounts live in the
-# namespace already attached to mindsoulbody-api, and its id is not in this repo.
-# [[kv_namespaces]]
-# binding = "FRIENDS"
-# id = "<existing production namespace id>"
+# Existing production namespace. Do not create a new one.
+[[kv_namespaces]]
+binding = "FRIENDS"
+id = "2429d982103e4d7cabcbda5ad113fc94"

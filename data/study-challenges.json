@@ -4197,7 +4197,7 @@
             "Because the intellect is too weak to know anything"
           ],
           "correct": 1,
-          "explanation": "Augustine's anti-Pelagian point: grace goes before (prevenient), heals the bent will, and the healed will truly chooses — grace elevates, never overrides."
+          "explanation": "Orthodox synergy, as St. Maximus the Confessor, St. John Cassian, and St. Macarius teach it: grace goes before, heals the bent will, and the person truly cooperates. Grace elevates; it never overrides."
         },
         {
           "prompt": "Why do different people struggle with different ruling sins?",
@@ -7965,6 +7965,13 @@
         "Nicaea II (787)",
         "Nicaea I (325)",
         "Ephesus (431)"
+      ],
+      "correct": [2, 3, 0, 1],
+      "explanations": [
+        "Nicaea I (325) confessed the Son as homoousios — of one essence with the Father — and not a creature.",
+        "Ephesus (431) confessed Mary as Theotokos: the one born of her is the divine Son incarnate, one Person.",
+        "Chalcedon (451) confessed Christ as one Person in two complete natures, divine and human, without confusion.",
+        "Nicaea II (787) defended the veneration of icons because the Son truly became visible in the Incarnation."
       ]
     },
     {
@@ -7985,6 +7992,13 @@
         "Identify the one born of Mary as the divine Son incarnate.",
         "Distinguish glorified resurrection from ordinary resuscitation.",
         "Explain how living faith bears the fruit of love through grace."
+      ],
+      "correct": [1, 3, 0, 2],
+      "explanations": [
+        "Theotokos names the Person Mary bore: the divine Son, who took flesh. It does not make Mary the source of the Godhead.",
+        "Grace and works are not rivals. Living faith bears the fruit of love; the work is the fruit of grace, not a wage that earns it.",
+        "An icon is venerated as a window to the person shown. The worship due to God alone is not given to wood.",
+        "The resurrection is a glorified life, not a return to ordinary mortal existence."
       ]
     }
   ]

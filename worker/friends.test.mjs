@@ -4,22 +4,30 @@ import { handleFriends } from './friends.mjs';
 
 function memoryKv() {
   const data = new Map();
+  const options = new Map();
   return {
     async get(key, type) {
       if (!data.has(key)) return null;
       const value = data.get(key);
       return type === 'json' ? JSON.parse(value) : value;
     },
-    async put(key, value) { data.set(key, String(value)); },
-    async delete(key) { data.delete(key); },
-    snapshot() { return data; }
+    async put(key, value, opts) {
+      data.set(key, String(value));
+      if (opts) options.set(key, opts);
+    },
+    async delete(key) {
+      data.delete(key);
+      options.delete(key);
+    },
+    options() { return options; },
+    keys() { return [...data.keys()]; }
   };
 }
 
 function call(kv, path, body, method = 'POST') {
   const request = new Request(`https://friends.test${path}`, {
     method,
-    headers: { 'content-type': 'application/json' },
+    headers: { 'content-type': 'application/json', origin: 'https://bvsquiat27.github.io' },
     body: method === 'GET' || method === 'OPTIONS' ? undefined : JSON.stringify(body ?? {})
   });
   return handleFriends(request, { FRIENDS: kv });
@@ -29,16 +37,21 @@ async function read(response) {
   const text = await response.text();
   let data = null;
   try { data = text ? JSON.parse(text) : null; } catch { data = text; }
-  return { status: response.status, data, text };
+  return { status: response.status, data, text, headers: response.headers };
 }
 
 function hasSecretKey(value) {
   if (Array.isArray(value)) return value.some(hasSecretKey);
   if (value && typeof value === 'object') {
-    if (Object.prototype.hasOwnProperty.call(value, 'secret')) return true;
+    if (Object.prototype.hasOwnProperty.call(value, 'secret') || Object.prototype.hasOwnProperty.call(value, 'secretHash')) return true;
     return Object.values(value).some(hasSecretKey);
   }
   return false;
+}
+
+async function sha256hex(text) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 const AVATAR = 'data:image/png;base64,aaaa';
@@ -51,6 +64,8 @@ test('sync stores public profile fields and another browser receives them withou
   assert.equal(mary.name, undefined);
   assert.equal(typeof mary.secret, 'string');
   assert.equal(mary.secret.length, 32);
+  assert.match(mary.publicId, /^[a-f0-9]{16}$/);
+  assert.equal(mary.secretHash, undefined);
 
   const sync = await read(await call(kv, '/sync', {
     code: mary.code,
@@ -60,6 +75,7 @@ test('sync stores public profile fields and another browser receives them withou
     handle: 'maryh',
     city: 'Antioch',
     bio: 'Reads in the morning',
+    denomination: 'Basically Orthodox',
     avatar_data: AVATAR,
     cover_data: COVER,
     email: 'mary@example.com',
@@ -67,6 +83,7 @@ test('sync stores public profile fields and another browser receives them withou
       handle: 'maryh',
       city: 'Antioch',
       bio: 'Reads in the morning',
+      denomination: 'Basically Orthodox',
       avatar_data: AVATAR,
       cover_data: COVER,
       secret: mary.secret,
@@ -75,13 +92,16 @@ test('sync stores public profile fields and another browser receives them withou
     }
   }));
   assert.equal(sync.status, 200);
-  assert.deepEqual(sync.data, { ok: true });
+  assert.equal(sync.data.ok, true);
+  assert.equal(sync.data.publicId, mary.publicId);
   assert.equal(sync.text.includes(mary.secret), false);
+  assert.equal(sync.headers.get('access-control-allow-origin'), 'https://bvsquiat27.github.io');
 
-  const kept = await read(await call(kv, '/sync', { code: mary.code, secret: mary.secret }));
-  assert.equal(kept.status, 200);
-
-  await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code.toLowerCase() });
+  const requested = await read(await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code.toLowerCase() }));
+  assert.equal(requested.data.status, 'pending');
+  const notYet = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  assert.deepEqual(notYet.data, []);
+  await call(kv, '/friend/accept', { code: mary.code, secret: mary.secret, friendCode: angel.code });
   const friends = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
   assert.equal(friends.status, 200);
   assert.equal(friends.data.length, 1);
@@ -91,11 +111,13 @@ test('sync stores public profile fields and another browser receives them withou
   assert.equal(row.handle, 'maryh');
   assert.equal(row.city, 'Antioch');
   assert.equal(row.bio, 'Reads in the morning');
+  assert.equal(row.denomination, 'Basically Orthodox');
   assert.equal(row.avatar_data, AVATAR);
   assert.equal(row.cover_data, COVER);
   assert.equal(row.profile.handle, 'maryh');
   assert.equal(row.profile.city, 'Antioch');
   assert.equal(row.profile.bio, 'Reads in the morning');
+  assert.equal(row.profile.denomination, 'Basically Orthodox');
   assert.equal(row.profile.avatar_data, AVATAR);
   assert.equal(row.profile.cover_data, COVER);
   assert.equal(row.stats.studies, 1);
@@ -110,11 +132,18 @@ test('sync stores public profile fields and another browser receives them withou
 
   const stored = await kv.get(`user:${mary.code}`, 'json');
   assert.equal(stored.secret, undefined);
+  assert.equal(stored.secretHash, await sha256hex(mary.secret));
   assert.equal(stored.email, undefined);
   assert.equal(stored.handle, 'maryh');
   assert.equal(stored.avatar_data, AVATAR);
   assert.equal(stored.cover_data, COVER);
+  assert.equal(stored.publicId, mary.publicId);
   assert.equal(JSON.stringify(stored).includes(mary.secret), false);
+  const kept = await read(await call(kv, '/sync', { code: mary.code, secret: mary.secret }));
+  assert.equal(kept.status, 200);
+  assert.equal(kept.data.publicId, mary.publicId);
+  assert.equal(kv.keys().some((key) => key.startsWith('auth:')), false);
+  assert.equal(kv.keys().some((key) => key.startsWith('board:')), false);
 });
 
 test('javascript and empty images are not stored, and an omitted name stays', async () => {
@@ -162,7 +191,9 @@ test('only the list owner receives friend records, and those records omit everyo
   const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
 
   await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code });
+  await call(kv, '/friend/accept', { code: angel.code, secret: angel.secret, friendCode: mary.code });
   await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: ruth.code });
+  await call(kv, '/friend/accept', { code: ruth.code, secret: ruth.secret, friendCode: mary.code });
 
   const injected = 'MSB-ZZZZZZ';
   const sync = await read(await call(kv, '/sync', {
@@ -181,7 +212,7 @@ test('only the list owner receives friend records, and those records omit everyo
 
   const asAngel = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
   assert.equal(asAngel.status, 200);
-  assert.deepEqual(asAngel.data.map(row => row.code), [mary.code]);
+  assert.deepEqual(asAngel.data.map((row) => row.code), [mary.code]);
   assert.equal(asAngel.data[0].friends, undefined);
   assert.equal(asAngel.data[0].profile.friends, undefined);
   assert.equal(asAngel.data[0].profile.handle, 'maryh');
@@ -191,7 +222,7 @@ test('only the list owner receives friend records, and those records omit everyo
 
   const asMary = await read(await call(kv, '/friends', { code: mary.code, secret: mary.secret }));
   assert.equal(asMary.status, 200);
-  assert.deepEqual(asMary.data.map(row => row.code).sort(), [angel.code, ruth.code].sort());
+  assert.deepEqual(asMary.data.map((row) => row.code).sort(), [angel.code, ruth.code].sort());
   for (const row of asMary.data) {
     assert.equal(row.friends, undefined);
     assert.equal(row.profile && row.profile.friends, undefined);
@@ -222,6 +253,7 @@ test('a stored saint portrait id is stripped and does not replace a photo', asyn
   stored.profile = { ...(stored.profile || {}), avatar_saint: 'nicholas' };
   await kv.put(`user:${mary.code}`, JSON.stringify(stored));
   await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code });
+  await call(kv, '/friend/accept', { code: mary.code, secret: mary.secret, friendCode: angel.code });
   const legacy = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
   assert.equal(legacy.data[0].avatar_saint, undefined);
   assert.equal(legacy.data[0].profile.avatar_saint, undefined);
@@ -248,6 +280,91 @@ test('a stored saint portrait id is stripped and does not replace a photo', asyn
   assert.equal(JSON.stringify(cleared.data).includes('saints/'), false);
 });
 
+test('a friend request stays pending until the other person accepts, and public scores omit friend codes', async () => {
+  const kv = memoryKv();
+  const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
+
+  const add = await read(await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code }));
+  assert.equal(add.status, 200);
+  assert.equal(add.data.ok, true);
+  assert.equal(add.data.status, 'pending');
+  assert.equal(add.text.includes(angel.secret), false);
+  assert.equal(add.text.includes(mary.secret), false);
+
+  const maryFriends = await read(await call(kv, '/friends', { code: mary.code, secret: mary.secret }));
+  const angelFriends = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  assert.deepEqual(maryFriends.data, []);
+  assert.deepEqual(angelFriends.data, []);
+
+  const maryRequests = await read(await call(kv, '/friend/requests', { code: mary.code, secret: mary.secret }));
+  assert.equal(maryRequests.status, 200);
+  assert.deepEqual(maryRequests.data.incoming.map((row) => row.code), [angel.code]);
+  assert.equal(maryRequests.data.incoming[0].name, 'Angel');
+  assert.deepEqual(maryRequests.data.outgoing, []);
+  assert.equal(maryRequests.text.includes(ruth.code), false);
+  assert.equal(maryRequests.text.includes(angel.secret), false);
+
+  const angelRequests = await read(await call(kv, '/friend/requests', { code: angel.code, secret: angel.secret }));
+  assert.deepEqual(angelRequests.data.outgoing.map((row) => row.code), [mary.code]);
+  assert.deepEqual(angelRequests.data.incoming, []);
+
+  const stolen = await read(await call(kv, '/friend/requests', { code: mary.code, secret: angel.secret }));
+  assert.equal(stolen.status, 401);
+  assert.equal(stolen.text.includes(angel.code), false);
+
+  const declined = await read(await call(kv, '/friend/decline', { code: mary.code, secret: mary.secret, friendCode: angel.code }));
+  assert.equal(declined.status, 200);
+  const afterDecline = await read(await call(kv, '/friend/requests', { code: mary.code, secret: mary.secret }));
+  assert.deepEqual(afterDecline.data.incoming, []);
+  const angelAfter = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  assert.deepEqual(angelAfter.data, []);
+
+  await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code });
+  const accepted = await read(await call(kv, '/friend/accept', { code: mary.code, secret: mary.secret, friendCode: angel.code }));
+  assert.equal(accepted.data.status, 'friends');
+  const paired = await read(await call(kv, '/friends', { code: mary.code, secret: mary.secret }));
+  assert.deepEqual(paired.data.map((row) => row.code), [angel.code]);
+  assert.equal(paired.text.includes(ruth.code), false);
+  const cleared = await read(await call(kv, '/friend/requests', { code: mary.code, secret: mary.secret }));
+  assert.deepEqual(cleared.data.incoming, []);
+  assert.deepEqual(cleared.data.outgoing, []);
+
+  const again = await read(await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code }));
+  assert.equal(again.data.status, 'friends');
+
+  await call(kv, '/scores/submit', { code: mary.code, secret: mary.secret, show: 'jeopardy', score: 400, level: 2 });
+  await call(kv, '/scores/submit', { code: ruth.code, secret: ruth.secret, show: 'jeopardy', score: 100, level: 1 });
+  const board = await read(await call(kv, '/scores?show=jeopardy', null, 'GET'));
+  assert.equal(board.status, 200);
+  assert.equal(board.text.includes(mary.code), false);
+  assert.equal(board.text.includes(ruth.code), false);
+  assert.equal(board.text.includes('MSB-'), false);
+  assert.deepEqual(board.data.scores.map((row) => row.name), ['Mary', 'Ruth']);
+  assert.equal(board.data.scores[0].id, mary.publicId);
+  assert.equal(board.data.scores[0].code, undefined);
+  assert.equal(board.data.scores[1].id, ruth.publicId);
+  const raw = await kv.get('leaderboard', 'json');
+  assert.equal(raw.jeopardy[0].code, mary.code);
+  assert.equal(raw.jeopardy[0].score, 400);
+  assert.equal(raw.jeopardy[1].code, ruth.code);
+});
+
+test('adding someone who already asked completes the friendship', async () => {
+  const kv = memoryKv();
+  const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code });
+  const back = await read(await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code }));
+  assert.equal(back.data.status, 'friends');
+  const friends = await read(await call(kv, '/friends', { code: mary.code, secret: mary.secret }));
+  assert.deepEqual(friends.data.map((row) => row.code), [angel.code]);
+  const requests = await read(await call(kv, '/friend/requests', { code: angel.code, secret: angel.secret }));
+  assert.deepEqual(requests.data.outgoing, []);
+  assert.deepEqual(requests.data.incoming, []);
+});
+
 test('wrong secret does not echo the secret, and friend responses stay public', async () => {
   const kv = memoryKv();
   const user = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
@@ -257,13 +374,226 @@ test('wrong secret does not echo the secret, and friend responses stay public', 
   assert.equal(wrong.text.includes('not-the-secret'), false);
   assert.equal(wrong.text.includes(user.secret), false);
 
-  const note = await read(await call(kv, '/note/send', {
+  const missing = await read(await call(kv, '/friends', { code: 'MSB-MISSING', secret: user.secret }));
+  assert.equal(missing.status, 404);
+  assert.equal(missing.data.error, 'Unknown friend code');
+
+  const self = await read(await call(kv, '/note/send', {
     code: user.code,
     secret: user.secret,
     to: user.code,
     body: 'hello',
     secretNote: user.secret
   }));
-  assert.equal(note.status, 403);
-  assert.equal(note.text.includes(user.secret), false);
+  assert.equal(self.status, 400);
+  assert.equal(self.text.includes(user.secret), false);
+
+  const stranger = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
+  const forbidden = await read(await call(kv, '/note/send', {
+    code: user.code,
+    secret: user.secret,
+    to: stranger.code,
+    body: 'hello'
+  }));
+  assert.equal(forbidden.status, 403);
+  assert.equal(forbidden.data.error, 'Add that person as a friend first');
+});
+
+test('live KV records keep their secret, friends, and code-only scores', async () => {
+  const kv = memoryKv();
+  const secret = 'legacy-secret-kept-for-this-account';
+  const palSecret = 'pal-secret-kept-for-this-account';
+  const legacy = {
+    code: 'MSB-LEGACY',
+    name: 'Legacy',
+    secretHash: await sha256hex(secret),
+    stats: { bests: { jeopardy: 10 }, levels: { jeopardy: 2 }, studies: 3 },
+    friends: ['MSB-PAL001'],
+    updatedAt: 1000
+  };
+  const pal = {
+    code: 'MSB-PAL001',
+    name: 'Pal',
+    secretHash: await sha256hex(palSecret),
+    stats: { bests: {}, levels: {}, studies: 1 },
+    friends: ['MSB-LEGACY'],
+    updatedAt: 1000
+  };
+  await kv.put('user:MSB-LEGACY', JSON.stringify(legacy));
+  await kv.put('user:MSB-PAL001', JSON.stringify(pal));
+  await kv.put('leaderboard', JSON.stringify({
+    jeopardy: [{ code: 'MSB-LEGACY', name: 'Legacy', score: 500, level: 3, ts: 1000 }]
+  }));
+
+  const auth = await read(await call(kv, '/friends', { code: 'MSB-LEGACY', secret }));
+  assert.equal(auth.status, 200);
+  assert.deepEqual(auth.data.map((row) => row.code), ['MSB-PAL001']);
+  assert.equal(auth.data[0].name, 'Pal');
+  assert.equal(auth.data[0].stats.studies, 1);
+  assert.equal(auth.text.includes(secret), false);
+  assert.equal(auth.text.includes(legacy.secretHash), false);
+
+  const wrong = await read(await call(kv, '/sync', { code: 'MSB-LEGACY', secret: 'nope' }));
+  assert.equal(wrong.status, 401);
+
+  const board = await read(await call(kv, '/scores?show=jeopardy', null, 'GET'));
+  assert.equal(board.status, 200);
+  assert.equal(board.data.scores.length, 1);
+  assert.equal(board.data.scores[0].name, 'Legacy');
+  assert.equal(board.data.scores[0].score, 500);
+  assert.equal(board.data.scores[0].level, 3);
+  assert.equal(board.data.scores[0].ts, 1000);
+  assert.match(board.data.scores[0].id, /^[a-f0-9]{16}$/);
+  assert.equal(board.data.scores[0].code, undefined);
+  assert.equal(board.text.includes('MSB-LEGACY'), false);
+  assert.equal(board.text.includes('MSB-'), false);
+
+  const stored = await kv.get('user:MSB-LEGACY', 'json');
+  assert.equal(stored.secretHash, legacy.secretHash);
+  assert.deepEqual(stored.friends, ['MSB-PAL001']);
+  assert.equal(stored.name, 'Legacy');
+  assert.equal(stored.stats.bests.jeopardy, 10);
+  assert.equal(stored.publicId, board.data.scores[0].id);
+  const rawBoard = await kv.get('leaderboard', 'json');
+  assert.equal(rawBoard.jeopardy[0].code, 'MSB-LEGACY');
+  assert.equal(rawBoard.jeopardy[0].score, 500);
+  assert.equal(rawBoard.jeopardy[0].id, stored.publicId);
+
+  const again = await read(await call(kv, '/scores?show=jeopardy', null, 'GET'));
+  assert.equal(again.data.scores[0].id, stored.publicId);
+  assert.equal(again.data.scores[0].score, 500);
+
+  const synced = await read(await call(kv, '/sync', {
+    code: 'MSB-LEGACY',
+    secret,
+    name: 'Legacy',
+    stats: legacy.stats,
+    city: 'Antioch',
+    bio: 'Still here',
+    denomination: 'Basically Orthodox'
+  }));
+  assert.equal(synced.data.publicId, stored.publicId);
+  const after = await kv.get('user:MSB-LEGACY', 'json');
+  assert.equal(after.secretHash, legacy.secretHash);
+  assert.deepEqual(after.friends, ['MSB-PAL001']);
+  assert.equal(after.city, 'Antioch');
+  assert.equal(after.denomination, 'Basically Orthodox');
+  const palView = await read(await call(kv, '/friends', { code: 'MSB-PAL001', secret: palSecret }));
+  assert.equal(palView.data[0].city, 'Antioch');
+  assert.equal(palView.data[0].denomination, 'Basically Orthodox');
+  assert.equal(palView.data[0].profile.bio, 'Still here');
+
+  const outsider = (await read(await call(kv, '/register', { name: 'New' }))).data;
+  await call(kv, '/friend/add', { code: outsider.code, secret: outsider.secret, friendCode: 'MSB-LEGACY' });
+  const still = await read(await call(kv, '/friends', { code: 'MSB-LEGACY', secret }));
+  assert.deepEqual(still.data.map((row) => row.code), ['MSB-PAL001']);
+  const incoming = await read(await call(kv, '/friend/requests', { code: 'MSB-LEGACY', secret }));
+  assert.deepEqual(incoming.data.incoming.map((row) => row.code), [outsider.code]);
+  await call(kv, '/friend/decline', { code: 'MSB-LEGACY', secret, friendCode: outsider.code });
+  const declined = await read(await call(kv, '/friend/requests', { code: 'MSB-LEGACY', secret }));
+  assert.deepEqual(declined.data.incoming, []);
+  const friendsAfter = await read(await call(kv, '/friends', { code: 'MSB-LEGACY', secret }));
+  assert.deepEqual(friendsAfter.data.map((row) => row.code), ['MSB-PAL001']);
+});
+
+test('legacy records without inbox, threads, or shared still exchange notes, messages, and rooms', async () => {
+  const kv = memoryKv();
+  const secret = 'note-secret-for-legacy-owner';
+  const palSecret = 'note-secret-for-legacy-pal';
+  await kv.put('user:MSB-OWNER1', JSON.stringify({
+    code: 'MSB-OWNER1', name: 'Owner', secretHash: await sha256hex(secret),
+    stats: { bests: {}, levels: {}, studies: 0 }, friends: ['MSB-PAL002'], updatedAt: 50
+  }));
+  await kv.put('user:MSB-PAL002', JSON.stringify({
+    code: 'MSB-PAL002', name: 'Pal', secretHash: await sha256hex(palSecret),
+    stats: { bests: {}, levels: {}, studies: 0 }, friends: ['MSB-OWNER1'], updatedAt: 50
+  }));
+  const owner = { code: 'MSB-OWNER1', secret };
+  const pal = { code: 'MSB-PAL002', secret: palSecret };
+
+  const sent = await read(await call(kv, '/note/send', {
+    ...owner, to: pal.code, title: 'Peace', body: 'Read John 1', studyId: 'john-1', ref: { book: 43, chapter: 1, verse: 1, label: 'John 1:1' }
+  }));
+  assert.equal(sent.status, 200);
+  assert.match(sent.data.id, /^[a-f0-9]{16}$/);
+  const notes = await read(await call(kv, '/notes', pal));
+  assert.equal(notes.data.inbox[0].body, 'Read John 1');
+  assert.equal(notes.data.inbox[0].from, owner.code);
+  const ownerNotes = await read(await call(kv, '/notes', owner));
+  assert.equal(ownerNotes.data.sent[0].id, sent.data.id);
+  assert.equal((await read(await call(kv, '/note/read', { ...pal, id: sent.data.id }))).data.ok, true);
+  assert.equal((await read(await call(kv, '/notes', pal))).data.inbox[0].read, true);
+  assert.equal((await read(await call(kv, '/note/delete', { ...pal, id: sent.data.id, box: 'inbox' }))).data.ok, true);
+  assert.deepEqual((await read(await call(kv, '/notes', pal))).data.inbox, []);
+
+  const msg = await read(await call(kv, '/msg/send', { ...owner, to: pal.code, body: 'Hello' }));
+  assert.equal(msg.status, 200);
+  const thread = await read(await call(kv, '/msg/thread', { ...pal, with: owner.code }));
+  assert.equal(thread.data.messages[0].body, 'Hello');
+  assert.equal(thread.data.messages[0].read, true);
+  const storedPal = await kv.get('user:MSB-PAL002', 'json');
+  assert.equal(storedPal.secretHash, await sha256hex(palSecret));
+  assert.deepEqual(storedPal.friends, ['MSB-OWNER1']);
+
+  const shared = await read(await call(kv, '/shared/create', { ...owner, to: pal.code, title: 'Together', body: 'First line' }));
+  assert.equal(shared.status, 200);
+  assert.match(shared.data.id, /^[a-f0-9]{16}$/);
+  assert.equal((await kv.get(`shared:${shared.data.id}`)) != null, true);
+  const listed = await read(await call(kv, '/shared/list', pal));
+  assert.equal(listed.data.notes[0].body, 'First line');
+  const got = await read(await call(kv, '/shared/get', { ...pal, id: shared.data.id }));
+  assert.equal(got.status, 200);
+  const updated = await read(await call(kv, '/shared/update', { ...pal, id: shared.data.id, title: 'Together', body: 'Second line' }));
+  assert.equal(updated.data.body, 'Second line');
+  assert.equal(updated.data.updatedBy, pal.code);
+  assert.equal((await read(await call(kv, '/shared/delete', { ...owner, id: shared.data.id }))).data.ok, true);
+  assert.equal(await kv.get(`shared:${shared.data.id}`), null);
+
+  const room = await read(await call(kv, '/room/create', { ...owner, show: 'jeopardy', level: 2 }));
+  assert.equal(room.status, 200);
+  assert.match(room.data.room, /^ROOM-/);
+  assert.equal(kv.options().get(`room:${room.data.room}`).expirationTtl, 7200);
+  const joined = await read(await call(kv, '/room/join', { ...pal, room: room.data.room }));
+  assert.equal(joined.status, 200);
+  assert.equal(joined.data.players.length, 2);
+  const started = await read(await call(kv, '/room/start', { ...owner, room: room.data.room }));
+  assert.equal(started.data.status, 'active');
+  const scored = await read(await call(kv, '/room/score', { ...pal, room: room.data.room, score: 40, finished: true }));
+  assert.equal(scored.data.players.find((p) => p.code === pal.code).score, 40);
+  const state = await read(await call(kv, '/room/state', { ...owner, room: room.data.room }));
+  assert.equal(state.data.room, room.data.room);
+  const left = await read(await call(kv, '/room/leave', { ...pal, room: room.data.room }));
+  assert.equal(left.data.players.length, 1);
+
+  const stranger = (await read(await call(kv, '/register', { name: 'Nope' }))).data;
+  const blocked = await read(await call(kv, '/room/join', { code: stranger.code, secret: stranger.secret, room: room.data.room }));
+  assert.equal(blocked.status, 403);
+});
+
+test('health, missing routes, and the body limit keep the live status codes', async () => {
+  const kv = memoryKv();
+  const health = await read(await call(kv, '/health', null, 'GET'));
+  assert.equal(health.status, 200);
+  assert.deepEqual(health.data, { ok: true });
+  assert.equal(health.headers.get('access-control-allow-origin'), 'https://bvsquiat27.github.io');
+
+  const options = await handleFriends(new Request('https://friends.test/friends', { method: 'OPTIONS' }), { FRIENDS: kv });
+  assert.equal(options.status, 204);
+  assert.equal(options.headers.get('access-control-allow-origin'), 'https://bvsquiat27.github.io');
+
+  const missingGet = await read(await call(kv, '/missing', null, 'GET'));
+  assert.equal(missingGet.status, 404);
+  const missingPost = await read(await call(kv, '/missing', {}));
+  assert.equal(missingPost.status, 404);
+
+  const malformed = await handleFriends(new Request('https://friends.test/sync', { method: 'POST', body: '{' }), { FRIENDS: kv });
+  assert.equal(malformed.status, 400);
+  assert.equal((await malformed.json()).error, 'Malformed JSON body');
+
+  const huge = await handleFriends(new Request('https://friends.test/sync', { method: 'POST', body: 'x'.repeat(16385) }), { FRIENDS: kv });
+  assert.equal(huge.status, 413);
+  assert.equal((await huge.json()).error, 'Request too large');
+
+  const badShow = await read(await call(kv, '/scores?show=chess', null, 'GET'));
+  assert.equal(badShow.status, 400);
 });

@@ -191,9 +191,9 @@ window.BibleGames = (() => {
     setHtml(`${backBar('Public scores')}<div class="loading">Gathering the ${esc(title)} board…</div>`);
     try {
       const scores = await ctx.social.publicScores(show);
-      const me = ctx.social.identity() ? ctx.social.identity().code : '';
+      const meId = ctx.social.identity() ? (ctx.social.identity().publicId || '') : '';
       const rows = scores.length ? scores.map((s, i) => {
-        const mine = !!(s && s.code && me && s.code === me);
+        const mine = !!(s && s.id && meId && s.id === meId);
         return `<div class="card friend-row"><div><strong>${i + 1}. ${esc(s.name || 'Friend')}</strong>${mine ? ' <span class="friend-chip">you</span>' : ''}<br><small class="muted">Level ${s.level || 1} · ${new Date(s.ts || Date.now()).toLocaleDateString()}</small></div><strong>${show === 'millionaire' ? money(s.score) : s.score}</strong></div>`;
       }).join('') : '<p class="muted">No solo scores yet. Finish a solo run of this game and you will open the board.</p>';
       setHtml(`${backBar('Public scores')}<p class="lead">🌍 ${esc(title)} — names and scores only. Friend codes are not shown.</p>${rows}<p><button class="secondary" data-gx="show-menu" data-show="${show}">← Back to ${esc(title)}</button></p>`);
@@ -767,7 +767,7 @@ window.BibleGames = (() => {
     setHtml(`${backBar('Who Wants to Be a Millionaire')}
       <section class="card gx-center">
         <span class="eyebrow">WALKED AWAY</span>
-        <h2>${esc(G.name)} leaves with ${money(won)}</h2>
+        <h2>${/^you$/i.test(String(G.name || 'You').trim()) ? `You leave with ${money(won)}` : `${esc(G.name)} leaves with ${money(won)}`}</h2>
         <p>You stopped at question ${G.rung}. The correct answer was: <strong>${esc(currentMillionaire().answer)}</strong> (${esc(currentMillionaire().reference)}).</p>
         <button class="primary" data-gx="show-menu" data-show="millionaire">Play again</button>
         <button class="secondary" data-gx="hub">All games</button>
