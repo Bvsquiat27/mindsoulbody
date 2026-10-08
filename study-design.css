@@ -379,5 +379,6 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .study-verse-row label{display:grid;gap:4px;font-size:13px;font-weight:700}
 .study-verse-row input{width:88px;border-radius:12px;border:1px solid var(--line);background:var(--app-input,var(--surface));color:var(--text);padding:8px 10px}
 .bible-translation-note{color:var(--muted);margin:6px 0}
+.bible-subscription{margin:12px 2px 4px;color:var(--muted);font-style:italic;font-size:0.95rem;line-height:1.45}
 .bible-controls{display:grid;gap:10px}
 .bible-controls select{min-height:44px}

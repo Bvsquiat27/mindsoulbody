@@ -4,16 +4,21 @@
    and study-notes.json are NETWORK-FIRST so lesson notes update immediately.
    Bible book JSON lives in its own cache (BIBLE_CACHE). That cache is NOT
    tied to CACHE_VERSION, so an app update does not wipe downloaded books.
-   Story illustrations live in STORIES_CACHE, also kept across app updates.
+   A newer Bible cache is seeded from the previous one so offline reading
+   still opens, then each book is replaced from the network the next time
+   it is fetched. Story illustrations live in STORIES_CACHE, also kept
+   across app updates. Only caches named with this app's msb- prefix are
+   deleted, so another app on the same origin keeps its own caches.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v75';
+const CACHE_VERSION = 'v76';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
-const BIBLE_DATA_VERSION = 'kjv-1';
+const BIBLE_DATA_VERSION = 'kjv-2';
 const BIBLE_CACHE = `msb-bible-${BIBLE_DATA_VERSION}`;
-const RVR_DATA_VERSION = 'rvr1909-1';
+const RVR_DATA_VERSION = 'rvr1909-2';
 const RVR_CACHE = `msb-bible-${RVR_DATA_VERSION}`;
+const APP_CACHE_PREFIX = 'msb-';
 const STORIES_CACHE = 'msb-stories-1';
 const STORY_IDS = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
 
@@ -111,14 +116,27 @@ self.addEventListener('activate', (event) => {
         await preserveBibleBooks(keys);
         await preserveRvrBooks(keys);
         await preserveStories(keys);
+        const kept = new Set([SHELL_CACHE, DATA_CACHE, BIBLE_CACHE, RVR_CACHE, STORIES_CACHE]);
         await Promise.all(
-          keys.filter((k) => k !== SHELL_CACHE && k !== DATA_CACHE && k !== BIBLE_CACHE && k !== RVR_CACHE && k !== STORIES_CACHE)
+          keys.filter((k) => k.startsWith(APP_CACHE_PREFIX) && !kept.has(k))
             .map((k) => caches.delete(k))
         );
       })
       .then(() => self.clients.claim())
   );
 });
+
+function freshOrCached(cacheName, request) {
+  const cached = () => caches.open(cacheName).then((cache) => cache.match(request));
+  return fetch(request).then((res) => {
+    if (res && res.ok) {
+      const copy = res.clone();
+      caches.open(cacheName).then((cache) => cache.put(request, copy));
+      return res;
+    }
+    return cached().then((hit) => hit || res);
+  }).catch(() => cached().then((hit) => hit || Response.error()));
+}
 
 self.addEventListener('fetch', (event) => {
   const { request } = event;
@@ -142,12 +160,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   if (isRvrBook(url)) {
-    event.respondWith(
-      caches.open(RVR_CACHE).then((cache) => cache.match(request).then((hit) => hit || fetch(request).then((res) => {
-        if (res.ok) cache.put(request, res.clone());
-        return res;
-      })))
-    );
+    event.respondWith(freshOrCached(RVR_CACHE, request));
     return;
   }
 
@@ -162,12 +175,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   if (isBibleBook(url) || isFatherNotes(url)) {
-    event.respondWith(
-      caches.open(BIBLE_CACHE).then((cache) => cache.match(request).then((hit) => hit || fetch(request).then((res) => {
-        if (res.ok) cache.put(request, res.clone());
-        return res;
-      })))
-    );
+    event.respondWith(freshOrCached(BIBLE_CACHE, request));
     return;
   }
 

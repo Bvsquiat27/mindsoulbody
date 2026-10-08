@@ -290,8 +290,13 @@
     try { response = await fetch(file); } catch { response = null; }
     if (!response || !response.ok){
       try {
-        const cache = await caches.open('msb-bible-kjv-1');
-        response = await cache.match(url) || await cache.match(file);
+        const present = await caches.keys();
+        for (const name of ['msb-bible-kjv-2', 'msb-bible-kjv-1']) {
+          if (!present.includes(name)) continue;
+          const cache = await caches.open(name);
+          response = await cache.match(url) || await cache.match(file);
+          if (response) break;
+        }
       } catch { response = null; }
     }
     if (!response || !response.ok) return null;
@@ -343,9 +348,14 @@
       available++;
       data.chapters.forEach((verses, index) => {
         if (!Array.isArray(verses) || hits.length >= 40) return;
+        const chapter = index + 1;
         verses.forEach((text, verseIndex) => {
           if (!text || hits.length >= 40) return;
-          if (String(text).toLowerCase().includes(q)) hits.push({ book:book.id, name:book.name, chapter:index + 1, verse:verseIndex + 1, text:snippet(text, query) });
+          const shown = book.id >= 67 && window.msbPlainBible ? window.msbPlainBible(text) : text;
+          if (String(shown).toLowerCase().includes(q)) {
+            const verse = book.id === 78 && chapter === 10 ? verseIndex + 4 : verseIndex + 1;
+            hits.push({ book:book.id, name:book.name, chapter, verse, text:snippet(shown, query) });
+          }
         });
       });
       onProgress(available, missing);

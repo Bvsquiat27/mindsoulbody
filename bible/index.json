@@ -268,85 +268,99 @@
       "id": 45,
       "name": "Romans",
       "chapters": 16,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "Written to the Romans from Corinthus, and sent by Phebe servant of the church at Cenchrea."
     },
     {
       "id": 46,
       "name": "1 Corinthians",
       "chapters": 16,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "The first epistle to the Corinthians was written from Philippi by Stephanas, and Fortunatus, and Achaicus, and Timotheus."
     },
     {
       "id": 47,
       "name": "2 Corinthians",
       "chapters": 13,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "The second epistle to the Corinthians was written from Philippi, a city of Macedonia, by Titus and Lucas."
     },
     {
       "id": 48,
       "name": "Galatians",
       "chapters": 6,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "Unto the Galatians written from Rome."
     },
     {
       "id": 49,
       "name": "Ephesians",
       "chapters": 6,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "Written from Rome unto the Ephesians by Tychicus."
     },
     {
       "id": 50,
       "name": "Philippians",
       "chapters": 4,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "It was written to the Philippians from Rome by Epaphroditus."
     },
     {
       "id": 51,
       "name": "Colossians",
       "chapters": 4,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "Written from Rome to the Colossians by Tychicus and Onesimus."
     },
     {
       "id": 52,
       "name": "1 Thessalonians",
       "chapters": 5,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "The first epistle unto the Thessalonians was written from Athens."
     },
     {
       "id": 53,
       "name": "2 Thessalonians",
       "chapters": 3,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "The second epistle to the Thessalonians was written from Athens."
     },
     {
       "id": 54,
       "name": "1 Timothy",
       "chapters": 6,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "The first to Timothy was written from Laodicea, which is the chiefest city of Phrygia Pacatiana."
     },
     {
       "id": 55,
       "name": "2 Timothy",
       "chapters": 4,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "The second epistle unto Timotheus, ordained the first bishop of the church of the Ephesians, was written from Rome, when Paul was brought before Nero the second time."
     },
     {
       "id": 56,
       "name": "Titus",
       "chapters": 3,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "It was written to Titus, ordained the first bishop of the church of the Cretians, from Nicopolis of Macedonia."
     },
     {
       "id": 57,
       "name": "Philemon",
       "chapters": 1,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "Written from Rome to Philemon, by Onesimus a servant."
     },
     {
       "id": 58,
       "name": "Hebrews",
       "chapters": 13,
-      "section": "New Testament"
+      "section": "New Testament",
+      "subscription": "Written to the Hebrews from Italy by Timothy."
     },
     {
       "id": 59,
