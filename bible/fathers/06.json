@@ -1,0 +1,28 @@
+[
+  {
+    "id": "f-6-7-1-1",
+    "book": 6,
+    "chapter": 7,
+    "verse": 1,
+    "kind": "Father",
+    "title": "John Chrysostom on Joshua 7:1",
+    "body": "“Where then there is such impiety as this going on, what dreadful calamity must we not expect? And to be assured how sore vengeance they incur who are guilty of such sins as these, consider the examples of old.”",
+    "author": "John Chrysostom, Homilies on Galatians through Philemon",
+    "source": "https://www.ccel.org/ccel/schaff/npnf113.html",
+    "sourceLabel": "NPNF1, vol. 13",
+    "links": []
+  },
+  {
+    "id": "f-6-10-12-2",
+    "book": 6,
+    "chapter": 10,
+    "verse": 12,
+    "kind": "Father",
+    "title": "John Chrysostom on Joshua 10:12",
+    "body": "“Consider of how great value is the righteous man. Joshua the son of Nun said, \"Let the sun stand still at Gibeon, the moon at the valley of Elom\" ( Josh.”",
+    "author": "John Chrysostom, Homilies on John and Hebrews",
+    "source": "https://www.ccel.org/ccel/schaff/npnf114.html",
+    "sourceLabel": "NPNF1, vol. 14",
+    "links": []
+  }
+]

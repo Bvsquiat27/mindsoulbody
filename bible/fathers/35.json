@@ -1,0 +1,54 @@
+[
+  {
+    "id": "f-35-1-5-2",
+    "book": 35,
+    "chapter": 1,
+    "verse": 5,
+    "kind": "Father",
+    "title": "John Chrysostom on Habakkuk 1:5",
+    "body": "“The Priest of God is Standing, offering up the prayer of all: and art thou laughing, having no fears? And while he is offering up the prayers in trembling for thee, dost thou despise all?”",
+    "author": "John Chrysostom, Homilies on John and Hebrews",
+    "source": "https://www.ccel.org/ccel/schaff/npnf114.html",
+    "sourceLabel": "NPNF1, vol. 14",
+    "links": []
+  },
+  {
+    "id": "f-35-2-1-4",
+    "book": 35,
+    "chapter": 2,
+    "verse": 1,
+    "kind": "Father",
+    "title": "Jerome on Habakkuk 2:1",
+    "body": "“Habakkuk, like a strong and unyielding wrestler, stands upon his watch and sets his foot upon the tower that he may contemplate Christ upon the cross and say \"His glory covered the heavens and the earth was full of his praise.”",
+    "author": "Jerome, Letter 53, to Paulinus",
+    "source": "https://www.ccel.org/ccel/schaff/npnf206.html",
+    "sourceLabel": "NPNF2, vol. 6",
+    "links": []
+  },
+  {
+    "id": "f-35-2-3-3",
+    "book": 35,
+    "chapter": 2,
+    "verse": 3,
+    "kind": "Father",
+    "title": "John Chrysostom on Habakkuk 2:3",
+    "body": "“It is to be observed that the words \"He that cometh will come and will not tarry,\" are from the prophet Habakkuk ii.”",
+    "author": "John Chrysostom, Homilies on John and Hebrews",
+    "source": "https://www.ccel.org/ccel/schaff/npnf114.html",
+    "sourceLabel": "NPNF1, vol. 14",
+    "links": []
+  },
+  {
+    "id": "f-35-2-4-1",
+    "book": 35,
+    "chapter": 2,
+    "verse": 4,
+    "kind": "Father",
+    "title": "John Chrysostom on Habakkuk 2:4",
+    "body": "“For all have sinned, and are under the curse. However he does not say this yet, lest he should seem to lay it down of himself, but here again establishes his point by a text which concisely states both points; that no man has fulfilled the Law, (wherefore they are under the curse,) and, that Faith justifies.”",
+    "author": "John Chrysostom, Homilies on Galatians through Philemon",
+    "source": "https://www.ccel.org/ccel/schaff/npnf113.html",
+    "sourceLabel": "NPNF1, vol. 13",
+    "links": []
+  }
+]

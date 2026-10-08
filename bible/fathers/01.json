@@ -1,0 +1,67 @@
+[
+  {
+    "id": "f-1-1-1-1",
+    "book": 1,
+    "chapter": 1,
+    "verse": 1,
+    "kind": "Father",
+    "title": "Basil the Great on Genesis 1:1",
+    "body": "“It is right that any one beginning to narrate the formation of the world should begin with the good order which reigns in visible things. I am about to speak of the creation of heaven and earth, which was not spontaneous, as some have imagined, but drew its origin from God.”",
+    "author": "Basil the Great, Hexaemeron, Homily 1",
+    "source": "https://www.ccel.org/ccel/schaff/npnf208.html",
+    "sourceLabel": "NPNF2, vol. 8",
+    "links": []
+  },
+  {
+    "id": "f-1-1-1-2",
+    "book": 1,
+    "chapter": 1,
+    "verse": 1,
+    "kind": "Father",
+    "title": "Basil the Great on Genesis 1:1",
+    "body": "“But before weighing the justice of these remarks, before examining all the sense contained in these few words, let us see who addresses them to us. Because, if the weakness of our intelligence does not allow us to penetrate the depth of the thoughts of the writer, yet we shall be involuntarily drawn to give faith to his words by the force of his authority.”",
+    "author": "Basil the Great, Hexaemeron, Homily 1",
+    "source": "https://www.ccel.org/ccel/schaff/npnf208.html",
+    "sourceLabel": "NPNF2, vol. 8",
+    "links": []
+  },
+  {
+    "id": "f-1-21-21-3",
+    "book": 1,
+    "chapter": 21,
+    "verse": 21,
+    "kind": "Father",
+    "title": "Cyril of Jerusalem on Genesis 21:21",
+    "body": "“The following note is slightly abridged from the Edition of Alexandrides of Jerusalem. \"Previous Editions read ex orous pharan kataskiou daseos.”",
+    "author": "Cyril of Jerusalem, Catechetical Lectures",
+    "source": "https://www.ccel.org/ccel/schaff/npnf207.html",
+    "sourceLabel": "NPNF2, vol. 7",
+    "links": []
+  },
+  {
+    "id": "f-1-24-43-4",
+    "book": 1,
+    "chapter": 24,
+    "verse": 43,
+    "kind": "Father",
+    "title": "Cyril of Jerusalem on Genesis 24:43",
+    "body": "“Cyril's argument is fully justified by the actual usage of \"Almah,\" which certainly refers to unmarried women in Gen.”",
+    "author": "Cyril of Jerusalem, Catechetical Lectures",
+    "source": "https://www.ccel.org/ccel/schaff/npnf207.html",
+    "sourceLabel": "NPNF2, vol. 7",
+    "links": []
+  },
+  {
+    "id": "f-1-49-17-5",
+    "book": 1,
+    "chapter": 49,
+    "verse": 17,
+    "kind": "Father",
+    "title": "Cyril of Jerusalem on Genesis 49:17",
+    "body": "“Hippolytus, ubi supra, § 6: \"The Saviour came into the world in the Circumcision, and he (Antichrist) will come in the same manner:\" ib.”",
+    "author": "Cyril of Jerusalem, Catechetical Lectures",
+    "source": "https://www.ccel.org/ccel/schaff/npnf207.html",
+    "sourceLabel": "NPNF2, vol. 7",
+    "links": []
+  }
+]

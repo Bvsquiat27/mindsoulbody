@@ -6,7 +6,7 @@
    tied to CACHE_VERSION, so an app update does not wipe downloaded books.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v71';
+const CACHE_VERSION = 'v72';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-1';
@@ -34,6 +34,7 @@ const SHELL = [
 ];
 
 const isBibleBook = (url) => /\/bible\/(?:index|\d\d)\.json$/.test(url.pathname);
+const isFatherNotes = (url) => /\/bible\/fathers\/\d\d\.json$/.test(url.pathname);
 const isStudyNotes = (url) => url.pathname.endsWith('/study-notes.json');
 const isDataRequest = (url) => url.pathname.includes('/data/');
 
@@ -45,7 +46,7 @@ async function preserveBibleBooks(keys) {
     const requests = await cache.keys();
     for (const request of requests) {
       const path = new URL(request.url).pathname;
-      if (!isBibleBook(new URL(request.url))) continue;
+      if (!isBibleBook(new URL(request.url)) && !isFatherNotes(new URL(request.url))) continue;
       if (path.endsWith('/study-notes.json')) continue;
       const hit = await cache.match(request);
       if (hit) await bible.put(request, hit.clone());
@@ -96,7 +97,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  if (isBibleBook(url)) {
+  if (isBibleBook(url) || isFatherNotes(url)) {
     event.respondWith(
       caches.open(BIBLE_CACHE).then((cache) => cache.match(request).then((hit) => hit || fetch(request).then((res) => {
         if (res.ok) cache.put(request, res.clone());

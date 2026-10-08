@@ -1,0 +1,28 @@
+[
+  {
+    "id": "f-8-1-4-1",
+    "book": 8,
+    "chapter": 1,
+    "verse": 4,
+    "kind": "Father",
+    "title": "Jerome on Ruth 1:4",
+    "body": "“Ruth the Moabitess fulfils the prophecy of Isaiah:--\"Send thou a lamb, O Lord, as ruler of the land from the rock of the wilderness to the mount of the daughter of Zion.”",
+    "author": "Jerome, Letter 53, to Paulinus",
+    "source": "https://www.ccel.org/ccel/schaff/npnf206.html",
+    "sourceLabel": "NPNF2, vol. 6",
+    "links": []
+  },
+  {
+    "id": "f-8-1-20-2",
+    "book": 8,
+    "chapter": 1,
+    "verse": 20,
+    "kind": "Father",
+    "title": "Gregory the Great on Ruth 1:20",
+    "body": "“Therefore call me not Noemi, that is fair; but call me Mara, for I am full of bitterness (Ruth i.”",
+    "author": "Gregory the Great, Letter",
+    "source": "https://www.ccel.org/ccel/schaff/npnf212.html",
+    "sourceLabel": "NPNF2, vol. 12",
+    "links": []
+  }
+]

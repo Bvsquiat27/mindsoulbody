@@ -1,0 +1,41 @@
+[
+  {
+    "id": "f-22-1-3-1",
+    "book": 22,
+    "chapter": 1,
+    "verse": 3,
+    "kind": "Father",
+    "title": "Cyril of Jerusalem on Song of Solomon 1:3",
+    "body": "“Cyril's argument is fully justified by the actual usage of \"Almah,\" which certainly refers to unmarried women in Gen.”",
+    "author": "Cyril of Jerusalem, Catechetical Lectures",
+    "source": "https://www.ccel.org/ccel/schaff/npnf207.html",
+    "sourceLabel": "NPNF2, vol. 7",
+    "links": []
+  },
+  {
+    "id": "f-22-1-3-3",
+    "book": 22,
+    "chapter": 1,
+    "verse": 3,
+    "kind": "Father",
+    "title": "John Chrysostom on Song of Solomon 1:3",
+    "body": "“Or else he means thus, \"that it may make them, the hearers, full of grace.\" For as sweet ointment gives grace to them that partake of it, so also does good speech.”",
+    "author": "John Chrysostom, Homilies on Galatians through Philemon",
+    "source": "https://www.ccel.org/ccel/schaff/npnf113.html",
+    "sourceLabel": "NPNF1, vol. 13",
+    "links": []
+  },
+  {
+    "id": "f-22-8-5-2",
+    "book": 22,
+    "chapter": 8,
+    "verse": 5,
+    "kind": "Father",
+    "title": "John Chrysostom on Song of Solomon 8:5",
+    "body": "“Now as moderation, so chastity, is an ordinary effect of love. If a man love his own wife as he ought to love, even though he be never so much inclined to wantoness, he will not endure to look upon another woman, on account of his affection for her.”",
+    "author": "John Chrysostom, Homilies on the Epistles to the Corinthians",
+    "source": "https://www.ccel.org/ccel/schaff/npnf112.html",
+    "sourceLabel": "NPNF1, vol. 12",
+    "links": []
+  }
+]

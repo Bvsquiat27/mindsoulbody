@@ -1,0 +1,54 @@
+[
+  {
+    "id": "f-3-4-5-1",
+    "book": 3,
+    "chapter": 4,
+    "verse": 5,
+    "kind": "Father",
+    "title": "Cyril of Jerusalem on Leviticus 4:5",
+    "body": "“Eusebius: \"He consecrated a man high-priest of God, in so far as that was possible, and him he called Christ.\" Cf.”",
+    "author": "Cyril of Jerusalem, Catechetical Lectures",
+    "source": "https://www.ccel.org/ccel/schaff/npnf207.html",
+    "sourceLabel": "NPNF2, vol. 7",
+    "links": []
+  },
+  {
+    "id": "f-3-17-10-2",
+    "book": 3,
+    "chapter": 17,
+    "verse": 10,
+    "kind": "Father",
+    "title": "John Chrysostom on Leviticus 17:10",
+    "body": "“The prohibitions imposed by the council upon the Gentiles were chiefly concessions to Jewish prejudice and opinion. Abstinence from meat which had been offered in idols' temples and from things strangled and from blood was forbidden in the Mosaic law (Ex.”",
+    "author": "John Chrysostom, Homilies on Acts and Romans",
+    "source": "https://www.ccel.org/ccel/schaff/npnf111.html",
+    "sourceLabel": "NPNF1, vol. 11",
+    "links": []
+  },
+  {
+    "id": "f-3-18-5-3",
+    "book": 3,
+    "chapter": 18,
+    "verse": 5,
+    "kind": "Father",
+    "title": "John Chrysostom on Leviticus 18:5",
+    "body": "“What he means is this. Moses showeth us the righteousness ensuing from the Law, what sort it is of, and whence.”",
+    "author": "John Chrysostom, Homilies on Acts and Romans",
+    "source": "https://www.ccel.org/ccel/schaff/npnf111.html",
+    "sourceLabel": "NPNF1, vol. 11",
+    "links": []
+  },
+  {
+    "id": "f-3-24-20-4",
+    "book": 3,
+    "chapter": 24,
+    "verse": 20,
+    "kind": "Father",
+    "title": "John Chrysostom on Leviticus 24:20",
+    "body": "“However, it is right not to overlook what a little before came into my recollection, and was brought forward for a testimony. And what then was this?”",
+    "author": "John Chrysostom, Homilies on Galatians through Philemon",
+    "source": "https://www.ccel.org/ccel/schaff/npnf113.html",
+    "sourceLabel": "NPNF1, vol. 13",
+    "links": []
+  }
+]

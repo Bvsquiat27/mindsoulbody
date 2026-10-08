@@ -130,10 +130,10 @@ const CHALLENGE_SUBJECT={
   'explain-the-words':'language','explain-say-it-right':'language','mini-say-the-words-1':'language','mini-say-the-words-2':'language','ladder-6-orthodox-terms':'language',
   'track-genesis':'scripture','track-gospels':'scripture','track-angels':'scripture','track-origin-of-evil':'scripture','track-human-person':'scripture','track-the-fall':'scripture','reading-scripture':'scripture',
   'track-nicaea1':'history','track-constantinople1':'history','track-ephesus':'history','track-chalcedon':'history','track-constantinople2':'history','track-constantinople3':'history','track-nicaea2':'history','council-depth':'history','ladder-4-councils':'history','ladder-5-figures':'history','fathers-incarnation':'history',
-  'defense-saints-intercession':'saints',
-  worship:'prayer','track-psalms':'prayer','explain-church-time':'prayer',
+  'defense-saints-intercession':'saints','saint-theotokos':'saints','saint-nicholas':'saints','saint-seraphim':'saints','saint-herman':'saints','saint-mary-egypt':'saints','saint-chrysostom':'saints','saint-basil':'saints','saint-paisios':'saints',
+  worship:'prayer','track-psalms':'prayer','explain-church-time':'prayer','prayer-divine-liturgy':'prayer','prayer-vespers':'prayer','prayer-jesus-prayer':'prayer','feast-nativity-theotokos':'prayer','feast-exaltation':'prayer','feast-entrance-theotokos':'prayer','feast-nativity':'prayer','feast-theophany':'prayer','feast-presentation':'prayer','feast-annunciation':'prayer','feast-entry-jerusalem':'prayer','feast-ascension':'prayer','feast-pentecost':'prayer','feast-transfiguration':'prayer','feast-dormition':'prayer','feast-pascha':'prayer','lent-great-lent':'prayer','lent-fasting':'prayer','lent-three-helps':'prayer',
   'explain-sacraments':'sacraments','explain-baptism':'sacraments','explain-chrismation':'sacraments','explain-penance':'sacraments','explain-anointing':'sacraments','explain-marriage':'sacraments','explain-priesthood':'sacraments','defense-true-body-blood':'sacraments','explain-church-hierarchy':'sacraments',
-  'explain-dogma-and-life':'life','explain-coming-to-faith':'life','explain-monasticism':'life','mini-dominant-difference':'life'
+  'explain-dogma-and-life':'life','explain-coming-to-faith':'life','explain-monasticism':'life','mini-dominant-difference':'life','life-repentance':'life','life-almsgiving':'life','life-forgiveness':'life','life-hospitality':'life'
 };
 const STUDY_SUBJECT={
   word:'theology',colossians1:'theology',philippians2:'theology',hebrews1:'theology',tradition:'theology',romans8:'theology','first-john':'theology',resurrection:'theology',
