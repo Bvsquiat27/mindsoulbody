@@ -353,3 +353,5 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .kathisma-today{outline:2px solid var(--teal)}
 .home-tools{margin-top:8px}
 .home-tools h2{margin:8px 0}
+.bible-note-filters{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.bible-note-filters .filter{min-height:44px}

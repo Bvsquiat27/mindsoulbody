@@ -7944,6 +7944,1277 @@
           }
         ]
       }
+    },
+    {
+      "id": "saint-theotokos",
+      "title": "Mary, the Theotokos",
+      "category": "Saints",
+      "level": "2 readings · 2 questions",
+      "summary": "The Church calls Mary Theotokos because the one she bore is the Son of God.",
+      "source": "Luke 1 and John 19 in the King James text; the title Theotokos was confessed at the Council of Ephesus (431). The hymn line is from Isabel Florence Hapgood, Service Book (Houghton, Mifflin, 1906), public domain.",
+      "sourceUrl": "https://www.ccel.org/ccel/schaff/npnf214.x.xvi.i.html",
+      "lessons": [
+        {
+          "heading": "The mother of the Lord",
+          "body": "Elizabeth, filled with the Holy Ghost, asks Mary, “And whence is this to me, that the mother of my Lord should come to me?” (Luke 1:43). The Church kept that name. Mary is not the source of the Godhead. She is the woman from whom the eternal Son took flesh. At Ephesus in 431 the Church called her Theotokos, the Birth-giver of God, so that no one would split the child into a mere man standing beside the Word.\n\nFrom the cross Jesus gives her to the beloved disciple: “Woman, behold thy son,” and to the disciple, “Behold thy mother” (John 19:26–27). The Church still stands with her. A public-domain hymn of the hours says, “More honourable than the Cherubim, and beyond compare more glorious than the Seraphim, thou who without defilement barest God the Word, true Birth-giver of God, we magnify thee.”"
+        },
+        {
+          "heading": "How to speak of her",
+          "body": "Honor Mary without turning her into a goddess, and do not shrink her into an ordinary mother of an ordinary prophet. She said, “Behold the handmaid of the Lord; be it unto me according to thy word” (Luke 1:38). That yes is the pattern of the Church: a creature who receives God and does not replace him."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Why does the Church call Mary Theotokos?",
+          "choices": [
+            "Because she is the source of the Father",
+            "Because the one she bore is the Son of God in the flesh",
+            "Because she wrote the Gospels"
+          ],
+          "correct": 1,
+          "explanation": "Theotokos guards the identity of the child: Mary bore the incarnate Son, not a second person beside the Word."
+        },
+        {
+          "prompt": "In Luke 1:43, Elizabeth calls Mary the mother of whom?",
+          "choices": [
+            "My Lord",
+            "A prophet only",
+            "The emperor"
+          ],
+          "correct": 0,
+          "explanation": "Elizabeth says, “the mother of my Lord.”"
+        }
+      ]
+    },
+    {
+      "id": "saint-nicholas",
+      "title": "Saint Nicholas of Myra",
+      "category": "Saints",
+      "level": "2 readings · 2 questions",
+      "summary": "The Church remembers Nicholas as a bishop who hid his alms and stood for the faith.",
+      "source": "The Church’s memory of Nicholas, bishop of Myra in Lycia, in the age of the Council of Nicaea. This lesson is original prose and does not quote a modern biography.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "A bishop who gave in secret",
+          "body": "Nicholas was a bishop of Myra, on the south coast of Asia Minor, in the early fourth century. The Church remembers him in the same age as the Council of Nicaea, when the bishops confessed that the Son is of one essence with the Father. What ordinary people remembered first was not a speech. It was that he found a way to give without being seen.\n\nThe old stories say he provided dowries for daughters whose father was about to sell them into shame, and that he left the gold where the family would find it and he would not. Whether every detail of those stories can be dated, the shape of them matches the Gospel he preached. Jesus says, “Let not thy left hand know what thy right hand doeth” (Matthew 6:3). Nicholas became the icon of that sentence."
+        },
+        {
+          "heading": "What the Church kept",
+          "body": "Later ages piled legends on him, and some of those legends are too late to treat as a court record. The Church did not keep him because he is useful for winter tales. She keeps a bishop who defended the poor and the faith of Nicaea. On his day, the fitting response is alms given quietly, not a performance of generosity."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Nicholas is remembered as bishop of which city?",
+          "choices": [
+            "Myra",
+            "Rome",
+            "Alexandria"
+          ],
+          "correct": 0,
+          "explanation": "The Church remembers Nicholas as bishop of Myra in Lycia."
+        },
+        {
+          "prompt": "Matthew 6:3 tells the giver to hide the gift even from whom?",
+          "choices": [
+            "The left hand",
+            "The bishop only",
+            "The tax collector"
+          ],
+          "correct": 0,
+          "explanation": "Jesus says the left hand should not know what the right hand is doing."
+        }
+      ]
+    },
+    {
+      "id": "saint-seraphim",
+      "title": "Saint Seraphim of Sarov",
+      "category": "Saints",
+      "level": "2 readings · 2 questions",
+      "summary": "A Russian monk who received visitors in peace and died at Sarov in 1833.",
+      "source": "Historical outline of Seraphim of Sarov (died 1833). This lesson is original prose. It does not quote later books about him.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "A monk at Sarov",
+          "body": "Seraphim lived as a monk at the monastery of Sarov in Russia and died in 1833. He spent long years in a cell and in the forest, then in his last years received the people who walked out to see him. The Church remembers a man who greeted visitors as if the resurrection had already reached the doorway.\n\nHe is not a substitute for the Gospels. He is a witness that the same Spirit who filled the apostles is not locked in the first century. People came with ordinary troubles. He answered with prayer, a short word, and the sign of the cross, and sent them back to confession and the chalice."
+        },
+        {
+          "heading": "What we do not pretend to quote",
+          "body": "Many English books about Seraphim are modern and copyrighted. This lesson does not borrow their sentences. What can be said from the public record is enough: a monk of Sarov, a life of prayer, a death in 1833, and a Church that still asks his prayers. The goal of that memory is not nostalgia. It is to seek the Holy Spirit with the same steadiness."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Where did Seraphim live as a monk?",
+          "choices": [
+            "Sarov",
+            "Mount Athos only",
+            "Jerusalem"
+          ],
+          "correct": 0,
+          "explanation": "Seraphim is remembered as a monk of Sarov."
+        },
+        {
+          "prompt": "In what year did he die?",
+          "choices": [
+            "1833",
+            "1994",
+            "325"
+          ],
+          "correct": 0,
+          "explanation": "Seraphim of Sarov died in 1833."
+        }
+      ]
+    },
+    {
+      "id": "saint-herman",
+      "title": "Saint Herman of Alaska",
+      "category": "Saints",
+      "level": "2 readings · 2 questions",
+      "summary": "A monk from Valaam who stayed in Alaska and died on Spruce Island in 1837.",
+      "source": "Historical outline of Herman of Alaska (died 1837). Original prose; no modern biography is quoted.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "From Valaam to Spruce Island",
+          "body": "Herman was a monk of Valaam, in the north of Russia, who traveled with a small mission to Alaska at the end of the eighteenth century. The others died or returned. He stayed. He lived on Spruce Island, near Kodiak, taught the children, cared for the sick, and defended the native people when traders treated them as cargo. He died in 1837.\n\nHis life is a mission story without a garrison. He did not arrive as a governor. He arrived as a monk, and the people who buried him had learned the prayers he kept. The Church in America still begins many of her memories with his name."
+        },
+        {
+          "heading": "A witness, not a slogan",
+          "body": "Herman’s love of the people around him was concrete: food, teaching, and a refusal to look away when the weak were cheated. James says, “Pure religion and undefiled before God and the Father is this, To visit the fatherless and widows in their affliction, and to keep himself unspotted from the world” (James 1:27). That verse is a fair measure of the life the Church remembers on Spruce Island."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Herman is remembered for his years in which land?",
+          "choices": [
+            "Alaska",
+            "Egypt",
+            "Italy"
+          ],
+          "correct": 0,
+          "explanation": "Herman lived out his monastic life in Alaska and died on Spruce Island."
+        },
+        {
+          "prompt": "James 1:27 pairs visiting the afflicted with what else?",
+          "choices": [
+            "Keeping oneself unspotted from the world",
+            "Winning a debate",
+            "Building a palace"
+          ],
+          "correct": 0,
+          "explanation": "James names both mercy to the afflicted and a life kept unspotted."
+        }
+      ]
+    },
+    {
+      "id": "saint-mary-egypt",
+      "title": "Saint Mary of Egypt",
+      "category": "Saints",
+      "level": "2 readings · 2 questions",
+      "summary": "The Church remembers a woman who left a destructive life and finished it in repentance beyond the Jordan.",
+      "source": "The ancient commemoration of Mary of Egypt, told in the Church from the life associated with Sophronius of Jerusalem. This lesson is original prose and does not reproduce a modern translation of that life.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "A life turned around",
+          "body": "The Church keeps the memory of Mary of Egypt in Great Lent, especially on the fifth Sunday and on her day in April. The old account says she lived for years in Alexandria in open sexual sin, then came to Jerusalem with a crowd and could not enter the church of the Resurrection. She prayed before an icon of the Mother of God, promised to repent, and crossed the Jordan into the desert.\n\nYears later a priest named Zosimas met her there. She asked for the Holy Mysteries, received them, and died. The details belong to the Church’s received story of her, not to a modern novel. The point the fast is meant to hear is simple: no past is too twisted for repentance, and repentance is a long obedience, not a mood."
+        },
+        {
+          "heading": "Why Lent tells her story",
+          "body": "Lent is not a contest in looking serious. It is a return. The prodigal says, “I will arise and go to my father” (Luke 15:18). Mary’s story is that sentence lived in the desert. The Church puts it before Holy Week so that no one will think the passion is only for people who have been tidy all year."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "When does the Church especially remember Mary of Egypt?",
+          "choices": [
+            "In Great Lent",
+            "Only at Christmas",
+            "On Pentecost alone"
+          ],
+          "correct": 0,
+          "explanation": "Her commemoration is kept in Great Lent, including the fifth Sunday."
+        },
+        {
+          "prompt": "In the Church’s story, who brought her the Holy Mysteries?",
+          "choices": [
+            "Zosimas",
+            "Pontius Pilate",
+            "King Herod"
+          ],
+          "correct": 0,
+          "explanation": "The received account names the priest Zosimas."
+        }
+      ]
+    },
+    {
+      "id": "saint-chrysostom",
+      "title": "Saint John Chrysostom",
+      "category": "Saints",
+      "level": "2 readings · 2 questions",
+      "summary": "The golden-mouthed archbishop of Constantinople, whose homilies still sit beside the New Testament.",
+      "source": "John Chrysostom, Homilies on Romans, Homily 1, in Nicene and Post-Nicene Fathers, first series, volume 11.",
+      "sourceUrl": "https://www.ccel.org/ccel/schaff/npnf111.html",
+      "lessons": [
+        {
+          "heading": "A preacher of the text",
+          "body": "John was born in Antioch, preached there for years, and then became archbishop of Constantinople. He was sent into exile and died on the road in 407. The name Chrysostom means golden mouth. It stuck because he opened the Scriptures in church and would not stop until the congregation had heard the passage, not a speech floating free of it.\n\nAt the start of his homilies on Romans he notices something small and telling: “Moses having written five books, has nowhere put his own name to them, neither have they who after him put together the history of events after him, no nor yet has Matthew, nor John, nor Mark, nor Luke; but the blessed Paul everywhere in his Epistles sets his own name.” John then asks why. That is his method. He stays with the words."
+        },
+        {
+          "heading": "Why the Church still reads him",
+          "body": "Chrysostom is not infallible in every historical guess, and the English in the Nicene and Post-Nicene Fathers is a nineteenth-century translation of his Greek. What the Church received from him is a habit: read the verse, then the next verse, and let doctrine come out of the reading. His Divine Liturgy is the one most Sundays still pray. The preacher and the prayer belong together."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "In the Romans homily quoted here, who puts his own name on his writings?",
+          "choices": [
+            "Paul, in the Epistles",
+            "Moses, on all five books",
+            "No biblical writer"
+          ],
+          "correct": 0,
+          "explanation": "Chrysostom says Moses and the evangelists do not sign their books, but Paul sets his name on the Epistles."
+        },
+        {
+          "prompt": "Chrysostom died in what year?",
+          "choices": [
+            "407",
+            "1833",
+            "1994"
+          ],
+          "correct": 0,
+          "explanation": "John Chrysostom died in exile in 407."
+        }
+      ]
+    },
+    {
+      "id": "saint-basil",
+      "title": "Saint Basil the Great",
+      "category": "Saints",
+      "level": "2 readings · 2 questions",
+      "summary": "Bishop of Caesarea, preacher on Genesis, and a founder of the common monastic life.",
+      "source": "Basil the Great, Hexaemeron, Homily 1, in Nicene and Post-Nicene Fathers, second series, volume 8.",
+      "sourceUrl": "https://www.ccel.org/ccel/schaff/npnf208.html",
+      "lessons": [
+        {
+          "heading": "Creation has an author",
+          "body": "Basil was bishop of Caesarea in Cappadocia in the fourth century, brother of Gregory of Nyssa and friend of Gregory of Nazianzus. He organized communities of monks under a common rule, cared for the poor in a large hostel by the city, and preached through the six days of creation.\n\nOpening those homilies, he refuses a fashionable guess: “I am about to speak of the creation of heaven and earth, which was not spontaneous, as some have imagined, but drew its origin from God.” The world is gift. It did not invent itself. Basil’s point is worship before it is science: if creation has an origin, the origin is God."
+        },
+        {
+          "heading": "A life that matched the preaching",
+          "body": "Basil’s name is also on a Divine Liturgy still used on some days of the year, including the Sundays of Great Lent. The same man who said the world came from God built a place where the sick could lie down. Doctrine and mercy were not two hobbies. They were one bishop’s work."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Basil says the creation of heaven and earth was not what?",
+          "choices": [
+            "Spontaneous",
+            "Good",
+            "Visible"
+          ],
+          "correct": 0,
+          "explanation": "In Hexaemeron, Homily 1, he says it was not spontaneous, but drew its origin from God."
+        },
+        {
+          "prompt": "Basil was bishop of which city?",
+          "choices": [
+            "Caesarea in Cappadocia",
+            "Rome",
+            "London"
+          ],
+          "correct": 0,
+          "explanation": "Basil served as bishop of Caesarea."
+        }
+      ]
+    },
+    {
+      "id": "saint-paisios",
+      "title": "Saint Paisios of Mount Athos",
+      "category": "Saints",
+      "level": "2 readings · 2 questions",
+      "summary": "A monk of Athos who died in 1994, remembered for plain counsel and mercy.",
+      "source": "Public facts of Paisios of Mount Athos (died 1994). Original prose. His books and recorded sayings are not quoted, because those publications are not public-domain texts.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "A recent witness",
+          "body": "Paisios was a monk on Mount Athos, the monastic peninsula in northern Greece. He died in 1994. The Church later added him to the calendar of saints. People came to his cell with fears about family, illness, and the state of the world. He answered as a monk: prayer, fasting, and a word that sent the visitor back to confession rather than to a personality cult.\n\nBecause he died so recently, almost every English book of his sayings is still in copyright. This lesson does not repeat those pages. A saint does not need a borrowed quotation to be remembered. He needs the truth of his life: a monk who stayed at his prayers and did not despise the people at the door."
+        },
+        {
+          "heading": "What to imitate",
+          "body": "The useful imitation is not a costume. It is the hidden rule he kept: say the Jesus Prayer, tell the truth kindly, and refuse despair. Paul writes, “Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God” (Philippians 4:6). That is an old sentence. It is also the shape of a modern monk’s counsel."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Paisios lived his monastic life chiefly where?",
+          "choices": [
+            "Mount Athos",
+            "Alaska",
+            "Myra"
+          ],
+          "correct": 0,
+          "explanation": "Paisios is remembered as a monk of Mount Athos."
+        },
+        {
+          "prompt": "Why does this lesson not quote his books?",
+          "choices": [
+            "Those publications are not public-domain texts",
+            "He never spoke",
+            "The Church forgot him"
+          ],
+          "correct": 0,
+          "explanation": "His books and recorded sayings are modern and copyrighted, so this lesson stays with the public facts."
+        }
+      ]
+    },
+    {
+      "id": "prayer-divine-liturgy",
+      "title": "A walk through the Divine Liturgy",
+      "category": "Prayer and worship",
+      "level": "2 readings · 2 questions",
+      "summary": "The Sunday service moves from the Word to the table, and both belong to one prayer.",
+      "source": "Original description of the received shape of the Divine Liturgy. The communion prayer quoted here is from Isabel Florence Hapgood, Service Book (1906), public domain. Modern service books are not quoted.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "From the door to the Gospel",
+          "body": "The Divine Liturgy is the Church’s Sunday thanksgiving. It begins with a blessing and the great litany, the long “Lord, have mercy” in which the living and the dead are named. Antiphons and the hymns of the day follow. At the little entrance the Gospel book is carried out. The Church is saying that Christ comes to speak before he comes to be received.\n\nThe Trisagion, the prokeimenon, the Epistle, and the Gospel are not a preface that could be skipped. They are the table set in words. The homily, when it is given, is meant to open that reading, not to replace it. Then the Church prays again for the world and for the catechumens, and the faithful remain for the sacrifice of praise."
+        },
+        {
+          "heading": "From the gifts to the cup",
+          "body": "At the great entrance the bread and wine are brought to the altar. The Creed is said. The anaphora lifts them with thanksgiving: the priest recalls the Father’s work, the cross, and the resurrection, and calls on the Holy Spirit. The Church sings the Lord’s Prayer and comes to the cup.\n\nBefore communion a public-domain prayer says, “I believe, O Lord, and I confess, that thou art in very truth the Christ, the Son of the living God, who didst come into the world to save sinners, of whom I am chief.” The Liturgy ends with thanksgiving and a dismissal. It is one arc: hear the Word, thank the Father, receive the Son, and go in the Spirit."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What is carried at the little entrance?",
+          "choices": [
+            "The Gospel book",
+            "The collection plate only",
+            "The bishop’s crown"
+          ],
+          "correct": 0,
+          "explanation": "The little entrance brings the Gospel into the midst of the people."
+        },
+        {
+          "prompt": "The communion prayer quoted here confesses Christ as what?",
+          "choices": [
+            "The Son of the living God",
+            "A symbol with no body",
+            "One teacher among many equals"
+          ],
+          "correct": 0,
+          "explanation": "The prayer says, “thou art in very truth the Christ, the Son of the living God.”"
+        }
+      ]
+    },
+    {
+      "id": "prayer-vespers",
+      "title": "Vespers, in plain steps",
+      "category": "Prayer and worship",
+      "level": "2 readings · 2 questions",
+      "summary": "The evening service lights the lamps, sings the psalms, and hands the day back to God.",
+      "source": "Original account of the received order of Vespers. The evening line quoted here is from Isabel Florence Hapgood, Service Book (1906), public domain.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "Why the Church prays at lamp-lighting",
+          "body": "Vespers is the Church’s evening prayer. It belongs to the start of the liturgical day, because the old way of counting a day began at sunset. The service opens with a blessing and Psalm 104, the psalm of creation: the God who made light is asked to receive the day that is ending. A litany follows. Then come the evening psalms and the hymns appointed for the feast or the fast.\n\nAt the heart of the service the lamps are lit and the ancient hymn at lamp-lighting is sung. The Church does not treat darkness as a mood to decorate. She answers it with praise. After that come the readings when a feast has them, the litanies, and the prayer that the evening may be peaceable."
+        },
+        {
+          "heading": "A lay way in",
+          "body": "You do not have to invent a private vespers if you can get to church. If you are at home, the same shape still helps: thank God for the day, read a psalm, ask mercy, and stop. Hapgood’s evening prayers include the line, “The day is past; I thank thee, O Lord.” That is enough of a door. The point is not to collect offices. The point is to let the day end in front of God instead of in front of a screen."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which psalm traditionally opens the Church’s Vespers?",
+          "choices": [
+            "Psalm 104, the psalm of creation",
+            "Psalm 151, which is not in this Bible",
+            "Only the Sermon on the Mount"
+          ],
+          "correct": 0,
+          "explanation": "Vespers begins from Psalm 104, blessing God for the created world as the day ends."
+        },
+        {
+          "prompt": "Why does the liturgical day lean toward evening?",
+          "choices": [
+            "The old counting of a day began at sunset",
+            "Because morning prayer was forbidden",
+            "Because the Gospels were written at night"
+          ],
+          "correct": 0,
+          "explanation": "The Church inherited a day that turns at sunset, so Vespers opens what morning will continue."
+        }
+      ]
+    },
+    {
+      "id": "prayer-jesus-prayer",
+      "title": "The Jesus Prayer",
+      "category": "Prayer and worship",
+      "level": "2 readings · 2 questions",
+      "summary": "A short prayer built from two Gospel cries: the blind man, and the publican.",
+      "source": "Mark 10:47 and Luke 18:13 in the King James text. The lesson does not quote a modern manual of the Jesus Prayer.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "Two sentences the Gospels already pray",
+          "body": "Outside Jericho a blind man cries, “Jesus, thou Son of David, have mercy on me” (Mark 10:47). In the temple a publican will not lift his eyes and says, “God be merciful to me a sinner” (Luke 18:13). The Church put those two cries together and kept them short: Lord Jesus Christ, Son of God, have mercy on me, a sinner.\n\nThe prayer is not a spell. It is a name and a need. You can say it on a rope of knots, or under your breath while you walk, or once, slowly, when you have no other words. The point is attention. The name of Jesus is the content. Mercy is the request. The last words keep the speaker honest."
+        },
+        {
+          "heading": "A pace that can last",
+          "body": "The old counsel is to say it gently and to stay with it, not to hunt for a feeling. If the mind wanders, begin the sentence again. Luke says the publican “went down to his house justified” rather than the man who rehearsed his virtues (Luke 18:14). The Jesus Prayer takes that side of the story. It is a way of standing in the truth without making a speech."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Mark 10:47 records the blind man asking Jesus for what?",
+          "choices": [
+            "Mercy",
+            "A crown",
+            "A debate"
+          ],
+          "correct": 0,
+          "explanation": "He cries, “have mercy on me.”"
+        },
+        {
+          "prompt": "Luke 18:13 is the prayer of which man?",
+          "choices": [
+            "The publican",
+            "The Pharisee who listed his virtues",
+            "The rich ruler"
+          ],
+          "correct": 0,
+          "explanation": "The publican says, “God be merciful to me a sinner.”"
+        }
+      ]
+    },
+    {
+      "id": "feast-nativity-theotokos",
+      "title": "The Nativity of the Theotokos",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "On September 8 the Church begins the year of feasts with Mary’s birth.",
+      "source": "The Church’s calendar of the Twelve Great Feasts. Scripture from the King James text. Original prose.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "A birth that prepares a birth",
+          "body": "The Nativity of the Theotokos is kept on September 8. It is the first of the Twelve Great Feasts. The Gospels do not narrate Mary’s birth. The Church receives the story of Joachim and Anna from her older tradition and celebrates the fact the Gospels assume: the mother of the Lord was born of human parents, in a real family, inside the people of Israel.\n\nThe feast is not a distraction from Christ. It is the door of the story that ends at his cradle and his cross. Mary will say yes. Until then, the Church simply gives thanks that the woman who will bear him has come into the world."
+        },
+        {
+          "heading": "Where it sits in the year",
+          "body": "September opens the festal cycle. The Exaltation of the Cross follows on the 14th, then the Entrance of the Theotokos in November, and the Nativity of Christ in December. Learning the twelve feasts is a way of learning the Gospel in the order the Church sings it. This one says: salvation arrives through a daughter of Adam, not around her."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "On what date is the Nativity of the Theotokos kept?",
+          "choices": [
+            "September 8",
+            "December 25",
+            "August 15"
+          ],
+          "correct": 0,
+          "explanation": "The feast is September 8."
+        },
+        {
+          "prompt": "This feast is counted among which set?",
+          "choices": [
+            "The Twelve Great Feasts",
+            "The weekdays of Lent only",
+            "The fast of the apostles only"
+          ],
+          "correct": 0,
+          "explanation": "Mary’s nativity is one of the Twelve Great Feasts."
+        }
+      ]
+    },
+    {
+      "id": "feast-exaltation",
+      "title": "The Exaltation of the Cross",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "On September 14 the Church lifts up the cross and calls it the glory of Christ.",
+      "source": "John 12:32 in the King James text, and the Church’s feast of September 14. Original prose.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "The cross held up",
+          "body": "The Exaltation of the Cross is kept on September 14. The Church remembers the finding of the cross in Jerusalem and the day it was lifted up so the people could see it. The hymn of the feast is not embarrassed by the wood. It treats the cross as the place where death was broken.\n\nJesus had already said, “And I, if I be lifted up from the earth, will draw all men unto me” (John 12:32). The evangelist adds that he said this signifying what death he should die. The feast takes him at his word. The lifting up is not an accident the Church explains away. It is the way he draws the world."
+        },
+        {
+          "heading": "A strict day",
+          "body": "September 14 is kept as a fast day. The tone is not the tone of Pascha night. The Church can exalt the cross and still refuse to treat it as a charm. She stands in front of it, bows, and remembers that glory and suffering are not rivals in Christ."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "John 12:32 says that when Jesus is lifted up he will do what?",
+          "choices": [
+            "Draw all men unto him",
+            "Hide from the nations",
+            "End the Scriptures"
+          ],
+          "correct": 0,
+          "explanation": "He says he will draw all men unto himself."
+        },
+        {
+          "prompt": "The Exaltation of the Cross is kept on which date?",
+          "choices": [
+            "September 14",
+            "January 6",
+            "August 6"
+          ],
+          "correct": 0,
+          "explanation": "The feast is September 14."
+        }
+      ]
+    },
+    {
+      "id": "feast-entrance-theotokos",
+      "title": "The Entrance of the Theotokos",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "On November 21 the Church sings of Mary entering the temple and being prepared for the Annunciation.",
+      "source": "The feast of November 21 in the Church’s calendar. Original prose. The Gospels do not narrate this entrance; the feast belongs to the Church’s received memory of Mary.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "Brought to the house of God",
+          "body": "The Entrance of the Theotokos into the Temple is kept on November 21. The older account says Joachim and Anna brought their small daughter to the temple and that she grew up there in prayer. The Gospels do not tell that scene. The Church still keeps the feast, because the point is not a missing verse. The point is that the woman who will bear God was herself offered to God.\n\nThe temple in Jerusalem was the place of God’s presence among his people. Mary’s entrance says, in the Church’s poetry, that the living temple is being prepared. The child who walks in will become the one in whom the Word takes flesh."
+        },
+        {
+          "heading": "Between two feasts",
+          "body": "November sits between Mary’s birth in September and Christ’s birth in December. The Entrance keeps the story from jumping. God does not arrive unannounced into a life that was never prayed. The feast asks the Church to offer her own children, and her own attention, to the same house of prayer."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "On what date is the Entrance of the Theotokos kept?",
+          "choices": [
+            "November 21",
+            "February 2",
+            "March 25"
+          ],
+          "correct": 0,
+          "explanation": "The feast is November 21."
+        },
+        {
+          "prompt": "What does this lesson say the Gospels do with the entrance story?",
+          "choices": [
+            "They do not narrate that scene",
+            "They give a full chapter to it",
+            "They deny that Mary existed"
+          ],
+          "correct": 0,
+          "explanation": "The entrance belongs to the Church’s received memory. The four Gospels do not narrate it."
+        }
+      ]
+    },
+    {
+      "id": "feast-nativity",
+      "title": "The Nativity of Christ",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "On December 25 the Church confesses that the Word was born in Bethlehem.",
+      "source": "Luke 2 in the King James text. Original prose on the feast of December 25.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "Born in the city of David",
+          "body": "The Nativity of Christ is kept on December 25. Luke says Mary “brought forth her firstborn son, and wrapped him in swaddling clothes, and laid him in a manger; because there was no room for them in the inn” (Luke 2:7). The Church does not treat this as a soft legend beside the real theology. This is the theology: the Son of God has a birth, a body, and a town.\n\nAngels speak to shepherds. The child is named Jesus. The feast lasts beyond a single morning because the Church is not finished looking at what happened. God has entered the world he made, from the inside."
+        },
+        {
+          "heading": "What the day is for",
+          "body": "Christmas in the Church is preceded by a fast and followed by days that still sing the birth. The point of the feast is adoration, not a mood. The same child will be baptized, will teach, will be crucified, and will rise. December 25 is the day the Church refuses to start that story anywhere except in Mary’s arms."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Luke 2:7 says Mary laid the child where?",
+          "choices": [
+            "In a manger",
+            "In Herod’s palace",
+            "In the temple treasury"
+          ],
+          "correct": 0,
+          "explanation": "She laid him in a manger, because there was no room in the inn."
+        },
+        {
+          "prompt": "The Nativity of Christ is kept on which date?",
+          "choices": [
+            "December 25",
+            "January 6 only",
+            "September 8"
+          ],
+          "correct": 0,
+          "explanation": "The feast is December 25. Theophany on January 6 is his baptism."
+        }
+      ]
+    },
+    {
+      "id": "feast-theophany",
+      "title": "Theophany, the Baptism of Christ",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "On January 6 the Church stands at the Jordan, where the Trinity is shown.",
+      "source": "Matthew 3:16–17 in the King James text. Original prose on the feast of January 6.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "The Jordan",
+          "body": "Theophany, also called Epiphany in the East, is kept on January 6. It is the baptism of Christ, not the visit of the magi. Matthew says the heavens were opened, the Spirit of God descended like a dove, and a voice from heaven said, “This is my beloved Son, in whom I am well pleased” (Matthew 3:16–17).\n\nThe feast is called Theophany because God is shown: the Son in the water, the Spirit descending, the Father speaking. Jesus does not go to John because he needs washing from sin. He goes to take our washing on himself and to sanctify the waters."
+        },
+        {
+          "heading": "Water blessed",
+          "body": "On this day the Church blesses water and the people drink it and carry it home. The act is not magic. It is a confession that the Jordan still reaches the font. Every baptism in the Church leans on this day. The beloved Son has already stood where the newly baptized will stand."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "At the baptism, the voice from heaven calls Jesus what?",
+          "choices": [
+            "My beloved Son",
+            "A creature adopted that afternoon",
+            "Only a prophet of John"
+          ],
+          "correct": 0,
+          "explanation": "The voice says, “This is my beloved Son, in whom I am well pleased.”"
+        },
+        {
+          "prompt": "Theophany on January 6 celebrates which event?",
+          "choices": [
+            "The baptism of Christ",
+            "The birth at Bethlehem",
+            "The Ascension"
+          ],
+          "correct": 0,
+          "explanation": "January 6 is the Baptism of Christ, the showing of the Trinity at the Jordan."
+        }
+      ]
+    },
+    {
+      "id": "feast-presentation",
+      "title": "The Presentation of Christ",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "On February 2 the Church meets Simeon and Anna in the temple.",
+      "source": "Luke 2:29–32 in the King James text. Original prose on the feast of February 2.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "Forty days",
+          "body": "The Presentation of Christ, sometimes called the Meeting, is kept on February 2, forty days after his birth. Luke says Mary and Joseph brought him to Jerusalem to present him to the Lord. Simeon takes the child and says, “Lord, now lettest thou thy servant depart in peace, according to thy word: for mine eyes have seen thy salvation” (Luke 2:29–30).\n\nSimeon also says the child is “a light to lighten the Gentiles, and the glory of thy people Israel” (Luke 2:32). Anna speaks of him to those who waited for redemption. The feast is the old Israel recognizing her Lord in a baby."
+        },
+        {
+          "heading": "A meeting, not a farewell",
+          "body": "The candles of the day match Simeon’s word about light. The Church is not done with the temple. She is saying that the temple’s hope has arrived and can be held. Mary hears that a sword will pierce her soul. The meeting already leans toward the cross. Joy and that warning belong in the same chapter."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Simeon says his eyes have seen what?",
+          "choices": [
+            "Thy salvation",
+            "The end of Israel",
+            "A political treaty"
+          ],
+          "correct": 0,
+          "explanation": "He says, “mine eyes have seen thy salvation.”"
+        },
+        {
+          "prompt": "The Presentation is kept how many days after the Nativity?",
+          "choices": [
+            "Forty",
+            "Twelve",
+            "Three"
+          ],
+          "correct": 0,
+          "explanation": "February 2 is the fortieth day."
+        }
+      ]
+    },
+    {
+      "id": "feast-annunciation",
+      "title": "The Annunciation",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "On March 25 the Church hears Gabriel and Mary’s yes.",
+      "source": "Luke 1:35 and 1:38 in the King James text. Original prose on the feast of March 25.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "The angel and the handmaid",
+          "body": "The Annunciation is kept on March 25, nine months before the Nativity. Gabriel tells Mary that the Holy Ghost will come upon her and the power of the Highest will overshadow her, “therefore also that holy thing which shall be born of thee shall be called the Son of God” (Luke 1:35). Mary answers, “Behold the handmaid of the Lord; be it unto me according to thy word” (Luke 1:38).\n\nThe feast is the moment the incarnation is accepted, not merely predicted. God does not force the door. He speaks, and a woman of Israel consents. The Church has never treated that consent as a small courtesy."
+        },
+        {
+          "heading": "Often inside Lent",
+          "body": "March 25 frequently falls in Great Lent. The Church does not postpone the feast until the fast is over. She keeps it, and the hymns hold the joy of the conception beside the penitence of the season. The child who is conceived will be the one who dies and rises. Lent is already his road."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Luke 1:35 says the child will be called what?",
+          "choices": [
+            "The Son of God",
+            "A son of Joseph only",
+            "The brother of John the Baptist by nature"
+          ],
+          "correct": 0,
+          "explanation": "Gabriel says the holy one born of Mary shall be called the Son of God."
+        },
+        {
+          "prompt": "Mary’s answer in Luke 1:38 begins with which words?",
+          "choices": [
+            "Behold the handmaid of the Lord",
+            "I will not",
+            "Tell my cousins first"
+          ],
+          "correct": 0,
+          "explanation": "She says, “Behold the handmaid of the Lord; be it unto me according to thy word.”"
+        }
+      ]
+    },
+    {
+      "id": "feast-entry-jerusalem",
+      "title": "The Entry into Jerusalem",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "Palm Sunday opens Holy Week with the crowd’s hosanna and the road to the cross.",
+      "source": "Matthew 21:9 in the King James text. Original prose on the movable feast of the Entry.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "Hosanna",
+          "body": "The Entry of the Lord into Jerusalem is one of the Twelve Great Feasts, and it moves with Pascha. Matthew says the crowds cried, “Hosanna to the Son of David: Blessed is he that cometh in the name of the Lord; Hosanna in the highest” (Matthew 21:9). They cut branches. He rides a colt. The king arrives without an army.\n\nThe Church gives the people palms or pussy-willow branches and sings the same hosanna. She does not pretend the week will stay cheerful. The voices that bless him will soon be near the voices that accuse him. The feast tells the truth about both."
+        },
+        {
+          "heading": "The gate of Holy Week",
+          "body": "Palm Sunday is the door, not the destination. The Bridegroom services, Thursday’s supper and the cross, Friday’s burial, and the night of Pascha all stand on the other side of this gate. To shout hosanna honestly is to follow him into the city, not to stop at the roadside."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Matthew 21:9 has the crowds bless the one who comes in whose name?",
+          "choices": [
+            "The name of the Lord",
+            "The name of Caesar",
+            "Their own name"
+          ],
+          "correct": 0,
+          "explanation": "They cry, “Blessed is he that cometh in the name of the Lord.”"
+        },
+        {
+          "prompt": "The Entry into Jerusalem is timed by what?",
+          "choices": [
+            "The date of Pascha",
+            "A fixed day in September",
+            "The winter solstice"
+          ],
+          "correct": 0,
+          "explanation": "It is a movable feast, the Sunday that opens Holy Week."
+        }
+      ]
+    },
+    {
+      "id": "feast-ascension",
+      "title": "The Ascension",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "Forty days after Pascha, Christ ascends and does not abandon his body.",
+      "source": "Acts 1:9–11 in the King James text. Original prose.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "Taken up",
+          "body": "The Ascension is kept on the fortieth day after Pascha, always a Thursday. Acts says he was taken up and a cloud received him out of their sight. Two men in white ask why the disciples stand gazing: “this same Jesus, which is taken up from you into heaven, shall so come in like manner as ye have seen him go into heaven” (Acts 1:11).\n\nThe feast is not an exit from the incarnation. The Son ascends with the humanity he took. Human nature is carried to the Father’s right hand. The Church does not say he left his body behind as a used garment."
+        },
+        {
+          "heading": "Waiting, not stranded",
+          "body": "He tells them to wait for the promise of the Father. Ascension Thursday is ten days before Pentecost. The disciples return to Jerusalem and stay at prayer. The feast teaches the same posture: look up, and stay together until the Spirit comes. The one who ascended is the one who will come again."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Acts 1:11 says Jesus will come again in what manner?",
+          "choices": [
+            "In like manner as they saw him go",
+            "As a rumor only",
+            "Never"
+          ],
+          "correct": 0,
+          "explanation": "The messengers say he shall come in like manner as they saw him go into heaven."
+        },
+        {
+          "prompt": "The Ascension falls how many days after Pascha?",
+          "choices": [
+            "Forty",
+            "Fifty",
+            "Seven"
+          ],
+          "correct": 0,
+          "explanation": "It is the fortieth day, and Pentecost is the fiftieth."
+        }
+      ]
+    },
+    {
+      "id": "feast-pentecost",
+      "title": "Pentecost",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "On the fiftieth day the Spirit comes, and the Church begins to speak.",
+      "source": "Acts 2:1–4 in the King James text. Original prose.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "The upper room",
+          "body": "Pentecost is the fiftieth day after Pascha. Acts says they were all with one accord in one place. A sound came from heaven as of a rushing mighty wind. Cloven tongues like fire sat on each of them, and they were filled with the Holy Ghost and began to speak (Acts 2:1–4). The people outside hear the great works of God in their own languages.\n\nThe feast is the birth of the Church’s public preaching, not the invention of a new god. The Spirit is the same Spirit who rested on the Son at the Jordan. Now he rests on the body of disciples so that the world can hear."
+        },
+        {
+          "heading": "Kneeling, then standing",
+          "body": "At vespers of Pentecost the Church kneels for the first time since Pascha and prays long prayers to the Spirit. The week after is free of fasting. The point of the day is not a private thrill. It is the Spirit making one people who can tell the truth about Christ in words their neighbors understand."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Acts 2 says the disciples were filled with whom?",
+          "choices": [
+            "The Holy Ghost",
+            "A spirit of fear only",
+            "The emperor’s genius"
+          ],
+          "correct": 0,
+          "explanation": "They were filled with the Holy Ghost and began to speak."
+        },
+        {
+          "prompt": "Pentecost is which day after Pascha?",
+          "choices": [
+            "The fiftieth",
+            "The third",
+            "The twelfth"
+          ],
+          "correct": 0,
+          "explanation": "Pentecost means the fiftieth day."
+        }
+      ]
+    },
+    {
+      "id": "feast-transfiguration",
+      "title": "The Transfiguration",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "On August 6 the Church sees Christ’s glory on the mountain before the cross.",
+      "source": "Matthew 17:2–5 in the King James text. Original prose on the feast of August 6.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "Light on the mountain",
+          "body": "The Transfiguration is kept on August 6. Matthew says Jesus was transfigured before Peter, James, and John, “and his face did shine as the sun, and his raiment was white as the light” (Matthew 17:2). Moses and Elijah appear. A bright cloud overshadows them, and a voice says, “This is my beloved Son, in whom I am well pleased; hear ye him” (Matthew 17:5).\n\nThe feast shows that the one who will be crucified is already the beloved Son. The light is not a costume. It is his glory, briefly suffered to be seen so the disciples will not collapse when they see him on the cross."
+        },
+        {
+          "heading": "Fruit and the fast that follows",
+          "body": "In many places grapes or other fruit are blessed on this day. Two days later the fast before the Dormition continues toward August 15. Glory and a short fast sit next to each other, as the mountain sits next to the road to Jerusalem. The voice on the mountain still gives the Church her instruction: hear him."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Matthew 17:2 compares the shining of his face to what?",
+          "choices": [
+            "The sun",
+            "A lamp in a tomb",
+            "The moon only"
+          ],
+          "correct": 0,
+          "explanation": "His face did shine as the sun, and his raiment was white as the light."
+        },
+        {
+          "prompt": "The voice on the mountain says the disciples should do what?",
+          "choices": [
+            "Hear him",
+            "Build three inns and stay",
+            "Forget Moses"
+          ],
+          "correct": 0,
+          "explanation": "The voice says, “hear ye him.”"
+        }
+      ]
+    },
+    {
+      "id": "feast-dormition",
+      "title": "The Dormition of the Theotokos",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "On August 15 the Church keeps Mary’s falling asleep and her place with her Son.",
+      "source": "The feast of August 15. Luke 1:48 in the King James text. Original prose. The Gospels do not narrate Mary’s death.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "Falling asleep",
+          "body": "The Dormition is kept on August 15. Dormition means falling asleep. The Church believes Mary died as we die, and that her Son received her. The four Gospels do not describe that hour. The feast comes from the Church’s memory and her hymns, not from a verse that can be quoted as a news report.\n\nWhat the Gospels do give is Mary’s own line: “For he hath regarded the low estate of his handmaiden: for, behold, from henceforth all generations shall call me blessed” (Luke 1:48). August 15 is one of those generations keeping the promise. Blessed does not mean exempt from the grave. It means God did not forget her there."
+        },
+        {
+          "heading": "The last of the great feasts",
+          "body": "A short fast leads to the day. The cycle that began with her birth in September ends with her death in August, and then the year turns and begins again. The Church asks her prayers. She does not confuse the mother with the Son. She buries the mother in the hope of the resurrection he already accomplished."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What does “Dormition” mean?",
+          "choices": [
+            "Falling asleep",
+            "A military victory",
+            "The baptism of Christ"
+          ],
+          "correct": 0,
+          "explanation": "Dormition is the falling asleep, the death, of the Theotokos."
+        },
+        {
+          "prompt": "Luke 1:48 says all generations shall call Mary what?",
+          "choices": [
+            "Blessed",
+            "Forgotten",
+            "The Father"
+          ],
+          "correct": 0,
+          "explanation": "Mary says all generations shall call her blessed."
+        }
+      ]
+    },
+    {
+      "id": "feast-pascha",
+      "title": "Pascha",
+      "category": "Feast",
+      "level": "2 readings · 2 questions",
+      "summary": "Pascha is the feast of feasts: Christ is risen, and the fast breaks.",
+      "source": "1 Corinthians 15:20 and Mark 16:6 in the King James text. Original prose. Pascha is the center of the year and is named beside the Twelve Great Feasts.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "The night",
+          "body": "Pascha is not one feast among others. It is the feast that gives the others their meaning. The date moves with the first Sunday after the paschal full moon, and the whole year is counted from it: Lent before, Pentecost after, every Sunday as a small Pascha. At the door of the church the priest and people pass the news in a sentence: Christ is risen.\n\nPaul writes, “But now is Christ risen from the dead, and become the firstfruits of them that slept” (1 Corinthians 15:20). The angel at the tomb says, “he is risen; he is not here” (Mark 16:6). The Church does not sing those lines as poetry that might be false. She sings them as the fact that judges every other fact."
+        },
+        {
+          "heading": "After the fast",
+          "body": "The fast breaks. Eggs are dyed. The canon is long and the people stay. None of that replaces the announcement. If Christ is risen, death is no longer the last owner of a body. The Twelve Great Feasts tell his birth, his baptism, his cross, and his mother’s story. Pascha tells why any of those days are good news."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Paul calls the risen Christ the firstfruits of whom?",
+          "choices": [
+            "Them that slept",
+            "The angels only",
+            "The emperors"
+          ],
+          "correct": 0,
+          "explanation": "1 Corinthians 15:20 says he became the firstfruits of them that slept."
+        },
+        {
+          "prompt": "How is the date of Pascha set?",
+          "choices": [
+            "It moves; it is the Sunday after the paschal full moon",
+            "It is always March 1",
+            "It is always December 25"
+          ],
+          "correct": 0,
+          "explanation": "Pascha is a movable feast, the first Sunday after the paschal full moon of the Church’s reckoning."
+        }
+      ]
+    },
+    {
+      "id": "lent-great-lent",
+      "title": "How Great Lent is shaped",
+      "category": "Fast",
+      "level": "2 readings · 2 questions",
+      "summary": "Great Lent is forty days of fasting toward Pascha, with Holy Week as its own intense end.",
+      "source": "The received order of Great Lent. Matthew 4:1–2 in the King James text. The Lenten prayer quoted is from Isabel Florence Hapgood, Service Book (1906), public domain.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "Forty days, then the week of the cross",
+          "body": "Great Lent is the fast before Pascha. It echoes the forty days Jesus was in the wilderness: “And when he had fasted forty days and forty nights, he was afterward an hungred” (Matthew 4:2). The Church counts forty days of fasting and then Holy Week, which is not a vague extra. Holy Week follows the supper, the trial, the cross, and the tomb one day at a time.\n\nThe weeks have their own memories. The Sunday of Orthodoxy, Gregory Palamas, the Cross, John Climacus, and Mary of Egypt lead to Palm Sunday. Forgiveness Vespers begins the fast with mutual pardon. Without that service, the fast is only a diet."
+        },
+        {
+          "heading": "A prayer for the road",
+          "body": "The weekday services grow longer. The prayer of Ephraim is repeated with prostrations. In Hapgood’s public-domain text it begins, “O Lord and Master of my life, grant not unto me a spirit of slothfulness, of discouragement, of lust of power, of vain babbling.” The fast is aimed at those four, not at impressing anyone. It ends when the priest sings that Christ is risen and the people answer that he is risen indeed."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Matthew 4:2 says Jesus fasted for how long?",
+          "choices": [
+            "Forty days and forty nights",
+            "Three hours",
+            "A single sabbath"
+          ],
+          "correct": 0,
+          "explanation": "He fasted forty days and forty nights."
+        },
+        {
+          "prompt": "What begins Great Lent in the parish?",
+          "choices": [
+            "Forgiveness Vespers",
+            "The Nativity liturgy",
+            "A wedding"
+          ],
+          "correct": 0,
+          "explanation": "Forgiveness Vespers opens the fast with mutual pardon."
+        }
+      ]
+    },
+    {
+      "id": "lent-fasting",
+      "title": "Fasting without theater",
+      "category": "Fast",
+      "level": "2 readings · 2 questions",
+      "summary": "The Church fasts from certain foods, and Christ forbids turning that into a show.",
+      "source": "Matthew 6:16–18 in the King James text. Original prose on the Church’s fast. Medical and pastoral exceptions belong to a priest, not to this page.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "What a fast is",
+          "body": "In Great Lent the Church asks the faithful to abstain from meat, dairy, and most days from fish, wine, and oil, with some days of relief marked on the calendar. The rule is older than any one parish kitchen. It is also not a contest. Children, the sick, the pregnant, and those whose work or poverty makes the full rule harmful should ask their priest rather than invent a private heroism or a private excuse.\n\nJesus says, “When ye fast, be not, as the hypocrites, of a sad countenance” (Matthew 6:16). Anoint the head, wash the face, and do not look like a person collecting credit. The Father who sees in secret is the audience that matters."
+        },
+        {
+          "heading": "Food is not the whole fast",
+          "body": "A kitchen that is strict and a tongue that is cruel has missed the fast. The Church pairs the plate with prayer, alms, and fewer entertainments. Isaiah’s kind of fast, the one God recognizes, loosens burdens and feeds the hungry. The Lenten table is training for that, not a replacement for it. When Pascha comes, the same people who fasted are told to feast. Abstaining is for a season. Thanksgiving is the goal."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Matthew 6:16 tells people who fast not to look like whom?",
+          "choices": [
+            "The hypocrites, with a sad countenance",
+            "The angels",
+            "The apostles at Pentecost"
+          ],
+          "correct": 0,
+          "explanation": "Jesus says not to fast like the hypocrites, who disfigure their faces to be seen."
+        },
+        {
+          "prompt": "Who should adjust the fasting rule for illness or pregnancy?",
+          "choices": [
+            "The person’s priest",
+            "A stranger on the internet",
+            "No one; the rule never bends"
+          ],
+          "correct": 0,
+          "explanation": "The Church expects pastoral judgment. The sick and the pregnant ask their priest."
+        }
+      ]
+    },
+    {
+      "id": "lent-three-helps",
+      "title": "Prayer, fasting, and alms",
+      "category": "Fast",
+      "level": "2 readings · 2 questions",
+      "summary": "Lent stands on three practices Jesus names together in the Sermon on the Mount.",
+      "source": "Matthew 6 in the King James text. Original prose.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "One sermon, three practices",
+          "body": "In Matthew 6 Jesus teaches alms, prayer, and fasting in a single stretch. He warns against doing any of them to be seen. He gives the words “Our Father.” He says to fast without a performance. The Church did not invent a three-part Lent and then hunt for a proof text. She found the three already standing together in the Sermon on the Mount.\n\nDrop one and the other two warp. Prayer without fasting can stay in the head. Fasting without alms can turn into pride about a plate. Alms without prayer can become a way to manage God. Lent asks for all three, in secret where secret is possible, and in church where the body needs the body."
+        },
+        {
+          "heading": "A small rule",
+          "body": "A workable Lent is concrete: a prayer morning and evening, the Jesus Prayer a few times a day, the fast your priest blesses, and one real gift of money or time to someone who needs it. Jesus says the Father who sees in secret shall reward openly (Matthew 6:4, 6, 18). The reward is not a reputation. It is the Father’s own attention, which was the point of the fast."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Matthew 6 sets which three practices side by side?",
+          "choices": [
+            "Alms, prayer, and fasting",
+            "Study, debate, and travel",
+            "Wealth, status, and ease"
+          ],
+          "correct": 0,
+          "explanation": "The chapter teaches almsgiving, prayer, and fasting, each away from the eyes of admirers."
+        },
+        {
+          "prompt": "Jesus says the Father sees the hidden work and will do what?",
+          "choices": [
+            "Reward openly",
+            "Ignore it",
+            "Publish the giver’s name"
+          ],
+          "correct": 0,
+          "explanation": "He says the Father who sees in secret shall reward thee openly."
+        }
+      ]
+    },
+    {
+      "id": "life-repentance",
+      "title": "Repentance is a road",
+      "category": "Christian life",
+      "level": "2 readings · 2 questions",
+      "summary": "Repentance is turning around and walking home, not a single pang of regret.",
+      "source": "Luke 15:18–20 in the King James text. Original prose.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "I will arise",
+          "body": "The prodigal does not wait until he feels worthy. He says, “I will arise and go to my father, and will say unto him, Father, I have sinned against heaven, and before thee” (Luke 15:18). Then he arises and goes. The father sees him a long way off and runs. Repentance in that story is a decision, a sentence, and a walk. The feeling of shame is real, and it is not the whole of it.\n\nIn the Church that walk has a place: confession before a priest, a canon of prayer if one is given, and communion when the priest says the person is ready. The point is not to linger in self-hatred. The point is to come home and stay."
+        },
+        {
+          "heading": "Again, without theater",
+          "body": "People fall after they repent. The road includes getting up. John writes that if we confess our sins, God is faithful and just to forgive (1 John 1:9). Faithful means he does not tire of the truth told again. Just means forgiveness is not a shrug. It is the cross already borne. A Christian life is not a spotless record. It is a record of returns."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "In Luke 15:18 the son decides to tell his father what?",
+          "choices": [
+            "I have sinned against heaven and before thee",
+            "I deserve the inheritance again",
+            "My brother was unfair"
+          ],
+          "correct": 0,
+          "explanation": "He plans to say, “Father, I have sinned against heaven, and before thee.”"
+        },
+        {
+          "prompt": "1 John 1:9 says that if we confess, God is what?",
+          "choices": [
+            "Faithful and just to forgive",
+            "Indifferent",
+            "Obliged to ignore the sin"
+          ],
+          "correct": 0,
+          "explanation": "He is faithful and just to forgive us our sins and to cleanse us."
+        }
+      ]
+    },
+    {
+      "id": "life-almsgiving",
+      "title": "Alms that stay quiet",
+      "category": "Christian life",
+      "level": "2 readings · 2 questions",
+      "summary": "Giving to the poor is part of the faith, and Jesus tells the giver not to advertise it.",
+      "source": "Matthew 6:2–4 in the King James text. Original prose.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "Do not sound a trumpet",
+          "body": "Jesus says, “When thou doest thine alms, do not sound a trumpet before thee, as the hypocrites do in the synagogues and in the streets, that they may have glory of men” (Matthew 6:2). They have their reward already: they were seen. The other way is to give so quietly that the left hand does not know what the right hand is doing. The Father who sees in secret is enough.\n\nAlms are not a tip added to a spiritual life. In the Church they belong with prayer and fasting. Money, food, time, and attention all count when they actually reach a person in need. A gift that only decorates the giver is the trumpet Jesus names."
+        },
+        {
+          "heading": "Mercy has a direction",
+          "body": "The early Church kept lists of widows and sent help when famine came. That habit is not optional nostalgia. James says faith without works is dead, and he names the works: visit the afflicted and refuse the world’s stain. Quiet giving is one of those works. It does not earn a place at the table. It shows that the person at the table has noticed who else is hungry."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Matthew 6:2 says the hypocrites give alms in order to receive what?",
+          "choices": [
+            "Glory of men",
+            "God’s secret reward",
+            "Nothing at all"
+          ],
+          "correct": 0,
+          "explanation": "They give to have glory of men, and Jesus says they have their reward."
+        },
+        {
+          "prompt": "Who sees the gift that was hidden?",
+          "choices": [
+            "The Father",
+            "Only the recipient’s neighbors",
+            "No one"
+          ],
+          "correct": 0,
+          "explanation": "The Father who sees in secret is the one who rewards."
+        }
+      ]
+    },
+    {
+      "id": "life-forgiveness",
+      "title": "Forgiveness before the fast",
+      "category": "Christian life",
+      "level": "2 readings · 2 questions",
+      "summary": "The Lord’s Prayer ties God’s forgiveness to the forgiveness we give.",
+      "source": "Matthew 6:12 and 6:14–15 in the King James text. Original prose.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "As we forgive",
+          "body": "In the prayer Jesus taught, the Church says, “And forgive us our debts, as we forgive our debtors” (Matthew 6:12). He does not leave the line unexplained. “For if ye forgive men their trespasses, your heavenly Father will also forgive you: but if ye forgive not men their trespasses, neither will your Father forgive your trespasses” (Matthew 6:14–15).\n\nThis is not a bargain in which we purchase pardon. It is a warning that a clenched life cannot receive an open gift. Forgiveness may still tell the truth about harm. It refuses revenge. It refuses to keep the person as an enemy forever. Forgiveness Vespers at the start of Lent makes the whole parish practice the sentence out loud."
+        },
+        {
+          "heading": "A limit that is not a loophole",
+          "body": "Forgiveness does not mean staying in reach of someone who is still dangerous. Safety and pardon are different acts. You can refuse revenge and still tell a priest, a family, or the proper authority what happened. What Jesus forbids is the nursed hatred that wants the other person damned. The Father’s forgiveness is the pattern: costly, clear, and aimed at restoration where restoration is possible."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Matthew 6:12 asks God to forgive us as we forgive whom?",
+          "choices": [
+            "Our debtors",
+            "Only our friends",
+            "No one"
+          ],
+          "correct": 0,
+          "explanation": "The prayer says, “as we forgive our debtors.”"
+        },
+        {
+          "prompt": "Matthew 6:15 says that if we do not forgive, what follows?",
+          "choices": [
+            "The Father will not forgive our trespasses",
+            "Nothing changes",
+            "We are praised for strength"
+          ],
+          "correct": 0,
+          "explanation": "Jesus says that if we forgive not, neither will the Father forgive our trespasses."
+        }
+      ]
+    },
+    {
+      "id": "life-hospitality",
+      "title": "Hospitality",
+      "category": "Christian life",
+      "level": "2 readings · 2 questions",
+      "summary": "Receiving a stranger is one of the works the King names at the judgment.",
+      "source": "Matthew 25:35 and Hebrews 13:2 in the King James text. Original prose.",
+      "sourceUrl": "",
+      "lessons": [
+        {
+          "heading": "I was a stranger",
+          "body": "In the parable of the judgment the King says, “I was a stranger, and ye took me in” (Matthew 25:35). The righteous do not remember doing it for him. He answers that what they did for the least of these, they did for him. Hospitality in that saying is not a hobby for people with large houses. It is one of the works by which the King recognizes his own.\n\nHebrews adds a reason that keeps the host humble: “Be not forgetful to entertain strangers: for thereby some have entertained angels unawares” (Hebrews 13:2). Abraham’s table is in the background. So is the road to Emmaus, where the disciples knew the Lord in the breaking of bread. A meal can be a meeting."
+        },
+        {
+          "heading": "A door that can actually open",
+          "body": "Hospitality can be a Sunday meal, a bed for a night, or a careful welcome of someone who does not yet know the prayers. It includes the people who are easy to overlook: the newcomer who stands at the back, the student far from home, the neighbor who is ashamed to ask. The Church’s coffee after liturgy is a small version of the same command, if it is real welcome and not a club. The King has already said which guest counts."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "In Matthew 25:35 the King says he was a stranger and the righteous did what?",
+          "choices": [
+            "Took him in",
+            "Asked for his papers and shut the door",
+            "Ignored him politely"
+          ],
+          "correct": 0,
+          "explanation": "He says, “I was a stranger, and ye took me in.”"
+        },
+        {
+          "prompt": "Hebrews 13:2 says some who welcomed strangers entertained whom unawares?",
+          "choices": [
+            "Angels",
+            "Only relatives",
+            "No one of consequence"
+          ],
+          "correct": 0,
+          "explanation": "The verse says some have entertained angels unawares."
+        }
+      ]
     }
   ],
   "games": [

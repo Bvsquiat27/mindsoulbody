@@ -1,0 +1,28 @@
+[
+  {
+    "id": "f-17-1-1-2",
+    "book": 17,
+    "chapter": 1,
+    "verse": 1,
+    "kind": "Father",
+    "title": "Augustine on Esther 1:1",
+    "body": "“Esdras also wrote, who is historical rather than prophetical, as is also the book called Esther, which is found to relate, for the praise of God, events not far from those times”",
+    "author": "Augustine, The City of God",
+    "source": "https://www.ccel.org/ccel/schaff/npnf102.html",
+    "sourceLabel": "NPNF1, vol. 2",
+    "links": []
+  },
+  {
+    "id": "f-17-7-10-1",
+    "book": 17,
+    "chapter": 7,
+    "verse": 10,
+    "kind": "Father",
+    "title": "Jerome on Esther 7:10",
+    "body": "“Esther, a type of the church, frees her people from danger and, after having slain Haman whose name means iniquity, hands down to posterity a memorable day and a great feast.”",
+    "author": "Jerome, Letter 53, to Paulinus",
+    "source": "https://www.ccel.org/ccel/schaff/npnf206.html",
+    "sourceLabel": "NPNF2, vol. 6",
+    "links": []
+  }
+]

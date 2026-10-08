@@ -1,0 +1,28 @@
+[
+  {
+    "id": "f-77-7-1-1",
+    "book": 77,
+    "chapter": 7,
+    "verse": 1,
+    "kind": "Father",
+    "title": "Augustine on 2 Maccabees 7:1",
+    "body": "“These are held as canonical, not by the Jews, but by the Church, on account of the extreme and wonderful sufferings of certain martyrs, who, before Christ had come in the flesh, contended for the law of God even unto death, and endured most grievous and horrible evils.”",
+    "author": "Augustine, The City of God",
+    "source": "https://www.ccel.org/ccel/schaff/npnf102.html",
+    "sourceLabel": "NPNF1, vol. 2",
+    "links": []
+  },
+  {
+    "id": "f-77-7-20-2",
+    "book": 77,
+    "chapter": 7,
+    "verse": 20,
+    "kind": "Father",
+    "title": "Basil the Great on 2 Maccabees 7:20",
+    "body": "“The mother of the Maccabees saw the death of seven sons without a sigh, without even shedding one unworthy tear.”",
+    "author": "Basil the Great, Letter",
+    "source": "https://www.ccel.org/ccel/schaff/npnf208.html",
+    "sourceLabel": "NPNF2, vol. 8",
+    "links": []
+  }
+]

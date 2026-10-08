@@ -1,0 +1,28 @@
+[
+  {
+    "id": "f-15-1-1-2",
+    "book": 15,
+    "chapter": 1,
+    "verse": 1,
+    "kind": "Father",
+    "title": "Jerome on Ezra 1:1",
+    "body": "“Ezra and Nehemiah, that is the Lord's helper and His consoler, are united in a single book.”",
+    "author": "Jerome, Letter 53, to Paulinus",
+    "source": "https://www.ccel.org/ccel/schaff/npnf206.html",
+    "sourceLabel": "NPNF2, vol. 6",
+    "links": []
+  },
+  {
+    "id": "f-15-6-15-1",
+    "book": 15,
+    "chapter": 6,
+    "verse": 15,
+    "kind": "Father",
+    "title": "John Chrysostom on Ezra 6:15",
+    "body": "“Forty and six years,\" they said, referring to the latter building, for the former was finished in twenty years' time.”",
+    "author": "John Chrysostom, Homilies on John and Hebrews",
+    "source": "https://www.ccel.org/ccel/schaff/npnf114.html",
+    "sourceLabel": "NPNF1, vol. 14",
+    "links": []
+  }
+]

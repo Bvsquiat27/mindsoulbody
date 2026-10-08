@@ -1,0 +1,28 @@
+[
+  {
+    "id": "f-34-1-4-1",
+    "book": 34,
+    "chapter": 1,
+    "verse": 4,
+    "kind": "Father",
+    "title": "John Chrysostom on Nahum 1:4",
+    "body": "“Now it were right for us to dismiss you, having herein exculpated the Scripture, that ye may suffer this punishment at our hands for your negligence concerning the Scriptures: but because I greatly spare you and cannot any longer bear to look on you confused and disturbed, let us also add the solution, having first mentioned the speaker, and when it was spoken, and to whom.”",
+    "author": "John Chrysostom, Homilies on the Epistles to the Corinthians",
+    "source": "https://www.ccel.org/ccel/schaff/npnf112.html",
+    "sourceLabel": "NPNF1, vol. 12",
+    "links": []
+  },
+  {
+    "id": "f-34-3-1-2",
+    "book": 34,
+    "chapter": 3,
+    "verse": 1,
+    "kind": "Father",
+    "title": "Jerome on Nahum 3:1",
+    "body": "“Nahum, the consoler of the world, rebukes \"the bloody city\" and when it is overthrown cries:--\"Behold upon the mountains the feet of him that bringeth good tidings.”",
+    "author": "Jerome, Letter 53, to Paulinus",
+    "source": "https://www.ccel.org/ccel/schaff/npnf206.html",
+    "sourceLabel": "NPNF2, vol. 6",
+    "links": []
+  }
+]

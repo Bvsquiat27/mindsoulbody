@@ -1,0 +1,28 @@
+[
+  {
+    "id": "f-31-1-1-1",
+    "book": 31,
+    "chapter": 1,
+    "verse": 1,
+    "kind": "Father",
+    "title": "Jerome on Obadiah 1:1",
+    "body": "“Obadiah, whose name means the servant of God, thunders against Edom red with blood and against the creature born of earth.”",
+    "author": "Jerome, Letter 53, to Paulinus",
+    "source": "https://www.ccel.org/ccel/schaff/npnf206.html",
+    "sourceLabel": "NPNF2, vol. 6",
+    "links": []
+  },
+  {
+    "id": "f-31-1-1-2",
+    "book": 31,
+    "chapter": 1,
+    "verse": 1,
+    "kind": "Father",
+    "title": "Augustine on Obadiah 1:1",
+    "body": "“Obadiah, so far as his writings are concerned, the briefest of all the prophets, speaks against Idumea, that is, the nation of Esau, that reprobate elder of the twin sons of Isaac and grandsons of Abraham.”",
+    "author": "Augustine, The City of God",
+    "source": "https://www.ccel.org/ccel/schaff/npnf102.html",
+    "sourceLabel": "NPNF1, vol. 2",
+    "links": []
+  }
+]

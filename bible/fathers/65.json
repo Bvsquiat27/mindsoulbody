@@ -1,0 +1,28 @@
+[
+  {
+    "id": "f-65-1-14-1",
+    "book": 65,
+    "chapter": 1,
+    "verse": 14,
+    "kind": "Father",
+    "title": "Jerome on Jude 1:14",
+    "body": "“The apostles James, Peter, John, and Jude, have published seven epistles at once spiritual and to the point, short and long, short that is in words but lengthy in substance so that there are few indeed who do not find themselves in the dark when they read them.”",
+    "author": "Jerome, Letter 53, to Paulinus",
+    "source": "https://www.ccel.org/ccel/schaff/npnf206.html",
+    "sourceLabel": "NPNF2, vol. 6",
+    "links": []
+  },
+  {
+    "id": "f-65-1-14-2",
+    "book": 65,
+    "chapter": 1,
+    "verse": 14,
+    "kind": "Father",
+    "title": "Augustine on Jude 1:14",
+    "body": "“We cannot deny that Enoch, the seventh from Adam, left some divine writings, for this is asserted by the Apostle Jude in his canonical epistle.”",
+    "author": "Augustine, The City of God",
+    "source": "https://www.ccel.org/ccel/schaff/npnf102.html",
+    "sourceLabel": "NPNF1, vol. 2",
+    "links": []
+  }
+]

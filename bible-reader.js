@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
-  const reader = { index:null, notes:null, bookData:new Map(), book:43, chapter:1, highlights:[], verseNotes:[], readLog:[], pendingVerse:null, place:null, loadedUser:null, accountRequest:0, selectedVerse:null, rotated:false, fontSize:19, requestId:0, root:null, context:null };
+  const reader = { index:null, notes:null, fatherNotes:new Map(), noteKind:'All', bookData:new Map(), book:43, chapter:1, highlights:[], verseNotes:[], readLog:[], pendingVerse:null, place:null, loadedUser:null, accountRequest:0, selectedVerse:null, rotated:false, fontSize:19, requestId:0, root:null, context:null };
   const fileName = id => `bible/${String(id).padStart(2, '0')}.json`;
   const bookInfo = () => reader.index?.books.find(book => book.id === reader.book);
   const currentVerses = () => reader.bookData.get(reader.book)?.chapters[reader.chapter - 1] || [];
@@ -97,14 +97,23 @@
     }
     await copyVerse(verse);
   }
+  function fathersFile(id){ return `bible/fathers/${String(id).padStart(2, '0')}.json`; }
+  function loadedNotes(){
+    return (reader.notes || []).concat(reader.fatherNotes.get(reader.book) || []);
+  }
+  function noteVisible(note){
+    return reader.noteKind === 'All' || note.kind === reader.noteKind;
+  }
   function render() {
     if (!reader.root || !reader.index || !reader.root.isConnected) return;
     const books = reader.index.books, info = bookInfo(), verses = currentVerses(), highlights = reader.highlights;
-    const chapterNotes = (reader.notes || []).filter(note => note.book === reader.book && note.chapter === reader.chapter);
-    const relatedNotes = (reader.notes || []).filter(note => note.book === reader.book || note.links.some(link => link.book === reader.book && link.chapter === reader.chapter));
-    const displayedNotes = chapterNotes.length ? chapterNotes : relatedNotes.length ? relatedNotes.slice(0, 6) : (reader.notes || []).slice(0, 6);
+    const pool = loadedNotes().filter(noteVisible);
+    const chapterNotes = pool.filter(note => note.book === reader.book && note.chapter === reader.chapter);
+    const relatedNotes = pool.filter(note => note.book === reader.book || (note.links || []).some(link => link.book === reader.book && link.chapter === reader.chapter));
+    const displayedNotes = chapterNotes.length ? chapterNotes : relatedNotes.length ? relatedNotes.slice(0, 6) : pool.filter(note => note.book === reader.book).slice(0, 6);
     const reference = (book, chapter, verse) => `${books[book - 1]?.name || ''} ${chapter}:${verse}`;
-    const renderNote = note => `<section class="bible-study-card"><span class="tag">${esc(note.kind)} · ${esc(reference(note.book, note.chapter, note.verse))}</span><h4>${esc(note.title)}</h4><p>${esc(note.body)}</p><small>${esc(note.author)}</small><div class="bible-study-links"><button data-jump-book="${note.book}" data-jump-chapter="${note.chapter}" data-jump-verse="${note.verse}">Read ${esc(reference(note.book, note.chapter, note.verse))} →</button>${note.links.map(link => `<button data-jump-book="${link.book}" data-jump-chapter="${link.chapter}" data-jump-verse="${link.verse}">${esc(reference(link.book, link.chapter, link.verse))} ↗</button>`).join('')}</div><a href="${esc(note.source)}" target="_blank" rel="noopener noreferrer">${esc(note.sourceLabel || "Open source ↗")}</a><button class="bible-copy-source" data-copy-source="${esc(note.source)}">Copy source link</button></section>`;
+    const renderNote = note => `<section class="bible-study-card"><span class="tag">${esc(note.kind)} · ${esc(reference(note.book, note.chapter, note.verse))}</span><h4>${esc(note.title)}</h4><p>${esc(note.body)}</p><small>${esc(note.author)}</small><div class="bible-study-links"><button data-jump-book="${note.book}" data-jump-chapter="${note.chapter}" data-jump-verse="${note.verse}">Read ${esc(reference(note.book, note.chapter, note.verse))} →</button>${(note.links || []).map(link => `<button data-jump-book="${link.book}" data-jump-chapter="${link.chapter}" data-jump-verse="${link.verse}">${esc(reference(link.book, link.chapter, link.verse))} ↗</button>`).join('')}</div><a href="${esc(note.source)}" target="_blank" rel="noopener noreferrer">${esc(note.sourceLabel || "Open source ↗")}</a><button class="bible-copy-source" data-copy-source="${esc(note.source)}">Copy source link</button></section>`;
+    const kindFilters = [['All','All'],['Father','Fathers'],['Teaching','Teaching'],['Apologetics','Apologetics']].map(([id, label]) => `<button type="button" class="filter ${reader.noteKind === id ? 'active' : ''}" data-bible="note-kind" data-kind="${id}" aria-pressed="${reader.noteKind === id}">${label}</button>`).join('');
     const studyMarkup = displayedNotes.map(renderNote).join('');
     const selectedNotes = chapterNotes.filter(note => note.verse === reader.selectedVerse);
     const myNoteAt = verse => (reader.verseNotes || []).find(n => n.book_id === reader.book && n.chapter === reader.chapter && n.verse === verse) || null;
@@ -119,7 +128,7 @@
       ${offlineMarkup()}
       <div class="bible-layout"><div class="bible-primary"><div class="bible-controls card"><label>Book<select id="bible-book">${sections.map(section => `<optgroup label="${esc(section)}">${books.filter(book => book.section === section).map(book => `<option value="${book.id}" ${book.id === reader.book ? 'selected' : ''}>${esc(book.name)}</option>`).join('')}</optgroup>`).join('')}</select></label><label>Chapter<select id="bible-chapter">${Array.from({ length:info.chapters - (info.chapterStart || 1) + 1 }, (_, i) => { const chapter = i + (info.chapterStart || 1); return `<option value="${chapter}" ${chapter === reader.chapter ? 'selected' : ''}>${chapter}</option>`; }).join('')}</select></label><div class="bible-control-buttons"><button class="secondary" data-bible="previous" aria-label="Previous chapter">←</button><button class="secondary" data-bible="next" aria-label="Next chapter">→</button><button class="secondary" data-bible="smaller" aria-label="Smaller text">A−</button><button class="secondary" data-bible="larger" aria-label="Larger text">A+</button><button class="secondary" data-bible="speak" aria-label="Read this chapter aloud">Read aloud</button><button class="secondary" data-bible="speak-pause" aria-label="Pause reading" aria-pressed="${speech.paused}">Pause</button><button class="secondary" data-bible="speak-stop" aria-label="Stop reading">Stop</button><button class="secondary" data-bible="rotate" aria-label="Rotate reading view" aria-pressed="${reader.rotated}">⤾ <span>Rotate</span></button><button class="secondary" data-bible="notes">Study notes (${chapterNotes.length})</button></div></div>
       <article class="bible-page card" style="--reader-size:${reader.fontSize}px"><div class="bible-page-title"><span class="eyebrow">${esc(info.section)}</span><h2>${esc(info.name)} ${reader.chapter}</h2><small>${verses.filter(Boolean).length} verses</small></div>${selectedNotes.length ? `<div id="bible-verse-note" class="bible-inline-notes" aria-live="polite"><div class="bible-inline-title"><strong>Study notes · ${esc(reference(reader.book, reader.chapter, reader.selectedVerse))}</strong><button class="text-button" data-bible="close-note" aria-label="Close study note">×</button></div>${selectedNotes.map(renderNote).join('')}</div>` : ''}${myNoteBox}${reader.selectedVerse ? `<div class="bible-highlight-tools" role="group" aria-label="Highlight verse ${reader.selectedVerse}"><span>Verse ${reader.selectedVerse}</span><button data-color="teal" aria-label="Highlight teal" title="Teal"></button><button data-color="gold" aria-label="Highlight gold" title="Gold"></button><button data-color="rose" aria-label="Highlight rose" title="Rose"></button><button class="bible-clear-highlight" data-color="remove" aria-label="Clear highlight" title="Clear highlight"></button><button class="secondary" data-bible="copy-verse" aria-label="Copy verse ${reader.selectedVerse}">Copy</button><button class="secondary" data-bible="share-verse" aria-label="Share verse ${reader.selectedVerse}">Share</button></div>` : ''}<div class="bible-verses">${verses.map((text, i) => text ? `<button class="bible-verse ${savedColor(i + 1 + verseOffset()) ? 'highlight-' + savedColor(i + 1 + verseOffset()) : ''} ${reader.selectedVerse === i + 1 + verseOffset() ? 'selected' : ''}${speech.playing && speech.verse === i + 1 + verseOffset() ? ' bible-speaking' : ''}" data-bible-verse="${i + 1 + verseOffset()}" aria-label="Verse ${i + 1 + verseOffset()}: ${esc(text)}"><sup>${i + 1 + verseOffset()}</sup>${esc(text)}${chapterNotes.some(note => note.verse === i + 1 + verseOffset()) ? '<span class="bible-annotation" aria-label="Study note available">✦</span>' : ''}${myNoteAt(i + 1 + verseOffset()) ? '<span class="bible-annotation bible-my-mark" aria-label="Your note on this verse">✎</span>' : ''}</button>` : '').join('')}</div><div class="bible-page-foot"><button class="text-button" data-bible="previous">← Previous</button><span class="bible-log-wrap"><button class="secondary bible-log-btn ${loggedHere ? 'bible-logged' : ''}" data-bible="log-read" aria-pressed="${loggedHere}">${loggedHere ? `✓ ${esc(info.name)} ${reader.chapter} logged — tap to undo` : `✓ Log ${esc(info.name)} ${reader.chapter} as read`}</button><span class="bible-log-progressbar" aria-hidden="true"><i style="width:${bookChaptersTotal ? Math.round(bookChaptersLogged / bookChaptersTotal * 100) : 0}%"></i></span><small class="bible-log-progress">${esc(info.name)}: ${bookChaptersLogged} of ${bookChaptersTotal} chapters logged</small></span><button class="text-button" data-bible="next">Next →</button></div></article></div>
-      <aside class="bible-aside"><div class="card"><span class="eyebrow">YOUR MARKS</span><h3>Highlighted verses</h3>${savedMarkup}<p class="small">Your highlights stay in this browser.</p><button type="button" class="text-button" data-nav="marks">All marks</button></div><div class="card" id="bible-notes"><span class="eyebrow">STUDY ALONGSIDE SCRIPTURE</span><h3>${chapterNotes.length ? `Notes on ${esc(info.name)} ${reader.chapter}` : 'Explore the study library'}</h3><p class="small">Father · Teaching · Apologetics. Summaries are editorial; use the source links to read further.</p><div class="bible-study-stack">${studyMarkup}</div></div></aside></div></div>`;
+      <aside class="bible-aside"><div class="card"><span class="eyebrow">YOUR MARKS</span><h3>Highlighted verses</h3>${savedMarkup}<p class="small">Your highlights stay in this browser.</p><button type="button" class="text-button" data-nav="marks">All marks</button></div><div class="card" id="bible-notes"><span class="eyebrow">STUDY ALONGSIDE SCRIPTURE</span><h3>${chapterNotes.length ? `Notes on ${esc(info.name)} ${reader.chapter}` : 'Explore the study library'}</h3><div class="bible-note-filters" role="group" aria-label="Study note kinds">${kindFilters}</div><p class="small">Father · Teaching · Apologetics. Father lines are short quotations. Use the source link to read the passage.</p><div class="bible-study-stack">${studyMarkup || '<p class="muted">No notes of this kind on this chapter.</p>'}</div></div></aside></div></div>`;
     updateRotated();
     if (!reader.offline) refreshOffline();
   }
@@ -212,7 +221,7 @@
     reader.offlineBusy = true;
     reader.offline = Object.assign({books:0, bytes:0, scanning:false, busy:true, done:0}, reader.offline, {busy:true, done:reader.offline?.books || 0});
     paintOffline();
-    const files = ['bible/index.json', ...Array.from({length:BIBLE_BOOK_TOTAL}, (_, i) => bibleFile(i + 1))];
+    const files = ['bible/index.json', ...Array.from({length:BIBLE_BOOK_TOTAL}, (_, i) => bibleFile(i + 1)), ...Array.from({length:BIBLE_BOOK_TOTAL}, (_, i) => fathersFile(i + 1))];
     let bytes = 0;
     let bookCount = 0;
     try {
@@ -224,7 +233,7 @@
         const buffer = await response.arrayBuffer();
         bytes += buffer.byteLength;
         await cache.put(url, new Response(buffer, {headers:{'Content-Type':'application/json'}}));
-        if (file !== 'bible/index.json') bookCount += 1;
+        if (/^bible\/\d\d\.json$/.test(file)) bookCount += 1;
         reader.offline = {books:bookCount, bytes, scanning:false, busy:true, done:bookCount};
         paintOffline();
       }
@@ -249,6 +258,18 @@
     const data = await response.json();
     if (!Array.isArray(data.chapters) || data.book !== reader.index.books[id - 1]?.name) throw Error('This book could not be verified.');
     reader.bookData.set(id, data);
+  }
+  async function ensureFathers(id) {
+    if (reader.fatherNotes.has(id)) return;
+    const url = fathersFile(id);
+    let response = null;
+    try { response = await fetch(url); } catch { response = null; }
+    if (!response || !response.ok) response = await readCached(url);
+    let notes = [];
+    if (response && response.ok) {
+      try { notes = await response.json(); } catch { notes = []; }
+    }
+    reader.fatherNotes.set(id, Array.isArray(notes) ? notes : []);
   }
   async function loadAccount() {
     const userId = reader.context.userId() || 'device';
@@ -289,7 +310,7 @@
       }
       await loadAccount();
       if (!reader.index.books[reader.book - 1] || reader.chapter < (reader.index.books[reader.book - 1].chapterStart || 1) || reader.chapter > reader.index.books[reader.book - 1].chapters) { reader.book = 43; reader.chapter = 1; }
-      await ensureBook(reader.book);
+      await Promise.all([ensureBook(reader.book), ensureFathers(reader.book)]);
       if (requestId === reader.requestId && root.isConnected) {
         render();
         if (reader.pendingVerse) {
@@ -309,7 +330,7 @@
     const requestId = ++reader.requestId;
     reader.root.innerHTML = '<div class="loading">Turning the page…</div>';
     try {
-      await ensureBook(book);
+      await Promise.all([ensureBook(book), ensureFathers(book)]);
       if (requestId !== reader.requestId) return;
       render();
       localStorage.setItem('lampstand_bible_place', `${book}:${chapter}`);
@@ -353,6 +374,7 @@
     switch(target.dataset.bible) {
       case 'retry': show(reader.root, reader.context); break;
       case 'notes': reader.root?.querySelector('#bible-notes')?.scrollIntoView({block:'start',behavior:'smooth'}); break;
+      case 'note-kind': reader.noteKind = target.dataset.kind || 'All'; render(); break;
       case 'close-note': reader.selectedVerse = null; render(); break;
       case 'log-read': {
         const book = reader.book, chapter = reader.chapter;
