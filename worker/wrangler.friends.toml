@@ -9,3 +9,12 @@ preview_urls = false
 [[kv_namespaces]]
 binding = "FRIENDS"
 id = "2429d982103e4d7cabcbda5ad113fc94"
+
+[triggers]
+crons = ["*/15 * * * *"]
+
+# Public key only. Generate a pair with: node worker/gen-vapid.mjs
+# Replace this empty string with VAPID_PUBLIC_KEY before deploy.
+# Set VAPID_PRIVATE_KEY and VAPID_SUBJECT with `wrangler secret put`. Never commit them.
+[vars]
+VAPID_PUBLIC_KEY = ""

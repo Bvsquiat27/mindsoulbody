@@ -204,6 +204,15 @@ html{background:var(--bg)}body{color:var(--text);font-family:Outfit,system-ui,sa
 .tap-vibration-toggle[aria-pressed="true"]{border-color:var(--teal)}
 .tap-vibration-toggle[aria-pressed="true"] .tap-vibration-knob{background:var(--teal)}
 .tap-vibration-toggle[aria-pressed="true"] .tap-vibration-knob::after{transform:translateX(18px);background:var(--on-accent,#04221f)}
+.tap-vibration-toggle[aria-checked="true"]{border-color:var(--teal)}
+.tap-vibration-toggle[aria-checked="true"] .tap-vibration-knob{background:var(--teal)}
+.tap-vibration-toggle[aria-checked="true"] .tap-vibration-knob::after{transform:translateX(18px);background:var(--on-accent,#04221f)}
+.morning-push{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:18px 0}
+.morning-time-label{display:flex;flex-direction:column;gap:6px;margin-top:12px;font-size:14px}
+.morning-time-label input{min-height:44px;font:inherit;padding:8px 10px}
+.morning-push-note{margin:8px 0 0}
+.moment-prompt{margin:8px 0 0}
+.moment-prompt .text-button{min-height:44px}
 .tap-vibration-state{font-size:13px;font-weight:700;min-width:1.6em;text-align:left}
 .tap-vibration-toggle:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .profile-cover{background:linear-gradient(135deg,var(--app-hero),var(--app-hero-end))}

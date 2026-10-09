@@ -828,7 +828,19 @@
     'Baptism, anointing, and the life those gifts begin.': 'El bautismo, la unción y la vida que esos dones empiezan.',
     'Notice who is speaking, to whom, and what comes before and after. Let the passage sit with you before you rush on.': 'Fíjate quién habla, a quién, y qué viene antes y después. Deja que el pasaje se quede contigo antes de seguir de prisa.',
     'Games': 'Juegos',
-    'Lessons and quizzes': 'Lecciones y cuestionarios'
+    'Lessons and quizzes': 'Lecciones y cuestionarios',
+    'MORNING': 'MAÑANA',
+    'Morning message': 'Mensaje de la mañana',
+    'A notification with the morning card and verse, at the time you choose.': 'Una notificación con la tarjeta de la mañana y el versículo, a la hora que elijas.',
+    'Time': 'Hora',
+    'Morning message time': 'Hora del mensaje de la mañana',
+    'This phone cannot show morning notifications.': 'Este teléfono no puede mostrar notificaciones de la mañana.',
+    'Notifications are blocked. Allow them in the phone settings, then turn this on.': 'Las notificaciones están bloqueadas. Permítelas en los ajustes del teléfono y vuelve a activarlo.',
+    'Morning messages are not ready on the server yet.': 'Los mensajes de la mañana todavía no están listos en el servidor.',
+    'Morning message is on.': 'El mensaje de la mañana está activado.',
+    'Morning message is off.': 'El mensaje de la mañana está desactivado.',
+    'Morning message time saved.': 'La hora del mensaje de la mañana quedó guardada.',
+    'Get this every morning?': '¿Quieres recibir esto cada mañana?'
   });
 
   function stored() {

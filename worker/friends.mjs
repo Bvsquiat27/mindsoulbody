@@ -1,3 +1,6 @@
+import { validatePushBody, postWebPush } from './webpush.mjs';
+import { pushDue, notificationBody } from './morning.mjs';
+
 /* Mind Soul & Body — friends API worker.
    This is the production KV layout for mindsoulbody-api. Do not replace it
    with per-show board keys, a separate auth record, or a new namespace.
@@ -28,6 +31,8 @@
      rate:verse-read:<code> → { start, n }  200 reads per hour
      rate:study:<code> → { start, n }  40 writes per hour
      rate:study-delete:<code> → { start, n }  200 deletes per hour
+     push:<code> → { endpoint, p256dh, auth, hour, minute, timeZone, lang, lastSent }
+     push:index → [codes] that have a morning subscription
 
    The account secret is a random 32-hex string returned once at register.
    Only its SHA-256 hex digest is stored. Compare it in constant time.
@@ -432,6 +437,8 @@ export const RATE_LIMITS = {
   friendAdd: 40,
   shared: 20,
   scores: 60,
+  pushSubscribe: 20,
+  pushUnsubscribe: 20,
 };
 
 function verseNumber(value, min, max) {
@@ -538,6 +545,7 @@ export async function handleFriends(request, env) {
     const url = new URL(request.url);
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders(origin) });
     if (url.pathname === '/health' && request.method === 'GET') return reply({ ok: true });
+    if (url.pathname === '/push/key' && request.method === 'GET') return reply({ publicKey: String(env.VAPID_PUBLIC_KEY || '') });
     if (url.pathname === '/recovery-email' && (request.method === 'GET' || request.method === 'POST')) {
       return reply({
         ready: false,
@@ -1144,10 +1152,88 @@ export async function handleFriends(request, env) {
       return reply(note);
     }
 
+    if (url.pathname === '/push/subscribe' || url.pathname === '/push/unsubscribe') {
+      const a = await authed(env, body);
+      if (a.error) return reply({ error: a.error }, a.status);
+      const subscribing = url.pathname === '/push/subscribe';
+      const limit = subscribing ? RATE_LIMITS.pushSubscribe : RATE_LIMITS.pushUnsubscribe;
+      const bucket = subscribing ? 'push-subscribe' : 'push-unsubscribe';
+      if (!(await takeRate(env, `rate:${bucket}:${a.user.code}`, limit))) return reply({ error: 'Too many notification changes this hour' }, 429);
+      if (!subscribing) {
+        await env.FRIENDS.delete(`push:${a.user.code}`);
+        await savePushIndex(env, (await loadPushIndex(env)).filter((code) => code !== a.user.code));
+        return reply({ ok: true });
+      }
+      const check = validatePushBody(body);
+      if (check.error) return reply({ error: check.error }, 400);
+      let previous = null;
+      try { previous = JSON.parse(await env.FRIENDS.get(`push:${a.user.code}`) || 'null'); } catch { previous = null; }
+      const row = {
+        endpoint: check.endpoint,
+        p256dh: check.p256dh,
+        auth: check.auth,
+        hour: check.hour,
+        minute: check.minute,
+        timeZone: check.timeZone,
+        lang: check.lang,
+        lastSent: previous && typeof previous.lastSent === 'string' ? previous.lastSent : '',
+        updatedAt: Date.now(),
+      };
+      await env.FRIENDS.put(`push:${a.user.code}`, JSON.stringify(row));
+      const index = await loadPushIndex(env);
+      if (!index.includes(a.user.code)) await savePushIndex(env, index.concat(a.user.code));
+      return reply({ ok: true });
+    }
+
     return reply({ error: 'Not found' }, 404);
   } catch {
     return reply({ error: 'Server error' }, 500);
   }
 }
 
-export default { fetch: handleFriends };
+const PUSH_INDEX = 'push:index';
+
+async function loadPushIndex(env) {
+  try {
+    const data = JSON.parse(await env.FRIENDS.get(PUSH_INDEX) || '[]');
+    return Array.isArray(data) ? data.filter((code) => typeof code === 'string') : [];
+  } catch { return []; }
+}
+
+async function savePushIndex(env, codes) {
+  await env.FRIENDS.put(PUSH_INDEX, JSON.stringify([...new Set(codes)]));
+}
+
+export async function sendDueMorningPushes(env, now = Date.now()) {
+  if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY || !env.VAPID_SUBJECT) return { sent: 0, reason: 'unconfigured' };
+  const codes = await loadPushIndex(env);
+  const keep = [];
+  let sent = 0;
+  for (const code of codes) {
+    let row = null;
+    try { row = JSON.parse(await env.FRIENDS.get(`push:${code}`) || 'null'); } catch { row = null; }
+    if (!row || typeof row.endpoint !== 'string') continue;
+    const due = pushDue(now, row);
+    if (!due.due) { keep.push(code); continue; }
+    let result = { ok: false, gone: false };
+    try { result = await postWebPush(env, row, JSON.stringify(notificationBody(now, row))); } catch { result = { ok: false, gone: false }; }
+    if (result.gone) {
+      await env.FRIENDS.delete(`push:${code}`);
+      continue;
+    }
+    keep.push(code);
+    if (!result.ok) continue;
+    row.lastSent = due.today;
+    await env.FRIENDS.put(`push:${code}`, JSON.stringify(row));
+    sent += 1;
+  }
+  if (keep.length !== codes.length) await savePushIndex(env, keep);
+  return { sent };
+}
+
+export default {
+  fetch: handleFriends,
+  scheduled(_event, env, ctx) {
+    ctx.waitUntil(sendDueMorningPushes(env, Date.now()));
+  },
+};

@@ -1011,7 +1011,7 @@ test('verse reads and study deletes are rate limited on their own hourly buckets
 
 test('a full rate bucket stays full and the next call is refused', async () => {
   assert.deepEqual(RATE_LIMITS, {
-    register: 80, sync: 60, msg: 60, note: 40, friendAdd: 40, shared: 20, scores: 60
+    register: 80, sync: 60, msg: 60, note: 40, friendAdd: 40, shared: 20, scores: 60, pushSubscribe: 20, pushUnsubscribe: 20
   });
   const kv = memoryKv();
   const now = Date.now();

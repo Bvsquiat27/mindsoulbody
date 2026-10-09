@@ -10,22 +10,56 @@
   function slotName(date){const hour=(date||new Date()).getHours();if(hour<12)return 'morning';if(hour>=20)return 'night';return '';}
   function pick(list, date){const start=new Date(date.getFullYear(),0,0);const n=Math.floor((date-start)/86400000);return list[Math.abs(n)%list.length];}
   function dismissed(name, date){try{return localStorage.getItem(KEY)===dayKey(date)+':'+name}catch{return false}}
-  function slot(date){
-    const now=date||new Date();
-    const name=slotName(now);
-    if(!name||dismissed(name, now)) return '';
-    const item=pick(name==='morning'?MORNING:NIGHT, now);
+  function morningPrompt(){
+    let row=null;
+    try{row=JSON.parse(localStorage.getItem('msb_morning_push')||'null')}catch{row=null}
+    if(row&&(row.enabled||row.prompted)) return '';
+    return `<p class="moment-prompt">${es()?'¿Quieres recibir esto cada mañana?':'Get this every morning?'} <button type="button" class="text-button" data-morning-yes>${es()?'Sí':'Yes'}</button><button type="button" class="text-button" data-morning-no>${es()?'Ahora no':'Not now'}</button></p>`;
+  }
+  function cardHtml(item, name){
     const eyebrow=name==='morning'?(es()?'PARA ESTA MAÑANA':'FOR THIS MORNING'):(es()?'PARA ESTA NOCHE':'FOR THIS EVENING');
     const prayer=es()?item.prayerEs:item.prayer;
     const verse=es()?item.textEs:item.text;
     const ref=es()?item.refEs:item.ref;
-    return `<section class="card moment-card" id="moment-card" data-i18n-skip><span class="eyebrow">${eyebrow}</span><p class="moment-verse">${esc(verse)}</p><p class="moment-ref">${esc(ref)}</p><p class="moment-prayer">${esc(prayer)}</p><button type="button" class="text-button" data-moment-dismiss="${name}">${es()?'Por hoy está bien':"That's enough for now"}</button><button type="button" class="secondary" data-lection-book="${item.book}" data-lection-chapter="${item.chapter}" data-lection-verse="${item.verse}">${es()?'Abrir el versículo':'Open the verse'}</button></section>`;
+    return `<section class="card moment-card" id="moment-card" data-i18n-skip><span class="eyebrow">${eyebrow}</span><p class="moment-verse">${esc(verse)}</p><p class="moment-ref">${esc(ref)}</p><p class="moment-prayer">${esc(prayer)}</p>${name==='morning'?morningPrompt():''}<button type="button" class="text-button" data-moment-dismiss="${name}">${es()?'Por hoy está bien':"That's enough for now"}</button><button type="button" class="secondary" data-lection-book="${item.book}" data-lection-chapter="${item.chapter}" data-lection-verse="${item.verse}">${es()?'Abrir el versículo':'Open the verse'}</button></section>`;
+  }
+  function slot(date){
+    const now=date||new Date();
+    const name=slotName(now);
+    if(!name||dismissed(name, now)) return '';
+    return cardHtml(pick(name==='morning'?MORNING:NIGHT, now), name);
+  }
+  function revealMorning(){
+    const html=cardHtml(pick(MORNING, new Date()), 'morning');
+    const existing=document.getElementById('moment-card');
+    if(existing) existing.outerHTML=html;
+    else {
+      const day=document.getElementById('orthodox-day');
+      if(day) day.insertAdjacentHTML('beforebegin', html);
+      else document.getElementById('screen')?.insertAdjacentHTML('afterbegin', html);
+    }
+    document.getElementById('moment-card')?.scrollIntoView({block:'center'});
+  }
+  function rememberPrompt(){
+    let row={};
+    try{row=JSON.parse(localStorage.getItem('msb_morning_push')||'null')||{}}catch{row={}}
+    row.prompted=true;
+    if(!row.time) row.time='07:00';
+    try{localStorage.setItem('msb_morning_push', JSON.stringify(row))}catch{}
+    document.querySelector('.moment-prompt')?.remove();
   }
   document.addEventListener('click', event => {
+    if(event.target.closest('[data-morning-no]')){rememberPrompt();return}
+    const yes=event.target.closest('[data-morning-yes]');
+    if(yes&&window.msbEnableMorningPush){
+      yes.disabled=true;
+      window.msbEnableMorningPush().then(()=>document.querySelector('.moment-prompt')?.remove()).catch(()=>{yes.disabled=false});
+      return;
+    }
     const button=event.target.closest('[data-moment-dismiss]');
     if(!button) return;
     try{localStorage.setItem(KEY, dayKey(new Date())+':'+button.dataset.momentDismiss)}catch{}
     document.getElementById('moment-card')?.remove();
   });
-  window.MsbMoments={slot, slotName, pick, MORNING, NIGHT};
+  window.MsbMoments={slot, slotName, pick, MORNING, NIGHT, revealMorning};
 })();

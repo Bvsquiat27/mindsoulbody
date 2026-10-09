@@ -11,7 +11,7 @@
    deleted, so another app on the same origin keeps its own caches.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v79';
+const CACHE_VERSION = 'v80';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-2';
@@ -210,4 +210,39 @@ self.addEventListener('fetch', (event) => {
         return Response.error();
       }))
   );
+});
+
+self.addEventListener('push', (event) => {
+  event.waitUntil((async () => {
+    let data = {};
+    if (event.data) {
+      try { data = event.data.json(); } catch { data = {}; }
+    }
+    const spanish = data.lang === 'es';
+    const title = data.title || (spanish ? 'Buenos días ☀️' : 'Good morning ☀️');
+    const body = data.body || (spanish ? 'Tu versículo de la mañana está listo.' : 'Your morning verse is ready.');
+    await self.registration.showNotification(title, {
+      body,
+      icon: 'icon-192.png',
+      badge: 'icon-192.png',
+      lang: spanish ? 'es' : 'en',
+      tag: 'msb-morning',
+      data: { url: data.url || './?morning=1' },
+    });
+  })());
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const target = new URL((event.notification.data && event.notification.data.url) || './?morning=1', self.registration.scope).href;
+  event.waitUntil((async () => {
+    const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (const client of windows) {
+      if (new URL(client.url).origin !== self.location.origin) continue;
+      await client.focus();
+      client.postMessage({ type: 'msb-morning' });
+      return;
+    }
+    await self.clients.openWindow(target);
+  })());
 });
