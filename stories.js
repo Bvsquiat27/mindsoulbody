@@ -147,64 +147,196 @@
     return `<img class="${size === 'card' ? 'story-cover' : 'story-hero'}" src="${src}" srcset="${card} 512w, ${full} 1024w" sizes="${size === 'card' ? '(min-width: 720px) 46vw, 100vw' : '100vw'}" width="1024" height="576" alt="${alt}" loading="lazy" decoding="async">`;
   }
 
+  const prayer = {
+    en: 'God, you are near. Thank you for this day. Thank you for the people who love me. Hold me while I sleep. Keep me safe. Give me a quiet heart. Amen.',
+    es: 'Dios, tú estás cerca. Gracias por este día. Gracias por las personas que me quieren. Abrázame mientras duermo. Cuídame. Dame un corazón tranquilo. Amén.'
+  };
+  let bedtime = null;
+  let music = null;
+
+  function speechRow() {
+    const rates = window.MsbSpeech ? MsbSpeech.rateHtml() : '';
+    return `<div class="story-actions"><button class="primary" type="button" data-story-speak>Read aloud</button><button class="secondary" type="button" data-speech-pause>Pause</button><button class="secondary" type="button" data-speech-stop>Stop</button>${rates}</div>`;
+  }
+
   function showList(root) {
     const cards = stories.map(item => `<button class="card story-card" data-story="${esc(item.id)}">${picture(item, 'card')}<h2>${esc(pick(item, 'title'))}</h2><span>Open</span></button>`).join('');
-    root.innerHTML = `<span class="eyebrow">LITTLE ONES</span><h1>Stories for little ones</h1><p class="lead">Bible stories told simply, for a child close by.</p><div class="story-grid">${cards}</div>`;
+    root.innerHTML = `<span class="eyebrow">LITTLE ONES</span><h1>Stories for little ones</h1><p class="lead">Bible stories told simply, for a child close by.</p><button class="card bedtime-entry" type="button" data-bedtime><span class="eyebrow">LITTLE ONES</span><strong>Bedtime</strong><span>A story, a prayer, and a quiet night sky</span></button><div class="story-grid">${cards}</div>`;
   }
 
   function showOne(root, item) {
     const title = pick(item, 'title');
     const body = pick(item, 'body');
-    root.innerHTML = `<button class="text-button back" data-story-back type="button">← Back</button><article class="story-read" data-i18n-skip><span class="eyebrow">${es()?'Una historia para leer juntos':'A story to read together'}</span>${picture(item, 'hero')}<h1 class="story-title">${esc(title)}</h1><p class="story-body">${esc(body)}</p></article><div class="story-actions"><button class="primary" type="button" data-story-speak data-story-id="${esc(item.id)}">Read aloud</button><button class="secondary" type="button" data-story-stop>Stop</button></div>`;
+    root.innerHTML = `<button class="text-button back" data-story-back type="button">← Back</button><article class="story-read" data-read-block data-i18n-skip><span class="eyebrow">${es()?'Una historia para leer juntos':'A story to read together'}</span>${picture(item, 'hero')}<h1 class="story-title">${esc(title)}</h1><p class="story-body">${esc(body)}</p></article>${speechRow()}<p><button class="secondary" type="button" data-bedtime data-bedtime-story="${esc(item.id)}">Bedtime</button></p>`;
+  }
+
+  function bedtimeStory() {
+    return stories.find(item => item.id === (bedtime && bedtime.story)) || stories.find(item => item.id === 'stars') || stories[0];
+  }
+
+  function stars() {
+    let html = '';
+    for (let i = 0; i < 42; i += 1) {
+      const left = (i * 37) % 100;
+      const top = (i * 53) % 78;
+      html += `<i class="star" style="left:${left}%;top:${top}%"></i>`;
+    }
+    return html;
+  }
+
+  function showBedtime(root) {
+    const item = bedtimeStory();
+    const step = bedtime.step;
+    if (step === 'prayer') {
+      const words = es() ? prayer.es : prayer.en;
+      root.innerHTML = `<button class="text-button back" data-bedtime-back type="button">← Back</button><article class="story-read bedtime-prayer" data-read-block><span class="eyebrow">BEDTIME</span><h1>A small prayer</h1><p class="story-body">${esc(words)}</p></article>${speechRow()}<p><button class="primary" type="button" data-bedtime-next="sky">Play the night</button></p>`;
+      return;
+    }
+    if (step === 'sky') {
+      const minutes = bedtime.minutes || 20;
+      root.innerHTML = `<section class="bedtime-sky" data-i18n-skip><div class="bedtime-stars" aria-hidden="true">${stars()}</div><div class="bedtime-copy"><span class="eyebrow">${es() ? 'HORA DE DORMIR' : 'BEDTIME'}</span><h1>${es() ? 'El cielo está quieto' : 'The sky is quiet'}</h1><p>${es() ? 'La cajita de música suena bajito. La pantalla se queda así hasta que termine el tiempo.' : 'The music box plays softly. The screen stays like this until the time is done.'}</p><div class="bedtime-timers" role="group" aria-label="${es() ? 'Tiempo para dormir' : 'Sleep timer'}">${[10, 20, 30].map(n => `<button type="button" class="secondary${minutes === n ? ' active' : ''}" data-bedtime-minutes="${n}">${n} min</button>`).join('')}</div><button class="text-button" type="button" data-bedtime-back>${es() ? 'Volver a la oración' : 'Back to the prayer'}</button></div></section>`;
+      return;
+    }
+    root.innerHTML = `<button class="text-button back" data-bedtime-back type="button">← Stories</button><article class="story-read" data-read-block data-i18n-skip><span class="eyebrow">${es() ? 'HORA DE DORMIR' : 'BEDTIME'}</span>${picture(item, 'hero')}<h1 class="story-title">${esc(pick(item, 'title'))}</h1><p class="story-body">${esc(pick(item, 'body'))}</p></article>${speechRow()}<p><button class="primary" type="button" data-bedtime-next="prayer">A small prayer</button></p>`;
   }
 
   function show(root) {
-    const item = stories.find(entry => entry.id === openId);
-    if (item) showOne(root, item);
-    else showList(root);
+    if (bedtime) showBedtime(root);
+    else {
+      const item = stories.find(entry => entry.id === openId);
+      if (item) showOne(root, item);
+      else showList(root);
+    }
   }
 
-  function speak(item) {
-    const synth = window.speechSynthesis;
-    if (!synth || typeof SpeechSynthesisUtterance !== 'function') {
-      const toast = document.getElementById('toast');
-      if (toast) { toast.textContent = window.MsbI18n ? MsbI18n.t('This browser cannot read aloud.') : 'This browser cannot read aloud.'; toast.classList.add('show'); }
-      return;
-    }
-    try { synth.cancel(); } catch { /* ignore */ }
-    const utter = new SpeechSynthesisUtterance(`${pick(item, 'title')}. ${pick(item, 'body')}`);
-    utter.lang = es() ? 'es-MX' : 'en-US';
-    utter.rate = 0.92;
-    try { synth.speak(utter); } catch { /* ignore */ }
+  function speakFrom(root) {
+    const block = root.querySelector('[data-read-block]');
+    if (!block || !window.MsbSpeech) return;
+    const nodes = [...block.querySelectorAll('h1, p')].filter(el => el.textContent.trim());
+    MsbSpeech.speak({
+      lang: es() ? 'es' : 'en',
+      chunks: nodes.map(el => ({ text: el.textContent.trim(), el })),
+      onChunk: chunk => { if (chunk.el) chunk.el.scrollIntoView({ block: 'nearest' }); }
+    });
+  }
+
+  function stopMusic() {
+    if (!music) return;
+    const ctx = music.ctx;
+    try {
+      music.gain.gain.cancelScheduledValues(ctx.currentTime);
+      music.gain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+    } catch { /* ignore */ }
+    clearTimeout(music.timer);
+    setTimeout(() => { try { ctx.close(); } catch { /* ignore */ } }, 400);
+    music = null;
+    if (window.msbYieldAudio) { try { window.msbYieldAudio('bedtime', false); } catch { /* ignore */ } }
+  }
+
+  function startMusic(minutes) {
+    stopMusic();
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const master = ctx.createGain();
+    master.gain.value = 0.0001;
+    master.connect(ctx.destination);
+    const endAt = ctx.currentTime + minutes * 60;
+    master.gain.linearRampToValueAtTime(0.07, ctx.currentTime + 1.5);
+    master.gain.setValueAtTime(0.07, Math.max(ctx.currentTime + 1.6, endAt - 20));
+    master.gain.linearRampToValueAtTime(0.0001, endAt);
+    const notes = [329.63, 329.63, 392, 329.63, 329.63, 392, 329.63, 392, 523.25, 493.88, 440, 440, 523.25, 440, 392, 349.23, 349.23, 392, 329.63, 293.66, 261.63];
+    const beats = [0.5, 0.5, 1, 0.5, 0.5, 1, 0.45, 0.45, 0.7, 0.3, 1, 0.5, 0.5, 0.7, 0.3, 1, 0.5, 0.5, 0.7, 0.3, 1.4];
+    let when = ctx.currentTime + 0.15;
+    let step = 0;
+    const schedule = () => {
+      if (!music || music.ctx !== ctx) return;
+      while (when < ctx.currentTime + 6 && when < endAt) {
+        const dur = beats[step % beats.length] * 0.62;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = notes[step % notes.length];
+        gain.gain.setValueAtTime(0.0001, when);
+        gain.gain.exponentialRampToValueAtTime(0.8, when + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+        osc.connect(gain);
+        gain.connect(master);
+        osc.start(when);
+        osc.stop(when + dur + 0.02);
+        when += dur * 0.96;
+        step += 1;
+      }
+      if (when < endAt) music.timer = setTimeout(schedule, 900);
+    };
+    music = { ctx, gain: master, timer: null };
+    if (window.msbYieldAudio) { try { window.msbYieldAudio('bedtime', true); } catch { /* ignore */ } }
+    schedule();
+  }
+
+  function refresh() {
+    const root = document.getElementById('screen');
+    if (root) show(root);
+    if (window.MsbI18n) MsbI18n.apply(root);
   }
 
   document.addEventListener('click', event => {
+    const screen = document.getElementById('screen');
+    if (!screen || !event.target.closest('#screen')) return;
+    if (event.target.closest('[data-bedtime]')) {
+      const chosen = event.target.closest('[data-bedtime-story]')?.dataset.bedtimeStory;
+      bedtime = { step: 'story', story: chosen || openId || 'stars', minutes: 20 };
+      if (window.MsbSpeech) MsbSpeech.stop();
+      refresh();
+      return;
+    }
+    if (event.target.closest('[data-bedtime-back]')) {
+      if (!bedtime) return;
+      if (bedtime.step === 'sky') { stopMusic(); bedtime.step = 'prayer'; }
+      else if (bedtime.step === 'prayer') bedtime.step = 'story';
+      else { stopMusic(); bedtime = null; }
+      if (window.MsbSpeech) MsbSpeech.stop();
+      refresh();
+      return;
+    }
+    const next = event.target.closest('[data-bedtime-next]');
+    if (next && bedtime) {
+      bedtime.step = next.dataset.bedtimeNext;
+      if (bedtime.step === 'sky') startMusic(bedtime.minutes || 20);
+      if (window.MsbSpeech) MsbSpeech.stop();
+      refresh();
+      return;
+    }
+    const minutes = event.target.closest('[data-bedtime-minutes]');
+    if (minutes && bedtime) {
+      bedtime.minutes = Number(minutes.dataset.bedtimeMinutes) || 20;
+      startMusic(bedtime.minutes);
+      refresh();
+      return;
+    }
     const open = event.target.closest('[data-story]');
-    if (open && open.closest('#screen')) {
+    if (open) {
       openId = open.dataset.story;
-      const root = document.getElementById('screen');
-      if (root) show(root);
-      if (window.MsbI18n) MsbI18n.apply(root);
+      bedtime = null;
+      refresh();
       return;
     }
     if (event.target.closest('[data-story-back]')) {
       openId = null;
-      try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch { /* ignore */ }
-      const root = document.getElementById('screen');
-      if (root) show(root);
-      if (window.MsbI18n) MsbI18n.apply(root);
+      if (window.MsbSpeech) MsbSpeech.stop();
+      refresh();
       return;
     }
-    const speakBtn = event.target.closest('[data-story-speak]');
-    if (speakBtn) {
-      const item = stories.find(entry => entry.id === speakBtn.dataset.storyId);
-      if (item) speak(item);
-      return;
-    }
-    if (event.target.closest('[data-story-stop]')) {
-      try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch { /* ignore */ }
-    }
+    if (event.target.closest('[data-story-speak]')) speakFrom(screen);
   });
 
-  window.MsbStories = { show, reset() { openId = null; } };
+  window.MsbStories = {
+    show,
+    reset() {
+      openId = null;
+      bedtime = null;
+      stopMusic();
+      if (window.MsbSpeech) MsbSpeech.stop();
+    }
+  };
 })();

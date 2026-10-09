@@ -443,5 +443,21 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .study-empty h2{font-size:clamp(28px,7vw,40px);line-height:1.15}
 @keyframes study-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .study-entry-new{animation:study-rise .45s ease}
-@media(prefers-reduced-motion:reduce){.study-entry-new{animation:none}}
+@media(prefers-reduced-motion:reduce){.study-entry-new,.love-heart,.star{animation:none}}
+.speech-row,.speech-rates{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.speech-current,.bible-verse.bible-speaking{outline:2px solid var(--teal);background:color-mix(in srgb,var(--teal) 22%,transparent);border-radius:10px}
+.bible-prologue{margin:8px 2px 14px;color:var(--muted);font-style:italic;font-size:0.95rem;line-height:1.5}
+.love-card{position:relative}
+.love-text{font-family:var(--serif);font-size:1.2rem;line-height:1.45}
+.love-heart{position:absolute;left:50%;top:30%;font-size:3.2rem;color:var(--gold);pointer-events:none;animation:love-float 1.1s ease forwards}
+@keyframes love-float{from{opacity:0;transform:translate(-50%,8px) scale(.7)}40%{opacity:1}to{opacity:0;transform:translate(-50%,-46px) scale(1.15)}}
+.bedtime-entry{display:grid;gap:4px;text-align:left;margin:0 0 14px}
+.bedtime-sky{position:relative;min-height:70vh;border-radius:22px;overflow:hidden;padding:28px 18px 32px;background:radial-gradient(circle at 50% 12%, color-mix(in srgb, var(--teal) 28%, rgb(26 35 68)), rgb(7 11 22) 68%);color:rgb(246 241 230)}
+.bedtime-stars{position:absolute;inset:0}
+.star{position:absolute;width:3px;height:3px;border-radius:50%;background:rgb(246 241 230);opacity:.85;animation:star-twinkle 2.8s ease-in-out infinite}
+@keyframes star-twinkle{50%{opacity:.25}}
+.bedtime-copy{position:relative;display:grid;gap:12px;max-width:34rem}
+.bedtime-copy h1{color:rgb(246 241 230)}
+.bedtime-timers{display:flex;flex-wrap:wrap;gap:8px}
+.bedtime-timers .active{background:var(--teal);color:var(--on-accent)}
 @media(max-width:1024px){.toast{bottom:calc(112px + env(safe-area-inset-bottom))}}

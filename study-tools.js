@@ -295,7 +295,7 @@
     if (!response || !response.ok){
       try {
         const present = await caches.keys();
-        for (const name of ['msb-bible-kjv-2', 'msb-bible-kjv-1']) {
+        for (const name of ['msb-bible-kjv-3', 'msb-bible-kjv-2', 'msb-bible-kjv-1']) {
           if (!present.includes(name)) continue;
           const cache = await caches.open(name);
           response = await cache.match(url) || await cache.match(file);

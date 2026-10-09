@@ -828,7 +828,30 @@
     'Baptism, anointing, and the life those gifts begin.': 'El bautismo, la unción y la vida que esos dones empiezan.',
     'Notice who is speaking, to whom, and what comes before and after. Let the passage sit with you before you rush on.': 'Fíjate quién habla, a quién, y qué viene antes y después. Deja que el pasaje se quede contigo antes de seguir de prisa.',
     'Games': 'Juegos',
-    'Lessons and quizzes': 'Lecciones y cuestionarios'
+    'Lessons and quizzes': 'Lecciones y cuestionarios',
+    'FOR SOMEONE YOU LOVE': 'PARA ALGUIEN QUE AMAS',
+    'Love in Scripture': 'El amor en la Escritura',
+    'Verses to send to your person': 'Versículos para enviarle a tu persona',
+    'A quiet corner of passages about love. Each one is in the translation you are reading, ready to send.': 'Un rincón tranquilo de pasajes sobre el amor. Cada uno está en la traducción que estás leyendo, listo para enviar.',
+    'Send to my person': 'Enviar a mi persona',
+    'Opening the passages…': 'Abriendo los pasajes…',
+    'This passage is not on this device yet.': 'Este pasaje todavía no está en el dispositivo.',
+    'Bedtime': 'Hora de dormir',
+    'A story, a prayer, and a quiet night sky': 'Una historia, una oración y un cielo quieto de noche',
+    'A small prayer': 'Una oración pequeña',
+    'Play the night': 'Poner la noche',
+    'The sky is quiet': 'El cielo está quieto',
+    'The music box plays softly. The screen stays like this until the time is done.': 'La cajita de música suena bajito. La pantalla se queda así hasta que termine el tiempo.',
+    'Sleep timer': 'Tiempo para dormir',
+    'Back to the prayer': 'Volver a la oración',
+    'Pause': 'Pausa',
+    'Stop': 'Detener',
+    '0.8×': '0.8×',
+    '1×': '1×',
+    '1.2×': '1.2×',
+    'Read this chapter aloud': 'Leer este capítulo en voz alta',
+    'Pause reading': 'Pausar la lectura',
+    'Stop reading': 'Detener la lectura'
   });
 
   function stored() {

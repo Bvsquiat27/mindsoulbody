@@ -157,6 +157,7 @@
         verseRoutes = 'ready';
         if (window.msbCloseDialog) msbCloseDialog();
         toast('Verse sent.');
+        if (typeof payload.onSent === 'function') payload.onSent();
       } catch (error) {
         if (button) button.disabled = false;
         if (missing(error)) { verseRoutes = 'missing'; if (window.msbCloseDialog) msbCloseDialog(); toast('Sending verses is coming soon.'); return; }
