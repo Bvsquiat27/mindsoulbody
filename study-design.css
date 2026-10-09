@@ -386,6 +386,15 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .bible-controls{display:grid;gap:10px}
 .bible-controls select{min-height:44px}
 
+.memory-grid,.memory-actions,.verse-mail-wrap{display:grid;gap:10px}
+.memory-card-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.memory-line{font-family:var(--serif);font-size:1.35rem;line-height:1.8}
+.memory-blank,.memory-input{display:inline-block;min-width:4.2rem;margin:0 3px;padding:0 4px;border:0;border-bottom:2px solid var(--teal);background:transparent;color:var(--text);font:inherit;text-align:center}
+.memory-input{width:6.5rem}
+.memory-input.memory-wrong{border-bottom-color:var(--gold)}
+.memory-peek{background:color-mix(in srgb, var(--gold) 28%, transparent);border-radius:6px}
+.memory-badge{display:inline-flex;align-items:center;min-height:28px;padding:0 10px;border-radius:999px;background:color-mix(in srgb, var(--gold) 32%, transparent);color:var(--text);font-size:.85rem}
+.memory-pick{text-align:left}
 .study-notebook{display:grid;gap:14px}
 .study-hero,.study-composer,.study-entry,.study-empty,.study-picker{background:linear-gradient(145deg,color-mix(in srgb,var(--text) 7%,transparent),color-mix(in srgb,var(--text) 2%,transparent)),linear-gradient(160deg,var(--app-card),var(--app-card-end));border:1px solid var(--line);box-shadow:inset 0 1px color-mix(in srgb,var(--text) 12%,transparent),0 18px 40px color-mix(in srgb,var(--bg) 35%,transparent)}
 .study-hero{display:grid;gap:14px;padding:20px}
