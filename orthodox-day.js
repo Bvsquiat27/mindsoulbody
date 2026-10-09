@@ -113,12 +113,24 @@
     const name = esc(verse && verse.name || '');
     return `<section class="daily-stack" id="orthodox-day"><span class="eyebrow">TODAY IN SCRIPTURE</span><h2>${text}</h2><span>${name}</span>${playButton()}</section>`;
   }
+  function localizedDisplay(item){
+    const display = String(item.display || '');
+    if (!esDay()) return display;
+    const match = display.match(/^(.*?)\s+(\d+.*)$/);
+    const name = match ? match[1].trim().toLowerCase().replace(/\s+/g, ' ') : '';
+    const id = item.book || NAMES[name] || 0;
+    const label = id && window.msbBookLabel ? msbBookLabel(id, '') : '';
+    if (label && match && NAMES[name]) return `${label} ${match[2]}`;
+    if (label && item.chapter) return `${label} ${item.chapter}${item.verse ? ':' + item.verse : ''}`;
+    return display;
+  }
   function cardHtml(day){
     const readings = (day.readings || []).map(item => {
       const shown = sourceLabel(item.source);
-      const label = `${shown}: ${item.display}`;
+      const display = localizedDisplay(item);
+      const label = `${shown}: ${display}`;
       if (!item.book || !item.chapter) return `<p class="orthodox-reading-plain"><span class="eyebrow">${esc(shown)}</span> ${esc(item.display)}</p>`;
-      return `<button type="button" class="secondary orthodox-reading" data-lection-book="${item.book}" data-lection-chapter="${item.chapter}" data-lection-verse="${item.verse || 1}" aria-label="${esDay() ? 'Abrir' : 'Open'} ${esc(label)} ${esDay() ? 'en la Biblia' : 'in the Bible'}"><span><span class="eyebrow">${esc(shown)}</span> ${esc(item.display)}</span><span aria-hidden="true">${esDay() ? 'Abrir ↗' : 'Open ↗'}</span></button>`;
+      return `<button type="button" class="secondary orthodox-reading" data-lection-book="${item.book}" data-lection-chapter="${item.chapter}" data-lection-verse="${item.verse || 1}" aria-label="${esDay() ? 'Abrir' : 'Open'} ${esc(label)} ${esDay() ? 'en la Biblia' : 'in the Bible'}"><span><span class="eyebrow">${esc(shown)}</span> ${esc(display)}</span><span aria-hidden="true">${esDay() ? 'Abrir ↗' : 'Open ↗'}</span></button>`;
     }).join('');
     if (!readings) return '';
     const eyebrow = esDay() ? `LECTURAS DE HOY · ${esc(weekdayLabel())}` : `TODAY'S READINGS · ${esc(weekdayLabel())}`;

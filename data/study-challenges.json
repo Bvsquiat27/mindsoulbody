@@ -41,6 +41,48 @@
           "correct": 1,
           "explanation": "Paul says the invisible things of God are understood by the things that are made."
         }
+      ],
+      "titleEs": "¿Existe Dios?",
+      "summaryEs": "El mundo tiene orden y no se hizo solo. Eso es una razón para confiar en el Dios que le dio el ser.",
+      "lessonsEs": [
+        {
+          "heading": "Un mundo que no se inventó solo",
+          "body": "Los cristianos no fingimos que una frase puede meter a Dios en un laboratorio. Sí decimos que el mundo es un mal candidato para “así nomás pasó”. Lo que empieza, cambia y se deshace no explica por qué hay algo en vez de nada. Una mente que encuentra orden, belleza y leyes confiables en ese mundo ya está recibiendo un regalo, no una máquina cerrada.\n\nBasilio el Grande, predicando sobre Génesis, rechaza la idea de que el mundo se armó solo: “Voy a hablar de la creación del cielo y de la tierra, que no fue espontánea, como algunos imaginaron, sino que tuvo su origen en Dios”. Pablo dice lo mismo desde el otro lado: “Porque las cosas invisibles de él, su eterna potencia y divinidad, se echan de ver desde la creación del mundo, siendo entendidas por las cosas que son hechas” (Romanos 1:20, RV1909).\n\nLa ciencia puede decir cómo arde una estrella. Contar ese fuego no responde quién le dio un lugar para arder. La primera respuesta de la Iglesia no es un truco. Es adoración: el mundo es criatura, y Dios es el que ya estaba ahí.",
+          "headingEs": "Un mundo que no se inventó solo",
+          "bodyEs": "Los cristianos no fingimos que una frase puede meter a Dios en un laboratorio. Sí decimos que el mundo es un mal candidato para “así nomás pasó”. Lo que empieza, cambia y se deshace no explica por qué hay algo en vez de nada. Una mente que encuentra orden, belleza y leyes confiables en ese mundo ya está recibiendo un regalo, no una máquina cerrada.\n\nBasilio el Grande, predicando sobre Génesis, rechaza la idea de que el mundo se armó solo: “Voy a hablar de la creación del cielo y de la tierra, que no fue espontánea, como algunos imaginaron, sino que tuvo su origen en Dios”. Pablo dice lo mismo desde el otro lado: “Porque las cosas invisibles de él, su eterna potencia y divinidad, se echan de ver desde la creación del mundo, siendo entendidas por las cosas que son hechas” (Romanos 1:20, RV1909).\n\nLa ciencia puede decir cómo arde una estrella. Contar ese fuego no responde quién le dio un lugar para arder. La primera respuesta de la Iglesia no es un truco. Es adoración: el mundo es criatura, y Dios es el que ya estaba ahí."
+        },
+        {
+          "heading": "Para llevarte",
+          "body": "La existencia de Dios no es una pieza de repuesto pegada a un mundo que ya se explica solo. El mundo señala más allá de sí mismo. Basta con la frase de Basilio: la creación tuvo su origen en Dios, y no fue espontánea.",
+          "headingEs": "Para llevarte",
+          "bodyEs": "La existencia de Dios no es una pieza de repuesto pegada a un mundo que ya se explica solo. El mundo señala más allá de sí mismo. Basta con la frase de Basilio: la creación tuvo su origen en Dios, y no fue espontánea."
+        }
+      ],
+      "questionsEs": [
+        {
+          "prompt": "¿Qué niega Basilio sobre el origen del cielo y de la tierra?",
+          "choices": [
+            "Que se puedan estudiar",
+            "Que hayan llegado a ser de manera espontánea, sin Dios",
+            "Que Dios sea distinto del mundo"
+          ],
+          "correct": 1,
+          "explanation": "En el Hexamerón, Basilio dice que la creación del cielo y de la tierra no fue espontánea, sino que tuvo su origen en Dios.",
+          "promptEs": "¿Qué niega Basilio sobre el origen del cielo y de la tierra?",
+          "explanationEs": "En el Hexamerón, Basilio dice que la creación del cielo y de la tierra no fue espontánea, sino que tuvo su origen en Dios."
+        },
+        {
+          "prompt": "Romanos 1:20 dice que la eterna potencia y divinidad de Dios se echan de ver por medio de qué?",
+          "choices": [
+            "Un sentimiento privado, sin vínculo con el mundo",
+            "Las cosas que son hechas",
+            "Un voto de las naciones"
+          ],
+          "correct": 1,
+          "explanation": "Pablo dice que las cosas invisibles de Dios se entienden por las cosas que son hechas.",
+          "promptEs": "Romanos 1:20 dice que la eterna potencia y divinidad de Dios se echan de ver por medio de qué?",
+          "explanationEs": "Pablo dice que las cosas invisibles de Dios se entienden por las cosas que son hechas."
+        }
       ]
     },
     {
@@ -84,7 +126,9 @@
           "correct": 1,
           "explanation": "Matthew 28:19 names the Father, the Son, and the Holy Spirit in one name. The Church confesses one divine nature and three Persons."
         }
-      ]
+      ],
+      "titleEs": "¿Por qué la Trinidad?",
+      "summaryEs": "Un solo Dios, y el Hijo y el Espíritu no son creaciones tardías. La Escritura habla de los tres sin dividir al único Dios."
     },
     {
       "id": "idea-resurrection",
@@ -126,7 +170,9 @@
           "correct": 1,
           "explanation": "The first witnesses at the tomb being women is a stubborn detail. It does not fit a legend designed to sound officially impressive."
         }
-      ]
+      ],
+      "titleEs": "La resurrección: ¿qué evidencia hay?",
+      "summaryEs": "Los relatos no suenan a un rumor pulido. Empieza por lo que dicen los testigos y por la tumba vacía."
     },
     {
       "id": "idea-gospels",
@@ -169,7 +215,9 @@
           "correct": 0,
           "explanation": "Luke says the things he records were delivered by those who from the beginning were eyewitnesses and ministers of the word."
         }
-      ]
+      ],
+      "titleEs": "¿Son confiables los Evangelios?",
+      "summaryEs": "Cuatro relatos cercanos a los hechos, con nombres, lugares y detalles que un invento tardío no necesita."
     },
     {
       "id": "idea-evil",
@@ -211,7 +259,9 @@
           "correct": 2,
           "explanation": "The lesson refuses both a second evil god and a denial of pain. The Cross and Resurrection are God’s way with the wound."
         }
-      ]
+      ],
+      "titleEs": "¿Por qué hay mal y sufrimiento?",
+      "summaryEs": "La Escritura no esconde el dolor. Tampoco lo llama el plan secreto de Dios para lastimar."
     },
     {
       "id": "idea-tradition",
@@ -254,7 +304,8 @@
           "correct": 0,
           "explanation": "Paul says to hold the traditions taught whether by word or by his epistle."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "idea-icons",
@@ -297,7 +348,8 @@
           "correct": 1,
           "explanation": "He compares the image with the Gospel book: the honour is for what they present, not for leather or paint as God."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "idea-theotokos-saints",
@@ -340,7 +392,8 @@
           "correct": 1,
           "explanation": "He says the honour given to her is referred to him who was made of her incarnate, and that the saints’ lives move us to glorify God."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "idea-church",
@@ -383,7 +436,8 @@
           "correct": 0,
           "explanation": "Paul calls the church of the living God the pillar and ground of the truth."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "idea-eucharist",
@@ -426,7 +480,8 @@
           "correct": 2,
           "explanation": "The lesson confesses a real presence and the one sacrifice, not a bare symbol and not a second Christ."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "idea-faith-science",
@@ -469,7 +524,9 @@
           "correct": 1,
           "explanation": "The lesson says scientific description and the confession of the Creator answer different questions about the same world."
         }
-      ]
+      ],
+      "titleEs": "Fe y ciencia",
+      "summaryEs": "Estudiar cómo funciona el mundo no compite con adorar a quien lo hizo."
     },
     {
       "id": "idea-miracles",
@@ -512,7 +569,9 @@
           "correct": 0,
           "explanation": "John says these things are written that you might believe that Jesus is the Christ, the Son of God, and have life in his name."
         }
-      ]
+      ],
+      "titleEs": "¿Por qué los milagros?",
+      "summaryEs": "Un milagro no es un truco contra las leyes. Es el Creador actuando en lo que él mismo hizo."
     },
     {
       "id": "trinity",
@@ -578,7 +637,9 @@
           "correct": 1,
           "explanation": "Trinitarian doctrine matters because salvation and prayer are communion with the Father through the Son in the Holy Spirit, not because definitions replace prayer."
         }
-      ]
+      ],
+      "titleEs": "El único Dios y las tres Personas",
+      "summaryEs": "El Padre, el Hijo y el Espíritu son un solo Dios, no tres dioses ni tres modos de hablar."
     },
     {
       "id": "christ",
@@ -644,7 +705,8 @@
           "correct": 1,
           "explanation": "The Incarnation is not a temporary disguise because the Word truly assumed humanity and remains incarnate."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "worship",
@@ -737,7 +799,8 @@
           "heading": "The cross",
           "body": "The Cross was an instrument of death. In Christ’s hands it became the instrument of salvation. St Basil connects the “sign of the Son of Man” at the Second Coming with the arms of the Cross: the Cross is not only a past event but the sign under which the Lord returns. Christians sign themselves with it, bless with it, and are guarded by it in travel, work, sleep, and prayer. It ties the Old Testament to the New, and the New to the age to come, when material signs will no longer be needed because God will be all in all. Until then, the Cross is how the Church touches that victory in the body."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "apologetics",
@@ -803,7 +866,8 @@
           "correct": 1,
           "explanation": "Orthodox teaching gives Scripture first place within Holy Tradition; Tradition is not a license to discard the Bible or equate every custom with apostolic teaching."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "deity-evidence",
@@ -955,7 +1019,9 @@
           "explanation": "One Lord acts in both registers. The human actions carry the divine imprint, and the divine works are done in a real human life."
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "titleEs": "El caso de que Jesús es Dios",
+      "summaryEs": "Mira lo que Jesús dice, lo que hace y cómo responden los que lo oyeron."
     },
     {
       "id": "trinity-case",
@@ -1107,7 +1173,9 @@
           "explanation": "The story’s point is: do not labor for proofs of what faith receives. Believe the Son, and come into the Church’s communion."
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "titleEs": "Presentar la Trinidad con cuidado",
+      "summaryEs": "No fuerces un versículo a decir más de lo que dice. Junta el testimonio completo."
     },
     {
       "id": "council-depth",
@@ -1240,7 +1308,8 @@
           "term": "Theotokos",
           "say": "theh oh toh kohs"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "religions",
@@ -1375,7 +1444,8 @@
           "correct": 1,
           "explanation": "A cumulative argument should present a coherent case and answer rival interpretations honestly, not claim one verse ends all disagreement."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "fathers-incarnation",
@@ -1484,7 +1554,8 @@
           "correct": 1,
           "explanation": "Maximus reads Christ’s work as healing and reconciling creation, not treating created life as irrelevant."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "reading-scripture",
@@ -1589,7 +1660,9 @@
           "correct": 1,
           "explanation": "A responsible typological reading keeps the passage’s historical setting together with the New Testament’s use of it."
         }
-      ]
+      ],
+      "titleEs": "Lee el pasaje y prueba la afirmación",
+      "summaryEs": "Antes de discutir, lee el texto en su lugar y pregunta qué sostiene de verdad."
     },
     {
       "id": "humanity-and-wills",
@@ -1694,7 +1767,9 @@
           "correct": 2,
           "explanation": "The best sentence avoids the false choice: the one divine Son lived a genuine human life."
         }
-      ]
+      ],
+      "titleEs": "La humanidad plena de Cristo",
+      "summaryEs": "Jesús es verdaderamente humano: cuerpo, alma, mente y voluntad humana, sin dejar de ser Dios."
     },
     {
       "id": "mini-one-god",
@@ -1746,7 +1821,9 @@
           "correct": 1,
           "explanation": "The strongest reply confesses one God and three distinct Persons, not three gods and not the Father alone."
         }
-      ]
+      ],
+      "titleEs": "Un solo Dios, tres Personas",
+      "summaryEs": "Una lección corta para no confundir al único Dios con tres dioses."
     },
     {
       "id": "mini-real-flesh",
@@ -1798,7 +1875,9 @@
           "correct": 1,
           "explanation": "Luke’s “Handle me and see” shows the risen Christ is bodily real, not a ghost."
         }
-      ]
+      ],
+      "titleEs": "¿Dios se hizo de verdad humano?",
+      "summaryEs": "El Hijo no fingió un cuerpo. Nació, tuvo hambre y murió de verdad."
     },
     {
       "id": "mini-read-fairly",
@@ -1850,7 +1929,9 @@
           "correct": 1,
           "explanation": "A good answer fairly states the objection and gives a contextual case rather than leaning on one isolated verse."
         }
-      ]
+      ],
+      "titleEs": "Responde sin armar un muñeco de paja",
+      "summaryEs": "Repite la objeción con justicia antes de contestarla."
     },
     {
       "id": "mini-islamic-dilemma",
@@ -1906,7 +1987,8 @@
           "correct": 1,
           "explanation": "Sinaiticus (about AD 350) and the Scrolls (before Christ) predate Islam by centuries, so the Bible of Muhammad's day is checkable — and it proclaims the crucifixion and the Son."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "track-genesis",
@@ -2075,7 +2157,9 @@
             "category": "overflow"
           }
         ]
-      }
+      },
+      "titleEs": "Génesis: comienzos y promesa",
+      "summaryEs": "Creación, caída y la promesa que no se apaga."
     },
     {
       "id": "track-gospels",
@@ -2158,7 +2242,9 @@
           "explanation": "The New Adam carries the human vocation Adam broke, from within the human race."
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "titleEs": "Los Evangelios: la vida de Cristo y la Pascua",
+      "summaryEs": "Sigue a Jesús desde el anuncio hasta la cruz y la tumba vacía."
     },
     {
       "id": "track-psalms",
@@ -2214,6 +2300,66 @@
           ],
           "correct": 0,
           "explanation": "Psalm 22 opens with the cry Jesus quotes on the cross."
+        }
+      ],
+      "titleEs": "Los Salmos: oración y profecía",
+      "summaryEs": "Ora el Salterio y aprende a moverte entre sus dos numeraciones.",
+      "lessonsEs": [
+        {
+          "heading": "Un libro de oración",
+          "body": "La adoración de la Iglesia reza los Salmos como su propia palabra delante de Dios: lamento, alabanza, arrepentimiento y esperanza.",
+          "headingEs": "Un libro de oración",
+          "bodyEs": "La adoración de la Iglesia reza los Salmos como su propia palabra delante de Dios: lamento, alabanza, arrepentimiento y esperanza."
+        },
+        {
+          "heading": "Dos numeraciones",
+          "body": "La RV1909 y la KJV siguen la numeración hebrea. El Salterio de la Septuaginta, el que usa la adoración ortodoxa, a menudo difiere. El Salmo 23 de la RV1909 es el Salmo 22 de la Septuaginta.",
+          "headingEs": "Dos numeraciones",
+          "bodyEs": "La RV1909 y la KJV siguen la numeración hebrea. El Salterio de la Septuaginta, el que usa la adoración ortodoxa, a menudo difiere. El Salmo 23 de la RV1909 es el Salmo 22 de la Septuaginta."
+        },
+        {
+          "heading": "Léelo con Cristo",
+          "body": "Jesús cita el Salmo 22 en la cruz. Lee todo el lamento, incluido el giro hacia la alabanza, antes de sacar conclusiones de una sola línea.",
+          "headingEs": "Léelo con Cristo",
+          "bodyEs": "Jesús cita el Salmo 22 en la cruz. Lee todo el lamento, incluido el giro hacia la alabanza, antes de sacar conclusiones de una sola línea."
+        }
+      ],
+      "questionsEs": [
+        {
+          "prompt": "¿Cuál es el número de la Septuaginta para el Salmo 23 de la RV1909?",
+          "choices": [
+            "22",
+            "23",
+            "24"
+          ],
+          "correct": 0,
+          "explanation": "En la numeración de la Septuaginta, el Salmo 23 de la RV1909 es el Salmo 22.",
+          "promptEs": "¿Cuál es el número de la Septuaginta para el Salmo 23 de la RV1909?",
+          "explanationEs": "En la numeración de la Septuaginta, el Salmo 23 de la RV1909 es el Salmo 22."
+        },
+        {
+          "prompt": "¿Qué salmo empieza “Jehová es mi pastor” en la numeración de la RV1909?",
+          "choices": [
+            "El Salmo 23",
+            "El Salmo 2",
+            "El Salmo 119"
+          ],
+          "correct": 0,
+          "explanation": "El Salmo 23 de la RV1909 empieza: “JEHOVÁ es mi pastor; nada me faltará”.",
+          "promptEs": "¿Qué salmo empieza “Jehová es mi pastor” en la numeración de la RV1909?",
+          "explanationEs": "El Salmo 23 de la RV1909 empieza: “JEHOVÁ es mi pastor; nada me faltará”."
+        },
+        {
+          "prompt": "¿Qué salmo abre con el grito que Jesús cita en la cruz?",
+          "choices": [
+            "El Salmo 22",
+            "El Salmo 150",
+            "El Salmo 1"
+          ],
+          "correct": 0,
+          "explanation": "El Salmo 22 abre con el grito que Jesús cita en la cruz.",
+          "promptEs": "¿Qué salmo abre con el grito que Jesús cita en la cruz?",
+          "explanationEs": "El Salmo 22 abre con el grito que Jesús cita en la cruz."
         }
       ]
     },
@@ -2272,7 +2418,8 @@
           "correct": 0,
           "explanation": "Nicaea confessed the Son and the Father to be of one divine essence."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "track-constantinople1",
@@ -2329,7 +2476,8 @@
           "correct": 0,
           "explanation": "Basil the Great wrote On the Holy Spirit."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "track-ephesus",
@@ -2392,7 +2540,8 @@
           "term": "Theotokos",
           "say": "theh oh toh kohs"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "track-chalcedon",
@@ -2475,7 +2624,8 @@
           "explanation": "The definition confesses one Christ in two natures without confusion, change, division, or separation."
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "deeper": true
     },
     {
       "id": "track-constantinople2",
@@ -2532,7 +2682,8 @@
           "correct": 0,
           "explanation": "The council reaffirmed Cyril of Alexandria’s Christological teaching."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "track-constantinople3",
@@ -2615,7 +2766,8 @@
           "explanation": "“Not as I will, but as Thou wilt” is the human will speaking. A swallowed will could not pray that prayer."
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "deeper": true
     },
     {
       "id": "track-nicaea2",
@@ -2698,7 +2850,8 @@
           "explanation": "The icon is venerated as holy. That is not the same as worshipping the material as God."
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "deeper": true
     },
     {
       "id": "explain-the-words",
@@ -2791,7 +2944,8 @@
           "say": "high pah stuh sis"
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "deeper": true
     },
     {
       "id": "explain-one-god-three-hypostases",
@@ -2909,7 +3063,8 @@
           "say": "peh ree koh ree sis"
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "deeper": true
     },
     {
       "id": "explain-eternal-manifestation",
@@ -3093,7 +3248,8 @@
           "say": "man ih fes tay shun"
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "deeper": true
     },
     {
       "id": "explain-godhead-without-heresy",
@@ -3325,7 +3481,8 @@
           "say": "proh seeds"
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "deeper": true
     },
     {
       "id": "explain-hypostatic-union",
@@ -3473,7 +3630,8 @@
           }
         ]
       },
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "deeper": true
     },
     {
       "id": "explain-say-it-right",
@@ -3536,7 +3694,8 @@
           "term": "Theotokos",
           "say": "theh oh toh kohs"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "defense-saints-intercession",
@@ -3656,7 +3815,8 @@
             "category": "ask-intercession"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "defense-theotokos",
@@ -3756,7 +3916,8 @@
           "say": "kah myoo nih kah tee oh, ih dee oh mah tum"
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "deeper": true
     },
     {
       "id": "defense-true-body-blood",
@@ -3822,7 +3983,8 @@
           "term": "koinonia",
           "say": "koy noh nee ah"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "defense-essence-energies",
@@ -3947,7 +4109,8 @@
           "say": "theh oh sis"
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "deeper": true
     },
     {
       "id": "mini-say-the-words-1",
@@ -4044,7 +4207,8 @@
           "term": "communicatio idiomatum",
           "say": "kah myoo nih kah tee oh, ih dee oh mah tum"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "mini-say-the-words-2",
@@ -4137,7 +4301,8 @@
           "term": "thelema gnomikon",
           "say": "theh leh mah, noh mee kon"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "mini-dominant-difference",
@@ -4248,7 +4413,8 @@
           "say": "sin ehr gee ah"
         }
       ],
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "deeper": true
     },
     {
       "id": "explain-christus-victor-psa",
@@ -4465,7 +4631,8 @@
           }
         ]
       },
-      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev."
+      "adaptation": "Adapted from The Mystery of Faith by Bishop Hilarion Alfeyev.",
+      "deeper": true
     },
     {
       "id": "ladder-1-union",
@@ -4688,7 +4855,8 @@
             "category": "true-man"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "ladder-2-properties",
@@ -4799,7 +4967,8 @@
           "term": "abstract predication",
           "say": "ab strakt pred ih kay shun"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "ladder-2b-communicatio",
@@ -4964,7 +5133,8 @@
             "category": "eternal-son"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "ladder-2c-predication",
@@ -5140,7 +5310,8 @@
             "category": "divine-nature"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "ladder-3-heresies",
@@ -5274,7 +5445,8 @@
           "term": "Adoptionism",
           "say": "uh dop shun iz um"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "ladder-4-councils",
@@ -5393,7 +5565,8 @@
           "term": "Theotokos",
           "say": "theh oh toh kohs"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "ladder-5-figures",
@@ -5516,7 +5689,8 @@
           "term": "enhypostasia",
           "say": "en hee pah stah see ah"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "ladder-6-orthodox-terms",
@@ -5639,7 +5813,8 @@
           "term": "prosopon",
           "say": "proh soh pon"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "explain-dogma-and-life",
@@ -5725,7 +5900,8 @@
             "category": "experience"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "explain-coming-to-faith",
@@ -5819,7 +5995,9 @@
             "category": "encounter"
           }
         ]
-      }
+      },
+      "titleEs": "La fe, el llamado y la conversión",
+      "summaryEs": "La fe es confiar y volverse, no firmar una lista de ideas."
     },
     {
       "id": "explain-seeking-god",
@@ -5919,7 +6097,9 @@
           "term": "cosmos",
           "say": "KOZ-moss"
         }
-      ]
+      ],
+      "titleEs": "De la filosofía a la revelación",
+      "summaryEs": "Pensar ayuda. Dios también habla, y no solo desde nuestros argumentos."
     },
     {
       "id": "track-angels",
@@ -6005,7 +6185,9 @@
             "category": "worship"
           }
         ]
-      }
+      },
+      "titleEs": "Los ángeles",
+      "summaryEs": "Mensajeros de Dios, no el centro de la historia. La Escritura los muestra sirviendo."
     },
     {
       "id": "track-origin-of-evil",
@@ -6095,7 +6277,9 @@
             "category": "a-will"
           }
         ]
-      }
+      },
+      "titleEs": "El origen del mal",
+      "summaryEs": "El mal no es un segundo dios. Es un bien torcido, y la Escritura lo cuenta así."
     },
     {
       "id": "track-human-person",
@@ -6195,7 +6379,9 @@
           "term": "theosis",
           "say": "theh-OH-sis"
         }
-      ]
+      ],
+      "titleEs": "La persona humana",
+      "summaryEs": "Hechos a imagen de Dios, cuerpo y alma, no un alma atrapada en un estorbo."
     },
     {
       "id": "track-the-fall",
@@ -6285,7 +6471,9 @@
             "category": "turned"
           }
         ]
-      }
+      },
+      "titleEs": "Antes de la caída, y la caída",
+      "summaryEs": "Lo que se rompió no era el diseño. Fue la confianza."
     },
     {
       "id": "explain-church-kingdom",
@@ -6371,7 +6559,8 @@
             "category": "house"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "explain-church-attributes",
@@ -6457,7 +6646,8 @@
             "category": "catholic-apostolic"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "explain-church-hierarchy",
@@ -6543,7 +6733,8 @@
             "category": "example"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "explain-women-in-the-church",
@@ -6629,7 +6820,8 @@
             "category": "service"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "explain-church-time",
@@ -6715,7 +6907,8 @@
             "category": "presence"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "explain-one-church",
@@ -6801,7 +6994,8 @@
             "category": "humility"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "explain-sacraments",
@@ -6893,7 +7087,8 @@
           "term": "mysterion",
           "say": "mee-STEE-ree-on"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "explain-baptism",
@@ -6979,7 +7174,8 @@
             "category": "life"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "explain-chrismation",
@@ -7071,7 +7267,8 @@
           "term": "chrism",
           "say": "KRIZ-um"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "explain-penance",
@@ -7163,7 +7360,8 @@
           "term": "metanoia",
           "say": "meh-tah-NOY-ah"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "explain-anointing",
@@ -7249,7 +7447,8 @@
             "category": "soul"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "explain-marriage",
@@ -7335,7 +7534,8 @@
             "category": "feast"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "explain-priesthood",
@@ -7421,7 +7621,8 @@
             "category": "gift"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "explain-monasticism",
@@ -7507,7 +7708,8 @@
             "category": "goal"
           }
         ]
-      }
+      },
+      "deeper": true
     },
     {
       "id": "explain-second-coming",
@@ -7599,7 +7801,9 @@
           "term": "eschaton",
           "say": "ESS-kah-ton"
         }
-      ]
+      ],
+      "titleEs": "El fin de la historia",
+      "summaryEs": "Jesús dice que volverá. La esperanza mira hacia ese día, no hacia una huida."
     },
     {
       "id": "explain-death-and-resurrection",
@@ -7685,7 +7889,9 @@
             "category": "wait"
           }
         ]
-      }
+      },
+      "titleEs": "Muerte y resurrección",
+      "summaryEs": "La muerte es real. La resurrección también, y es del cuerpo, no solo de una idea."
     },
     {
       "id": "explain-last-judgment",
@@ -7771,7 +7977,9 @@
             "category": "descent"
           }
         ]
-      }
+      },
+      "titleEs": "El juicio final",
+      "summaryEs": "Dios juzga con verdad. El día no es un rumor para asustar, es la luz sobre lo que hicimos."
     },
     {
       "id": "explain-what-is-hell",
@@ -7857,7 +8065,9 @@
             "category": "victory"
           }
         ]
-      }
+      },
+      "titleEs": "¿Qué es el infierno?",
+      "summaryEs": "La Escritura habla de estar lejos de Dios. No lo conviertas en un espectáculo."
     },
     {
       "id": "explain-new-creation",
@@ -7943,7 +8153,9 @@
             "category": "world"
           }
         ]
-      }
+      },
+      "titleEs": "Un cielo nuevo y una tierra nueva",
+      "summaryEs": "El final no es escapar del mundo. Es el mundo hecho nuevo."
     },
     {
       "id": "saint-theotokos",
@@ -7984,7 +8196,8 @@
           "correct": 0,
           "explanation": "Elizabeth says, “the mother of my Lord.”"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "saint-nicholas",
@@ -8025,7 +8238,8 @@
           "correct": 0,
           "explanation": "Jesus says the left hand should not know what the right hand is doing."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "saint-seraphim",
@@ -8066,7 +8280,8 @@
           "correct": 0,
           "explanation": "Seraphim of Sarov died in 1833."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "saint-herman",
@@ -8107,7 +8322,8 @@
           "correct": 0,
           "explanation": "James names both mercy to the afflicted and a life kept unspotted."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "saint-mary-egypt",
@@ -8148,7 +8364,8 @@
           "correct": 0,
           "explanation": "The received account names the priest Zosimas."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "saint-chrysostom",
@@ -8189,7 +8406,8 @@
           "correct": 0,
           "explanation": "John Chrysostom died in exile in 407."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "saint-basil",
@@ -8230,7 +8448,8 @@
           "correct": 0,
           "explanation": "Basil served as bishop of Caesarea."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "saint-paisios",
@@ -8271,7 +8490,8 @@
           "correct": 0,
           "explanation": "His books and recorded sayings are modern and copyrighted, so this lesson stays with the public facts."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "prayer-divine-liturgy",
@@ -8312,7 +8532,8 @@
           "correct": 0,
           "explanation": "The prayer says, “thou art in very truth the Christ, the Son of the living God.”"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "prayer-vespers",
@@ -8353,7 +8574,8 @@
           "correct": 0,
           "explanation": "The Church inherited a day that turns at sunset, so Vespers opens what morning will continue."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "prayer-jesus-prayer",
@@ -8393,6 +8615,48 @@
           ],
           "correct": 0,
           "explanation": "The publican says, “God be merciful to me a sinner.”"
+        }
+      ],
+      "titleEs": "La oración de Jesús",
+      "summaryEs": "Una oración corta hecha de dos gritos del Evangelio: el ciego y el publicano.",
+      "lessonsEs": [
+        {
+          "heading": "Dos frases que los Evangelios ya oran",
+          "body": "A las afueras de Jericó un ciego grita: “Jesús, Hijo de David, ten misericordia de mí” (Marcos 10:47, RV1909). En el templo un publicano ni siquiera quiere alzar los ojos y dice: “Dios, sé propicio á mí pecador” (Lucas 18:13, RV1909). La Iglesia juntó esos dos gritos y los dejó cortos: Señor Jesucristo, Hijo de Dios, ten misericordia de mí, pecador.\n\nLa oración no es un conjuro. Es un nombre y una necesidad. Puedes decirla en un cordón de nudos, o en voz baja mientras caminas, o una sola vez, despacio, cuando no te quedan otras palabras. El punto es la atención. El nombre de Jesús es el contenido. La misericordia es el pedido. Las últimas palabras mantienen honesto a quien ora.",
+          "headingEs": "Dos frases que los Evangelios ya oran",
+          "bodyEs": "A las afueras de Jericó un ciego grita: “Jesús, Hijo de David, ten misericordia de mí” (Marcos 10:47, RV1909). En el templo un publicano ni siquiera quiere alzar los ojos y dice: “Dios, sé propicio á mí pecador” (Lucas 18:13, RV1909). La Iglesia juntó esos dos gritos y los dejó cortos: Señor Jesucristo, Hijo de Dios, ten misericordia de mí, pecador.\n\nLa oración no es un conjuro. Es un nombre y una necesidad. Puedes decirla en un cordón de nudos, o en voz baja mientras caminas, o una sola vez, despacio, cuando no te quedan otras palabras. El punto es la atención. El nombre de Jesús es el contenido. La misericordia es el pedido. Las últimas palabras mantienen honesto a quien ora."
+        },
+        {
+          "heading": "Un ritmo que puede durar",
+          "body": "El consejo antiguo es decirla con suavidad y quedarte ahí, no salir a cazar un sentimiento. Si la mente se va, empieza la frase otra vez. Lucas dice que el publicano “descendió á su casa justificado” antes que el hombre que repasaba sus virtudes (Lucas 18:14, RV1909). La oración de Jesús se pone de ese lado de la historia. Es una manera de estar en la verdad sin dar un discurso.",
+          "headingEs": "Un ritmo que puede durar",
+          "bodyEs": "El consejo antiguo es decirla con suavidad y quedarte ahí, no salir a cazar un sentimiento. Si la mente se va, empieza la frase otra vez. Lucas dice que el publicano “descendió á su casa justificado” antes que el hombre que repasaba sus virtudes (Lucas 18:14, RV1909). La oración de Jesús se pone de ese lado de la historia. Es una manera de estar en la verdad sin dar un discurso."
+        }
+      ],
+      "questionsEs": [
+        {
+          "prompt": "Marcos 10:47 recuerda que el ciego le pidió a Jesús ¿qué?",
+          "choices": [
+            "Misericordia",
+            "Una corona",
+            "Un debate"
+          ],
+          "correct": 0,
+          "explanation": "Grita: “ten misericordia de mí”.",
+          "promptEs": "Marcos 10:47 recuerda que el ciego le pidió a Jesús ¿qué?",
+          "explanationEs": "Grita: “ten misericordia de mí”."
+        },
+        {
+          "prompt": "Lucas 18:13 es la oración de ¿qué hombre?",
+          "choices": [
+            "El publicano",
+            "El fariseo que enumeraba sus virtudes",
+            "El joven rico"
+          ],
+          "correct": 0,
+          "explanation": "El publicano dice: “Dios, sé propicio á mí pecador”.",
+          "promptEs": "Lucas 18:13 es la oración de ¿qué hombre?",
+          "explanationEs": "El publicano dice: “Dios, sé propicio á mí pecador”."
         }
       ]
     },
@@ -8435,7 +8699,8 @@
           "correct": 0,
           "explanation": "Mary’s nativity is one of the Twelve Great Feasts."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "feast-exaltation",
@@ -8476,7 +8741,8 @@
           "correct": 0,
           "explanation": "The feast is September 14."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "feast-entrance-theotokos",
@@ -8517,7 +8783,8 @@
           "correct": 0,
           "explanation": "The entrance belongs to the Church’s received memory. The four Gospels do not narrate it."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "feast-nativity",
@@ -8558,7 +8825,8 @@
           "correct": 0,
           "explanation": "The feast is December 25. Theophany on January 6 is his baptism."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "feast-theophany",
@@ -8599,7 +8867,8 @@
           "correct": 0,
           "explanation": "January 6 is the Baptism of Christ, the showing of the Trinity at the Jordan."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "feast-presentation",
@@ -8640,7 +8909,8 @@
           "correct": 0,
           "explanation": "February 2 is the fortieth day."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "feast-annunciation",
@@ -8681,7 +8951,8 @@
           "correct": 0,
           "explanation": "She says, “Behold the handmaid of the Lord; be it unto me according to thy word.”"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "feast-entry-jerusalem",
@@ -8722,7 +8993,8 @@
           "correct": 0,
           "explanation": "It is a movable feast, the Sunday that opens Holy Week."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "feast-ascension",
@@ -8763,7 +9035,8 @@
           "correct": 0,
           "explanation": "It is the fortieth day, and Pentecost is the fiftieth."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "feast-pentecost",
@@ -8804,7 +9077,8 @@
           "correct": 0,
           "explanation": "Pentecost means the fiftieth day."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "feast-transfiguration",
@@ -8845,7 +9119,8 @@
           "correct": 0,
           "explanation": "The voice says, “hear ye him.”"
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "feast-dormition",
@@ -8886,7 +9161,8 @@
           "correct": 0,
           "explanation": "Mary says all generations shall call her blessed."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "feast-pascha",
@@ -8927,7 +9203,8 @@
           "correct": 0,
           "explanation": "Pascha is a movable feast, the first Sunday after the paschal full moon of the Church’s reckoning."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "lent-great-lent",
@@ -8968,7 +9245,8 @@
           "correct": 0,
           "explanation": "Forgiveness Vespers opens the fast with mutual pardon."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "lent-fasting",
@@ -9009,7 +9287,8 @@
           "correct": 0,
           "explanation": "The Church expects pastoral judgment. The sick and the pregnant ask their priest."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "lent-three-helps",
@@ -9050,7 +9329,8 @@
           "correct": 0,
           "explanation": "He says the Father who sees in secret shall reward thee openly."
         }
-      ]
+      ],
+      "deeper": true
     },
     {
       "id": "life-repentance",
@@ -9090,6 +9370,48 @@
           ],
           "correct": 0,
           "explanation": "He is faithful and just to forgive us our sins and to cleanse us."
+        }
+      ],
+      "titleEs": "El arrepentimiento es un camino",
+      "summaryEs": "Arrepentirse es darse la vuelta y caminar a casa, no un solo pinchazo de pena.",
+      "lessonsEs": [
+        {
+          "heading": "Me levantaré",
+          "body": "El hijo pródigo no espera a sentirse digno. Dice: “Me levantaré, é iré á mi padre, y le diré: Padre, he pecado contra el cielo, y contra ti” (Lucas 15:18, RV1909). Después se levanta y va. El padre lo ve desde lejos y corre. En esa historia el arrepentimiento es una decisión, una frase y una caminata. La vergüenza es real, y no es todo.\n\nEn la Iglesia esa caminata tiene un lugar: la confesión ante un sacerdote, un canon de oración si te lo dan, y la comunión cuando el sacerdote dice que la persona está lista. El punto no es quedarse en el odio a uno mismo. El punto es volver a casa y quedarse.",
+          "headingEs": "Me levantaré",
+          "bodyEs": "El hijo pródigo no espera a sentirse digno. Dice: “Me levantaré, é iré á mi padre, y le diré: Padre, he pecado contra el cielo, y contra ti” (Lucas 15:18, RV1909). Después se levanta y va. El padre lo ve desde lejos y corre. En esa historia el arrepentimiento es una decisión, una frase y una caminata. La vergüenza es real, y no es todo.\n\nEn la Iglesia esa caminata tiene un lugar: la confesión ante un sacerdote, un canon de oración si te lo dan, y la comunión cuando el sacerdote dice que la persona está lista. El punto no es quedarse en el odio a uno mismo. El punto es volver a casa y quedarse."
+        },
+        {
+          "heading": "Otra vez, sin teatro",
+          "body": "La gente cae después de arrepentirse. El camino incluye levantarse. Juan escribe que si confesamos nuestros pecados, Dios es fiel y justo para perdonar (1 Juan 1:9). Fiel quiere decir que no se cansa de la verdad dicha otra vez. Justo quiere decir que el perdón no es un encogimiento de hombros. Es la cruz ya cargada. Una vida cristiana no es un expediente sin mancha. Es un expediente de regresos.",
+          "headingEs": "Otra vez, sin teatro",
+          "bodyEs": "La gente cae después de arrepentirse. El camino incluye levantarse. Juan escribe que si confesamos nuestros pecados, Dios es fiel y justo para perdonar (1 Juan 1:9). Fiel quiere decir que no se cansa de la verdad dicha otra vez. Justo quiere decir que el perdón no es un encogimiento de hombros. Es la cruz ya cargada. Una vida cristiana no es un expediente sin mancha. Es un expediente de regresos."
+        }
+      ],
+      "questionsEs": [
+        {
+          "prompt": "En Lucas 15:18 el hijo decide decirle a su padre ¿qué?",
+          "choices": [
+            "He pecado contra el cielo y contra ti",
+            "Merezco la herencia otra vez",
+            "Mi hermano fue injusto"
+          ],
+          "correct": 0,
+          "explanation": "Piensa decir: “Padre, he pecado contra el cielo, y contra ti”.",
+          "promptEs": "En Lucas 15:18 el hijo decide decirle a su padre ¿qué?",
+          "explanationEs": "Piensa decir: “Padre, he pecado contra el cielo, y contra ti”."
+        },
+        {
+          "prompt": "1 Juan 1:9 dice que si confesamos, Dios es ¿qué?",
+          "choices": [
+            "Fiel y justo para perdonar",
+            "Indiferente",
+            "Obligado a ignorar el pecado"
+          ],
+          "correct": 0,
+          "explanation": "Él es fiel y justo para perdonar nuestros pecados y limpiarnos.",
+          "promptEs": "1 Juan 1:9 dice que si confesamos, Dios es ¿qué?",
+          "explanationEs": "Él es fiel y justo para perdonar nuestros pecados y limpiarnos."
         }
       ]
     },
@@ -9132,7 +9454,9 @@
           "correct": 0,
           "explanation": "The Father who sees in secret is the one who rewards."
         }
-      ]
+      ],
+      "titleEs": "Limosna que se queda callada",
+      "summaryEs": "Dar sin anuncio. La mano izquierda no necesita un discurso."
     },
     {
       "id": "life-forgiveness",
@@ -9173,7 +9497,9 @@
           "correct": 0,
           "explanation": "Jesus says that if we forgive not, neither will the Father forgive our trespasses."
         }
-      ]
+      ],
+      "titleEs": "El perdón antes del ayuno",
+      "summaryEs": "Perdonar es soltar la deuda, no fingir que no dolió."
     },
     {
       "id": "life-hospitality",
@@ -9214,7 +9540,9 @@
           "correct": 0,
           "explanation": "The verse says some have entertained angels unawares."
         }
-      ]
+      ],
+      "titleEs": "Hospitalidad",
+      "summaryEs": "Abrir la mesa es una forma antigua de tomar en serio al prójimo."
     }
   ],
   "games": [
@@ -9237,13 +9565,21 @@
         "Nicaea I (325)",
         "Ephesus (431)"
       ],
-      "correct": [2, 3, 0, 1],
+      "correct": [
+        2,
+        3,
+        0,
+        1
+      ],
       "explanations": [
         "Nicaea I (325) confessed the Son as homoousios — of one essence with the Father — and not a creature.",
         "Ephesus (431) confessed Mary as Theotokos: the one born of her is the divine Son incarnate, one Person.",
         "Chalcedon (451) confessed Christ as one Person in two complete natures, divine and human, without confusion.",
         "Nicaea II (787) defended the veneration of icons because the Son truly became visible in the Incarnation."
-      ]
+      ],
+      "deeper": true,
+      "titleEs": "Mapa de los concilios",
+      "summaryEs": "Une cada controversia con el concilio que dio una respuesta clara."
     },
     {
       "id": "argument",
@@ -9264,13 +9600,21 @@
         "Distinguish glorified resurrection from ordinary resuscitation.",
         "Explain how living faith bears the fruit of love through grace."
       ],
-      "correct": [1, 3, 0, 2],
+      "correct": [
+        1,
+        3,
+        0,
+        2
+      ],
       "explanations": [
         "Theotokos names the Person Mary bore: the divine Son, who took flesh. It does not make Mary the source of the Godhead.",
         "Grace and works are not rivals. Living faith bears the fruit of love; the work is the fruit of grace, not a wage that earns it.",
         "An icon is venerated as a window to the person shown. The worship due to God alone is not given to wood.",
         "The resurrection is a glorified life, not a return to ordinary mortal existence."
-      ]
+      ],
+      "deeper": true,
+      "titleEs": "Arma la respuesta",
+      "summaryEs": "Elige el primer paso más firme ante cada objeción. La precisión importa más que ganar un punto."
     }
   ]
 }

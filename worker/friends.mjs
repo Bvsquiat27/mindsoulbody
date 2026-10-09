@@ -423,6 +423,16 @@ const STUDY_RATE = 40;
 const VERSE_READ_RATE = 200;
 const STUDY_DELETE_RATE = 200;
 const HOUR_MS = 60 * 60 * 1000;
+const SCORE_MAX = 1000000;
+export const RATE_LIMITS = {
+  register: 80,
+  sync: 60,
+  msg: 60,
+  note: 40,
+  friendAdd: 40,
+  shared: 20,
+  scores: 60,
+};
 
 function verseNumber(value, min, max) {
   if (typeof value === 'boolean' || value == null) return null;
@@ -438,14 +448,23 @@ function boundedText(value, max) {
   return { text: raw.trim() };
 }
 
+function clientIp(request) {
+  const cf = request.headers.get('CF-Connecting-IP');
+  if (cf) return cf.trim();
+  const forwarded = request.headers.get('x-forwarded-for') || '';
+  const first = forwarded.split(',')[0].trim();
+  return first || 'unknown';
+}
+
 async function takeRate(env, key, limit) {
   const now = Date.now();
   let bucket = null;
   try { bucket = JSON.parse(await env.FRIENDS.get(key) || 'null'); } catch { bucket = null; }
   if (!bucket || typeof bucket.start !== 'number' || now - bucket.start >= HOUR_MS) bucket = { start: now, n: 0 };
+  if (bucket.n >= limit) return false;
   bucket.n += 1;
   await env.FRIENDS.put(key, JSON.stringify(bucket));
-  return bucket.n <= limit;
+  return true;
 }
 
 async function friendsBothWays(env, user, otherCode) {
@@ -544,6 +563,7 @@ export async function handleFriends(request, env) {
     if (error) return reply({ error }, status);
 
     if (url.pathname === '/register') {
+      if (!(await takeRate(env, `rate:register:${clientIp(request)}`, RATE_LIMITS.register))) return reply({ error: 'Too many new friend codes this hour' }, 429);
       const name = cleanName(body?.name) || 'Friend';
       let code = null;
       for (let i = 0; i < 6 && !code; i++) {
@@ -564,6 +584,7 @@ export async function handleFriends(request, env) {
     if (url.pathname === '/sync') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:sync:${a.user.code}`, RATE_LIMITS.sync))) return reply({ error: 'Too many syncs this hour' }, 429);
       if (body?.name !== undefined) a.user.name = cleanName(body.name) || a.user.name;
       if (body && Object.prototype.hasOwnProperty.call(body, 'stats')) a.user.stats = cleanStats(body.stats);
       const warnings = applyProfile(a.user, body || {});
@@ -572,16 +593,6 @@ export async function handleFriends(request, env) {
       await saveUser(env, a.user);
       await stampBoardId(env, a.user.code, publicId);
       return reply({ ok: true, publicId, ...(warnings.length ? { warning: warnings.join(' ') } : {}) });
-    }
-
-    if (url.pathname === '/account/public-id') {
-      const a = await authed(env, body);
-      if (a.error) return reply({ error: a.error }, a.status);
-      const publicId = await ensurePublicId(env, a.user);
-      if (a.user.publicId !== publicId) a.user.publicId = publicId;
-      await saveUser(env, a.user);
-      await stampBoardId(env, a.user.code, publicId);
-      return reply({ ok: true, publicId });
     }
 
     if (url.pathname === '/friends') {
@@ -598,6 +609,7 @@ export async function handleFriends(request, env) {
     if (url.pathname === '/friend/add') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:friend-add:${a.user.code}`, RATE_LIMITS.friendAdd))) return reply({ error: 'Too many friend requests this hour' }, 429);
       const friendCode = String(body?.friendCode || '').trim().toUpperCase();
       if (!friendCode) return reply({ error: 'Missing friendCode' }, 400);
       if (friendCode === a.user.code) return reply({ error: 'You cannot add yourself' }, 400);
@@ -709,9 +721,9 @@ export async function handleFriends(request, env) {
       const to = String(body?.to || '').trim().toUpperCase();
       if (!to) return reply({ error: 'Missing recipient code' }, 400);
       if (to === a.user.code) return reply({ error: 'You cannot send a note to yourself' }, 400);
-      if (!(a.user.friends || []).includes(to)) return reply({ error: 'Add that person as a friend first' }, 403);
-      const friend = hydrate(await loadUser(env, to));
-      if (!friend) return reply({ error: 'No user with that friend code' }, 404);
+      if (!(await takeRate(env, `rate:note:${a.user.code}`, RATE_LIMITS.note))) return reply({ error: 'Too many notes this hour' }, 429);
+      const friend = await friendsBothWays(env, a.user, to);
+      if (!friend) return reply({ error: 'Add that person as a friend first' }, 403);
       const text = String(body?.body ?? '').trim().slice(0, NOTE_BODY_MAX);
       if (!text) return reply({ error: 'Write the note first' }, 400);
       const note = {
@@ -772,6 +784,8 @@ export async function handleFriends(request, env) {
       const score = Math.floor(num(body?.score));
       const level = Math.min(5, Math.max(1, Math.floor(num(body?.level)) || 1));
       if (score <= 0) return reply({ ok: true, skipped: true });
+      if (score > SCORE_MAX) return reply({ error: 'That score is too high' }, 400);
+      if (!(await takeRate(env, `rate:scores:${a.user.code}`, RATE_LIMITS.scores))) return reply({ error: 'Too many scores this hour' }, 429);
       const publicId = await ensurePublicId(env, a.user);
       await stampBoardId(env, a.user.code, publicId);
       const board = await loadBoard(env);
@@ -888,9 +902,9 @@ export async function handleFriends(request, env) {
       const to = String(body?.to || '').trim().toUpperCase();
       if (!to) return reply({ error: 'Missing recipient code' }, 400);
       if (to === a.user.code) return reply({ error: 'You cannot message yourself' }, 400);
-      if (!(a.user.friends || []).includes(to)) return reply({ error: 'Add that person as a friend first' }, 403);
-      const friend = hydrate(await loadUser(env, to));
-      if (!friend) return reply({ error: 'No user with that friend code' }, 404);
+      if (!(await takeRate(env, `rate:msg:${a.user.code}`, RATE_LIMITS.msg))) return reply({ error: 'Too many messages this hour' }, 429);
+      const friend = await friendsBothWays(env, a.user, to);
+      if (!friend) return reply({ error: 'Add that person as a friend first' }, 403);
       const text = String(body?.body ?? '').trim().slice(0, 2000);
       if (!text) return reply({ error: 'Write the message first' }, 400);
       const msg = { id: randomHex(8), from: a.user.code, fromName: a.user.name, body: text, ts: Date.now(), read: false };
@@ -931,9 +945,9 @@ export async function handleFriends(request, env) {
       const to = String(body?.to || '').trim().toUpperCase();
       if (!to) return reply({ error: 'Missing friend code' }, 400);
       if (to === a.user.code) return reply({ error: 'Pick a friend to write with' }, 400);
-      if (!(a.user.friends || []).includes(to)) return reply({ error: 'Add that person as a friend first' }, 403);
-      const friend = hydrate(await loadUser(env, to));
-      if (!friend) return reply({ error: 'No user with that friend code' }, 404);
+      if (!(await takeRate(env, `rate:shared:${a.user.code}`, RATE_LIMITS.shared))) return reply({ error: 'Too many shared notes this hour' }, 429);
+      const friend = await friendsBothWays(env, a.user, to);
+      if (!friend) return reply({ error: 'Add that person as a friend first' }, 403);
       const text = String(body?.body ?? '').trim().slice(0, NOTE_BODY_MAX);
       if (!text) return reply({ error: 'Write the first line together first' }, 400);
       const id = randomHex(8);

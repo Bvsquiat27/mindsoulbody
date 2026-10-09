@@ -231,8 +231,10 @@
     return [{ chapter:n, lxx:n }];
   }
   function psalmLabel(part){
-    const kjv = part.note ? `Psalm ${part.chapter} (${part.note})` : `Psalm ${part.chapter}`;
-    return `Septuagint ${part.lxx} · ${kjv}`;
+    const es = window.MsbI18n && MsbI18n.lang() === 'es';
+    const note = part.note ? String(part.note).replace(/^verses /, es ? 'versículos ' : 'verses ') : '';
+    const kjv = note ? `${es ? 'Salmo' : 'Psalm'} ${part.chapter} (${note})` : `${es ? 'Salmo' : 'Psalm'} ${part.chapter}`;
+    return `${es ? 'Septuaginta' : 'Septuagint'} ${part.lxx} · ${kjv}`;
   }
   function suggestedKathisma(){
     const now = new Date();
@@ -266,11 +268,12 @@
       const n = index + 1;
       const open = openKathisma === n;
       const body = stases === 'psalm118'
-        ? PSALM118.map((range, i) => `<div class="stasis"><p class="eyebrow">STASIS ${i + 1}</p><button type="button" class="plan-reading" data-lection-book="19" data-lection-chapter="119" data-lection-verse="${range[0]}"><span>Septuagint 118:${range[0]}–${range[1]} · Psalm 119:${range[0]}–${range[1]}</span><span>Open</span></button></div>`).join('')
+        ? PSALM118.map((range, i) => { const es = window.MsbI18n && MsbI18n.lang() === 'es'; return `<div class="stasis"><p class="eyebrow">STASIS ${i + 1}</p><button type="button" class="plan-reading" data-lection-book="19" data-lection-chapter="119" data-lection-verse="${range[0]}"><span>${es ? 'Septuaginta' : 'Septuagint'} 118:${range[0]}–${range[1]} · ${es ? 'Salmo' : 'Psalm'} 119:${range[0]}–${range[1]}</span><span>Open</span></button></div>`; }).join('')
         : stases.map((range, i) => `<div class="stasis"><p class="eyebrow">STASIS ${i + 1}</p>${stasisMarkup(range)}</div>`).join('');
       return `<article class="card kathisma ${n === suggested ? 'kathisma-today' : ''}" id="kathisma-${n}"><div class="kathisma-head"><h2>Kathisma ${n}</h2>${n === suggested ? '<span class="tag">Suggested today</span>' : ''}${done[n] ? '<span class="tag">Read</span>' : ''}</div><button type="button" class="secondary" data-kathisma-open="${n}" aria-expanded="${open}">${open ? 'Hide the stases' : 'Show the stases'}</button>${open ? `<div class="stasis-list">${body}</div>` : ''}<button type="button" class="secondary" data-kathisma-done="${n}">${done[n] ? 'Mark unread' : 'Mark this kathisma read'}</button></article>`;
     }).join('');
-    root.innerHTML = `<button type="button" class="text-button back" data-nav="today">← Home</button><span class="eyebrow">THE PSALTER</span><h1>Twenty kathismata</h1><p class="lead">Each kathisma opens in this Bible. Septuagint numbers are shown beside the KJV numbering. The psalm text itself is unchanged.</p><p class="plan-progress">${finished} of 20 kathismata read · today’s suggestion is kathisma ${suggested}</p>${blocks}`;
+    const es = window.MsbI18n && MsbI18n.lang() === 'es';
+    root.innerHTML = `<button type="button" class="text-button back" data-nav="today">← Home</button><span class="eyebrow">THE PSALTER</span><h1>Twenty kathismata</h1><p class="lead">Each kathisma opens in this Bible. Septuagint numbers are shown beside the KJV numbering. The psalm text itself is unchanged.</p><p class="plan-progress">${es ? `${finished} de 20 catismas leídos · la sugerencia de hoy es el catisma ${suggested}` : `${finished} of 20 kathismata read · today’s suggestion is kathisma ${suggested}`}</p>${blocks}`;
   }
 
   let searchQuery = '';
@@ -406,7 +409,7 @@
     if (marksFilter.value === 'all' || marksFilter.value === 'highlights'){
       for (const item of data.highlights || []){
         const book = bookById(item.book_id);
-        const label = `${book ? book.name : 'Verse'} ${item.chapter}:${item.verse}`;
+        const label = `${book ? (window.msbBookLabel ? msbBookLabel(book.id, book.name) : book.name) : 'Verse'} ${item.chapter}:${item.verse}`;
         if (q && !label.toLowerCase().includes(q) && !String(item.color || '').includes(q)) continue;
         rows.push({ kind:'highlight', label, book:item.book_id, chapter:item.chapter, verse:item.verse, meta:item.color || 'highlight' });
       }
@@ -426,7 +429,8 @@
         const text = String(note.body || '').trim();
         if (!text) continue;
         const book = bookById(note.book_id);
-        const label = `${book ? book.name : 'Verse'} ${note.chapter}:${note.verse}`;
+        const bookName = book ? (window.msbBookLabel ? msbBookLabel(book.id, book.name) : book.name) : '';
+        const label = `${bookName || 'Verse'} ${note.chapter}:${note.verse}`;
         if (q && !`${label} ${text}`.toLowerCase().includes(q)) continue;
         rows.push({ kind:'verse', label, text, book:note.book_id, chapter:note.chapter, verse:note.verse, meta:'Verse note' });
       }

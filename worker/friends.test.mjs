@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { FRIEND_LIMITS, handleFriends } from './friends.mjs';
+import { FRIEND_LIMITS, RATE_LIMITS, handleFriends } from './friends.mjs';
 
 function memoryKv() {
   const data = new Map();
@@ -60,7 +60,7 @@ const COVER = 'https://cdn.example/cover.webp';
 test('sync stores public profile fields and another browser receives them without the secret', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   assert.equal(mary.name, undefined);
   assert.equal(typeof mary.secret, 'string');
   assert.equal(mary.secret.length, 32);
@@ -191,7 +191,7 @@ test('javascript and empty images are not stored, and an omitted name stays', as
 test('only the list owner receives friend records, and those records omit everyone else’s friends', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
 
   await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code });
@@ -241,7 +241,7 @@ test('only the list owner receives friend records, and those records omit everyo
 test('a stored saint portrait id is stripped and does not replace a photo', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   await call(kv, '/sync', {
     code: mary.code,
     secret: mary.secret,
@@ -287,7 +287,7 @@ test('a stored saint portrait id is stripped and does not replace a photo', asyn
 test('a friend request stays pending until the other person accepts, and public scores omit friend codes', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
 
   const add = await read(await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code }));
@@ -305,7 +305,7 @@ test('a friend request stays pending until the other person accepts, and public 
   const maryRequests = await read(await call(kv, '/friend/requests', { code: mary.code, secret: mary.secret }));
   assert.equal(maryRequests.status, 200);
   assert.deepEqual(maryRequests.data.incoming.map((row) => row.code), [angel.code]);
-  assert.equal(maryRequests.data.incoming[0].name, 'Angel');
+  assert.equal(maryRequests.data.incoming[0].name, 'Alex');
   assert.deepEqual(maryRequests.data.outgoing, []);
   assert.equal(maryRequests.text.includes(ruth.code), false);
   assert.equal(maryRequests.text.includes(angel.secret), false);
@@ -358,7 +358,7 @@ test('a friend request stays pending until the other person accepts, and public 
 test('adding someone who already asked completes the friendship', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code });
   const back = await read(await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code }));
   assert.equal(back.data.status, 'friends');
@@ -467,7 +467,14 @@ test('live KV records keep their secret, friends, and code-only scores', async (
   assert.equal(rawBefore.jeopardy[0].score, 500);
   assert.equal(rawBefore.jeopardy[0].id, undefined);
 
-  const claimed = await read(await call(kv, '/account/public-id', { code: 'MSB-LEGACY', secret }));
+  const gone = await read(await call(kv, '/account/public-id', { code: 'MSB-LEGACY', secret }));
+  assert.equal(gone.status, 404);
+  const claimed = await read(await call(kv, '/sync', {
+    code: 'MSB-LEGACY',
+    secret,
+    name: 'Legacy',
+    stats: legacy.stats
+  }));
   assert.equal(claimed.status, 200);
   assert.match(claimed.data.publicId, /^[a-f0-9]{16}$/);
   const stored = await kv.get('user:MSB-LEGACY', 'json');
@@ -741,7 +748,7 @@ test('a full inbox rejects a new request, a stranded outgoing request is rewritt
 test('room scores wait until the room is active', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code });
   await call(kv, '/friend/accept', { code: angel.code, secret: angel.secret, friendCode: mary.code });
   const room = (await read(await call(kv, '/room/create', { code: mary.code, secret: mary.secret, show: 'jeopardy', level: 1 }))).data;
@@ -761,7 +768,7 @@ test('room scores wait until the room is active', async () => {
 test('shared list applies the same editor check as shared get', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
   await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code });
   await call(kv, '/friend/accept', { code: angel.code, secret: angel.secret, friendCode: mary.code });
@@ -784,7 +791,7 @@ test('shared list applies the same editor check as shared get', async () => {
 test('a message thread is hidden after the two people are no longer friends', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code });
   await call(kv, '/friend/accept', { code: angel.code, secret: angel.secret, friendCode: mary.code });
   await call(kv, '/msg/send', { code: mary.code, secret: mary.secret, to: angel.code, body: 'Remember the verse' });
@@ -811,7 +818,7 @@ async function befriend(kv, left, right) {
 test('accepted friends can send a verse, and a stranger or an unfriended person cannot', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
   await befriend(kv, mary, angel);
   const stranger = await read(await call(kv, '/verse/send', {
@@ -858,7 +865,7 @@ test('accepted friends can send a verse, and a stranger or an unfriended person 
 test('verse sends are limited to 30 an hour', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   await befriend(kv, mary, angel);
   for (let i = 0; i < 30; i++) {
     const ok = await read(await call(kv, '/verse/send', {
@@ -877,7 +884,7 @@ test('verse sends are limited to 30 an hour', async () => {
 test('a study notebook is private to the two friends and stays off the scoreboard', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
   await befriend(kv, mary, angel);
   const question = 'What does the morning verse ask of us?';
@@ -940,7 +947,7 @@ test('overlapping requests keep their own Access-Control-Allow-Origin', async ()
 test('verse numbers must be integers in range', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   await befriend(kv, mary, angel);
   const base = { code: mary.code, secret: mary.secret, to: angel.code, reference: 'John 3:16', text: 'For God so loved the world', note: '' };
   for (const broken of [
@@ -972,7 +979,7 @@ test('verse numbers must be integers in range', async () => {
 test('verse reads and study deletes are rate limited on their own hourly buckets', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Angel' }))).data;
+  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   await befriend(kv, mary, angel);
   const sent = await read(await call(kv, '/verse/send', {
     code: mary.code, secret: mary.secret, to: angel.code,
@@ -1000,4 +1007,80 @@ test('verse reads and study deletes are rate limited on their own hourly buckets
     book: 19, chapter: 23, verse: 1, reference: 'Psalm 23:1', text: 'The LORD is my shepherd', note: ''
   }));
   assert.equal(stillSends.status, 200);
+});
+
+test('a full rate bucket stays full and the next call is refused', async () => {
+  assert.deepEqual(RATE_LIMITS, {
+    register: 80, sync: 60, msg: 60, note: 40, friendAdd: 40, shared: 20, scores: 60
+  });
+  const kv = memoryKv();
+  const now = Date.now();
+  const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
+  const pal = (await read(await call(kv, '/register', { name: 'Pal' }))).data;
+  await kv.put('rate:register:unknown', JSON.stringify({ start: now, n: RATE_LIMITS.register }));
+  const blocked = await read(await call(kv, '/register', { name: 'Extra' }));
+  assert.equal(blocked.status, 429);
+  assert.equal((await kv.get('rate:register:unknown', 'json')).n, RATE_LIMITS.register);
+  await befriend(kv, mary, pal);
+  const seed = async (key, limit) => kv.put(key, JSON.stringify({ start: now, n: limit }));
+  await seed(`rate:sync:${mary.code}`, RATE_LIMITS.sync);
+  await seed(`rate:msg:${mary.code}`, RATE_LIMITS.msg);
+  await seed(`rate:note:${mary.code}`, RATE_LIMITS.note);
+  await seed(`rate:friend-add:${mary.code}`, RATE_LIMITS.friendAdd);
+  await seed(`rate:shared:${mary.code}`, RATE_LIMITS.shared);
+  await seed(`rate:scores:${mary.code}`, RATE_LIMITS.scores);
+
+  const sync = await read(await call(kv, '/sync', { code: mary.code, secret: mary.secret, name: 'Mary' }));
+  const msg = await read(await call(kv, '/msg/send', { code: mary.code, secret: mary.secret, to: pal.code, body: 'Hello' }));
+  const note = await read(await call(kv, '/note/send', { code: mary.code, secret: mary.secret, to: pal.code, body: 'A note' }));
+  const added = await read(await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: pal.code }));
+  const shared = await read(await call(kv, '/shared/create', { code: mary.code, secret: mary.secret, to: pal.code, body: 'Together' }));
+  const score = await read(await call(kv, '/scores/submit', { code: mary.code, secret: mary.secret, show: 'jeopardy', score: 12, level: 1 }));
+  for (const result of [sync, msg, note, added, shared, score]) assert.equal(result.status, 429);
+  assert.equal((await kv.get(`rate:sync:${mary.code}`, 'json')).n, RATE_LIMITS.sync);
+  assert.equal((await kv.get(`rate:msg:${mary.code}`, 'json')).n, RATE_LIMITS.msg);
+  assert.equal((await kv.get(`rate:note:${mary.code}`, 'json')).n, RATE_LIMITS.note);
+  assert.equal((await kv.get(`rate:friend-add:${mary.code}`, 'json')).n, RATE_LIMITS.friendAdd);
+  assert.equal((await kv.get(`rate:shared:${mary.code}`, 'json')).n, RATE_LIMITS.shared);
+  assert.equal((await kv.get(`rate:scores:${mary.code}`, 'json')).n, RATE_LIMITS.scores);
+  assert.deepEqual((await kv.get(`user:${pal.code}`, 'json')).threads, {});
+});
+
+test('a score above the cap is rejected and is not stored', async () => {
+  const kv = memoryKv();
+  const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
+  const high = await read(await call(kv, '/scores/submit', {
+    code: mary.code, secret: mary.secret, show: 'jeopardy', score: 1000001, level: 1
+  }));
+  assert.equal(high.status, 400);
+  assert.equal(high.data.error, 'That score is too high');
+  assert.equal(await kv.get(`rate:scores:${mary.code}`), null);
+  assert.equal(await kv.get('leaderboard'), null);
+  const ok = await read(await call(kv, '/scores/submit', {
+    code: mary.code, secret: mary.secret, show: 'jeopardy', score: 40, level: 1
+  }));
+  assert.equal(ok.status, 200);
+  assert.equal((await kv.get('leaderboard', 'json')).jeopardy[0].score, 40);
+});
+
+test('messages, notes, and shared notes require friendship in both directions', async () => {
+  const kv = memoryKv();
+  const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
+  const pal = (await read(await call(kv, '/register', { name: 'Pal' }))).data;
+  const pending = await read(await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: pal.code }));
+  assert.equal(pending.data.status, 'pending');
+  const msg = await read(await call(kv, '/msg/send', { code: mary.code, secret: mary.secret, to: pal.code, body: 'Hello' }));
+  const note = await read(await call(kv, '/note/send', { code: mary.code, secret: mary.secret, to: pal.code, body: 'A note' }));
+  const shared = await read(await call(kv, '/shared/create', { code: mary.code, secret: mary.secret, to: pal.code, body: 'Together' }));
+  for (const result of [msg, note, shared]) {
+    assert.equal(result.status, 403);
+    assert.equal(result.data.error, 'Add that person as a friend first');
+  }
+  await befriend(kv, mary, pal);
+  const stored = await kv.get(`user:${mary.code}`, 'json');
+  stored.friends = stored.friends.filter((code) => code !== pal.code);
+  await kv.put(`user:${mary.code}`, JSON.stringify(stored));
+  const oneWay = await read(await call(kv, '/msg/send', { code: pal.code, secret: pal.secret, to: mary.code, body: 'Still here' }));
+  assert.equal(oneWay.status, 403);
+  assert.deepEqual((await kv.get(`user:${mary.code}`, 'json')).threads || {}, {});
 });

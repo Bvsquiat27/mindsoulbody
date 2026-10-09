@@ -42,11 +42,18 @@
     return `<section class="card verse-inbox-card" id="verse-inbox-home"><span class="eyebrow">VERSES FOR YOU</span><h2>Verses for you</h2><p class="muted" id="verse-inbox-status">Loading…</p></section>`;
   }
 
+  function positiveInt(value) {
+    const n = Number(value);
+    return Number.isInteger(n) && n > 0 ? n : 0;
+  }
+
   function verseCard(item) {
     const mine = item.direction === 'out';
     const who = mine ? (item.toName || 'Friend') : (item.fromName || 'Friend');
     const label = mine ? `To ${who}` : `From ${who}`;
-    return `<button type="button" class="verse-mail ${item.read ? '' : 'verse-mail-new'}" data-verse-open="1" data-book="${item.book}" data-chapter="${item.chapter}" data-verse="${item.verse}" data-id="${esc(item.id)}"><strong>${esc(item.reference || '')}</strong><span>${esc(item.text || '')}</span><small>${esc(label)}${item.note ? ' · ' + esc(item.note) : ''}</small></button>`;
+    const book = positiveInt(item.book), chapter = positiveInt(item.chapter), verse = positiveInt(item.verse);
+    const ref = book && chapter ? ` data-verse-open="1" data-book="${book}" data-chapter="${chapter}" data-verse="${verse || 1}"` : '';
+    return `<button type="button" class="verse-mail ${item.read ? '' : 'verse-mail-new'}"${ref} data-id="${esc(item.id)}"><strong>${esc(item.reference || '')}</strong><span>${esc(item.text || '')}</span><small>${esc(label)}${item.note ? ' · ' + esc(item.note) : ''}</small></button>`;
   }
 
   async function paintInbox() {
@@ -140,9 +147,11 @@
       const button = form.querySelector('[type=submit]');
       if (button) button.disabled = true;
       try {
+        const book = positiveInt(payload.book), chapter = positiveInt(payload.chapter), verse = positiveInt(payload.verse);
+        if (!book || !chapter || !verse) { toast('That verse could not be sent.'); if (button) button.disabled = false; return; }
         await call('/verse/send', {
           code: me.code, secret: me.secret, to: data.get('to'),
-          book: payload.book, chapter: payload.chapter, verse: payload.verse,
+          book, chapter, verse,
           reference: payload.reference, text: payload.text, note, translation: payload.translation === 'rvr' ? 'rvr' : 'kjv'
         });
         verseRoutes = 'ready';
@@ -284,7 +293,9 @@
       const photo = mine ? '' : (friends.find(friend => friend.code === entry.author)?.avatar_data || '');
       const verses = (entry.verses || []).map(link => {
         const label = link.book ? `${bookName(link.book)} ${link.chapter}:${link.verse}` : (link.reference || '');
-        return `<button type="button" class="study-pill" data-verse-open="1" data-book="${link.book}" data-chapter="${link.chapter}" data-verse="${link.verse}">${esc(label)}</button>`;
+        const book = positiveInt(link.book), chapter = positiveInt(link.chapter), verse = positiveInt(link.verse);
+        if (!book || !chapter) return '';
+        return `<button type="button" class="study-pill" data-verse-open="1" data-book="${book}" data-chapter="${chapter}" data-verse="${verse || 1}">${esc(label)}</button>`;
       }).join('');
       return `<article class="card study-entry ${mine ? 'study-entry-mine' : 'study-entry-theirs'}${entry.id === flashId ? ' study-entry-new' : ''}"><header class="study-entry-head"><span class="study-avatar">${avatarMarkup(photo, who)}</span><div><strong>${esc(who)}</strong><time>${esc(relativeWhen(entry.ts))}</time></div><button type="button" class="study-more" data-study-menu aria-expanded="false" aria-label="Entry actions">⋯</button></header><div class="study-menu" hidden><button type="button" data-study-edit="${esc(entry.id)}">Edit</button><button type="button" data-study-delete="${esc(entry.id)}">Delete</button></div><h3 class="study-question">${esc(entry.question || '')}</h3>${entry.answer ? `<p class="study-answer">${esc(entry.answer)}</p>` : ''}${verses ? `<div class="study-entry-verses">${verses}</div>` : ''}</article>`;
     }).join('');
@@ -597,8 +608,8 @@
     if (me && open.dataset.id) {
       try { await call('/verse/read', { code: me.code, secret: me.secret, id: open.dataset.id }); } catch { /* still open the verse */ }
     }
-    const book = Number(open.dataset.book), chapter = Number(open.dataset.chapter), verse = Number(open.dataset.verse);
-    if (book && chapter && window.msbOpenBibleVerse) msbOpenBibleVerse(book, chapter, verse);
+    const book = positiveInt(open.dataset.book), chapter = positiveInt(open.dataset.chapter), verse = positiveInt(open.dataset.verse);
+    if (book && chapter && window.msbOpenBibleVerse) msbOpenBibleVerse(book, chapter, verse || undefined);
   });
 
   window.msbOpenVerseSend = openSend;

@@ -158,7 +158,8 @@
         "chapter": 11,
         "verse": 23
       }
-    ]
+    ],
+    "deeper": true
   },
   {
     "id": "eucharist-defense",
@@ -181,7 +182,8 @@
         "chapter": 10,
         "verse": 16
       }
-    ]
+    ],
+    "deeper": true
   },
   {
     "id": "tradition",
@@ -204,7 +206,8 @@
         "chapter": 2,
         "verse": 42
       }
-    ]
+    ],
+    "deeper": true
   },
   {
     "id": "icons",
@@ -227,7 +230,8 @@
         "chapter": 1,
         "verse": 15
       }
-    ]
+    ],
+    "deeper": true
   },
   {
     "id": "icons-defense",
@@ -250,7 +254,8 @@
         "chapter": 20,
         "verse": 4
       }
-    ]
+    ],
+    "deeper": true
   },
   {
     "id": "resurrection",
@@ -462,7 +467,9 @@
         "chapter": 3,
         "verse": 16
       }
-    ]
+    ],
+    "titleEs": "La práctica de leer",
+    "bodyEs": "El salmo abre con atención a la instrucción del Señor de día y de noche. Leer la Escritura es una práctica que te forma, no solo una búsqueda de textos sueltos para ganar una discusión."
   },
   {
     "id": "psalm-incarnation",
@@ -508,7 +515,9 @@
         "chapter": 22,
         "verse": 22
       }
-    ]
+    ],
+    "titleEs": "El grito desde la cruz",
+    "bodyEs": "Jesús toma este lamento en los relatos de la pasión. Lee el salmo entero: atraviesa el sufrimiento y llega a la alabanza. Así es más rico que una sola predicción arrancada de su poesía."
   },
   {
     "id": "psalm-110",
@@ -1951,7 +1960,8 @@
         "chapter": 1,
         "verse": 14
       }
-    ]
+    ],
+    "deeper": true
   },
   {
     "id": "ignatius-shared-flesh",
@@ -3028,7 +3038,8 @@
         "chapter": 15,
         "verse": 26
       }
-    ]
+    ],
+    "deeper": true
   },
   {
     "id": "you-who-are-evil",
@@ -3461,7 +3472,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-symbol-of-faith/incarnation",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "christ"
+    "lessonId": "christ",
+    "deeper": true
   },
   {
     "id": "lesson-worship-0",
@@ -3475,7 +3487,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/sources-of-christian-doctrine/church-art",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "worship"
+    "lessonId": "worship",
+    "deeper": true
   },
   {
     "id": "lesson-apologetics",
@@ -3489,7 +3502,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/sources-of-christian-doctrine/tradition",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "apologetics"
+    "lessonId": "apologetics",
+    "deeper": true
   },
   {
     "id": "lesson-deity-evidence-0",
@@ -3687,7 +3701,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/sources-of-christian-doctrine/the-councils",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "council-depth"
+    "lessonId": "council-depth",
+    "deeper": true
   },
   {
     "id": "lesson-council-depth-1",
@@ -3701,7 +3716,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/sources-of-christian-doctrine/the-councils",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "council-depth"
+    "lessonId": "council-depth",
+    "deeper": true
   },
   {
     "id": "lesson-council-depth-2",
@@ -3715,7 +3731,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/sources-of-christian-doctrine/the-councils",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "council-depth"
+    "lessonId": "council-depth",
+    "deeper": true
   },
   {
     "id": "lesson-council-depth-3",
@@ -3729,7 +3746,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/sources-of-christian-doctrine/the-councils",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "council-depth"
+    "lessonId": "council-depth",
+    "deeper": true
   },
   {
     "id": "lesson-religions-0",
@@ -3743,7 +3761,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-three-divine-persons",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "religions"
+    "lessonId": "religions",
+    "deeper": true
   },
   {
     "id": "lesson-religions-1",
@@ -3757,7 +3776,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-three-divine-persons",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "religions"
+    "lessonId": "religions",
+    "deeper": true
   },
   {
     "id": "lesson-religions-2",
@@ -3777,7 +3797,8 @@
         "verse": 28
       }
     ],
-    "lessonId": "religions"
+    "lessonId": "religions",
+    "deeper": true
   },
   {
     "id": "lesson-religions-3",
@@ -3791,7 +3812,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-three-divine-persons",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "religions"
+    "lessonId": "religions",
+    "deeper": true
   },
   {
     "id": "lesson-fathers-incarnation",
@@ -3805,7 +3827,8 @@
     "source": "https://www.newadvent.org/fathers/2802.htm",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "fathers-incarnation"
+    "lessonId": "fathers-incarnation",
+    "deeper": true
   },
   {
     "id": "lesson-reading-scripture",
@@ -3889,7 +3912,8 @@
     "source": "https://quran.com/5/47",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "mini-islamic-dilemma"
+    "lessonId": "mini-islamic-dilemma",
+    "deeper": true
   },
   {
     "id": "lesson-mini-islamic-dilemma-1",
@@ -3903,7 +3927,8 @@
     "source": "https://quran.com/5/47",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "mini-islamic-dilemma"
+    "lessonId": "mini-islamic-dilemma",
+    "deeper": true
   },
   {
     "id": "lesson-mini-islamic-dilemma-2",
@@ -3917,7 +3942,8 @@
     "source": "https://quran.com/5/47",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "mini-islamic-dilemma"
+    "lessonId": "mini-islamic-dilemma",
+    "deeper": true
   },
   {
     "id": "lesson-track-genesis-0",
@@ -4125,7 +4151,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fourth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-nicaea1"
+    "lessonId": "track-nicaea1",
+    "deeper": true
   },
   {
     "id": "lesson-track-nicaea1-1",
@@ -4139,7 +4166,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fourth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-nicaea1"
+    "lessonId": "track-nicaea1",
+    "deeper": true
   },
   {
     "id": "lesson-track-nicaea1-2",
@@ -4153,7 +4181,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fourth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-nicaea1"
+    "lessonId": "track-nicaea1",
+    "deeper": true
   },
   {
     "id": "lesson-track-constantinople1-0",
@@ -4167,7 +4196,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fourth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-constantinople1"
+    "lessonId": "track-constantinople1",
+    "deeper": true
   },
   {
     "id": "lesson-track-constantinople1-1",
@@ -4187,7 +4217,8 @@
         "verse": 3
       }
     ],
-    "lessonId": "track-constantinople1"
+    "lessonId": "track-constantinople1",
+    "deeper": true
   },
   {
     "id": "lesson-track-constantinople1-2",
@@ -4201,7 +4232,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fourth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-constantinople1"
+    "lessonId": "track-constantinople1",
+    "deeper": true
   },
   {
     "id": "lesson-track-ephesus-0",
@@ -4215,7 +4247,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fifth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-ephesus"
+    "lessonId": "track-ephesus",
+    "deeper": true
   },
   {
     "id": "lesson-track-ephesus-1",
@@ -4235,7 +4268,8 @@
         "verse": 43
       }
     ],
-    "lessonId": "track-ephesus"
+    "lessonId": "track-ephesus",
+    "deeper": true
   },
   {
     "id": "lesson-track-ephesus-2",
@@ -4249,7 +4283,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fifth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-ephesus"
+    "lessonId": "track-ephesus",
+    "deeper": true
   },
   {
     "id": "lesson-track-chalcedon-0",
@@ -4263,7 +4298,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fifth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-chalcedon"
+    "lessonId": "track-chalcedon",
+    "deeper": true
   },
   {
     "id": "lesson-track-chalcedon-1",
@@ -4283,7 +4319,8 @@
         "verse": 6
       }
     ],
-    "lessonId": "track-chalcedon"
+    "lessonId": "track-chalcedon",
+    "deeper": true
   },
   {
     "id": "lesson-track-chalcedon-2",
@@ -4297,7 +4334,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fifth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-chalcedon"
+    "lessonId": "track-chalcedon",
+    "deeper": true
   },
   {
     "id": "lesson-track-chalcedon-3",
@@ -4311,7 +4349,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fifth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-chalcedon"
+    "lessonId": "track-chalcedon",
+    "deeper": true
   },
   {
     "id": "lesson-track-constantinople2-0",
@@ -4325,7 +4364,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/sixth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-constantinople2"
+    "lessonId": "track-constantinople2",
+    "deeper": true
   },
   {
     "id": "lesson-track-constantinople2-1",
@@ -4345,7 +4385,8 @@
         "verse": 8
       }
     ],
-    "lessonId": "track-constantinople2"
+    "lessonId": "track-constantinople2",
+    "deeper": true
   },
   {
     "id": "lesson-track-constantinople2-2",
@@ -4359,7 +4400,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/sixth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-constantinople2"
+    "lessonId": "track-constantinople2",
+    "deeper": true
   },
   {
     "id": "lesson-track-constantinople3-0",
@@ -4373,7 +4415,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/seventh-century/saint-maximus-the-confessor-and-saint-martin-of-rome",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-constantinople3"
+    "lessonId": "track-constantinople3",
+    "deeper": true
   },
   {
     "id": "lesson-track-constantinople3-1",
@@ -4387,7 +4430,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/seventh-century/saint-maximus-the-confessor-and-saint-martin-of-rome",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-constantinople3"
+    "lessonId": "track-constantinople3",
+    "deeper": true
   },
   {
     "id": "lesson-track-constantinople3-2",
@@ -4401,7 +4445,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/seventh-century/saint-maximus-the-confessor-and-saint-martin-of-rome",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-constantinople3"
+    "lessonId": "track-constantinople3",
+    "deeper": true
   },
   {
     "id": "lesson-track-constantinople3-3",
@@ -4415,7 +4460,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/seventh-century/saint-maximus-the-confessor-and-saint-martin-of-rome",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-constantinople3"
+    "lessonId": "track-constantinople3",
+    "deeper": true
   },
   {
     "id": "lesson-track-nicaea2-0",
@@ -4429,7 +4475,8 @@
     "source": "https://www.oca.org/saints/lives/2010/10/17/70-commemoration-of-the-holy-fathers-of-the-seventh-ecumenical-coun",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-nicaea2"
+    "lessonId": "track-nicaea2",
+    "deeper": true
   },
   {
     "id": "lesson-track-nicaea2-1",
@@ -4443,7 +4490,8 @@
     "source": "https://www.oca.org/saints/lives/2010/10/17/70-commemoration-of-the-holy-fathers-of-the-seventh-ecumenical-coun",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-nicaea2"
+    "lessonId": "track-nicaea2",
+    "deeper": true
   },
   {
     "id": "lesson-track-nicaea2-2",
@@ -4457,7 +4505,8 @@
     "source": "https://www.oca.org/saints/lives/2010/10/17/70-commemoration-of-the-holy-fathers-of-the-seventh-ecumenical-coun",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-nicaea2"
+    "lessonId": "track-nicaea2",
+    "deeper": true
   },
   {
     "id": "lesson-track-nicaea2-3",
@@ -4471,7 +4520,8 @@
     "source": "https://www.oca.org/saints/lives/2010/10/17/70-commemoration-of-the-holy-fathers-of-the-seventh-ecumenical-coun",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "track-nicaea2"
+    "lessonId": "track-nicaea2",
+    "deeper": true
   },
   {
     "id": "lesson-explain-the-words-0",
@@ -4485,7 +4535,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-three-divine-persons",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-the-words"
+    "lessonId": "explain-the-words",
+    "deeper": true
   },
   {
     "id": "lesson-explain-the-words-1",
@@ -4499,7 +4550,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-three-divine-persons",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-the-words"
+    "lessonId": "explain-the-words",
+    "deeper": true
   },
   {
     "id": "lesson-explain-the-words-2",
@@ -4513,7 +4565,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-three-divine-persons",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-the-words"
+    "lessonId": "explain-the-words",
+    "deeper": true
   },
   {
     "id": "lesson-explain-the-words-3",
@@ -4527,7 +4580,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-three-divine-persons",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-the-words"
+    "lessonId": "explain-the-words",
+    "deeper": true
   },
   {
     "id": "lesson-explain-one-god-three-hypostases-0",
@@ -4541,7 +4595,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-doctrine-of-the-holy-trinity",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-one-god-three-hypostases"
+    "lessonId": "explain-one-god-three-hypostases",
+    "deeper": true
   },
   {
     "id": "lesson-explain-one-god-three-hypostases-1",
@@ -4555,7 +4610,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-doctrine-of-the-holy-trinity",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-one-god-three-hypostases"
+    "lessonId": "explain-one-god-three-hypostases",
+    "deeper": true
   },
   {
     "id": "lesson-explain-one-god-three-hypostases-2",
@@ -4569,7 +4625,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-doctrine-of-the-holy-trinity",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-one-god-three-hypostases"
+    "lessonId": "explain-one-god-three-hypostases",
+    "deeper": true
   },
   {
     "id": "lesson-explain-one-god-three-hypostases-3",
@@ -4583,7 +4640,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-doctrine-of-the-holy-trinity",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-one-god-three-hypostases"
+    "lessonId": "explain-one-god-three-hypostases",
+    "deeper": true
   },
   {
     "id": "lesson-explain-one-god-three-hypostases-4",
@@ -4597,7 +4655,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-holy-trinity/the-doctrine-of-the-holy-trinity",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-one-god-three-hypostases"
+    "lessonId": "explain-one-god-three-hypostases",
+    "deeper": true
   },
   {
     "id": "lesson-explain-eternal-manifestation-0",
@@ -4617,7 +4676,8 @@
         "verse": 14
       }
     ],
-    "lessonId": "explain-eternal-manifestation"
+    "lessonId": "explain-eternal-manifestation",
+    "deeper": true
   },
   {
     "id": "lesson-explain-eternal-manifestation-1",
@@ -4637,7 +4697,8 @@
         "verse": 26
       }
     ],
-    "lessonId": "explain-eternal-manifestation"
+    "lessonId": "explain-eternal-manifestation",
+    "deeper": true
   },
   {
     "id": "lesson-explain-eternal-manifestation-2",
@@ -4657,7 +4718,8 @@
         "verse": 16
       }
     ],
-    "lessonId": "explain-eternal-manifestation"
+    "lessonId": "explain-eternal-manifestation",
+    "deeper": true
   },
   {
     "id": "lesson-explain-eternal-manifestation-3",
@@ -4677,7 +4739,8 @@
         "verse": 14
       }
     ],
-    "lessonId": "explain-eternal-manifestation"
+    "lessonId": "explain-eternal-manifestation",
+    "deeper": true
   },
   {
     "id": "lesson-explain-eternal-manifestation-4",
@@ -4697,7 +4760,8 @@
         "verse": 15
       }
     ],
-    "lessonId": "explain-eternal-manifestation"
+    "lessonId": "explain-eternal-manifestation",
+    "deeper": true
   },
   {
     "id": "lesson-explain-godhead-without-heresy-0",
@@ -4711,7 +4775,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Deuteronomy%206%3A4%3B%20Isaiah%2044%3A6%3B%20Matthew%2028%3A19%3B%20John%201%3A1%3B%20John%208%3A42%3B%20John%2015%3A26%3B%20John%2020%3A28&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-godhead-without-heresy"
+    "lessonId": "explain-godhead-without-heresy",
+    "deeper": true
   },
   {
     "id": "lesson-explain-godhead-without-heresy-1",
@@ -4725,7 +4790,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Deuteronomy%206%3A4%3B%20Isaiah%2044%3A6%3B%20Matthew%2028%3A19%3B%20John%201%3A1%3B%20John%208%3A42%3B%20John%2015%3A26%3B%20John%2020%3A28&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-godhead-without-heresy"
+    "lessonId": "explain-godhead-without-heresy",
+    "deeper": true
   },
   {
     "id": "lesson-explain-godhead-without-heresy-2",
@@ -4739,7 +4805,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Deuteronomy%206%3A4%3B%20Isaiah%2044%3A6%3B%20Matthew%2028%3A19%3B%20John%201%3A1%3B%20John%208%3A42%3B%20John%2015%3A26%3B%20John%2020%3A28&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-godhead-without-heresy"
+    "lessonId": "explain-godhead-without-heresy",
+    "deeper": true
   },
   {
     "id": "lesson-explain-godhead-without-heresy-3",
@@ -4753,7 +4820,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Deuteronomy%206%3A4%3B%20Isaiah%2044%3A6%3B%20Matthew%2028%3A19%3B%20John%201%3A1%3B%20John%208%3A42%3B%20John%2015%3A26%3B%20John%2020%3A28&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-godhead-without-heresy"
+    "lessonId": "explain-godhead-without-heresy",
+    "deeper": true
   },
   {
     "id": "lesson-explain-godhead-without-heresy-4",
@@ -4773,7 +4841,8 @@
         "verse": 15
       }
     ],
-    "lessonId": "explain-godhead-without-heresy"
+    "lessonId": "explain-godhead-without-heresy",
+    "deeper": true
   },
   {
     "id": "lesson-explain-hypostatic-union-0",
@@ -4787,7 +4856,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fifth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-hypostatic-union"
+    "lessonId": "explain-hypostatic-union",
+    "deeper": true
   },
   {
     "id": "lesson-explain-hypostatic-union-1",
@@ -4801,7 +4871,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fifth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-hypostatic-union"
+    "lessonId": "explain-hypostatic-union",
+    "deeper": true
   },
   {
     "id": "lesson-explain-hypostatic-union-2",
@@ -4815,7 +4886,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fifth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-hypostatic-union"
+    "lessonId": "explain-hypostatic-union",
+    "deeper": true
   },
   {
     "id": "lesson-explain-hypostatic-union-3",
@@ -4829,7 +4901,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/church-history/fifth-century",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-hypostatic-union"
+    "lessonId": "explain-hypostatic-union",
+    "deeper": true
   },
   {
     "id": "lesson-explain-say-it-right-0",
@@ -4843,7 +4916,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-symbol-of-faith/incarnation",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-say-it-right"
+    "lessonId": "explain-say-it-right",
+    "deeper": true
   },
   {
     "id": "lesson-explain-say-it-right-1",
@@ -4857,7 +4931,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-symbol-of-faith/incarnation",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-say-it-right"
+    "lessonId": "explain-say-it-right",
+    "deeper": true
   },
   {
     "id": "lesson-explain-say-it-right-2",
@@ -4871,7 +4946,8 @@
     "source": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-symbol-of-faith/incarnation",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-say-it-right"
+    "lessonId": "explain-say-it-right",
+    "deeper": true
   },
   {
     "id": "lesson-defense-saints-intercession-0",
@@ -4896,7 +4972,8 @@
         "verse": 9
       }
     ],
-    "lessonId": "defense-saints-intercession"
+    "lessonId": "defense-saints-intercession",
+    "deeper": true
   },
   {
     "id": "lesson-defense-saints-intercession-1",
@@ -4926,7 +5003,8 @@
         "verse": 3
       }
     ],
-    "lessonId": "defense-saints-intercession"
+    "lessonId": "defense-saints-intercession",
+    "deeper": true
   },
   {
     "id": "lesson-defense-saints-intercession-2",
@@ -4940,7 +5018,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Revelation%205%3A8%3B%20Revelation%208%3A3-4%3B%20Hebrews%2012%3A1%3B%201%20Timothy%202%3A1-5&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "defense-saints-intercession"
+    "lessonId": "defense-saints-intercession",
+    "deeper": true
   },
   {
     "id": "lesson-defense-theotokos-0",
@@ -4954,7 +5033,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Luke%201%3A39-45%3B%20John%201%3A1-14%3B%20Galatians%204%3A4&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "defense-theotokos"
+    "lessonId": "defense-theotokos",
+    "deeper": true
   },
   {
     "id": "lesson-defense-theotokos-1",
@@ -4979,7 +5059,8 @@
         "verse": 4
       }
     ],
-    "lessonId": "defense-theotokos"
+    "lessonId": "defense-theotokos",
+    "deeper": true
   },
   {
     "id": "lesson-defense-theotokos-2",
@@ -4993,7 +5074,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Luke%201%3A39-45%3B%20John%201%3A1-14%3B%20Galatians%204%3A4&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "defense-theotokos"
+    "lessonId": "defense-theotokos",
+    "deeper": true
   },
   {
     "id": "lesson-defense-theotokos-3",
@@ -5007,7 +5089,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Luke%201%3A39-45%3B%20John%201%3A1-14%3B%20Galatians%204%3A4&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "defense-theotokos"
+    "lessonId": "defense-theotokos",
+    "deeper": true
   },
   {
     "id": "lesson-defense-true-body-blood-0",
@@ -5027,7 +5110,8 @@
         "verse": 23
       }
     ],
-    "lessonId": "defense-true-body-blood"
+    "lessonId": "defense-true-body-blood",
+    "deeper": true
   },
   {
     "id": "lesson-defense-true-body-blood-1",
@@ -5047,7 +5131,8 @@
         "verse": 53
       }
     ],
-    "lessonId": "defense-true-body-blood"
+    "lessonId": "defense-true-body-blood",
+    "deeper": true
   },
   {
     "id": "lesson-defense-true-body-blood-2",
@@ -5061,7 +5146,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Matthew%2026%3A26-28%3B%20John%206%3A53-56%3B%201%20Corinthians%2010%3A16%3B%201%20Corinthians%2011%3A23-29&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "defense-true-body-blood"
+    "lessonId": "defense-true-body-blood",
+    "deeper": true
   },
   {
     "id": "lesson-defense-essence-energies-0",
@@ -5081,7 +5167,8 @@
         "verse": 16
       }
     ],
-    "lessonId": "defense-essence-energies"
+    "lessonId": "defense-essence-energies",
+    "deeper": true
   },
   {
     "id": "lesson-defense-essence-energies-1",
@@ -5106,7 +5193,8 @@
         "verse": 4
       }
     ],
-    "lessonId": "defense-essence-energies"
+    "lessonId": "defense-essence-energies",
+    "deeper": true
   },
   {
     "id": "lesson-defense-essence-energies-2",
@@ -5120,7 +5208,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Exodus%2033%3A18-23%3B%20Matthew%2017%3A1-8%3B%20Psalm%2036%3A9%3B%202%20Peter%201%3A4&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "defense-essence-energies"
+    "lessonId": "defense-essence-energies",
+    "deeper": true
   },
   {
     "id": "lesson-defense-essence-energies-3",
@@ -5134,7 +5223,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Exodus%2033%3A18-23%3B%20Matthew%2017%3A1-8%3B%20Psalm%2036%3A9%3B%202%20Peter%201%3A4&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "defense-essence-energies"
+    "lessonId": "defense-essence-energies",
+    "deeper": true
   },
   {
     "id": "lesson-defense-essence-energies-4",
@@ -5148,7 +5238,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Exodus%2033%3A18-23%3B%20Matthew%2017%3A1-8%3B%20Psalm%2036%3A9%3B%202%20Peter%201%3A4&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "defense-essence-energies"
+    "lessonId": "defense-essence-energies",
+    "deeper": true
   },
   {
     "id": "lesson-mini-say-the-words-1-0",
@@ -5162,7 +5253,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Philippians%202%3A5-11%3B%20Luke%201%3A43&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "mini-say-the-words-1"
+    "lessonId": "mini-say-the-words-1",
+    "deeper": true
   },
   {
     "id": "lesson-mini-say-the-words-1-1",
@@ -5176,7 +5268,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Philippians%202%3A5-11%3B%20Luke%201%3A43&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "mini-say-the-words-1"
+    "lessonId": "mini-say-the-words-1",
+    "deeper": true
   },
   {
     "id": "lesson-mini-say-the-words-1-2",
@@ -5196,7 +5289,8 @@
         "verse": 7
       }
     ],
-    "lessonId": "mini-say-the-words-1"
+    "lessonId": "mini-say-the-words-1",
+    "deeper": true
   },
   {
     "id": "lesson-mini-say-the-words-2-0",
@@ -5216,7 +5310,8 @@
         "verse": 4
       }
     ],
-    "lessonId": "mini-say-the-words-2"
+    "lessonId": "mini-say-the-words-2",
+    "deeper": true
   },
   {
     "id": "lesson-mini-say-the-words-2-1",
@@ -5230,7 +5325,8 @@
     "source": "https://www.biblegateway.com/passage/?search=2%20Peter%201%3A4%3B%20John%2017%3A21-23&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "mini-say-the-words-2"
+    "lessonId": "mini-say-the-words-2",
+    "deeper": true
   },
   {
     "id": "lesson-mini-say-the-words-2-2",
@@ -5244,7 +5340,8 @@
     "source": "https://www.biblegateway.com/passage/?search=2%20Peter%201%3A4%3B%20John%2017%3A21-23&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "mini-say-the-words-2"
+    "lessonId": "mini-say-the-words-2",
+    "deeper": true
   },
   {
     "id": "lesson-mini-dominant-difference-0",
@@ -5258,7 +5355,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Romans%207%3A15-25%3B%20John%208%3A34-36%3B%20Galatians%205%3A17&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "mini-dominant-difference"
+    "lessonId": "mini-dominant-difference",
+    "deeper": true
   },
   {
     "id": "lesson-mini-dominant-difference-1",
@@ -5272,7 +5370,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Romans%207%3A15-25%3B%20John%208%3A34-36%3B%20Galatians%205%3A17&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "mini-dominant-difference"
+    "lessonId": "mini-dominant-difference",
+    "deeper": true
   },
   {
     "id": "lesson-mini-dominant-difference-2",
@@ -5286,7 +5385,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Romans%207%3A15-25%3B%20John%208%3A34-36%3B%20Galatians%205%3A17&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "mini-dominant-difference"
+    "lessonId": "mini-dominant-difference",
+    "deeper": true
   },
   {
     "id": "lesson-mini-dominant-difference-3",
@@ -5306,7 +5406,8 @@
         "verse": 1
       }
     ],
-    "lessonId": "mini-dominant-difference"
+    "lessonId": "mini-dominant-difference",
+    "deeper": true
   },
   {
     "id": "lesson-explain-christus-victor-psa-0",
@@ -5320,7 +5421,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Colossians%202%3A15%3B%20Hebrews%202%3A14-15%3B%20Isaiah%2053%3B%20Galatians%203%3A13%3B%202%20Corinthians%205%3A19-21&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-christus-victor-psa"
+    "lessonId": "explain-christus-victor-psa",
+    "deeper": true
   },
   {
     "id": "lesson-explain-christus-victor-psa-1",
@@ -5340,7 +5442,8 @@
         "verse": 29
       }
     ],
-    "lessonId": "explain-christus-victor-psa"
+    "lessonId": "explain-christus-victor-psa",
+    "deeper": true
   },
   {
     "id": "lesson-explain-christus-victor-psa-2",
@@ -5354,7 +5457,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Colossians%202%3A15%3B%20Hebrews%202%3A14-15%3B%20Isaiah%2053%3B%20Galatians%203%3A13%3B%202%20Corinthians%205%3A19-21&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-christus-victor-psa"
+    "lessonId": "explain-christus-victor-psa",
+    "deeper": true
   },
   {
     "id": "lesson-explain-christus-victor-psa-3",
@@ -5374,7 +5478,8 @@
         "verse": 4
       }
     ],
-    "lessonId": "explain-christus-victor-psa"
+    "lessonId": "explain-christus-victor-psa",
+    "deeper": true
   },
   {
     "id": "lesson-explain-christus-victor-psa-4",
@@ -5388,7 +5493,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Colossians%202%3A15%3B%20Hebrews%202%3A14-15%3B%20Isaiah%2053%3B%20Galatians%203%3A13%3B%202%20Corinthians%205%3A19-21&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-christus-victor-psa"
+    "lessonId": "explain-christus-victor-psa",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-1-union-0",
@@ -5402,7 +5508,8 @@
     "source": "https://www.biblegateway.com/passage/?search=John%201%3A1-14%3B%20Philippians%202%3A5-11&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-1-union"
+    "lessonId": "ladder-1-union",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-1-union-1",
@@ -5416,7 +5523,8 @@
     "source": "https://www.biblegateway.com/passage/?search=John%201%3A1-14%3B%20Philippians%202%3A5-11&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-1-union"
+    "lessonId": "ladder-1-union",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-1-union-2",
@@ -5430,7 +5538,8 @@
     "source": "https://www.biblegateway.com/passage/?search=John%201%3A1-14%3B%20Philippians%202%3A5-11&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-1-union"
+    "lessonId": "ladder-1-union",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-1-union-3",
@@ -5444,7 +5553,8 @@
     "source": "https://www.biblegateway.com/passage/?search=John%201%3A1-14%3B%20Philippians%202%3A5-11&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-1-union"
+    "lessonId": "ladder-1-union",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-2-properties-0",
@@ -5464,7 +5574,8 @@
         "verse": 28
       }
     ],
-    "lessonId": "ladder-2-properties"
+    "lessonId": "ladder-2-properties",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-2-properties-1",
@@ -5478,7 +5589,8 @@
     "source": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20Acts%2020%3A28&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-2-properties"
+    "lessonId": "ladder-2-properties",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-2-properties-2",
@@ -5492,7 +5604,8 @@
     "source": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20Acts%2020%3A28&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-2-properties"
+    "lessonId": "ladder-2-properties",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-2b-communicatio-0",
@@ -5512,7 +5625,8 @@
         "verse": 28
       }
     ],
-    "lessonId": "ladder-2b-communicatio"
+    "lessonId": "ladder-2b-communicatio",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-2b-communicatio-1",
@@ -5526,7 +5640,8 @@
     "source": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20Acts%2020%3A28&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-2b-communicatio"
+    "lessonId": "ladder-2b-communicatio",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-2b-communicatio-2",
@@ -5540,7 +5655,8 @@
     "source": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20Acts%2020%3A28&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-2b-communicatio"
+    "lessonId": "ladder-2b-communicatio",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-2b-communicatio-3",
@@ -5554,7 +5670,8 @@
     "source": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20Acts%2020%3A28&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-2b-communicatio"
+    "lessonId": "ladder-2b-communicatio",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-2c-predication-0",
@@ -5568,7 +5685,8 @@
     "source": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20John%201%3A14&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-2c-predication"
+    "lessonId": "ladder-2c-predication",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-2c-predication-1",
@@ -5582,7 +5700,8 @@
     "source": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20John%201%3A14&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-2c-predication"
+    "lessonId": "ladder-2c-predication",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-2c-predication-2",
@@ -5596,7 +5715,8 @@
     "source": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20John%201%3A14&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-2c-predication"
+    "lessonId": "ladder-2c-predication",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-2c-predication-3",
@@ -5610,7 +5730,8 @@
     "source": "https://www.biblegateway.com/passage/?search=1%20Corinthians%202%3A8%3B%20John%201%3A14&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-2c-predication"
+    "lessonId": "ladder-2c-predication",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-3-heresies-0",
@@ -5624,7 +5745,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Luke%201%3A35%3B%20Hebrews%204%3A15&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-3-heresies"
+    "lessonId": "ladder-3-heresies",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-3-heresies-1",
@@ -5638,7 +5760,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Luke%201%3A35%3B%20Hebrews%204%3A15&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-3-heresies"
+    "lessonId": "ladder-3-heresies",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-3-heresies-2",
@@ -5652,7 +5775,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Luke%201%3A35%3B%20Hebrews%204%3A15&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-3-heresies"
+    "lessonId": "ladder-3-heresies",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-4-councils-0",
@@ -5666,7 +5790,8 @@
     "source": "https://www.biblegateway.com/passage/?search=John%201%3A1%3B%20Luke%201%3A43%3B%20Matthew%2026%3A39&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-4-councils"
+    "lessonId": "ladder-4-councils",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-4-councils-1",
@@ -5680,7 +5805,8 @@
     "source": "https://www.biblegateway.com/passage/?search=John%201%3A1%3B%20Luke%201%3A43%3B%20Matthew%2026%3A39&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-4-councils"
+    "lessonId": "ladder-4-councils",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-4-councils-2",
@@ -5694,7 +5820,8 @@
     "source": "https://www.biblegateway.com/passage/?search=John%201%3A1%3B%20Luke%201%3A43%3B%20Matthew%2026%3A39&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-4-councils"
+    "lessonId": "ladder-4-councils",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-5-figures-0",
@@ -5708,7 +5835,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Luke%201%3A43%3B%20John%201%3A14&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-5-figures"
+    "lessonId": "ladder-5-figures",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-5-figures-1",
@@ -5722,7 +5850,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Luke%201%3A43%3B%20John%201%3A14&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-5-figures"
+    "lessonId": "ladder-5-figures",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-5-figures-2",
@@ -5736,7 +5865,8 @@
     "source": "https://www.biblegateway.com/passage/?search=Luke%201%3A43%3B%20John%201%3A14&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-5-figures"
+    "lessonId": "ladder-5-figures",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-6-orthodox-terms-0",
@@ -5756,7 +5886,8 @@
         "verse": 16
       }
     ],
-    "lessonId": "ladder-6-orthodox-terms"
+    "lessonId": "ladder-6-orthodox-terms",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-6-orthodox-terms-1",
@@ -5776,7 +5907,8 @@
         "verse": 21
       }
     ],
-    "lessonId": "ladder-6-orthodox-terms"
+    "lessonId": "ladder-6-orthodox-terms",
+    "deeper": true
   },
   {
     "id": "lesson-ladder-6-orthodox-terms-2",
@@ -5790,7 +5922,8 @@
     "source": "https://www.biblegateway.com/passage/?search=2%20Peter%201%3A4%3B%20John%2017%3A21-23&version=KJV",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "ladder-6-orthodox-terms"
+    "lessonId": "ladder-6-orthodox-terms",
+    "deeper": true
   },
   {
     "id": "lesson-explain-dogma-and-life-0",
@@ -5804,7 +5937,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-dogma-and-life"
+    "lessonId": "explain-dogma-and-life",
+    "deeper": true
   },
   {
     "id": "lesson-explain-coming-to-faith-0",
@@ -6000,7 +6134,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-church-kingdom"
+    "lessonId": "explain-church-kingdom",
+    "deeper": true
   },
   {
     "id": "lesson-explain-church-attributes-0",
@@ -6014,7 +6149,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-church-attributes"
+    "lessonId": "explain-church-attributes",
+    "deeper": true
   },
   {
     "id": "lesson-explain-church-hierarchy-0",
@@ -6028,7 +6164,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-church-hierarchy"
+    "lessonId": "explain-church-hierarchy",
+    "deeper": true
   },
   {
     "id": "lesson-explain-women-in-the-church-0",
@@ -6042,7 +6179,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-women-in-the-church"
+    "lessonId": "explain-women-in-the-church",
+    "deeper": true
   },
   {
     "id": "lesson-explain-church-time-0",
@@ -6056,7 +6194,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-church-time"
+    "lessonId": "explain-church-time",
+    "deeper": true
   },
   {
     "id": "lesson-explain-one-church-0",
@@ -6070,7 +6209,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-one-church"
+    "lessonId": "explain-one-church",
+    "deeper": true
   },
   {
     "id": "lesson-explain-sacraments-0",
@@ -6084,7 +6224,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-sacraments"
+    "lessonId": "explain-sacraments",
+    "deeper": true
   },
   {
     "id": "lesson-explain-baptism-0",
@@ -6098,7 +6239,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-baptism"
+    "lessonId": "explain-baptism",
+    "deeper": true
   },
   {
     "id": "lesson-explain-chrismation-0",
@@ -6112,7 +6254,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-chrismation"
+    "lessonId": "explain-chrismation",
+    "deeper": true
   },
   {
     "id": "lesson-explain-penance-0",
@@ -6126,7 +6269,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-penance"
+    "lessonId": "explain-penance",
+    "deeper": true
   },
   {
     "id": "lesson-explain-anointing-0",
@@ -6140,7 +6284,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-anointing"
+    "lessonId": "explain-anointing",
+    "deeper": true
   },
   {
     "id": "lesson-explain-marriage-0",
@@ -6154,7 +6299,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-marriage"
+    "lessonId": "explain-marriage",
+    "deeper": true
   },
   {
     "id": "lesson-explain-priesthood-0",
@@ -6168,7 +6314,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-priesthood"
+    "lessonId": "explain-priesthood",
+    "deeper": true
   },
   {
     "id": "lesson-explain-monasticism-0",
@@ -6182,7 +6329,8 @@
     "source": "https://en.wikipedia.org/wiki/Hilarion_(Alfeyev)",
     "sourceLabel": "Open source ↗",
     "links": [],
-    "lessonId": "explain-monasticism"
+    "lessonId": "explain-monasticism",
+    "deeper": true
   },
   {
     "id": "lesson-explain-second-coming-0",
@@ -6362,7 +6510,9 @@
         "verse": 26
       }
     ],
-    "studyId": "beginning"
+    "studyId": "beginning",
+    "titleEs": "En el principio Dios",
+    "bodyEs": "Génesis abre toda la Biblia: antes que nada, Dios. La creación no es una pelea entre dioses. Un solo Dios habla, y lo que hace es bueno, coronado por la humanidad a su imagen. La Iglesia lee la creación como un acto libre de amor: el mundo no es Dios, y no es malo. La materia puede llevar gracia porque el Creador la hizo y la llamó buena en gran manera."
   },
   {
     "id": "reading-adam-garden",
@@ -6598,7 +6748,9 @@
     "source": "https://www.biblegateway.com/passage/?search=Psalms%2023%3A1&version=KJV",
     "sourceLabel": "Read this passage ↗",
     "links": [],
-    "studyId": "psalm23"
+    "studyId": "psalm23",
+    "titleEs": "Jehová es mi pastor",
+    "bodyEs": "David canta a un Pastor que lo alimenta, lo guía, lo conforta y camina con él por el valle de sombra de muerte. El salmo termina en una mesa puesta y en una promesa: el bien y la misericordia lo siguen todos sus días. La Iglesia oye aquí a Cristo — “Yo soy el buen pastor” (Juan 10:11) — y reza este salmo junto a la cama y junto a la tumba. Fíjate: el Pastor no quita el valle. Lo atraviesa con los suyos, vara y cayado en la mano."
   },
   {
     "id": "reading-psalm22",
@@ -6858,7 +7010,8 @@
         "verse": 28
       }
     ],
-    "studyId": "council"
+    "studyId": "council",
+    "deeper": true
   },
   {
     "id": "reading-born-again",
@@ -6892,7 +7045,8 @@
         "verse": 23
       }
     ],
-    "studyId": "eucharist-reading"
+    "studyId": "eucharist-reading",
+    "deeper": true
   },
   {
     "id": "reading-john6",
@@ -6926,7 +7080,8 @@
         "verse": 14
       }
     ],
-    "studyId": "tradition"
+    "studyId": "tradition",
+    "deeper": true
   },
   {
     "id": "reading-romans8",
