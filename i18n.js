@@ -840,7 +840,9 @@
     'Morning message is on.': 'El mensaje de la mañana está activado.',
     'Morning message is off.': 'El mensaje de la mañana está desactivado.',
     'Morning message time saved.': 'La hora del mensaje de la mañana quedó guardada.',
-    'Get this every morning?': '¿Quieres recibir esto cada mañana?'
+    'Get this every morning?': '¿Quieres recibir esto cada mañana?',
+    'Enabled': 'Activado',
+    'Disabled': 'Apagado'
   });
 
   function stored() {

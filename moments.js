@@ -14,7 +14,7 @@
     let row=null;
     try{row=JSON.parse(localStorage.getItem('msb_morning_push')||'null')}catch{row=null}
     if(row&&(row.enabled||row.prompted)) return '';
-    return `<p class="moment-prompt">${es()?'¿Quieres recibir esto cada mañana?':'Get this every morning?'} <button type="button" class="text-button" data-morning-yes>${es()?'Sí':'Yes'}</button><button type="button" class="text-button" data-morning-no>${es()?'Ahora no':'Not now'}</button></p>`;
+    return `<p class="moment-prompt"><span>${es()?'¿Quieres recibir esto cada mañana?':'Get this every morning?'}</span> <button type="button" class="text-button" data-morning-yes>${es()?'Sí':'Yes'}</button> <button type="button" class="text-button" data-morning-no>${es()?'Ahora no':'Not now'}</button></p>`;
   }
   function cardHtml(item, name){
     const eyebrow=name==='morning'?(es()?'PARA ESTA MAÑANA':'FOR THIS MORNING'):(es()?'PARA ESTA NOCHE':'FOR THIS EVENING');

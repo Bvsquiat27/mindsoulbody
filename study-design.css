@@ -211,7 +211,7 @@ html{background:var(--bg)}body{color:var(--text);font-family:Outfit,system-ui,sa
 .morning-time-label{display:flex;flex-direction:column;gap:6px;margin-top:12px;font-size:14px}
 .morning-time-label input{min-height:44px;font:inherit;padding:8px 10px}
 .morning-push-note{margin:8px 0 0}
-.moment-prompt{margin:8px 0 0}
+.moment-prompt{margin:8px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .moment-prompt .text-button{min-height:44px}
 .tap-vibration-state{font-size:13px;font-weight:700;min-width:1.6em;text-align:left}
 .tap-vibration-toggle:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
