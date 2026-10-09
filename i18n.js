@@ -33,7 +33,7 @@
     'The full Bible': 'La Biblia completa',
     '78 books, notes, and highlights': '78 libros, notas y subrayados',
     'PLAY': 'JUGAR',
-    '¿Qué dice la Biblia?, Jeopardy, and lessons': '¿Qué dice la Biblia?, Jeopardy y lecciones',
+    'Survey Says, Jeopardy, and lessons': 'Survey Says, Jeopardy y lecciones',
     'Start with Scripture': 'Empieza por la Escritura',
     'Open study ↗': 'Abrir estudio ↗',
     'TODAY': 'HOY',
@@ -644,6 +644,193 @@
     "Dec": "dic"
   };
 
+  Object.assign(ES, {
+    'BIBLE STUDY': 'ESTUDIO BÍBLICO',
+    'Read Scripture and keep a simple rhythm. A profile on this device keeps your notes and progress in this browser.': 'Lee la Escritura y guarda un ritmo sencillo. Un perfil en este dispositivo guarda tus notas y tu avance en este navegador.',
+    'Study notes are a learning aid. Bring difficult questions to your pastor or study group.': 'Las notas de estudio son una ayuda. Lleva las preguntas difíciles a tu pastor o a tu grupo de estudio.',
+    'Reflect on Scripture.': 'Reflexiona sobre la Escritura.',
+    'Short readings with context, a closer look, questions, and a practice for the day.': 'Lecturas cortas con contexto, una mirada más de cerca, preguntas y una práctica para el día.',
+    'A CLOSER LOOK': 'UNA MIRADA MÁS DE CERCA',
+    'Read it again, slowly': 'Léelo otra vez, despacio',
+    'Take the Word into prayer.': 'Lleva la Palabra a la oración.',
+    'A simple way to read faithfully, without rushing to finish.': 'Una manera sencilla de leer con fidelidad, sin correr para terminar.',
+    'A DAILY RHYTHM': 'UN RITMO DIARIO',
+    'THE JESUS PRAYER': 'LA ORACIÓN DE JESÚS',
+    'Prayer rope': 'Cordón de oración',
+    'Choose the knots, then tap once for each. A short pulse marks a knot. A stronger pulse marks a finished rope. Today’s count stays on this device.': 'Elige los nudos y toca una vez por cada uno. Un pulso corto marca un nudo. Un pulso más fuerte marca un cordón terminado. La cuenta de hoy se queda en este dispositivo.',
+    'Knots on the rope': 'Nudos del cordón',
+    'Custom': 'Personal',
+    'Custom knots': 'Nudos personalizados',
+    'Custom knot count': 'Cantidad personalizada de nudos',
+    'Tap for the next knot': 'Toca para el siguiente nudo',
+    'Rope complete. Tap to begin the next.': 'Cordón completo. Toca para empezar el siguiente.',
+    'The screen stays awake while this page is open.': 'La pantalla sigue despierta mientras esta página está abierta.',
+    'rope completed': 'cordón completo',
+    'ropes completed': 'cordones completos',
+    'knots today': 'nudos hoy',
+    'A DAILY RULE': 'UNA REGLA DIARIA',
+    'Prayer rule': 'Regla de oración',
+    'Choose which prayers belong in your rule. Check off the ones you pray today. The list clears after midnight on this device.': 'Elige qué oraciones van en tu regla. Marca las que ores hoy. La lista se vacía después de la medianoche en este dispositivo.',
+    'In my rule': 'En mi regla',
+    'Prayed today': 'Orada hoy',
+    'Add at least one prayer to your rule.': 'Agrega al menos una oración a tu regla.',
+    'Close the text': 'Cerrar el texto',
+    'Morning Prayers': 'Oraciones de la mañana',
+    'Evening Prayers': 'Oraciones de la noche',
+    'Trisagion Prayers': 'Oraciones del Trisagio',
+    'Prayers before and after meals': 'Oraciones antes y después de comer',
+    'Prayers before Holy Communion': 'Oraciones antes de la Sagrada Comunión',
+    'MORE PRAYERS': 'MÁS ORACIONES',
+    'Go deeper': 'Profundizar',
+    'WHEN YOU ARE READY': 'CUANDO ESTÉS LISTO',
+    'Longer lessons on worship, history, and hard questions. They stay here so the front of the app can stay with Scripture.': 'Lecciones más largas sobre la adoración, la historia y las preguntas difíciles. Se quedan aquí para que el frente de la app siga con la Escritura.',
+    'Readings': 'Lecturas',
+    'Open the passage': 'Abrir el pasaje',
+    'Loading study notes…': 'Cargando notas de estudio…',
+    'No extra notes in this set.': 'No hay notas extra en este conjunto.',
+    'Study notes are unavailable offline until the app has saved them.': 'Las notas de estudio no están disponibles sin conexión hasta que la app las haya guardado.',
+    'A score is a study aid, not a measure of faith.': 'Una puntuación es una ayuda de estudio, no una medida de fe.',
+    'They stay folded until you open them.': 'Están plegadas hasta que las abras.',
+    'Study notes': 'Notas de estudio',
+    'TOUCH': 'TACTO',
+    'Tap vibration': 'Vibración al tocar',
+    'A short pulse when you tap icons and buttons.': 'Un pulso corto cuando tocas iconos y botones.',
+    'On': 'Sí',
+    'Off': 'No',
+    'Download whole Bible for offline': 'Descargar toda la Biblia para leer sin conexión',
+    'Whole Bible on this device': 'La Biblia completa en este dispositivo',
+    'The download also saves the Reina-Valera 1909.': 'La descarga también guarda la Reina-Valera 1909.',
+    'Persistent storage is on, so the browser is less likely to clear your notes and progress.': 'El almacenamiento persistente está activo, así que el navegador es menos propenso a borrar tus notas y tu avance.',
+    'Persistent storage was requested. This browser may still clear data if storage is low — keep a backup.': 'Se pidió almacenamiento persistente. Este navegador todavía puede borrar datos si queda poco espacio. Guarda una copia.',
+    'This browser does not offer persistent storage. Export a backup so your notes are not only in this browser.': 'Este navegador no ofrece almacenamiento persistente. Exporta una copia para que tus notas no vivan solo aquí.',
+    'Requesting persistent storage so the browser is less likely to clear your notes and progress.': 'Pidiendo almacenamiento persistente para que el navegador sea menos propenso a borrar tus notas y tu avance.',
+    '01 · BE STILL': '01 · QUÉDATE QUIETO',
+    'Begin with prayer': 'Empieza con oración',
+    'Ask the Holy Spirit to open your heart. Read the passage aloud or slowly enough to hear it.': 'Pide al Espíritu Santo que abra tu corazón. Lee el pasaje en voz alta, o tan despacio que puedas oírlo.',
+    '02 · ATTEND': '02 · ATIENDE',
+    'Read in context': 'Lee en contexto',
+    'Let the passage sit with you before you rush on.': 'Deja que el pasaje se quede contigo antes de seguir de prisa.',
+    '03 · RESPOND': '03 · RESPONDE',
+    'Live one thing': 'Vive una cosa',
+    'Write a question, pray with the text, and choose one concrete act of repentance, gratitude, or mercy.': 'Escribe una pregunta, ora con el texto y elige un acto concreto de arrepentimiento, gratitud o misericordia.',
+    'Language': 'Lenguaje',
+    'Church History': 'Historia de la Iglesia',
+    'Saints': 'Santos',
+    'Prayer and Worship': 'Oración y adoración',
+    'Sacraments': 'Sacramentos',
+    'Christian Life': 'Vida cristiana',
+    'The Holy Spirit': 'El Espíritu Santo',
+    'Subject': 'Tema',
+    'Theme': 'Asunto',
+    'Filter readings by subject': 'Filtrar lecturas por tema',
+    'Filter readings by theme': 'Filtrar lecturas por asunto',
+    'Filter games': 'Filtrar juegos',
+    'All readings': 'Todas las lecturas',
+    'All games': 'Todos los juegos',
+    'Lessons and quizzes': 'Lecciones y cuestionarios',
+    'No games in this subject.': 'No hay juegos en este tema.',
+    'No lessons in this subject.': 'No hay lecciones en este tema.',
+    'Christology': 'Cristología',
+    'Discipleship': 'Discipulado',
+    'Repentance': 'Arrepentimiento',
+    'Faith & works': 'Fe y obras',
+    'Pascha': 'Pascua',
+    'Creation & Origins': 'Creación y orígenes',
+    'Christ in the Old Testament': 'Cristo en el Antiguo Testamento',
+    'Psalms & Prayer': 'Salmos y oración',
+    'Life of Christ': 'La vida de Cristo',
+    'The Church': 'La Iglesia',
+    'Scripture & Tradition': 'Escritura y tradición',
+    'Faith & Salvation': 'Fe y salvación',
+    'Prophets & Kings': 'Profetas y reyes',
+    'Wisdom & Suffering': 'Sabiduría y sufrimiento',
+    'Saints & Prayer': 'Santos y oración',
+    'FRIENDS': 'AMIGOS',
+    'Study and play together': 'Estudien y jueguen juntos',
+    'Get a friend code and share it. The other person sends a request, and you accept it before you are friends. You will see each other\'s studies finished and game levels beaten. Your notes stay private unless you choose to send one to a friend. Only you can see your friends list.': 'Obtén un código de amistad y compártelo. La otra persona envía una solicitud, y tú la aceptas antes de ser amigos. Verán los estudios terminados y los niveles de juego. Tus notas siguen privadas, a menos que elijas enviar una. Solo tú ves tu lista de amigos.',
+    'Your name for friends': 'Tu nombre para los amigos',
+    'Get my friend code': 'Obtener mi código',
+    'Works only with an internet connection; everything else in the app still works offline.': 'Solo funciona con internet. Lo demás de la app sigue funcionando sin conexión.',
+    'Back to profile': 'Volver al perfil',
+    'Your friend code': 'Tu código de amistad',
+    'Verses for you': 'Versículos para ti',
+    'SEND A REQUEST': 'ENVIAR UNA SOLICITUD',
+    'Their friend code': 'El código de tu amigo',
+    'Send request': 'Enviar solicitud',
+    'Requests': 'Solicitudes',
+    'Friends': 'Amigos',
+    'Refresh': 'Actualizar',
+    'SEND A NOTE TO A FRIEND': 'ENVIAR UNA NOTA A UN AMIGO',
+    'Only the note you write here is sent — your journal itself stays private on your device. Attach the study and its verse travels with the note: your friend can open the passage in the Bible and save the note straight into their own journal.': 'Solo se envía la nota que escribes aquí. Tu diario se queda privado en tu dispositivo. Si adjuntas el estudio, el versículo viaja con la nota: tu amigo puede abrir el pasaje y guardar la nota en su propio diario.',
+    'SHARED NOTES — MAKE THEM TOGETHER': 'NOTAS COMPARTIDAS — ESCRÍBANLAS JUNTOS',
+    'Start a note with a friend and you can both keep writing it. Every edit shows who made it. Attach the study and its verse travels with the note, and either of you can save a copy onto that verse in your own Bible.': 'Empieza una nota con un amigo y los dos pueden seguir escribiéndola. Cada cambio muestra quién lo hizo. Si adjuntas el estudio, el versículo viaja con la nota, y cualquiera de los dos puede guardar una copia en ese versículo de su propia Biblia.',
+    'Title (optional)': 'Título (opcional)',
+    'Send note': 'Enviar nota',
+    'Start a shared note': 'Empezar una nota compartida',
+    'Shared with you': 'Compartido contigo',
+    'Notes from friends': 'Notas de amigos',
+    'No study attached': 'Sin estudio adjunto',
+    'Encouragement, a question, what the passage showed you…': 'Un ánimo, una pregunta, lo que el pasaje te mostró…',
+    'Start the note together…': 'Empiecen la nota juntos…',
+    'Copy code': 'Copiar código',
+    'Share': 'Compartir',
+    'Your study journal.': 'Tu diario de estudio.',
+    'Sign in to open the notes saved on this device. They stay in this browser.': 'Inicia sesión para abrir las notas guardadas en este dispositivo. Se quedan en este navegador.',
+    'SAVED IN THIS BROWSER': 'GUARDADO EN ESTE NAVEGADOR',
+    'The questions you keep are part of the journey.': 'Las preguntas que guardas son parte del camino.',
+    'No notes yet. Open a study and write down what you notice.': 'Todavía no hay notas. Abre un estudio y escribe lo que notes.',
+    'Send to friend': 'Enviar a un amigo',
+    '← Quizzes & games': '← Cuestionarios y juegos',
+    'PLAY THE SCRIPTURES': 'JUEGA CON LA ESCRITURA',
+    'The question is yours.': 'La pregunta es tuya.',
+    'This board cannot be scored. There is no answer key, so a choice is not marked right or wrong.': 'Este tablero no se puede calificar. No hay clave de respuestas, así que una opción no se marca bien ni mal.',
+    'ANSWER BOARD': 'TABLERO DE RESPUESTAS',
+    'Survey Says': 'Survey Says',
+    'Family Feud style. Read the prompt and the biblical choices. Nothing here is scored.': 'Al estilo de una encuesta. Lee la pregunta y las opciones bíblicas. Aquí no se califica nada.',
+    'CATEGORY BOARD': 'TABLERO DE CATEGORÍAS',
+    'Jeopardy': 'Jeopardy',
+    'Pick a clue and read the responses in question form. Nothing here is scored.': 'Elige una pista y lee las respuestas en forma de pregunta. Aquí no se califica nada.',
+    'The answer board point order is curated for play. It does not represent an actual survey.': 'El orden de los puntos está armado para jugar. No representa una encuesta real.',
+    '← Boards': '← Tableros',
+    'Clues across Scripture.': 'Pistas por toda la Escritura.',
+    'Name what the Bible names.': 'Nombra lo que la Biblia nombra.',
+    'Not scored': 'Sin calificar',
+    'Scripture references use KJV numbering. Orthodox Psalter numbers can differ.': 'Las referencias usan la numeración de la KJV. Los números del Salterio pueden diferir.',
+    'SPACED REVIEW': 'REPASO ESPACIADO',
+    'Review': 'Repaso',
+    'Questions you missed come back after 1, 3, 7, and 14 days until you answer them right.': 'Las preguntas que fallaste vuelven a los 1, 3, 7 y 14 días, hasta que las respondas bien.',
+    'Nothing is due today.': 'Hoy no hay nada pendiente.',
+    'Miss a quiz question and it will wait here for tomorrow.': 'Si fallas una pregunta del cuestionario, te esperará aquí mañana.',
+    'That’s right. This one can rest.': 'Así es. Esta puede descansar.',
+    'Not yet. It will return on a later day.': 'Todavía no. Volverá otro día.',
+    'Continue': 'Seguir',
+    'THE PSALTER': 'EL SALTERIO',
+    'Twenty kathismata': 'Veinte catismas',
+    'Each kathisma opens in this Bible. Septuagint numbers are shown beside the KJV numbering. The psalm text itself is unchanged.': 'Cada catisma se abre en esta Biblia. Los números de la Septuaginta aparecen junto a la numeración de la KJV. El texto del salmo no cambia.',
+    'Suggested today': 'Sugerido hoy',
+    'Hide the stases': 'Ocultar las estasis',
+    'Show the stases': 'Mostrar las estasis',
+    'Mark unread': 'Marcar como no leído',
+    'Mark this kathisma read': 'Marcar este catisma como leído',
+    'Open': 'Abrir',
+    'ON THIS DEVICE': 'EN ESTE DISPOSITIVO',
+    'My marks': 'Mis marcas',
+    'Every highlight and note on this device. They are included when you export a backup from Profile.': 'Cada subrayado y cada nota de este dispositivo. Van incluidos cuando exportas una copia desde Perfil.',
+    'Filter marks': 'Filtrar marcas',
+    'Export marks': 'Exportar marcas',
+    'Highlights': 'Subrayados',
+    'Verse notes': 'Notas de versículo',
+    'Nothing in this filter yet.': 'Todavía no hay nada en este filtro.',
+    'Study note': 'Nota de estudio',
+    'Verse note': 'Nota de versículo',
+    'People of faith whose stories still teach us.': 'Personas de fe cuyas historias todavía nos enseñan.',
+    'The Psalms, the hours of prayer, and a simple rule.': 'Los Salmos, las horas de oración y una regla sencilla.',
+    'Baptism, anointing, and the life those gifts begin.': 'El bautismo, la unción y la vida que esos dones empiezan.',
+    'Notice who is speaking, to whom, and what comes before and after. Let the passage sit with you before you rush on.': 'Fíjate quién habla, a quién, y qué viene antes y después. Deja que el pasaje se quede contigo antes de seguir de prisa.',
+    'Games': 'Juegos',
+    'Lessons and quizzes': 'Lecciones y cuestionarios'
+  });
+
   function stored() {
     try {
       const saved = localStorage.getItem(KEY);
@@ -657,10 +844,15 @@
 
   function lang() { return current; }
 
+  function paintTitle() {
+    document.title = current === 'es' ? 'Mind Soul & Body — Estudio bíblico' : 'Mind Soul & Body — Bible study';
+  }
+
   function set(next) {
     current = next === 'es' ? 'es' : 'en';
     try { localStorage.setItem(KEY, current); } catch { /* private mode */ }
     document.documentElement.lang = current === 'es' ? 'es' : 'en';
+    paintTitle();
   }
 
   function t(text) {
@@ -669,9 +861,40 @@
     return Object.prototype.hasOwnProperty.call(ES, value) ? ES[value] : value;
   }
 
-  function apply(root) {
-    document.documentElement.lang = current === 'es' ? 'es' : 'en';
-    if (current !== 'es' || !root) return;
+  let applyLock = 0;
+
+  function translateText(node) {
+    if (!node || node.nodeType !== 3) return;
+    const parent = node.parentElement;
+    if (!parent) return;
+    const tag = parent.tagName;
+    if (tag === 'SCRIPT' || tag === 'STYLE') return;
+    if (parent.closest('[data-i18n-skip]')) return;
+    const raw = node.nodeValue;
+    if (!raw) return;
+    const trimmed = raw.trim();
+    if (!trimmed || !Object.prototype.hasOwnProperty.call(ES, trimmed)) return;
+    const padStart = raw.indexOf(trimmed);
+    const next = raw.slice(0, padStart) + ES[trimmed] + raw.slice(padStart + trimmed.length);
+    if (next !== raw) node.nodeValue = next;
+  }
+
+  function translateAttrs(el) {
+    if (!el || el.nodeType !== 1 || el.closest('[data-i18n-skip]')) return;
+    for (const attr of ['aria-label', 'placeholder', 'title']) {
+      const value = el.getAttribute(attr);
+      if (value && Object.prototype.hasOwnProperty.call(ES, value)) el.setAttribute(attr, ES[value]);
+    }
+    if (el.tagName === 'OPTGROUP') {
+      const value = el.getAttribute('label');
+      if (value && Object.prototype.hasOwnProperty.call(ES, value)) el.setAttribute('label', ES[value]);
+    }
+  }
+
+  function translateTree(root) {
+    if (!root) return;
+    if (root.nodeType === 3) { translateText(root); return; }
+    if (root.nodeType !== 1 && root.nodeType !== 9 && root.nodeType !== 11) return;
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode(node) {
         const parent = node.parentElement;
@@ -684,27 +907,50 @@
     });
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
-    for (const node of nodes) {
-      const raw = node.nodeValue;
-      if (!raw) continue;
-      const trimmed = raw.trim();
-      if (!trimmed || !Object.prototype.hasOwnProperty.call(ES, trimmed)) continue;
-      const padStart = raw.indexOf(trimmed);
-      node.nodeValue = raw.slice(0, padStart) + ES[trimmed] + raw.slice(padStart + trimmed.length);
+    for (const node of nodes) translateText(node);
+    const scope = root.nodeType === 1 ? root : document.documentElement;
+    if (root.nodeType === 1) translateAttrs(root);
+    scope.querySelectorAll('[aria-label],[placeholder],[title],[label]').forEach(translateAttrs);
+  }
+
+  function apply(root) {
+    applyLock++;
+    try {
+      document.documentElement.lang = current === 'es' ? 'es' : 'en';
+      paintTitle();
+      if (current !== 'es' || !root) return;
+      translateTree(root);
+    } finally {
+      requestAnimationFrame(() => { applyLock = Math.max(0, applyLock - 1); });
     }
-    root.querySelectorAll('[aria-label],[placeholder],[title],[label]').forEach(el => {
-      if (el.closest('[data-i18n-skip]')) return;
-      for (const attr of ['aria-label', 'placeholder', 'title']) {
-        const value = el.getAttribute(attr);
-        if (value && Object.prototype.hasOwnProperty.call(ES, value)) el.setAttribute(attr, ES[value]);
+  }
+
+  function watchLateText() {
+    const observer = new MutationObserver(records => {
+      if (applyLock > 0 || current !== 'es') return;
+      applyLock++;
+      try {
+        for (const record of records) {
+          if (record.type === 'characterData') translateText(record.target);
+          if (record.type === 'attributes') translateAttrs(record.target);
+          if (record.type === 'childList') {
+            record.addedNodes.forEach(node => translateTree(node));
+          }
+        }
+      } finally {
+        requestAnimationFrame(() => { applyLock = Math.max(0, applyLock - 1); });
       }
-      if (el.tagName === 'OPTGROUP') {
-        const value = el.getAttribute('label');
-        if (value && Object.prototype.hasOwnProperty.call(ES, value)) el.setAttribute('label', ES[value]);
-      }
+    });
+    observer.observe(document.documentElement, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: ['aria-label', 'placeholder', 'title', 'label']
     });
   }
 
   set(current);
+  if (document.documentElement) watchLateText();
   window.MsbI18n = { lang, set, t, apply, key: KEY };
 })();

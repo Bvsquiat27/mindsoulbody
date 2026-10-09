@@ -11,12 +11,12 @@
    deleted, so another app on the same origin keeps its own caches.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v78';
+const CACHE_VERSION = 'v79';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-2';
 const BIBLE_CACHE = `msb-bible-${BIBLE_DATA_VERSION}`;
-const RVR_DATA_VERSION = 'rvr1909-3';
+const RVR_DATA_VERSION = 'rvr1909-4';
 const RVR_CACHE = `msb-bible-${RVR_DATA_VERSION}`;
 const APP_CACHE_PREFIX = 'msb-';
 const STORIES_CACHE = 'msb-stories-1';
@@ -44,10 +44,18 @@ const SHELL = [
   './moments.js',
   './stories.js',
   './bridge.js',
-  './audio/still-waters.ogg',
-  './audio/still-waters.mp3',
-  ...STORY_IDS.flatMap((id) => [`./img/stories/${id}.webp`, `./img/stories/${id}-512.webp`]),
 ];
+
+const DATA_FILES = [
+  './data/study-challenges.json',
+  './data/study-library.json',
+  './data/holy-spirit.json',
+  './data/game-bank.json',
+  './data/trivia.json',
+  './bible/study-notes.json',
+];
+
+const STORY_FILES = STORY_IDS.flatMap((id) => [`./img/stories/${id}.webp`, `./img/stories/${id}-512.webp`]);
 
 const isBibleBook = (url) => /\/bible\/(?:index|\d\d)\.json$/.test(url.pathname);
 const isRvrBook = (url) => /\/bible\/rvr\/(?:index|\d\d)\.json$/.test(url.pathname);
@@ -102,11 +110,19 @@ async function preserveRvrBooks(keys) {
 }
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(SHELL_CACHE)
-      .then((cache) => cache.addAll(SHELL))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil((async () => {
+    const shell = await caches.open(SHELL_CACHE);
+    await shell.addAll(SHELL);
+    const data = await caches.open(DATA_CACHE);
+    await data.addAll(DATA_FILES);
+    const bible = await caches.open(BIBLE_CACHE);
+    await bible.addAll(['./bible/index.json']);
+    const rvr = await caches.open(RVR_CACHE);
+    await rvr.addAll(['./bible/rvr/index.json']);
+    const stories = await caches.open(STORIES_CACHE);
+    await stories.addAll(STORY_FILES);
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', (event) => {

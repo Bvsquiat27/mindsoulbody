@@ -143,9 +143,60 @@ test('study together notebook names verses and keeps the worker payload', () => 
 
 test('service worker refreshes Bible caches and only deletes this app', () => {
   const sw = read('sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v78'/);
+  assert.match(sw, /const CACHE_VERSION = 'v79'/);
   assert.match(sw, /const BIBLE_DATA_VERSION = 'kjv-2'/);
-  assert.match(sw, /const RVR_DATA_VERSION = 'rvr1909-3'/);
+  assert.match(sw, /const RVR_DATA_VERSION = 'rvr1909-4'/);
   assert.match(sw, /function freshOrCached/);
   assert.match(sw, /k\.startsWith\(APP_CACHE_PREFIX\) && !kept\.has\(k\)/);
+  const shell = sw.slice(sw.indexOf('const SHELL = ['), sw.indexOf('const DATA_FILES'));
+  const data = sw.slice(sw.indexOf('const DATA_FILES'), sw.indexOf('const STORY_FILES'));
+  assert.equal(shell.includes('.webp'), false);
+  assert.equal(shell.includes('audio/'), false);
+  assert.equal(sw.includes('still-waters'), false);
+  for (const file of [
+    './data/study-challenges.json',
+    './data/study-library.json',
+    './data/holy-spirit.json',
+    './data/game-bank.json',
+    './data/trivia.json',
+    './bible/study-notes.json',
+  ]) assert.match(data, new RegExp(file.replace(/[./]/g, '\\$&')));
+  assert.match(sw, /await bible\.addAll\(\['\.\/bible\/index\.json'\]\)/);
+  assert.match(sw, /await rvr\.addAll\(\['\.\/bible\/rvr\/index\.json'\]\)/);
+  assert.match(sw, /await stories\.addAll\(STORY_FILES\)/);
+  const reader = read('bible-reader.js');
+  assert.match(reader, /msb-bible-rvr1909-4/);
+  assert.match(reader, /msb-bible-rvr1909-3/);
+});
+
+test('Job 40 display numbers map onto the later KJV verses', () => {
+  const reader = read('bible-reader.js');
+  assert.match(reader, /reader\.book === 18 && reader\.chapter === 40 && display >= 1 && display <= 19\) return display \+ 5/);
+  assert.equal(book(18).chapters[39].length, 24);
+  assert.equal(JSON.parse(read('bible/rvr/18.json')).chapters[39].length, 24);
+});
+
+test('study notes stay collapsed and deeper notes stay off the chapter', () => {
+  const reader = read('bible-reader.js');
+  assert.match(reader, /notesOpen:false/);
+  assert.match(reader, /!note\.deeper/);
+  assert.match(reader, /aria-expanded="\$\{reader\.notesOpen\}"/);
+  assert.match(reader, /data-bible="notes"/);
+});
+
+test('RV epistle subscriptions sit on the index, not inside a verse', () => {
+  const index = JSON.parse(read('bible/rvr/index.json'));
+  const reader = read('bible-reader.js');
+  assert.match(reader, /bible-subscription/);
+  for (let id = 45; id <= 58; id += 1) {
+    const info = index.books.find((item) => item.id === id);
+    const chapters = JSON.parse(read(`bible/rvr/${String(id).padStart(2, '0')}.json`)).chapters;
+    const joined = chapters.flat().join('\n');
+    assert.equal(typeof info.subscription, 'string');
+    assert.equal(info.subscription.length > 8, true, info.name);
+    assert.equal(joined.includes(info.subscription), false, info.name);
+  }
+  const second = JSON.parse(read('bible/rvr/47.json')).chapters.at(-1);
+  assert.equal(second.at(-1).includes('Filipos de Macedonia'), false);
+  assert.equal(second[12].includes('Filipos de Macedonia'), false);
 });

@@ -35,7 +35,9 @@
           "correct": 1,
           "explanation": "John 1:14 affirms that the Word became flesh, not that he merely appeared human or stopped being divine."
         }
-      ]
+      ],
+      "themeEs": "Cristología",
+      "titleEs": "El Verbo se hizo carne"
     },
     {
       "id": "beatitudes",
@@ -72,7 +74,9 @@
           "correct": 0,
           "explanation": "The Beatitudes describe a way of life in Christ, not a list of achievements or a replacement for prayer."
         }
-      ]
+      ],
+      "themeEs": "Discipulado",
+      "titleEs": "La vida bienaventurada"
     },
     {
       "id": "mercy",
@@ -109,7 +113,9 @@
           "correct": 1,
           "explanation": "Repentance in the parable is returning to the father, not hiding failure or earning the robe."
         }
-      ]
+      ],
+      "themeEs": "Arrepentimiento",
+      "titleEs": "El Padre sale corriendo a tu encuentro"
     },
     {
       "id": "faith",
@@ -146,7 +152,9 @@
           "correct": 1,
           "explanation": "Orthodox teaching treats acts of mercy as the fruit of living faith and grace, not a way to buy salvation."
         }
-      ]
+      ],
+      "themeEs": "Fe y obras",
+      "titleEs": "Una fe que se vuelve visible"
     },
     {
       "id": "resurrection",
@@ -183,7 +191,9 @@
           "correct": 1,
           "explanation": "Pascha centers on Christ’s real victory over death, not only moral improvement or a seasonal custom."
         }
-      ]
+      ],
+      "themeEs": "Pascua",
+      "titleEs": "Si Cristo resucitó"
     },
     {
       "id": "renewal",
@@ -220,7 +230,9 @@
           "correct": 0,
           "explanation": "The psalmist asks God to renew a right spirit within him."
         }
-      ]
+      ],
+      "themeEs": "Oración",
+      "titleEs": "Un corazón limpio"
     },
     {
       "id": "beginning",
@@ -256,6 +268,42 @@
           ],
           "correct": 1,
           "explanation": "God calls each stage good and the whole \"very good\" (Genesis 1:31)."
+        }
+      ],
+      "themeEs": "Creación y orígenes",
+      "titleEs": "En el principio Dios",
+      "passageEs": "EN el principio crió Dios los cielos y la tierra. Y la tierra estaba desordenada y vacía, y las tinieblas estaban sobre la haz del abismo, y el Espíritu de Dios se movía sobre la haz de las aguas. Y dijo Dios: Sea la luz: y fué la luz. Y vió Dios que la luz era buena: y apartó Dios la luz de las tinieblas. Y llamó Dios á la luz Día, y á las tinieblas llamó Noche: y fué la tarde y la mañana un día. Y dijo Dios: Hagamos al hombre á nuestra imagen, conforme á nuestra semejanza; y señoree en los peces de la mar, y en las aves de los cielos, y en las bestias, y en toda la tierra, y en todo animal que anda arrastrando sobre la tierra. Y crió Dios al hombre á su imagen, á imagen de Dios lo crió; varón y hembra los crió. Y los bendijo Dios; y díjoles Dios: Fructificad y multiplicad, y henchid la tierra, y sojuzgadla, y señoread en los peces de la mar, y en las aves de los cielos, y en todas las bestias que se mueven sobre la tierra. Y dijo Dios: He aquí que os he dado toda hierba que da simiente, que está sobre la haz de toda la tierra; y todo árbol en que hay fruto de árbol que da simiente, seros ha para comer. Y á toda bestia de la tierra, y á todas las aves de los cielos, y á todo lo que se mueve sobre la tierra, en que hay vida, toda hierba verde les será para comer: y fué así. Y vió Dios todo lo que había hecho, y he aquí que era bueno en gran manera. Y fué la tarde y la mañana el día sexto.",
+      "contextEs": "Génesis abre toda la Biblia: antes que nada, Dios. La creación no es una pelea entre dioses. Un solo Dios habla, y lo que hace es bueno, coronado por la humanidad a su imagen.",
+      "orthodoxEs": "La Iglesia lee la creación como un acto libre de amor: el mundo no es Dios, y no es malo. La materia puede llevar gracia porque el Creador la hizo y la llamó buena en gran manera.",
+      "practiceEs": "Lee despacio las frases “y dijo Dios” y “era buena”. Hoy dale gracias a Dios por una cosa creada, como un regalo y no como ruido de fondo.",
+      "questionsEs": [
+        "¿Por qué la Biblia empieza con “En el principio crió Dios” en vez de explicar de dónde vino Dios?",
+        "¿Qué le da a cada ser humano el haber sido hecho a imagen de Dios?"
+      ],
+      "quizEs": [
+        {
+          "prompt": "¿Qué corona el día sexto en Génesis 1?",
+          "choices": [
+            "La hechura de las estrellas",
+            "La humanidad hecha a imagen de Dios",
+            "El nombre de los animales"
+          ],
+          "correct": 1,
+          "explanation": "Génesis 1:26–27 pone a la humanidad, hecha a imagen de Dios, como corona del día sexto.",
+          "promptEs": "¿Qué corona el día sexto en Génesis 1?",
+          "explanationEs": "Génesis 1:26–27 pone a la humanidad, hecha a imagen de Dios, como corona del día sexto."
+        },
+        {
+          "prompt": "¿Cómo describe Génesis el resultado de la obra de Dios?",
+          "choices": [
+            "Casi buena, con algo de mal mezclado",
+            "Buena, y al final buena en gran manera",
+            "Terminada, pero quebrada desde el principio"
+          ],
+          "correct": 1,
+          "explanation": "Dios llama buena cada etapa, y al conjunto “bueno en gran manera” (Génesis 1:31).",
+          "promptEs": "¿Cómo describe Génesis el resultado de la obra de Dios?",
+          "explanationEs": "Dios llama buena cada etapa, y al conjunto “bueno en gran manera” (Génesis 1:31)."
         }
       ]
     },
@@ -294,7 +342,9 @@
           "correct": 1,
           "explanation": "Genesis 2:15 puts the man in the garden \"to dress it and to keep it\" — work before the fall is blessing, not curse."
         }
-      ]
+      ],
+      "themeEs": "Creación y orígenes",
+      "titleEs": "Aliento de vida en el huerto"
     },
     {
       "id": "fall",
@@ -331,7 +381,9 @@
           "correct": 0,
           "explanation": "Genesis 3:21: even in judgment, God clothes them himself — mercy inside the sentence."
         }
-      ]
+      ],
+      "themeEs": "Creación y orígenes",
+      "titleEs": "El día en que todo se quebró"
     },
     {
       "id": "noah",
@@ -368,7 +420,9 @@
           "correct": 1,
           "explanation": "Genesis 9:12–17: the bow is the sign of God's everlasting covenant with every living creature."
         }
-      ]
+      ],
+      "themeEs": "Creación y orígenes",
+      "titleEs": "El arca y la promesa"
     },
     {
       "id": "passover",
@@ -405,7 +459,9 @@
           "correct": 1,
           "explanation": "Exodus 13:8: \"thou shalt shew thy son in that day\" — memory handed down is the point."
         }
-      ]
+      ],
+      "themeEs": "Cristo en el Antiguo Testamento",
+      "titleEs": "La noche de la Pascua"
     },
     {
       "id": "red-sea",
@@ -442,7 +498,9 @@
           "correct": 1,
           "explanation": "Exodus 14:22: dry ground, the waters a wall on right and left."
         }
-      ]
+      ],
+      "themeEs": "Cristo en el Antiguo Testamento",
+      "titleEs": "Por el mar, en seco"
     },
     {
       "id": "manna",
@@ -479,7 +537,9 @@
           "correct": 1,
           "explanation": "Exodus 16:20: hoarded manna bred worms — grasping spoils the gift."
         }
-      ]
+      ],
+      "themeEs": "Cristo en el Antiguo Testamento",
+      "titleEs": "Pan del cielo"
     },
     {
       "id": "serpent-lifted",
@@ -516,7 +576,9 @@
           "correct": 1,
           "explanation": "John 3:14: \"as Moses lifted up the serpent... so must the Son of man be lifted up.\""
         }
-      ]
+      ],
+      "themeEs": "Cristo en el Antiguo Testamento",
+      "titleEs": "La serpiente levantada"
     },
     {
       "id": "ruth",
@@ -553,7 +615,9 @@
           "correct": 1,
           "explanation": "Ruth 4:17: Obed, father of Jesse, father of David — Ruth the Moabite stands in the Messiah's family tree."
         }
-      ]
+      ],
+      "themeEs": "Cristo en el Antiguo Testamento",
+      "titleEs": "Tu pueblo será mi pueblo"
     },
     {
       "id": "isaiah-child",
@@ -590,7 +654,9 @@
           "correct": 1,
           "explanation": "The child bears divine names — the Church confesses this is God the Son, born in the flesh."
         }
-      ]
+      ],
+      "themeEs": "Cristo en el Antiguo Testamento",
+      "titleEs": "Un niño nos es nacido"
     },
     {
       "id": "suffering-servant",
@@ -627,7 +693,9 @@
           "correct": 1,
           "explanation": "Isaiah 53:6: this is the Father's saving will, not a tragic accident."
         }
-      ]
+      ],
+      "themeEs": "Cristo en el Antiguo Testamento",
+      "titleEs": "Por su llaga fuimos curados"
     },
     {
       "id": "son-of-man",
@@ -664,7 +732,9 @@
           "correct": 1,
           "explanation": "Daniel 7:14: all peoples and nations serve him — a kingdom wider than one nation."
         }
-      ]
+      ],
+      "themeEs": "Cristo en el Antiguo Testamento",
+      "titleEs": "El Hijo del hombre recibe el reino"
     },
     {
       "id": "psalm1",
@@ -701,7 +771,9 @@
           "correct": 1,
           "explanation": "Psalm 1:4: the wicked are like chaff which the wind drives away."
         }
-      ]
+      ],
+      "themeEs": "Salmos y oración",
+      "titleEs": "El árbol junto a las aguas"
     },
     {
       "id": "psalm23",
@@ -737,6 +809,42 @@
           ],
           "correct": 1,
           "explanation": "Psalm 23:6: goodness and mercy — not shame — are what pursue the Shepherd's sheep."
+        }
+      ],
+      "themeEs": "Salmos y oración",
+      "titleEs": "Jehová es mi pastor",
+      "passageEs": "JEHOVÁ es mi pastor; nada me faltará. En lugares de delicados pastos me hará yacer: junto á aguas de reposo me pastoreará. Confortará mi alma; guiaráme por sendas de justicia por amor de su nombre. Aunque ande en valle de sombra de muerte, no temeré mal alguno; porque tú estarás conmigo: tu vara y tu cayado me infundirán aliento. Aderezarás mesa delante de mí, en presencia de mis angustiadores: ungiste mi cabeza con aceite: mi copa está rebosando. Ciertamente el bien y la misericordia me seguirán todos los días de mi vida: y en la casa de Jehová moraré por largos días.",
+      "contextEs": "David canta a un Pastor que lo alimenta, lo guía, lo conforta y camina con él por el valle de sombra de muerte. El salmo termina en una mesa puesta y en una promesa: el bien y la misericordia lo siguen todos sus días.",
+      "orthodoxEs": "La Iglesia oye aquí a Cristo — “Yo soy el buen pastor” (Juan 10:11, RV1909) — y reza este salmo junto a la cama y junto a la tumba. Fíjate: el Pastor no quita el valle. Lo atraviesa con los suyos, vara y cayado en la mano.",
+      "practiceEs": "Ora el salmo en voz alta una vez hoy, despacio. En “tú estarás conmigo”, detente y nombra un miedo que le estás entregando al Pastor.",
+      "questionsEs": [
+        "¿Por qué dice David “nada me faltará” si todavía camina por un valle?",
+        "La vara y el cayado sirven para defender y para guiar. ¿Dónde necesitas cada uno?"
+      ],
+      "quizEs": [
+        {
+          "prompt": "¿Qué hace el Pastor por el alma de David?",
+          "choices": [
+            "La prueba con silencio",
+            "Confortará mi alma",
+            "La esconde de los enemigos"
+          ],
+          "correct": 1,
+          "explanation": "Salmo 23:3: “Confortará mi alma”. Restaurar es obra del Pastor.",
+          "promptEs": "¿Qué hace el Pastor por el alma de David?",
+          "explanationEs": "Salmo 23:3: “Confortará mi alma”. Restaurar es obra del Pastor."
+        },
+        {
+          "prompt": "¿Quién sigue a David todos los días de su vida?",
+          "choices": [
+            "Sus enemigos, a lo lejos",
+            "El bien y la misericordia",
+            "El recuerdo de sus pecados"
+          ],
+          "correct": 1,
+          "explanation": "Salmo 23:6: el bien y la misericordia — no la vergüenza — persiguen a las ovejas del Pastor.",
+          "promptEs": "¿Quién sigue a David todos los días de su vida?",
+          "explanationEs": "Salmo 23:6: el bien y la misericordia — no la vergüenza — persiguen a las ovejas del Pastor."
         }
       ]
     },
@@ -775,7 +883,9 @@
           "correct": 1,
           "explanation": "Psalm 22:27–31: the cry ends in global praise — the whole psalm is the prayer."
         }
-      ]
+      ],
+      "themeEs": "Salmos y oración",
+      "titleEs": "Desde la cruz, un salmo"
     },
     {
       "id": "psalm42",
@@ -812,7 +922,9 @@
           "correct": 1,
           "explanation": "Psalm 42:11: hope is commanded before it is felt."
         }
-      ]
+      ],
+      "themeEs": "Salmos y oración",
+      "titleEs": "Mi alma tiene sed de Dios"
     },
     {
       "id": "psalm103",
@@ -849,7 +961,9 @@
           "correct": 1,
           "explanation": "Psalm 103:14: he knows our frame; he remembers we are dust — pity, not disgust."
         }
-      ]
+      ],
+      "themeEs": "Salmos y oración",
+      "titleEs": "Bendice, alma mía, a Jehová"
     },
     {
       "id": "psalm139",
@@ -886,7 +1000,9 @@
           "correct": 1,
           "explanation": "Psalm 139:14 — wonder is the right response to a human life."
         }
-      ]
+      ],
+      "themeEs": "Salmos y oración",
+      "titleEs": "Formidables y maravillosas son tus obras"
     },
     {
       "id": "luke15",
@@ -923,7 +1039,9 @@
           "correct": 1,
           "explanation": "Luke 15:7, 10: joy in heaven over one repenting sinner."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "Perdido y hallado"
     },
     {
       "id": "good-samaritan",
@@ -960,7 +1078,9 @@
           "correct": 1,
           "explanation": "Luke 10:37: the answer to theology is imitation."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "¿Quién es mi prójimo?"
     },
     {
       "id": "sower",
@@ -997,7 +1117,9 @@
           "correct": 1,
           "explanation": "Matthew 13:23: real hearing bears fruit, though not identical amounts."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "Cuatro clases de tierra"
     },
     {
       "id": "cana",
@@ -1034,7 +1156,9 @@
           "correct": 1,
           "explanation": "John 2:10: Christ saves the best for the moment of need."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "El agua hecha vino"
     },
     {
       "id": "lazarus",
@@ -1071,7 +1195,9 @@
           "correct": 1,
           "explanation": "John 11:17, 39: four days — beyond all doubt of death, so the sign cannot be explained away."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "Jesús lloró"
     },
     {
       "id": "footwashing",
@@ -1108,7 +1234,9 @@
           "correct": 1,
           "explanation": "John 13:5–11 with 13:26–30: even the betrayer's feet are washed."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "La toalla y el lebrillo"
     },
     {
       "id": "emmaus",
@@ -1145,7 +1273,9 @@
           "correct": 0,
           "explanation": "Luke 24:32: hearts burned under the opened Scriptures before eyes were opened at the table."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "Lo reconocieron al partir el pan"
     },
     {
       "id": "lords-prayer",
@@ -1182,7 +1312,9 @@
           "correct": 1,
           "explanation": "Matthew 6:11: daily bread trains daily dependence."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "Enséñanos a orar"
     },
     {
       "id": "pentecost",
@@ -1219,7 +1351,9 @@
           "correct": 1,
           "explanation": "Acts 2:41: about three thousand souls added that day."
         }
-      ]
+      ],
+      "themeEs": "La Iglesia",
+      "titleEs": "Lenguas de fuego"
     },
     {
       "id": "stephen",
@@ -1256,7 +1390,9 @@
           "correct": 1,
           "explanation": "Acts 7:60: dying, he intercedes for his killers."
         }
-      ]
+      ],
+      "themeEs": "La Iglesia",
+      "titleEs": "Señor, no les imputes este pecado"
     },
     {
       "id": "paul-conversion",
@@ -1293,7 +1429,9 @@
           "correct": 1,
           "explanation": "Acts 9:17–18: healing and baptism come through the Church he was attacking."
         }
-      ]
+      ],
+      "themeEs": "La Iglesia",
+      "titleEs": "Saulo, Saulo, ¿por qué me persigues?"
     },
     {
       "id": "council",
@@ -1330,7 +1468,10 @@
           "correct": 1,
           "explanation": "Acts 15:28: the Spirit and the gathered Church speak in one sentence."
         }
-      ]
+      ],
+      "deeper": true,
+      "themeEs": "La Iglesia",
+      "titleEs": "Nos ha parecido bien al Espíritu Santo y a nosotros"
     },
     {
       "id": "born-again",
@@ -1367,7 +1508,9 @@
           "correct": 0,
           "explanation": "John 3:4: he hears birth as biology; Jesus speaks of a birth from above."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "Nacido de agua y del Espíritu"
     },
     {
       "id": "eucharist-reading",
@@ -1404,7 +1547,10 @@
           "correct": 1,
           "explanation": "1 Corinthians 11:28: self-examination and discerning the body."
         }
-      ]
+      ],
+      "deeper": true,
+      "themeEs": "La vida de Cristo",
+      "titleEs": "Esto es mi cuerpo"
     },
     {
       "id": "john6",
@@ -1441,7 +1587,10 @@
           "correct": 1,
           "explanation": "John 6:66: the hard saying empties the crowd — and Jesus does not chase them with a softer version."
         }
-      ]
+      ],
+      "deeper": true,
+      "themeEs": "La vida de Cristo",
+      "titleEs": "Mi carne es verdadera comida"
     },
     {
       "id": "tradition",
@@ -1478,7 +1627,10 @@
           "correct": 1,
           "explanation": "2 Timothy 3:16–17: God-breathed Scripture equips the man of God for every good work."
         }
-      ]
+      ],
+      "deeper": true,
+      "themeEs": "Escritura y tradición",
+      "titleEs": "Retened las tradiciones"
     },
     {
       "id": "romans8",
@@ -1515,7 +1667,9 @@
           "correct": 1,
           "explanation": "Romans 8:38–39: Paul's list ends with \"nor any other creature\" — nothing."
         }
-      ]
+      ],
+      "themeEs": "Fe y salvación",
+      "titleEs": "Ninguna condenación, ninguna separación"
     },
     {
       "id": "corinthians13",
@@ -1552,7 +1706,9 @@
           "correct": 1,
           "explanation": "1 Corinthians 13:13: love is greatest because love is eternal."
         }
-      ]
+      ],
+      "themeEs": "Fe y salvación",
+      "titleEs": "El mayor de ellos es el amor"
     },
     {
       "id": "fruit-spirit",
@@ -1589,7 +1745,9 @@
           "correct": 1,
           "explanation": "Galatians 5:16, 25: walk in the Spirit and you will not fulfill the flesh."
         }
-      ]
+      ],
+      "themeEs": "Fe y salvación",
+      "titleEs": "El fruto del Espíritu"
     },
     {
       "id": "armor",
@@ -1626,7 +1784,9 @@
           "correct": 0,
           "explanation": "Ephesians 6:18: prayer at all times is the soldier's atmosphere."
         }
-      ]
+      ],
+      "themeEs": "Fe y salvación",
+      "titleEs": "Vestíos de toda la armadura de Dios"
     },
     {
       "id": "phil4",
@@ -1663,7 +1823,9 @@
           "correct": 1,
           "explanation": "Philippians 4:7: peace stands guard; explanations are not promised."
         }
-      ]
+      ],
+      "themeEs": "Fe y salvación",
+      "titleEs": "La paz que sobrepasa todo entendimiento"
     },
     {
       "id": "colossians1",
@@ -1700,7 +1862,9 @@
           "correct": 1,
           "explanation": "Colossians 1:20: peace is made through the blood of his cross."
         }
-      ]
+      ],
+      "themeEs": "Cristología",
+      "titleEs": "En él consisten todas las cosas"
     },
     {
       "id": "philippians2",
@@ -1737,7 +1901,9 @@
           "correct": 1,
           "explanation": "Philippians 2:9–10: exaltation answers humiliation."
         }
-      ]
+      ],
+      "themeEs": "Cristología",
+      "titleEs": "Se humilló a sí mismo"
     },
     {
       "id": "hebrews1",
@@ -1774,7 +1940,9 @@
           "correct": 1,
           "explanation": "Hebrews 1:3: radiance and exact image — language of true divinity."
         }
-      ]
+      ],
+      "themeEs": "Cristología",
+      "titleEs": "Dios ha hablado por su Hijo"
     },
     {
       "id": "transfiguration",
@@ -1811,7 +1979,9 @@
           "correct": 1,
           "explanation": "Matthew 17:5: the voice repeats the baptism and adds the command — hear him."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "La gloria en el monte"
     },
     {
       "id": "temptation",
@@ -1848,7 +2018,9 @@
           "correct": 1,
           "explanation": "Matthew 4:2: forty days — recapitulating Israel's forty years, and succeeding."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "Escrito está"
     },
     {
       "id": "nativity",
@@ -1885,7 +2057,9 @@
           "correct": 1,
           "explanation": "Luke 2:12: the sign of God's arrival is humility."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "Nuevas de gran gozo"
     },
     {
       "id": "magi",
@@ -1922,7 +2096,9 @@
           "correct": 1,
           "explanation": "Matthew 2:12: warned in a dream, they depart another way — obedience over reporting."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "Hemos visto su estrella"
     },
     {
       "id": "isaiah6",
@@ -1959,7 +2135,9 @@
           "correct": 1,
           "explanation": "Isaiah 6:6–7: the altar's coal takes away his iniquity."
         }
-      ]
+      ],
+      "themeEs": "Profetas y reyes",
+      "titleEs": "Santo, santo, santo"
     },
     {
       "id": "ezekiel-bones",
@@ -1996,7 +2174,9 @@
           "correct": 1,
           "explanation": "Ezekiel 37:9–10: prophesy to the breath — God's Spirit is the life."
         }
-      ]
+      ],
+      "themeEs": "Profetas y reyes",
+      "titleEs": "¿Vivirán estos huesos?"
     },
     {
       "id": "micah68",
@@ -2033,7 +2213,9 @@
           "correct": 0,
           "explanation": "Micah 6:8: the requirement is not a secret; it has been shown."
         }
-      ]
+      ],
+      "themeEs": "Profetas y reyes",
+      "titleEs": "¿Qué pide Jehová de ti?"
     },
     {
       "id": "habakkuk",
@@ -2070,7 +2252,9 @@
           "correct": 1,
           "explanation": "Habakkuk 3:19: strength to stand on heights, not escape from the valley."
         }
-      ]
+      ],
+      "themeEs": "Profetas y reyes",
+      "titleEs": "Con todo, yo me alegraré"
     },
     {
       "id": "job",
@@ -2107,7 +2291,9 @@
           "correct": 1,
           "explanation": "Job 42:5–6: \"Mine eye seeth thee\" — sight replaces hearsay."
         }
-      ]
+      ],
+      "themeEs": "Sabiduría y sufrimiento",
+      "titleEs": "Yo sé que mi Redentor vive"
     },
     {
       "id": "proverbs-wisdom",
@@ -2144,7 +2330,9 @@
           "correct": 0,
           "explanation": "Proverbs 3:12: fatherly correction — delight, not disgust."
         }
-      ]
+      ],
+      "themeEs": "Sabiduría y sufrimiento",
+      "titleEs": "El temor de Jehová"
     },
     {
       "id": "ecclesiastes",
@@ -2181,7 +2369,9 @@
           "correct": 1,
           "explanation": "Ecclesiastes 12:14: nothing is vapor to the Judge."
         }
-      ]
+      ],
+      "themeEs": "Sabiduría y sufrimiento",
+      "titleEs": "Vanidad de vanidades, y la conclusión"
     },
     {
       "id": "james-works",
@@ -2218,7 +2408,9 @@
           "correct": 1,
           "explanation": "James 2:22: Abraham's faith was completed — perfected — by his works."
         }
-      ]
+      ],
+      "themeEs": "Fe y salvación",
+      "titleEs": "La fe sin obras está muerta"
     },
     {
       "id": "peter-suffering",
@@ -2255,7 +2447,9 @@
           "correct": 1,
           "explanation": "1 Peter 4:12–13: fiery, shared with Christ, and temporary."
         }
-      ]
+      ],
+      "themeEs": "Fe y salvación",
+      "titleEs": "Una esperanza viva por la resurrección"
     },
     {
       "id": "first-john",
@@ -2292,7 +2486,9 @@
           "correct": 1,
           "explanation": "1 John 4:18: perfect love casteth out fear — punishment's dread does not survive love."
         }
-      ]
+      ],
+      "themeEs": "Fe y salvación",
+      "titleEs": "Dios es amor"
     },
     {
       "id": "revelation-end",
@@ -2329,7 +2525,9 @@
           "correct": 1,
           "explanation": "Revelation 21:4: the former things — death and tears — are passed away."
         }
-      ]
+      ],
+      "themeEs": "La Iglesia",
+      "titleEs": "He aquí, yo hago nuevas todas las cosas"
     },
     {
       "id": "cloud-witnesses",
@@ -2366,7 +2564,9 @@
           "correct": 1,
           "explanation": "Hebrews 12:2: the witnesses surround; Jesus is the gaze."
         }
-      ]
+      ],
+      "themeEs": "Santos y oración",
+      "titleEs": "Rodeados de testigos"
     },
     {
       "id": "persistent-widow",
@@ -2403,7 +2603,9 @@
           "correct": 1,
           "explanation": "Luke 18:7–8: speedily — the delay is ours to interpret, not his character."
         }
-      ]
+      ],
+      "themeEs": "Santos y oración",
+      "titleEs": "Orad, y no desmayéis"
     },
     {
       "id": "tax-collector",
@@ -2440,7 +2642,9 @@
           "correct": 0,
           "explanation": "Luke 18:14: exaltation and humility trade places in God's house."
         }
-      ]
+      ],
+      "themeEs": "Santos y oración",
+      "titleEs": "Dios, sé propicio a mí, pecador"
     },
     {
       "id": "magnificat",
@@ -2477,7 +2681,9 @@
           "correct": 1,
           "explanation": "Luke 1:51–52: the great reversal is Mary's whole theology in seed."
         }
-      ]
+      ],
+      "themeEs": "Santos y oración",
+      "titleEs": "Mi alma engrandece al Señor"
     },
     {
       "id": "anointing-elders",
@@ -2514,7 +2720,9 @@
           "correct": 1,
           "explanation": "James 5:16: fervency and righteousness, joined to confession."
         }
-      ]
+      ],
+      "themeEs": "Santos y oración",
+      "titleEs": "La oración de fe salvará al enfermo"
     },
     {
       "id": "gehenna-mercy",
@@ -2551,7 +2759,9 @@
           "correct": 1,
           "explanation": "Luke 23:43: today, with me — immediacy and company."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "Señor, acuérdate de mí"
     },
     {
       "id": "gethsemane",
@@ -2588,7 +2798,9 @@
           "correct": 1,
           "explanation": "Matthew 26:40–45: the spirit is willing, the flesh weak — his words diagnose us too."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "No se haga mi voluntad, sino la tuya"
     },
     {
       "id": "resurrection-morning",
@@ -2625,7 +2837,9 @@
           "correct": 1,
           "explanation": "John 20:16: \"Mary.\" Recognition comes at his voice, not her searching."
         }
-      ]
+      ],
+      "themeEs": "La vida de Cristo",
+      "titleEs": "No está aquí: ha resucitado"
     },
     {
       "id": "acts2-community",
@@ -2662,7 +2876,9 @@
           "correct": 1,
           "explanation": "Acts 2:47: growth was God's, the life was theirs."
         }
-      ]
+      ],
+      "themeEs": "La Iglesia",
+      "titleEs": "Perseveraban"
     },
     {
       "id": "genesis-image",
@@ -2699,7 +2915,9 @@
           "correct": 1,
           "explanation": "Genesis 1:28: dominion is stewardship from an image-bearer, not ownership by a tyrant."
         }
-      ]
+      ],
+      "themeEs": "Creación y orígenes",
+      "titleEs": "Varón y hembra los crió"
     },
     {
       "id": "dominant-will",
@@ -2746,7 +2964,10 @@
           "correct": 0,
           "explanation": "Krasis (temperament) and each person's gnomic will differ — Evagrius's logismoi rule different souls in turn, so the Philokalia names the ruling passion first."
         }
-      ]
+      ],
+      "deeper": true,
+      "themeEs": "Fe y salvación",
+      "titleEs": "La voluntad sigue la luz más fuerte"
     }
   ]
 }

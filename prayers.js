@@ -97,7 +97,93 @@
       ]
     }
   ];
-  const DEFAULT_RULE = PRAYERS.map(item => item.id);
+  const PRAYER_ES = {
+    morning: {
+      titleEs: 'Oraciones de la mañana',
+      blurbEs: 'La Primera Hora: adoración, la oración de las horas y la luz de la mañana.',
+      blocksEs: [
+        ['rubric','De la Primera Hora. Empieza con las oraciones del Trisagio cuando formen parte de tu regla.'],
+        ['text','Venid, adoremos a Dios, nuestro Rey. Venid, adoremos y postrémonos ante Cristo, nuestro Rey y nuestro Dios. Venid, adoremos y postrémonos ante el mismo Cristo, nuestro Rey y nuestro Dios.'],
+        ['text','¿Cómo te llamaremos, llena de gracia? Cielo, porque de ti salió el Sol de justicia. Paraíso, porque brotó de ti la Flor de la inmortalidad. Virgen, porque permaneciste sin mancha. Madre pura, porque en tu santo abrazo tuviste a tu Hijo, Dios de todos. Ruégale que salve nuestras almas.'],
+        ['text','Ordena mis pasos en tu palabra, y ninguna maldad se enseñoreará de mí. Líbrame de la opresión de los hombres, y guardaré tus mandamientos. Haz resplandecer tu rostro sobre tu siervo, y enséñame tus estatutos.'],
+        ['text','Llénese mi boca de tu alabanza, Señor, para cantar tu gloria y tu honor todo el día.'],
+        ['text','Cristo Dios nuestro, tú que en todo tiempo y a toda hora eres adorado y glorificado en el cielo y en la tierra; paciente, rico en misericordia y compasión; que amas al justo y tienes piedad del que está endurecido en el pecado; que llamas a todos al arrepentimiento con la promesa de los bienes que vendrán: recibe también ahora nuestras súplicas y dirige nuestra vida según tus mandamientos. Santifica nuestras almas, purifica nuestros cuerpos, endereza nuestra mente y líbranos de toda calamidad, ira y angustia. Rodéanos con tus santos ángeles, para que, guiados y guardados por ellos, lleguemos a la unidad de la fe y a contemplar tu gloria inefable. Porque bendito eres por los siglos de los siglos. Amén.'],
+        ['text','Más honorable que los querubines e incomparablemente más gloriosa que los serafines, tú que sin corrupción diste a luz a Dios el Verbo, verdadera Madre de Dios, te magníficamos.'],
+        ['text','Cristo, luz verdadera, que iluminas y santificas a todo hombre que viene al mundo: haz brillar sobre nosotros la luz de tu rostro, para que en ella veamos la luz inefable, y guía bien nuestros pasos para guardar tus mandamientos, por las súplicas de tu Madre purísima y de todos los santos. Amén.'],
+        ['rubric','Oración de san Efrén el Sirio. Al final de cada frase, una reverencia.'],
+        ['text','Señor y Dueño de mi vida, no me des espíritu de pereza, de desaliento, de afán de poder ni de hablar en vano.'],
+        ['text','Dame más bien a mí, tu siervo, espíritu de castidad, de humildad, de paciencia y de amor.'],
+        ['text','Sí, Señor y Rey, concédeme ver mis propias faltas y no juzgar a mi hermano. Porque bendito eres por los siglos de los siglos. Amén.'],
+        ['rubric','Después, doce veces: Oh Dios, límpiame a mí, pecador. Luego se dice otra vez toda la oración.']
+      ]
+    },
+    evening: {
+      titleEs: 'Oraciones de la noche',
+      blurbEs: 'De Completas: el día ya pasó, el Credo y los himnos de la noche.',
+      blocksEs: [
+        ['rubric','Del oficio de Completas. Empieza con las oraciones del Trisagio cuando formen parte de tu regla.'],
+        ['text','El día ya pasó. Te doy gracias, Señor. Te ruego que esta tarde y esta noche no caiga en pecado, y sálvame, Salvador mío.'],
+        ['text','El día ya pasó. Te alabo, Dueño mío. Te ruego que esta tarde y esta noche esté sin engaño, y sálvame, Salvador.'],
+        ['text','El día ya pasó. Te canto, Santo. Te ruego que esta tarde y esta noche no me venza la tentación, y sálvame, Salvador.'],
+        ['text','Con cantos que no cesan, las potestades incorpóreas de los querubines te glorifican. Los seres de seis alas, los serafines, te exaltan sin descanso. Con cantos tres veces santos, todo el ejército de los ángeles te alaba. Porque tú eres el Padre antes de todos los siglos, y tienes contigo a tu Hijo, que también es desde la eternidad, y al Espíritu de vida, igual en honor, y manifiestas la Trinidad indivisible. Virgen santísima, Madre de Dios, y vosotros, testigos y servidores del Verbo, con todo el coro de los profetas y los mártires que alcanzaron la vida inmortal: orad con fervor por todos nosotros, porque estamos en gran apuro, para que, libres de las trampas del maligno, cantemos fuerte el himno de los ángeles: Santo, Santo, Santo, Señor tres veces santo, ten piedad de nosotros y sálvanos. Amén.'],
+        ['text','Creo en un solo Dios, Padre todopoderoso, Creador del cielo y de la tierra, de todo lo visible y lo invisible. Y en un solo Señor, Jesucristo, Hijo único de Dios, nacido del Padre antes de todos los siglos. Luz de Luz, Dios verdadero de Dios verdadero, engendrado, no creado, de la misma esencia que el Padre, por quien todo fue hecho. Que por nosotros y por nuestra salvación bajó del cielo, y por el Espíritu Santo se encarnó de la Virgen María, y se hizo hombre. Fue crucificado por nosotros bajo Poncio Pilato, padeció y fue sepultado. Y resucitó al tercer día, conforme a las Escrituras. Y subió al cielo, y está sentado a la derecha del Padre. Y vendrá otra vez con gloria a juzgar a vivos y muertos, y su reino no tendrá fin. Y en el Espíritu Santo, Señor y dador de vida, que procede del Padre, que con el Padre y el Hijo es adorado y glorificado, y que habló por los profetas. En una Iglesia santa, católica y apostólica. Confieso un solo bautismo para el perdón de los pecados. Espero la resurrección de los muertos y la vida del mundo venidero. Amén.'],
+        ['text','Soberana santísima, Madre de Dios, ruega por nosotros, pecadores.'],
+        ['text','Ejército celestial de ángeles y arcángeles, rogad por nosotros, pecadores.'],
+        ['text','San Juan, profeta, precursor y bautista de nuestro Señor Jesucristo, ruega por nosotros, pecadores.'],
+        ['text','Santos y gloriosos apóstoles, profetas y mártires, y todos los santos, rogad por nosotros, pecadores.'],
+        ['text','Oh Dios, límpianos a nosotros, pecadores, y ten piedad de nosotros.'],
+        ['text','Ilumina mis ojos, Cristo Dios mío, para que no duerma hacia la muerte, no sea que mi enemigo diga: pude contra él.'],
+        ['text','Sé tú el defensor de mi alma, Dios, porque camino entre muchas trampas. Líbrame de ellas y sálvame, tú que eres bueno y amas al ser humano.'],
+        ['text','Y como por nuestras muchas faltas no tenemos osadía, tú, Virgen Madre de Dios, ruégale con fervor al que nació de ti, porque la oración de una madre alcanza mucho ante la bondad del Dueño. No desprecies las súplicas de los pecadores, Purísima, porque es bondadoso y poderoso para salvar el que quiso padecer por nosotros.'],
+        ['text','Tú conoces, Señor, mi Creador, la vigilancia sin sueño de mis enemigos invisibles y la fragilidad de mi carne. En tus manos encomiendo mi espíritu. Cúbreme con las alas de tu bondad, para que no duerma hacia la muerte, e ilumina los ojos de mi entendimiento, para que me goce en tus palabras divinas. Y haz que, en el tiempo que te agrade, te glorifique con alabanza, a ti, el único bueno, que amas al ser humano.']
+      ]
+    },
+    trisagion: {
+      titleEs: 'Oraciones del Trisagio',
+      blurbEs: 'El comienzo de costumbre de las oraciones de la Iglesia.',
+      blocksEs: [
+        ['rubric','El comienzo de costumbre, como está en el libro de servicios. Desde Pascua hasta Pentecostés no se dice “Rey celestial”.'],
+        ['text','Gloria a ti, Dios nuestro, gloria a ti.'],
+        ['text','Rey celestial, Consolador, Espíritu de verdad, que estás en todas partes y lo llenas todo, tesoro de bienes y dador de vida: ven y habita en nosotros, límpianos de toda mancha y salva, Bondadoso, nuestras almas.'],
+        ['rubric','Tres veces, cada una con la señal de la cruz y una reverencia.'],
+        ['text','Santo Dios, Santo Fuerte, Santo Inmortal, ten piedad de nosotros.'],
+        ['text','Gloria al Padre, y al Hijo, y al Espíritu Santo, ahora y siempre y por los siglos de los siglos. Amén.'],
+        ['text','Trinidad santísima, ten piedad de nosotros. Señor, lava nuestros pecados. Dueño, perdona nuestras faltas. Santo, visita y sana nuestras enfermedades, por tu Nombre.'],
+        ['rubric','Señor, ten piedad. Tres veces.'],
+        ['text','Gloria al Padre, y al Hijo, y al Espíritu Santo, ahora y siempre y por los siglos de los siglos. Amén.'],
+        ['text','Padre nuestro, que estás en los cielos, santificado sea tu Nombre. Venga tu reino. Hágase tu voluntad en la tierra como en el cielo. El pan nuestro de cada día, dánoslo hoy. Y perdónanos nuestras deudas, así como nosotros perdonamos a nuestros deudores. Y no nos dejes caer en la tentación, mas líbranos del maligno.'],
+        ['text','Porque tuyo es el reino, el poder y la gloria, del Padre, y del Hijo, y del Espíritu Santo, ahora y siempre y por los siglos de los siglos. Amén.']
+      ]
+    },
+    meals: {
+      titleEs: 'Oraciones antes y después de comer',
+      blurbEs: 'La bendición del pan en la vigilia, y la acción de gracias que la sigue.',
+      blocksEs: [
+        ['rubric','Antes de la comida. La bendición de los panes en la vigilia de toda la noche, dicha sobre la comida.'],
+        ['text','Señor Jesucristo, Dios nuestro, que bendijiste los cinco panes y con ellos alimentaste a los cinco mil: bendice también estos panes, el trigo, el vino y el aceite. Multiplícalos en esta casa santa y en todo tu mundo, y santifica a todos los fieles que van a participar de ellos. Porque tú, Cristo Dios nuestro, bendices, santificas y alimentas todas las cosas, y a ti te damos gloria, con tu Padre que no tiene principio, y tu Espíritu santísimo, bueno y dador de vida, ahora y siempre y por los siglos de los siglos. Amén.'],
+        ['rubric','Después de la comida. Del cierre de esa misma bendición.'],
+        ['text','Bendito sea el Nombre del Señor, desde ahora y para siempre.'],
+        ['text','Gustad, y ved que es bueno Jehová: dichoso el hombre que confiará en él. Temed a Jehová, vosotros sus santos, porque nada falta a los que le temen.'],
+        ['text','Gloria a ti, Cristo Dios nuestro, esperanza nuestra, gloria a ti.'],
+        ['text','Por las oraciones de nuestros santos padres, Señor Jesucristo, Dios nuestro, ten piedad de nosotros. Amén.']
+      ]
+    },
+    communion: {
+      titleEs: 'Oraciones antes de la Sagrada Comunión',
+      blurbEs: 'Las oraciones que se dicen justo antes de recibir los Santos Misterios.',
+      blocksEs: [
+        ['rubric','De las “Oraciones de preparación para la Sagrada Comunión” y de la comunión en la Liturgia. Se dicen después de la confesión y del ayuno de la Iglesia, como te indique tu sacerdote.'],
+        ['text','Creo, Señor, y confieso que tú eres en verdad el Cristo, el Hijo del Dios vivo, que viniste al mundo a salvar a los pecadores, de los cuales yo soy el primero. Y creo que esto es de verdad tu Cuerpo purísimo, y que esto es tu Sangre preciosa. Por eso te ruego: ten piedad de mí y perdona mis faltas, voluntarias e involuntarias, de palabra o de obra, cometidas a sabiendas o por ignorancia. Y concédeme participar sin condenación de tus Misterios purísimos, para perdón de mis pecados y para vida eterna. Amén.'],
+        ['text','De tu Cena mística, Hijo de Dios, recíbeme hoy como comulgante. Porque no hablaré de tu Misterio a tus enemigos, ni te daré un beso como Judas, sino que, como el ladrón, te confesaré: acuérdate de mí, Señor, en tu reino.'],
+        ['text','Que esta participación en tus Santos Misterios no sea para juicio ni para condenación, Señor, sino para la sanidad del alma y del cuerpo.'],
+        ['rubric','Oración de san Juan Damasceno.'],
+        ['text','Estoy ante las puertas de tu templo y no me aparto de los malos pensamientos. Pero, Cristo Dios, que justificaste al publicano, tuviste misericordia de la mujer de Canaán y abriste las puertas del paraíso al ladrón: ábreme también tu bondad y recíbeme, que vengo y te toco, como recibiste a la mujer pecadora y a la que padecía flujo de sangre. Una, al tocar el borde de tu manto, recibió la salud completa. La otra, abrazando tus pies purísimos, se llevó el perdón de sus pecados. Que yo no me consuma, aunque sea digno de toda condena, por atreverme a recibir tu Cuerpo. Recíbeme como las recibiste a ellas, e ilumina mis sentidos espirituales, consumiendo mis ofensas, por las oraciones de la que te dio a luz sin semilla y de las potestades celestiales. Porque bendito eres por los siglos de los siglos. Amén.']
+      ]
+    }
+  };
+  for (const item of PRAYERS) Object.assign(item, PRAYER_ES[item.id] || {});
+
+  const DEFAULT_RULE = PRAYERS.filter(item => item.id !== 'communion').map(item => item.id);
   let openId = '';
   let wakeSentinel = null;
   let practiceOpen = false;
@@ -160,6 +246,10 @@
   }
   function knotLabel(rope){
     const total = ropeTotal(rope);
+    if (esPrayer()) {
+      if (rope.complete) return `${total} de ${total}. Cordón completo.`;
+      return `${rope.count} de ${total}.`;
+    }
     if (rope.complete) return `${total} of ${total}. Rope complete.`;
     return `${rope.count} of ${total}.`;
   }
@@ -168,29 +258,56 @@
     const total = ropeTotal(rope);
     const sizes = [33, 50, 100];
     const wake = typeof navigator !== 'undefined' && navigator.wakeLock ? '<p class="rope-wake">The screen stays awake while this page is open.</p>' : '';
-    return `<section class="card prayer-rope" id="prayer-rope"><span class="eyebrow">THE JESUS PRAYER</span><h2>Prayer rope</h2><p class="muted">Choose the knots, then tap once for each. A short pulse marks a knot. A stronger pulse marks a finished rope. Today’s count stays on this device.</p><div class="rope-sizes" role="group" aria-label="Knots on the rope">${sizes.map(size => `<button type="button" class="rope-size ${rope.preset===size?'active':''}" data-rope-size="${size}" aria-pressed="${rope.preset===size}">${size}</button>`).join('')}<button type="button" class="rope-size ${rope.preset==='custom'?'active':''}" data-rope-size="custom" aria-pressed="${rope.preset==='custom'}">Custom</button></div>${rope.preset==='custom'?`<label class="rope-custom">Custom knots<input id="rope-custom" type="number" min="1" max="500" inputmode="numeric" value="${esc(rope.custom)}" aria-label="Custom knot count"></label>`:''}<button type="button" class="rope-tap ${rope.complete?'rope-complete':''}" data-rope-tap aria-label="Advance one knot. ${esc(knotLabel(rope))} Lord Jesus Christ, Son of God, have mercy on me, a sinner."><span class="rope-prayer">Lord Jesus Christ, Son of God, have mercy on me, a sinner.</span><strong class="rope-count">${rope.complete?total:rope.count}<small> / ${total}</small></strong><span class="rope-hint">${rope.complete?'Rope complete. Tap to begin the next.':'Tap for the next knot'}</span></button><div class="rope-stats"><div><strong>${rope.ropes}</strong><small>${rope.ropes===1?'rope':'ropes'} completed</small></div><div><strong>${rope.today}</strong><small>knots today</small></div></div><p id="rope-live" class="visually-hidden" aria-live="polite"></p>${wake}</section>`;
+    return `<section class="card prayer-rope" id="prayer-rope"><span class="eyebrow">THE JESUS PRAYER</span><h2>Prayer rope</h2><p class="muted">Choose the knots, then tap once for each. A short pulse marks a knot. A stronger pulse marks a finished rope. Today’s count stays on this device.</p><div class="rope-sizes" role="group" aria-label="Knots on the rope">${sizes.map(size => `<button type="button" class="rope-size ${rope.preset===size?'active':''}" data-rope-size="${size}" aria-pressed="${rope.preset===size}">${size}</button>`).join('')}<button type="button" class="rope-size ${rope.preset==='custom'?'active':''}" data-rope-size="custom" aria-pressed="${rope.preset==='custom'}">Custom</button></div>${rope.preset==='custom'?`<label class="rope-custom">Custom knots<input id="rope-custom" type="number" min="1" max="500" inputmode="numeric" value="${esc(rope.custom)}" aria-label="Custom knot count"></label>`:''}<button type="button" class="rope-tap ${rope.complete?'rope-complete':''}" data-rope-tap aria-label="Advance one knot. ${esc(knotLabel(rope))} ${esc(ropePrayer())}"><span class="rope-prayer">${esc(ropePrayer())}</span><strong class="rope-count">${rope.complete?total:rope.count}<small> / ${total}</small></strong><span class="rope-hint">${rope.complete?'Rope complete. Tap to begin the next.':'Tap for the next knot'}</span></button><div class="rope-stats"><div><strong>${rope.ropes}</strong><small>${rope.ropes===1?'rope':'ropes'} completed</small></div><div><strong>${rope.today}</strong><small>knots today</small></div></div><p id="rope-live" class="visually-hidden" aria-live="polite"></p>${wake}</section>`;
   }
   function prayerBody(item){
     return item.blocks.map(([kind, text]) => kind==='rubric' ? `<p class="prayer-rubric">${esc(text)}</p>` : `<p>${esc(text)}</p>`).join('');
   }
+  function esPrayer(){ return !!(window.MsbI18n && MsbI18n.lang() === 'es'); }
+  function ropePrayer(){
+    return esPrayer()
+      ? 'Señor Jesucristo, Hijo de Dios, ten misericordia de mí, pecador.'
+      : 'Lord Jesus Christ, Son of God, have mercy on me, a sinner.';
+  }
+  function prayerView(item){
+    if (!esPrayer() || !item || !item.titleEs) return item;
+    return { id: item.id, title: item.titleEs, blurb: item.blurbEs || item.blurb, blocks: item.blocksEs || item.blocks };
+  }
   function ruleHtml(){
     const rule = loadRule();
-    const inRule = PRAYERS.filter(item => rule.included.includes(item.id));
+    const visible = PRAYERS.filter(item => item.id !== 'communion');
+    const inRule = visible.filter(item => rule.included.includes(item.id));
     const doneCount = inRule.filter(item => rule.done[item.id]).length;
-    const rows = PRAYERS.map(item => {
+    const rows = visible.map(item => {
+      const view = prayerView(item);
       const included = rule.included.includes(item.id);
       const done = !!rule.done[item.id];
       const open = openId === item.id;
-      return `<article class="rule-row ${included?'':'rule-off'}"><div class="rule-top"><label class="rule-include"><input type="checkbox" data-prayer-rule="${item.id}" ${included?'checked':''}><span>In my rule</span></label><label class="rule-done"><input type="checkbox" data-prayer-done="${item.id}" ${done?'checked':''} ${included?'':'disabled'}><span>Prayed today</span></label></div><h3>${esc(item.title)}</h3><p class="muted">${esc(item.blurb)}</p><button type="button" class="secondary" data-prayer-open="${item.id}" aria-expanded="${open}">${open?'Close the text':`Read ${esc(item.title)}`}</button>${open?`<div class="prayer-text" id="prayer-text-${item.id}">${prayerBody(item)}</div>`:''}</article>`;
+      return `<article class="rule-row ${included?'':'rule-off'}"><div class="rule-top"><label class="rule-include"><input type="checkbox" data-prayer-rule="${item.id}" ${included?'checked':''}><span>In my rule</span></label><label class="rule-done"><input type="checkbox" data-prayer-done="${item.id}" ${done?'checked':''} ${included?'':'disabled'}><span>Prayed today</span></label></div><h3>${esc(view.title)}</h3><p class="muted">${esc(view.blurb)}</p><button type="button" class="secondary" data-prayer-open="${item.id}" aria-expanded="${open}">${open?'Close the text':`Read ${esc(view.title)}`}</button>${open?`<div class="prayer-text" id="prayer-text-${item.id}">${prayerBody(view)}</div>`:''}</article>`;
     }).join('');
     return `<section class="card prayer-rule" id="prayer-rule"><span class="eyebrow">A DAILY RULE</span><h2>Prayer rule</h2><p class="muted">Choose which prayers belong in your rule. Check off the ones you pray today. The list clears after midnight on this device.</p><p class="rule-progress">${inRule.length?`${doneCount} of ${inRule.length} prayed today`:'Add at least one prayer to your rule.'}</p><div class="rule-list">${rows}</div><p class="prayer-source">Texts from Isabel Florence Hapgood, <cite>Service Book of the Holy Orthodox-Catholic Apostolic Church</cite> (Houghton, Mifflin and Company, 1906). That translation is in the public domain. Modern service-book translations are not used here.</p></section>`;
+  }
+  function deeperHtml(){
+    const item = PRAYERS.find(entry => entry.id === 'communion');
+    if (!item) return '';
+    const view = prayerView(item);
+    const open = openId === item.id;
+    return `<section class="card prayer-rule" id="prayer-deeper"><span class="eyebrow">MORE PRAYERS</span><h2>${esc(view.title)}</h2><p class="muted">${esc(view.blurb)}</p><button type="button" class="secondary" data-prayer-open="${item.id}" aria-expanded="${open}">${open ? 'Close the text' : `Read ${esc(view.title)}`}</button>${open ? `<div class="prayer-text" id="prayer-text-${item.id}">${prayerBody(view)}</div>` : ''}<p class="prayer-source">Texts from Isabel Florence Hapgood, <cite>Service Book of the Holy Orthodox-Catholic Apostolic Church</cite> (Houghton, Mifflin and Company, 1906). That translation is in the public domain.</p></section>`;
   }
   function html(){ return ropeHtml() + ruleHtml(); }
   function paint(){
     const rope = document.getElementById('prayer-rope');
     const rule = document.getElementById('prayer-rule');
+    const deeper = document.getElementById('prayer-deeper');
     if (rope) rope.outerHTML = ropeHtml();
     if (rule) rule.outerHTML = ruleHtml();
+    if (deeper) deeper.outerHTML = deeperHtml();
+    if (window.MsbI18n) {
+      ['prayer-rope', 'prayer-rule', 'prayer-deeper'].forEach(id => {
+        const node = document.getElementById(id);
+        if (node) MsbI18n.apply(node);
+      });
+    }
   }
   function announce(message){
     const live = document.getElementById('rope-live');
@@ -266,7 +383,7 @@
     const tap = event.target.closest('[data-rope-tap]');
     if (tap) { advance(); return; }
     const open = event.target.closest('[data-prayer-open]');
-    if (open && open.closest('#prayer-rule')) {
+    if (open && open.closest('#prayer-rule, #prayer-deeper')) {
       openId = openId === open.dataset.prayerOpen ? '' : open.dataset.prayerOpen;
       paint();
       if (openId) document.getElementById(`prayer-text-${openId}`)?.scrollIntoView({block:'nearest'});
@@ -297,5 +414,5 @@
       paint();
     }
   });
-  window.MsbPrayers = { html, onShow, onHide };
+  window.MsbPrayers = { html, deeperHtml, onShow, onHide };
 })();
