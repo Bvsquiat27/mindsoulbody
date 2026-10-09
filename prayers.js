@@ -84,6 +84,25 @@
       ]
     },
     {
+      id:'shift',
+      title:'For the Shift: Before and After',
+      titleEs:'Para el turno: antes y después',
+      blurb:'For the ones who care for everyone else: a three-minute send-off and a coming-home prayer.',
+      blurbEs:'Para quienes cuidan a todos los demás: una oración breve al salir y una al volver a casa.',
+      blocks:[
+        ['rubric','Before the shift. Psalm 91 is yours today: He shall cover thee with his feathers, and under his wings shalt thou trust.'],
+        ['text','Lord, You are my refuge and my fortress. Cover the people waiting in those rooms, steady my hands, sharpen what I notice, and let me be kind when I am tired. I go in Your name, and I am not going alone.'],
+        ['rubric','After the shift, before you go home.'],
+        ['text','Lord, I saw hard things today and I hand them to You: every face, every room, every outcome I could not change. What was mine to carry is done. Wash this day off me. Let me come home whole, and let the people I love get the rested version of me. Amen.']
+      ],
+      blocksEs:[
+        ['rubric','Antes del turno. El Salmo 91 es tuyo hoy: con sus plumas te cubrirá, y debajo de sus alas estarás seguro.'],
+        ['text','Señor, tú eres mi refugio y mi fortaleza. Cubre a las personas que esperan en esos cuartos, afirma mis manos y hazme amable aun cuando esté cansada. Voy en tu nombre, y no voy sola.'],
+        ['rubric','Después del turno, antes de volver a casa.'],
+        ['text','Señor, hoy vi cosas difíciles y te las entrego: cada rostro, cada cuarto, cada resultado que no pude cambiar. Lo que me tocaba cargar ya terminó. Límpiame de este día y déjame llegar a casa entera. Amén.']
+      ]
+    },
+    {
       id:'communion',
       title:'Prayers before Holy Communion',
       blurb:'The prayers said immediately before receiving the Holy Mysteries.',

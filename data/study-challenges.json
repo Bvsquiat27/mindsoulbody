@@ -9543,6 +9543,658 @@
       ],
       "titleEs": "Hospitalidad",
       "summaryEs": "Abrir la mesa es una forma antigua de tomar en serio al prójimo."
+    },
+    {
+      "id": "walk-church-visits",
+      "track": "Walking Together",
+      "micro": true,
+      "title": "Visiting Each Other's Churches",
+      "category": "Apologetics lesson",
+      "level": "4 teaching cards · 7 questions",
+      "summary": "Two churches, one Lord. What a Pentecostal friend will see at the Liturgy, what an Orthodox friend will see at her service, and how to receive each other without sanding down what either of you believes.",
+      "source": "Acts 2:42-47 · 1 Corinthians 14:26-40 · John 17:21 · Psalm 91",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=Acts%202%3A42-47%3B%201%20Corinthians%2014%3A26-40%3B%20John%2017%3A21&version=KJV",
+      "lessons": [
+        {
+          "heading": "Start where she actually stands",
+          "body": "Karen is classical Pentecostal and Trinitarian: baptized in the name of the Father, and of the Son, and of the Holy Spirit (Matthew 28:19), filled with the Spirit, expecting God to move. That is not a half-Christianity waiting for your correction; it is a living faith since the day she gave her life to Christ. The first move in visiting each other's churches is honor. You do not have to pretend the differences are small. You do have to remember the person in the other pew is your sister before she is your debate topic."
+        },
+        {
+          "heading": "What she will see at the Liturgy",
+          "body": "Prepare her gently. She will see icons, incense, chant, and a service that does not pause to explain itself. Tell her beforehand: nobody is worshipping paint; the Church surrounds its prayer with the faces of the witnesses (Hebrews 12:1). The center is the Eucharist, the true Body and Blood, received with fear and love. She does not have to receive to be welcome. Let her stand, watch, and pray as she can. A guest who is not pressured becomes a guest who can actually hear."
+        },
+        {
+          "heading": "What you will see at her service",
+          "body": "Expect raised hands, loud praise, an altar call, and maybe tongues — Paul regulates tongues, he does not forbid them: let all things be done decently and in order (1 Corinthians 14:40), and the one who speaks in a tongue should pray for the interpretation (14:13). Her church baptizes Trinitarian and preaches Christ crucified. You will hear testimony: what God did this week. Receive it as she means it. You can love the zeal in a room without adopting every claim made in it."
+        },
+        {
+          "heading": "Disagree like family",
+          "body": "You will still disagree — on saints, on baptism, on what happens at the table. Her rule is a good one: disagree peacefully, never disrespectfully. Debate questions; never make the person feel small for asking them. The goal of visiting each other is not to win the other church. It is what Christ prayed the night before the Cross: that they all may be one, that the world may believe (John 17:21). Start with the Creed you share, the Scriptures you share, and the Savior you share. Let the rest be a long friendship, not a first date test."
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple-choice",
+          "prompt": "What is the first move when visiting each other's churches?",
+          "choices": [
+            "Correct her doctrine in the parking lot",
+            "Honor: she is your sister before she is your debate topic",
+            "Pretend there are no differences at all",
+            "Rate her service against yours"
+          ],
+          "correct": 1,
+          "explanation": "Honor comes first. You do not have to pretend the differences are small; you do have to remember she is your sister in Christ before she is a topic."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "How should you prepare a Pentecostal friend for the Liturgy?",
+          "choices": [
+            "Tell her she must receive the Eucharist",
+            "Explain icons and the service beforehand, and let her stand and pray as she can",
+            "Say nothing and let her figure it out",
+            "Warn her the chanting is not worship"
+          ],
+          "correct": 1,
+          "explanation": "A guest who is not pressured can actually hear. Explain the witnesses around the prayer (Hebrews 12:1); the center is the Eucharist, received by the faithful — she can be fully welcome without receiving."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "What does Paul actually do about tongues in 1 Corinthians 14?",
+          "choices": [
+            "Forbids them outright",
+            "Regulates them: interpretation, order, decency (14:13, 40)",
+            "Says they ended before he wrote",
+            "Makes them the test of salvation"
+          ],
+          "correct": 1,
+          "explanation": "Paul regulates tongues rather than forbidding them — interpretation and order. Her Trinitarian Pentecostal practice can be received on those terms without either of you lying about what you believe."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "John 17:21 — Christ's prayer the night before the Cross — asks the Father for what?",
+          "choices": [
+            "That all churches use one building",
+            "That His people may be one, so the world may believe",
+            "That debates would stop forever",
+            "That visitors convert quickly"
+          ],
+          "correct": 1,
+          "explanation": "That they all may be one, that the world may believe. Visiting each other serves that prayer; it is not a conversion trap."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "Her rule for disagreement — disagree peacefully, never disrespectfully — is best kept by…",
+          "choices": [
+            "Debating the question without making the person feel small",
+            "Avoiding every hard topic forever",
+            "Winning quickly so it ends",
+            "Only texting, never face to face"
+          ],
+          "correct": 0,
+          "explanation": "Debate questions; never make the person feel small for asking them. Peaceful disagreement is a discipline both churches claim to want."
+        },
+        {
+          "type": "true-false",
+          "prompt": "True or false: honoring her Pentecostal faith means you have to pretend the differences between your churches are small.",
+          "choices": [
+            "True",
+            "False"
+          ],
+          "correct": 1,
+          "explanation": "False. Honor is not pretending. You can hold real differences honestly and still receive her as a sister — that is the whole point of visiting rather than arguing from a distance."
+        },
+        {
+          "type": "true-false",
+          "prompt": "True or false: a guest at the Liturgy who does not receive the Eucharist can still be fully welcome.",
+          "choices": [
+            "True",
+            "False"
+          ],
+          "correct": 0,
+          "explanation": "True. She can stand, watch, and pray as she can. Welcome does not require pressure, and pressure is the fastest way to close ears."
+        }
+      ],
+      "words": [
+        {
+          "term": "liturgy",
+          "say": "lit ur jee"
+        },
+        {
+          "term": "testimonio",
+          "say": "tes tee moh nee oh",
+          "lang": "es"
+        },
+        {
+          "term": "orar juntos",
+          "say": "oh rahr hoon tohs",
+          "lang": "es"
+        }
+      ]
+    },
+    {
+      "id": "walk-strong-cared",
+      "track": "Walking Together",
+      "micro": true,
+      "title": "Strong, and Still Cared For",
+      "category": "Devotional path",
+      "level": "7 days · 7 teaching cards · 7 questions",
+      "summary": "For the woman who has to be strong — seven days on receiving: Moses told to accept help, the man carried by friends, Ruth in the field, Mary at His feet. One small 'receive one thing today' practice each day.",
+      "source": "Exodus 18:17-24 · Mark 2:1-12 · Ruth 2 · Luke 10:38-42 · Psalm 116:2 · Psalm 23 · John 15:16",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=Exodus%2018%3A17-24%3B%20Mark%202%3A1-12%3B%20Ruth%202%3B%20Luke%2010%3A38-42&version=KJV",
+      "lessons": [
+        {
+          "heading": "Day 1 · Moses had to be told",
+          "body": "Jethro watched Moses judge the people from morning till evening and said the thing a strong person rarely hears: what you are doing is not good; you will wear yourselves out (Exodus 18:17-18). Moses — the man who split the sea — accepted help, appointed others, and the work got better, not weaker. Strength that cannot receive instruction is just exhaustion with good branding. Today: let one person carry one thing, and do not apologize for it."
+        },
+        {
+          "heading": "Day 2 · The man who never asked",
+          "body": "In Mark 2, four friends tear open a roof and lower a paralyzed man in front of Jesus. Notice: the man never asks. His friends carry him, and Jesus, seeing their faith, forgives and heals him. Some healings God routes through people who refuse to wait for an invitation. If you cannot ask, let that be the prayer today: Lord, teach me to be carried. And thank Him for the carriers."
+        },
+        {
+          "heading": "Day 3 · Ruth receives",
+          "body": "Ruth gleans behind the reapers, and Boaz orders his men to leave handfuls of grain on purpose (Ruth 2:15-16). She does not steal, beg, or perform worthiness. She receives what kindness placed in her path and brings it home to Naomi. Receiving is not taking. It is letting what was left for you actually reach you. What has God left in your field today that your strength keeps walking past?"
+        },
+        {
+          "heading": "Day 4 · Mary receives, Martha serves",
+          "body": "Martha served until service became resentment; Mary sat and received, and the Lord defended the receiver (Luke 10:38-42). He did not say serving is faithless. He said the one who receives Him first has chosen the good part. Before the next shift of caring for everyone else, sit for five minutes and only receive: one psalm, no phone, no fixing. Let Him be the one who serves you."
+        },
+        {
+          "heading": "Day 5 · Her verse",
+          "body": "Because he turned his ear to me, I will call on him as long as I live (Psalm 116:2). The psalmist does not say God turned His ear because the prayer was strong. He turned His ear because He is God. Your call is not measured by how well you ask. Today the practice is small on purpose: ask Him — out loud — for one concrete thing you need, and let the asking itself be the obedience."
+        },
+        {
+          "heading": "Day 6 · The good part is rest",
+          "body": "He makes me lie down in green pastures; He restores my soul (Psalm 23:2-3). Restoration is something done to the sheep, not achieved by her. The Shepherd leads, carries the tired one home on His shoulders (Luke 15:5), and calls that joy, not burden. Rest today is not quitting. It is agreeing with the Shepherd about who does the carrying."
+        },
+        {
+          "heading": "Day 7 · Chosen and wanted",
+          "body": "You did not choose me, but I chose you (John 15:16). Before you ever learned to be strong, you were wanted — by the God who turned His ear, and He has a way of sending that same choosing through ordinary people who show up and stay. This week you practiced receiving in small pieces. Keep the pieces. Being cared for is not the reward for the strong. It is the portion of the beloved."
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple-choice",
+          "prompt": "What did Jethro tell Moses in Exodus 18?",
+          "choices": [
+            "Refuse all help to stay pure",
+            "What you are doing is not good — you will wear out; appoint others",
+            "Work longer hours to prove faith",
+            "Send the people away"
+          ],
+          "correct": 1,
+          "explanation": "Jethro told Moses he would wear himself and the people out, and Moses obeyed by appointing others. Accepting help made the work better, not weaker."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "In Mark 2, when Jesus saw the paralyzed man lowered through the roof, whose faith does the text name?",
+          "choices": [
+            "The man's flawless asking",
+            "Their faith — the friends who carried him",
+            "The crowd blocking the door",
+            "Nobody's; it was automatic"
+          ],
+          "correct": 1,
+          "explanation": "Seeing their faith (Mark 2:5). The man never asked. Some healings God routes through people who refuse to wait for an invitation."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "What did Boaz command his reapers in Ruth 2?",
+          "choices": [
+            "Keep Ruth out of the field",
+            "Leave handfuls of grain on purpose for her",
+            "Charge her family for gleaning",
+            "Send her to another farm"
+          ],
+          "correct": 1,
+          "explanation": "Boaz ordered handfuls left on purpose (Ruth 2:15-16). Ruth received what kindness placed in her path — receiving is not taking."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "In Luke 10, why did the Lord defend Mary over Martha?",
+          "choices": [
+            "Serving is faithless",
+            "Receiving Him first is the good part that will not be taken away",
+            "Martha cooked badly",
+            "Guests should never be served"
+          ],
+          "correct": 1,
+          "explanation": "He did not condemn serving; He said the one who receives Him first chose the good part (Luke 10:42)."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "Psalm 116:2 — why does the psalmist say he will call on God as long as he lives?",
+          "choices": [
+            "Because his prayers were strong",
+            "Because God turned His ear to him",
+            "Because he finally earned it",
+            "Because others stopped praying"
+          ],
+          "correct": 1,
+          "explanation": "Because he turned his ear to me. God bends toward the caller; the call is not graded by how well you ask."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "Psalm 23:3 — who restores the sheep's soul?",
+          "choices": [
+            "The sheep, by effort",
+            "He does — He restores my soul",
+            "The other sheep",
+            "Restoration is never needed"
+          ],
+          "correct": 1,
+          "explanation": "He restores my soul. Restoration is done to the sheep, not achieved by her — the Shepherd carries, the sheep receives."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "John 15:16 — what does Christ say about being chosen?",
+          "choices": [
+            "You chose yourselves by strength",
+            "You did not choose me, but I chose you",
+            "Only the strong are chosen",
+            "Being chosen must be earned yearly"
+          ],
+          "correct": 1,
+          "explanation": "You did not choose me, but I chose you. Wanted comes before strong; being cared for is the portion of the beloved, not a prize."
+        }
+      ],
+      "words": [
+        {
+          "term": "hesed",
+          "say": "kheh sed"
+        },
+        {
+          "term": "Voy a orar por ti y por tu hija",
+          "say": "voy ah oh rahr por tee ee por too ee hah",
+          "lang": "es"
+        },
+        {
+          "term": "Déjame ayudarte",
+          "say": "deh hah meh ah yoo dahr teh",
+          "lang": "es"
+        }
+      ]
+    },
+    {
+      "id": "walk-matthew-pace",
+      "track": "Walking Together",
+      "micro": true,
+      "title": "Matthew 5–8 at Her Pace",
+      "category": "Scripture path",
+      "level": "4 teaching cards · 8 questions · Match the Word",
+      "summary": "The Sermon on the Mount and the healings that follow, in five-minute pieces with no streak to break. Built for the Saturday call: three questions, one memory verse, and the narrow road that is — literally — pressure.",
+      "source": "Matthew 5-8 · Acts 14:22 · Psalm 91",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=Matthew%205-8&version=KJV",
+      "lessons": [
+        {
+          "heading": "Five minutes, no debt",
+          "body": "This path does not punish a hard week. Each piece is one small section of Matthew 5-8, and the only rule is: when you open it, you are exactly on time. Jesus taught crowds who had walked miles and worked all day; He did not hand them homework debt. Take the Beatitudes today, the Lord's Prayer tomorrow, the healings when you can. The Word keeps. So does He."
+        },
+        {
+          "heading": "The narrow road is pressure",
+          "body": "In Matthew 7:14 the word for the narrow, hard road is thlipsis: pressure, affliction, being squeezed. The gate is not narrow because God is stingy with heaven. The road itself is pressure — and Acts 14:22 says it plainly: through many tribulations (thlipseon) we must enter the kingdom of God. If your week feels squeezed — shifts, a hurt child, no sleep — you are not off the road. By Christ's own word, the pressure is the road."
+        },
+        {
+          "heading": "Saturday question one: judging and discerning",
+          "body": "Matthew 7 opens, Judge not, that ye be not judged — then a few verses later commands you to know teachers by their fruits (7:15-20). Both, in one chapter. Judging (krino) in the condemning sense means writing a person's final verdict, which belongs to God. Discerning means testing a teaching or a pattern by its fruit, which He commands. Saturday talk: where is the line between condemning a person and discerning a teaching in your real week?"
+        },
+        {
+          "heading": "Saturday questions two and three",
+          "body": "Two: if the narrow road is pressure, where has pressure actually brought you closer to God — not despite it, through it? Three: not everyone who says Lord, Lord (7:21) — so what does doing the Father's will look like on an ordinary Tuesday, on shift, at home with a little girl who needs you? Memory verse for the week: Ask, and it shall be given you; seek, and ye shall find (Matthew 7:7). Pray the chapter like it was written for your Tuesday. It was."
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple-choice",
+          "prompt": "What does thlipsis, the word behind the narrow road in Matthew 7:14, actually mean?",
+          "choices": [
+            "A tiny gate",
+            "Pressure, affliction, being squeezed",
+            "A secret password",
+            "A church building"
+          ],
+          "correct": 1,
+          "explanation": "Thlipsis is pressure/affliction. The road is not narrow because God is stingy; the road itself is pressure (see Acts 14:22)."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "Acts 14:22 says we enter the kingdom of God…",
+          "choices": [
+            "When life gets easy",
+            "Through many tribulations",
+            "Only after perfect doctrine tests",
+            "By avoiding all pressure"
+          ],
+          "correct": 1,
+          "explanation": "Through many tribulations we must enter the kingdom. A squeezed week is not off the road — by Christ's word, the pressure is the road."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "Matthew 7 forbids judging and commands fruit-inspection in the same chapter. The distinction is…",
+          "choices": [
+            "Never evaluate anything",
+            "Condemning a person is forbidden; discerning a teaching by its fruit is commanded",
+            "Judge people, never teachings",
+            "Only apostles may notice fruit"
+          ],
+          "correct": 1,
+          "explanation": "Krino as condemning writes a final verdict on a person — God's job. Testing teaching by fruit (7:15-20) is commanded in the same breath."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "The memory verse of this path, Matthew 7:7, promises what to the one who asks and seeks?",
+          "choices": [
+            "Instant wealth",
+            "Ask — it shall be given; seek — ye shall find; knock — it shall be opened",
+            "Silence from heaven",
+            "Only clergy are heard"
+          ],
+          "correct": 1,
+          "explanation": "Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "The house on the rock in Matthew 7:24-27 stands because the builder…",
+          "choices": [
+            "Heard the words only",
+            "Heard the words and did them",
+            "Built fastest",
+            "Had the most money"
+          ],
+          "correct": 1,
+          "explanation": "Whoever hears these sayings of mine and does them is like the wise man who built on the rock. Ordinary Tuesday obedience is the foundation."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "In Matthew 8, the centurion amazes Jesus because he…",
+          "choices": [
+            "Offers a bribe",
+            "Trusts Christ's word alone — speak only the word, and my servant shall be healed",
+            "Demands a sign in the sky",
+            "Knows the Law best"
+          ],
+          "correct": 1,
+          "explanation": "Speak the word only, and my servant shall be healed (Matthew 8:8). Jesus marvels: great faith trusts the word without needing to watch it work."
+        },
+        {
+          "type": "true-false",
+          "prompt": "True or false: missing days in this Matthew path means you have fallen behind and owe extra reading.",
+          "choices": [
+            "True",
+            "False"
+          ],
+          "correct": 1,
+          "explanation": "False, by design. Five-minute pieces, no streak debt. When you open it, you are exactly on time."
+        },
+        {
+          "type": "true-false",
+          "prompt": "True or false: in Matthew 5, salt and light describe Christians hidden away from the world.",
+          "choices": [
+            "True",
+            "False"
+          ],
+          "correct": 1,
+          "explanation": "False. A city set on a hill cannot be hid, and the lamp goes on the stand (Matthew 5:14-15). Presence, not hiding."
+        }
+      ],
+      "words": [
+        {
+          "term": "thlipsis",
+          "say": "thlip sis"
+        },
+        {
+          "term": "krino",
+          "say": "kree noh"
+        },
+        {
+          "term": "makarios",
+          "say": "mah kah ree os"
+        },
+        {
+          "term": "Estoy orando por ti",
+          "say": "es toy oh rahn doh por tee",
+          "lang": "es"
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: Matthew 5–8",
+        "intro": "Drag each verse to the claim it guards. Round 2 is reference only — the way you will carry them on shift.",
+        "categories": [
+          {
+            "id": "blessed",
+            "label": "The blessed life (Matt 5)"
+          },
+          {
+            "id": "pressure",
+            "label": "The road is pressure (Matt 7)"
+          },
+          {
+            "id": "ask",
+            "label": "Ask, seek, knock (Matt 7)"
+          },
+          {
+            "id": "faith-heals",
+            "label": "Faith that heals (Matt 8)"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Matthew 5:3",
+            "text": "Blessed are the poor in spirit: for theirs is the kingdom of heaven",
+            "category": "blessed"
+          },
+          {
+            "ref": "Matthew 5:16",
+            "text": "Let your light so shine before men",
+            "category": "blessed"
+          },
+          {
+            "ref": "Matthew 7:14",
+            "text": "strait is the gate, and narrow is the way, which leadeth unto life",
+            "category": "pressure"
+          },
+          {
+            "ref": "Acts 14:22",
+            "text": "through many tribulations we must enter into the kingdom of God",
+            "category": "pressure"
+          },
+          {
+            "ref": "Matthew 7:7",
+            "text": "Ask, and it shall be given you; seek, and ye shall find",
+            "category": "ask"
+          },
+          {
+            "ref": "Matthew 7:24",
+            "text": "whosoever heareth these sayings of mine, and doeth them… built his house upon a rock",
+            "category": "ask"
+          },
+          {
+            "ref": "Matthew 8:8",
+            "text": "speak the word only, and my servant shall be healed",
+            "category": "faith-heals"
+          },
+          {
+            "ref": "Matthew 8:13",
+            "text": "as thou hast believed, so be it done unto thee",
+            "category": "faith-heals"
+          }
+        ]
+      }
+    },
+    {
+      "id": "walk-guarding-senses",
+      "track": "Walking Together",
+      "micro": true,
+      "title": "Guarding the Senses",
+      "category": "Scripture path",
+      "level": "4 teaching cards · 7 questions · Match the Word",
+      "summary": "Her insight, in her framing: what comes in through the eyes shapes the soul. The lamp of the body, a covenant with the eyes, and a practical rule for phones, feeds, and a house with a little girl in it.",
+      "source": "Matthew 6:22-23 · Job 31:1 · Psalm 101:3 · Philippians 4:8",
+      "sourceUrl": "https://www.biblegateway.com/passage/?search=Matthew%206%3A22-23%3B%20Job%2031%3A1%3B%20Psalm%20101%3A3%3B%20Philippians%204%3A8&version=KJV",
+      "lessons": [
+        {
+          "heading": "The insight, stated plainly",
+          "body": "You said it first, and it is Orthodox to the bone: what comes in through the eyes shapes the soul. The senses are doors. Whatever we let stand in front of them long enough stops being entertainment and starts being formation — it teaches the heart what to want. Guarding the senses is not fear of the world. It is choosing what gets to raise you."
+        },
+        {
+          "heading": "The lamp of the body",
+          "body": "The light of the body is the eye: if therefore thine eye be single, thy whole body shall be full of light (Matthew 6:22). Single here means undivided, honest, aimed at one thing. A divided eye — one eye on Christ, one eye feeding old hungers — fills the body with what Christ bluntly calls darkness (6:23). The Fathers read this as attention: the eye you keep is the light you live by."
+        },
+        {
+          "heading": "Job made a covenant",
+          "body": "I made a covenant with mine eyes; why then should I think upon a maid? (Job 31:1). Job does not wait for temptation to negotiate. He settles the matter beforehand, in the calm, so the storm has nothing to bargain with. A covenant with the eyes is a decision made once that protects a thousand later moments: what you will not scroll, open, or keep on the screen — especially in a house where a little girl is learning what eyes are for."
+        },
+        {
+          "heading": "Fill the house with better light",
+          "body": "Guarding is only half; the other half is filling. Whatsoever things are true, honest, just, pure, lovely — think on these things (Philippians 4:8). David's version is household-shaped: I will set no wicked thing before mine eyes (Psalm 101:3). The practical rule for this week: one input fasted (the feed, the show, the old playlist) and one input feasted (a psalm at breakfast, the Saturday chapter open on the counter). Doors guarded, house lit."
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple-choice",
+          "prompt": "What does Christ call the eye in Matthew 6:22?",
+          "choices": [
+            "A window to decorate",
+            "The light (lamp) of the body",
+            "A camera that only records",
+            "Unimportant to the soul"
+          ],
+          "correct": 1,
+          "explanation": "The light of the body is the eye. If the eye is single, the whole body is full of light — attention is formation."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "Single eye in Matthew 6:22 means…",
+          "choices": [
+            "Looking at one screen forever",
+            "Undivided, honest, aimed at one thing",
+            "Closing one eye in prayer",
+            "Refusing to read"
+          ],
+          "correct": 1,
+          "explanation": "Single = undivided. A divided eye fills the body with darkness (6:23); a single eye fills it with light."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "Job 31:1 — what did Job make a covenant with?",
+          "choices": [
+            "His servants",
+            "His eyes",
+            "His calendar",
+            "His enemies"
+          ],
+          "correct": 1,
+          "explanation": "I made a covenant with mine eyes. He settled the matter beforehand, in the calm, so temptation had nothing to negotiate with."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "Psalm 101:3 puts the guarding of the eyes where?",
+          "choices": [
+            "Only in church",
+            "In the house — I will set no wicked thing before mine eyes",
+            "Only for children",
+            "Only on fast days"
+          ],
+          "correct": 1,
+          "explanation": "Household-shaped holiness: no wicked thing before the eyes at home either — where a little girl learns what eyes are for."
+        },
+        {
+          "type": "multiple-choice",
+          "prompt": "Philippians 4:8 completes guarding with…",
+          "choices": [
+            "Filling: think on what is true, honest, just, pure, lovely",
+            "Thinking about nothing at all",
+            "Only news and feeds",
+            "Guarding others instead"
+          ],
+          "correct": 0,
+          "explanation": "Guarding is half; filling is the other half. Fast one input, feast on another — doors guarded, house lit."
+        },
+        {
+          "type": "true-false",
+          "prompt": "True or false: guarding the senses means fearing the world and hiding from it.",
+          "choices": [
+            "True",
+            "False"
+          ],
+          "correct": 1,
+          "explanation": "False. It is choosing what gets to form you. The senses are doors, and whatever stands long before them starts teaching the heart what to want."
+        },
+        {
+          "type": "true-false",
+          "prompt": "True or false: a covenant with the eyes is decided once, beforehand, rather than renegotiated in every moment of temptation.",
+          "choices": [
+            "True",
+            "False"
+          ],
+          "correct": 0,
+          "explanation": "True — that is Job's pattern. Settled in the calm, it protects a thousand later moments."
+        }
+      ],
+      "words": [
+        {
+          "term": "custodia",
+          "say": "koos toh dee ah"
+        },
+        {
+          "term": "Cuida tus ojos",
+          "say": "kwee dah toos oh hohs",
+          "lang": "es"
+        },
+        {
+          "term": "la Palabra",
+          "say": "lah pah lah brah",
+          "lang": "es"
+        }
+      ],
+      "drag": {
+        "title": "Match the Word: Guarding the Senses",
+        "intro": "Drag each verse to the practice it teaches.",
+        "categories": [
+          {
+            "id": "lamp",
+            "label": "The eye is the lamp"
+          },
+          {
+            "id": "covenant",
+            "label": "A covenant beforehand"
+          },
+          {
+            "id": "house",
+            "label": "Guard the house"
+          },
+          {
+            "id": "fill",
+            "label": "Fill with better light"
+          }
+        ],
+        "refs": [
+          {
+            "ref": "Matthew 6:22",
+            "text": "The light of the body is the eye: if therefore thine eye be single, thy whole body shall be full of light",
+            "category": "lamp"
+          },
+          {
+            "ref": "Matthew 6:23",
+            "text": "if thine eye be evil, thy whole body shall be full of darkness",
+            "category": "lamp"
+          },
+          {
+            "ref": "Job 31:1",
+            "text": "I made a covenant with mine eyes",
+            "category": "covenant"
+          },
+          {
+            "ref": "Psalm 101:3",
+            "text": "I will set no wicked thing before mine eyes",
+            "category": "house"
+          },
+          {
+            "ref": "Philippians 4:8",
+            "text": "whatsoever things are true… lovely… think on these things",
+            "category": "fill"
+          }
+        ]
+      }
     }
   ],
   "games": [
