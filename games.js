@@ -7,6 +7,9 @@ window.BibleGames = (() => {
   const BANK_URL = 'data/game-bank.json';
   const CLOCK_TICK = 100;
   let root = null, ctx = null, bank = null, G = null;
+  /* Chrome text goes through the app dictionary (i18n.js); {name} slots are filled after lookup. */
+  const T = (text, vars) => { let out = window.MsbI18n ? MsbI18n.t(text) : text; if (vars) for (const [k, v] of Object.entries(vars)) out = out.split(`{${k}}`).join(String(v)); return out; };
+  const gxPts = v => T('{n} points', { n: v });
 
   /* ---------- small helpers ---------- */
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -73,11 +76,11 @@ window.BibleGames = (() => {
   }
   function roomButtons(show) {
     return `<div class="gx-online">
-      <p class="small muted">Play a friend online — you both need the app open with internet. A solo finish is saved on this device and joins the public scores once you have a friend code. The public board lists names and scores only.</p>
+      <p class="small muted">${T('Play a friend online — you both need the app open with internet. A solo finish is saved on this device and joins the public scores once you have a friend code. The public board lists names and scores only.')}</p>
       <div class="gx-modes">
-        <button class="card gx-mode" data-gx="room-create" data-show-key="${show}"><strong>🟢 Live room vs a friend</strong><span>Open a room at the level picked above, send your friend the room code, then race live — scores update as you play and the higher score wins.</span></button>
+        <button class="card gx-mode" data-gx="room-create" data-show-key="${show}"><strong>${T('🟢 Live room vs a friend')}</strong><span>${T('Open a room at the level picked above, send your friend the room code, then race live — scores update as you play and the higher score wins.')}</span></button>
       </div>
-      <p class="gx-joinrow"><input class="text-input" data-gx-room-input placeholder="ROOM-XXXXXX" autocapitalize="characters" maxlength="12"><button class="secondary" data-gx="room-join">Join room</button><button class="secondary" data-gx="scores" data-show-key="${show}">🌍 Public scores</button></p>
+      <p class="gx-joinrow"><input class="text-input" data-gx-room-input placeholder="ROOM-XXXXXX" autocapitalize="characters" maxlength="12"><button class="secondary" data-gx="room-join">${T('Join room')}</button><button class="secondary" data-gx="scores" data-show-key="${show}">${T('🌍 Public scores')}</button></p>
       <p class="small muted" data-gx-room-status></p>
     </div>`;
   }
@@ -246,21 +249,22 @@ window.BibleGames = (() => {
   function setHtml(html) {
     if (!root) return;
     root.innerHTML = html;
+    if (window.MsbI18n && MsbI18n.lang() === 'es') MsbI18n.apply(root);
     const target = root.querySelector('[data-gx-autofocus]');
     if (target) setTimeout(() => { try { target.focus(); } catch { /* noop */ } }, 30);
   }
   function backBar(title) {
-    return `<button class="text-button" data-gx="hub">← Games</button><button class="text-button gx-snd" data-gx="sound-toggle" aria-label="${gxSoundOn ? 'Mute sound effects' : 'Unmute sound effects'}">${gxSoundOn ? '🔊' : '🔇'}</button><button class="text-button gx-snd${gxMusicOn ? '' : ' gx-snd-off'}" data-gx="music-toggle" aria-label="${gxMusicOn ? 'Turn music off' : 'Turn music on'}">🎵</button><span class="eyebrow">GAME SHOW</span><h1>${esc(title)}</h1>`;
+    return `<button class="text-button" data-gx="hub">${T('← Games')}</button><button class="text-button gx-snd" data-gx="sound-toggle" aria-label="${T(gxSoundOn ? 'Mute sound effects' : 'Unmute sound effects')}">${gxSoundOn ? '🔊' : '🔇'}</button><button class="text-button gx-snd${gxMusicOn ? '' : ' gx-snd-off'}" data-gx="music-toggle" aria-label="${T(gxMusicOn ? 'Turn music off' : 'Turn music on')}">🎵</button><span class="eyebrow">${T('GAME SHOW')}</span><h1>${esc(title)}</h1>`;
   }
   function scoreBar(seats, activeIdx) {
     return `<div class="gx-scorebar">${seats.map((s, i) => `<div class="gx-seat ${i === activeIdx ? 'active' : ''} ${s.pc ? 'pc' : ''}"><span>${esc(s.name)}</span><strong>${s.score}</strong></div>`).join('')}</div>`;
   }
   function nameInputs(mode) {
     if (mode === '2p' || mode === 'teams') {
-      return `<label class="gx-field">Player one / Team one<input data-gx-name="0" value="Player 1" maxlength="20"></label>
-              <label class="gx-field">Player two / Team two<input data-gx-name="1" value="Player 2" maxlength="20"></label>`;
+      return `<label class="gx-field">${T('Player one / Team one')}<input data-gx-name="0" value="${T('Player 1')}" maxlength="20"></label>
+              <label class="gx-field">${T('Player two / Team two')}<input data-gx-name="1" value="${T('Player 2')}" maxlength="20"></label>`;
     }
-    return `<label class="gx-field">Your name<input data-gx-name="0" value="You" maxlength="20"></label>`;
+    return `<label class="gx-field">${T('Your name')}<input data-gx-name="0" value="${T('You')}" maxlength="20"></label>`;
   }
   function readNames(fallbacks) {
     const out = [];
@@ -272,7 +276,7 @@ window.BibleGames = (() => {
   }
   function bestLine(show, format) {
     const b = bestOf(show);
-    return b.plays ? `<p class="small muted">Your best here: <strong>${format(b.best)}</strong> over ${b.plays} game${b.plays === 1 ? '' : 's'} on this device.</p>` : '';
+    return b.plays ? `<p class="small muted">${T('Your best here:')} <strong>${format(b.best)}</strong> ${T(b.plays === 1 ? 'over 1 game on this device.' : 'over {n} games on this device.', { n: b.plays })}</p>` : '';
   }
 
   /* ================= LEVELS =================
@@ -341,21 +345,21 @@ window.BibleGames = (() => {
   function gxLevelNote(show, level) {
     const p = gxShowProg(show);
     const bits = {
-      jeopardy: 'Each level is a fresh board — five new categories, twenty-five new clues, and its own Final Jeopardy.',
-      millionaire: `Reach question ${GX_LEVELS.millionaire[level - 1].target} of the ladder and bank the money to beat this level.`,
-      feud: `A two-board match — boards ${(level - 1) * 2 + 1} and ${(level - 1) * 2 + 2} of ten. Clear both boards to beat this level.`,
-      sound: 'Ten cards dealt fresh from this level of the deck. Decode 7 of 10 to beat it.',
-      babel: `Catch ${GX_LEVELS.babel[level - 1].catches} falling pieces before the tower reaches ten bricks.`,
-      defend: `Sparring round: ${GX_LEVELS.defend[level - 1].name}. Hear the objection, say your first sentence out loud, then choose the strongest opening. Get ${GX_LEVELS.defend[level - 1].pass} right to beat the level.`,
-      doctrine: `Wording round: ${GX_LEVELS.doctrine[level - 1].name}. Learn the Church term, then choose the sentence that says it cleanly. Get ${GX_LEVELS.doctrine[level - 1].pass} right to beat the level.`,
+      jeopardy: T('Each level is a fresh board — five new categories, twenty-five new clues, and its own Final Jeopardy.'),
+      millionaire: T('Reach question {n} of the ladder and bank the money to beat this level.', { n: GX_LEVELS.millionaire[level - 1].target }),
+      feud: T('A two-board match — boards {a} and {b} of ten. Clear both boards to beat this level.', { a: (level - 1) * 2 + 1, b: (level - 1) * 2 + 2 }),
+      sound: T('Ten cards dealt fresh from this level of the deck. Decode 7 of 10 to beat it.'),
+      babel: T('Catch {n} falling pieces before the tower reaches ten bricks.', { n: GX_LEVELS.babel[level - 1].catches }),
+      defend: T('Sparring round: {name}. Hear the objection, say your first sentence out loud, then choose the strongest opening. Get {n} right to beat the level.', { name: T(GX_LEVELS.defend[level - 1].name), n: GX_LEVELS.defend[level - 1].pass }),
+      doctrine: T('Wording round: {name}. Learn the Church term, then choose the sentence that says it cleanly. Get {n} right to beat the level.', { name: T(GX_LEVELS.doctrine[level - 1].name), n: GX_LEVELS.doctrine[level - 1].pass }),
     };
-    return `${bits[show] || ''}${p.done.length ? ` Beaten so far: Level ${p.done.join(', ')}.` : ''}`;
+    return `${bits[show] || ''}${p.done.length ? ` ${T('Beaten so far: Level {list}.', { list: p.done.join(', ') })}` : ''}`;
   }
   function gxLevelChips(show) {
     const p = gxShowProg(show); const sel = gxSelectedLevel(show);
-    return `<div class="gx-levels gx-lvlrow" role="group" aria-label="Choose a level">${[1, 2, 3, 4, 5].map(n => {
+    return `<div class="gx-levels gx-lvlrow" role="group" aria-label="${T('Choose a level')}">${[1, 2, 3, 4, 5].map(n => {
       const locked = n > p.unlocked, beaten = p.done.includes(n);
-      return `<button class="secondary gx-level${n === sel ? ' active' : ''}" data-gx="lvl-pick" data-show-key="${show}" data-level="${n}"${locked ? ' disabled' : ''}>${locked ? '🔒 ' : ''}Level ${n}${beaten ? ' ✓' : ''}</button>`;
+      return `<button class="secondary gx-level${n === sel ? ' active' : ''}" data-gx="lvl-pick" data-show-key="${show}" data-level="${n}"${locked ? ' disabled' : ''}>${locked ? '🔒 ' : ''}${T('Level {n}', { n })}${beaten ? ' ✓' : ''}</button>`;
     }).join('')}</div><p class="small muted gx-levelnote">${esc(gxLevelNote(show, sel))}</p>`;
   }
   function gxStartSolo(show) {
@@ -370,13 +374,13 @@ window.BibleGames = (() => {
   }
   function gxNextLevelButton(beaten) {
     if (!beaten || !G || !G.runLevel || G.runLevel >= 5) return '';
-    return `<button class="primary" data-gx="next-level">Next level ${G.runLevel + 1} →</button>`;
+    return `<button class="primary" data-gx="next-level">${T('Next level {n} →', { n: G.runLevel + 1 })}</button>`;
   }
   function gxLevelBanner(show, level, beaten) {
     if (!beaten || !level) return '';
     return level >= 5
-      ? `<p class="lead gx-leveldone">Level complete — all five levels beaten! 🏆</p>`
-      : `<p class="lead gx-leveldone">Level complete — Level ${level + 1} unlocked!</p>`;
+      ? `<p class="lead gx-leveldone">${T('Level complete — all five levels beaten! 🏆')}</p>`
+      : `<p class="lead gx-leveldone">${T('Level complete — Level {n} unlocked!', { n: level + 1 })}</p>`;
   }
 
   /* ================= JEOPARDY ================= */
@@ -384,7 +388,7 @@ window.BibleGames = (() => {
     const b = bestOf('jeopardy');
     setHtml(`${backBar('Jeopardy')}
       <p class="lead">Five categories, twenty-five clues, and one final wager. Answer in question form — thirty seconds on the clock once you buzz.</p>
-      ${bestLine('jeopardy', v => v + ' points')}
+      ${bestLine('jeopardy', gxPts)}
       ${gxLevelChips('jeopardy')}
       <div class="gx-modes">
         <button class="card gx-mode" data-gx="j-mode" data-mode="solo"><strong>Solo</strong><span>You against the board. Every clue is yours to win — or lose.</span></button>
@@ -787,7 +791,7 @@ window.BibleGames = (() => {
   function feudMenu() {
     setHtml(`${backBar('Family Feud')}
       <p class="lead">We asked the board — well, we wrote the board: our own house rankings, made for this app. Every answer starts hidden. Type a guess: if it's up there, the board flips it over with its points. Three strikes, and the other side gets one guess to steal the pot.</p>
-      ${bestLine('feud', v => v + ' points')}
+      ${bestLine('feud', gxPts)}
       ${gxLevelChips('feud')}
       <div class="gx-modes">
         <button class="card gx-mode" data-gx="f-mode" data-mode="pc"><strong>Your team vs the PC</strong><span>Face off against the machine across this level's two boards.</span></button>
@@ -1387,7 +1391,7 @@ window.BibleGames = (() => {
       <div class="gx-levels" role="group" aria-label="Difficulty">
         ${[['easy', 'Easy'], ['mixed', 'Mixed'], ['hard', 'Hard']].map(([k, l]) => `<button class="secondary gx-level ${lvl === k ? 'active' : ''}" data-gx="s-level" data-level="${k}">${l}</button>`).join('')}
       </div>
-      ${bestLine('sound', v => v + ' points')}
+      ${bestLine('sound', gxPts)}
       <div class="gx-modes">
         <button class="card gx-mode" data-gx="s-mode" data-mode="solo"><strong>Solo decode — level run</strong><span>Ten fresh cards from the level picked above. Reveal when you're ready, score yourself honestly, and decode 7 of 10 to beat the level.</span></button>
         <button class="card gx-mode" data-gx="s-mode" data-mode="race"><strong>Race the PC</strong><span>Four phrases, one true card. Tap the real line before the PC cracks it — a wrong tap hands it the steal.</span></button>
@@ -1693,7 +1697,7 @@ window.BibleGames = (() => {
   function babelMenu() {
     setHtml(`${backBar('Tower of Babel')}
       <p class="lead">A brick is always falling toward the tower. Answer the question before it lands: right, and you catch the piece mid-air; wrong — or too slow — and the wall grows by one. Reach ten bricks and the whole tower topples.</p>
-      ${bestLine('babel', v => v + ' points')}
+      ${bestLine('babel', gxPts)}
       ${gxLevelChips('babel')}
       <div class="gx-names">${nameInputs('solo')}</div>
       <button class="primary" data-gx="b-start" data-gx-autofocus>Start building</button>
@@ -1998,12 +2002,12 @@ window.BibleGames = (() => {
     const cfg = faithCfg(show);
     setHtml(`${backBar(cfg.title)}
       <p class="lead">${cfg.intro}</p>
-      ${bestLine(show, v => v + ' points')}
+      ${bestLine(show, gxPts)}
       ${gxLevelChips(show)}
       <div class="gx-modes">
-        <button class="card gx-mode" data-gx="fth-start"><strong>${cfg.start}</strong><span>Six cards from the level above. Say your answer out loud before choosing; every card ends with the reason and a sentence to keep.</span></button>
+        <button class="card gx-mode" data-gx="fth-start"><strong>${cfg.start}</strong><span>${T('Six cards from the level above. Say your answer out loud before choosing; every card ends with the reason and a sentence to keep.')}</span></button>
       </div>
-      <p class="footnote">Built from your study rule: Scripture and the Fathers first, exact terms in transliteration, and a spoken sentence at the end of every card.</p>
+      <p class="footnote">${T('Built from your study rule: Scripture and the Fathers first, exact terms in transliteration, and a spoken sentence at the end of every card.')}</p>
       ${roomButtons(show)}`);
   }
   function defendMenu() { faithMenu(); }
