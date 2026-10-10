@@ -143,7 +143,7 @@ test('study together notebook names verses and keeps the worker payload', () => 
 
 test('service worker refreshes Bible caches and only deletes this app', () => {
   const sw = read('sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v84'/);
+  assert.match(sw, /const CACHE_VERSION = 'v85'/);
   assert.match(sw, /const BIBLE_DATA_VERSION = 'kjv-3'/);
   assert.match(sw, /const RVR_DATA_VERSION = 'rvr1909-4'/);
   assert.match(sw, /function freshOrCached/);
@@ -153,6 +153,9 @@ test('service worker refreshes Bible caches and only deletes this app', () => {
   assert.equal(shell.includes('.webp'), false);
   assert.equal(shell.includes('audio/'), false);
   assert.equal(sw.includes('still-waters'), false);
+  assert.match(sw, /const AUDIO_CACHE = 'msb-audio-1'/);
+  assert.match(sw, /if \(isWorshipAudio\(url\)\)/);
+  assert.match(sw, /STORIES_CACHE, AUDIO_CACHE\]\)/);
   for (const file of [
     './data/study-challenges.json',
     './data/study-library.json',
@@ -228,4 +231,23 @@ test('RV epistle subscriptions sit on the index, not inside a verse', () => {
   const second = JSON.parse(read('bible/rvr/47.json')).chapters.at(-1);
   assert.equal(second.at(-1).includes('Filipos de Macedonia'), false);
   assert.equal(second[12].includes('Filipos de Macedonia'), false);
+});
+
+test('worship audio cache answers Range requests from the full cached file', async () => {
+  const sw = read('sw.js');
+  const start = sw.indexOf('async function rangeResponse');
+  const end = sw.indexOf('// Worship audio: cache-first');
+  const rangeResponse = new Function(`${sw.slice(start, end)}; return rangeResponse;`)();
+  const full = () => new Response(new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]), { headers: { 'Content-Type': 'audio/ogg' } });
+  const whole = await rangeResponse(full(), null);
+  assert.equal(whole.status, 200);
+  assert.equal((await whole.arrayBuffer()).byteLength, 10);
+  const open = await rangeResponse(full(), 'bytes=0-');
+  assert.equal(open.status, 206);
+  assert.equal(open.headers.get('Content-Range'), 'bytes 0-9/10');
+  const mid = await rangeResponse(full(), 'bytes=2-4');
+  assert.deepEqual([...new Uint8Array(await mid.arrayBuffer())], [2, 3, 4]);
+  const tail = await rangeResponse(full(), 'bytes=-3');
+  assert.equal(tail.headers.get('Content-Range'), 'bytes 7-9/10');
+  assert.equal((await rangeResponse(full(), 'bytes=20-')).status, 416);
 });

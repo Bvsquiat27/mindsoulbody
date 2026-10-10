@@ -288,8 +288,9 @@
     },
     PRAYERS.find(item => item.id === 'workday')
   ].filter(Boolean);
-  /* The Church's older prayers (Hapgood), shown only under Go deeper. */
+  /* The Church's older prayers (Hapgood). They sit in the rule beside the Scripture prayers and are listed again under Go deeper. */
   const OLDER_PRAYERS = PRAYERS.filter(item => item.id !== 'workday');
+  const RULE_PRAYERS = SCRIPTURE_PRAYERS.concat(OLDER_PRAYERS);
 
   const DEFAULT_RULE = SCRIPTURE_PRAYERS.map(item => item.id);
   let openId = '';
@@ -338,9 +339,12 @@
   }
   function loadRule(){
     const saved = readJson(RULE_KEY) || {};
-    const included = Array.isArray(saved.included) ? saved.included.filter(id => DEFAULT_RULE.includes(id)) : DEFAULT_RULE.slice();
+    /* Keep every saved id, including ids this version does not show, so an older or newer rule is never wiped. */
+    const included = Array.isArray(saved.included)
+      ? Array.from(new Set(saved.included.filter(id => typeof id === 'string' && id)))
+      : DEFAULT_RULE.slice();
     const rule = {
-      included: included.length ? included : [],
+      included,
       day: typeof saved.day === 'string' ? saved.day : '',
       done: saved.done && typeof saved.done === 'object' ? saved.done : {}
     };
@@ -383,17 +387,22 @@
   }
   function ruleHtml(){
     const rule = loadRule();
-    const visible = SCRIPTURE_PRAYERS;
-    const inRule = visible.filter(item => rule.included.includes(item.id));
+    const inRule = RULE_PRAYERS.filter(item => rule.included.includes(item.id));
     const doneCount = inRule.filter(item => rule.done[item.id]).length;
-    const rows = visible.map(item => {
+    const row = item => {
       const view = prayerView(item);
       const included = rule.included.includes(item.id);
       const done = !!rule.done[item.id];
       const open = openId === item.id;
       return `<article class="rule-row ${included?'':'rule-off'}"><div class="rule-top"><label class="rule-include"><input type="checkbox" data-prayer-rule="${item.id}" ${included?'checked':''}><span>In my rule</span></label><label class="rule-done"><input type="checkbox" data-prayer-done="${item.id}" ${done?'checked':''} ${included?'':'disabled'}><span>Prayed today</span></label></div><h3>${esc(view.title)}</h3><p class="muted">${esc(view.blurb)}</p><button type="button" class="secondary" data-prayer-open="${item.id}" aria-expanded="${open}">${open?(esPrayer()?'Cerrar el texto':'Close the text'):(esPrayer()?`Leer: ${esc(view.title)}`:`Read ${esc(view.title)}`)}</button>${open?`<div class="prayer-text" id="prayer-text-${item.id}">${prayerBody(view)}</div>`:''}</article>`;
-    }).join('');
-    return `<section class="card prayer-rule" id="prayer-rule"><span class="eyebrow">A DAILY RULE</span><h2>Prayer rule</h2><p class="muted">Choose which prayers belong in your rule. Check off the ones you pray today. The list clears after midnight on this device.</p><p class="rule-progress">${inRule.length?(esPrayer()?`${doneCount} de ${inRule.length} oradas hoy`:`${doneCount} of ${inRule.length} prayed today`):(esPrayer()?'Agrega al menos una oración a tu regla.':'Add at least one prayer to your rule.')}</p><div class="rule-list">${rows}</div>${esPrayer()?'<p class="prayer-source">Escritura de la Reina-Valera 1909.</p>':'<p class="prayer-source">Scripture from the King James Version.</p>'}</section>`;
+    };
+    const rows = SCRIPTURE_PRAYERS.map(row).join('')
+      + `<h3 class="rule-group">${esPrayer() ? 'Las oraciones antiguas de la Iglesia' : 'The Church’s older prayers'}</h3>`
+      + OLDER_PRAYERS.map(row).join('');
+    const source = esPrayer()
+      ? '<p class="prayer-source">Escritura de la Reina-Valera 1909. Oraciones antiguas en inglés de Isabel Florence Hapgood, <cite>Service Book of the Holy Orthodox-Catholic Apostolic Church</cite> (Houghton, Mifflin and Company, 1906), de dominio público. La versión en español sigue esos textos.</p>'
+      : '<p class="prayer-source">Scripture from the King James Version. Older prayers from Isabel Florence Hapgood, <cite>Service Book of the Holy Orthodox-Catholic Apostolic Church</cite> (Houghton, Mifflin and Company, 1906). That translation is in the public domain.</p>';
+    return `<section class="card prayer-rule" id="prayer-rule"><span class="eyebrow">A DAILY RULE</span><h2>Prayer rule</h2><p class="muted">Choose which prayers belong in your rule. Check off the ones you pray today. The list clears after midnight on this device.</p><p class="rule-progress">${inRule.length?(esPrayer()?`${doneCount} de ${inRule.length} oradas hoy`:`${doneCount} of ${inRule.length} prayed today`):(esPrayer()?'Agrega al menos una oración a tu regla.':'Add at least one prayer to your rule.')}</p><div class="rule-list">${rows}</div>${source}</section>`;
   }
   function deeperHtml(){
     const rows = OLDER_PRAYERS.map(item => {

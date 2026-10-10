@@ -19,12 +19,13 @@
     'Turn worship music on': 'Poner la música de alabanza',
     'Close dialog': 'Cerrar',
     'YOUR STUDY': 'TU ESTUDIO',
-    'ORTHODOX BIBLE STUDY': 'ESTUDIO BÍBLICO',
+    'ORTHODOX BIBLE STUDY': 'ESTUDIO BÍBLICO ORTODOXO',
+    'Read Scripture with the Orthodox Church. Keep private notes, keep a study rhythm, and track your progress.': 'Lee la Escritura con la Iglesia Ortodoxa. Guarda notas privadas, mantén un ritmo de estudio y sigue tu avance.',
     'READ · REFLECT · PRAY': 'LEE · REFLEXIONA · ORA',
     'Opening your study…': 'Abriendo tu estudio…',
     'SCRIPTURE · PRAYER · TRADITION': 'ESCRITURA · ORACIÓN · VIDA',
     'Read deeply. Live faithfully.': 'Lee a fondo. Vive con fidelidad.',
-    'Read Scripture with the Orthodox Church. A profile on this device keeps your notes and progress in this browser.': 'Lee la Escritura con la Iglesia. Un perfil en este dispositivo guarda tus notas y tu avance en este navegador.',
+    'Read Scripture with the Orthodox Church. A profile on this device keeps your notes and progress in this browser.': 'Lee la Escritura con la Iglesia Ortodoxa. Un perfil en este dispositivo guarda tus notas y tu avance en este navegador.',
     'Keep your place': 'Guarda tu lugar',
     'Create a profile to save notes, reading progress, and highlights in this browser. They stay on this device.': 'Crea un perfil para guardar notas, tu avance y subrayados en este navegador. Se quedan en este dispositivo.',
     'Create your study profile': 'Crear tu perfil de estudio',
@@ -170,7 +171,7 @@
     'Your study notes, quiz results, highlights, and reading place are saved in this browser. They are not synced to other devices.': 'Tus notas, resultados, subrayados y el lugar donde vas leyendo se guardan en este navegador. No se sincronizan con otros dispositivos.',
     'PLAY': 'JUGAR',
     'ORTHODOX THEOLOGY · APOLOGETICS': 'JUEGOS Y LECCIONES',
-    'Every game is on this screen. Tap a card to play. Filter only if you want a smaller set. Lessons and quizzes sit underneath, still in the open.': 'Todos los juegos están en esta pantalla. Toca una tarjeta para jugar. Filtra solo si quieres un grupo más pequeño. Las lecciones y las preguntas están debajo, a la vista.',
+    'Every game and lesson is on this screen. Tap a card to play. Filter only if you want a smaller set. Lessons and quizzes sit underneath. Go deeper gathers the longer ones in one place.': 'Todos los juegos y lecciones están en esta pantalla. Toca una tarjeta para jugar. Filtra solo si quieres un grupo más pequeño. Las lecciones y las preguntas están debajo. Profundizar reúne las más largas en un solo lugar.',
     'Subject': 'Tema',
     'Filter lessons and games by subject': 'Filtrar lecciones y juegos por tema',
     'All games': 'Todos los juegos',
@@ -683,7 +684,7 @@
     'MORE PRAYERS': 'MÁS ORACIONES',
     'Go deeper': 'Profundizar',
     'WHEN YOU ARE READY': 'CUANDO ESTÉS LISTO',
-    'Longer lessons on worship, history, and hard questions. They stay here so the front of the app can stay with Scripture.': 'Lecciones más largas sobre la adoración, la historia y las preguntas difíciles. Se quedan aquí para que el frente de la app siga con la Escritura.',
+    'Longer lessons on worship, history, and hard questions, gathered in one place. Every one of them is also on the main screens.': 'Lecciones más largas sobre la adoración, la historia y las preguntas difíciles, reunidas en un solo lugar. Cada una también está en las pantallas principales.',
     'Readings': 'Lecturas',
     'Open the passage': 'Abrir el pasaje',
     'Loading study notes…': 'Cargando notas de estudio…',
@@ -735,6 +736,7 @@
     'Repentance': 'Arrepentimiento',
     'Faith & works': 'Fe y obras',
     'Pascha': 'Pascua',
+    'Prayer': 'Oración',
     'Creation & Origins': 'Creación y orígenes',
     'Christ in the Old Testament': 'Cristo en el Antiguo Testamento',
     'Psalms & Prayer': 'Salmos y oración',
@@ -942,7 +944,7 @@
   function lang() { return current; }
 
   function paintTitle() {
-    document.title = current === 'es' ? 'Mind Soul & Body — Estudio bíblico' : 'Mind Soul & Body — Bible study';
+    document.title = current === 'es' ? 'Mind Soul & Body — Estudio bíblico ortodoxo' : 'Mind Soul & Body — Orthodox Bible Study';
   }
 
   function set(next) {

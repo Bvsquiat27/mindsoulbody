@@ -317,6 +317,7 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .rule-include,.rule-done{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:700}
 .rule-include input,.rule-done input{width:22px;height:22px;accent-color:var(--teal)}
 .rule-row .secondary{min-height:44px}
+.rule-group{margin:12px 0 0;font-size:1.05rem;color:var(--muted)}
 .rule-off{opacity:.72}
 .prayer-text{margin-top:12px;font-family:var(--serif,Georgia,serif);font-size:clamp(18px,2.4vw,22px);line-height:1.65;color:var(--text)}
 .prayer-text p{margin:0 0 12px}
