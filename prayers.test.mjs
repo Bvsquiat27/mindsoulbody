@@ -26,11 +26,12 @@ test('Pray tab main path quotes the KJV and RV1909 word for word', () => {
   });
 });
 
-test('the main Pray rule has no Orthodox service-book prayers or prayer rope', () => {
+test('the prayer rope is on the Pray tab and the service-book prayers stay in Go deeper', () => {
   const rule = src.slice(src.indexOf('function ruleHtml'), src.indexOf('function deeperHtml'));
-  assert.doesNotMatch(rule, /Hapgood|ropeHtml\(\)/);
-  assert.match(src, /function html\(\)\{ return ruleHtml\(\); \}/);
+  assert.doesNotMatch(rule, /Hapgood/);
+  assert.match(src, /function html\(\)\{ return ropeHtml\(\) \+ ruleHtml\(\); \}/);
+  assert.match(src, /const ROPE_KEY = 'msb_prayer_rope';/);
   const deeper = src.slice(src.indexOf('function deeperHtml'), src.indexOf('function html()'));
   assert.match(deeper, /Hapgood/);
-  assert.match(deeper, /ropeHtml\(\)/);
+  assert.doesNotMatch(deeper, /ropeHtml\(\)/);
 });
