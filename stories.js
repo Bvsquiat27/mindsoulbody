@@ -220,7 +220,29 @@
     });
   }
 
+  /* The night screen promises to stay on until the timer ends, so hold a
+     screen wake lock for exactly that long. The browser drops the lock when
+     the tab is hidden; it is taken again when the tab comes back. */
+  let screenLock = null;
+  async function holdScreen(on) {
+    if (!on) {
+      const current = screenLock;
+      screenLock = null;
+      try { await current?.release(); } catch { /* already released */ }
+      return;
+    }
+    if (!navigator.wakeLock?.request || screenLock) return;
+    try {
+      screenLock = await navigator.wakeLock.request('screen');
+      screenLock.addEventListener?.('release', () => { screenLock = null; });
+    } catch { screenLock = null; }
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && music && Date.now() < music.until) holdScreen(true);
+  });
+
   function stopMusic() {
+    holdScreen(false);
     if (!music) return;
     const ctx = music.ctx;
     try {
@@ -228,6 +250,7 @@
       music.gain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
     } catch { /* ignore */ }
     clearTimeout(music.timer);
+    clearTimeout(music.release);
     setTimeout(() => { try { ctx.close(); } catch { /* ignore */ } }, 400);
     music = null;
     if (window.msbYieldAudio) { try { window.msbYieldAudio('bedtime', false); } catch { /* ignore */ } }
@@ -269,7 +292,8 @@
       }
       if (when < endAt) music.timer = setTimeout(schedule, 900);
     };
-    music = { ctx, gain: master, timer: null };
+    music = { ctx, gain: master, timer: null, until: Date.now() + minutes * 60000, release: setTimeout(() => holdScreen(false), minutes * 60000) };
+    holdScreen(true);
     if (window.msbYieldAudio) { try { window.msbYieldAudio('bedtime', true); } catch { /* ignore */ } }
     schedule();
   }
