@@ -9,9 +9,12 @@
    it is fetched. Story illustrations live in STORIES_CACHE, also kept
    across app updates. Only caches named with this app's msb- prefix are
    deleted, so another app on the same origin keeps its own caches.
+   Worship audio is not precached. The first play stores the whole file in
+   AUDIO_CACHE (kept across updates); later plays, online or offline, are
+   served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v84';
+const CACHE_VERSION = 'v85';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -20,6 +23,7 @@ const RVR_DATA_VERSION = 'rvr1909-4';
 const RVR_CACHE = `msb-bible-${RVR_DATA_VERSION}`;
 const APP_CACHE_PREFIX = 'msb-';
 const STORIES_CACHE = 'msb-stories-1';
+const AUDIO_CACHE = 'msb-audio-1';
 const STORY_IDS = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
 
 const SHELL = [
@@ -81,6 +85,7 @@ const isBibleBook = (url) => /\/bible\/(?:index|\d\d)\.json$/.test(url.pathname)
 const isRvrBook = (url) => /\/bible\/rvr\/(?:index|\d\d)\.json$/.test(url.pathname);
 const isFatherNotes = (url) => /\/bible\/fathers\/\d\d\.json$/.test(url.pathname);
 const isStoryArt = (url) => /\/img\/(?:stories\/[a-z0-9-]+\.webp|coloring\/[a-z0-9-]+\.(?:png|webp))$/.test(url.pathname);
+const isWorshipAudio = (url) => /\/audio\/[a-z0-9-]+\.(?:ogg|mp3)$/.test(url.pathname);
 const isStudyNotes = (url) => url.pathname.endsWith('/study-notes.json');
 const isDataRequest = (url) => url.pathname.includes('/data/');
 
@@ -152,7 +157,7 @@ self.addEventListener('activate', (event) => {
         await preserveBibleBooks(keys);
         await preserveRvrBooks(keys);
         await preserveStories(keys);
-        const kept = new Set([SHELL_CACHE, DATA_CACHE, BIBLE_CACHE, RVR_CACHE, STORIES_CACHE]);
+        const kept = new Set([SHELL_CACHE, DATA_CACHE, BIBLE_CACHE, RVR_CACHE, STORIES_CACHE, AUDIO_CACHE]);
         await Promise.all(
           keys.filter((k) => k.startsWith(APP_CACHE_PREFIX) && !kept.has(k))
             .map((k) => caches.delete(k))
@@ -174,6 +179,51 @@ function freshOrCached(cacheName, request) {
   }).catch(() => cached().then((hit) => hit || Response.error()));
 }
 
+// Answer a Range request from a full cached file.
+async function rangeResponse(full, rangeHeader) {
+  const buffer = await full.arrayBuffer();
+  const size = buffer.byteLength;
+  const type = full.headers.get('Content-Type') || 'application/octet-stream';
+  const match = /^bytes=(\d*)-(\d*)$/.exec(String(rangeHeader || '').trim());
+  if (!match) {
+    return new Response(buffer, { status: 200, headers: { 'Content-Type': type, 'Content-Length': String(size), 'Accept-Ranges': 'bytes' } });
+  }
+  let start = match[1] === '' ? NaN : Number(match[1]);
+  let end = match[2] === '' ? NaN : Number(match[2]);
+  if (Number.isNaN(start)) { start = Math.max(0, size - (Number.isNaN(end) ? 0 : end)); end = size - 1; }
+  if (Number.isNaN(end) || end >= size) end = size - 1;
+  if (start >= size || start > end) {
+    return new Response(null, { status: 416, headers: { 'Content-Range': `bytes */${size}` } });
+  }
+  return new Response(buffer.slice(start, end + 1), {
+    status: 206,
+    statusText: 'Partial Content',
+    headers: { 'Content-Type': type, 'Content-Length': String(end - start + 1), 'Content-Range': `bytes ${start}-${end}/${size}`, 'Accept-Ranges': 'bytes' }
+  });
+}
+
+// Worship audio: cache-first. The first play fetches the whole file (no Range),
+// stores it, and every later play is answered from the cache.
+async function worshipAudio(request, url) {
+  const cache = await caches.open(AUDIO_CACHE);
+  const key = new Request(url.href);
+  let full = await cache.match(key);
+  if (!full) {
+    try {
+      const res = await fetch(key);
+      if (res && res.ok && res.status === 200) {
+        await cache.put(key, res.clone());
+        full = res;
+      } else {
+        return res;
+      }
+    } catch {
+      return offlineResponse(url);
+    }
+  }
+  return rangeResponse(full, request.headers.get('Range'));
+}
+
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
@@ -192,6 +242,11 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => caches.match(request).then((hit) => hit || offlineResponse(url)))
     );
+    return;
+  }
+
+  if (isWorshipAudio(url)) {
+    event.respondWith(worshipAudio(request, url));
     return;
   }
 
