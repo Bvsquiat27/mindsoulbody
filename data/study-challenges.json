@@ -16882,7 +16882,9 @@
           "say": "oh rahr hoon tohs",
           "lang": "es"
         }
-      ]
+      ],
+      "titleEs": "Visitar la iglesia del otro",
+      "summaryEs": "Dos iglesias, un solo Señor. Qué va a ver una amiga pentecostal en la Liturgia, qué va a ver un amigo ortodoxo en su culto, y cómo recibirse sin limar lo que cada uno cree."
     },
     {
       "id": "walk-strong-cared",
@@ -17025,7 +17027,9 @@
           "say": "deh hah meh ah yoo dahr teh",
           "lang": "es"
         }
-      ]
+      ],
+      "titleEs": "Fuerte, y aun así cuidada",
+      "summaryEs": "Para la mujer que tiene que ser fuerte: siete días sobre recibir. Moisés, a quien le dijeron que aceptara ayuda; el hombre cargado por sus amigos; Rut en el campo; María a los pies de Jesús. Cada día, una práctica pequeña: recibe una cosa hoy."
     },
     {
       "id": "walk-matthew-pace",
@@ -17231,7 +17235,9 @@
             "category": "faith-heals"
           }
         ]
-      }
+      },
+      "titleEs": "Mateo 5–8 a tu ritmo",
+      "summaryEs": "El Sermón del Monte y las sanidades que siguen, en pedacitos de cinco minutos y sin racha que romper. Hecho para la llamada del sábado: tres preguntas, un versículo para memorizar, y el camino angosto que es, literalmente, presión."
     },
     {
       "id": "walk-guarding-senses",
@@ -17407,7 +17413,9 @@
             "category": "fill"
           }
         ]
-      }
+      },
+      "titleEs": "Guardar los sentidos",
+      "summaryEs": "Tu propia idea, en tus palabras: lo que entra por los ojos forma el alma. La lámpara del cuerpo, un pacto con los ojos, y una regla práctica para el celular, las redes y una casa donde vive una niña."
     }
   ],
   "games": [

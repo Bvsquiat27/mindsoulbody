@@ -57,6 +57,7 @@ const DATA_FILES = [
   './data/game-bank.json',
   './data/trivia.json',
   './bible/study-notes.json',
+  './data/offline-verses.json',
 ];
 
 const STORY_FILES = STORY_IDS.flatMap((id) => [`./img/stories/${id}.webp`, `./img/stories/${id}-512.webp`]);

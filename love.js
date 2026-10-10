@@ -24,9 +24,19 @@
     return es() && item.book <= 66 ? `bible/rvr/${id}.json` : `bible/${id}.json`;
   }
 
+  let offline = null;
+  async function offlineVerses() {
+    if (!offline) offline = fetch('data/offline-verses.json').then(r => r.ok ? r.json() : {}).then(d => (d && d.verses) || {}).catch(() => ({}));
+    return offline;
+  }
+
   async function textOf(item) {
     const key = `${es() ? 'es' : 'en'}:${item.id}`;
     if (cache.has(key)) return cache.get(key);
+    const saved = await offlineVerses();
+    const translation = es() && item.book <= 66 ? 'rvr' : 'kjv';
+    const quick = item.verses.map(verse => saved[`${item.book}:${item.chapter}:${verse}`]?.[translation] || '');
+    if (quick.every(Boolean)) { const text = quick.join(' '); cache.set(key, text); return text; }
     const response = await fetch(fileFor(item));
     if (!response.ok) throw Error('That passage is not on this device yet.');
     const data = await response.json();

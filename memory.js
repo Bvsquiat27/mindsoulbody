@@ -83,8 +83,14 @@
     if (item.text) return String(item.text).trim();
     const id = String(item.book).padStart(2, '0');
     const spanish = (item.translation === 'rvr' || (!item.translation && es())) && item.book <= 66;
+    try {
+      const saved = await fetch('data/offline-verses.json').then(r => r.ok ? r.json() : null);
+      const hit = saved && saved.verses && saved.verses[`${item.book}:${item.chapter}:${item.verse}`];
+      if (hit && hit[spanish ? 'rvr' : 'kjv']) return String(hit[spanish ? 'rvr' : 'kjv']).trim();
+    } catch { /* fall through to the book file */ }
     const file = spanish ? `bible/rvr/${id}.json` : `bible/${id}.json`;
-    const response = await fetch(file);
+    let response;
+    try { response = await fetch(file); } catch { throw Error('That verse is not on this device yet.'); }
     if (!response.ok) throw Error('That verse is not on this device yet.');
     const data = await response.json();
     return String((data.chapters[item.chapter - 1] || [])[item.verse - 1] || '').trim();
@@ -236,7 +242,7 @@
         fromMemory = false;
         revealed.clear();
         paint();
-      } catch (error) { toast(error.message || 'That verse is not on this device yet.'); choose.disabled = false; }
+      } catch { toast('That verse is not on this device yet.'); choose.disabled = false; }
       return;
     }
     const received = event.target.closest('[data-memory-add]');
@@ -253,7 +259,7 @@
           reference: received.dataset.reference || '',
           text: received.dataset.text || ''
         });
-      } catch (error) { toast(error.message || 'That verse is not on this device yet.'); }
+      } catch { toast('That verse is not on this device yet.'); }
       return;
     }
     if (!event.target.closest('#screen')) return;

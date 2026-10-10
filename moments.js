@@ -19,7 +19,7 @@
     const prayer=es()?item.prayerEs:item.prayer;
     const verse=es()?item.textEs:item.text;
     const ref=es()?item.refEs:item.ref;
-    return `<section class="card moment-card" id="moment-card" data-i18n-skip><span class="eyebrow">${eyebrow}</span><p class="moment-verse">${esc(verse)}</p><p class="moment-ref">${esc(ref)}</p><p class="moment-prayer">${esc(prayer)}</p><button type="button" class="text-button" data-moment-dismiss="${name}">${es()?'Por hoy está bien':"That's enough for now"}</button><button type="button" class="secondary" data-lection-book="${item.book}" data-lection-chapter="${item.chapter}" data-lection-verse="${item.verse}">${es()?'Abrir el versículo':'Open the verse'}</button><button type="button" class="secondary" data-moment-speak>Read aloud</button>${window.MsbSpeech?MsbSpeech.rateHtml():''}</section>`;
+    return `<section class="card moment-card" id="moment-card" data-i18n-skip><span class="eyebrow">${eyebrow}</span><p class="moment-verse">${esc(verse)}</p><p class="moment-ref">${esc(ref)}</p><p class="moment-prayer">${esc(prayer)}</p><button type="button" class="text-button" data-moment-dismiss="${name}">${es()?'Por hoy está bien':"That's enough for now"}</button><button type="button" class="secondary" data-lection-book="${item.book}" data-lection-chapter="${item.chapter}" data-lection-verse="${item.verse}">${es()?'Abrir el versículo':'Open the verse'}</button><button type="button" class="secondary" data-moment-speak>${es()?'Leer en voz alta':'Read aloud'}</button>${window.MsbSpeech?MsbSpeech.rateHtml():''}</section>`;
   }
   document.addEventListener('click', event => {
     if (event.target.closest('[data-moment-speak]') && window.MsbSpeech) {
