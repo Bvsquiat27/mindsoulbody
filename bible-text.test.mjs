@@ -143,7 +143,7 @@ test('study together notebook names verses and keeps the worker payload', () => 
 
 test('service worker refreshes Bible caches and only deletes this app', () => {
   const sw = read('sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v83'/);
+  assert.match(sw, /const CACHE_VERSION = 'v84'/);
   assert.match(sw, /const BIBLE_DATA_VERSION = 'kjv-3'/);
   assert.match(sw, /const RVR_DATA_VERSION = 'rvr1909-4'/);
   assert.match(sw, /function freshOrCached/);
@@ -176,10 +176,13 @@ test('Job 40 display numbers map onto the later KJV verses', () => {
   assert.equal(JSON.parse(read('bible/rvr/18.json')).chapters[39].length, 24);
 });
 
-test('study notes stay collapsed and deeper notes stay off the chapter', () => {
+test('tapping a verse shows its notes and every note kind reaches the reader', () => {
   const reader = read('bible-reader.js');
   assert.match(reader, /notesOpen:false/);
-  assert.match(reader, /!note\.deeper/);
+  assert.doesNotMatch(reader, /!note\.deeper/);
+  assert.match(reader, /const selectedNotes = reader\.selectedVerse \? chapterNotes/);
+  assert.match(reader, /\['Father','Padres'\]/);
+  assert.match(reader, /Father:'Padre de la Iglesia'/);
   assert.match(reader, /aria-expanded="\$\{reader\.notesOpen\}"/);
   assert.match(reader, /data-bible="notes"/);
 });

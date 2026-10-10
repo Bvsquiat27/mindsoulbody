@@ -470,3 +470,27 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .bedtime-timers{display:flex;flex-wrap:wrap;gap:8px}
 .bedtime-timers .active{background:var(--teal);color:var(--on-accent)}
 @media(max-width:1024px){.toast{bottom:calc(112px + env(safe-area-inset-bottom))}}
+/* Coloring book */
+.coloring-book{margin-top:28px}
+.coloring-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(min-width:720px){.coloring-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.coloring-thumb{display:flex;flex-direction:column;gap:8px;padding:8px;text-align:left;min-height:48px}
+.coloring-thumb img{width:100%;height:auto;aspect-ratio:16/9;border-radius:10px;background:white;object-fit:contain}
+.coloring-thumb span{font-weight:700;font-size:.95rem}
+.coloring-stage{position:relative;width:100%;aspect-ratio:1200/675;background:white;border-radius:14px;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;overscroll-behavior:contain}
+.coloring-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.coloring-lines{pointer-events:none}
+.coloring-tools{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.coloring-tool{display:inline-flex;align-items:center;gap:8px;min-height:52px;min-width:52px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:inherit;font:inherit;font-weight:700}
+.coloring-tool.active{background:var(--teal);color:rgb(6,36,32);border-color:transparent}
+.coloring-size i{display:inline-block;width:var(--size);height:var(--size);border-radius:50%;background:currentColor}
+.coloring-save{min-height:52px}
+.coloring-dots{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:12px 0}
+.coloring-dot{aspect-ratio:1;min-width:48px;min-height:48px;border-radius:50%;background:var(--dot);border:3px solid rgba(255,255,255,.35);box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.coloring-dot.active{border-color:white;outline:3px solid var(--teal);outline-offset:2px;transform:scale(1.08)}
+.coloring-status{min-height:1.4em}
+/* Verse study notes inside the chapter must wrap on a phone. */
+.bible-primary,.bible-page{min-width:0}
+.bible-inline-notes,.bible-inline-notes .bible-study-card{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.bible-inline-notes .bible-study-links{flex-wrap:wrap}
+.bible-highlight-tools{flex-wrap:wrap;max-width:100%}

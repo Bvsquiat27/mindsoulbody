@@ -153,6 +153,9 @@
   };
   let bedtime = null;
   let music = null;
+  let coloringId = null;
+  const coloring = () => window.MsbColoring;
+  const storyTitle = id => { const item = stories.find(entry => entry.id === id); return item ? pick(item, 'title') : id; };
 
   function speechRow() {
     const rates = window.MsbSpeech ? MsbSpeech.rateHtml() : '';
@@ -161,13 +164,13 @@
 
   function showList(root) {
     const cards = stories.map(item => `<button class="card story-card" data-story="${esc(item.id)}">${picture(item, 'card')}<h2>${esc(pick(item, 'title'))}</h2><span>Open</span></button>`).join('');
-    root.innerHTML = `<span class="eyebrow">LITTLE ONES</span><h1>Stories for little ones</h1><p class="lead">Bible stories told simply, for a child close by.</p><button class="card bedtime-entry" type="button" data-bedtime><span class="eyebrow">LITTLE ONES</span><strong>Bedtime</strong><span>A story, a prayer, and a quiet night sky</span></button><div class="story-grid">${cards}</div>`;
+    root.innerHTML = `<span class="eyebrow">LITTLE ONES</span><h1>Stories for little ones</h1><p class="lead">Bible stories told simply, for a child close by.</p><button class="card bedtime-entry" type="button" data-bedtime><span class="eyebrow">LITTLE ONES</span><strong>Bedtime</strong><span>A story, a prayer, and a quiet night sky</span></button><div class="story-grid">${cards}</div>${coloring() ? coloring().gridHtml(storyTitle) : ''}`;
   }
 
   function showOne(root, item) {
     const title = pick(item, 'title');
     const body = pick(item, 'body');
-    root.innerHTML = `<button class="text-button back" data-story-back type="button">← Back</button><article class="story-read" data-read-block data-i18n-skip><span class="eyebrow">${es()?'Una historia para leer juntos':'A story to read together'}</span>${picture(item, 'hero')}<h1 class="story-title">${esc(title)}</h1><p class="story-body">${esc(body)}</p></article>${speechRow()}<p><button class="secondary" type="button" data-bedtime data-bedtime-story="${esc(item.id)}">Bedtime</button></p>`;
+    root.innerHTML = `<button class="text-button back" data-story-back type="button">← Back</button><article class="story-read" data-read-block data-i18n-skip><span class="eyebrow">${es()?'Una historia para leer juntos':'A story to read together'}</span>${picture(item, 'hero')}<h1 class="story-title">${esc(title)}</h1><p class="story-body">${esc(body)}</p></article>${speechRow()}<p><button class="secondary" type="button" data-bedtime data-bedtime-story="${esc(item.id)}">Bedtime</button>${coloring() && coloring().has(item.id) ? ` <button class="secondary" type="button" data-coloring-open="${esc(item.id)}" data-i18n-skip>🖍️ ${es() ? 'Colorear' : 'Color it'}</button>` : ''}</p>`;
   }
 
   function bedtimeStory() {
@@ -201,6 +204,7 @@
   }
 
   function show(root) {
+    if (coloringId && coloring()) { coloring().open(root, coloringId, storyTitle(coloringId)); return; }
     if (bedtime) showBedtime(root);
     else {
       const item = stories.find(entry => entry.id === openId);
@@ -338,6 +342,21 @@
       refresh();
       return;
     }
+    const color = event.target.closest('[data-coloring-open]');
+    if (color && coloring()) {
+      coloringId = color.dataset.coloringOpen;
+      bedtime = null;
+      if (window.MsbSpeech) MsbSpeech.stop();
+      refresh();
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+    if (event.target.closest('[data-coloring-back]')) {
+      coloringId = null;
+      if (coloring()) coloring().close();
+      refresh();
+      return;
+    }
     const open = event.target.closest('[data-story]');
     if (open) {
       openId = open.dataset.story;
@@ -358,6 +377,8 @@
     show,
     reset() {
       openId = null;
+      coloringId = null;
+      if (window.MsbColoring) MsbColoring.close();
       bedtime = null;
       stopMusic();
       if (window.MsbSpeech) MsbSpeech.stop();

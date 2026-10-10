@@ -407,17 +407,15 @@
     const source = esPrayer()
       ? '<p class="prayer-source">Textos en inglés de Isabel Florence Hapgood, <cite>Service Book of the Holy Orthodox-Catholic Apostolic Church</cite> (Houghton, Mifflin and Company, 1906), de dominio público. La versión en español sigue esos textos.</p>'
       : '<p class="prayer-source">Texts from Isabel Florence Hapgood, <cite>Service Book of the Holy Orthodox-Catholic Apostolic Church</cite> (Houghton, Mifflin and Company, 1906). That translation is in the public domain. Modern service-book translations are not used here.</p>';
-    return `<section class="card prayer-rule" id="prayer-deeper"><span class="eyebrow">${esPrayer() ? 'ORACIONES ANTIGUAS' : 'OLDER PRAYERS'}</span><h2>${esPrayer() ? 'Las oraciones antiguas de la Iglesia' : 'The Church’s older prayers'}</h2>${intro}<div class="rule-list">${rows}</div>${source}</section>${ropeHtml()}`;
+    return `<section class="card prayer-rule" id="prayer-deeper"><span class="eyebrow">${esPrayer() ? 'ORACIONES ANTIGUAS' : 'OLDER PRAYERS'}</span><h2>${esPrayer() ? 'Las oraciones antiguas de la Iglesia' : 'The Church’s older prayers'}</h2>${intro}<div class="rule-list">${rows}</div>${source}</section>`;
   }
-  function html(){ return ruleHtml(); }
+  function html(){ return ropeHtml() + ruleHtml(); }
   function paint(){
     const rope = document.getElementById('prayer-rope');
     const rule = document.getElementById('prayer-rule');
     const deeper = document.getElementById('prayer-deeper');
-    // On Go deeper the rope sits right after #prayer-deeper and deeperHtml()
-    // returns both, so replace the old rope first and then the section.
-    if (deeper) { if (rope) rope.remove(); deeper.outerHTML = deeperHtml(); }
-    else if (rope) rope.outerHTML = ropeHtml();
+    if (rope) rope.outerHTML = ropeHtml();
+    if (deeper) deeper.outerHTML = deeperHtml();
     if (rule) rule.outerHTML = ruleHtml();
     if (window.MsbI18n) {
       ['prayer-rope', 'prayer-rule', 'prayer-deeper'].forEach(id => {
