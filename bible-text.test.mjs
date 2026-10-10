@@ -143,8 +143,8 @@ test('study together notebook names verses and keeps the worker payload', () => 
 
 test('service worker refreshes Bible caches and only deletes this app', () => {
   const sw = read('sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v80'/);
-  assert.match(sw, /const BIBLE_DATA_VERSION = 'kjv-2'/);
+  assert.match(sw, /const CACHE_VERSION = 'v83'/);
+  assert.match(sw, /const BIBLE_DATA_VERSION = 'kjv-3'/);
   assert.match(sw, /const RVR_DATA_VERSION = 'rvr1909-4'/);
   assert.match(sw, /function freshOrCached/);
   assert.match(sw, /k\.startsWith\(APP_CACHE_PREFIX\) && !kept\.has\(k\)/);
@@ -182,6 +182,32 @@ test('study notes stay collapsed and deeper notes stay off the chapter', () => {
   assert.match(reader, /!note\.deeper/);
   assert.match(reader, /aria-expanded="\$\{reader\.notesOpen\}"/);
   assert.match(reader, /data-bible="notes"/);
+});
+
+test('KJV Psalm titles and the Sirach prologue sit outside the verses', () => {
+  const psalms = book(19);
+  assert.equal(Object.keys(psalms.headings).length, 116);
+  assert.equal(psalms.headings['23:1'], 'A Psalm of David.');
+  assert.equal(psalms.headings['3:1'].startsWith('A Psalm of David'), true);
+  assert.equal(psalms.headings['119:1'], undefined);
+  assert.equal(psalms.chapters[22][0].includes('A Psalm of David'), false);
+  assert.match(psalms.chapters[2][0], /^LORD/);
+  const sirach = book(70);
+  assert.match(sirach.prologue, /Prologue of the Wisdom of Jesus the Son of Sirach/);
+  assert.equal(sirach.chapters[0][0].includes('Prologue'), false);
+  assert.match(sirach.chapters[0][0], /^All wisdom cometh/);
+  const reader = read('bible-reader.js');
+  assert.match(reader, /bible-prologue/);
+  assert.match(reader, /verseBody/);
+  const speech = read('speech.js');
+  assert.match(speech, /es-us/);
+  assert.match(speech, /wakeLock/);
+  assert.match(speech, /0\.8/);
+  assert.match(read('love.js'), /Send to my person/);
+  assert.match(read('stories.js'), /Abrázame mientras duermo/);
+  assert.match(read('stories.js'), /AudioContext/);
+  assert.match(read('sw.js'), /speech\.js/);
+  assert.match(read('sw.js'), /love\.js/);
 });
 
 test('RV epistle subscriptions sit on the index, not inside a verse', () => {

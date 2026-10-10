@@ -60,7 +60,7 @@ const COVER = 'https://cdn.example/cover.webp';
 test('sync stores public profile fields and another browser receives them without the secret', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   assert.equal(mary.name, undefined);
   assert.equal(typeof mary.secret, 'string');
   assert.equal(mary.secret.length, 32);
@@ -97,12 +97,12 @@ test('sync stores public profile fields and another browser receives them withou
   assert.equal(sync.text.includes(mary.secret), false);
   assert.equal(sync.headers.get('access-control-allow-origin'), 'https://bvsquiat27.github.io');
 
-  const requested = await read(await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code.toLowerCase() }));
+  const requested = await read(await call(kv, '/friend/add', { code: alex.code, secret: alex.secret, friendCode: mary.code.toLowerCase() }));
   assert.equal(requested.data.status, 'pending');
-  const notYet = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  const notYet = await read(await call(kv, '/friends', { code: alex.code, secret: alex.secret }));
   assert.deepEqual(notYet.data, []);
-  await call(kv, '/friend/accept', { code: mary.code, secret: mary.secret, friendCode: angel.code });
-  const friends = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  await call(kv, '/friend/accept', { code: mary.code, secret: mary.secret, friendCode: alex.code });
+  const friends = await read(await call(kv, '/friends', { code: alex.code, secret: alex.secret }));
   assert.equal(friends.status, 200);
   assert.equal(friends.data.length, 1);
   const row = friends.data[0];
@@ -127,7 +127,7 @@ test('sync stores public profile fields and another browser receives them withou
   assert.equal(row.stats.levels.extra, undefined);
   assert.equal(hasSecretKey(row), false);
   assert.equal(friends.text.includes(mary.secret), false);
-  assert.equal(friends.text.includes(angel.secret), false);
+  assert.equal(friends.text.includes(alex.secret), false);
   assert.equal(row.email, undefined);
 
   const stored = await kv.get(`user:${mary.code}`, 'json');
@@ -191,11 +191,11 @@ test('javascript and empty images are not stored, and an omitted name stays', as
 test('only the list owner receives friend records, and those records omit everyone else’s friends', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
 
-  await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code });
-  await call(kv, '/friend/accept', { code: angel.code, secret: angel.secret, friendCode: mary.code });
+  await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: alex.code });
+  await call(kv, '/friend/accept', { code: alex.code, secret: alex.secret, friendCode: mary.code });
   await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: ruth.code });
   await call(kv, '/friend/accept', { code: ruth.code, secret: ruth.secret, friendCode: mary.code });
 
@@ -211,37 +211,37 @@ test('only the list owner receives friend records, and those records omit everyo
   assert.equal(sync.text.includes(ruth.code), false);
 
   const stored = await kv.get(`user:${mary.code}`, 'json');
-  assert.deepEqual(stored.friends, [angel.code, ruth.code]);
+  assert.deepEqual(stored.friends, [alex.code, ruth.code]);
   assert.equal(JSON.stringify(stored.profile || {}).includes(injected), false);
 
-  const asAngel = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
-  assert.equal(asAngel.status, 200);
-  assert.deepEqual(asAngel.data.map((row) => row.code), [mary.code]);
-  assert.equal(asAngel.data[0].friends, undefined);
-  assert.equal(asAngel.data[0].profile.friends, undefined);
-  assert.equal(asAngel.data[0].profile.handle, 'maryh');
-  assert.equal(asAngel.text.includes(ruth.code), false);
-  assert.equal(asAngel.text.includes(injected), false);
-  assert.equal(asAngel.text.includes(mary.secret), false);
+  const asAlex = await read(await call(kv, '/friends', { code: alex.code, secret: alex.secret }));
+  assert.equal(asAlex.status, 200);
+  assert.deepEqual(asAlex.data.map((row) => row.code), [mary.code]);
+  assert.equal(asAlex.data[0].friends, undefined);
+  assert.equal(asAlex.data[0].profile.friends, undefined);
+  assert.equal(asAlex.data[0].profile.handle, 'maryh');
+  assert.equal(asAlex.text.includes(ruth.code), false);
+  assert.equal(asAlex.text.includes(injected), false);
+  assert.equal(asAlex.text.includes(mary.secret), false);
 
   const asMary = await read(await call(kv, '/friends', { code: mary.code, secret: mary.secret }));
   assert.equal(asMary.status, 200);
-  assert.deepEqual(asMary.data.map((row) => row.code).sort(), [angel.code, ruth.code].sort());
+  assert.deepEqual(asMary.data.map((row) => row.code).sort(), [alex.code, ruth.code].sort());
   for (const row of asMary.data) {
     assert.equal(row.friends, undefined);
     assert.equal(row.profile && row.profile.friends, undefined);
   }
 
-  const stolen = await read(await call(kv, '/friends', { code: mary.code, secret: angel.secret }));
+  const stolen = await read(await call(kv, '/friends', { code: mary.code, secret: alex.secret }));
   assert.equal(stolen.status, 401);
   assert.equal(stolen.text.includes(ruth.code), false);
-  assert.equal(stolen.text.includes(angel.code), false);
+  assert.equal(stolen.text.includes(alex.code), false);
 });
 
 test('a stored saint portrait id is stripped and does not replace a photo', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   await call(kv, '/sync', {
     code: mary.code,
     secret: mary.secret,
@@ -256,9 +256,9 @@ test('a stored saint portrait id is stripped and does not replace a photo', asyn
   stored.avatar_saint = 'nicholas';
   stored.profile = { ...(stored.profile || {}), avatar_saint: 'nicholas' };
   await kv.put(`user:${mary.code}`, JSON.stringify(stored));
-  await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code });
-  await call(kv, '/friend/accept', { code: mary.code, secret: mary.secret, friendCode: angel.code });
-  const legacy = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  await call(kv, '/friend/add', { code: alex.code, secret: alex.secret, friendCode: mary.code });
+  await call(kv, '/friend/accept', { code: mary.code, secret: mary.secret, friendCode: alex.code });
+  const legacy = await read(await call(kv, '/friends', { code: alex.code, secret: alex.secret }));
   assert.equal(legacy.data[0].avatar_saint, undefined);
   assert.equal(legacy.data[0].profile.avatar_saint, undefined);
   assert.equal(legacy.data[0].avatar_data, AVATAR);
@@ -278,7 +278,7 @@ test('a stored saint portrait id is stripped and does not replace a photo', asyn
   await call(kv, '/sync', { code: mary.code, secret: mary.secret, avatar_saint: 'javascript:alert(1)' });
   stored = await kv.get(`user:${mary.code}`, 'json');
   assert.equal(stored.avatar_saint, undefined);
-  const cleared = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  const cleared = await read(await call(kv, '/friends', { code: alex.code, secret: alex.secret }));
   assert.equal(cleared.data[0].avatar_saint, undefined);
   assert.equal(JSON.stringify(cleared.data).includes('nicholas'), false);
   assert.equal(JSON.stringify(cleared.data).includes('saints/'), false);
@@ -287,55 +287,55 @@ test('a stored saint portrait id is stripped and does not replace a photo', asyn
 test('a friend request stays pending until the other person accepts, and public scores omit friend codes', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
 
-  const add = await read(await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code }));
+  const add = await read(await call(kv, '/friend/add', { code: alex.code, secret: alex.secret, friendCode: mary.code }));
   assert.equal(add.status, 200);
   assert.equal(add.data.ok, true);
   assert.equal(add.data.status, 'pending');
-  assert.equal(add.text.includes(angel.secret), false);
+  assert.equal(add.text.includes(alex.secret), false);
   assert.equal(add.text.includes(mary.secret), false);
 
   const maryFriends = await read(await call(kv, '/friends', { code: mary.code, secret: mary.secret }));
-  const angelFriends = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
+  const alexFriends = await read(await call(kv, '/friends', { code: alex.code, secret: alex.secret }));
   assert.deepEqual(maryFriends.data, []);
-  assert.deepEqual(angelFriends.data, []);
+  assert.deepEqual(alexFriends.data, []);
 
   const maryRequests = await read(await call(kv, '/friend/requests', { code: mary.code, secret: mary.secret }));
   assert.equal(maryRequests.status, 200);
-  assert.deepEqual(maryRequests.data.incoming.map((row) => row.code), [angel.code]);
+  assert.deepEqual(maryRequests.data.incoming.map((row) => row.code), [alex.code]);
   assert.equal(maryRequests.data.incoming[0].name, 'Alex');
   assert.deepEqual(maryRequests.data.outgoing, []);
   assert.equal(maryRequests.text.includes(ruth.code), false);
-  assert.equal(maryRequests.text.includes(angel.secret), false);
+  assert.equal(maryRequests.text.includes(alex.secret), false);
 
-  const angelRequests = await read(await call(kv, '/friend/requests', { code: angel.code, secret: angel.secret }));
-  assert.deepEqual(angelRequests.data.outgoing.map((row) => row.code), [mary.code]);
-  assert.deepEqual(angelRequests.data.incoming, []);
+  const alexRequests = await read(await call(kv, '/friend/requests', { code: alex.code, secret: alex.secret }));
+  assert.deepEqual(alexRequests.data.outgoing.map((row) => row.code), [mary.code]);
+  assert.deepEqual(alexRequests.data.incoming, []);
 
-  const stolen = await read(await call(kv, '/friend/requests', { code: mary.code, secret: angel.secret }));
+  const stolen = await read(await call(kv, '/friend/requests', { code: mary.code, secret: alex.secret }));
   assert.equal(stolen.status, 401);
-  assert.equal(stolen.text.includes(angel.code), false);
+  assert.equal(stolen.text.includes(alex.code), false);
 
-  const declined = await read(await call(kv, '/friend/decline', { code: mary.code, secret: mary.secret, friendCode: angel.code }));
+  const declined = await read(await call(kv, '/friend/decline', { code: mary.code, secret: mary.secret, friendCode: alex.code }));
   assert.equal(declined.status, 200);
   const afterDecline = await read(await call(kv, '/friend/requests', { code: mary.code, secret: mary.secret }));
   assert.deepEqual(afterDecline.data.incoming, []);
-  const angelAfter = await read(await call(kv, '/friends', { code: angel.code, secret: angel.secret }));
-  assert.deepEqual(angelAfter.data, []);
+  const alexAfter = await read(await call(kv, '/friends', { code: alex.code, secret: alex.secret }));
+  assert.deepEqual(alexAfter.data, []);
 
-  await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code });
-  const accepted = await read(await call(kv, '/friend/accept', { code: mary.code, secret: mary.secret, friendCode: angel.code }));
+  await call(kv, '/friend/add', { code: alex.code, secret: alex.secret, friendCode: mary.code });
+  const accepted = await read(await call(kv, '/friend/accept', { code: mary.code, secret: mary.secret, friendCode: alex.code }));
   assert.equal(accepted.data.status, 'friends');
   const paired = await read(await call(kv, '/friends', { code: mary.code, secret: mary.secret }));
-  assert.deepEqual(paired.data.map((row) => row.code), [angel.code]);
+  assert.deepEqual(paired.data.map((row) => row.code), [alex.code]);
   assert.equal(paired.text.includes(ruth.code), false);
   const cleared = await read(await call(kv, '/friend/requests', { code: mary.code, secret: mary.secret }));
   assert.deepEqual(cleared.data.incoming, []);
   assert.deepEqual(cleared.data.outgoing, []);
 
-  const again = await read(await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code }));
+  const again = await read(await call(kv, '/friend/add', { code: alex.code, secret: alex.secret, friendCode: mary.code }));
   assert.equal(again.data.status, 'friends');
 
   await call(kv, '/scores/submit', { code: mary.code, secret: mary.secret, show: 'jeopardy', score: 400, level: 2 });
@@ -358,13 +358,13 @@ test('a friend request stays pending until the other person accepts, and public 
 test('adding someone who already asked completes the friendship', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
-  await call(kv, '/friend/add', { code: angel.code, secret: angel.secret, friendCode: mary.code });
-  const back = await read(await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code }));
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  await call(kv, '/friend/add', { code: alex.code, secret: alex.secret, friendCode: mary.code });
+  const back = await read(await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: alex.code }));
   assert.equal(back.data.status, 'friends');
   const friends = await read(await call(kv, '/friends', { code: mary.code, secret: mary.secret }));
-  assert.deepEqual(friends.data.map((row) => row.code), [angel.code]);
-  const requests = await read(await call(kv, '/friend/requests', { code: angel.code, secret: angel.secret }));
+  assert.deepEqual(friends.data.map((row) => row.code), [alex.code]);
+  const requests = await read(await call(kv, '/friend/requests', { code: alex.code, secret: alex.secret }));
   assert.deepEqual(requests.data.outgoing, []);
   assert.deepEqual(requests.data.incoming, []);
 });
@@ -748,31 +748,31 @@ test('a full inbox rejects a new request, a stranded outgoing request is rewritt
 test('room scores wait until the room is active', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
-  await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code });
-  await call(kv, '/friend/accept', { code: angel.code, secret: angel.secret, friendCode: mary.code });
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: alex.code });
+  await call(kv, '/friend/accept', { code: alex.code, secret: alex.secret, friendCode: mary.code });
   const room = (await read(await call(kv, '/room/create', { code: mary.code, secret: mary.secret, show: 'jeopardy', level: 1 }))).data;
-  await call(kv, '/room/join', { code: angel.code, secret: angel.secret, room: room.room });
-  const early = await read(await call(kv, '/room/score', { code: angel.code, secret: angel.secret, room: room.room, score: 90 }));
+  await call(kv, '/room/join', { code: alex.code, secret: alex.secret, room: room.room });
+  const early = await read(await call(kv, '/room/score', { code: alex.code, secret: alex.secret, room: room.room, score: 90 }));
   assert.equal(early.status, 409);
   assert.equal(early.data.error, 'That room is not active');
   const waiting = await read(await call(kv, '/room/state', { code: mary.code, secret: mary.secret, room: room.room }));
   assert.equal(waiting.data.status, 'waiting');
-  assert.equal(waiting.data.players.find((player) => player.code === angel.code).score, 0);
+  assert.equal(waiting.data.players.find((player) => player.code === alex.code).score, 0);
   await call(kv, '/room/start', { code: mary.code, secret: mary.secret, room: room.room });
-  const scored = await read(await call(kv, '/room/score', { code: angel.code, secret: angel.secret, room: room.room, score: 90 }));
+  const scored = await read(await call(kv, '/room/score', { code: alex.code, secret: alex.secret, room: room.room, score: 90 }));
   assert.equal(scored.status, 200);
-  assert.equal(scored.data.players.find((player) => player.code === angel.code).score, 90);
+  assert.equal(scored.data.players.find((player) => player.code === alex.code).score, 90);
 });
 
 test('shared list applies the same editor check as shared get', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
-  await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code });
-  await call(kv, '/friend/accept', { code: angel.code, secret: angel.secret, friendCode: mary.code });
-  const note = (await read(await call(kv, '/shared/create', { code: mary.code, secret: mary.secret, to: angel.code, title: 'Together', body: 'A private line' }))).data;
+  await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: alex.code });
+  await call(kv, '/friend/accept', { code: alex.code, secret: alex.secret, friendCode: mary.code });
+  const note = (await read(await call(kv, '/shared/create', { code: mary.code, secret: mary.secret, to: alex.code, title: 'Together', body: 'A private line' }))).data;
   const ruthUser = await kv.get(`user:${ruth.code}`, 'json');
   ruthUser.shared = [note.id];
   await kv.put(`user:${ruth.code}`, JSON.stringify(ruthUser));
@@ -783,7 +783,7 @@ test('shared list applies the same editor check as shared get', async () => {
   const denied = await read(await call(kv, '/shared/get', { code: ruth.code, secret: ruth.secret, id: note.id }));
   assert.equal(denied.status, 403);
   assert.equal(denied.data.error, 'That note is not shared with you');
-  const visible = await read(await call(kv, '/shared/list', { code: angel.code, secret: angel.secret }));
+  const visible = await read(await call(kv, '/shared/list', { code: alex.code, secret: alex.secret }));
   assert.equal(visible.data.notes.length, 1);
   assert.equal(visible.data.notes[0].body, 'A private line');
 });
@@ -791,22 +791,22 @@ test('shared list applies the same editor check as shared get', async () => {
 test('a message thread is hidden after the two people are no longer friends', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
-  await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: angel.code });
-  await call(kv, '/friend/accept', { code: angel.code, secret: angel.secret, friendCode: mary.code });
-  await call(kv, '/msg/send', { code: mary.code, secret: mary.secret, to: angel.code, body: 'Remember the verse' });
-  const open = await read(await call(kv, '/msg/thread', { code: angel.code, secret: angel.secret, with: mary.code }));
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  await call(kv, '/friend/add', { code: mary.code, secret: mary.secret, friendCode: alex.code });
+  await call(kv, '/friend/accept', { code: alex.code, secret: alex.secret, friendCode: mary.code });
+  await call(kv, '/msg/send', { code: mary.code, secret: mary.secret, to: alex.code, body: 'Remember the verse' });
+  const open = await read(await call(kv, '/msg/thread', { code: alex.code, secret: alex.secret, with: mary.code }));
   assert.equal(open.status, 200);
   assert.equal(open.data.messages[0].body, 'Remember the verse');
-  await call(kv, '/friend/remove', { code: mary.code, secret: mary.secret, friendCode: angel.code });
-  const hidden = await read(await call(kv, '/msg/thread', { code: angel.code, secret: angel.secret, with: mary.code }));
+  await call(kv, '/friend/remove', { code: mary.code, secret: mary.secret, friendCode: alex.code });
+  const hidden = await read(await call(kv, '/msg/thread', { code: alex.code, secret: alex.secret, with: mary.code }));
   assert.equal(hidden.status, 403);
   assert.match(hidden.data.error, /not friends/);
   assert.equal(hidden.text.includes('Remember the verse'), false);
-  const other = await read(await call(kv, '/msg/thread', { code: mary.code, secret: mary.secret, with: angel.code }));
+  const other = await read(await call(kv, '/msg/thread', { code: mary.code, secret: mary.secret, with: alex.code }));
   assert.equal(other.status, 403);
   assert.equal(other.text.includes('Remember the verse'), false);
-  const stored = await kv.get(`user:${angel.code}`, 'json');
+  const stored = await kv.get(`user:${alex.code}`, 'json');
   assert.equal(stored.threads[mary.code][0].body, 'Remember the verse');
 });
 
@@ -818,64 +818,64 @@ async function befriend(kv, left, right) {
 test('accepted friends can send a verse, and a stranger or an unfriended person cannot', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
-  await befriend(kv, mary, angel);
+  await befriend(kv, mary, alex);
   const stranger = await read(await call(kv, '/verse/send', {
     code: ruth.code, secret: ruth.secret, to: mary.code,
     book: 43, chapter: 1, verse: 1, reference: 'John 1:1', text: 'In the beginning was the Word', note: 'hello'
   }));
   assert.equal(stranger.status, 403);
   const tooLong = await read(await call(kv, '/verse/send', {
-    code: mary.code, secret: mary.secret, to: angel.code,
+    code: mary.code, secret: mary.secret, to: alex.code,
     book: 43, chapter: 1, verse: 1, reference: 'John 1:1', text: 'In the beginning was the Word', note: 'n'.repeat(281)
   }));
   assert.equal(tooLong.status, 400);
   const sent = await read(await call(kv, '/verse/send', {
-    code: mary.code, secret: mary.secret, to: angel.code,
+    code: mary.code, secret: mary.secret, to: alex.code,
     book: 43, chapter: 1, verse: 1, reference: 'John 1:1', text: 'In the beginning was the Word', note: 'for your morning', translation: 'kjv'
   }));
   assert.equal(sent.status, 200);
   assert.match(sent.data.id, /^[a-f0-9]{16}$/);
-  const inbox = await read(await call(kv, '/verse/inbox', { code: angel.code, secret: angel.secret }));
+  const inbox = await read(await call(kv, '/verse/inbox', { code: alex.code, secret: alex.secret }));
   assert.equal(inbox.status, 200);
   assert.equal(inbox.data.verses.length, 1);
   assert.equal(inbox.data.verses[0].text, 'In the beginning was the Word');
   assert.equal(inbox.data.verses[0].note, 'for your morning');
   assert.equal(inbox.data.verses[0].direction, 'in');
   assert.equal(inbox.data.verses[0].read, false);
-  const thread = await read(await call(kv, '/verse/thread', { code: mary.code, secret: mary.secret, with: angel.code }));
+  const thread = await read(await call(kv, '/verse/thread', { code: mary.code, secret: mary.secret, with: alex.code }));
   assert.equal(thread.data.verses[0].direction, 'out');
-  const user = await kv.get(`user:${angel.code}`, 'json');
+  const user = await kv.get(`user:${alex.code}`, 'json');
   assert.equal(JSON.stringify(user).includes('In the beginning was the Word'), false);
-  await call(kv, '/friend/remove', { code: mary.code, secret: mary.secret, friendCode: angel.code });
+  await call(kv, '/friend/remove', { code: mary.code, secret: mary.secret, friendCode: alex.code });
   const blocked = await read(await call(kv, '/verse/send', {
-    code: mary.code, secret: mary.secret, to: angel.code,
+    code: mary.code, secret: mary.secret, to: alex.code,
     book: 43, chapter: 1, verse: 1, reference: 'John 1:1', text: 'should not arrive', note: ''
   }));
   assert.equal(blocked.status, 403);
-  const hidden = await read(await call(kv, '/verse/inbox', { code: angel.code, secret: angel.secret }));
+  const hidden = await read(await call(kv, '/verse/inbox', { code: alex.code, secret: alex.secret }));
   assert.equal(hidden.status, 200);
   assert.deepEqual(hidden.data.verses, []);
   assert.equal(hidden.text.includes('In the beginning was the Word'), false);
-  const deniedRead = await read(await call(kv, '/verse/read', { code: angel.code, secret: angel.secret, id: sent.data.id }));
+  const deniedRead = await read(await call(kv, '/verse/read', { code: alex.code, secret: alex.secret, id: sent.data.id }));
   assert.equal(deniedRead.status, 403);
 });
 
 test('verse sends are limited to 30 an hour', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
-  await befriend(kv, mary, angel);
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  await befriend(kv, mary, alex);
   for (let i = 0; i < 30; i++) {
     const ok = await read(await call(kv, '/verse/send', {
-      code: mary.code, secret: mary.secret, to: angel.code,
+      code: mary.code, secret: mary.secret, to: alex.code,
       book: 19, chapter: 23, verse: 1, reference: 'Psalm 23:1', text: `line ${i}`, note: ''
     }));
     assert.equal(ok.status, 200);
   }
   const limited = await read(await call(kv, '/verse/send', {
-    code: mary.code, secret: mary.secret, to: angel.code,
+    code: mary.code, secret: mary.secret, to: alex.code,
     book: 19, chapter: 23, verse: 1, reference: 'Psalm 23:1', text: 'one more', note: ''
   }));
   assert.equal(limited.status, 429);
@@ -884,33 +884,33 @@ test('verse sends are limited to 30 an hour', async () => {
 test('a study notebook is private to the two friends and stays off the scoreboard', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
   const ruth = (await read(await call(kv, '/register', { name: 'Ruth' }))).data;
-  await befriend(kv, mary, angel);
+  await befriend(kv, mary, alex);
   const question = 'What does the morning verse ask of us?';
   const added = await read(await call(kv, '/study/add', {
-    code: mary.code, secret: mary.secret, with: angel.code, entryId: 'abc12345',
+    code: mary.code, secret: mary.secret, with: alex.code, entryId: 'abc12345',
     question, answer: 'To look up.', verses: [{ book: 19, chapter: 5, verse: 3, reference: 'Psalm 5:3' }]
   }));
   assert.equal(added.status, 200);
   assert.equal(added.data.entries[0].id, 'abc12345');
   assert.equal(added.data.entries[0].question, question);
   const edited = await read(await call(kv, '/study/add', {
-    code: angel.code, secret: angel.secret, with: mary.code, entryId: 'abc12345',
+    code: alex.code, secret: alex.secret, with: mary.code, entryId: 'abc12345',
     question, answer: 'To look up, and to wait.', verses: [{ book: 19, chapter: 5, verse: 3, reference: 'Psalm 5:3' }]
   }));
   assert.equal(edited.status, 200);
   assert.equal(edited.data.entries.length, 1);
   assert.equal(edited.data.entries[0].answer, 'To look up, and to wait.');
-  assert.equal(edited.data.entries[0].updatedBy, angel.code);
+  assert.equal(edited.data.entries[0].updatedBy, alex.code);
   const peek = await read(await call(kv, '/study/get', { code: ruth.code, secret: ruth.secret, with: mary.code }));
   assert.equal(peek.status, 403);
   assert.equal(peek.text.includes(question), false);
   const scores = await read(await call(kv, '/scores', {}, 'GET'));
   assert.equal(scores.status, 200);
   assert.equal(scores.text.includes(question), false);
-  await call(kv, '/friend/remove', { code: mary.code, secret: mary.secret, friendCode: angel.code });
-  const closed = await read(await call(kv, '/study/get', { code: angel.code, secret: angel.secret, with: mary.code }));
+  await call(kv, '/friend/remove', { code: mary.code, secret: mary.secret, friendCode: alex.code });
+  const closed = await read(await call(kv, '/study/get', { code: alex.code, secret: alex.secret, with: mary.code }));
   assert.equal(closed.status, 403);
   assert.equal(closed.text.includes(question), false);
   const local = await read(await call(kv, '/verse/inbox', { code: mary.code, secret: mary.secret }, 'POST', 'http://127.0.0.1:8787'));
@@ -947,9 +947,9 @@ test('overlapping requests keep their own Access-Control-Allow-Origin', async ()
 test('verse numbers must be integers in range', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
-  await befriend(kv, mary, angel);
-  const base = { code: mary.code, secret: mary.secret, to: angel.code, reference: 'John 3:16', text: 'For God so loved the world', note: '' };
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  await befriend(kv, mary, alex);
+  const base = { code: mary.code, secret: mary.secret, to: alex.code, reference: 'John 3:16', text: 'For God so loved the world', note: '' };
   for (const broken of [
     { ...base, chapter: 3, verse: 16 },
     { ...base, book: null, chapter: 3, verse: 16 },
@@ -960,14 +960,14 @@ test('verse numbers must be integers in range', async () => {
     const denied = await read(await call(kv, '/verse/send', broken));
     assert.equal(denied.status, 400);
   }
-  assert.equal(await kv.get(`versebox:${angel.code}`), null);
+  assert.equal(await kv.get(`versebox:${alex.code}`), null);
   const study = await read(await call(kv, '/study/add', {
-    code: mary.code, secret: mary.secret, with: angel.code, entryId: 'abc12345',
+    code: mary.code, secret: mary.secret, with: alex.code, entryId: 'abc12345',
     question: 'Where?', answer: 'Here.', verses: [{ book: null, chapter: 1, verse: 1, reference: 'x' }]
   }));
   assert.equal(study.status, 400);
   const missing = await read(await call(kv, '/study/add', {
-    code: mary.code, secret: mary.secret, with: angel.code, entryId: 'abc12345',
+    code: mary.code, secret: mary.secret, with: alex.code, entryId: 'abc12345',
     question: 'Where?', answer: 'Here.', verses: [{ chapter: 1, verse: 1 }]
   }));
   assert.equal(missing.status, 400);
@@ -979,31 +979,31 @@ test('verse numbers must be integers in range', async () => {
 test('verse reads and study deletes are rate limited on their own hourly buckets', async () => {
   const kv = memoryKv();
   const mary = (await read(await call(kv, '/register', { name: 'Mary' }))).data;
-  const angel = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
-  await befriend(kv, mary, angel);
+  const alex = (await read(await call(kv, '/register', { name: 'Alex' }))).data;
+  await befriend(kv, mary, alex);
   const sent = await read(await call(kv, '/verse/send', {
-    code: mary.code, secret: mary.secret, to: angel.code,
+    code: mary.code, secret: mary.secret, to: alex.code,
     book: 43, chapter: 3, verse: 16, reference: 'John 3:16', text: 'For God so loved the world', note: ''
   }));
   assert.equal(sent.status, 200);
   for (let i = 0; i < 200; i++) {
-    const ok = await read(await call(kv, '/verse/read', { code: angel.code, secret: angel.secret, id: sent.data.id }));
+    const ok = await read(await call(kv, '/verse/read', { code: alex.code, secret: alex.secret, id: sent.data.id }));
     assert.equal(ok.status, 200);
   }
-  const limitedRead = await read(await call(kv, '/verse/read', { code: angel.code, secret: angel.secret, id: sent.data.id }));
+  const limitedRead = await read(await call(kv, '/verse/read', { code: alex.code, secret: alex.secret, id: sent.data.id }));
   assert.equal(limitedRead.status, 429);
   await call(kv, '/study/add', {
-    code: mary.code, secret: mary.secret, with: angel.code, entryId: 'abc12345',
+    code: mary.code, secret: mary.secret, with: alex.code, entryId: 'abc12345',
     question: 'A question', answer: 'An answer', verses: []
   });
   for (let i = 0; i < 200; i++) {
-    const ok = await read(await call(kv, '/study/delete', { code: mary.code, secret: mary.secret, with: angel.code, entryId: 'abc12345' }));
+    const ok = await read(await call(kv, '/study/delete', { code: mary.code, secret: mary.secret, with: alex.code, entryId: 'abc12345' }));
     assert.equal(ok.status, 200);
   }
-  const limitedDelete = await read(await call(kv, '/study/delete', { code: mary.code, secret: mary.secret, with: angel.code, entryId: 'abc12345' }));
+  const limitedDelete = await read(await call(kv, '/study/delete', { code: mary.code, secret: mary.secret, with: alex.code, entryId: 'abc12345' }));
   assert.equal(limitedDelete.status, 429);
   const stillSends = await read(await call(kv, '/verse/send', {
-    code: mary.code, secret: mary.secret, to: angel.code,
+    code: mary.code, secret: mary.secret, to: alex.code,
     book: 19, chapter: 23, verse: 1, reference: 'Psalm 23:1', text: 'The LORD is my shepherd', note: ''
   }));
   assert.equal(stillSends.status, 200);
