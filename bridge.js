@@ -53,7 +53,8 @@
     const label = mine ? `To ${who}` : `From ${who}`;
     const book = positiveInt(item.book), chapter = positiveInt(item.chapter), verse = positiveInt(item.verse);
     const ref = book && chapter ? ` data-verse-open="1" data-book="${book}" data-chapter="${chapter}" data-verse="${verse || 1}"` : '';
-    return `<button type="button" class="verse-mail ${item.read ? '' : 'verse-mail-new'}"${ref} data-id="${esc(item.id)}"><strong>${esc(item.reference || '')}</strong><span>${esc(item.text || '')}</span><small>${esc(label)}${item.note ? ' · ' + esc(item.note) : ''}</small></button>`;
+    const memorize = !mine && book ? `<button type="button" class="text-button" data-memory-add data-book="${book}" data-chapter="${chapter}" data-verse="${verse || 1}" data-translation="${item.translation === 'rvr' ? 'rvr' : 'kjv'}" data-reference="${esc(item.reference || '')}" data-text="${esc(item.text || '')}">Memorize this one</button>` : '';
+    return `<div class="verse-mail-wrap"><button type="button" class="verse-mail ${item.read ? '' : 'verse-mail-new'}"${ref} data-id="${esc(item.id)}"><strong>${esc(item.reference || '')}</strong><span>${esc(item.text || '')}</span><small>${esc(label)}${item.note ? ' · ' + esc(item.note) : ''}</small></button>${memorize}</div>`;
   }
 
   async function paintInbox() {
