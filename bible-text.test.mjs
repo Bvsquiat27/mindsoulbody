@@ -143,7 +143,7 @@ test('study together notebook names verses and keeps the worker payload', () => 
 
 test('service worker refreshes Bible caches and only deletes this app', () => {
   const sw = read('sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v85'/);
+  assert.match(sw, /const CACHE_VERSION = 'v86'/);
   assert.match(sw, /const BIBLE_DATA_VERSION = 'kjv-3'/);
   assert.match(sw, /const RVR_DATA_VERSION = 'rvr1909-4'/);
   assert.match(sw, /function freshOrCached/);
@@ -250,4 +250,29 @@ test('worship audio cache answers Range requests from the full cached file', asy
   const tail = await rangeResponse(full(), 'bytes=-3');
   assert.equal(tail.headers.get('Content-Range'), 'bytes 7-9/10');
   assert.equal((await rangeResponse(full(), 'bytes=20-')).status, 416);
+});
+
+test('original study practices keep their older-practice notes and Scripture', () => {
+  const studies = JSON.parse(read('data/study-library.json')).studies;
+  const byId = Object.fromEntries(studies.map((item) => [item.id, item]));
+  const ids = ['mercy', 'cana', 'cloud-witnesses', 'persistent-widow', 'tax-collector', 'magnificat', 'anointing-elders'];
+  for (const id of ids) {
+    assert.ok(byId[id].deeperPractice, `${id} deeperPractice`);
+    assert.ok(byId[id].deeperPracticeEs, `${id} deeperPracticeEs`);
+  }
+  assert.equal(studies.filter((item) => item.deeperPractice).length, 7);
+  assert.match(byId.cana.practice, /"Whatsoever he saith unto you, do it" \(John 2:5\)/);
+  assert.equal(byId.cana.practice.includes('Do whatever he tells you'), false);
+  assert.match(byId.cana.practiceEs, /“Haced todo lo que os dijere” \(Juan 2:5, RV1909\)/);
+  assert.match(byId.mercy.practice, /\(James 5:16\)/);
+  assert.match(byId.mercy.practiceEs, /\(Santiago 5:16, RV1909\)/);
+  assert.match(byId['cloud-witnesses'].orthodox, /\(Luke 20:38\)/);
+  assert.match(byId['cloud-witnesses'].orthodoxEs, /\(Lucas 20:38\)/);
+  assert.match(byId['persistent-widow'].orthodox, /"Pray without ceasing" \(1 Thessalonians 5:17\)/);
+  assert.match(byId['persistent-widow'].orthodoxEs, /“Orad sin cesar” \(1 Tesalonicenses 5:17, RV1909\)/);
+  assert.match(byId['tax-collector'].practice, /"God be merciful to me a sinner" \(Luke 18:13\)/);
+  assert.match(byId['tax-collector'].practiceEs, /“Dios, sé propicio á mí pecador” \(Lucas 18:13, RV1909\)/);
+  assert.match(byId['persistent-widow'].deeperPractice, /Lord Jesus Christ, Son of God, have mercy on me, a sinner/);
+  assert.match(byId.magnificat.deeperPractice, /Theotokos/);
+  assert.match(byId['anointing-elders'].deeperPractice, /Holy Unction/);
 });
