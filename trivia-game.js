@@ -9,10 +9,10 @@ window.TriviaGame=(()=>{
   function render(){
     if(!root)return;
     if(!mode){
-      root.innerHTML=`<button class="text-button" data-nav="challenges">← Quizzes & games</button><span class="eyebrow">PLAY THE SCRIPTURES</span><h1>The question is yours.</h1>${unscoredNote()}<div class="challenge-grid"><button class="card challenge-card" data-trivia="select" data-mode="answer-board"><span class="eyebrow">ANSWER BOARD</span><h2>Survey Says</h2><p>Family Feud style. Read the prompt and the biblical choices. Nothing here is scored.</p></button><button class="card challenge-card" data-trivia="select" data-mode="jeopardy"><span class="eyebrow">CATEGORY BOARD</span><h2>Jeopardy</h2><p>Pick a clue and read the responses in question form. Nothing here is scored.</p></button></div><p class="footnote">The answer board point order is curated for play. It does not represent an actual survey.</p>`;
+      root.innerHTML=`<button class="text-button" data-nav="challenges">← Quizzes & games</button><span class="eyebrow">PLAY THE SCRIPTURES</span><h1>The question is yours.</h1>${unscoredNote()}<div class="challenge-grid"><button class="card challenge-card" data-trivia="select" data-mode="answer-board"><span class="eyebrow">ANSWER BOARD</span><h2>Survey Says</h2><p>Family Feud style. Read the prompt and the biblical choices. Nothing here is scored.</p></button><button class="card challenge-card" data-trivia="select" data-mode="jeopardy"><span class="eyebrow">CATEGORY BOARD</span><h2>Jeopardy</h2><p>Pick a clue and read the responses in question form. Nothing here is scored.</p></button></div><p class="footnote">The answer board point order is curated for play. It does not represent an actual survey.</p>`;if(window.MsbI18n)MsbI18n.apply(root);
       return;
     }
-    root.innerHTML=`<button class="text-button" data-trivia="boards">← Boards</button><span class="eyebrow">${mode==='jeopardy'?'CATEGORY BOARD':'ANSWER BOARD'}</span><h1>${mode==='jeopardy'?'Clues across Scripture.':'Name what the Bible names.'}</h1>${unscoredNote()}${mode==='jeopardy'?jeopardyBoard():answerBoard()}${notice?`<div class="card trivia-feedback" role="status"><strong>Not scored</strong><p>${esc(notice)}</p></div>`:''}<p class="footnote">Scripture references use KJV numbering. Orthodox Psalter numbers can differ.</p>`;
+    root.innerHTML=`<button class="text-button" data-trivia="boards">← Boards</button><span class="eyebrow">${mode==='jeopardy'?'CATEGORY BOARD':'ANSWER BOARD'}</span><h1>${mode==='jeopardy'?'Clues across Scripture.':'Name what the Bible names.'}</h1>${unscoredNote()}${mode==='jeopardy'?jeopardyBoard():answerBoard()}${notice?`<div class="card trivia-feedback" role="status"><strong>Not scored</strong><p>${esc(notice)}</p></div>`:''}<p class="footnote">Scripture references use KJV numbering. Orthodox Psalter numbers can differ.</p>`;if(window.MsbI18n)MsbI18n.apply(root);
   }
   function jeopardyBoard(){
     const items=library.jeopardy||[],cats=[...new Set(items.map(q=>q.category))];
@@ -39,7 +39,7 @@ window.TriviaGame=(()=>{
     if(action==='answer'){
       const items=mode==='jeopardy'?(library.jeopardy||[]):(library.answerBoard||[]);
       const q=items.find(item=>item.id===button.dataset.id);
-      notice=q?`This board cannot be scored. There is no answer key, so this choice is not marked right or wrong.${q.reference?` The card names ${q.reference}.`:''}`:'This board cannot be scored. There is no answer key, so this choice is not marked right or wrong.';
+      {const t=text=>window.MsbI18n?MsbI18n.t(text):text;notice=t('This board cannot be scored. There is no answer key, so this choice is not marked right or wrong.')+(q&&q.reference?' '+t('The card names {ref}.').split('{ref}').join(q.reference):'');}
       render();
       root.querySelector('.trivia-feedback')?.scrollIntoView({block:'nearest',behavior:'smooth'});
     }

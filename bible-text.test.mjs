@@ -143,7 +143,7 @@ test('study together notebook names verses and keeps the worker payload', () => 
 
 test('service worker refreshes Bible caches and only deletes this app', () => {
   const sw = read('sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v87'/);
+  assert.match(sw, /const CACHE_VERSION = 'v88'/);
   assert.match(sw, /const BIBLE_DATA_VERSION = 'kjv-3'/);
   assert.match(sw, /const RVR_DATA_VERSION = 'rvr1909-4'/);
   assert.match(sw, /function freshOrCached/);
@@ -275,4 +275,20 @@ test('original study practices keep their older-practice notes and Scripture', (
   assert.match(byId['persistent-widow'].deeperPractice, /Lord Jesus Christ, Son of God, have mercy on me, a sinner/);
   assert.match(byId.magnificat.deeperPractice, /Theotokos/);
   assert.match(byId['anointing-elders'].deeperPractice, /Holy Unction/);
+});
+
+test('Spanish chrome covers lesson tags, Bible notes, and game-show menus', () => {
+  const i18n = read('i18n.js');
+  for (const key of ['STUDY', 'Compare the sources', 'Study note available', 'Read this passage ↗', 'Your name', '← Games', 'GAME SHOW',
+    'Play a friend online — you both need the app open with internet.', 'Open a room at the level picked above',
+    'Six cards from the level above.', 'Built from your study rule:', 'Level {n}', '{n} points']) {
+    assert.ok(i18n.includes(`"${key}`) || i18n.includes(`'${key}`), `missing Spanish entry for ${key}`);
+  }
+  const games = read('games.js');
+  assert.match(games, /\$\{T\('← Games'\)\}/);
+  assert.match(games, /\$\{T\('GAME SHOW'\)\}/);
+  assert.match(games, /MsbI18n\.apply\(root\)/);
+  assert.match(read('aura.js'), /msbT\('STUDY'\)/);
+  assert.match(read('bible-reader.js'), /uiT\('Study note available'\)/);
+  assert.match(read('study-design.css'), /\.bible-controls select\{min-height:44px;font-size:16px/);
 });

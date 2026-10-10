@@ -385,7 +385,7 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .bible-subscription{margin:12px 2px 4px;color:var(--muted);font-style:italic;font-size:0.95rem;line-height:1.45}
 .bible-verse-heading{margin:14px 2px 0;color:var(--muted);font-style:italic;font-size:0.92rem;line-height:1.35}
 .bible-controls{display:grid;gap:10px}
-.bible-controls select{min-height:44px}
+.bible-controls select{min-height:44px;font-size:16px;min-width:0}
 
 .memory-grid,.memory-actions,.verse-mail-wrap{display:grid;gap:10px}
 .memory-card-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
