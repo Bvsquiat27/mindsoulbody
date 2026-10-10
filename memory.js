@@ -42,6 +42,7 @@
   let typing = false;
   let fromMemory = false;
   const revealed = new Set();
+  let lastRemoved = null;
 
   function todayKey(date) {
     const now = date || new Date();
@@ -79,8 +80,20 @@
     return { active: rows.filter(item => !item.mastered).length, mastered: rows.filter(item => item.mastered).length };
   }
 
+  /* Always look the verse up in this app's own Bible data by reference.
+     A verse sent by a friend carries text too, but that text is only used
+     when the lookup fails, so a note cannot change what Scripture says. */
   async function textFor(item) {
-    if (item.text) return String(item.text).trim();
+    let found = null;
+    try { found = await lookup(item); } catch { found = null; /* not on this device */ }
+    if (found) return found;
+    // Only when the Bible file could not be read at all; a reference that
+    // does not exist in the app's Bible is refused.
+    if (found === null && item.text) return String(item.text).trim().slice(0, 1000);
+    throw Error('That verse is not on this device yet.');
+  }
+
+  async function lookup(item) {
     const id = String(item.book).padStart(2, '0');
     const spanish = (item.translation === 'rvr' || (!item.translation && es())) && item.book <= 66;
     try {
@@ -97,7 +110,11 @@
   }
 
   async function add(item) {
-    const text = await textFor(item);
+    const whole = value => { const n = Math.floor(Number(value)); return Number.isFinite(n) && n > 0 ? n : 0; };
+    item = Object.assign({}, item, { book: whole(item.book), chapter: whole(item.chapter), verse: whole(item.verse) });
+    if (!item.book || !item.chapter || !item.verse || item.book > 99) { toast('That verse is not on this device yet.'); return { added: false }; }
+    let text = '';
+    try { text = await textFor(item); } catch { text = ''; }
     if (!text) { toast('That verse is not on this device yet.'); return { added: false }; }
     const translation = item.book > 66 ? 'kjv' : (item.translation === 'rvr' || (!item.translation && es()) ? 'rvr' : 'kjv');
     const row = {
@@ -106,7 +123,7 @@
       chapter: Number(item.chapter),
       verse: Number(item.verse),
       translation,
-      reference: item.reference || `${item.book}:${item.chapter}:${item.verse}`,
+      reference: String(item.reference || `${item.book}:${item.chapter}:${item.verse}`).slice(0, 80),
       text,
       startedOn: todayKey(),
       mastered: false,
@@ -139,13 +156,18 @@
     const api = schedule();
     const tokens = api.tokenize(row.text);
     const hidden = hiddenSet(row, fromMemory);
+    const blanks = tokens.filter((token, index) => token.word && hidden.has(index) && !revealed.has(index)).length;
+    let blank = 0;
     return tokens.map((token, index) => {
       if (!token.word || !hidden.has(index)) return `<span>${esc(token.text)}</span>`;
       if (revealed.has(index)) return `<span class="memory-peek">${esc(token.text)}</span>`;
+      blank += 1;
       if (typing || fromMemory || row.mastered) {
-        return `<input class="memory-input" data-memory-word="${index}" aria-label="Missing word" autocomplete="off" enterkeyhint="next" value="">`;
+        const label = es() ? `Palabra que falta, ${blank} de ${blanks}` : `Missing word ${blank} of ${blanks}`;
+        return `<input class="memory-input" data-memory-word="${index}" aria-label="${label}" autocomplete="off" enterkeyhint="next" value="">`;
       }
-      return `<button type="button" class="memory-blank" data-memory-reveal="${index}" aria-label="Show this word">____</button>`;
+      const label = es() ? `Mostrar la palabra ${blank} de ${blanks}` : `Show word ${blank} of ${blanks}`;
+      return `<button type="button" class="memory-blank" data-memory-reveal="${index}" aria-label="${label}">____</button>`;
     }).join('');
   }
 
@@ -157,7 +179,8 @@
       const badge = row.mastered ? '<span class="memory-badge">Mastered</span>' : `<span class="tag">Day ${Math.min(day, 6)} of 6</span>`;
       return `<article class="card memory-card"><div class="memory-card-top"><strong>${esc(row.reference)}</strong>${badge}</div><p class="small">${row.translation === 'rvr' ? 'RVR1909' : 'KJV'}</p><div class="memory-actions"><button type="button" class="primary" data-memory-open="${esc(row.id)}">Practice</button><button type="button" class="secondary" data-lection-book="${row.book}" data-lection-chapter="${row.chapter}" data-lection-verse="${row.verse}">Open the verse</button><button type="button" class="text-button" data-memory-remove="${esc(row.id)}">Remove</button></div></article>`;
     }).join('');
-    root.innerHTML = `<button class="text-button back" data-nav="today" type="button">← Home</button><span class="eyebrow">LEARN BY HEART</span><h1>Memory verse</h1><p class="lead">A short verse, a little more hidden each day, until you can say it.</p><p><button class="primary" type="button" data-memory-pick>Choose a verse</button></p>${cards || '<p class="muted">Your list is empty. Choose a short verse, or tap Memorize this on any verse you are reading.</p>'}<p class="small">These verses stay on this device. They are included when you export a backup.</p>`;
+    const undo = lastRemoved ? `<p class="card memory-undo" role="status" data-i18n-skip>${es() ? `Quitaste ${esc(lastRemoved.row.reference)}.` : `Removed ${esc(lastRemoved.row.reference)}.`} <button type="button" class="secondary" data-memory-undo>${es() ? 'Deshacer' : 'Undo'}</button></p>` : '';
+    root.innerHTML = `<button class="text-button back" data-nav="today" type="button">← Home</button><span class="eyebrow">LEARN BY HEART</span><h1>Memory verse</h1><p class="lead">A short verse, a little more hidden each day, until you can say it.</p><p><button class="primary" type="button" data-memory-pick>Choose a verse</button></p>${undo}${cards || '<p class="muted">Your list is empty. Choose a short verse, or tap Memorize this on any verse you are reading.</p>'}<p class="small">These verses stay on this device. They are included when you export a backup.</p>`;
   }
 
   function showPick(root) {
@@ -263,12 +286,29 @@
       return;
     }
     if (!event.target.closest('#screen')) return;
-    if (event.target.closest('[data-memory-pick]')) { screenMode = 'pick'; paint(); return; }
+    if (event.target.closest('[data-memory-pick]')) { screenMode = 'pick'; lastRemoved = null; paint(); return; }
     if (event.target.closest('[data-memory-list]')) { screenMode = 'list'; fromMemory = false; typing = false; revealed.clear(); paint(); return; }
     const open = event.target.closest('[data-memory-open]');
-    if (open) { activeId = open.dataset.memoryOpen; screenMode = 'practice'; typing = false; fromMemory = false; revealed.clear(); paint(); return; }
+    if (open) { lastRemoved = null; activeId = open.dataset.memoryOpen; screenMode = 'practice'; typing = false; fromMemory = false; revealed.clear(); paint(); return; }
     const remove = event.target.closest('[data-memory-remove]');
-    if (remove) { save(load().filter(item => item.id !== remove.dataset.memoryRemove)); paint(); return; }
+    if (remove) {
+      const rows = load();
+      const index = rows.findIndex(item => item.id === remove.dataset.memoryRemove);
+      if (index >= 0) { lastRemoved = { row: rows[index], index }; rows.splice(index, 1); save(rows); }
+      paint();
+      const button = document.querySelector('[data-memory-undo]');
+      if (button) button.focus();
+      return;
+    }
+    if (event.target.closest('[data-memory-undo]')) {
+      if (lastRemoved) {
+        const rows = load();
+        if (!rows.some(item => item.id === lastRemoved.row.id)) { rows.splice(Math.min(lastRemoved.index, rows.length), 0, lastRemoved.row); save(rows); }
+        lastRemoved = null;
+      }
+      paint();
+      return;
+    }
     const reveal = event.target.closest('[data-memory-reveal]');
     if (reveal) { revealed.add(Number(reveal.dataset.memoryReveal)); paint(); return; }
     const mode = event.target.closest('[data-memory-mode]');

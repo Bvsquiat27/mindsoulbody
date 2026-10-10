@@ -154,8 +154,8 @@
       "theme": "Repentance",
       "passage": "And he arose, and came to his father. But when he was yet a great way off, his father saw him, and had compassion, and ran, and fell on his neck, and kissed him. And the son said unto him, Father, I have sinned against heaven, and in thy sight, and am no more worthy to be called thy son. But the father said to his servants, Bring forth the best robe, and put it on him; and put a ring on his hand, and shoes on his feet: And bring hither the fatted calf, and kill it; and let us eat, and be merry: For this my son was dead, and is alive again; he was lost, and is found. And they began to be merry.",
       "context": "The younger son turns back after wasting his inheritance. The father sees him before he reaches home and receives him with joy.",
-      "orthodox": "Repentance is a return to the Father, not a way to make ourselves worthy before we approach him. The Church reads this parable in preparation for Great Lent: confession and mercy belong together.",
-      "practice": "Begin a prayer with honest confession, then finish it with the father's welcome in mind. If needed, speak with your priest about confession.",
+      "orthodox": "Repentance is a return to the Father, not a way to make ourselves worthy before we approach him. Confession and mercy belong together: the son speaks the truth, and the father runs to meet him.",
+      "practice": "Begin a prayer with honest confession, then finish it with the father's welcome in mind. If something weighs on you, tell one trusted believer and let them pray with you (James 5:16).",
       "questions": [
         "What does the father do before the son finishes his speech?",
         "What keeps you from turning toward God when you have failed?"
@@ -186,8 +186,8 @@
       "titleEs": "El Padre sale corriendo a tu encuentro",
       "passageEs": "Y levantándose, vino á su padre. Y como aun estuviese lejos, viólo su padre, y fué movido á misericordia, y corrió, y echóse sobre su cuello, y besóle. Y el hijo le dijo: Padre, he pecado contra el cielo, y contra ti, y ya no soy digno de ser llamado tu hijo. Mas el padre dijo á sus siervos: Sacad el principal vestido, y vestidle; y poned un anillo en su mano, y zapatos en sus pies. Y traed el becerro grueso, y matadlo, y comamos, y hagamos fiesta: Porque este mi hijo muerto era, y ha revivido; habíase perdido, y es hallado. Y comenzaron á regocijarse.",
       "contextEs": "El hijo menor vuelve después de malgastar la herencia. El padre lo ve antes de que llegue a casa y lo recibe con alegría.",
-      "orthodoxEs": "El arrepentimiento es un regreso al Padre, no una manera de volvernos dignos antes de acercarnos a él. La Iglesia lee esta parábola al prepararse para la Gran Cuaresma: la confesión y la misericordia van juntas.",
-      "practiceEs": "Empieza una oración con una confesión honesta y termínala con la bienvenida del padre en la mente. Si hace falta, habla con tu sacerdote acerca de la confesión.",
+      "orthodoxEs": "El arrepentimiento es un regreso al Padre, no una manera de volvernos dignos antes de acercarnos a él. La confesión y la misericordia van juntas: el hijo dice la verdad, y el padre corre a recibirlo.",
+      "practiceEs": "Empieza una oración con una confesión honesta y termínala con la bienvenida del padre en la mente. Si algo te pesa, cuéntaselo a un creyente de confianza y deja que ore contigo (Santiago 5:16).",
       "questionsEs": [
         "¿Qué hace el padre antes de que el hijo termine su discurso?",
         "¿Qué te impide volverte hacia Dios cuando has fallado?"
@@ -217,7 +217,9 @@
           "promptEs": "¿Qué significa el arrepentimiento en esta parábola?",
           "explanationEs": "En la parábola, arrepentirse es volver al padre, no esconder el fracaso ni ganarse el vestido."
         }
-      ]
+      ],
+      "deeperPractice": "Many Christians read this parable while preparing for Lent, and the older churches keep confession as a sacrament: you name your sins aloud before God with a priest as witness, and hear the words of forgiveness spoken over you.",
+      "deeperPracticeEs": "Muchos cristianos leen esta parábola al prepararse para la Cuaresma, y las iglesias más antiguas guardan la confesión como un sacramento: nombras tus pecados en voz alta delante de Dios, con un sacerdote como testigo, y escuchas las palabras de perdón dichas sobre ti."
     },
     {
       "id": "faith",
@@ -297,7 +299,7 @@
       "order": 5,
       "title": "If Christ be risen",
       "reference": "1 Corinthians 15:20–22",
-      "theme": "Pascha",
+      "theme": "Easter",
       "passage": "But now is Christ risen from the dead, and become the firstfruits of them that slept. For since by man came death, by man came also the resurrection of the dead. For as in Adam all die, even so in Christ shall all be made alive.",
       "context": "Paul responds to those denying the resurrection of the dead. He anchors Christian hope in Christ's own rising.",
       "orthodox": "Pascha proclaims the defeat of death in the risen Christ. Resurrection is not merely a metaphor for optimism; it is the ground of the Church's worship and hope for the renewal of creation.",
@@ -372,8 +374,8 @@
       "reference": "Psalm 50(51):10–12",
       "theme": "Prayer",
       "passage": "Create in me a clean heart, O God; and renew a right spirit within me. Cast me not away from thy presence; and take not thy holy spirit from me. Restore unto me the joy of thy salvation; and uphold me with thy free spirit.",
-      "context": "Psalm 51 in most English Bibles is Psalm 50 in the Greek Septuagint numbering used in Orthodox worship. It is a prayer of repentance and restoration.",
-      "orthodox": "The psalm asks God to remake the heart. Orthodox prayer repeatedly returns to repentance as healing: we bring our wounds to God rather than pretending we can repair ourselves alone.",
+      "context": "Psalm 51 in most Bibles is Psalm 50 in the numbering of the ancient Greek Bible (the Septuagint). It is a prayer of repentance and restoration.",
+      "orthodox": "The psalm asks God to remake the heart. Christian prayer returns again and again to repentance as healing: we bring our wounds to God rather than pretending we can repair ourselves alone.",
       "practice": "Read Psalm 50(51) slowly. Pause after ‘Create in me a clean heart’ and name what you need God to renew.",
       "questions": [
         "Why does the psalm ask God to create, not merely polish, a clean heart?",
@@ -404,8 +406,8 @@
       "themeEs": "Oración",
       "titleEs": "Un corazón limpio",
       "passageEs": "Crea en mí, oh Dios, un corazón limpio; y renueva un espíritu recto dentro de mí. No me eches de delante de ti; y no quites de mí tu santo espíritu. Vuélveme el gozo de tu salud; y el espíritu libre me sustente.",
-      "contextEs": "El Salmo 51 en la mayoría de las Biblias en inglés es el Salmo 50 en la numeración griega de la Septuaginta, la que usa el culto ortodoxo. Es una oración de arrepentimiento y de restauración.",
-      "orthodoxEs": "El salmo le pide a Dios que rehaga el corazón. La oración ortodoxa vuelve una y otra vez al arrepentimiento como sanación: llevamos nuestras heridas a Dios, en vez de fingir que podemos repararnos solos.",
+      "contextEs": "El Salmo 51 en la mayoría de las Biblias es el Salmo 50 en la numeración de la antigua Biblia griega (la Septuaginta). Es una oración de arrepentimiento y de restauración.",
+      "orthodoxEs": "El salmo le pide a Dios que rehaga el corazón. La oración cristiana vuelve una y otra vez al arrepentimiento como sanación: llevamos nuestras heridas a Dios, en vez de fingir que podemos repararnos solos.",
       "practiceEs": "Lee despacio el Salmo 50 (51). Detente después de “Crea en mí, oh Dios, un corazón limpio” y nombra lo que necesitas que Dios renueve.",
       "questionsEs": [
         "¿Por qué el salmo le pide a Dios que cree un corazón limpio, y no solo que lo pula?",
@@ -592,7 +594,7 @@
       "theme": "Creation & Origins",
       "passage": "Now the serpent was more subtil than any beast of the field which the LORD God had made. And he said unto the woman, Yea, hath God said, Ye shall not eat of every tree of the garden? And the woman said unto the serpent, We may eat of the fruit of the trees of the garden: but of the fruit of the tree which is in the midst of the garden, God hath said, Ye shall not eat of it, neither shall ye touch it, lest ye die. And the serpent said unto the woman, Ye shall not surely die: for God doth know that in the day ye eat thereof, then your eyes shall be opened, and ye shall be as gods, knowing good and evil. And when the woman saw that the tree was good for food, and that it was pleasant to the eyes, and a tree to be desired to make one wise, she took of the fruit thereof, and did eat, and gave also unto her husband with her; and he did eat. And the eyes of them both were opened, and they knew that they were naked; and they sewed fig leaves together, and made themselves aprons. And they heard the voice of the LORD God walking in the garden in the cool of the day: and Adam and his wife hid themselves from the presence of the LORD God amongst the trees of the garden. And the LORD God called unto Adam, and said unto him, Where art thou? And he said, I heard thy voice in the garden, and I was afraid, because I was naked; and I hid myself. And he said, Who told thee that thou wast naked? Hast thou eaten of the tree, whereof I commanded thee that thou shouldest not eat? And the man said, The woman whom thou gavest to be with me, she gave me of the tree, and I did eat. And the LORD God said unto the woman, What is this that thou hast done? And the woman said, The serpent beguiled me, and I did eat. … Unto Adam also and to his wife did the LORD God make coats of skins, and clothed them.",
       "context": "The serpent questions God's word, the fruit is taken, and shame enters the world. Adam and Eve hide, blame each other — yet God comes walking in the garden calling, \"Where art thou?\" and clothes them with his own hands.",
-      "orthodox": "Orthodox teaching calls the fall an ancestral wound: death and corruption pass to all, and conscience awakens twisted. But the story's center is not an angry God hunting sinners; it is a Father searching for his hiding children.",
+      "orthodox": "Many early Christians called the fall an ancestral wound: death and corruption pass to all, and conscience awakens twisted. But the story's center is not an angry God hunting sinners; it is a Father searching for his hiding children.",
       "practice": "Name one thing you have been hiding from God or from someone you love. Bring it into the open in prayer today — no excuses, just the truth.",
       "questions": [
         "Who does the blaming in Genesis 3, and what does blame do to love?",
@@ -624,7 +626,7 @@
       "titleEs": "El día en que todo se quebró",
       "passageEs": "EMPERO la serpiente era astuta, más que todos los animales del campo que Jehová Dios había hecho; la cual dijo á la mujer: ¿Conque Dios os ha dicho: No comáis de todo árbol del huerto? Y la mujer respondió á la serpiente: Del fruto de los árboles del huerto comemos; Mas del fruto del árbol que está en medio del huerto dijo Dios: No comeréis de él, ni le tocaréis, porque no muráis. Entonces la serpiente dijo á la mujer: No moriréis; Mas sabe Dios que el día que comiereis de él, serán abiertos vuestros ojos, y seréis como dioses sabiendo el bien y el mal. Y vió la mujer que el árbol era bueno para comer, y que era agradable á los ojos, y árbol codiciable para alcanzar la sabiduría; y tomó de su fruto, y comió; y dió también á su marido, el cual comió así como ella. Y fueron abiertos los ojos de entrambos, y conocieron que estaban desnudos: entonces cosieron hojas de higuera, y se hicieron delantales. Y oyeron la voz de Jehová Dios que se paseaba en el huerto al aire del día: y escondióse el hombre y su mujer de la presencia de Jehová Dios entre los árboles del huerto. Y llamó Jehová Dios al hombre, y le dijo: ¿Dónde estás tú? Y él respondió: Oí tu voz en el huerto, y tuve miedo, porque estaba desnudo; y escondíme. Y díjole: ¿Quién te enseñó que estabas desnudo? ¿Has comido del árbol de que yo te mandé no comieses? Y el hombre respondió: La mujer que me diste por compañera me dió del árbol, y yo comí. Entonces Jehová Dios dijo á la mujer: ¿Qué es lo que has hecho? Y dijo la mujer: La serpiente me engañó, y comí. Y Jehová Dios hizo al hombre y á su mujer túnicas de pieles, y vistiólos.",
       "contextEs": "La serpiente pone en duda la palabra de Dios, se toma el fruto y la vergüenza entra en el mundo. Adán y Eva se esconden y se echan la culpa; aun así, Dios viene caminando por el huerto, llama “¿Dónde estás tú?” (Génesis 3:9, RV1909) y los viste con sus propias manos.",
-      "orthodoxEs": "La enseñanza ortodoxa llama a la caída una herida ancestral: la muerte y la corrupción pasan a todos, y la conciencia despierta torcida. Pero el centro del relato no es un Dios enojado que caza pecadores; es un Padre que busca a sus hijos escondidos.",
+      "orthodoxEs": "Muchos cristianos antiguos llamaron a la caída una herida ancestral: la muerte y la corrupción pasan a todos, y la conciencia despierta torcida. Pero el centro del relato no es un Dios enojado que caza pecadores; es un Padre que busca a sus hijos escondidos.",
       "practiceEs": "Nombra una cosa que le has estado escondiendo a Dios o a alguien a quien amas. Hoy sácala a la luz en la oración: sin excusas, solo la verdad.",
       "questionsEs": [
         "¿Quién echa la culpa en Génesis 3, y qué le hace la culpa al amor?",
@@ -1614,7 +1616,7 @@
       "theme": "Psalms & Prayer",
       "passage": "Bless the LORD, O my soul: And all that is within me, bless his holy name. Bless the LORD, O my soul, And forget not all his benefits: Who forgiveth all thine iniquities; Who healeth all thy diseases; Who redeemeth thy life from destruction; Who crowneth thee with lovingkindness and tender mercies; Who satisfieth thy mouth with good things; So that thy youth is renewed like the eagle's. The LORD executeth righteousness and judgment For all that are oppressed. He made known his ways unto Moses, His acts unto the children of Israel. The LORD is merciful and gracious, Slow to anger, and plenteous in mercy. He will not always chide: Neither will he keep his anger for ever. He hath not dealt with us after our sins; Nor rewarded us according to our iniquities. For as the heaven is high above the earth, So great is his mercy toward them that fear him. As far as the east is from the west, So far hath he removed our transgressions from us. Like as a father pitieth his children, So the LORD pitieth them that fear him. For he knoweth our frame; He remembereth that we are dust.",
       "context": "David calls his own soul to bless the Lord and forget none of his benefits: forgiveness, healing, redemption from destruction, crowning with mercy. God, he says, is slow to anger — and knows our frame, remembering we are dust.",
-      "orthodox": "The Church sings Psalm 103 at Vespers, starting the evening with blessing rather than complaint. The psalm holds justice and tenderness together: God does not treat us after our sins, because he pities his children like a father.",
+      "orthodox": "Christians have long sung Psalm 103 in evening prayer, starting the evening with blessing rather than complaint. The psalm holds justice and tenderness together: God does not treat us after our sins, because he pities his children like a father.",
       "practice": "List three benefits from this psalm that are yours today. Say the first line aloud three times, slower each time.",
       "questions": [
         "Why does David preach to his own soul instead of waiting to feel grateful?",
@@ -1646,7 +1648,7 @@
       "titleEs": "Bendice, alma mía, a Jehová",
       "passageEs": "BENDICE, alma mía, á Jehová; y bendigan todas mis entrañas su santo nombre. Bendice, alma mía á Jehová, y no olvides ninguno de sus beneficios. El es quien perdona todas tus iniquidades, el que sana todas tus dolencias; El que rescata del hoyo tu vida, el que te corona de favores y misericordias; El que sacia de bien tu boca de modo que te rejuvenezcas como el águila. Jehová el que hace justicia y derecho á todos los que padecen violencia. Sus caminos notificó á Moisés, y á los hijos de Israel sus obras. Misericordioso y clemente es Jehová; lento para la ira, y grande en misericordia. No contenderá para siempre, ni para siempre guardará el enojo. No ha hecho con nosotros conforme á nuestras iniquidades; ni nos ha pagado conforme á nuestros pecados. Porque como la altura de los cielos sobre la tierra, engrandeció su misericordia sobre los que le temen. Cuanto está lejos el oriente del occidente, hizo alejar de nosotros nuestras rebeliones. Como el padre se compadece de los hijos, se compadece Jehová de los que le temen. Porque él conoce nuestra condición; acuérdase que somos polvo.",
       "contextEs": "David llama a su propia alma a bendecir a Jehová y a no olvidar ninguno de sus beneficios: perdón, sanidad, rescate de la fosa, corona de misericordia. Dios, dice, es lento para la ira, y conoce nuestra condición: se acuerda de que somos polvo.",
-      "orthodoxEs": "La Iglesia canta el Salmo 103 en las Vísperas, y empieza la tarde con bendición y no con queja. El salmo sostiene juntas la justicia y la ternura: Dios no nos paga conforme a nuestros pecados, porque se compadece de sus hijos como un padre.",
+      "orthodoxEs": "Desde hace mucho, los cristianos cantan el Salmo 103 en la oración de la tarde, y empiezan la noche con bendición y no con queja. El salmo sostiene juntas la justicia y la ternura: Dios no nos paga conforme a nuestros pecados, porque se compadece de sus hijos como un padre.",
       "practiceEs": "Anota tres beneficios de este salmo que son tuyos hoy. Di la primera línea en voz alta tres veces, cada vez más despacio.",
       "questionsEs": [
         "¿Por qué David le predica a su propia alma en vez de esperar a sentirse agradecido?",
@@ -1833,7 +1835,7 @@
       "theme": "Life of Christ",
       "passage": "And, behold, a certain lawyer stood up, and tempted him, saying, Master, what shall I do to inherit eternal life? He said unto him, What is written in the law? how readest thou? And he answering said, Thou shalt love the Lord thy God with all thy heart, and with all thy soul, and with all thy strength, and with all thy mind; and thy neighbour as thyself. And he said unto him, Thou hast answered right: this do, and thou shalt live. But he, willing to justify himself, said unto Jesus, And who is my neighbour? And Jesus answering said, A certain man went down from Jerusalem to Jericho, and fell among thieves, which stripped him of his raiment, and wounded him, and departed, leaving him half dead. And by chance there came down a certain priest that way: and when he saw him, he passed by on the other side. And likewise a Levite, when he was at the place, came and looked on him, and passed by on the other side. But a certain Samaritan, as he journeyed, came where he was: and when he saw him, he had compassion on him, and went to him, and bound up his wounds, pouring in oil and wine, and set him on his own beast, and brought him to an inn, and took care of him. And on the morrow when he departed, he took out two pence, and gave them to the host, and said unto him, Take care of him; and whatsoever thou spendest more, when I come again, I will repay thee. Which now of these three, thinkest thou, was neighbour unto him that fell among the thieves? And he said, He that shewed mercy on him. Then said Jesus unto him, Go, and do thou likewise.",
       "context": "A lawyer asks who qualifies as his neighbor. Jesus tells of a robbed man passed by a priest and a Levite, and helped — at cost, with oil, wine, his own animal, and an open tab — by a Samaritan, the outsider.",
-      "orthodox": "The Fathers read the Samaritan as Christ himself: he finds humanity half-dead by the roadside, binds wounds with oil and wine (the Church's sacraments), and pays our debt. The command lands on the lawyer: \"Go, and do thou likewise.\"",
+      "orthodox": "Early Christian teachers read the Samaritan as Christ himself: he finds humanity half-dead by the roadside, binds wounds with oil and wine, and pays our debt. The command lands on the lawyer: \"Go, and do thou likewise.\"",
       "practice": "Do one costly, inconvenient act of mercy today for someone outside your usual circle. Quietly, without posting it.",
       "questions": [
         "The lawyer wants to limit \"neighbor.\" How does the parable refuse the limit?",
@@ -1865,7 +1867,7 @@
       "titleEs": "¿Quién es mi prójimo?",
       "passageEs": "Y he aquí, un doctor de la ley se levantó, tentándole y diciendo: Maestro, ¿haciendo qué cosa poseeré la vida eterna? Y él le dijo: ¿Qué está escrito en la ley? ¿cómo lees? Y él respondiendo, dijo: Amarás al Señor tu Dios de todo tu corazón, y de toda tu alma, y de todas tus fuerzas, y de todo tu entendimiento; y á tu prójimo como á ti mismo. Y díjole: Bien has respondido: haz esto, y vivirás. Mas él, queriéndose justificar á sí mismo, dijo á Jesús: ¿Y quién es mi prójimo? Y respondiendo Jesús, dijo: Un hombre descendía de Jerusalem á Jericó, y cayó en manos de ladrones, los cuales le despojaron; é hiriéndole, se fueron, dejándole medio muerto. Y aconteció, que descendió un sacerdote por aquel camino, y viéndole, se pasó de un lado. Y asimismo un Levita, llegando cerca de aquel lugar, y viéndole, se pasó de un lado. Mas un Samaritano que transitaba, viniendo cerca de él, y viéndole, fué movido á misericordia; Y llegándose, vendó sus heridas, echándoles aceite y vino; y poniéndole sobre su cabalgadura, llevóle al mesón, y cuidó de él. Y otro día al partir, sacó dos denarios, y diólos al huésped, y le dijo: Cuídamele; y todo lo que de más gastares, yo cuando vuelva te lo pagaré. ¿Quién, pues, de estos tres te parece que fué el prójimo de aquél que cayó en manos de los ladrones? Y él dijo: El que usó con él de misericordia. Entonces Jesús le dijo: Ve, y haz tú lo mismo.",
       "contextEs": "Un intérprete de la ley pregunta quién califica como su prójimo. Jesús cuenta de un hombre asaltado, al que pasan de largo un sacerdote y un levita, y al que ayuda —con costo: aceite, vino, su propia cabalgadura y una cuenta abierta— un samaritano, el de afuera.",
-      "orthodoxEs": "Los Padres leen al samaritano como Cristo mismo: encuentra a la humanidad medio muerta junto al camino, venda las heridas con aceite y vino (los sacramentos de la Iglesia) y paga nuestra deuda. El mandato cae sobre el intérprete: “Ve, y haz tú lo mismo” (Lucas 10:37, RV1909).",
+      "orthodoxEs": "Los maestros cristianos antiguos leyeron al samaritano como Cristo mismo: encuentra a la humanidad medio muerta junto al camino, venda las heridas con aceite y vino, y paga nuestra deuda. El mandato cae sobre el intérprete: “Ve, y haz tú lo mismo” (Lucas 10:37, RV1909).",
       "practiceEs": "Haz hoy un acto de misericordia que te cueste y te incomode, por alguien fuera de tu círculo de siempre. En silencio, sin publicarlo.",
       "questionsEs": [
         "El intérprete quiere limitar al “prójimo”. ¿Cómo se niega la parábola a ese límite?",
@@ -1979,8 +1981,8 @@
       "theme": "Life of Christ",
       "passage": "And the third day there was a marriage in Cana of Galilee; and the mother of Jesus was there: and both Jesus was called, and his disciples, to the marriage. And when they wanted wine, the mother of Jesus saith unto him, They have no wine. Jesus saith unto her, Woman, what have I to do with thee? mine hour is not yet come. His mother saith unto the servants, Whatsoever he saith unto you, do it. And there were set there six waterpots of stone, after the manner of the purifying of the Jews, containing two or three firkins apiece. Jesus saith unto them, Fill the waterpots with water. And they filled them up to the brim. And he saith unto them, Draw out now, and bear unto the governor of the feast. And they bare it. When the ruler of the feast had tasted the water that was made wine, and knew not whence it was: (but the servants which drew the water knew;) the governor of the feast called the bridegroom, and saith unto him, Every man at the beginning doth set forth good wine; and when men have well drunk, then that which is worse: but thou hast kept the good wine until now. This beginning of miracles did Jesus in Cana of Galilee, and manifested forth his glory; and his disciples believed on him.",
       "context": "At a wedding in Cana the wine runs out. At his Mother's word — \"They have no wine\" — Jesus turns water in the purification jars into the best wine, quietly, so the feast is saved. John calls it the beginning of signs, revealing his glory.",
-      "orthodox": "The Church delights in the details: the first sign happens at a wedding, through a mother's intercession, and the steward tastes what he cannot explain. Christ blesses ordinary joy; he does not despise the feast.",
-      "practice": "Bring one small embarrassment or shortage to God today before you try to fix it, and tell his Mother too, the way the servants were told: \"Do whatever he tells you.\"",
+      "orthodox": "The Church delights in the details: the first sign happens at a wedding, after Mary simply tells Jesus the need, and the steward tastes what he cannot explain. Christ blesses ordinary joy; he does not despise the feast.",
+      "practice": "Bring one small embarrassment or shortage to God today before you try to fix it, and then do what the servants were told: \"Whatsoever he saith unto you, do it\" (John 2:5).",
       "questions": [
         "Why does Jesus perform his first sign at a wedding feast rather than in the temple?",
         "What do Mary's five words to the servants teach about prayer?"
@@ -2011,8 +2013,8 @@
       "titleEs": "El agua hecha vino",
       "passageEs": "Y AL tercer día hiciéronse unas bodas en Caná de Galilea; y estaba allí la madre de Jesús. Y fué también llamado Jesús y sus discípulos á las bodas. Y faltando el vino, la madre de Jesús le dijo: Vino no tienen. Y dícele Jesús: ¿Qué tengo yo contigo, mujer? aun no ha venido mi hora. Su madre dice á los que servían: Haced todo lo que os dijere. Y estaban allí seis tinajuelas de piedra para agua, conforme á la purificación de los Judíos, que cabían en cada una dos ó tres cántaros. Díceles Jesús: Henchid estas tinajuelas de agua. E hinchiéronlas hasta arriba. Y díceles: Sacad ahora, y presentad al maestresala. Y presentáronle. Y como el maestresala gustó el agua hecha vino, que no sabía de dónde era (mas lo sabían los sirvientes que habían sacado el agua), el maestresala llama al esposo, Y dícele: Todo hombre pone primero el buen vino, y cuando están satisfechos, entonces lo que es peor; mas tú has guardado el buen vino hasta ahora. Este principio de señales hizo Jesús en Caná de Galilea, y manifestó su gloria; y sus discípulos creyeron en él.",
       "contextEs": "En una boda en Caná se acaba el vino. A la palabra de su Madre —“Vino no tienen” (Juan 2:3, RV1909)— Jesús convierte en el mejor vino el agua de las tinajas de la purificación, en silencio, y así se salva la fiesta. Juan lo llama el principio de las señales, que manifiesta su gloria.",
-      "orthodoxEs": "La Iglesia se goza en los detalles: la primera señal ocurre en una boda, por la intercesión de una madre, y el maestresala prueba lo que no puede explicar. Cristo bendice el gozo ordinario; no desprecia la fiesta.",
-      "practiceEs": "Llévale hoy a Dios una vergüenza pequeña o una escasez, antes de intentar arreglarla tú, y díselo también a su Madre, como se les dijo a los que servían: “Haced todo lo que os dijere” (Juan 2:5, RV1909).",
+      "orthodoxEs": "La Iglesia se goza en los detalles: la primera señal ocurre en una boda, después de que María sencillamente le cuenta a Jesús la necesidad, y el maestresala prueba lo que no puede explicar. Cristo bendice el gozo ordinario; no desprecia la fiesta.",
+      "practiceEs": "Llévale hoy a Dios una vergüenza pequeña o una escasez, antes de intentar arreglarla tú, y luego haz lo que se les dijo a los que servían: “Haced todo lo que os dijere” (Juan 2:5, RV1909).",
       "questionsEs": [
         "¿Por qué hace Jesús su primera señal en una fiesta de bodas y no en el templo?",
         "¿Qué enseñan acerca de la oración las palabras de María a los que servían?"
@@ -2042,7 +2044,9 @@
           "promptEs": "¿Qué dice el maestresala del vino?",
           "explanationEs": "Juan 2:10: Cristo guarda lo mejor para el momento de la necesidad."
         }
-      ]
+      ],
+      "deeperPractice": "The older churches see Mary at Cana as an intercessor: she brings the need to her Son and points everyone to him. So they also ask her to pray for them, the way you might ask a friend, always ending where she ends: \"Whatsoever he saith unto you, do it.\"",
+      "deeperPracticeEs": "Las iglesias más antiguas ven a María en Caná como intercesora: lleva la necesidad a su Hijo y señala a todos hacia él. Por eso también le piden que ore por ellos, como se lo pedirías a una amiga, terminando siempre donde ella termina: “Haced todo lo que os dijere”."
     },
     {
       "id": "lazarus",
@@ -2271,7 +2275,7 @@
       "theme": "Life of Christ",
       "passage": "And when thou prayest, thou shalt not be as the hypocrites are: for they love to pray standing in the synagogues and in the corners of the streets, that they may be seen of men. Verily I say unto you, They have their reward. But thou, when thou prayest, enter into thy closet, and when thou hast shut thy door, pray to thy Father which is in secret; and thy Father which seeth in secret shall reward thee openly. But when ye pray, use not vain repetitions, as the heathen do: for they think that they shall be heard for their much speaking. Be not ye therefore like unto them: for your Father knoweth what things ye have need of, before ye ask him. After this manner therefore pray ye: Our Father which art in heaven, Hallowed be thy name. Thy kingdom come. Thy will be done in earth, as it is in heaven. Give us this day our daily bread. And forgive us our debts, as we forgive our debtors. And lead us not into temptation, but deliver us from evil: For thine is the kingdom, and the power, and the glory, for ever. Amen. For if ye forgive men their trespasses, your heavenly Father will also forgive you: but if ye forgive not men their trespasses, neither will your Father forgive your trespasses.",
       "context": "Jesus warns against praying to be seen and against babbling, then gives the pattern prayer: Father, kingdom, daily bread, forgiveness tied to our forgiving, and deliverance from evil.",
-      "orthodox": "The Church has prayed these exact words at every liturgy for two thousand years (St. Cyprian calls it the summary of the gospel). \"Our Father\" — never \"my Father\" alone: even private prayer is prayed as a member of a family.",
+      "orthodox": "Christians have prayed these exact words together for two thousand years (St. Cyprian calls it the summary of the gospel). \"Our Father\", never \"my Father\" alone: even private prayer is prayed as a member of a family.",
       "practice": "Pray the Lord's Prayer once today at half your normal speed. Camp on the line that costs you most and stay there a while.",
       "questions": [
         "Why does the prayer begin with God's name and kingdom before our needs?",
@@ -2303,7 +2307,7 @@
       "titleEs": "Enséñanos a orar",
       "passageEs": "Y cuando oras, no seas como los hipócritas; porque ellos aman el orar en las sinagogas, y en los cantones de las calles en pie, para ser vistos de los hombres: de cierto os digo, que ya tienen su pago. Mas tú, cuando oras, éntrate en tu cámara, y cerrada tu puerta, ora á tu Padre que está en secreto; y tu Padre que ve en secreto, te recompensará en público. Y orando, no seáis prolijos, como los Gentiles; que piensan que por su parlería serán oídos. No os hagáis, pues, semejantes á ellos; porque vuestro Padre sabe de qué cosas tenéis necesidad, antes que vosotros le pidáis. Vosotros pues, oraréis así: Padre nuestro que estás en los cielos, santificado sea tu nombre. Venga tu reino. Sea hecha tu voluntad, como en el cielo, así también en la tierra. Danos hoy nuestro pan cotidiano. Y perdónanos nuestras deudas, como también nosotros perdonamos á nuestros deudores. Y no nos metas en tentación, mas líbranos del mal: porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amén. Porque si perdonareis á los hombres sus ofensas, os perdonará también á vosotros vuestro Padre celestial. Mas si no perdonareis á los hombres sus ofensas, tampoco vuestro Padre os perdonará vuestras ofensas.",
       "contextEs": "Jesús advierte contra orar para ser vistos y contra la palabrería, y luego da la oración modelo: Padre, reino, pan cotidiano, perdón atado a nuestro perdonar, y librarnos del mal.",
-      "orthodoxEs": "La Iglesia ha orado estas palabras exactas en cada liturgia durante dos mil años (san Cipriano la llama el resumen del evangelio). “Padre nuestro”, nunca solo “Padre mío”: hasta la oración privada se reza como miembro de una familia.",
+      "orthodoxEs": "Los cristianos han orado juntos estas palabras exactas durante dos mil años (san Cipriano la llama el resumen del evangelio). “Padre nuestro”, nunca solo “Padre mío”: hasta la oración privada se reza como miembro de una familia.",
       "practiceEs": "Ora hoy el Padrenuestro una vez, a la mitad de tu velocidad de siempre. Quédate en la línea que más te cuesta y permanece ahí un rato.",
       "questionsEs": [
         "¿Por qué empieza la oración con el nombre y el reino de Dios, antes de nuestras necesidades?",
@@ -2637,7 +2641,7 @@
       "theme": "Life of Christ",
       "passage": "There was a man of the Pharisees, named Nicodemus, a ruler of the Jews: the same came to Jesus by night, and said unto him, Rabbi, we know that thou art a teacher come from God: for no man can do these miracles that thou doest, except God be with him. Jesus answered and said unto him, Verily, verily, I say unto thee, Except a man be born again, he cannot see the kingdom of God. Nicodemus saith unto him, How can a man be born when he is old? can he enter the second time into his mother's womb, and be born? Jesus answered, Verily, verily, I say unto thee, Except a man be born of water and of the Spirit, he cannot enter into the kingdom of God. That which is born of the flesh is flesh; and that which is born of the Spirit is spirit. Marvel not that I said unto thee, Ye must be born again. The wind bloweth where it listeth, and thou hearest the sound thereof, but canst not tell whence it cometh, and whither it goeth: so is every one that is born of the Spirit.",
       "context": "Nicodemus comes by night and hears a hard saying: \"Except a man be born again, he cannot see the kingdom of God.\" Jesus explains: born of water and of the Spirit — like wind, unseen in origin, real in effect.",
-      "orthodox": "The Church has read \"water and the Spirit\" as baptism from the earliest Fathers (St. Justin, St. Irenaeus): the new birth is not a feeling about God but God's own act, washing and giving the Spirit. Nicodemus, the teacher of Israel, must become a child again.",
+      "orthodox": "The new birth is not a feeling about God but God's own act, washing and giving the Spirit (Titus 3:5). The earliest Christian teachers (St. Justin, St. Irenaeus) heard \"water and the Spirit\" and thought of baptism. Nicodemus, the teacher of Israel, must become a child again.",
       "practice": "Thank God today for your baptism (or, if unbaptized, ask him plainly to bring you to the water). Pray for one person by name to be born anew.",
       "questions": [
         "Why does a respected teacher need to be \"born again\" rather than simply learn more?",
@@ -2669,7 +2673,7 @@
       "titleEs": "Nacido de agua y del Espíritu",
       "passageEs": "Y HABÍA un hombre de los Fariseos que se llamaba Nicodemo, príncipe de los Judíos. Este vino á Jesús de noche, y díjole: Rabbí, sabemos que has venido de Dios por maestro; porque nadie puede hacer estas señales que tú haces, si no fuere Dios con él. Respondió Jesús, y díjole: De cierto, de cierto te digo, que el que no naciere otra vez, no puede ver el reino de Dios. Dícele Nicodemo: ¿Cómo puede el hombre nacer siendo viejo? ¿puede entrar otra vez en el vientre de su madre, y nacer? Respondió Jesús: De cierto, de cierto te digo, que el que no naciere de agua y del Espíritu, no puede entrar en el reino de Dios. Lo que es nacido de la carne, carne es; y lo que es nacido del Espíritu, espíritu es. No te maravilles de que te dije: Os es necesario nacer otra vez. El viento de donde quiere sopla, y oyes su sonido; mas ni sabes de dónde viene, ni á dónde vaya: así es todo aquel que es nacido del Espíritu.",
       "contextEs": "Nicodemo viene de noche y oye un dicho duro: “el que no naciere otra vez, no puede ver el reino de Dios” (Juan 3:3, RV1909). Jesús explica: nacer de agua y del Espíritu, como el viento, invisible en su origen y real en su efecto.",
-      "orthodoxEs": "La Iglesia ha leído “agua y Espíritu” como el bautismo desde los Padres más antiguos (san Justino, san Ireneo): el nuevo nacimiento no es un sentimiento acerca de Dios, sino un acto del propio Dios, que lava y da el Espíritu. Nicodemo, el maestro de Israel, tiene que volver a ser niño.",
+      "orthodoxEs": "El nuevo nacimiento no es un sentimiento acerca de Dios, sino un acto del propio Dios, que lava y da el Espíritu (Tito 3:5). Los maestros cristianos más antiguos (san Justino, san Ireneo) oían “agua y Espíritu” y pensaban en el bautismo. Nicodemo, el maestro de Israel, tiene que volver a ser niño.",
       "practiceEs": "Dale gracias a Dios hoy por tu bautismo (o, si no estás bautizado, pídele con claridad que te lleve al agua). Ora por una persona, por su nombre, para que nazca de nuevo.",
       "questionsEs": [
         "¿Por qué un maestro respetado necesita “nacer otra vez”, y no solo aprender más?",
@@ -3808,7 +3812,7 @@
       "theme": "Prophets & Kings",
       "passage": "In the year that king Uzziah died I saw also the Lord sitting upon a throne, high and lifted up, and his train filled the temple. Above it stood the seraphims: each one had six wings; with twain he covered his face, and with twain he covered his feet, and with twain he did fly. And one cried unto another, and said, Holy, holy, holy, is the LORD of hosts: the whole earth is full of his glory. And the posts of the door moved at the voice of him that cried, and the house was filled with smoke. Then said I, Woe is me! for I am undone; because I am a man of unclean lips, and I dwell in the midst of a people of unclean lips: for mine eyes have seen the King, the LORD of hosts. Then flew one of the seraphims unto me, having a live coal in his hand, which he had taken with the tongs from off the altar: and he laid it upon my mouth, and said, Lo, this hath touched thy lips; and thine iniquity is taken away, and thy sin purged. Also I heard the voice of the Lord, saying, Whom shall I send, and who will go for us? Then said I, Here am I; send me.",
       "context": "In the year King Uzziah dies, Isaiah sees the King who cannot die: enthroned, robed, the temple shaking, seraphim crying \"Holy, holy, holy.\" Isaiah cries \"Woe is me,\" a coal touches his lips, and the call comes: \"Whom shall I send?\" — \"Here am I; send me.\"",
-      "orthodox": "The Church sings the seraphim's hymn at every liturgy (\"Holy, holy, holy\" in the anaphora) and reads the vision as a glimpse of the Trinity — one Lord, thrice holy (St. Basil). Isaiah is not qualified by talent but by cleansing: the coal comes before the commission.",
+      "orthodox": "Christians have sung the seraphim's hymn in worship for centuries (\"Holy, holy, holy\") and read the vision as a glimpse of the Trinity: one Lord, thrice holy (St. Basil). Isaiah is not qualified by talent but by cleansing: the coal comes before the commission.",
       "practice": "Before asking God for a task, ask for the coal: confess one specific uncleanness today and receive his cleansing, then say \"send me.\"",
       "questions": [
         "Isaiah's first word on seeing God is \"Woe is me,\" not \"How beautiful.\" Why is conviction the doorway, not the obstacle?",
@@ -3840,7 +3844,7 @@
       "titleEs": "Santo, santo, santo",
       "passageEs": "EN el año que murió el rey Uzzías vi yo al Señor sentado sobre un trono alto y sublime, y sus faldas henchían el templo. Y encima de él estaban serafines: cada uno tenía seis alas; con dos cubrían sus rostros, y con dos cubrían sus pies, y con dos volaban. Y el uno al otro daba voces, diciendo: Santo, santo, santo, Jehová de los ejércitos: toda la tierra está llena de su gloria. Y los quiciales de las puertas se estremecieron con la voz del que clamaba, y la casa se hinchió de humo. Entonces dije: ¡Ay de mí! que soy muerto; que siendo hombre inmundo de labios, y habitando en medio de pueblo que tiene labios inmundos, han visto mis ojos al Rey, Jehová de los ejércitos. Y voló hacia mí uno de los serafines, teniendo en su mano un carbón encendido, tomado del altar con unas tenazas: Y tocando con él sobre mi boca, dijo: He aquí que esto tocó tus labios, y es quitada tu culpa, y limpio tu pecado. Después oí la voz del Señor, que decía: ¿A quién enviaré, y quién nos irá? Entonces respondí yo: Heme aquí, envíame á mí.",
       "contextEs": "En el año en que muere el rey Uzías, Isaías ve al Rey que no puede morir: en el trono, con su manto, el templo que tiembla, los serafines que claman “Santo, santo, santo”. Isaías grita “¡Ay de mí!”, un carbón toca sus labios, y llega el llamado: “¿A quién enviaré?” — “Heme aquí, envíame”.",
-      "orthodoxEs": "La Iglesia canta el himno de los serafines en cada liturgia (“Santo, santo, santo” en la anáfora) y lee la visión como un vislumbre de la Trinidad: un solo Señor, tres veces santo (san Basilio). Isaías no queda capacitado por el talento, sino por la limpieza: el carbón llega antes del envío.",
+      "orthodoxEs": "Los cristianos han cantado el himno de los serafines en el culto durante siglos (“Santo, santo, santo”) y leen la visión como un vislumbre de la Trinidad: un solo Señor, tres veces santo (san Basilio). Isaías no queda capacitado por el talento, sino por la limpieza: el carbón llega antes del envío.",
       "practiceEs": "Antes de pedirle a Dios una tarea, pide el carbón: confiesa hoy una inmundicia concreta y recibe su limpieza, y luego di “envíame”.",
       "questionsEs": [
         "La primera palabra de Isaías al ver a Dios es “¡Ay de mí!”, no “Qué hermoso”. ¿Por qué la convicción es la puerta, y no el obstáculo?",
@@ -4608,11 +4612,11 @@
       "order": 64,
       "title": "Surrounded by witnesses",
       "reference": "Hebrews 12:1–2",
-      "theme": "Saints & Prayer",
+      "theme": "Prayer & the Faithful",
       "passage": "Wherefore seeing we also are compassed about with so great a cloud of witnesses, let us lay aside every weight, and the sin which doth so easily beset us, and let us run with patience the race that is set before us, looking unto Jesus the author and finisher of our faith; who for the joy that was set before him endured the cross, despising the shame, and is set down at the right hand of the throne of God.",
       "context": "After the long roll of faith's heroes, Hebrews pictures the Christian life as a race run in a stadium: \"we also are compassed about with so great a cloud of witnesses.\" Lay aside every weight, and run looking to Jesus, the author and finisher of faith.",
-      "orthodox": "The Church reads \"witnesses\" (martyres) actively, not as dead portraits: those who finished are alive in Christ and surround the runners — which is why we ask their prayers. The race is run in company, toward the face of Christ.",
-      "practice": "Run today's race in company: ask one saint whose story you know to pray for you by name, and encourage one living believer as if you were in their cloud.",
+      "orthodox": "\"Witnesses\" (martyres) is an active word, not a gallery of dead portraits: those who finished are alive in Christ (Luke 20:38) and surround the runners. The race is run in company, toward the face of Christ.",
+      "practice": "Run today's race in company: thank God for one believer, past or present, whose faith strengthens yours, and encourage one living believer as if you were in their cloud.",
       "questions": [
         "If the witnesses were only memories, would the image still work? What does \"compassed about\" add?",
         "What \"weight\" (not sin — weight) is slowing your race most?"
@@ -4639,12 +4643,12 @@
           "explanation": "Hebrews 12:2: the witnesses surround; Jesus is the gaze."
         }
       ],
-      "themeEs": "Santos y oración",
+      "themeEs": "Oración y los fieles",
       "titleEs": "Rodeados de testigos",
       "passageEs": "POR tanto nosotros también, teniendo en derredor nuestro una tan grande nube de testigos, dejando todo el peso del pecado que nos rodea, corramos con paciencia la carrera que nos es propuesta, Puestos los ojos en el autor y consumador de la fe, en Jesús; el cual, habiéndole sido propuesto gozo, sufrió la cruz, menospreciando la vergüenza, y sentóse á la diestra del trono de Dios.",
       "contextEs": "Después de la larga lista de los héroes de la fe, Hebreos pinta la vida cristiana como una carrera en un estadio: “teniendo en derredor nuestro una tan grande nube de testigos” (Hebreos 12:1, RV1909). Deja todo peso, y corre mirando a Jesús, el autor y consumador de la fe.",
-      "orthodoxEs": "La Iglesia lee “testigos” (mártires) de manera activa, no como retratos muertos: los que terminaron están vivos en Cristo y rodean a los que corren, y por eso pedimos sus oraciones. La carrera se corre en compañía, hacia el rostro de Cristo.",
-      "practiceEs": "Corre hoy la carrera en compañía: pídele a un santo cuya historia conoces que ore por ti, por tu nombre, y anima a un creyente vivo como si estuvieras en su nube.",
+      "orthodoxEs": "“Testigos” (mártires) es una palabra activa, no una galería de retratos muertos: los que terminaron están vivos en Cristo (Lucas 20:38) y rodean a los que corren. La carrera se corre en compañía, hacia el rostro de Cristo.",
+      "practiceEs": "Corre hoy la carrera en compañía: dale gracias a Dios por un creyente, de antes o de ahora, cuya fe fortalece la tuya, y anima a un creyente vivo como si estuvieras en su nube.",
       "questionsEs": [
         "Si los testigos fueran solo recuerdos, ¿seguiría funcionando la imagen? ¿Qué añade “en derredor nuestro”?",
         "¿Qué peso —no solo el pecado, sino la carga que estorba— está frenando más tu carrera?"
@@ -4674,17 +4678,19 @@
           "promptEs": "¿Dónde están fijos los ojos durante la carrera?",
           "explanationEs": "Hebreos 12:2: los testigos rodean; Jesús es la mirada."
         }
-      ]
+      ],
+      "deeperPractice": "Because the saints are alive in Christ, the older churches ask them for their prayers, the way you ask a friend at church. Pick one believer whose story you know and ask God for the same faith they had; the Church would add, \"and ask them to pray for you.\"",
+      "deeperPracticeEs": "Como los santos están vivos en Cristo, las iglesias más antiguas les piden sus oraciones, como le pedirías a un amigo de la iglesia. Escoge a un creyente cuya historia conoces y pídele a Dios la misma fe que tuvo; la Iglesia añadiría: “y pídele que ore por ti”."
     },
     {
       "id": "persistent-widow",
       "order": 65,
       "title": "Pray, and do not faint",
       "reference": "Luke 18:1–8",
-      "theme": "Saints & Prayer",
+      "theme": "Prayer & the Faithful",
       "passage": "And he spake a parable unto them to this end, that men ought always to pray, and not to faint; saying, There was in a city a judge, which feared not God, neither regarded man: and there was a widow in that city; and she came unto him, saying, Avenge me of mine adversary. And he would not for a while: but afterward he said within himself, Though I fear not God, nor regard man; yet because this widow troubleth me, I will avenge her, lest by her continual coming she weary me. And the Lord said, Hear what the unjust judge saith. And shall not God avenge his own elect, which cry day and night unto him, though he bear long with them? I tell you that he will avenge them speedily. Nevertheless when the Son of man cometh, shall he find faith on the earth?",
       "context": "Jesus tells a parable \"to this end, that men ought always to pray, and not to faint\": a widow wears down an unjust judge by her coming. If even he answers, how much more will God — who is not unjust — avenge his elect who cry day and night?",
-      "orthodox": "St. Luke gives the parable's purpose before the story: persistence is the point. The Church's unceasing prayer (the Jesus Prayer, prayed by Christians since the desert fathers) is this widow's knocking turned into a way of life.",
+      "orthodox": "St. Luke gives the parable's purpose before the story: persistence is the point. Paul says the same thing in three words: \"Pray without ceasing\" (1 Thessalonians 5:17). The widow's knocking becomes a way of life.",
       "practice": "Take one request you gave up on and bring it back today. Pray it morning, noon, and night — briefly, stubbornly, like the widow.",
       "questions": [
         "The judge answers because of persistence, not justice. Is Jesus saying God must be worn down — or the opposite?",
@@ -4712,11 +4718,11 @@
           "explanation": "Luke 18:7–8: speedily — the delay is ours to interpret, not his character."
         }
       ],
-      "themeEs": "Santos y oración",
+      "themeEs": "Oración y los fieles",
       "titleEs": "Orad, y no desmayéis",
       "passageEs": "Y PROPÚSOLES también una parábola sobre que es necesario orar siempre, y no desmayar, Diciendo: Había un juez en una ciudad, el cual ni temía á Dios, ni respetaba á hombre. Había también en aquella ciudad una viuda, la cual venía á él diciendo: Hazme justicia de mi adversario. Pero él no quiso por algún tiempo; mas después de esto dijo dentro de sí: Aunque ni temo á Dios, ni tengo respeto á hombre, Todavía, porque esta viuda me es molesta, le haré justicia, porque al fin no venga y me muela. Y dijo el Señor: Oid lo que dice el juez injusto. ¿Y Dios no hará justicia á sus escogidos, que claman á él día y noche, aunque sea longánime acerca de ellos? Os digo que los defenderá presto. Empero cuando el Hijo del hombre viniere, ¿hallará fe en la tierra?",
       "contextEs": "Jesús cuenta una parábola “sobre que es necesario orar siempre, y no desmayar” (Lucas 18:1, RV1909): una viuda desgasta a un juez injusto a fuerza de venir. Si hasta él responde, cuánto más Dios —que no es injusto— hará justicia a sus escogidos, que claman día y noche.",
-      "orthodoxEs": "San Lucas da el propósito de la parábola antes del relato: la persistencia es el punto. La oración incesante de la Iglesia (la oración de Jesús, rezada por los cristianos desde los padres del desierto) es el tocar de esta viuda, vuelto modo de vida.",
+      "orthodoxEs": "San Lucas da el propósito de la parábola antes del relato: la persistencia es el punto. Pablo dice lo mismo en pocas palabras: “Orad sin cesar” (1 Tesalonicenses 5:17, RV1909). El tocar de la viuda se vuelve modo de vida.",
       "practiceEs": "Toma un pedido que habías abandonado y tráelo de nuevo hoy. Óralo mañana, mediodía y noche: breve, terco, como la viuda.",
       "questionsEs": [
         "El juez responde por la persistencia, no por la justicia. ¿Está diciendo Jesús que hay que desgastar a Dios, o lo contrario?",
@@ -4747,18 +4753,20 @@
           "promptEs": "¿Qué promete Dios a sus escogidos que claman día y noche?",
           "explanationEs": "Lucas 18:7–8: presto. La demora es nuestra de interpretar, no su carácter."
         }
-      ]
+      ],
+      "deeperPractice": "Christians since the desert fathers have tried to obey \"pray without ceasing\" with the Jesus Prayer, repeated quietly through the day: \"Lord Jesus Christ, Son of God, have mercy on me, a sinner.\"",
+      "deeperPracticeEs": "Desde los padres del desierto, los cristianos han tratado de obedecer “orad sin cesar” con la oración de Jesús, repetida en silencio durante el día: “Señor Jesucristo, Hijo de Dios, ten piedad de mí, pecador”."
     },
     {
       "id": "tax-collector",
       "order": 66,
       "title": "God be merciful to me a sinner",
       "reference": "Luke 18:9–14",
-      "theme": "Saints & Prayer",
+      "theme": "Prayer & the Faithful",
       "passage": "And he spake this parable unto certain which trusted in themselves that they were righteous, and despised others: Two men went up into the temple to pray; the one a Pharisee, and the other a publican. The Pharisee stood and prayed thus with himself, God, I thank thee, that I am not as other men are, extortioners, unjust, adulterers, or even as this publican. I fast twice in the week, I give tithes of all that I possess. And the publican, standing afar off, would not lift up so much as his eyes unto heaven, but smote upon his breast, saying, God be merciful to me a sinner. I tell you, this man went down to his house justified rather than the other: for every one that exalteth himself shall be abased; and he that humbleth himself shall be exalted.",
       "context": "Two men pray in the temple. The Pharisee thanks God he is not like other men — and lists his résumé. The tax collector, eyes down, beats his breast: \"God be merciful to me a sinner.\" Jesus: this man went home justified, not the other.",
-      "orthodox": "From this tax collector the Church learned her most-prayed prayer: \"Lord Jesus Christ, Son of God, have mercy on me, a sinner.\" Justification here is not earned by the comparison game; it falls on the one who stops comparing.",
-      "practice": "Pray the Jesus Prayer slowly ten times today, breathing with it, and refuse one comparison — of yourself above or below anyone — when it comes.",
+      "orthodox": "The tax collector's prayer is seven words long and Jesus says it was enough. Justification here is not earned by the comparison game; it falls on the one who stops comparing.",
+      "practice": "Pray the tax collector's words slowly ten times today, breathing with them: \"God be merciful to me a sinner.\" Refuse one comparison, of yourself above or below anyone, when it comes.",
       "questions": [
         "The Pharisee's prayer is largely true facts. Why does it justify no one?",
         "Why does the tax collector not even lift his eyes — and why does that become the Church's model prayer?"
@@ -4785,12 +4793,12 @@
           "explanation": "Luke 18:14: exaltation and humility trade places in God's house."
         }
       ],
-      "themeEs": "Santos y oración",
+      "themeEs": "Oración y los fieles",
       "titleEs": "Dios, sé propicio a mí, pecador",
       "passageEs": "Y dijo también á unos que confiaban de sí como justos, y menospreciaban á los otros, esta parábola: Dos hombres subieron al templo á orar: el uno Fariseo, el otro publicano. El Fariseo, en pie, oraba consigo de esta manera: Dios, te doy gracias, que no soy como los otros hombres, ladrones, injustos, adúlteros, ni aun como este publicano; Ayuno dos veces á la semana, doy diezmos de todo lo que poseo. Mas el publicano estando lejos no quería ni aun alzar los ojos al cielo, sino que hería su pecho, diciendo: Dios, sé propicio á mí pecador. Os digo que éste descendió á su casa justificado antes que el otro; porque cualquiera que se ensalza, será humillado; y el que se humilla, será ensalzado.",
       "contextEs": "Dos hombres oran en el templo. El fariseo le da gracias a Dios de no ser como los demás hombres, y enumera su currículum. El publicano, con los ojos bajos, se golpea el pecho: “Dios, sé propicio á mí pecador” (Lucas 18:13, RV1909). Jesús: este descendió a su casa justificado, y no el otro.",
-      "orthodoxEs": "De este publicano aprendió la Iglesia su oración más rezada: “Señor Jesucristo, Hijo de Dios, ten piedad de mí, pecador”. Aquí la justificación no se gana en el juego de las comparaciones; cae sobre el que deja de compararse.",
-      "practiceEs": "Ora hoy la oración de Jesús despacio, diez veces, respirando con ella, y rechaza una comparación —de ti por encima o por debajo de alguien— cuando llegue.",
+      "orthodoxEs": "La oración del publicano es cortita, y Jesús dice que bastó. Aquí la justificación no se gana en el juego de las comparaciones; cae sobre el que deja de compararse.",
+      "practiceEs": "Ora hoy despacio, diez veces, las palabras del publicano, respirando con ellas: “Dios, sé propicio á mí pecador”. Rechaza una comparación —de ti por encima o por debajo de alguien— cuando llegue.",
       "questionsEs": [
         "La oración del fariseo es, en gran parte, hechos verdaderos. ¿Por qué no justifica a nadie?",
         "¿Por qué el publicano ni siquiera alza los ojos, y por qué eso llega a ser la oración modelo de la Iglesia?"
@@ -4820,17 +4828,19 @@
           "promptEs": "¿Qué concluye Jesús?",
           "explanationEs": "Lucas 18:14: en la casa de Dios, el ensalzarse y la humildad cambian de lugar."
         }
-      ]
+      ],
+      "deeperPractice": "From this prayer the Church shaped her most-prayed prayer, the Jesus Prayer: \"Lord Jesus Christ, Son of God, have mercy on me, a sinner.\" Many pray it slowly with each breath, sometimes on a prayer rope.",
+      "deeperPracticeEs": "De esta oración la Iglesia formó su oración más rezada, la oración de Jesús: “Señor Jesucristo, Hijo de Dios, ten piedad de mí, pecador”. Muchos la oran despacio con cada respiración, a veces con un cordón de oración."
     },
     {
       "id": "magnificat",
       "order": 67,
       "title": "My soul magnifies the Lord",
       "reference": "Luke 1:39–55",
-      "theme": "Saints & Prayer",
+      "theme": "Prayer & the Faithful",
       "passage": "And Mary arose in those days, and went into the hill country with haste, into a city of Juda; and entered into the house of Zacharias, and saluted Elisabeth. And it came to pass, that, when Elisabeth heard the salutation of Mary, the babe leaped in her womb; and Elisabeth was filled with the Holy Ghost: and she spake out with a loud voice, and said, Blessed art thou among women, and blessed is the fruit of thy womb. And whence is this to me, that the mother of my Lord should come to me? For, lo, as soon as the voice of thy salutation sounded in mine ears, the babe leaped in my womb for joy. And blessed is she that believed: for there shall be a performance of those things which were told her from the Lord. And Mary said, My soul doth magnify the Lord, And my spirit hath rejoiced in God my Saviour. For he hath regarded the low estate of his handmaiden: For, behold, from henceforth all generations shall call me blessed. For he that is mighty hath done to me great things; And holy is his name. And his mercy is on them that fear him From generation to generation. He hath shewed strength with his arm; He hath scattered the proud in the imagination of their hearts. He hath put down the mighty from their seats, And exalted them of low degree. He hath filled the hungry with good things; And the rich he hath sent empty away. He hath holpen his servant Israel, In remembrance of his mercy; As he spake to our fathers, To Abraham, and to his seed for ever.",
       "context": "Mary hurries to Elizabeth, whose child leaps at her greeting: \"Blessed art thou among women.\" Mary answers with the church's first hymn: her soul magnifies the Lord; the mighty are scattered, the humble exalted, the hungry filled — as he promised Abraham.",
-      "orthodox": "The Church calls Mary Theotokos (God-bearer) because the child she magnifies God for is God himself in the flesh; her song is prayed daily at Vespers (in Western use) and in the morning canon. She is the first theologian of the incarnation, and her doctrine is joy at God's reversals.",
+      "orthodox": "Elizabeth calls Mary \"the mother of my Lord\" (Luke 1:43), because the child Mary carries is God himself in the flesh. Her song is the first hymn of the incarnation, and her teaching is joy at God's reversals.",
       "practice": "Pray Mary's song aloud today. When you reach \"he hath filled the hungry with good things,\" name your hunger and let him fill it.",
       "questions": [
         "Why does the Magnificat celebrate God throwing down the mighty — is Mary preaching politics or something deeper?",
@@ -4858,11 +4868,11 @@
           "explanation": "Luke 1:51–52: the great reversal is Mary's whole theology in seed."
         }
       ],
-      "themeEs": "Santos y oración",
+      "themeEs": "Oración y los fieles",
       "titleEs": "Mi alma engrandece al Señor",
       "passageEs": "En aquellos días levantándose María, fué á la montaña con priesa, á una ciudad de Judá; Y entró en casa de Zacarías, y saludó á Elisabet. Y aconteció, que como oyó Elisabet la salutación de María, la criatura saltó en su vientre; y Elisabet fué llena del Espíritu Santo, Y exclamó á gran voz, y dijo: Bendita tú entre las mujeres, y bendito el fruto de tu vientre. ¿Y de dónde esto á mí, que la madre de mi Señor venga á mí? Porque he aquí, como llegó la voz de tu salutación á mis oídos, la criatura saltó de alegría en mi vientre. Y bienaventurada la que creyó, porque se cumplirán las cosas que le fueron dichas de parte del Señor. Entonces María dijo: engrandece mi alma al Señor; Y mi espíritu se alegró en Dios mi Salvador. Porque ha mirado á la bajeza de su criada; porque he aquí, desde ahora me dirán bienaventurada todas las generaciones. Porque me ha hecho grandes cosas el Poderoso; y santo es su nombre. Y su misericordia de generación á generación á los que le temen. Hizo valentía con su brazo: esparció los soberbios del pensamiento de su corazón. Quitó los poderosos de los tronos, y levantó á los humildes. A los hambrientos hinchió de bienes; y á los ricos envió vacíos. Recibió á Israel su siervo, acordándose de la misericordia, Como habló á nuestros padres á Abraham y á su simiente para siempre.",
       "contextEs": "María se apresura hacia Elisabet, cuyo niño salta al oír su saludo: “Bendita tú entre las mujeres” (Lucas 1:42, RV1909). María responde con el primer himno de la Iglesia: su alma engrandece al Señor; los soberbios son esparcidos, los humildes levantados, los hambrientos llenos, como se lo prometió a Abraham.",
-      "orthodoxEs": "La Iglesia llama a María Theotokos (la que dio a luz a Dios) porque el niño por quien ella engrandece a Dios es Dios mismo en la carne. Su cántico se ora cada día en las Vísperas (en el uso occidental) y en el canon de la mañana. Ella es la primera teóloga de la encarnación, y su doctrina es el gozo ante los vuelcos de Dios.",
+      "orthodoxEs": "Elisabet llama a María “la madre de mi Señor” (Lucas 1:43, RV1909), porque el niño que María lleva es Dios mismo en la carne. Su cántico es el primer himno de la encarnación, y su enseñanza es el gozo ante los vuelcos de Dios.",
       "practiceEs": "Ora hoy en voz alta el cántico de María. Cuando llegues a “A los hambrientos hinchió de bienes” (Lucas 1:53, RV1909), nombra tu hambre y deja que él la llene.",
       "questionsEs": [
         "¿Por qué celebra el Magníficat que Dios derribe a los poderosos? ¿Está María predicando política, o algo más hondo?",
@@ -4893,17 +4903,19 @@
           "promptEs": "¿Qué ha hecho Dios con los soberbios y con los humildes?",
           "explanationEs": "Lucas 1:51–52: el gran vuelco es toda la teología de María, en semilla."
         }
-      ]
+      ],
+      "deeperPractice": "The older churches call Mary Theotokos (God-bearer) for the same reason Elizabeth called her the mother of the Lord. Her song is prayed every day in evening and morning worship, and \"all generations shall call me blessed\" (Luke 1:48) is taken as a promise to keep.",
+      "deeperPracticeEs": "Las iglesias más antiguas llaman a María Theotokos (la que dio a luz a Dios) por la misma razón por la que Elisabet la llamó madre del Señor. Su cántico se ora cada día en el culto de la tarde y de la mañana, y “me dirán bienaventurada todas las generaciones” (Lucas 1:48, RV1909) se toma como una promesa que cumplir."
     },
     {
       "id": "anointing-elders",
       "order": 68,
       "title": "The prayer of faith shall save the sick",
       "reference": "James 5:13–16",
-      "theme": "Saints & Prayer",
+      "theme": "Prayer & the Faithful",
       "passage": "Is any among you afflicted? let him pray. Is any merry? let him sing psalms. Is any sick among you? let him call for the elders of the church; and let them pray over him, anointing him with oil in the name of the Lord: and the prayer of faith shall save the sick, and the Lord shall raise him up; and if he have committed sins, they shall be forgiven him. Confess your faults one to another, and pray one for another, that ye may be healed. The effectual fervent prayer of a righteous man availeth much.",
       "context": "James gives the Church her bedside pattern: suffering? pray. Merry? sing psalms. Sick? Call the elders to pray and anoint with oil in the Lord's name — and confess your faults to one another, for the prayer of a righteous man avails much.",
-      "orthodox": "The Church kept this as the mystery of Holy Unction: healing is God's gift through prayer, oil, and the gathered Church, and it is tied to confession — body and soul treated together because the person is one.",
+      "orthodox": "James ties healing to prayer, oil, the gathered Church, and confession: body and soul are cared for together because the person is one.",
       "practice": "Confess one fault today to one trusted believer, out loud, and pray for one sick person by name — the two are one prescription here.",
       "questions": [
         "Why does James join confession \"one to another\" to healing prayer?",
@@ -4931,11 +4943,11 @@
           "explanation": "James 5:16: fervency and righteousness, joined to confession."
         }
       ],
-      "themeEs": "Santos y oración",
+      "themeEs": "Oración y los fieles",
       "titleEs": "La oración de fe salvará al enfermo",
       "passageEs": "¿Está alguno entre vosotros afligido? haga oración. ¿Está alguno alegre? cante salmos. ¿Está alguno enfermo entre vosotros? llame á los ancianos de la iglesia, y oren por él, ungiéndole con aceite en el nombre del Señor. Y la oración de fe salvará al enfermo, y el Señor lo levantará; y si estuviere en pecados, le serán perdonados. Confesaos vuestras faltas unos á otros, y rogad los unos por los otros, para que seáis sanos; la oración del justo, obrando eficazmente, puede mucho.",
       "contextEs": "Santiago le da a la Iglesia su patrón de cabecera: ¿hay aflicción? Ore. ¿Hay alegría? Cante salmos. ¿Hay un enfermo? Que llame a los ancianos para que oren y lo unjan con aceite en el nombre del Señor, y confiésense las faltas unos a otros, porque la oración del justo, obrando eficazmente, puede mucho.",
-      "orthodoxEs": "La Iglesia guardó esto como el misterio de la Santa Unción: la sanidad es don de Dios por medio de la oración, del aceite y de la Iglesia reunida, y está atada a la confesión. El cuerpo y el alma se tratan juntos, porque la persona es una.",
+      "orthodoxEs": "Santiago une la sanidad a la oración, al aceite, a la Iglesia reunida y a la confesión: el cuerpo y el alma se cuidan juntos, porque la persona es una.",
       "practiceEs": "Confiesa hoy una falta, en voz alta, a un creyente de confianza, y ora por un enfermo, por su nombre. Aquí las dos cosas son una sola receta.",
       "questionsEs": [
         "¿Por qué junta Santiago la confesión “unos á otros” con la oración por la sanidad?",
@@ -4966,7 +4978,9 @@
           "promptEs": "En la frase de Santiago, ¿qué puede mucho?",
           "explanationEs": "Santiago 5:16: el fervor y la justicia, unidos a la confesión."
         }
-      ]
+      ],
+      "deeperPractice": "The older churches kept this passage as the sacrament of Holy Unction: the priests anoint the sick with oil and pray over them, joined to confession, just as James describes.",
+      "deeperPracticeEs": "Las iglesias más antiguas guardaron este pasaje como el sacramento de la Santa Unción: los sacerdotes ungen con aceite a los enfermos y oran por ellos, unido a la confesión, tal como lo describe Santiago."
     },
     {
       "id": "gehenna-mercy",
@@ -5195,7 +5209,7 @@
       "theme": "The Church",
       "passage": "And they continued stedfastly in the apostles' doctrine and fellowship, and in breaking of bread, and in prayers. And fear came upon every soul: and many wonders and signs were done by the apostles. And all that believed were together, and had all things common; and sold their possessions and goods, and parted them to all men, as every man had need. And they, continuing daily with one accord in the temple, and breaking bread from house to house, did eat their meat with gladness and singleness of heart, praising God, and having favour with all the people. And the Lord added to the church daily such as should be saved.",
       "context": "The newborn Church's life in one paragraph: steadfast in the apostles' doctrine, fellowship, breaking of bread, and prayers — sharing possessions, eating with gladness, praising God, and growing daily.",
-      "orthodox": "The Church reads Acts 2:42 as her own constitution: teaching, communion, the Eucharist (\"breaking of bread\"), and prayer — before programs and buildings. Generosity here is not communism imposed but family practiced; \"had all things common\" flows from the altar outward.",
+      "orthodox": "The Church reads Acts 2:42 as her own constitution: teaching, fellowship, the Lord's Supper (\"breaking of bread\"), and prayer, before programs and buildings. Generosity here is not communism imposed but family practiced; \"had all things common\" flows outward from the Lord's table.",
       "practice": "Practice one line today: share one thing you own (a meal, a tool, your car ride) as if it were the family's, not yours.",
       "questions": [
         "The order matters: doctrine, fellowship, breaking bread, prayers. What falls apart when the order is shuffled?",
@@ -5227,7 +5241,7 @@
       "titleEs": "Perseveraban",
       "passageEs": "Y perseveraban en la doctrina de los apóstoles, y en la comunión, y en el partimiento del pan, y en las oraciones. Y toda persona tenía temor: y muchas maravillas y señales eran hechas por los apóstoles. Y todos los que creían estaban juntos; y tenían todas las cosas comunes; Y vendían las posesiones, y las haciendas, y repartíanlas á todos, como cada uno había menester. Y perseverando unánimes cada día en el templo, y partiendo el pan en las casas, comían juntos con alegría y con sencillez de corazón, Alabando á Dios, y teniendo gracia con todo el pueblo. Y el Señor añadía cada día á la iglesia los que habían de ser salvos.",
       "contextEs": "La vida de la Iglesia recién nacida, en un párrafo: perseveraban en la doctrina de los apóstoles, en la comunión, en el partimiento del pan y en las oraciones; compartían lo que tenían, comían con alegría, alababan a Dios y crecían cada día.",
-      "orthodoxEs": "La Iglesia lee Hechos 2:42 como su propia constitución: enseñanza, comunión, la Eucaristía (“el partimiento del pan”) y la oración, antes que los programas y los edificios. Aquí la generosidad no es un comunismo impuesto, sino una familia practicada; “tenían todas las cosas comunes” sale del altar hacia afuera.",
+      "orthodoxEs": "La Iglesia lee Hechos 2:42 como su propia constitución: enseñanza, comunión, la Cena del Señor (“el partimiento del pan”) y la oración, antes que los programas y los edificios. Aquí la generosidad no es un comunismo impuesto, sino una familia practicada; “tenían todas las cosas comunes” sale de la mesa del Señor hacia afuera.",
       "practiceEs": "Practica hoy una línea: comparte algo que es tuyo (una comida, una herramienta, un lugar en tu auto) como si fuera de la familia, no solo tuyo.",
       "questionsEs": [
         "El orden importa: doctrina, comunión, partimiento del pan, oraciones. ¿Qué se desarma cuando se baraja el orden?",

@@ -745,6 +745,8 @@
     'Prophets & Kings': 'Profetas y reyes',
     'Wisdom & Suffering': 'Sabiduría y sufrimiento',
     'Saints & Prayer': 'Santos y oración',
+    'Prayer & the Faithful': 'Oración y los fieles',
+    'Easter': 'Pascua',
     'FRIENDS': 'AMIGOS',
     'Study and play together': 'Estudien y jueguen juntos',
     'Get a friend code and share it. The other person sends a request, and you accept it before you are friends. You will see each other\'s studies finished and game levels beaten. Your notes stay private unless you choose to send one to a friend. Only you can see your friends list.': 'Obtén un código de amistad y compártelo. La otra persona envía una solicitud, y tú la aceptas antes de ser amigos. Verán los estudios terminados y los niveles de juego. Tus notas siguen privadas, a menos que elijas enviar una. Solo tú ves tu lista de amigos.',

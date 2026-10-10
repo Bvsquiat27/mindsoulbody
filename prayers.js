@@ -1,5 +1,7 @@
-/* Prayer rope and a lay prayer rule.
-   Texts are Isabel Florence Hapgood's translation in Service Book of the
+/* A Scripture-first daily prayer rule on the Pray tab, plus the Church's
+   older prayers and the prayer rope under Go deeper.
+   Main-path prayers quote the KJV and the Reina-Valera 1909 word for word.
+   The older prayers are Isabel Florence Hapgood's translation in Service Book of the
    Holy Orthodox-Catholic Apostolic (Greco-Russian) Church (Boston and New York:
    Houghton, Mifflin and Company, 1906). That edition is in the public domain.
    Rubrics in this file say which office each prayer is taken from. */
@@ -84,22 +86,22 @@
       ]
     },
     {
-      id:'shift',
-      title:'For the Shift: Before and After',
-      titleEs:'Para el turno: antes y después',
-      blurb:'For the ones who care for everyone else: a three-minute send-off and a coming-home prayer.',
+      id:'workday',
+      title:'For the Workday: Before and After',
+      titleEs:'Para el trabajo: antes y después',
+      blurb:'For the ones who care for everyone else: a short send-off and a coming-home prayer.',
       blurbEs:'Para quienes cuidan a todos los demás: una oración breve al salir y una al volver a casa.',
       blocks:[
-        ['rubric','Before the shift. Psalm 91 is yours today: He shall cover thee with his feathers, and under his wings shalt thou trust.'],
-        ['text','Lord, You are my refuge and my fortress. Cover the people waiting in those rooms, steady my hands, sharpen what I notice, and let me be kind when I am tired. I go in Your name, and I am not going alone.'],
-        ['rubric','After the shift, before you go home.'],
-        ['text','Lord, I saw hard things today and I hand them to You: every face, every room, every outcome I could not change. What was mine to carry is done. Wash this day off me. Let me come home whole, and let the people I love get the rested version of me. Amen.']
+        ['rubric','Before work. Pray Psalm 91:4: He shall cover thee with his feathers, and under his wings shalt thou trust.'],
+        ['text','Lord, You are my refuge and my fortress. Cover the people I will serve today, steady my hands, sharpen what I notice, and let me be kind when I am tired. I go in Your name, and I am not going alone.'],
+        ['rubric','After work, before you go home.'],
+        ['text','Lord, I saw hard things today and I hand them to You: every face, every need, every outcome I could not change. What was mine to carry is done. Wash this day off me. Let me come home whole, and let the people I love get the rested version of me. Amen.']
       ],
       blocksEs:[
-        ['rubric','Antes del turno. El Salmo 91 es tuyo hoy: con sus plumas te cubrirá, y debajo de sus alas estarás seguro.'],
-        ['text','Señor, tú eres mi refugio y mi fortaleza. Cubre a las personas que esperan en esos cuartos, afirma mis manos y hazme amable aun cuando esté cansada. Voy en tu nombre, y no voy sola.'],
-        ['rubric','Después del turno, antes de volver a casa.'],
-        ['text','Señor, hoy vi cosas difíciles y te las entrego: cada rostro, cada cuarto, cada resultado que no pude cambiar. Lo que me tocaba cargar ya terminó. Límpiame de este día y déjame llegar a casa entera. Amén.']
+        ['rubric','Antes del trabajo. Ora el Salmo 91:4: Con sus plumas te cubrirá, y debajo de sus alas estarás seguro.'],
+        ['text','Señor, tú eres mi refugio y mi fortaleza. Cubre a las personas a quienes voy a servir hoy, afirma mis manos, aclara lo que noto y hazme amable aun cuando esté cansada. Voy en tu nombre, y no voy sola.'],
+        ['rubric','Después del trabajo, antes de volver a casa.'],
+        ['text','Señor, hoy vi cosas difíciles y te las entrego: cada rostro, cada necesidad, cada resultado que no pude cambiar. Lo que me tocaba cargar ya terminó. Límpiame de este día y déjame llegar a casa entera, para que los que amo reciban la versión descansada de mí. Amén.']
       ]
     },
     {
@@ -202,7 +204,94 @@
   };
   for (const item of PRAYERS) Object.assign(item, PRAYER_ES[item.id] || {});
 
-  const DEFAULT_RULE = PRAYERS.filter(item => item.id !== 'communion').map(item => item.id);
+  /* The daily rule on the Pray tab: Scripture and plain prayer only. */
+  const SCRIPTURE_PRAYERS = [
+    {
+      id:'our-father',
+      title:'The Lord’s Prayer',
+      titleEs:'El Padrenuestro',
+      blurb:'The prayer Jesus taught, from Matthew 6.',
+      blurbEs:'La oración que Jesús enseñó, de Mateo 6.',
+      blocks:[
+        ['rubric','Matthew 6:9–13. Pray it slowly, one line at a time.'],
+        ['text','After this manner therefore pray ye: Our Father which art in heaven, Hallowed be thy name. Thy kingdom come. Thy will be done in earth, as it is in heaven. Give us this day our daily bread. And forgive us our debts, as we forgive our debtors. And lead us not into temptation, but deliver us from evil: For thine is the kingdom, and the power, and the glory, for ever. Amen.']
+      ],
+      blocksEs:[
+        ['rubric','Mateo 6:9–13. Óralo despacio, una línea a la vez.'],
+        ['text','Vosotros pues, oraréis así: Padre nuestro que estás en los cielos, santificado sea tu nombre. Venga tu reino. Sea hecha tu voluntad, como en el cielo, así también en la tierra. Danos hoy nuestro pan cotidiano. Y perdónanos nuestras deudas, como también nosotros perdonamos á nuestros deudores. Y no nos metas en tentación, mas líbranos del mal: porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amén.']
+      ]
+    },
+    {
+      id:'morning-psalms',
+      title:'Morning: new mercies',
+      titleEs:'En la mañana: misericordias nuevas',
+      blurb:'Three short verses to start the day, then your own words.',
+      blurbEs:'Tres versículos cortos para empezar el día, y después tus propias palabras.',
+      blocks:[
+        ['rubric','Psalm 5:3'],
+        ['text','My voice shalt thou hear in the morning, O LORD; In the morning will I direct my prayer unto thee, and will look up.'],
+        ['rubric','Lamentations 3:22–23'],
+        ['text','It is of the LORD\'s mercies that we are not consumed, Because his compassions fail not. They are new every morning: Great is thy faithfulness.'],
+        ['rubric','Psalm 143:8'],
+        ['text','Cause me to hear thy lovingkindness in the morning; For in thee do I trust: Cause me to know the way wherein I should walk; For I lift up my soul unto thee.'],
+        ['rubric','Then tell Him plainly what today holds, and ask for what you need.']
+      ],
+      blocksEs:[
+        ['rubric','Salmo 5:3'],
+        ['text','Oh Jehová, de mañana oirás mi voz; de mañana me presentaré á ti, y esperaré.'],
+        ['rubric','Lamentaciones 3:22–23'],
+        ['text','Es por la misericordia de Jehová que no somos consumidos, porque nunca decayeron sus misericordias. Nuevas son cada mañana; grande es tu fidelidad.'],
+        ['rubric','Salmo 143:8'],
+        ['text','Hazme oir por la mañana tu misericordia, porque en ti he confiado: hazme saber el camino por donde ande, porque á ti he alzado mi alma.'],
+        ['rubric','Luego cuéntale con sencillez lo que trae el día, y pídele lo que necesitas.']
+      ]
+    },
+    {
+      id:'evening-psalms',
+      title:'Evening: lie down in peace',
+      titleEs:'En la noche: en paz me acostaré',
+      blurb:'Hand the day back to God and rest.',
+      blurbEs:'Devuélvele el día a Dios y descansa.',
+      blocks:[
+        ['rubric','Psalm 141:2'],
+        ['text','Let my prayer be set forth before thee as incense; And the lifting up of my hands as the evening sacrifice.'],
+        ['rubric','Thank Him for one good thing from today. Name one thing you need to let go of.'],
+        ['rubric','Psalm 4:8'],
+        ['text','I will both lay me down in peace, and sleep: For thou, LORD, only makest me dwell in safety.']
+      ],
+      blocksEs:[
+        ['rubric','Salmo 141:2'],
+        ['text','Sea enderezada mi oración delante de ti como un perfume, el don de mis manos como la ofrenda de la tarde.'],
+        ['rubric','Dale gracias por una cosa buena de hoy. Nombra una cosa que necesitas soltar.'],
+        ['rubric','Salmo 4:8'],
+        ['text','En paz me acostaré, y asimismo dormiré; porque solo tú, Jehová, me harás estar confiado.']
+      ]
+    },
+    {
+      id:'table',
+      title:'At the table',
+      titleEs:'En la mesa',
+      blurb:'A verse before the meal and a thank-you after.',
+      blurbEs:'Un versículo antes de comer y un gracias después.',
+      blocks:[
+        ['rubric','Before the meal. Psalm 145:15–16'],
+        ['text','The eyes of all wait upon thee; And thou givest them their meat in due season. Thou openest thine hand, And satisfiest the desire of every living thing.'],
+        ['rubric','After the meal. Psalm 107:1'],
+        ['text','O give thanks unto the LORD, for he is good: For his mercy endureth for ever.']
+      ],
+      blocksEs:[
+        ['rubric','Antes de comer. Salmo 145:15–16'],
+        ['text','Los ojos de todos esperan en ti, y tú les das su comida en su tiempo. Abres tu mano, y colmas de bendición á todo viviente.'],
+        ['rubric','Después de comer. Salmo 107:1'],
+        ['text','Alabad á Jehová, porque es bueno; porque para siempre es su misericordia.']
+      ]
+    },
+    PRAYERS.find(item => item.id === 'workday')
+  ].filter(Boolean);
+  /* The Church's older prayers (Hapgood), shown only under Go deeper. */
+  const OLDER_PRAYERS = PRAYERS.filter(item => item.id !== 'workday');
+
+  const DEFAULT_RULE = SCRIPTURE_PRAYERS.map(item => item.id);
   let openId = '';
   let wakeSentinel = null;
   let practiceOpen = false;
@@ -276,7 +365,7 @@
     const rope = loadRope();
     const total = ropeTotal(rope);
     const sizes = [33, 50, 100];
-    const wake = typeof navigator !== 'undefined' && navigator.wakeLock ? '<p class="rope-wake">The screen stays awake while this page is open.</p>' : '';
+    const wake = practiceOpen && typeof navigator !== 'undefined' && navigator.wakeLock ? '<p class="rope-wake">The screen stays awake while this page is open.</p>' : '';
     return `<section class="card prayer-rope" id="prayer-rope"><span class="eyebrow">THE JESUS PRAYER</span><h2>Prayer rope</h2><p class="muted">Choose the knots, then tap once for each. A short pulse marks a knot. A stronger pulse marks a finished rope. Today’s count stays on this device.</p><div class="rope-sizes" role="group" aria-label="Knots on the rope">${sizes.map(size => `<button type="button" class="rope-size ${rope.preset===size?'active':''}" data-rope-size="${size}" aria-pressed="${rope.preset===size}">${size}</button>`).join('')}<button type="button" class="rope-size ${rope.preset==='custom'?'active':''}" data-rope-size="custom" aria-pressed="${rope.preset==='custom'}">Custom</button></div>${rope.preset==='custom'?`<label class="rope-custom">Custom knots<input id="rope-custom" type="number" min="1" max="500" inputmode="numeric" value="${esc(rope.custom)}" aria-label="Custom knot count"></label>`:''}<button type="button" class="rope-tap ${rope.complete?'rope-complete':''}" data-rope-tap aria-label="Advance one knot. ${esc(knotLabel(rope))} ${esc(ropePrayer())}"><span class="rope-prayer">${esc(ropePrayer())}</span><strong class="rope-count">${rope.complete?total:rope.count}<small> / ${total}</small></strong><span class="rope-hint">${rope.complete?'Rope complete. Tap to begin the next.':'Tap for the next knot'}</span></button><div class="rope-stats"><div><strong>${rope.ropes}</strong><small>${rope.ropes===1?'rope':'ropes'} completed</small></div><div><strong>${rope.today}</strong><small>knots today</small></div></div><p id="rope-live" class="visually-hidden" aria-live="polite"></p>${wake}</section>`;
   }
   function prayerBody(item){
@@ -294,7 +383,7 @@
   }
   function ruleHtml(){
     const rule = loadRule();
-    const visible = PRAYERS.filter(item => item.id !== 'communion');
+    const visible = SCRIPTURE_PRAYERS;
     const inRule = visible.filter(item => rule.included.includes(item.id));
     const doneCount = inRule.filter(item => rule.done[item.id]).length;
     const rows = visible.map(item => {
@@ -302,25 +391,34 @@
       const included = rule.included.includes(item.id);
       const done = !!rule.done[item.id];
       const open = openId === item.id;
-      return `<article class="rule-row ${included?'':'rule-off'}"><div class="rule-top"><label class="rule-include"><input type="checkbox" data-prayer-rule="${item.id}" ${included?'checked':''}><span>In my rule</span></label><label class="rule-done"><input type="checkbox" data-prayer-done="${item.id}" ${done?'checked':''} ${included?'':'disabled'}><span>Prayed today</span></label></div><h3>${esc(view.title)}</h3><p class="muted">${esc(view.blurb)}</p><button type="button" class="secondary" data-prayer-open="${item.id}" aria-expanded="${open}">${open?'Close the text':`Read ${esc(view.title)}`}</button>${open?`<div class="prayer-text" id="prayer-text-${item.id}">${prayerBody(view)}</div>`:''}</article>`;
+      return `<article class="rule-row ${included?'':'rule-off'}"><div class="rule-top"><label class="rule-include"><input type="checkbox" data-prayer-rule="${item.id}" ${included?'checked':''}><span>In my rule</span></label><label class="rule-done"><input type="checkbox" data-prayer-done="${item.id}" ${done?'checked':''} ${included?'':'disabled'}><span>Prayed today</span></label></div><h3>${esc(view.title)}</h3><p class="muted">${esc(view.blurb)}</p><button type="button" class="secondary" data-prayer-open="${item.id}" aria-expanded="${open}">${open?(esPrayer()?'Cerrar el texto':'Close the text'):(esPrayer()?`Leer: ${esc(view.title)}`:`Read ${esc(view.title)}`)}</button>${open?`<div class="prayer-text" id="prayer-text-${item.id}">${prayerBody(view)}</div>`:''}</article>`;
     }).join('');
-    return `<section class="card prayer-rule" id="prayer-rule"><span class="eyebrow">A DAILY RULE</span><h2>Prayer rule</h2><p class="muted">Choose which prayers belong in your rule. Check off the ones you pray today. The list clears after midnight on this device.</p><p class="rule-progress">${inRule.length?(esPrayer()?`${doneCount} de ${inRule.length} oradas hoy`:`${doneCount} of ${inRule.length} prayed today`):(esPrayer()?'Agrega al menos una oración a tu regla.':'Add at least one prayer to your rule.')}</p><div class="rule-list">${rows}</div>${esPrayer()?'<p class="prayer-source">Textos en inglés de Isabel Florence Hapgood, <cite>Service Book of the Holy Orthodox-Catholic Apostolic Church</cite> (Houghton, Mifflin and Company, 1906), de dominio público. No se usan traducciones modernas de libros litúrgicos.</p>':'<p class="prayer-source">Texts from Isabel Florence Hapgood, <cite>Service Book of the Holy Orthodox-Catholic Apostolic Church</cite> (Houghton, Mifflin and Company, 1906). That translation is in the public domain. Modern service-book translations are not used here.</p>'}</section>`;
+    return `<section class="card prayer-rule" id="prayer-rule"><span class="eyebrow">A DAILY RULE</span><h2>Prayer rule</h2><p class="muted">Choose which prayers belong in your rule. Check off the ones you pray today. The list clears after midnight on this device.</p><p class="rule-progress">${inRule.length?(esPrayer()?`${doneCount} de ${inRule.length} oradas hoy`:`${doneCount} of ${inRule.length} prayed today`):(esPrayer()?'Agrega al menos una oración a tu regla.':'Add at least one prayer to your rule.')}</p><div class="rule-list">${rows}</div>${esPrayer()?'<p class="prayer-source">Escritura de la Reina-Valera 1909.</p>':'<p class="prayer-source">Scripture from the King James Version.</p>'}</section>`;
   }
   function deeperHtml(){
-    const item = PRAYERS.find(entry => entry.id === 'communion');
-    if (!item) return '';
-    const view = prayerView(item);
-    const open = openId === item.id;
-    return `<section class="card prayer-rule" id="prayer-deeper"><span class="eyebrow">MORE PRAYERS</span><h2>${esc(view.title)}</h2><p class="muted">${esc(view.blurb)}</p><button type="button" class="secondary" data-prayer-open="${item.id}" aria-expanded="${open}">${open ? 'Close the text' : `Read ${esc(view.title)}`}</button>${open ? `<div class="prayer-text" id="prayer-text-${item.id}">${prayerBody(view)}</div>` : ''}${esPrayer()?'<p class="prayer-source">Textos en inglés de Isabel Florence Hapgood, <cite>Service Book of the Holy Orthodox-Catholic Apostolic Church</cite> (Houghton, Mifflin and Company, 1906), de dominio público.</p>':'<p class="prayer-source">Texts from Isabel Florence Hapgood, <cite>Service Book of the Holy Orthodox-Catholic Apostolic Church</cite> (Houghton, Mifflin and Company, 1906). That translation is in the public domain.</p>'}</section>`;
+    const rows = OLDER_PRAYERS.map(item => {
+      const view = prayerView(item);
+      const open = openId === item.id;
+      return `<article class="rule-row"><h3>${esc(view.title)}</h3><p class="muted">${esc(view.blurb)}</p><button type="button" class="secondary" data-prayer-open="${item.id}" aria-expanded="${open}">${open ? (esPrayer() ? 'Cerrar el texto' : 'Close the text') : (esPrayer() ? `Leer: ${esc(view.title)}` : `Read ${esc(view.title)}`)}</button>${open ? `<div class="prayer-text" id="prayer-text-${item.id}">${prayerBody(view)}</div>` : ''}</article>`;
+    }).join('');
+    const intro = esPrayer()
+      ? '<p class="muted">Estas son oraciones que los cristianos han orado por muchos siglos: las Horas, las Completas, el Trisagio y las oraciones antes de la Comunión. Puedes leerlas sin prisa, cuando quieras.</p>'
+      : '<p class="muted">Prayers Christians have prayed for many centuries: the Hours, Compline, the Trisagion, and the prayers before Communion. Read them slowly, whenever you like.</p>';
+    const source = esPrayer()
+      ? '<p class="prayer-source">Textos en inglés de Isabel Florence Hapgood, <cite>Service Book of the Holy Orthodox-Catholic Apostolic Church</cite> (Houghton, Mifflin and Company, 1906), de dominio público. La versión en español sigue esos textos.</p>'
+      : '<p class="prayer-source">Texts from Isabel Florence Hapgood, <cite>Service Book of the Holy Orthodox-Catholic Apostolic Church</cite> (Houghton, Mifflin and Company, 1906). That translation is in the public domain. Modern service-book translations are not used here.</p>';
+    return `<section class="card prayer-rule" id="prayer-deeper"><span class="eyebrow">${esPrayer() ? 'ORACIONES ANTIGUAS' : 'OLDER PRAYERS'}</span><h2>${esPrayer() ? 'Las oraciones antiguas de la Iglesia' : 'The Church’s older prayers'}</h2>${intro}<div class="rule-list">${rows}</div>${source}</section>${ropeHtml()}`;
   }
-  function html(){ return ropeHtml() + ruleHtml(); }
+  function html(){ return ruleHtml(); }
   function paint(){
     const rope = document.getElementById('prayer-rope');
     const rule = document.getElementById('prayer-rule');
     const deeper = document.getElementById('prayer-deeper');
-    if (rope) rope.outerHTML = ropeHtml();
+    // On Go deeper the rope sits right after #prayer-deeper and deeperHtml()
+    // returns both, so replace the old rope first and then the section.
+    if (deeper) { if (rope) rope.remove(); deeper.outerHTML = deeperHtml(); }
+    else if (rope) rope.outerHTML = ropeHtml();
     if (rule) rule.outerHTML = ruleHtml();
-    if (deeper) deeper.outerHTML = deeperHtml();
     if (window.MsbI18n) {
       ['prayer-rope', 'prayer-rule', 'prayer-deeper'].forEach(id => {
         const node = document.getElementById(id);

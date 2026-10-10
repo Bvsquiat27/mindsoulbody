@@ -11,7 +11,7 @@
    deleted, so another app on the same origin keeps its own caches.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v82';
+const CACHE_VERSION = 'v83';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -60,7 +60,19 @@ const DATA_FILES = [
   './data/offline-verses.json',
 ];
 
-const STORY_FILES = STORY_IDS.flatMap((id) => [`./img/stories/${id}.webp`, `./img/stories/${id}-512.webp`]);
+// Only the small covers are precached. The full-size pictures are cached
+// the first time a story is opened; offline, a missing one falls back to its
+// small cover.
+const STORY_FILES = STORY_IDS.map((id) => `./img/stories/${id}-512.webp`);
+
+function offlineResponse(url) {
+  const json = /\.json$/.test(url.pathname);
+  return new Response(json ? JSON.stringify({ offline: true, error: 'Not saved on this device yet.' }) : 'Not saved on this device yet.', {
+    status: 503,
+    statusText: 'Offline',
+    headers: { 'Content-Type': json ? 'application/json; charset=utf-8' : 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' }
+  });
+}
 
 const isBibleBook = (url) => /\/bible\/(?:index|\d\d)\.json$/.test(url.pathname);
 const isRvrBook = (url) => /\/bible\/rvr\/(?:index|\d\d)\.json$/.test(url.pathname);
@@ -175,7 +187,7 @@ self.addEventListener('fetch', (event) => {
           }
           return res;
         })
-        .catch(() => caches.match(request))
+        .catch(() => caches.match(request).then((hit) => hit || offlineResponse(url)))
     );
     return;
   }
@@ -190,7 +202,11 @@ self.addEventListener('fetch', (event) => {
       caches.open(STORIES_CACHE).then((cache) => cache.match(request).then((hit) => hit || fetch(request).then((res) => {
         if (res.ok) cache.put(request, res.clone());
         return res;
-      }).catch(() => caches.match(request))))
+      }).catch(() => {
+        const small = url.pathname.replace(/(\/img\/stories\/[a-z]+)\.webp$/, '$1-512.webp');
+        return (small !== url.pathname ? cache.match(new URL(small, url.origin).href) : Promise.resolve(null))
+          .then((hit) => hit || offlineResponse(url));
+      })))
     );
     return;
   }
