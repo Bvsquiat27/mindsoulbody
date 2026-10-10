@@ -143,7 +143,7 @@ test('study together notebook names verses and keeps the worker payload', () => 
 
 test('service worker refreshes Bible caches and only deletes this app', () => {
   const sw = read('sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v86'/);
+  assert.match(sw, /const CACHE_VERSION = 'v87'/);
   assert.match(sw, /const BIBLE_DATA_VERSION = 'kjv-3'/);
   assert.match(sw, /const RVR_DATA_VERSION = 'rvr1909-4'/);
   assert.match(sw, /function freshOrCached/);
