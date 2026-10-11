@@ -1016,6 +1016,20 @@
     "Off": "No"
   });
 
+  /* Coloring book: pen sizes. */
+  Object.assign(ES, {
+    "✏️ Pen size": "✏️ Grosor del lápiz",
+    "Pen size": "Grosor del lápiz",
+    "Pen size: ": "Grosor del lápiz: ",
+    "Very fine": "Muy fino",
+    "Fine": "Fino",
+    "Small": "Chico",
+    "Medium": "Mediano",
+    "Large": "Grande",
+    "Big": "Muy grande",
+    "Huge": "Enorme"
+  });
+
   /* Lesson tags, Bible-note bylines, and the game-show menus. */
   Object.assign(ES, {
     "STUDY": "ESTUDIO",

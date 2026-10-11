@@ -123,3 +123,48 @@ test('zoom, sound and vibration labels have Spanish', () => {
   assert.match(i18n, /"Drawing sounds": "Sonidos del dibujo"/);
   for (const k of ['Zoom in', 'Zoom out', '⤢ Fit', '✋ Move', 'Drawing vibration', 'On', 'Off', 'Pinch with two fingers to zoom and move the picture. One finger colors.']) assert.ok(i18n.includes(`"${k}":`), k);
 });
+
+test('pen sizes: 6-8 steps from very fine (~2) to very big (~48), default in the list', () => {
+  const sizes = C.BRUSH_SIZES.map(r => r[1]);
+  assert.ok(sizes.length >= 6 && sizes.length <= 8, `steps: ${sizes.length}`);
+  assert.equal(sizes[0], 2);
+  assert.equal(sizes[sizes.length - 1], 48);
+  for (let i = 1; i < sizes.length; i += 1) assert.ok(sizes[i] > sizes[i - 1]);
+  assert.ok(sizes.includes(C.DEFAULT_BRUSH));
+  assert.equal(new Set(C.BRUSH_SIZES.map(r => r[0])).size, sizes.length);
+});
+
+test('size dots show the real line width and grow with the size', () => {
+  assert.equal(C.sizeDot(22, 1200, 1200), 44);
+  assert.equal(C.sizeDot(48, 358, 1200), 28.5);
+  assert.equal(C.sizeDot(2, 358, 1200), 2, 'the finest pen still shows a visible dot');
+  const dots = C.BRUSH_SIZES.map(r => C.sizeDot(r[1], 358, 1200));
+  for (let i = 1; i < dots.length; i += 1) assert.ok(dots[i] > dots[i - 1], 'every step looks different');
+  assert.ok(dots[dots.length - 1] <= 40, 'largest dot fits its button on a 390px phone');
+});
+
+test('every pen size works for sparkle pens: specks stay inside the line', () => {
+  for (const [, size] of C.BRUSH_SIZES) {
+    for (const pen of ['gold', 'rainbow']) {
+      const st = C.sparkleStroke(pen, size, 3);
+      const pts = [];
+      for (let x = 100; x <= 700; x += 7) pts.push({ x, y: 300 });
+      const ops = [];
+      for (const p of pts) ops.push(...st.add(p));
+      ops.push(...st.end());
+      assert.ok(ops.some(o => o.t === 'tip'), `${pen} ${size} draws ink`);
+      for (const o of ops.filter(o => o.t === 'speck')) {
+        const glow = o.r * (o.star ? 2.4 : 1.6);
+        assert.ok(Math.abs(o.y - 300) + glow <= size + 1e-9, `${pen} size ${size}: speck outside the line`);
+      }
+    }
+  }
+});
+
+test('pen size labels have Spanish', () => {
+  const i18n = readFileSync(new URL('./i18n.js', import.meta.url), 'utf8');
+  for (const [, , en] of C.BRUSH_SIZES) assert.ok(i18n.includes(`"${en}":`), en);
+  assert.match(i18n, /"Very fine": "Muy fino"/);
+  assert.match(i18n, /"Huge": "Enorme"/);
+  assert.ok(i18n.includes('"Pen size: ":'));
+});

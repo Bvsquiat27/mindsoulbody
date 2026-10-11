@@ -102,14 +102,15 @@
     const [base, light] = GLITTER[pen];
     const rand = rng(seed);
     const spacing = Math.max(1.5, size * 0.22);
-    const perStamp = 0.0028 * size * size;
+    /* very fine pens are plain glitter ink: specks would be wider than the line */
+    const perStamp = size < 5 ? 0 : 0.0028 * size * size;
     const pending = [];
     let last = null, distance = 0;
     function specks(p) {
       const n = Math.floor(perStamp) + (rand() < perStamp % 1 ? 1 : 0);
       for (let i = 0; i < n; i += 1) {
         const star = rand() < 0.16;
-        const r = star ? Math.min(5 + rand() * 4, Math.max(2.5, size * 0.3)) : Math.min(1.8 + rand() * 2.4, Math.max(1.2, size * 0.2));
+        const r = Math.min(star ? Math.min(5 + rand() * 4, Math.max(2.5, size * 0.3)) : Math.min(1.8 + rand() * 2.4, Math.max(1.2, size * 0.2)), size * 0.8 / (star ? 2.4 : 1.6));
         /* keep the whole glow inside the ink, so a same-size eraser pass removes it */
         const angle = rand() * Math.PI * 2, reach = Math.max(0, size * 0.8 - r * (star ? 2.4 : 1.6)) * Math.sqrt(rand());
         const hue = rainbowHue(distance + 40 + rand() * 120);
@@ -220,7 +221,17 @@
     };
   }
 
-  const api = { lineLayer, flatten, undoStack, stampPoints, rng, hslHex, GLITTER, rainbowHue, sparkleStroke, paintOps, MAX_ZOOM, clampView, toPicture, zoomAt, pinchView, panView, brushAt, PREF_KEYS, prefs, tickGate };
+  /* Pen sizes, very fine to very big: brush radius in picture pixels (the
+     picture is 1200 wide). The same sizes serve crayons, sparkle pens and the eraser. */
+  const BRUSH_SIZES = [['xfine', 2, 'Very fine'], ['fine', 5, 'Fine'], ['small', 10, 'Small'], ['medium', 22, 'Medium'], ['large', 30, 'Large'], ['big', 38, 'Big'], ['huge', 48, 'Huge']];
+  const DEFAULT_BRUSH = 22;
+  /* Diameter in CSS pixels of the line a size draws on a stage this wide at fit
+     (and, since the brush keeps its on-screen size, at any zoom). */
+  function sizeDot(size, stageWidth, pictureWidth) {
+    return Math.max(2, Math.round(size * 2 * stageWidth / (pictureWidth || 1200) * 2) / 2);
+  }
+
+  const api = { BRUSH_SIZES, DEFAULT_BRUSH, sizeDot, lineLayer, flatten, undoStack, stampPoints, rng, hslHex, GLITTER, rainbowHue, sparkleStroke, paintOps, MAX_ZOOM, clampView, toPicture, zoomAt, pinchView, panView, brushAt, PREF_KEYS, prefs, tickGate };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbColoringCore = api;
 })(typeof self !== 'undefined' ? self : this);
