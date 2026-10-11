@@ -6,33 +6,44 @@
 (() => {
   'use strict';
   const PAGES = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
+  /* 28 crayons, 7 to a row: brights, pastels, skin tones and browns, grays.
+     Names go through the app dictionary (i18n.js) for Spanish. */
   const COLORS = [
-    ['#e53935', 'Red', 'Rojo'], ['#fb8c00', 'Orange', 'Naranja'], ['#fdd835', 'Yellow', 'Amarillo'], ['#9ccc65', 'Light green', 'Verde claro'],
-    ['#2e7d32', 'Green', 'Verde'], ['#4fc3f7', 'Sky blue', 'Celeste'], ['#1e5bd8', 'Blue', 'Azul'], ['#8e24aa', 'Purple', 'Morado'],
-    ['#f48fb1', 'Pink', 'Rosado'], ['#8d5524', 'Brown', 'Café'], ['#f6c9a0', 'Peach', 'Durazno'], ['#757575', 'Gray', 'Gris']
+    ['#e53935', 'Red'], ['#d81b60', 'Magenta'], ['#f48fb1', 'Pink'], ['#ff8a65', 'Coral'], ['#fb8c00', 'Orange'], ['#f6c9a0', 'Peach'], ['#fdd835', 'Yellow'],
+    ['#fff59d', 'Lemon'], ['#d4a017', 'Gold'], ['#9ccc65', 'Light green'], ['#2e7d32', 'Green'], ['#00897b', 'Teal'], ['#a8e6cf', 'Mint'], ['#4fc3f7', 'Sky blue'],
+    ['#b3d9ff', 'Baby blue'], ['#1e5bd8', 'Blue'], ['#1a237e', 'Navy'], ['#8e24aa', 'Purple'], ['#c5a3e8', 'Lavender'], ['#ffdbac', 'Light tan'], ['#e0ac69', 'Tan'],
+    ['#c68642', 'Caramel'], ['#8d5524', 'Chocolate'], ['#4e342e', 'Dark brown'], ['#ffffff', 'White'], ['#bdbdbd', 'Light gray'], ['#757575', 'Gray'], ['#212121', 'Black']
   ];
+  /* Sparkle pens: glitter ink plus bright specks (see MsbColoringCore.sparkleStroke). */
+  const GLITTERS = [['gold', 'Gold glitter'], ['silver', 'Silver glitter'], ['pink', 'Pink glitter'], ['purple', 'Purple glitter'], ['blue', 'Blue glitter'], ['rainbow', 'Rainbow glitter']];
+  const SWATCH = { gold: '#d9a400', silver: '#9ea7b2', pink: '#ff4fa3', purple: '#8a3ffc', blue: '#1f7cff', rainbow: 'conic-gradient(#ff3b3b,#ffb300,#ffee33,#3ddc84,#2f8cff,#9b4dff,#ff3b3b)' };
   const SIZES = [['small', 10, 'Small', 'Chico'], ['medium', 22, 'Medium', 'Mediano'], ['big', 40, 'Big', 'Grande']];
   const W = 1200, H = 675;
   const core = () => window.MsbColoringCore;
   const es = () => !!(window.MsbI18n && MsbI18n.lang() === 'es');
   const t = (en, sp) => es() ? sp : en;
+  const L = en => window.MsbI18n ? MsbI18n.t(en) : en;
   const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const thumb = id => `img/coloring/${id}-400.webp`;
   const page = id => `img/coloring/${id}.png`;
   let session = null;
   const sprites = new Map();
+  const speckSprites = new Map();
 
   function gridHtml(titleOf) {
     return `<section class="coloring-book" data-i18n-skip><h2>${t('Coloring book', 'Libro para colorear')}</h2><p class="muted">${t('Pick a picture, choose a color, and color it in with your finger.', 'Escoge un dibujo, elige un color y coloréalo con el dedo.')}</p><div class="coloring-grid">${PAGES.map(id => `<button type="button" class="card coloring-thumb" data-coloring-open="${id}"><img src="${thumb(id)}" width="400" height="225" alt="" loading="lazy" decoding="async"><span>${esc(titleOf(id))}</span></button>`).join('')}</div></section>`;
   }
 
   function screenHtml(title) {
-    const dots = COLORS.map(([hex, en, sp], i) => `<button type="button" class="coloring-dot${i === 0 ? ' active' : ''}" data-coloring-color="${hex}" style="--dot:${hex}" aria-label="${esc(t(en, sp))}" aria-pressed="${i === 0}"></button>`).join('');
+    const dots = COLORS.map(([hex, en], i) => `<button type="button" class="coloring-dot${i === 0 ? ' active' : ''}" data-coloring-color="${hex}" style="--dot:${hex}" aria-label="${esc(L(en))}" title="${esc(L(en))}" aria-pressed="${i === 0}"></button>`).join('');
+    const glitters = GLITTERS.map(([id, en]) => `<button type="button" class="coloring-dot coloring-glitter" data-coloring-glitter="${id}" style="--dot:${SWATCH[id]}" aria-label="${esc(L(en))}" title="${esc(L(en))}" aria-pressed="false"></button>`).join('');
     const sizes = SIZES.map(([id, px, en, sp]) => `<button type="button" class="coloring-tool coloring-size${id === 'medium' ? ' active' : ''}" data-coloring-size="${px}" aria-pressed="${id === 'medium'}" aria-label="${esc(t('Brush size: ' + en, 'Tamaño del pincel: ' + sp))}"><i style="--size:${Math.round(px / 2.5) + 4}px"></i>${esc(t(en, sp))}</button>`).join('');
     return `<div class="coloring-screen" data-i18n-skip><button class="text-button back" type="button" data-coloring-back>${t('← Stories', '← Historias')}</button><span class="eyebrow">${t('COLORING BOOK', 'LIBRO PARA COLOREAR')}</span><h1>${esc(title)}</h1>
       <div class="coloring-stage"><canvas class="coloring-color" width="${W}" height="${H}"></canvas><canvas class="coloring-lines" width="${W}" height="${H}" role="img" aria-label="${esc(t('Coloring page: ', 'Dibujo para colorear: ') + title)}"></canvas></div>
       <p class="coloring-status muted" aria-live="polite">${t('Loading the picture…', 'Cargando el dibujo…')}</p>
-      <div class="coloring-dots" role="group" aria-label="${t('Colors', 'Colores')}">${dots}</div>
+      <div class="coloring-dots" role="group" aria-label="${esc(L('Colors'))}">${dots}</div>
+      <p class="coloring-sparkle-title">${esc(L('✨ Sparkle pens'))}</p>
+      <div class="coloring-dots coloring-glitters" role="group" aria-label="${esc(L('Sparkle pens'))}">${glitters}</div>
       <div class="coloring-tools" role="group" aria-label="${t('Brush', 'Pincel')}">${sizes}<button type="button" class="coloring-tool" data-coloring-eraser aria-pressed="false">🧽 ${t('Eraser', 'Borrador')}</button></div>
       <div class="coloring-tools"><button type="button" class="coloring-tool" data-coloring-undo>↶ ${t('Undo', 'Deshacer')}</button><button type="button" class="coloring-tool" data-coloring-clear>${t('Clear', 'Empezar de nuevo')}</button><button type="button" class="primary coloring-save" data-coloring-save>${t('Save picture', 'Guardar dibujo')}</button></div></div>`;
   }
@@ -55,6 +66,25 @@
     return c;
   }
 
+  /* A bright speck: soft glow with a hard center; stars get four thin rays. */
+  function speckSprite(hex, r, star) {
+    const q = Math.max(1, Math.round(r * 2) / 2), key = hex + q + (star ? '*' : '');
+    if (speckSprites.has(key)) return speckSprites.get(key);
+    const reach = star ? q * 2.4 : q * 1.6, d = Math.ceil(reach * 2) + 2, c = document.createElement('canvas');
+    c.width = c.height = d;
+    const ctx = c.getContext('2d'), m = d / 2;
+    const g = ctx.createRadialGradient(m, m, 0, m, m, reach);
+    g.addColorStop(0, hex); g.addColorStop(star ? 0.25 : 0.55, hex); g.addColorStop(1, hex + '00');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(m, m, reach, 0, Math.PI * 2); ctx.fill();
+    if (star) {
+      ctx.fillStyle = hex;
+      ctx.beginPath(); ctx.moveTo(m, m - reach); ctx.lineTo(m + q * 0.35, m); ctx.lineTo(m, m + reach); ctx.lineTo(m - q * 0.35, m); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(m - reach, m); ctx.lineTo(m, m - q * 0.35); ctx.lineTo(m + reach, m); ctx.lineTo(m, m + q * 0.35); ctx.closePath(); ctx.fill();
+    }
+    speckSprites.set(key, c);
+    return c;
+  }
+
   function loadImage(src) {
     return new Promise((resolve, reject) => { const img = new Image(); img.onload = () => resolve(img); img.onerror = () => reject(Error('image')); img.src = src; });
   }
@@ -64,7 +94,7 @@
     root.innerHTML = screenHtml(title);
     const color = root.querySelector('.coloring-color'), lines = root.querySelector('.coloring-lines'), stage = root.querySelector('.coloring-stage');
     const status = root.querySelector('.coloring-status');
-    const s = session = { id, root, stage, color, lines, cctx: color.getContext('2d', { willReadFrequently: true }), ready: false, hex: COLORS[0][0], size: 22, eraser: false, undo: core().undoStack(20), last: null, pointer: null };
+    const s = session = { id, root, stage, color, lines, cctx: color.getContext('2d', { willReadFrequently: true }), ready: false, hex: COLORS[0][0], size: 22, eraser: false, glitter: null, trail: null, seed: 0, undo: core().undoStack(20), last: null, pointer: null };
     stage.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
     try {
       let img;
@@ -97,7 +127,24 @@
     ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
   }
 
+  /* Run sparkle operations on the color layer (under the lines, so the eraser,
+     undo, clear and save treat glitter like any other color). */
+  function drawOps(s, ops) {
+    const ctx = s.cctx;
+    for (const op of ops) {
+      if (op.t === 'tip') {
+        const tip = sprite(op.hex, s.size), d = tip.width;
+        ctx.globalAlpha = 0.9; ctx.drawImage(tip, op.x - d / 2, op.y - d / 2);
+      } else {
+        const sp = speckSprite(op.hex, op.r, op.star), d = sp.width;
+        ctx.globalAlpha = 1; ctx.drawImage(sp, op.x - d / 2, op.y - d / 2);
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
   function strokeTo(s, pt) {
+    if (s.trail) { drawOps(s, s.trail.add(pt)); return; }
     const from = s.last || pt;
     for (const p of core().stampPoints(from, pt, Math.max(1.5, s.size * 0.22))) stamp(s, p);
     s.last = pt;
@@ -122,7 +169,9 @@
     const s = session;
     if (!s || !s.root.isConnected || !event.target.closest('.coloring-screen')) return;
     const dot = event.target.closest('[data-coloring-color]');
-    if (dot) { s.hex = dot.dataset.coloringColor; s.eraser = false; pick(s, '[data-coloring-color]', dot); pick(s, '[data-coloring-eraser]', null); return; }
+    if (dot) { s.hex = dot.dataset.coloringColor; s.glitter = null; s.eraser = false; pick(s, '[data-coloring-color],[data-coloring-glitter]', dot); pick(s, '[data-coloring-eraser]', null); return; }
+    const glitter = event.target.closest('[data-coloring-glitter]');
+    if (glitter) { s.glitter = glitter.dataset.coloringGlitter; s.eraser = false; pick(s, '[data-coloring-color],[data-coloring-glitter]', glitter); pick(s, '[data-coloring-eraser]', null); return; }
     const size = event.target.closest('[data-coloring-size]');
     if (size) { s.size = Number(size.dataset.coloringSize) || 22; pick(s, '[data-coloring-size]', size); return; }
     const eraser = event.target.closest('[data-coloring-eraser]');
@@ -140,6 +189,7 @@
     try { s.stage.setPointerCapture(event.pointerId); } catch { /* ignore */ }
     s.undo.push(s.cctx.getImageData(0, 0, W, H));
     s.last = null;
+    s.trail = s.glitter && !s.eraser ? core().sparkleStroke(s.glitter, s.size, (s.seed += 1)) : null;
     strokeTo(s, toCanvas(s, event));
   });
   document.addEventListener('pointermove', event => {
@@ -149,7 +199,7 @@
     const list = event.getCoalescedEvents ? event.getCoalescedEvents() : [];
     for (const e of (list.length ? list : [event])) strokeTo(s, toCanvas(s, e));
   });
-  const end = event => { const s = session; if (s && s.pointer === event.pointerId) { s.pointer = null; s.last = null; } };
+  const end = event => { const s = session; if (s && s.pointer === event.pointerId) { if (s.trail) drawOps(s, s.trail.end()); s.trail = null; s.pointer = null; s.last = null; } };
   document.addEventListener('pointerup', end);
   document.addEventListener('pointercancel', end);
 

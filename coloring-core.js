@@ -58,7 +58,117 @@
     return pts;
   }
 
-  const api = { lineLayer, flatten, undoStack, stampPoints };
+  /* Small seeded random generator (mulberry32): the same stroke seed and the
+     same finger path always give the same glitter. */
+  function rng(seed) {
+    let a = (seed >>> 0) || 1;
+    return () => {
+      a = (a + 0x6D2B79F5) >>> 0;
+      let t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function hslHex(h, s, l) {
+    const k = n => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+    const f = n => Math.round(255 * (l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1))));
+    return '#' + [f(0), f(8), f(4)].map(v => v.toString(16).padStart(2, '0')).join('');
+  }
+
+  /* Glitter pens: [base ink, light speck tint]. Rainbow has no fixed base. */
+  const GLITTER = {
+    gold: ['#d9a400', '#fff2a8'],
+    silver: ['#9ea7b2', '#ffffff'],
+    pink: ['#ff4fa3', '#ffd6ec'],
+    purple: ['#8a3ffc', '#eadcff'],
+    blue: ['#1f7cff', '#d6e9ff'],
+    rainbow: [null, null]
+  };
+
+  /* Rainbow hue walks along the stroke; snapped to 15 degree steps so the
+     browser can reuse a small set of brush tips. */
+  function rainbowHue(distance) { return (Math.round(((distance * 0.6) % 360) / 15) * 15) % 360; }
+
+  /* A sparkle stroke turns finger points into draw operations:
+     'tip'   a soft glitter-ink stamp (same spacing as the crayon),
+     'speck' a tiny bright dot or star.
+     Specks are held back until the stroke has moved on by about two brush
+     widths, so the following ink stamps do not paint over them; end()
+     returns the ones still waiting. */
+  function sparkleStroke(glitter, size, seed) {
+    const pen = GLITTER[glitter] ? glitter : 'gold';
+    const [base, light] = GLITTER[pen];
+    const rand = rng(seed);
+    const spacing = Math.max(1.5, size * 0.22);
+    const perStamp = 0.0028 * size * size;
+    const pending = [];
+    let last = null, distance = 0;
+    function specks(p) {
+      const n = Math.floor(perStamp) + (rand() < perStamp % 1 ? 1 : 0);
+      for (let i = 0; i < n; i += 1) {
+        const star = rand() < 0.16;
+        const r = star ? Math.min(5 + rand() * 4, Math.max(2.5, size * 0.3)) : Math.min(1.8 + rand() * 2.4, Math.max(1.2, size * 0.2));
+        /* keep the whole glow inside the ink, so a same-size eraser pass removes it */
+        const angle = rand() * Math.PI * 2, reach = Math.max(0, size * 0.8 - r * (star ? 2.4 : 1.6)) * Math.sqrt(rand());
+        const hue = rainbowHue(distance + 40 + rand() * 120);
+        const tint = base ? light : hslHex(hue, 1, 0.86);
+        pending.push({
+          t: 'speck',
+          x: p.x + Math.cos(angle) * reach,
+          y: p.y + Math.sin(angle) * reach,
+          r,
+          star,
+          hex: rand() < 0.62 ? '#ffffff' : tint,
+          due: distance + size * 2.2
+        });
+      }
+    }
+    return {
+      glitter: pen,
+      add(pt) {
+        const ops = [];
+        const pts = last ? stampPoints(last, pt, spacing) : [pt];
+        for (const p of pts) {
+          if (last) distance += Math.hypot(p.x - last.x, p.y - last.y);
+          last = p;
+          ops.push({ t: 'tip', x: p.x, y: p.y, hex: base || hslHex(rainbowHue(distance), 0.9, 0.55) });
+          specks(p);
+        }
+        while (pending.length && pending[0].due <= distance) ops.push(pending.shift());
+        return ops;
+      },
+      end() { last = null; return pending.splice(0); }
+    };
+  }
+
+  /* Plain software painter for the same operations (used by the tests, and a
+     reference for what the canvas draws): 'tip' is a disc of ink at 90%,
+     'speck' a solid bright disc, 'erase' clears a disc to transparent. */
+  function paintOps(rgba, width, height, ops, size) {
+    for (const op of ops) {
+      const r = op.t === 'tip' || op.t === 'erase' ? size : op.r;
+      const alpha = op.t === 'tip' ? 0.9 : 1;
+      const hex = op.hex || '#000000';
+      const cr = parseInt(hex.slice(1, 3), 16), cg = parseInt(hex.slice(3, 5), 16), cb = parseInt(hex.slice(5, 7), 16);
+      const x0 = Math.max(0, Math.floor(op.x - r)), x1 = Math.min(width - 1, Math.ceil(op.x + r));
+      const y0 = Math.max(0, Math.floor(op.y - r)), y1 = Math.min(height - 1, Math.ceil(op.y + r));
+      for (let y = y0; y <= y1; y += 1) for (let x = x0; x <= x1; x += 1) {
+        if (Math.hypot(x + 0.5 - op.x, y + 0.5 - op.y) > r) continue;
+        const p = (y * width + x) * 4;
+        if (op.t === 'erase') { rgba[p] = rgba[p + 1] = rgba[p + 2] = rgba[p + 3] = 0; continue; }
+        const da = rgba[p + 3] / 255, oa = alpha + da * (1 - alpha);
+        rgba[p] = Math.round((cr * alpha + rgba[p] * da * (1 - alpha)) / oa);
+        rgba[p + 1] = Math.round((cg * alpha + rgba[p + 1] * da * (1 - alpha)) / oa);
+        rgba[p + 2] = Math.round((cb * alpha + rgba[p + 2] * da * (1 - alpha)) / oa);
+        rgba[p + 3] = Math.round(oa * 255);
+      }
+    }
+    return rgba;
+  }
+
+  const api = { lineLayer, flatten, undoStack, stampPoints, rng, hslHex, GLITTER, rainbowHue, sparkleStroke, paintOps };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbColoringCore = api;
 })(typeof self !== 'undefined' ? self : this);
