@@ -57,6 +57,147 @@
     return { unlocked, isOpen, nextLocked, unlockNext, unlock, stars, addStar, total: ids.length };
   }
 
+  /* ---------- Each squishy's own sounds, effect and secret trick ----------
+     sound: which voices the game makes when you squish (press), stretch
+     (the tone that follows the pull) and let go; each squishy has its own.
+     fx: the little particles it gives off while you play.
+     trick: a secret move tied to its Bible story, done with one gesture. */
+  const KITS = {
+    lamb: { sound: { squish: 'bleat', release: 'mee', tone: 'warble' }, fx: 'hearts', trick: 'sleep', gesture: 'holdStill', ms: 3000 },
+    dove: { sound: { squish: 'coo', release: 'flutter', tone: 'whistle' }, fx: 'feathers', trick: 'olive', gesture: 'flickUp' },
+    fish: { sound: { squish: 'bubbles', release: 'splash', tone: 'blub' }, fx: 'bubbles', trick: 'jonah', gesture: 'hold', ms: 1500 },
+    lion: { sound: { squish: 'purr', release: 'roar', tone: 'growl' }, fx: 'roar-rings', trick: 'lie-down', gesture: 'tripleTap' },
+    star: { sound: { squish: 'bell', release: 'twinkle', tone: 'shimmer' }, fx: 'twinkles', trick: 'manger', gesture: 'dragAcross' },
+    rainbow: { sound: { squish: 'chord', release: 'glissando', tone: 'glide' }, fx: 'color-trail', trick: 'arc', gesture: 'swipeLR' },
+    stone: { sound: { squish: 'thud', release: 'clack', tone: 'twang' }, fx: 'dust', trick: 'sling', gesture: 'pullRelease' },
+    loaves: { sound: { squish: 'dough', release: 'crust', tone: 'hum' }, fx: 'crumbs', trick: 'multiply', gesture: 'fiveTaps' },
+    seed: { sound: { squish: 'pluck', release: 'sprout', tone: 'tremble' }, fx: 'leaves', trick: 'grow', gesture: 'stretchUp' },
+    bush: { sound: { squish: 'crackle', release: 'flare', tone: 'burn' }, fx: 'embers', trick: 'i-am', gesture: 'tripleTap' },
+    basket: { sound: { squish: 'slosh', release: 'drip', tone: 'wave' }, fx: 'ripples', trick: 'river', gesture: 'rock' },
+    tree: { sound: { squish: 'rustle', release: 'knock', tone: 'flutter' }, fx: 'falling-leaves', trick: 'zacchaeus', gesture: 'tapTop' },
+    ark: { sound: { squish: 'creak', release: 'patter', tone: 'horn' }, fx: 'rain', trick: 'two-by-two', gesture: 'shake' },
+    coat: { sound: { squish: 'swish', release: 'harp', tone: 'chorus' }, fx: 'ribbons', trick: 'twirl', gesture: 'circle' },
+    lamp: { sound: { squish: 'crunch', release: 'crunch-tail', tone: 'none' }, fx: 'sparks', trick: 'light-room', gesture: 'hold', ms: 1500 }
+  };
+  /* The stretch tone of each squishy: oscillator wave, base pitch and how
+     far the pitch climbs with the stretch, wobble (lfo rate and depth) and
+     the filter it plays through. */
+  const TONES = {
+    warble: { type: 'sine', base: 330, range: 380, lfo: 6, depth: 18, filter: 1600, q: 0.8 },
+    whistle: { type: 'sine', base: 620, range: 700, lfo: 10, depth: 12, filter: 3200, q: 0.8 },
+    blub: { type: 'square', base: 90, range: 160, lfo: 4, depth: 20, filter: 480, q: 2 },
+    growl: { type: 'sawtooth', base: 70, range: 150, lfo: 30, depth: 10, filter: 620, q: 1 },
+    shimmer: { type: 'sine', base: 880, range: 900, lfo: 14, depth: 25, filter: 5200, q: 0.7 },
+    glide: { type: 'triangle', base: 260, range: 780, lfo: 3, depth: 30, filter: 2000, q: 0.8 },
+    twang: { type: 'sawtooth', base: 110, range: 420, lfo: 0, depth: 0, filter: 1200, q: 6 },
+    hum: { type: 'sine', base: 160, range: 200, lfo: 5, depth: 4, filter: 820, q: 0.8 },
+    tremble: { type: 'triangle', base: 400, range: 500, lfo: 12, depth: 16, filter: 1800, q: 1 },
+    burn: { type: 'sawtooth', base: 120, range: 260, lfo: 17, depth: 25, filter: 900, q: 3 },
+    wave: { type: 'sine', base: 220, range: 300, lfo: 2, depth: 30, filter: 1000, q: 0.8 },
+    flutter: { type: 'triangle', base: 200, range: 350, lfo: 5, depth: 9, filter: 900, q: 1.5 },
+    horn: { type: 'sawtooth', base: 65, range: 110, lfo: 1.5, depth: 3, filter: 400, q: 1.2 },
+    chorus: { type: 'triangle', base: 300, range: 600, lfo: 7, depth: 10, filter: 2200, q: 0.9 },
+    none: null
+  };
+  const GESTURES = ['tap', 'doubleTap', 'tripleTap', 'fiveTaps', 'tapTop', 'hold', 'holdStill', 'flickUp', 'pullRelease', 'dragAcross', 'swipeLR', 'shake', 'rock', 'circle', 'stretchUp'];
+  const kitFor = id => KITS[id] || null;
+
+  /* Gesture recognizer. Feed it pointer events in squishy units (the
+     squishy is 120 x 120, (0,0) its top-left corner) with times in ms;
+     it answers with the gestures it saw. One finger only. */
+  function gestures(opt = {}) {
+    const size = opt.size || 120, TAP_MS = 260, TAP_MOVE = 10, GAP = 380;
+    let cur = null, taps = [], holdSent = 0;
+    function down(x, y, t) { cur = { pts: [{ x, y, t }], x0: x, y0: y, t0: t, max: 0, still: true }; holdSent = 0; return []; }
+    function move(x, y, t) {
+      if (!cur) return [];
+      cur.pts.push({ x, y, t });
+      const d = Math.hypot(x - cur.x0, y - cur.y0);
+      cur.max = Math.max(cur.max, d);
+      if (d > 8) cur.still = false;
+      return poll(t);
+    }
+    /* call every frame while a finger is down: holds fire while holding */
+    function poll(t) {
+      if (!cur) return [];
+      const ms = t - cur.t0, out = [];
+      if (cur.max <= 14 && ms >= 1500 && holdSent < 1) { holdSent = 1; out.push({ type: 'hold', ms }); }
+      if (cur.still && ms >= 3000 && holdSent < 2) { holdSent = 2; out.push({ type: 'holdStill', ms }); }
+      return out;
+    }
+    function up(x, y, t) {
+      if (!cur) return [];
+      move(x, y, t);
+      const c = cur, out = [], ms = t - c.t0, pts = c.pts;
+      cur = null;
+      /* taps */
+      if (ms <= TAP_MS && c.max <= TAP_MOVE) {
+        taps = taps.filter(k => t - k.t <= GAP * 4);
+        if (taps.length && t - taps[taps.length - 1].t > GAP) taps = [];
+        taps.push({ t, x, y });
+        const n = taps.length;
+        out.push({ type: 'tap', n, x, y });
+        if (y < size * 0.3) out.push({ type: 'tapTop' });
+        if (n === 2) out.push({ type: 'doubleTap' });
+        if (n === 3) out.push({ type: 'tripleTap' });
+        if (n === 5) { out.push({ type: 'fiveTaps' }); taps = []; }
+        return out;
+      }
+      taps = [];
+      const dx = x - c.x0, dy = y - c.y0;
+      /* flick: a quick upward throw at the end */
+      /* any 60-250 ms stretch right before letting go that went up fast */
+      const flick = pts.some(p => { const fdt = t - p.t, fdx = x - p.x, fdy = y - p.y; return fdt >= 60 && fdt <= 250 && fdy < -22 && Math.abs(fdy) > Math.abs(fdx) * 1.3 && -fdy / fdt > 0.16; });
+      if (flick || (ms < 200 && dy < -22 && Math.abs(dy) > Math.abs(dx) * 1.3)) out.push({ type: 'flickUp' });
+      /* pulled far, then let go while still far (a slingshot) */
+      if (c.max >= 55 && Math.hypot(dx, dy) >= 45) out.push({ type: 'pullRelease', dx, dy });
+      /* slow pull upward */
+      if (dy <= -45 && Math.abs(dx) < Math.abs(dy) * 0.7 && ms >= 350) out.push({ type: 'stretchUp' });
+      /* a long drag across */
+      let len = 0, minX = Infinity, maxX = -Infinity;
+      pts.forEach((p, i) => { if (i) len += Math.hypot(p.x - pts[i - 1].x, p.y - pts[i - 1].y); minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x); });
+      if (maxX - minX >= 110 && len >= 160) out.push({ type: 'dragAcross', path: pts.map(p => [p.x, p.y]) });
+      /* back-and-forth moves: direction changes along x */
+      let turns = 0, dir = 0, ext = pts[0].x, amp = 0;
+      for (const p of pts) {
+        const d = p.x - ext;
+        if (dir >= 0 && d < -12) { if (dir > 0) turns += 1; dir = -1; ext = p.x; }
+        else if (dir <= 0 && d > 12) { if (dir < 0) turns += 1; dir = 1; ext = p.x; }
+        if (dir > 0 && p.x > ext) ext = p.x;
+        if (dir < 0 && p.x < ext) ext = p.x;
+        amp = Math.max(amp, Math.abs(p.x - pts[0].x));
+      }
+      const xDom = (maxX - minX) > 2 * (Math.max(...pts.map(p => p.y)) - Math.min(...pts.map(p => p.y)));
+      if (turns >= 2 && xDom && amp >= 20 && ms < 1600) out.push({ type: 'swipeLR', turns });
+      if (turns >= 3 && ms <= 1500) out.push({ type: 'shake', turns });
+      if (turns >= 2 && ms >= 1200 && len / ms < 0.25) out.push({ type: 'rock', turns });
+      /* circling: total turning angle around the middle of the path */
+      if (pts.length >= 8) {
+        const mx = pts.reduce((a, p) => a + p.x, 0) / pts.length, my = pts.reduce((a, p) => a + p.y, 0) / pts.length;
+        let ang = 0, rad = 0;
+        for (let i = 1; i < pts.length; i += 1) {
+          const a0 = Math.atan2(pts[i - 1].y - my, pts[i - 1].x - mx), a1 = Math.atan2(pts[i].y - my, pts[i].x - mx);
+          let da = a1 - a0; if (da > Math.PI) da -= 2 * Math.PI; if (da < -Math.PI) da += 2 * Math.PI;
+          ang += da; rad += Math.hypot(pts[i].x - mx, pts[i].y - my);
+        }
+        if (Math.abs(ang) >= Math.PI * 1.7 && rad / (pts.length - 1) >= 14) out.push({ type: 'circle', turns: Math.abs(ang) / (2 * Math.PI) });
+      }
+      return out;
+    }
+    return { down, move, up, poll, get active() { return !!cur; } };
+  }
+  /* Does this gesture do this squishy's trick? */
+  function isTrick(id, g) {
+    const k = KITS[id];
+    if (!k || !g || g.type !== k.gesture) return false;
+    if ((g.type === 'hold' || g.type === 'holdStill') && k.ms && g.ms < k.ms) return false;
+    return true;
+  }
+  /* The hint shows the gesture after the trick was found, or after a few
+     plays with that squishy (a gentle nudge). */
+  const HINT_AFTER = 12;
+  function trickRevealed(id, st) { return (st.tricks || []).includes(id) || ((st.plays || {})[id] || 0) >= HINT_AFTER; }
+
   /* ---------- Unlock challenges ----------
      Each locked squishy has its own challenge, from easy to hard. Some are
      rare, and the glowing lamp is legendary. Squishies opened before this
@@ -77,7 +218,9 @@
     { id: 'first-squish', kind: 'squishes', n: 1, tier: 'common' },
     { id: 'squish-200', kind: 'squishes', n: 200, tier: 'rare' },
     { id: 'all-lessons', kind: 'lessons', n: 15, tier: 'rare' },
-    { id: 'match-3star', kind: 'matchThreeStars', n: 1, tier: 'common' }
+    { id: 'match-3star', kind: 'matchThreeStars', n: 1, tier: 'common' },
+    { id: 'first-trick', kind: 'tricks', n: 1, tier: 'common' },
+    { id: 'trick-master', kind: 'tricks', n: 0, tier: 'legendary' }
   ];
   const tierOf = id => (CHALLENGES.find(c => c.id === id) || {}).tier || 'common';
 
@@ -97,7 +240,7 @@
 
   /* Play counts kept for the challenges (one small JSON object). */
   function stats(storage) {
-    const blank = () => ({ memoryWins: 0, memoryBest: 0, questionWins: 0, perfectRounds: 0, squishes: 0, days: [], bestStreak: 0, badges: {} });
+    const blank = () => ({ memoryWins: 0, memoryBest: 0, questionWins: 0, perfectRounds: 0, squishes: 0, days: [], bestStreak: 0, badges: {}, tricks: [], plays: {} });
     const nat = v => (Number.isFinite(v) && v > 0 ? Math.floor(v) : 0);
     function get() {
       let v;
@@ -107,6 +250,8 @@
       for (const k of ['memoryWins', 'memoryBest', 'questionWins', 'perfectRounds', 'squishes', 'bestStreak']) out[k] = nat(v[k]);
       out.days = Array.isArray(v.days) ? v.days.filter(k => typeof k === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(k)).slice(-30) : [];
       if (v.badges && typeof v.badges === 'object') for (const [k, d] of Object.entries(v.badges)) if (typeof d === 'string') out.badges[k] = d;
+      out.tricks = Array.isArray(v.tricks) ? [...new Set(v.tricks.filter(k => typeof k === 'string' && KITS[k]))] : [];
+      if (v.plays && typeof v.plays === 'object') for (const [k, n] of Object.entries(v.plays)) if (KITS[k]) out.plays[k] = nat(n);
       return out;
     }
     function save(v) { try { storage.setItem(KEYS.stats, JSON.stringify(v)); } catch { /* full or blocked */ } return v; }
@@ -114,7 +259,9 @@
       get,
       memoryWon(moves) { const v = get(); v.memoryWins += 1; v.memoryBest = v.memoryBest ? Math.min(v.memoryBest, moves) : moves; return save(v); },
       roundDone(correct, count) { const v = get(); if (roundWon(correct, count)) v.questionWins += 1; if (count > 0 && correct === count) v.perfectRounds += 1; return save(v); },
-      squished() { const v = get(); v.squishes += 1; return save(v); },
+      squished(id) { const v = get(); v.squishes += 1; if (id && KITS[id]) v.plays[id] = (v.plays[id] || 0) + 1; return save(v); },
+      /* returns true the first time this squishy's trick is found */
+      trickFound(id) { const v = get(); if (!KITS[id] || v.tricks.includes(id)) return false; v.tricks.push(id); save(v); return true; },
       played(date) {
         const v = get(), k = dayKey(date);
         if (!v.days.includes(k)) v.days = [...v.days, k].sort().slice(-30);
@@ -143,6 +290,7 @@
       case 'memoryFast': { const ok = st.memoryBest > 0 && st.memoryBest <= ch.n; return { have: ok ? 1 : 0, need: 1, done: ok, best: st.memoryBest || null }; }
       case 'matchChapter': { let won = 0; for (let k = 1; k <= ch.n; k += 1) if ([1, 2, 3].includes(ctx.match[k])) won += 1; return cap(won, ch.n); }
       case 'matchThreeStars': return cap(Object.values(ctx.match).filter(s => s === 3).length, ch.n);
+      case 'tricks': { const all = ctx.squishies.filter(x => KITS[x.id]).length; return cap(ctx.stats.tricks.filter(id => ctx.squishies.some(x => x.id === id)).length, ch.n || all); }
       case 'final': {
         /* every other squishy open, and 3 stars on any Manna Match level */
         const others = ctx.squishies.filter(x => x.id !== ch.id && x.locked);
@@ -452,7 +600,7 @@
     return Math.min(1, base + 0.55 * i);
   }
 
-  const api = { CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
+  const api = { KITS, TONES, GESTURES, kitFor, gestures, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbSquishyCore = api;
 })(typeof self !== 'undefined' ? self : this);

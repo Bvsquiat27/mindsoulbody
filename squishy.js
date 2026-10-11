@@ -27,6 +27,13 @@
   const stats = () => C().stats(store2());
   const ctx = () => C().challengeContext(store2(), D().SQUISHIES);
   const TIER_LABEL = { rare: 'RARE', legendary: 'LEGENDARY' };
+  const FXM = () => window.MsbSquishyFx;
+  const kit = id => C().kitFor(id);
+  /* Secret tricks, in words */
+  const TRICK_NAME = { sleep: 'Safe with the Shepherd', olive: 'The olive leaf', jonah: 'Jonah on the shore', 'lie-down': 'The peaceful lion', manger: 'The way to the manger', arc: 'God’s promise', sling: 'Boink!', multiply: 'Food for 5000', grow: 'A tree for the birds', 'i-am': 'I AM', river: 'Found by the princess', zacchaeus: 'Come down, Zacchaeus!', 'two-by-two': 'Two by two', twirl: 'Coat of many colors', 'light-room': 'Light for the whole house' };
+  const TRICK_STORY = { sleep: 'The Good Shepherd keeps his lambs safe while they sleep.', olive: 'The dove came back with an olive leaf: the flood was over!', jonah: 'The big fish kept Jonah safe and put him on dry land.', 'lie-down': 'God shut the lions’ mouths, and Daniel was safe.', manger: 'The star led the wise men to baby Jesus.', arc: 'The rainbow is God’s promise to Noah.', sling: 'Little David trusted God against the giant.', multiply: 'Jesus fed 5000 people, and 12 baskets were left over!', grow: 'The tiny mustard seed grows into a tree where birds rest.', 'i-am': 'God spoke to Moses from the bush: I AM.', river: 'Pharaoh’s daughter found baby Moses in the river.', zacchaeus: 'Jesus called Zacchaeus down from the tree.', 'two-by-two': 'The animals went into the ark two by two.', twirl: 'Jacob gave Joseph a coat of many colors.', 'light-room': 'Jesus is the light of the world.' };
+  const GESTURE_TEXT = { holdStill: 'Hold it very still for 3 seconds', flickUp: 'Flick it up quickly', hold: 'Press and hold it', tripleTap: 'Tap it 3 times', dragAcross: 'Drag it all the way across', swipeLR: 'Swipe it left and right', pullRelease: 'Pull it far back and let go', fiveTaps: 'Tap it 5 times', stretchUp: 'Pull it slowly upward', rock: 'Rock it slowly side to side', tapTop: 'Tap the very top', shake: 'Shake it fast', circle: 'Drag it in a circle' };
+  const TRICK_TEXT = { 'i-am': 'I AM', multiply: '5000 fed!', sling: 'BOINK!' };
   /* What a challenge asks, in words. */
   function challengeText(ch) {
     switch (ch.kind) {
@@ -40,11 +47,12 @@
       case 'streak': return L('Play {n} days in a row', { n: ch.n });
       case 'matchThreeStars': return L('Get 3 stars on a Manna Match level');
       case 'final': return L('Unlock every squishy and get 3 stars on a Manna Match level');
+      case 'tricks': return ch.n === 1 ? L('Find a secret trick') : L('Find every secret trick');
       default: return '';
     }
   }
-  const BADGE_NAME = { stone: 'Good memory', loaves: 'Little learner', seed: 'Super squisher', bush: 'Question pro', basket: 'Noah’s helper', tree: 'Quick memory', ark: 'Perfect score', coat: 'Three days in a row', lamp: 'Light of the world', 'first-squish': 'First squish', 'squish-200': 'Squish galore', 'all-lessons': 'Every lesson learned', 'match-3star': 'Three-star match' };
-  const BADGE_ICON = { stone: '🃏', loaves: '📖', seed: '🤲', bush: '❓', basket: '🌈', tree: '⚡', ark: '💯', coat: '📅', lamp: '💡', 'first-squish': '👆', 'squish-200': '🎉', 'all-lessons': '🎓', 'match-3star': '⭐' };
+  const BADGE_NAME = { stone: 'Good memory', loaves: 'Little learner', seed: 'Super squisher', bush: 'Question pro', basket: 'Noah’s helper', tree: 'Quick memory', ark: 'Perfect score', coat: 'Three days in a row', lamp: 'Light of the world', 'first-squish': 'First squish', 'squish-200': 'Squish galore', 'all-lessons': 'Every lesson learned', 'match-3star': 'Three-star match', 'first-trick': 'First trick', 'trick-master': 'Trick master' };
+  const BADGE_ICON = { stone: '🃏', loaves: '📖', seed: '🤲', bush: '❓', basket: '🌈', tree: '⚡', ark: '💯', coat: '📅', lamp: '💡', 'first-squish': '👆', 'squish-200': '🎉', 'all-lessons': '🎓', 'match-3star': '⭐', 'first-trick': '✨', 'trick-master': '🎩' };
   /* "2026-10-11" -> "11 oct 2026" / "Oct 11, 2026" in the app language */
   function niceDate(key) {
     const [y, m, d] = String(key).split('-').map(Number);
@@ -149,6 +157,66 @@
   };
   function play(name) { if (SOUNDS[name]) SOUNDS[name](); }
 
+  /* ---------- Each squishy's own voices (names in squishy-core KITS) ----------
+     squish: when you press or start to pull; release: when you let go
+     (d / a = how hard, 0..1). Each is built differently, not just pitched. */
+  const rr = () => Math.random();
+  const SQUISH = {
+    bleat: d => voice({ type: 'sawtooth', f0: 380 + d * 80, f1: 320, dur: 0.32, peak: 0.035 + d * 0.02, vib: [7, 16], filter: ['bandpass', 1150, 1.4], attack: 0.04 }),
+    coo: d => voice({ f0: 470, f1: 390, dur: 0.2, peak: 0.04 + d * 0.02, attack: 0.03, trem: 11 }),
+    bubbles: d => [0, 0.06, 0.12].slice(0, 1 + Math.round(d * 2)).forEach(t => voice({ f0: 300 + rr() * 120, f1: 900 + rr() * 400, dur: 0.06, peak: 0.04, delay: t })),
+    purr: d => voice({ type: 'sawtooth', f0: 110, f1: 95, dur: 0.35 + d * 0.2, peak: 0.04 + d * 0.02, filter: ['lowpass', 480], trem: 26, attack: 0.05 }),
+    bell: d => { voice({ type: 'triangle', f0: 1318, dur: 0.6, peak: 0.03 + d * 0.015 }); voice({ f0: 2637, dur: 0.35, peak: 0.012 }); voice({ f0: 3951, dur: 0.2, peak: 0.006 }); },
+    chord: d => [392, 494, 587].forEach(f => voice({ type: 'triangle', f0: f * (1 + d * 0.12), dur: 0.35, peak: 0.018 })),
+    thud: d => { voice({ f0: 120, f1: 55, dur: 0.18, peak: 0.07 + d * 0.03 }); noise({ filter: 'lowpass', f0: 600, dur: 0.05, peak: 0.03 }); },
+    dough: d => { noise({ filter: 'lowpass', f0: 500, f1: 160, dur: 0.3, peak: 0.04 + d * 0.02, q: 2 }); voice({ f0: 160, f1: 120, dur: 0.25, peak: 0.02, filter: ['lowpass', 400] }); },
+    pluck: d => { voice({ type: 'triangle', f0: 880 + d * 220, dur: 0.12, peak: 0.05, attack: 0.003 }); noise({ filter: 'highpass', f0: 4000, dur: 0.02, peak: 0.02 }); },
+    crackle: d => { for (let k = 0; k < 4 + d * 6; k += 1) noise({ filter: 'bandpass', f0: 1500 + rr() * 3000, q: 6, dur: 0.02, peak: 0.03, delay: rr() * 0.25 }); },
+    slosh: d => noise({ filter: 'bandpass', f0: 1200, f1: 350, q: 3, dur: 0.4, peak: 0.04 + d * 0.02 }),
+    rustle: d => { noise({ filter: 'highpass', f0: 3200, dur: 0.1, peak: 0.025 + d * 0.01 }); noise({ filter: 'highpass', f0: 2800, dur: 0.1, peak: 0.02, delay: 0.09 }); },
+    creak: d => voice({ type: 'sawtooth', f0: 170 + d * 40, f1: 140, dur: 0.38, peak: 0.03, filter: ['lowpass', 650], vib: [11, 22] }),
+    swish: d => { noise({ f0: 1800, f1: 4400, dur: 0.22, peak: 0.03 + d * 0.015 }); voice({ type: 'triangle', f0: 784, dur: 0.4, peak: 0.02, delay: 0.05 }); },
+    crunch: d => crunch(0.3 + d * 0.5)
+  };
+  const RELEASE = {
+    mee: () => voice({ type: 'sawtooth', f0: 520, f1: 440, dur: 0.22, peak: 0.03, vib: [9, 20], filter: ['bandpass', 1400, 1.3] }),
+    flutter: () => { for (let k = 0; k < 5; k += 1) noise({ f0: 900, dur: 0.035, peak: 0.03, delay: k * 0.05 }); },
+    splash: a => { noise({ filter: 'lowpass', f0: 2500, f1: 400, dur: 0.35, peak: 0.04 + a * 0.03 }); voice({ f0: 600, f1: 1400, dur: 0.08, peak: 0.03, delay: 0.05 }); },
+    roar: a => { voice({ type: 'sawtooth', f0: 150, f1: 90, dur: 0.5 + a * 0.3, peak: 0.03 + a * 0.03, filter: ['lowpass', 700], trem: 18, attack: 0.08 }); noise({ filter: 'lowpass', f0: 700, dur: 0.5, peak: 0.02 }); },
+    twinkle: a => notes([1568, 2093, 2637, 3136].slice(0, 2 + Math.round(a * 2)), { dur: 0.25, peak: 0.03, step: 0.06 }),
+    glissando: a => notes([523, 587, 659, 784, 880, 1047].slice(0, 3 + Math.round(a * 3)), { type: 'triangle', dur: 0.18, peak: 0.03, step: 0.045 }),
+    clack: () => noise({ filter: 'highpass', f0: 2500, dur: 0.05, peak: 0.05 }),
+    crust: () => { for (let k = 0; k < 3; k += 1) noise({ filter: 'bandpass', f0: 2500 + k * 600, q: 4, dur: 0.03, peak: 0.03, delay: k * 0.04 }); },
+    sprout: a => voice({ f0: 300, f1: 1200 + a * 600, dur: 0.22, peak: 0.04 }),
+    flare: a => noise({ filter: 'bandpass', f0: 400, f1: 2400, q: 1.2, dur: 0.4, peak: 0.035 + a * 0.02 }),
+    drip: () => [0, 0.12, 0.26].forEach((t, i) => voice({ f0: 1400 - i * 200, f1: 700, dur: 0.07, peak: 0.035, delay: t })),
+    knock: () => [0, 0.11].forEach(t => voice({ f0: 260, f1: 180, dur: 0.07, peak: 0.06, filter: ['bandpass', 500, 2], delay: t })),
+    patter: () => { for (let k = 0; k < 10; k += 1) noise({ filter: 'highpass', f0: 3500, dur: 0.015, peak: 0.02, delay: rr() * 0.5 }); },
+    harp: a => notes([1047, 880, 784, 659, 523].slice(0, 3 + Math.round(a * 2)), { type: 'triangle', dur: 0.35, peak: 0.03, step: 0.05 }),
+    'crunch-tail': a => crunch(Math.max(0.5, a), true)
+  };
+  /* The sound of each secret trick */
+  const TRICK_SOUND = {
+    sleep: () => notes([784, 659, 587, 523], { type: 'sine', dur: 0.5, peak: 0.03, step: 0.32 }),
+    olive: () => { RELEASE.flutter(); setTimeout(() => { RELEASE.flutter(); SOUNDS.coo(); }, 1600); },
+    jonah: () => { setTimeout(() => voice({ f0: 300, f1: 70, dur: 0.35, peak: 0.07 }), 1100); setTimeout(() => RELEASE.splash(1), 2200); setTimeout(() => SOUNDS.chime(), 2900); },
+    'lie-down': () => voice({ type: 'sawtooth', f0: 100, f1: 85, dur: 1.6, peak: 0.04, filter: ['lowpass', 420], trem: 22, attack: 0.2 }),
+    manger: () => { notes([1568, 2093, 2637, 3136, 2637, 2093], { dur: 0.35, peak: 0.03, step: 0.14 }); setTimeout(() => SQUISH.bell(0.5), 1800); },
+    arc: () => notes([523, 587, 659, 698, 784, 880, 988, 1047], { type: 'triangle', dur: 0.4, peak: 0.03, step: 0.09 }),
+    sling: () => { voice({ type: 'sawtooth', f0: 140, f1: 520, dur: 0.3, peak: 0.04, filter: ['lowpass', 1500, 5] }); noise({ f0: 600, f1: 2400, dur: 0.4, peak: 0.04, delay: 0.45 }); setTimeout(() => voice({ f0: 420, f1: 120, dur: 0.5, peak: 0.07, vib: [14, 40] }), 1450); setTimeout(() => SQUISH.thud(0.6), 2900); },
+    multiply: () => { notes([523, 659, 784, 1047, 784, 1047, 1319], { type: 'triangle', dur: 0.22, peak: 0.035, step: 0.1 }); setTimeout(() => SOUNDS.giggle(), 1700); },
+    grow: () => { voice({ f0: 200, f1: 900, dur: 1.4, peak: 0.035, attack: 0.3 }); setTimeout(() => SOUNDS.pip(), 2400); setTimeout(() => SOUNDS.pip(), 2800); },
+    'i-am': () => { SQUISH.crackle(1); [262, 330, 392, 523].forEach(f => voice({ type: 'triangle', f0: f, dur: 2.2, peak: 0.022, attack: 0.5, delay: 0.7 })); },
+    river: () => { SQUISH.slosh(0.6); setTimeout(() => SQUISH.slosh(0.4), 900); setTimeout(() => RELEASE.harp(1), 1900); },
+    zacchaeus: () => { notes([784, 659], { dur: 0.2, peak: 0.04, step: 0.22 }); setTimeout(() => RELEASE.knock(), 1400); setTimeout(() => RELEASE.knock(), 1900); setTimeout(() => SOUNDS.giggle(), 2800); },
+    'two-by-two': () => { SQUISH.creak(0.5); RELEASE.patter(); setTimeout(RELEASE.patter, 500); setTimeout(RELEASE.patter, 1000); setTimeout(() => SOUNDS.chime(), 2200); },
+    twirl: () => { SQUISH.swish(1); RELEASE.harp(1); setTimeout(() => RELEASE.glissando(1), 700); },
+    'light-room': () => { crunch(1, true); setTimeout(() => [523, 784, 1047, 1568].forEach(f => voice({ type: 'sine', f0: f, dur: 2, peak: 0.02, attack: 0.4 })), 500); }
+  };
+  const TRICK_BUZZ = { sling: [20, 60, 40], 'light-room': [10, 30, 10, 30, 40], 'two-by-two': [15, 40, 15], jonah: [30, 80, 30] };
+  function kitSquish(d) { const k = pv && kit(pv.id); if (k && SQUISH[k.sound.squish]) SQUISH[k.sound.squish](d); }
+  function kitRelease(a) { const k = pv && kit(pv.id); if (k && RELEASE[k.sound.release]) RELEASE[k.sound.release](a); }
+
   /* ---------- Vibration (Android; iPhones have no Vibration API) ---------- */
   function vibrate(pattern) {
     try { if (localStorage.getItem('msb_tap_vibration') === 'off') return; } catch { /* on */ }
@@ -176,7 +244,7 @@
   /* Shelf: tap a squishy to play with it. */
   function shelfHtml() {
     const p = prog(), open = p.unlocked(), stars = p.stars();
-    const c = ctx();
+    const c = ctx(), tricksFound = c.stats.tricks;
     const tiles = D().SQUISHIES.map(s => {
       const tier = C().tierOf(s.id), ch = C().challengeFor(s.id);
       const tierCls = tier === 'common' ? '' : ` ${tier}`;
@@ -187,7 +255,7 @@
         const label = `${s.final ? L('The final squishy is locked.') : L('Locked squishy.')} ${TIER_LABEL[tier] ? L(TIER_LABEL[tier]) + '. ' : ''}${text}: ${pr.have} / ${pr.need}`;
         return `<button type="button" class="sq-tile locked${s.final ? ' final' : ''}${tierCls}" data-sq-locked="${s.id}" aria-label="${esc(label)}">${tag}<span class="sq-art">${A().svg(s.id)}</span><span class="sq-lock" aria-hidden="true">🔒</span><span class="sq-name">${esc(s.final ? L('✨ Final squishy') : L('Locked'))}</span>${progressBar(pr, text)}</button>`;
       }
-      return `<button type="button" class="sq-tile${s.glow ? ' glow' : ''}${tierCls}" data-sq-pick="${s.id}" aria-label="${esc(L('Play with {name}', { name: nameOf(s) }) + (TIER_LABEL[tier] ? ' (' + L(TIER_LABEL[tier]) + ')' : '') + (stars.includes(s.id) ? ' ⭐' : ''))}">${tag}${s.glow ? '<span class="sq-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' : ''}<span class="sq-art">${A().svg(s.id)}</span>${stars.includes(s.id) ? '<span class="sq-star" aria-hidden="true">⭐</span>' : ''}<span class="sq-name">${esc(nameOf(s))}</span></button>`;
+      return `<button type="button" class="sq-tile${s.glow ? ' glow' : ''}${tierCls}" data-sq-pick="${s.id}" aria-label="${esc(L('Play with {name}', { name: nameOf(s) }) + (TIER_LABEL[tier] ? ' (' + L(TIER_LABEL[tier]) + ')' : '') + (stars.includes(s.id) ? ' ⭐' : ''))}">${tag}${s.glow ? '<span class="sq-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' : ''}<span class="sq-art">${A().svg(s.id)}</span>${stars.includes(s.id) ? '<span class="sq-star" aria-hidden="true">⭐</span>' : ''}${tricksFound.includes(s.id) ? '<span class="sq-trick-dot" aria-hidden="true">✨</span>' : ''}<span class="sq-name">${esc(nameOf(s))}</span></button>`;
     }).join('');
     return `<p class="sq-hint">${esc(L('Tap a squishy to play with it: squish it, stretch it, and learn its Bible story.'))}</p>
       ${ui.msg ? `<p class="sq-msg" role="status">${esc(ui.msg)}</p>` : ''}
@@ -205,7 +273,17 @@
       const status = b.earned ? `<span class="sq-badge-date">✓ ${esc(L('Earned {date}', { date: niceDate(b.earned) }))}</span>` : progressBar(b.progress, text);
       return `<li class="sq-badge${b.earned ? ' earned' : ''}${tierCls}"><span class="sq-medal" aria-hidden="true">${b.earned ? BADGE_ICON[b.id] || '🏅' : '🔒'}</span>${art}<span class="sq-badge-body"><strong>${esc(L(BADGE_NAME[b.id] || b.id))}</strong>${TIER_LABEL[b.tier] ? `<span class="sq-tier inline">${esc(L(TIER_LABEL[b.tier]))}</span>` : ''}${b.earned ? `<span class="sq-req">${esc(text)}</span>` : ''}${status}</span></li>`;
     }).join('');
-    return `<h2 class="sq-h2">${esc(L('Achievements'))}</h2><p class="sq-hint">${esc(L('Badges earned: {n} of {total}', { n: got, total: list.length }))}</p><ul class="sq-badges">${rows}</ul>`;
+    return `<h2 class="sq-h2">${esc(L('Achievements'))}</h2><p class="sq-hint">${esc(L('Badges earned: {n} of {total}', { n: got, total: list.length }))}</p><ul class="sq-badges">${rows}</ul>${tricksHtml()}`;
+  }
+  /* Every squishy's secret trick: found ones by name, the rest a "?" */
+  function tricksHtml() {
+    const st = stats().get(), all = D().SQUISHIES.filter(x => kit(x.id));
+    const found = all.filter(x => st.tricks.includes(x.id)).length;
+    const rows = all.map(x => {
+      const k = kit(x.id), got = st.tricks.includes(x.id), shown = C().trickRevealed(x.id, st);
+      return `<li class="sq-trickrow${got ? ' found' : ''}"><span class="sq-badge-art${got ? '' : ' dim'}">${A().svg(x.id)}</span><span class="sq-badge-body"><strong>${got ? '✨ ' + esc(L(TRICK_NAME[k.trick])) : '✨ ?'}</strong><span class="sq-req">${esc(nameOf(x))}${shown ? ' · ' + esc(L(GESTURE_TEXT[k.gesture])) : ''}</span></span></li>`;
+    }).join('');
+    return `<h2 class="sq-h2" id="sq-tricks">${esc(L('Secret tricks'))}</h2><p class="sq-hint">${esc(L('Tricks found: {n} of {total}', { n: found, total: all.length }))}</p><ul class="sq-badges sq-tricklist">${rows}</ul>`;
   }
 
   /* Something counted toward the challenges: open any squishy whose
@@ -274,12 +352,26 @@
     const on = sounds().get();
     return `<div class="sq-play" data-sq-play role="dialog" aria-modal="true" aria-labelledby="sq-play-title">
       <div class="sq-play-top"><button type="button" class="sq-play-back" data-sq-play-back>${esc(L('← Shelf'))}</button><strong id="sq-play-title">${esc(nameOf(x))}</strong><button type="button" class="sq-sound" role="switch" aria-checked="${on}" data-sq-sound aria-label="${esc(L('Sounds'))}">${on ? '🔊' : '🔈'}</button></div>
-      <div class="sq-play-area" data-sq-area><canvas class="sq-canvas" data-sq-canvas tabindex="0" role="img" aria-label="${esc(L('{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch.', { name: nameOf(x) }))}"></canvas>
-        <button type="button" class="sq-learn" data-sq-learn hidden>📖 ${esc(L('Learn'))}</button></div>
+      <div class="sq-play-area" data-sq-area><canvas class="sq-canvas" data-sq-canvas tabindex="0" role="img" aria-label="${esc(L('{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch, T does its secret trick.', { name: nameOf(x) }))}"></canvas>
+        <button type="button" class="sq-learn" data-sq-learn hidden>📖 ${esc(L('Learn'))}</button>
+        <button type="button" class="sq-trick" data-sq-trick aria-live="polite">${esc(trickChip(x.id))}</button>
+        <p class="sq-toast" data-sq-toast role="status" hidden></p></div>
       <p class="sq-play-hint">${esc(L('Press to squish · drag to stretch · two fingers to squeeze or spread'))}</p>
       <div class="sq-sheet" data-sq-sheet hidden></div></div>`;
   }
 
+  function trickChip(id) {
+    const k = kit(id); if (!k) return '';
+    const st = stats().get();
+    if (st.tricks.includes(id)) return `✨ ${L(TRICK_NAME[k.trick])} · ${L(GESTURE_TEXT[k.gesture])}`;
+    if (C().trickRevealed(id, st)) return `✨ ${L('Secret trick')}: ${L(GESTURE_TEXT[k.gesture])}`;
+    return `✨ ${L('Secret trick')}: ?`;
+  }
+  function refreshChip() { const b = pv && pv.area.querySelector('[data-sq-trick]'); if (b) b.textContent = trickChip(pv.id); }
+  function toast(text, ms = 3200) {
+    const t = pv && pv.area.querySelector('[data-sq-toast]'); if (!t) return;
+    t.textContent = text; t.hidden = false; clearTimeout(t._h); t._h = setTimeout(() => { t.hidden = true; }, ms);
+  }
   function openPlay(id) {
     const host = ui.root && ui.root.querySelector('[data-sq-play-host]');
     const x = byId(id);
@@ -289,7 +381,7 @@
     host.innerHTML = playHtml(x);
     document.documentElement.classList.add('sq-locked');
     const canvas = host.querySelector('[data-sq-canvas]'), area = host.querySelector('[data-sq-area]');
-    pv = { id, x, canvas, area, ctx: canvas.getContext('2d'), body: C().softBody({ reduced: reduced() }), pointers: new Map(), mode: null, anchor: null, start: 0, pinch0: null, frame: 0, last: 0, dirty: true, mood: 'happy', dpr: 1, scale: 1, ox: 0, oy: 0, buzzAt: 0, buzzLevel: 0, squelch: 0, gestured: false, held: false, tone: null, lastStretch: 0, giggleAt: 0, glow: !!x.glow, glowI: 0, glowNow: 0, sparks: [], sparkAcc: 0, crunchAt: 0, crunchLevel: 0 };
+    pv = { id, x, canvas, area, ctx: canvas.getContext('2d'), body: C().softBody({ reduced: reduced() }), pointers: new Map(), mode: null, anchor: null, start: 0, pinch0: null, frame: 0, last: 0, dirty: true, mood: 'happy', dpr: 1, scale: 1, ox: 0, oy: 0, buzzAt: 0, buzzLevel: 0, squelch: 0, gestured: false, held: false, tone: null, lastStretch: 0, giggleAt: 0, glow: !!x.glow, glowI: 0, glowNow: 0, sparks: [], sparkAcc: 0, crunchAt: 0, crunchLevel: 0, parts: [], partAcc: 0, partK: 0, finger: null, gest: C().gestures(), anim: null, pile: [] };
     pv.face = A().faceAt(id);
     layout();
     kick();
@@ -340,6 +432,7 @@
       halo.addColorStop(0, `rgba(255,236,160,${(0.6 * G).toFixed(3)})`); halo.addColorStop(0.5, `rgba(255,205,90,${(0.28 * G).toFixed(3)})`); halo.addColorStop(1, 'rgba(255,190,70,0)');
       g.fillStyle = halo; g.fillRect(0, 0, p.canvas.width, p.canvas.height);
     }
+    if (p.anim) { drawAnim(g, ox, oy, s, k, bb); drawParts(g); return; }
     g.fillStyle = 'rgba(0,0,0,0.28)';
     g.beginPath();
     g.ellipse(ox + (bb.minX + bb.maxX) / 2 * s, oy + Math.min(bb.maxY, b.size * 1.02) * s, (bb.maxX - bb.minX) * s * 0.36, 9 * p.dpr, 0, 0, Math.PI * 2);
@@ -351,6 +444,7 @@
       g.drawImage(full.canvas, Math.round(ox), Math.round(oy));
       p.drawn = 'rest';
       if (p.glow) glowOver(g, gx, gy, gr, p.dpr);
+      drawParts(g);
       return;
     }
     p.drawn = 'mesh';
@@ -368,6 +462,51 @@
     }
     drawFace(g, s, ox, oy);
     if (p.glow) glowOver(g, gx, gy, gr, p.dpr);
+    drawParts(g);
+  }
+  /* Effects: particles, the loaves pile, and trick animations. */
+  function drawParts(g) {
+    const p = pv, F = FXM(); if (!F) return;
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    for (const it of p.pile) F.emo(g, it.ch, it.x * p.dpr, it.y * p.dpr, 22 * p.dpr, 1, it.rot);
+    for (const pt of p.parts) F.drawParticle(g, pt, p.dpr);
+  }
+  function animGeom(ox, oy, s, pose, bb) {
+    const p = pv, S = p.body.size * s, cx = ox + S / 2, cy = oy + S / 2;
+    return { cx, cy, S, W: p.canvas.width, H: p.canvas.height, dpr: p.dpr, ground: oy + Math.min(bb.maxY, p.body.size * 1.02) * s, px: cx + (pose.dx || 0) * S, py: cy + (pose.dy || 0) * S, path: p.anim.path, text: p.anim.text };
+  }
+  function drawAnim(g, ox, oy, s, k, bb) {
+    const p = pv, a = p.anim, F = FXM(), red = reduced();
+    const t = red ? 0.85 : Math.min(1, (performance.now() - a.t0) / a.def.dur);
+    const pose = red ? { mood: (a.def.pose(0.85) || {}).mood } : a.def.pose(t) || {};
+    const G = animGeom(ox, oy, s, pose, bb), S = G.S;
+    const full = texture(p.id, 'full'), body = texture(p.id, 'body'), face = texture(p.id, pose.mood || 'happy');
+    g.save();
+    g.globalAlpha = pose.alpha === undefined ? 1 : pose.alpha;
+    if (g.globalAlpha > 0) {
+      g.fillStyle = 'rgba(0,0,0,0.22)'; g.beginPath(); g.ellipse(G.px, G.ground, S * 0.3, 8 * p.dpr, 0, 0, Math.PI * 2); g.fill();
+      g.translate(G.px, G.py); g.rotate(pose.rot || 0); g.scale(pose.sx || 1, pose.sy || 1); g.translate(-G.cx, -G.cy);
+      g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
+      /* textures can be finer than the screen: always fit them to the body box */
+      if ((pose.mood || 'happy') === 'happy' && full.ready) g.drawImage(full.canvas, ox, oy, S, S);
+      else if (body.ready) { g.drawImage(body.canvas, ox, oy, S, S); if (face.ready) g.drawImage(face.canvas, ox, oy, S, S); }
+    }
+    g.restore();
+    g.save(); a.def.over(g, t, G); g.restore();
+    if (p.glow) { p.glowI = 1; glowOver(g, G.px, G.py, S, p.dpr); }
+  }
+  function burst(name, n) {
+    const p = pv, F = FXM(); if (!p || !F || reduced()) return;
+    const bb = p.body.bounds(), box = { x: p.ox + bb.minX * p.scale, y: p.oy + bb.minY * p.scale, w: (bb.maxX - bb.minX) * p.scale, h: (bb.maxY - bb.minY) * p.scale };
+    for (let i = 0; i < n && p.parts.length < 90; i += 1) { const pt = F.spawn(name, box, p.finger, Math.random, p.partK++); if (pt) p.parts.push(pt); }
+  }
+  function stepParts(dt, amount, active) {
+    const p = pv, F = FXM(), k = kit(p.id); if (!F || !k) return;
+    if (active && !reduced()) {
+      const f = F.FX[k.fx]; p.partAcc += dt * (f ? f.rate : 0) * (0.35 + amount * 1.6);
+      const n = Math.floor(p.partAcc); p.partAcc -= n; if (n) burst(k.fx, n);
+    }
+    p.parts = p.parts.filter(pt => F.step(pt, dt));
   }
   /* The face is not warped: it rides on the body with a mild stretch and tilt. */
   function drawFace(g, s, ox, oy) {
@@ -437,20 +576,21 @@
 
   /* Continuous stretchy tone: pitch rises with the stretch, only sounds while it changes. */
   function toneStart() {
-    if (pv && pv.glow) return;
-    const a = audio(); if (!a || !pv || pv.tone) return;
+    if (!pv || pv.glow || (kit(pv.id) && kit(pv.id).sound.tone === 'none')) return;
+    const a = audio(); if (!a || pv.tone) return;
     try {
       const osc = a.createOscillator(), f = a.createBiquadFilter(), gain = a.createGain(), lfo = a.createOscillator(), lg = a.createGain();
-      osc.type = 'triangle'; osc.frequency.value = 180; f.type = 'lowpass'; f.frequency.value = 900; gain.gain.value = 0;
-      lfo.frequency.value = 9; lg.gain.value = 6; lfo.connect(lg); lg.connect(osc.frequency);
+      const tn = C().TONES[(kit(pv.id) || { sound: {} }).sound.tone] || C().TONES.warble;
+      osc.type = tn.type; osc.frequency.value = tn.base; f.type = 'lowpass'; f.frequency.value = tn.filter; f.Q.value = tn.q; gain.gain.value = 0;
+      lfo.frequency.value = tn.lfo || 0.01; lg.gain.value = tn.depth; lfo.connect(lg); lg.connect(osc.frequency);
       osc.connect(f); f.connect(gain); gain.connect(master); osc.start(); lfo.start();
-      pv.tone = { osc, gain, lfo };
+      pv.tone = { osc, gain, lfo, tn };
     } catch { /* ignore */ }
   }
   function toneSet(amount, speed) {
     const t = pv && pv.tone; if (!t || !ac) return;
     const now = ac.currentTime;
-    t.osc.frequency.setTargetAtTime(170 + amount * 560, now, 0.03);
+    t.osc.frequency.setTargetAtTime(t.tn.base + amount * t.tn.range, now, 0.03);
     t.gain.gain.setTargetAtTime(Math.min(0.055, speed * 0.04), now, speed > 0.02 ? 0.03 : 0.08);
   }
   function toneStop() {
@@ -458,7 +598,6 @@
     pv.tone = null;
     try { t.gain.gain.setTargetAtTime(0, ac.currentTime, 0.04); t.osc.stop(ac.currentTime + 0.2); t.lfo.stop(ac.currentTime + 0.2); } catch { /* ignore */ }
   }
-  function squelch(depth) { noise({ filter: 'lowpass', f0: 900, f1: 220, dur: 0.22, peak: 0.03 + depth * 0.03 }); voice({ f0: 240, f1: 140, dur: 0.18, peak: 0.025 + depth * 0.02 }); }
   function boing(amount) { voice({ f0: 200 + amount * 340, f1: 95, dur: 0.45, peak: 0.04 + amount * 0.04, vib: [13, 26 + amount * 30] }); }
 
   function buzz(level, now) {
@@ -474,6 +613,8 @@
     const dt = p.last ? (now - p.last) / 1000 : 1 / 60;
     p.last = now;
     const b = p.body, list = [...p.pointers.values()];
+    if (p.anim && now - p.anim.t0 >= p.anim.def.dur) { p.anim = null; p.glowI = p.glow ? 0.3 : 0; }
+    if ((p.mode === 'press' || p.mode === 'grab') && list.length === 1) handle(p.gest.poll(now));
     if (p.mode === 'pinch' && list.length >= 2) {
       const [f0, f1] = list, d0 = p.pinch0.d, d1 = Math.hypot(f1.x - f0.x, f1.y - f0.y);
       b.pinch(p.pinch0.cx, p.pinch0.cy, p.pinch0.ux, p.pinch0.uy, d1 / d0);
@@ -484,7 +625,7 @@
       const hold = now - p.start, depth = 1 - Math.exp(-hold / 650);
       b.press(p.anchor.x, p.anchor.y, depth);
       const step = depth > 0.75 ? 2 : depth > 0.35 ? 1 : 0;
-      if (step > p.squelch) { p.squelch = step; squelch(depth); }
+      if (step > p.squelch) { p.squelch = step; kitSquish(depth); if (step === 2 && p.id === 'fish') { burst('fountain', 16); vibrate(20); } }
     }
     b.step(dt);
     const st = b.state, amount = Math.max(st.stretch, st.squish);
@@ -500,8 +641,9 @@
     const m = st.mode ? C().mood(st) : 'happy';
     if (m !== p.mood) { p.mood = m; }
     if (!st.mode && now - p.giggleAt > 1400 && b.energy() > 900) { p.giggleAt = now; play('giggle'); }
+    stepParts(Math.min(0.05, dt), amount, !!st.mode);
     draw();
-    const live = p.glow && (!reduced() || p.glowI > 0.01);
+    const live = (p.glow && (!reduced() || p.glowI > 0.01)) || p.anim || p.parts.length;
     if (st.mode || !b.atRest() || live) {
       if (!st.mode && b.atRest()) b.settle();
       p.frame = requestAnimationFrame(tick);
@@ -510,7 +652,7 @@
     function kick() { if (pv && !pv.frame) { pv.last = 0; pv.frame = requestAnimationFrame(tick); } }
 
   function beginGesture(p) {
-    if (!p.gestured) { p.gestured = true; play(byId(p.id).sound); stats().squished(); afterProgress(false); }
+    if (!p.gestured) { p.gestured = true; kitSquish(0.3); stats().squished(p.id); afterProgress(false); }
   }
   function endGesture() {
     const p = pv; if (!p) return;
@@ -518,12 +660,56 @@
     const was = p.body.release(f ? f.vx / p.scale : 0, f ? f.vy / p.scale : 0);
     toneStop();
     if (p.glow && was.mode) { crunch(Math.max(0.5, was.stretch, was.squish), true); vibrate(C().crunchPattern(Math.max(was.stretch, was.squish))); }
-    else if (was.mode === 'grab' || was.mode === 'pinch') { if (was.stretch > 0.15) boing(was.stretch); else play('release'); vibrate(C().pulseMs(Math.max(was.stretch, was.squish))); }
-    else if (was.mode === 'press') { play('release'); vibrate(C().pulseMs(was.squish)); }
+    else if (was.mode === 'grab' || was.mode === 'pinch') { if (was.stretch > 0.15) boing(was.stretch); kitRelease(Math.max(was.stretch, was.squish)); vibrate(C().pulseMs(Math.max(was.stretch, was.squish))); }
+    else if (was.mode === 'press') { kitRelease(was.squish); vibrate(C().pulseMs(was.squish)); }
     p.mode = null; p.squelch = 0; p.gestured = false; p.buzzLevel = 0;
     const learn = p.area.querySelector('[data-sq-learn]');
     if (learn && learn.hidden) learn.hidden = false;
+    refreshChip();
     kick();
+  }
+
+  /* ---------- Gestures and secret tricks ---------- */
+  function feed(kind, cx, cy) {
+    const p = pv; if (!p) return;
+    const at = toBody(p, cx, cy), r = p.canvas.getBoundingClientRect();
+    p.finger = { x: cx - r.left, y: cy - r.top };
+    handle(p.gest[kind](at.x, at.y, performance.now()));
+  }
+  function handle(list) {
+    const p = pv; if (!p || !list || !list.length) return;
+    for (const g of list) {
+      if (p.id === 'lamb' && g.type === 'doubleTap' && !p.anim) { startAnim(HOP, null); play('baa'); burst('hearts', 10); }
+      if (p.id === 'loaves' && g.type === 'tap') addLoaf();
+      if (C().isTrick(p.id, g)) { doTrick(g); return; }
+    }
+  }
+  /* the lamb's little hop (not its trick) */
+  const HOP = { dur: 520, pose: t => ({ dy: -Math.sin(Math.PI * t) * 0.2, sy: 1 + Math.sin(Math.PI * t) * 0.05, mood: 'wow' }), over() {} };
+  /* each tap on the loaves adds a little loaf or fish to the pile */
+  function addLoaf() {
+    const p = pv; if (p.pile.length >= 30) p.pile.shift();
+    const n = p.pile.length, size = p.body.size * p.scale, row = Math.floor(n / 10), col = n % 10;
+    p.pile.push({ ch: n % 2 ? '🐟' : '🍞', x: p.cw / 2 + (col - 4.5) * size * 0.12 + (row % 2) * size * 0.05, y: p.oy + size * 1.08 - row * 14, rot: (Math.random() - 0.5) * 0.6 });
+    burst('crumbs', 6); SQUISH.pluck(0.2);
+  }
+  function startAnim(def, extra) {
+    const p = pv; if (!p) return;
+    p.anim = { def, t0: performance.now(), ...(extra || {}) };
+    kick();
+  }
+  function doTrick(g) {
+    const p = pv, F = FXM(), k = kit(p && p.id); if (!p || !F || !k || (p.anim && p.anim.def !== HOP)) return;
+    if (p.mode && p.mode !== 'wait') { p.body.release(0, 0); toneStop(); p.mode = p.pointers.size ? 'wait' : null; p.gestured = false; }
+    let path = null;
+    if (g && g.path) { const s = p.scale * p.dpr; path = g.path.map(([x, y]) => [p.ox * p.dpr + x * s, p.oy * p.dpr + y * s]); }
+    startAnim(F.TRICKS[k.trick], { path, text: TRICK_TEXT[k.trick] ? L(TRICK_TEXT[k.trick]) : '', trick: k.trick });
+    if (TRICK_SOUND[k.trick]) TRICK_SOUND[k.trick]();
+    vibrate(TRICK_BUZZ[k.trick] || [12, 40, 12]);
+    const first = stats().trickFound(p.id);
+    toast(first ? `✨ ${L('Secret trick found: {name}!', { name: L(TRICK_NAME[k.trick]) })} ${L(TRICK_STORY[k.trick])}` : `✨ ${L(TRICK_NAME[k.trick])}: ${L(TRICK_STORY[k.trick])}`, 4200);
+    if (first) { play('match'); afterProgress(false); }
+    refreshChip();
   }
 
   document.addEventListener('pointerdown', e => {
@@ -534,6 +720,8 @@
     try { p.canvas.setPointerCapture(e.pointerId); } catch { /* ignore */ }
     const now = performance.now();
     p.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY, t: now, vx: 0, vy: 0 });
+    if (p.anim && p.anim.def !== HOP) { p.pointers.delete(e.pointerId); return; }
+    if (p.pointers.size === 1) feed('down', e.clientX, e.clientY); else p.gest = C().gestures();
     if (p.pointers.size === 2) {
       const [a, b] = [...p.pointers.values()];
       if (p.mode) { p.body.release(0, 0); }
@@ -555,12 +743,14 @@
     f.vx = f.vx * 0.5 + (e.clientX - f.x) / dt * 1000 * 0.5; f.vy = f.vy * 0.5 + (e.clientY - f.y) / dt * 1000 * 0.5;
     f.x = e.clientX; f.y = e.clientY; f.t = now;
     if (p.mode === 'press' && Math.hypot(f.x - f.x0, f.y - f.y0) > 10) { p.mode = 'grab'; toneStart(); }
+    if (p.pointers.size === 1) feed('move', e.clientX, e.clientY);
     kick();
   });
   const lift = e => {
     const p = pv;
     if (!p || !p.pointers.has(e.pointerId)) return;
-    if (p.pointers.size === 1 || p.mode !== 'pinch') { endGesture(); p.pointers.delete(e.pointerId); return; }
+    const solo = p.pointers.size === 1 && p.gest.active;
+    if (p.pointers.size === 1 || p.mode !== 'pinch') { endGesture(); p.pointers.delete(e.pointerId); if (solo && e.type === 'pointerup') feed('up', e.clientX, e.clientY); return; }
     /* pinch ended with one finger still down: let go of the pinch, wait for the last finger */
     endGesture(); p.pointers.delete(e.pointerId); p.mode = 'wait';
   };
@@ -574,6 +764,7 @@
     const p = pv;
     if (!p || e.target !== p.canvas) return;
     if (e.key === 'Escape') { e.preventDefault(); closePlay(); render(); return; }
+    if ((e.key === 't' || e.key === 'T') && !e.repeat && !p.mode) { e.preventDefault(); doTrick(null); return; }
     if (p.mode || e.repeat) { if (ARROWS[e.key] || e.key === ' ' || e.key === 'Enter') e.preventDefault(); return; }
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -732,6 +923,11 @@
     const pick = t.closest('[data-sq-pick]');
     if (pick) { ui.msg = ''; openPlay(pick.dataset.sqPick); return; }
     if (t.closest('[data-sq-play-back]')) { closePlay(); if (window.MsbSpeech) MsbSpeech.stop(); render(); ui.root.querySelector('.sq-grid')?.scrollIntoView({ block: 'center' }); return; }
+    if (t.closest('[data-sq-trick]') && pv) {
+      if (C().trickRevealed(pv.id, stats().get())) doTrick(null);
+      else toast(L('Keep playing with it to discover its secret trick!'), 2600);
+      return;
+    }
     const sheet = ui.root.querySelector('[data-sq-sheet]');
     if (t.closest('[data-sq-learn]') && pv && sheet) { sheet.innerHTML = cardHtml(pv.x); sheet.hidden = false; play('twinkle'); sheet.querySelector('button')?.focus(); return; }
     if (t.closest('[data-sq-sheet-close]') && sheet) { sheet.hidden = true; if (window.MsbSpeech) MsbSpeech.stop(); pv && pv.canvas.focus({ preventScroll: true }); return; }
@@ -779,7 +975,7 @@
     _play() {
       if (!pv) return null;
       const r = pv.canvas.getBoundingClientRect(), b = pv.body, bb = b.bounds();
-      return { id: pv.id, drawn: pv.drawn, tex: texture(pv.id, 'full').T, dpr: pv.dpr, glow: pv.glowNow, glowIntensity: pv.glowI, sparks: pv.sparks.length, mode: b.state.mode, stretch: b.state.stretch, squish: b.state.squish, mood: pv.mood, atRest: b.atRest(), area: b.area() / b.A0, w: bb.maxX - bb.minX, h: bb.maxY - bb.minY, minY: bb.minY, box: { x: r.left + pv.ox, y: r.top + pv.oy, size: b.size * pv.scale } };
+      return { id: pv.id, drawn: pv.drawn, tex: texture(pv.id, 'full').T, dpr: pv.dpr, glow: pv.glowNow, glowIntensity: pv.glowI, sparks: pv.sparks.length, mode: b.state.mode, stretch: b.state.stretch, squish: b.state.squish, mood: pv.mood, atRest: b.atRest(), area: b.area() / b.A0, w: bb.maxX - bb.minX, h: bb.maxY - bb.minY, minY: bb.minY, box: { x: r.left + pv.ox, y: r.top + pv.oy, size: b.size * pv.scale }, anim: pv.anim ? pv.anim.trick || 'hop' : null, parts: pv.parts.length, pile: pv.pile.length };
     }
   };
 })();

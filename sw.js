@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v99';
+const CACHE_VERSION = 'v100';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -44,6 +44,7 @@ const SHELL = [
   './orthodox-day.js',
   './study-tools.js',
   './achievements-rules.js',
+  './study-session.js',
   './i18n.js',
   './moments.js',
   './coloring-core.js',
@@ -54,6 +55,7 @@ const SHELL = [
   './squishy-data.js',
   './squishy-core.js',
   './squishy-art.js',
+  './squishy-fx.js',
   './squishy.js',
   './match3-data.js',
   './match3-core.js',
