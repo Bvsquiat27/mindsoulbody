@@ -1001,6 +1001,21 @@
     "Drawing deleted.": "Dibujo borrado."
   });
 
+  /* Coloring book: zoom, sounds and vibration. */
+  Object.assign(ES, {
+    "Zoom": "Zoom",
+    "Zoom in": "Acercar",
+    "Zoom out": "Alejar",
+    "⤢ Fit": "⤢ Ver todo",
+    "✋ Move": "✋ Mover",
+    "Pinch with two fingers to zoom and move the picture. One finger colors.": "Pellizca con dos dedos para acercar y mover el dibujo. Con un dedo coloreas.",
+    "Sound and vibration": "Sonido y vibración",
+    "Drawing sounds": "Sonidos del dibujo",
+    "Drawing vibration": "Vibración al dibujar",
+    "On": "Sí",
+    "Off": "No"
+  });
+
   /* Lesson tags, Bible-note bylines, and the game-show menus. */
   Object.assign(ES, {
     "STUDY": "ESTUDIO",

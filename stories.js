@@ -376,6 +376,7 @@
 
   window.MsbStories = {
     show,
+    bedtimeOn: () => !!bedtime,
     /* Reopen a coloring page, optionally with a drawing from My drawings loaded. */
     openColoring(id, drawingId) {
       if (!coloring() || !coloring().has(id)) return false;
