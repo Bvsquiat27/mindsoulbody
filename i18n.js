@@ -1133,6 +1133,7 @@
     "So close!": "¡Casi lo logras!",
     "You ran out of moves this time. Every try helps you get better. Want to try again?": "Esta vez se acabaron los movimientos. Cada intento te ayuda a mejorar. ¿Quieres intentarlo otra vez?",
     "Win the level before it to open this one.": "Gana el nivel anterior para abrir este.",
+    "Moves bonus!": "¡Bonus de movimientos!",
     "stars": "estrellas",
     "fish": "peces",
     "grapes": "uvas",

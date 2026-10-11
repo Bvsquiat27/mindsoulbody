@@ -289,10 +289,16 @@ test('goals: score, collect and stones; win, lose and stars', () => {
   g.score = 10; g.movesLeft = 0;
   assert.equal(C.status(g, lv), 'lost');
   g.movesLeft = 2; g.score = 100;
-  assert.equal(C.finalScore(g), 100 + 2 * 60, 'moves left give a bonus');
+  assert.equal(C.MOVE_BONUS, 150);
+  assert.equal(C.finalScore(g), 100 + 2 * 150, 'moves left give a bonus (sugar crush)');
   assert.equal(C.stars(lv, 100), 1);
   assert.equal(C.stars(lv, 500), 2);
   assert.equal(C.stars(lv, 950), 3);
+  /* a win with half the moves or more left is worth at least 2 stars */
+  const big = { ...lv, moves: 20, stars: [5000, 9000] };
+  assert.equal(C.stars(big, 100, 9), 1);
+  assert.equal(C.stars(big, 100, 10), 2);
+  assert.equal(C.stars(big, 9500, 17), 3);
 });
 
 test('every level can be won, and a careful player wins most tries', () => {
@@ -315,6 +321,25 @@ test('every level can be won, and a careful player wins most tries', () => {
     }
     assert.ok(wins >= (n <= 3 ? 12 : 8), `level ${n}: ${wins}/12`);
   }
+});
+
+test('stars are kind: a medium player gets 2+ stars in most wins and 3 in about a third', () => {
+  let wins = 0, two = 0, three = 0;
+  for (const lv of LEVELS) for (let r = 0; r < 10; r += 1) {
+    const g = C.createGame(lv), pick = C.rng(9000 + r * 7);
+    while (C.status(g, lv) === 'playing') {
+      const m = pick.next() < 0.5 ? C.hint(g, lv) : (all => all[pick.int(all.length)])(C.allMoves(g));
+      C.play(g, m[0], m[1]);
+    }
+    if (C.status(g, lv) !== 'won') continue;
+    wins += 1;
+    const s = C.stars(lv, C.finalScore(g), g.movesLeft);
+    if (s >= 2) two += 1;
+    if (s === 3) three += 1;
+    if (g.movesLeft >= lv.moves / 2) assert.ok(s >= 2, `level ${lv.n}: an early win earns 2+ stars`);
+  }
+  assert.ok(two / wins >= 0.55 && two / wins <= 0.9, `2+ stars in ${(100 * two / wins).toFixed(0)}% of wins`);
+  assert.ok(three / wins >= 0.2 && three / wins <= 0.4, `3 stars in ${(100 * three / wins).toFixed(0)}% of wins`);
 });
 
 /* ---------- Progress, sound, vibration ---------- */
@@ -401,4 +426,5 @@ test('the game is wired into Stories, precached, and its words have Spanish', ()
   for (const k of dyn) assert.ok(i18n.includes(`"${k}":`), `missing Spanish for: ${k}`);
   for (const k of ['Manna Match', 'Match Bible pictures and learn a lesson in every level']) assert.ok(i18n.includes(`"${k}":`), k);
   assert.match(ui, /data-i18n-skip/);
+  assert.doesNotMatch(ui, /_setMoves/, 'no move-changing test hook in the app');
 });

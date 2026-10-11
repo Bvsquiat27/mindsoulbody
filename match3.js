@@ -29,7 +29,7 @@
   const PIECE_ONE = { star: 'Star', fish: 'Fish', grapes: 'Grapes', loaf: 'Bread', leaf: 'Olive leaf', heart: 'Heart' };
   const SPECIAL_NAME = { 1: 'trumpet (clears a row)', 2: 'trumpet (clears a column)', 3: 'light (clears around it)' };
 
-  const ui = { root: null, view: 'map', n: 1, g: null, busy: false, sel: -1, els: new Map(), stone: null, hintTimer: 0, hinted: null, drag: null, msg: '', result: null, collected: {}, score: 0 };
+  const ui = { showMoves: null, root: null, view: 'map', n: 1, g: null, busy: false, sel: -1, els: new Map(), stone: null, hintTimer: 0, hinted: null, drag: null, msg: '', result: null, collected: {}, score: 0 };
 
   /* ---------- Sound (made on the device with Web Audio) ---------- */
   let ac = null, master = null, noiseBuf = null;
@@ -193,7 +193,7 @@
   function statusHtml() {
     const lv = levelOf(ui.n);
     const top = Math.max(lv.stars[1], 1), pct = Math.min(100, (ui.score / top) * 100);
-    return `<div class="m3-hud" data-m3-hud><div class="m3-moves" aria-label="${esc(L('Moves left: {n}', { n: ui.g.movesLeft }))}"><span>${esc(L('Moves'))}</span><b>${ui.g.movesLeft}</b></div><div class="m3-goals">${goalChips()}</div><div class="m3-score" aria-label="${esc(L('Score: {n}', { n: ui.score }))}"><span>${esc(L('Score'))}</span><b>${ui.score}</b></div></div>
+    return `<div class="m3-hud" data-m3-hud><div class="m3-moves" aria-label="${esc(L('Moves left: {n}', { n: ui.showMoves ?? ui.g.movesLeft }))}"><span>${esc(L('Moves'))}</span><b>${ui.showMoves ?? ui.g.movesLeft}</b></div><div class="m3-goals">${goalChips()}</div><div class="m3-score" aria-label="${esc(L('Score: {n}', { n: ui.score }))}"><span>${esc(L('Score'))}</span><b>${ui.score}</b></div></div>
       <div class="m3-meter" aria-hidden="true"><i style="width:${pct.toFixed(1)}%"></i><em style="left:${((lv.stars[0] / top) * 100).toFixed(1)}%">★</em><em style="left:99%">★</em></div>`;
   }
   function boardHtml() {
@@ -351,7 +351,7 @@
     updateStatus();
     ui.busy = false;
     const st = C().status(ui.g, levelOf(ui.n));
-    if (st !== 'playing') { await wait(reduced() ? 50 : 350); finish(st); return true; }
+    if (st !== 'playing') { await wait(reduced() ? 50 : 350); if (st === 'won') await sugarCrush(); finish(st); return true; }
     roving(Math.max(0, Math.min(63, b)));
     armHint();
     return true;
@@ -441,13 +441,35 @@
   }
   function poke() { if (ui.view === 'board' && !ui.busy) armHint(); }
 
+  /* Sugar crush: after a win, each unused move turns into bonus points, one
+     by one, with a sparkle and a rising chime. */
+  async function sugarCrush() {
+    const left = Math.max(0, ui.g.movesLeft);
+    if (!left) return;
+    const fx = ui.root && ui.root.querySelector('[data-m3-fx]');
+    bubble(fx, L('Moves bonus!'));
+    if (reduced()) { ui.score += C().moveBonus(ui.g); updateStatus(); return; }
+    for (let k = 1; k <= left; k += 1) {
+      ui.showMoves = left - k;
+      ui.score += C().MOVE_BONUS;
+      const cell = (k * 23 + 11) % C().N;
+      sparkle(fx, cell, ui.g.t[cell]);
+      const el = elAt(cell); if (el) { el.classList.remove('born'); void el.offsetWidth; el.classList.add('born'); }
+      sound('pop', Math.min(9, 1 + Math.floor(k / 2)));
+      updateStatus();
+      await wait(left > 15 ? 70 : 110);
+    }
+    ui.showMoves = null;
+    await wait(300);
+  }
+
   /* ---------- Win and try again ---------- */
   function finish(st) {
     clearHint();
     const box = ui.root && ui.root.querySelector('[data-m3-overlay]'); if (!box) return;
     const lv = levelOf(ui.n), l = lang();
     if (st === 'won') {
-      const bonus = Math.max(0, ui.g.movesLeft) * 60, total = C().finalScore(ui.g), stars = C().stars(lv, total);
+      const bonus = C().moveBonus(ui.g), total = C().finalScore(ui.g), stars = C().stars(lv, total, ui.g.movesLeft);
       prog().win(lv.n, stars, total);
       ui.result = { won: true, stars, total, bonus };
       sound('fanfare'); vibrate([20, 40, 30]);
@@ -473,7 +495,7 @@
 
   function startLevel(n) {
     const lv = levelOf(n);
-    ui.n = n; ui.g = C().createGame(lv); ui.view = 'board'; ui.sel = -1; ui.busy = false; ui.msg = ''; ui.result = null;
+    ui.n = n; ui.showMoves = null; ui.g = C().createGame(lv); ui.view = 'board'; ui.sel = -1; ui.busy = false; ui.msg = ''; ui.result = null;
     ui.collected = {}; ui.score = 0; ui.stone = ui.g.stone.slice();
     render();
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -513,7 +535,6 @@
     _hint() { return ui.g ? C().hint(ui.g, levelOf(ui.n)) : null; },
     _moves() { return ui.g ? C().allMoves(ui.g) : []; },
     _peek(a, b) { if (!ui.g) return null; const g = C().clone(ui.g); return C().play(g, a, b); },
-    _swap: (a, b) => trySwap(a, b),
-    _setMoves(n) { if (ui.g) { ui.g.movesLeft = n; updateStatus(); } }
+    _swap: (a, b) => trySwap(a, b)
   };
 })();
