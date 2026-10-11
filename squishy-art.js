@@ -1,12 +1,14 @@
 /* Kawaii Bible squishies drawn as inline SVG (no image files, so they work
    offline). Same style for all: soft pastel body with a dark plum outline, a
-   glossy highlight, big shiny eyes, blush cheeks and a small smile. The eyes
-   swap to squeezed ">  <" while being squished (CSS class .squeezed). */
+   glossy highlight, big shiny eyes, blush cheeks and a small smile. The
+   squeezed ">  <" eyes are hidden with a display attribute (not only CSS),
+   so the picture is right when drawn as an image on a canvas too. */
 (() => {
   'use strict';
   const INK = '#5b4660', EYE = '#3d2c3e';
   let uid = 0;
   let look = 'happy';
+  let part = 'all', faceSpot = null;
 
   /* Outline trick: the same shapes drawn thick in ink first, then filled on
      top, so only the outer edge shows a line. */
@@ -14,10 +16,12 @@
     return `<g fill="${INK}" stroke="${INK}" stroke-width="5" stroke-linejoin="round">${shapes}</g><g fill="${fill}">${shapes}</g>`;
   }
   function face(x, y, k = 1) {
+    faceSpot = { x, y, k };
+    if (part === 'body') return '';
     return `<g class="sq-face" transform="translate(${x} ${y}) scale(${k})">
       <g class="sq-open"${look === 'squint' ? ' display="none"' : ''}><ellipse cx="-13" cy="0" rx="5.6" ry="6.6" fill="${EYE}"/><ellipse cx="13" cy="0" rx="5.6" ry="6.6" fill="${EYE}"/>
       <circle cx="-11" cy="-2.4" r="2.2" fill="#fff"/><circle cx="15" cy="-2.4" r="2.2" fill="#fff"/><circle cx="-14.6" cy="2.4" r="1.1" fill="#fff"/><circle cx="11.4" cy="2.4" r="1.1" fill="#fff"/></g>
-      <g class="sq-shut"${look === 'squint' ? ' style="display:inline"' : ''} fill="none" stroke="${EYE}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M-18 -4 L-10 0 L-18 4"/><path d="M18 -4 L10 0 L18 4"/></g>
+      <g class="sq-shut" display="${look === 'squint' ? 'inline' : 'none'}" fill="none" stroke="${EYE}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M-18 -4 L-10 0 L-18 4"/><path d="M18 -4 L10 0 L18 4"/></g>
       <ellipse cx="-21" cy="8" rx="5.5" ry="3.2" fill="#ff9db5" opacity=".7"/><ellipse cx="21" cy="8" rx="5.5" ry="3.2" fill="#ff9db5" opacity=".7"/>
       ${look === 'wow' ? `<ellipse class="sq-mouth" cx="0" cy="9" rx="3.6" ry="4.6" fill="${EYE}"/><ellipse cx="0" cy="10.4" rx="2" ry="1.8" fill="#ff8fa3"/>` : `<path class="sq-mouth" d="M-4.5 6.5 Q-2.2 9.5 0 6.8 Q2.2 9.5 4.5 6.5" fill="none" stroke="${EYE}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`}</g>`;
   }
@@ -110,18 +114,44 @@
       const stripes = ['#ffadb5', '#ffcf9c', '#fff1a6', '#bdeccf', '#a9cbff', '#d7b8ff'].map((c, i) => `<rect x="0" y="${20 + i * 15}" width="120" height="15" fill="${c}"/>`).join('');
       return `<defs><clipPath id="${id}"><path d="${shape}"/></clipPath></defs><path d="${shape}" fill="${INK}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>
         <g clip-path="url(#${id})">${stripes}</g><path d="M50 20 Q60 32 70 20" fill="#fff8ef" stroke="${INK}" stroke-width="2"/>${shine(46, 40, 7, 4)}${face(60, 66, 0.66)}`;
+    },
+    /* The final squishy: a little clay oil lamp with a glowing flame. */
+    lamp() {
+      const g = `sq-glow-${uid += 1}`, f = `sq-flame-${uid}`;
+      return `<defs><radialGradient id="${g}" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff6c4" stop-opacity=".95"/><stop offset=".45" stop-color="#ffd86b" stop-opacity=".45"/><stop offset="1" stop-color="#ffc94d" stop-opacity="0"/></radialGradient>
+        <radialGradient id="${f}" cx="50%" cy="70%" r="65%"><stop offset="0" stop-color="#fffbe0"/><stop offset=".5" stop-color="#ffd25a"/><stop offset="1" stop-color="#ff9a3c"/></radialGradient></defs>
+        ${part === 'body' ? '' : `<circle class="sq-halo" cx="62" cy="62" r="58" fill="url(#${g})"/><circle cx="101" cy="42" r="22" fill="url(#${g})"/>`}
+        ${blob('<path d="M100 18 Q114 38 108 52 Q102 62 94 54 Q88 42 100 18 Z"/>', `url(#${f})`)}
+        <path d="M100 34 Q106 44 103 51 Q100 55 97 51 Q95 44 100 34 Z" fill="#fffbe6"/>
+        ${blob('<path d="M84 66 L108 56 Q114 58 110 64 L92 82 Z"/><ellipse cx="56" cy="80" rx="40" ry="24"/><ellipse cx="56" cy="104" rx="18" ry="6"/>', '#f7c873')}
+        <path d="M20 70 Q8 72 9 81 Q10 90 22 89" fill="none" stroke="${INK}" stroke-width="9" stroke-linecap="round"/><path d="M20 70 Q8 72 9 81 Q10 90 22 89" fill="none" stroke="#f7c873" stroke-width="4" stroke-linecap="round"/>
+        <ellipse cx="56" cy="60" rx="11" ry="4" fill="#c98f4a" stroke="${INK}" stroke-width="2"/>
+        <path d="M30 94 Q56 104 82 94" fill="none" stroke="#e0a959" stroke-width="2.4" stroke-linecap="round"/>
+        ${shine(36, 70, 9, 4)}${face(56, 80, 0.72)}`;
     }
   };
 
   /* mood: 'happy' (default), 'squint' (squished: > < eyes) or 'wow' (stretched: O mouth). */
-  function svg(id, label, mood) {
+  /* part: 'all' (default), 'body' (everything but the face) or 'face' (only
+     the face, at its usual spot). The play view warps the body but keeps the
+     face as one stiff piece so the character stays recognizable. */
+  function svg(id, label, mood, which) {
     const draw = ART[id];
     if (!draw) return '';
     look = mood || 'happy';
-    const body = draw();
-    look = 'happy';
+    part = which === 'body' || which === 'face' ? which : 'all';
+    let body = draw();
+    if (part === 'face') {
+      const f = faceSpot;
+      look = mood || 'happy'; part = 'all';
+      body = f ? face(f.x, f.y, f.k) : '';
+    }
+    look = 'happy'; part = 'all';
     return `<svg class="sq-svg" xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" ${label ? `role="img" aria-label="${String(label).replace(/"/g, '&quot;')}"` : 'aria-hidden="true"'} focusable="false">${body}</svg>`;
   }
 
-  window.MsbSquishyArt = { svg, ids: Object.keys(ART) };
+  /* Where the face sits (in the 120 x 120 picture) and its size. */
+  function faceAt(id) { faceSpot = null; if (ART[id]) { part = 'body'; ART[id](); part = 'all'; } return faceSpot; }
+
+  window.MsbSquishyArt = { svg, faceAt, ids: Object.keys(ART) };
 })();

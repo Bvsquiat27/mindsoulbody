@@ -524,6 +524,45 @@
         "en": "Now Israel loved Joseph more than all his children, because he was the son of his old age: and he made him a coat of many colours.",
         "es": "Y amaba Israel á José más que á todos sus hijos, porque le había tenido en su vejez: y le hizo una ropa de diversos colores."
       }
+    },
+    {
+      "id": "lamp",
+      "sound": "crunch",
+      "locked": true,
+      "glow": true,
+      "final": true,
+      "name": {
+        "en": "Light of the World Lamp",
+        "es": "Lámpara de la luz"
+      },
+      "lesson": {
+        "en": "Jesus said, “I am the light of the world.” When you follow Jesus, you do not have to walk in the dark, because His light shows you the way. And His love can shine through you too!",
+        "es": "Jesús dijo: «Yo soy la luz del mundo». Cuando sigues a Jesús, no tienes que andar en oscuridad, porque su luz te muestra el camino. ¡Y su amor también puede brillar en ti!"
+      },
+      "quiz": {
+        "en": "Jesus said, “I am the light of the world.” Which squishy is glowing with light?",
+        "es": "Jesús dijo: «Yo soy la luz del mundo». ¿Cuál squishy brilla con luz?"
+      },
+      "at": {
+        "en": [
+          43,
+          8,
+          12
+        ],
+        "es": [
+          43,
+          8,
+          12
+        ]
+      },
+      "ref": {
+        "en": "John 8:12",
+        "es": "Juan 8:12"
+      },
+      "verse": {
+        "en": "Then spake Jesus again unto them, saying, I am the light of the world: he that followeth me shall not walk in darkness, but shall have the light of life.",
+        "es": "Y hablóles Jesús otra vez, diciendo: Yo soy la luz del mundo: el que me sigue, no andará en tinieblas, mas tendrá la lumbre de la vida."
+      }
     }
   ];
 

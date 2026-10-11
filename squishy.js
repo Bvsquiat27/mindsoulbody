@@ -71,6 +71,24 @@
       src.connect(f); f.connect(gain); gain.connect(master); src.start(t); src.stop(t + dur + 0.05);
     } catch { /* ignore */ }
   }
+  /* Crunchy slime / ASMR crackle: many tiny filtered noise clicks at random
+     moments. More and louder clicks the harder you squish or stretch; the
+     release "tail" is longer and thins out at the end. */
+  function crunch(intensity, tail) {
+    const a = audio(); if (!a) return;
+    try {
+      if (!noiseBuf) { noiseBuf = a.createBuffer(1, a.sampleRate, a.sampleRate); const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i += 1) d[i] = Math.random() * 2 - 1; }
+      const sh = C().crunchShape(intensity), t0 = a.currentTime + 0.005, span = sh.spanMs / 1000 * (tail ? 2 : 1), count = Math.round(sh.clicks * (tail ? 1.6 : 1));
+      for (let k = 0; k < count; k += 1) {
+        const u = Math.random(), at = t0 + (tail ? Math.pow(u, 1.7) : u) * span, d = 0.004 + Math.random() * 0.012;
+        const src = a.createBufferSource(), bp = a.createBiquadFilter(), g = a.createGain();
+        src.buffer = noiseBuf; bp.type = 'bandpass'; bp.frequency.value = 1300 + Math.random() * 4400; bp.Q.value = 1.5 + Math.random() * 4;
+        g.gain.setValueAtTime(0.0001, at); g.gain.linearRampToValueAtTime(sh.peak * (0.4 + Math.random() * 0.8), at + 0.0015); g.gain.exponentialRampToValueAtTime(0.0001, at + d);
+        src.connect(bp); bp.connect(g); g.connect(master); src.start(at, Math.random() * 0.9, d + 0.01);
+      }
+      noise({ filter: 'lowpass', f0: 800, f1: 260, dur: 0.06 + 0.07 * intensity, peak: 0.01 + 0.018 * intensity });
+    } catch { /* ignore */ }
+  }
   const notes = (list, o) => list.forEach((f, i) => voice({ ...o, f0: f, delay: (o.step || 0.08) * i }));
   const SOUNDS = {
     baa: () => voice({ type: 'sawtooth', f0: 340, f1: 300, dur: 0.5, peak: 0.05, vib: [7, 14], filter: ['bandpass', 1100, 1.2], attack: 0.05 }),
@@ -91,6 +109,7 @@
     flip: () => noise({ filter: 'highpass', f0: 2500, dur: 0.06, peak: 0.02 }),
     match: () => notes([880, 1320], { dur: 0.16, peak: 0.04, step: 0.09 }),
     wrong: () => voice({ f0: 330, f1: 262, dur: 0.22, peak: 0.035 }),
+    crunch: () => crunch(0.45),
     fanfare: () => { notes([523, 659, 784], { type: 'triangle', dur: 0.25, peak: 0.06, step: 0.12 }); voice({ type: 'triangle', f0: 1047, dur: 0.7, peak: 0.06, delay: 0.36 }); notes([1568, 2093, 2637], { dur: 0.3, peak: 0.03, step: 0.07 }); }
   };
   function play(name) { if (SOUNDS[name]) SOUNDS[name](); }
@@ -123,8 +142,9 @@
   function shelfHtml() {
     const p = prog(), open = p.unlocked(), stars = p.stars();
     const tiles = D().SQUISHIES.map(s => {
+      if (!open.includes(s.id) && s.final) return `<button type="button" class="sq-tile locked final" data-sq-locked aria-label="${esc(L('The final squishy is locked. Unlock all the others to find it!'))}"><span class="sq-art">${A().svg(s.id)}</span><span class="sq-lock" aria-hidden="true">🔒</span><span class="sq-name">${esc(L('✨ Final squishy'))}</span></button>`;
       if (!open.includes(s.id)) return `<button type="button" class="sq-tile locked" data-sq-locked aria-label="${esc(L('Locked squishy. Win a game to unlock it.'))}"><span class="sq-art">${A().svg(s.id)}</span><span class="sq-lock" aria-hidden="true">🔒</span><span class="sq-name">${esc(L('Locked'))}</span></button>`;
-      return `<button type="button" class="sq-tile" data-sq-pick="${s.id}" aria-label="${esc(L('Play with {name}', { name: nameOf(s) }) + (stars.includes(s.id) ? ' ⭐' : ''))}"><span class="sq-art">${A().svg(s.id)}</span>${stars.includes(s.id) ? '<span class="sq-star" aria-hidden="true">⭐</span>' : ''}<span class="sq-name">${esc(nameOf(s))}</span></button>`;
+      return `<button type="button" class="sq-tile${s.glow ? ' glow' : ''}" data-sq-pick="${s.id}" aria-label="${esc(L('Play with {name}', { name: nameOf(s) }) + (stars.includes(s.id) ? ' ⭐' : ''))}">${s.glow ? '<span class="sq-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' : ''}<span class="sq-art">${A().svg(s.id)}</span>${stars.includes(s.id) ? '<span class="sq-star" aria-hidden="true">⭐</span>' : ''}<span class="sq-name">${esc(nameOf(s))}</span></button>`;
     }).join('');
     return `<p class="sq-hint">${esc(L('Tap a squishy to play with it: squish it, stretch it, and learn its Bible story.'))}</p>
       ${ui.msg ? `<p class="sq-msg" role="status">${esc(ui.msg)}</p>` : ''}
@@ -143,29 +163,44 @@
   /* ---------- Play view: a big soft-body squishy ---------- */
   let pv = null;
   const textures = new Map();
-  function texture(id, mood) {
-    const key = `${id}:${mood}`;
+  /* kind: 'body' (the picture without its face, warped by the mesh) or a face
+     mood: 'happy' | 'squint' | 'wow' (the face alone, drawn as one stiff piece). */
+  /* The picture is drawn into an offscreen canvas at the size it really shows
+     on this screen (device pixels, with room for stretching), so it stays crisp. */
+  const RENDER = 24; /* render mesh: 24 x 24 cells, smoothly sampled from the physics grid */
+  function texSize() {
+    const p = pv; if (!p) return 512;
+    const px = p.body.size * p.scale * p.dpr * 1.6;
+    return Math.max(512, Math.min(2048, Math.ceil(px / 64) * 64));
+  }
+  function texture(id, kind) {
+    /* the at-rest picture is made at exactly its on-screen size: no resampling */
+    const T = kind === 'full' && pv ? Math.round(pv.body.size * pv.scale * pv.dpr) : texSize(), key = `${id}:${kind}:${T}`;
     if (textures.has(key)) return textures.get(key);
-    const T = 360, entry = { ready: false, canvas: document.createElement('canvas'), mask: null };
+    const entry = { ready: false, T, canvas: document.createElement('canvas'), mask: null };
     entry.canvas.width = entry.canvas.height = T;
     const img = new Image();
     img.onload = () => {
       const g = entry.canvas.getContext('2d');
+      g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
       g.drawImage(img, 0, 0, T, T);
       entry.ready = true;
-      if (mood === 'happy') {
-        /* which mesh cells have any ink, so empty corners are skipped when drawing */
-        const n = pv ? pv.body.n : 11, data = g.getImageData(0, 0, T, T).data, cell = T / (n - 1), mask = new Uint8Array((n - 1) * (n - 1));
-        for (let j = 0; j < n - 1; j += 1) for (let i = 0; i < n - 1; i += 1) {
+      if (kind === 'body') {
+        /* which render cells have any ink, so empty corners are skipped */
+        const data = g.getImageData(0, 0, T, T).data, cell = T / RENDER, mask = new Uint8Array(RENDER * RENDER), step = Math.max(2, Math.floor(cell / 6));
+        for (let j = 0; j < RENDER; j += 1) for (let i = 0; i < RENDER; i += 1) {
           let any = 0;
-          for (let yy = Math.floor(j * cell); yy < Math.min(T, Math.ceil((j + 1) * cell)) && !any; yy += 3) for (let xx = Math.floor(i * cell); xx < Math.min(T, Math.ceil((i + 1) * cell)); xx += 3) if (data[(yy * T + xx) * 4 + 3] > 8) { any = 1; break; }
-          mask[j * (n - 1) + i] = any;
+          const y0 = Math.max(0, Math.floor(j * cell) - 2), y1 = Math.min(T, Math.ceil((j + 1) * cell) + 2), x0 = Math.max(0, Math.floor(i * cell) - 2), x1 = Math.min(T, Math.ceil((i + 1) * cell) + 2);
+          for (let yy = y0; yy < y1 && !any; yy += step) for (let xx = x0; xx < x1; xx += step) if (data[(yy * T + xx) * 4 + 3] > 4) { any = 1; break; }
+          mask[j * RENDER + i] = any;
         }
         entry.mask = mask;
       }
-      if (pv) pv.dirty = true;
+      if (pv) { pv.dirty = true; kick(); }
     };
-    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(A().svg(id, '', mood));
+    /* SVG drawn at the target size (not upscaled from a small bitmap) */
+    const svgText = (kind === 'full' ? A().svg(id, '', 'happy') : kind === 'body' ? A().svg(id, '', 'happy', 'body') : A().svg(id, '', kind, 'face')).replace('width="120" height="120"', `width="${T}" height="${T}"`);
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
     textures.set(key, entry);
     return entry;
   }
@@ -189,8 +224,8 @@
     host.innerHTML = playHtml(x);
     document.documentElement.classList.add('sq-locked');
     const canvas = host.querySelector('[data-sq-canvas]'), area = host.querySelector('[data-sq-area]');
-    pv = { id, x, canvas, area, ctx: canvas.getContext('2d'), body: C().softBody({ reduced: reduced() }), pointers: new Map(), mode: null, anchor: null, start: 0, pinch0: null, frame: 0, last: 0, dirty: true, mood: 'happy', dpr: 1, scale: 1, ox: 0, oy: 0, buzzAt: 0, buzzLevel: 0, squelch: 0, gestured: false, held: false, tone: null, lastStretch: 0, giggleAt: 0 };
-    for (const m of ['happy', 'squint', 'wow']) texture(id, m);
+    pv = { id, x, canvas, area, ctx: canvas.getContext('2d'), body: C().softBody({ reduced: reduced() }), pointers: new Map(), mode: null, anchor: null, start: 0, pinch0: null, frame: 0, last: 0, dirty: true, mood: 'happy', dpr: 1, scale: 1, ox: 0, oy: 0, buzzAt: 0, buzzLevel: 0, squelch: 0, gestured: false, held: false, tone: null, lastStretch: 0, giggleAt: 0, glow: !!x.glow, glowI: 0, glowNow: 0, sparks: [], sparkAcc: 0, crunchAt: 0, crunchLevel: 0 };
+    pv.face = A().faceAt(id);
     layout();
     kick();
     canvas.focus({ preventScroll: true });
@@ -207,60 +242,137 @@
   }
   function layout() {
     const p = pv; if (!p) return;
-    const r = p.area.getBoundingClientRect(), dpr = Math.min(2.5, window.devicePixelRatio || 1);
+    const r = p.area.getBoundingClientRect(), dpr = Math.min(3, Math.max(1, window.devicePixelRatio || 1));
     p.cw = Math.max(200, r.width); p.ch = Math.max(240, r.height); p.dpr = dpr;
     p.canvas.width = Math.round(p.cw * dpr); p.canvas.height = Math.round(p.ch * dpr);
     p.canvas.style.width = `${p.cw}px`; p.canvas.style.height = `${p.ch}px`;
     p.scale = Math.min(p.cw, p.ch) * 0.58 / p.body.size;
     p.ox = (p.cw - p.body.size * p.scale) / 2;
     p.oy = p.ch * 0.58 - p.body.size * p.scale / 2;
+    p.ctx.imageSmoothingEnabled = true; p.ctx.imageSmoothingQuality = 'high';
+    for (const m of ['full', 'body', 'happy', 'squint', 'wow']) texture(p.id, m);
     p.dirty = true;
   }
   window.addEventListener('resize', () => { if (pv) layout(); });
   const toBody = (p, cx, cy) => { const r = p.canvas.getBoundingClientRect(); return { x: (cx - r.left - p.ox) / p.scale, y: (cy - r.top - p.oy) / p.scale }; };
 
-  /* Draw the picture warped over the mesh: two textured triangles per cell. */
+  /* Draw the picture warped over a fine render mesh (smoothly sampled from the
+     physics grid). Each cell is one clipped quad, slightly enlarged so cells
+     overlap a hair and no seams show. */
+  const RP = new Float64Array((RENDER + 1) * (RENDER + 1) * 2);
   function draw() {
     const p = pv; if (!p) return;
-    const g = p.ctx, b = p.body, n = b.n, T = 360, k = T / b.size, tex = texture(p.id, p.mood), base = texture(p.id, 'happy');
-    const img = tex.ready ? tex.canvas : base.ready ? base.canvas : null;
+    const g = p.ctx, b = p.body, base = texture(p.id, 'body');
     g.setTransform(1, 0, 0, 1, 0, 0);
     g.clearRect(0, 0, p.canvas.width, p.canvas.height);
-    if (!img) return;
+    if (!base.ready) return;
+    const img = base.canvas, T = base.T, k = T / b.size;
     const s = p.scale * p.dpr, ox = p.ox * p.dpr, oy = p.oy * p.dpr;
     const bb = b.bounds();
+    const gx = ox + (bb.minX + bb.maxX) / 2 * s, gy = oy + (bb.minY + bb.maxY) / 2 * s, gr = Math.max(bb.maxX - bb.minX, bb.maxY - bb.minY) * s;
+    if (p.glow) {
+      const G = p.glowNow, halo = g.createRadialGradient(gx, gy, gr * 0.15, gx, gy, gr * 0.95);
+      halo.addColorStop(0, `rgba(255,236,160,${(0.6 * G).toFixed(3)})`); halo.addColorStop(0.5, `rgba(255,205,90,${(0.28 * G).toFixed(3)})`); halo.addColorStop(1, 'rgba(255,190,70,0)');
+      g.fillStyle = halo; g.fillRect(0, 0, p.canvas.width, p.canvas.height);
+    }
     g.fillStyle = 'rgba(0,0,0,0.28)';
     g.beginPath();
     g.ellipse(ox + (bb.minX + bb.maxX) / 2 * s, oy + Math.min(bb.maxY, b.size * 1.02) * s, (bb.maxX - bb.minX) * s * 0.36, 9 * p.dpr, 0, 0, Math.PI * 2);
     g.fill();
-    const X = i => ox + b.x[i] * s, Y = i => oy + b.y[i] * s;
-    const mask = base.mask;
-    for (let j = 0; j < n - 1; j += 1) for (let i = 0; i < n - 1; i += 1) {
-      if (mask && !mask[j * (n - 1) + i]) continue;
-      const a = j * n + i, bq = a + 1, c = a + n, d = a + n + 1;
-      tri(g, img, b.rx[a] * k, b.ry[a] * k, b.rx[bq] * k, b.ry[bq] * k, b.rx[c] * k, b.ry[c] * k, X(a), Y(a), X(bq), Y(bq), X(c), Y(c));
-      tri(g, img, b.rx[bq] * k, b.ry[bq] * k, b.rx[d] * k, b.ry[d] * k, b.rx[c] * k, b.ry[c] * k, X(bq), Y(bq), X(d), Y(d), X(c), Y(c));
+    /* At rest: the original picture, drawn straight (no mesh, no warping). */
+    const full = texture(p.id, 'full');
+    if (full.ready && !b.state.mode && b.maxOffset() < 0.3) {
+      g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
+      g.drawImage(full.canvas, Math.round(ox), Math.round(oy));
+      p.drawn = 'rest';
+      if (p.glow) glowOver(g, gx, gy, gr, p.dpr);
+      return;
     }
+    p.drawn = 'mesh';
+    const R = RENDER, step = b.size / R, mask = base.mask;
+    for (let j = 0; j <= R; j += 1) for (let i = 0; i <= R; i += 1) {
+      const q = b.smooth(i * step, j * step), o = (j * (R + 1) + i) * 2;
+      RP[o] = ox + q.x * s; RP[o + 1] = oy + q.y * s;
+    }
+    g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
+    const cellT = step * k;
+    for (let j = 0; j < R; j += 1) for (let i = 0; i < R; i += 1) {
+      if (mask && !mask[j * R + i]) continue;
+      const a = (j * (R + 1) + i) * 2, bq = a + 2, c = a + (R + 1) * 2, d = c + 2;
+      quad(g, img, T, i * cellT, j * cellT, cellT, RP[a], RP[a + 1], RP[bq], RP[bq + 1], RP[c], RP[c + 1], RP[d], RP[d + 1]);
+    }
+    drawFace(g, s, ox, oy);
+    if (p.glow) glowOver(g, gx, gy, gr, p.dpr);
   }
-  /* Affine-map one texture triangle (u) onto a screen triangle (d), clipped
-     slightly larger so neighbouring triangles meet without hairline seams. */
-  function tri(g, img, u0, v0, u1, v1, u2, v2, x0, y0, x1, y1, x2, y2) {
-    const det = (u1 - u0) * (v2 - v0) - (u2 - u0) * (v1 - v0);
-    if (!det) return;
-    const a = ((x1 - x0) * (v2 - v0) - (x2 - x0) * (v1 - v0)) / det, c = ((x2 - x0) * (u1 - u0) - (x1 - x0) * (u2 - u0)) / det;
-    const bb = ((y1 - y0) * (v2 - v0) - (y2 - y0) * (v1 - v0)) / det, d = ((y2 - y0) * (u1 - u0) - (y1 - y0) * (u2 - u0)) / det;
-    const e = x0 - a * u0 - c * v0, f = y0 - bb * u0 - d * v0;
-    const cx = (x0 + x1 + x2) / 3, cy = (y0 + y1 + y2) / 3, grow = (px, py) => { const dx = px - cx, dy = py - cy, l = Math.hypot(dx, dy) || 1; return [px + dx / l * 0.9, py + dy / l * 0.9]; };
-    const p0 = grow(x0, y0), p1 = grow(x1, y1), p2 = grow(x2, y2);
+  /* The face is not warped: it rides on the body with a mild stretch and tilt. */
+  function drawFace(g, s, ox, oy) {
+    const p = pv, f = p.face;
+    if (!f) return;
+    const tex = texture(p.id, p.mood), happy = texture(p.id, 'happy');
+    const use = tex.ready ? tex : happy.ready ? happy : null;
+    if (!use) return;
+    const img = use.canvas, T = use.T;
+    const fr = p.body.faceFrame(f.x, f.y, 26 * f.k), q = p.body.size / T, cs = Math.cos(fr.rot), sn = Math.sin(fr.rot);
+    const a = s * q * cs * fr.sx, b = s * q * sn * fr.sx, c = -s * q * sn * fr.sy, d = s * q * cs * fr.sy;
+    const cx = ox + fr.x * s, cy = oy + fr.y * s;
     g.save();
-    g.beginPath(); g.moveTo(p0[0], p0[1]); g.lineTo(p1[0], p1[1]); g.lineTo(p2[0], p2[1]); g.closePath(); g.clip();
-    g.setTransform(a, bb, c, d, e, f);
-    g.drawImage(img, 0, 0);
+    g.setTransform(a, b, c, d, cx - (a * f.x + c * f.y) / q, cy - (b * f.x + d * f.y) / q);
+    /* only the face's own square of the texture */
+    const half = 34 * f.k / q, fx = f.x / q, fy = f.y / q, sx = Math.max(0, fx - half), sy = Math.max(0, fy - half), sw = Math.min(T - sx, half * 2), sh = Math.min(T - sy, half * 2);
+    g.drawImage(img, sx, sy, sw, sh, sx, sy, sw, sh);
+    g.restore();
+  }
+  /* Inner glow that brightens with squish/stretch, and tiny floating lights. */
+  function glowOver(g, gx, gy, gr, dpr) {
+    const p = pv;
+    g.save();
+    g.globalCompositeOperation = 'lighter';
+    if (p.glowI > 0.02) {
+      const inner = g.createRadialGradient(gx, gy, 0, gx, gy, gr * 0.42);
+      inner.addColorStop(0, `rgba(255,236,170,${(0.22 * p.glowI).toFixed(3)})`); inner.addColorStop(1, "rgba(255,220,120,0)");
+      g.fillStyle = inner; g.fillRect(gx - gr, gy - gr, gr * 2, gr * 2);
+    }
+    for (const sp of p.sparks) {
+      const a = Math.sin(Math.PI * Math.min(1, sp.age / sp.life)), r = sp.r * dpr, x = sp.x * dpr, y = sp.y * dpr;
+      g.fillStyle = `rgba(255,236,170,${(0.9 * a).toFixed(3)})`;
+      g.beginPath(); g.moveTo(x, y - r * 2); g.quadraticCurveTo(x, y, x + r * 2, y); g.quadraticCurveTo(x, y, x, y + r * 2); g.quadraticCurveTo(x, y, x - r * 2, y); g.quadraticCurveTo(x, y, x, y - r * 2); g.fill();
+    }
+    g.restore();
+  }
+  function stepSparks(dt) {
+    const p = pv, b = p.body;
+    if (reduced()) { p.sparks.length = 0; return; }
+    p.sparkAcc += dt * (2.5 + 14 * p.glowI);
+    const bb = b.bounds();
+    while (p.sparkAcc >= 1 && p.sparks.length < 40) {
+      p.sparkAcc -= 1;
+      p.sparks.push({ x: p.ox + (bb.minX + Math.random() * (bb.maxX - bb.minX)) * p.scale, y: p.oy + (bb.minY + Math.random() * (bb.maxY - bb.minY) * 0.8) * p.scale, vx: (Math.random() - 0.5) * 14, vy: -(12 + Math.random() * 26), r: 1.4 + Math.random() * 2.2, age: 0, life: 1.1 + Math.random() * 1.3 });
+    }
+    if (p.sparkAcc > 1) p.sparkAcc = 0;
+    for (const sp of p.sparks) { sp.age += dt; sp.x += sp.vx * dt; sp.y += sp.vy * dt; }
+    p.sparks = p.sparks.filter(sp => sp.age < sp.life);
+  }
+  /* One mesh cell: the texture square (u0, v0, size) mapped onto the screen
+     quad (a b / c d). The cells are small, so one affine map (fitted to the
+     a-b-c corners) is exact to well under a pixel; the clip is the real quad,
+     pushed out 0.6 px so neighbours overlap instead of leaving hairlines, and
+     only that square of the texture is sampled. */
+  function quad(g, img, T, u0, v0, w, ax, ay, bx, by, cx, cy, dx, dy) {
+    const a = (bx - ax) / w, b = (by - ay) / w, c = (cx - ax) / w, d = (cy - ay) / w;
+    const e = ax - a * u0 - c * v0, f = ay - b * u0 - d * v0;
+    const mx = (ax + bx + cx + dx) / 4, my = (ay + by + cy + dy) / 4, out = (px, py) => { const vx = px - mx, vy = py - my, l = Math.hypot(vx, vy) || 1; return [px + vx / l * 0.6, py + vy / l * 0.6]; };
+    const A1 = out(ax, ay), B1 = out(bx, by), D1 = out(dx, dy), C1 = out(cx, cy);
+    g.save();
+    g.beginPath(); g.moveTo(A1[0], A1[1]); g.lineTo(B1[0], B1[1]); g.lineTo(D1[0], D1[1]); g.lineTo(C1[0], C1[1]); g.closePath(); g.clip();
+    g.setTransform(a, b, c, d, e, f);
+    const m = 2, sx = Math.max(0, u0 - m), sy = Math.max(0, v0 - m), sw = Math.min(T - sx, w + 2 * m), sh = Math.min(T - sy, w + 2 * m);
+    g.drawImage(img, sx, sy, sw, sh, sx, sy, sw, sh);
     g.restore();
   }
 
   /* Continuous stretchy tone: pitch rises with the stretch, only sounds while it changes. */
   function toneStart() {
+    if (pv && pv.glow) return;
     const a = audio(); if (!a || !pv || pv.tone) return;
     try {
       const osc = a.createOscillator(), f = a.createBiquadFilter(), gain = a.createGain(), lfo = a.createOscillator(), lg = a.createGain();
@@ -286,9 +398,9 @@
 
   function buzz(level, now) {
     const p = pv; if (!p) return;
-    if (now - p.buzzAt < 110 || Math.abs(level - p.buzzLevel) < 0.06 || level < 0.05) return;
+    if (now - p.buzzAt < (p.glow ? 160 : 110) || Math.abs(level - p.buzzLevel) < 0.06 || level < 0.05) return;
     p.buzzAt = now; p.buzzLevel = level;
-    vibrate(C().pulseMs(level));
+    vibrate(p.glow ? C().crunchPattern(level) : C().pulseMs(level));
   }
 
   function tick(now) {
@@ -314,12 +426,21 @@
     if (st.mode === 'grab' || st.mode === 'pinch') { const sp = Math.abs(amount - p.lastStretch) / Math.max(dt, 0.008); toneSet(amount, sp); }
     p.lastStretch = amount;
     if (st.mode) buzz(amount, now);
+    if (p.glow) {
+      if (st.mode && now - p.crunchAt > 85 + Math.random() * 70 && Math.abs(amount - p.crunchLevel) > 0.035) { p.crunchAt = now; p.crunchLevel = amount; crunch(amount); }
+      p.glowI = st.mode ? Math.max(amount, p.glowI * 0.9) : p.glowI * 0.95;
+      p.glowNow = C().glowLevel(p.glowI, now / 1000, reduced());
+      stepSparks(Math.min(0.05, dt));
+    }
     const m = st.mode ? C().mood(st) : 'happy';
     if (m !== p.mood) { p.mood = m; }
     if (!st.mode && now - p.giggleAt > 1400 && b.energy() > 900) { p.giggleAt = now; play('giggle'); }
     draw();
-    if (st.mode || !b.atRest()) p.frame = requestAnimationFrame(tick);
-    else { b.settle(); p.mood = 'happy'; draw(); p.last = 0; }
+    const live = p.glow && (!reduced() || p.glowI > 0.01);
+    if (st.mode || !b.atRest() || live) {
+      if (!st.mode && b.atRest()) b.settle();
+      p.frame = requestAnimationFrame(tick);
+    } else { b.settle(); p.mood = 'happy'; draw(); p.last = 0; }
   }
     function kick() { if (pv && !pv.frame) { pv.last = 0; pv.frame = requestAnimationFrame(tick); } }
 
@@ -331,7 +452,8 @@
     const f = [...p.pointers.values()][0];
     const was = p.body.release(f ? f.vx / p.scale : 0, f ? f.vy / p.scale : 0);
     toneStop();
-    if (was.mode === 'grab' || was.mode === 'pinch') { if (was.stretch > 0.15) boing(was.stretch); else play('release'); vibrate(C().pulseMs(Math.max(was.stretch, was.squish))); }
+    if (p.glow && was.mode) { crunch(Math.max(0.5, was.stretch, was.squish), true); vibrate(C().crunchPattern(Math.max(was.stretch, was.squish))); }
+    else if (was.mode === 'grab' || was.mode === 'pinch') { if (was.stretch > 0.15) boing(was.stretch); else play('release'); vibrate(C().pulseMs(Math.max(was.stretch, was.squish))); }
     else if (was.mode === 'press') { play('release'); vibrate(C().pulseMs(was.squish)); }
     p.mode = null; p.squelch = 0; p.gestured = false; p.buzzLevel = 0;
     const learn = p.area.querySelector('[data-sq-learn]');
@@ -496,13 +618,18 @@
     const box = ui.root && ui.root.querySelector('[data-sq-celebrate]');
     if (!box) return;
     const next = prog().unlockNext();
+    const last = !!(next && next.final);
     play('fanfare');
-    vibrate([20, 40, 30]);
-    const confetti = reduced() ? '' : `<div class="sq-confetti" aria-hidden="true">${Array.from({ length: 28 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--d:${(i % 7) * 0.12}s;--r:${(i * 53) % 360}deg;--c:${i % 5}"></i>`).join('')}</div>`;
-    const inner = next
+    if (last) { setTimeout(() => play('twinkle'), 650); setTimeout(() => crunch(0.8, true), 1100); }
+    vibrate(last ? [20, 40, 30, 60, 8, 20, 8, 20, 10] : [20, 40, 30]);
+    const confetti = reduced() ? '' : `<div class="sq-confetti${last ? ' gold' : ''}" aria-hidden="true">${Array.from({ length: 28 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--d:${(i % 7) * 0.12}s;--r:${(i * 53) % 360}deg;--c:${i % 5}"></i>`).join('')}</div>`;
+    const inner = last
+      ? `<span class="eyebrow">✨ ${esc(L('THE FINAL SQUISHY!'))}</span><h2>${esc(L('You unlocked every squishy!'))}</h2><p>${esc(L('Meet {name}, the glowing one!', { name: nameOf(next) }))}</p><div class="sq-new sq-new-glow">${A().svg(next.id, nameOf(next))}</div><button type="button" class="primary" data-sq-meet="${next.id}">${esc(L('Squish it!'))}</button>`
+      : next
       ? `<span class="eyebrow">${esc(L('NEW SQUISHY!'))}</span><h2>${esc(L('You unlocked {name}!', { name: nameOf(next) }))}</h2><div class="sq-new">${A().svg(next.id, nameOf(next))}</div><button type="button" class="primary" data-sq-meet="${next.id}">${esc(L('Squish it!'))}</button>`
       : `<span class="eyebrow">${esc(L('YOU WON!'))}</span><h2>${esc(L('You already have every squishy. Well done!'))}</h2><button type="button" class="primary" data-sq-meet="">${esc(L('Back to the shelf'))}</button>`;
-    box.innerHTML = `${confetti}<div class="sq-celebrate-card card" role="dialog" aria-modal="true" aria-labelledby="sq-cele-title">${inner.replace('<h2>', '<h2 id="sq-cele-title">')}</div>`;
+    box.classList.toggle('final', last);
+    box.innerHTML = `${confetti}${last && !reduced() ? '<div class="sq-burst" aria-hidden="true"></div>' : ''}<div class="sq-celebrate-card card" role="dialog" aria-modal="true" aria-labelledby="sq-cele-title">${inner.replace('<h2>', '<h2 id="sq-cele-title">')}</div>`;
     box.hidden = false;
     box.querySelector('[data-sq-meet]')?.focus();
   }
@@ -566,7 +693,7 @@
     _play() {
       if (!pv) return null;
       const r = pv.canvas.getBoundingClientRect(), b = pv.body, bb = b.bounds();
-      return { id: pv.id, mode: b.state.mode, stretch: b.state.stretch, squish: b.state.squish, mood: pv.mood, atRest: b.atRest(), area: b.area() / b.A0, w: bb.maxX - bb.minX, h: bb.maxY - bb.minY, minY: bb.minY, box: { x: r.left + pv.ox, y: r.top + pv.oy, size: b.size * pv.scale } };
+      return { id: pv.id, drawn: pv.drawn, tex: texture(pv.id, 'full').T, dpr: pv.dpr, glow: pv.glowNow, glowIntensity: pv.glowI, sparks: pv.sparks.length, mode: b.state.mode, stretch: b.state.stretch, squish: b.state.squish, mood: pv.mood, atRest: b.atRest(), area: b.area() / b.A0, w: bb.maxX - bb.minX, h: bb.maxY - bb.minY, minY: bb.minY, box: { x: r.left + pv.ox, y: r.top + pv.oy, size: b.size * pv.scale } };
     }
   };
 })();

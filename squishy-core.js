@@ -143,7 +143,9 @@
     for (let j = 1; j < n; j += 1) ring.push(j * n + n - 1);
     for (let i = n - 2; i >= 0; i -= 1) ring.push((n - 1) * n + i);
     for (let j = n - 2; j > 0; j -= 1) ring.push(j * n);
-    const cfg = { kA: 150, kS: 700, kHold: 1400, damp: reduced ? 15 : 4.6, kP: 1300, max: size * (reduced ? 0.45 : 0.9), squash: reduced ? 0.16 : 0.42, sigma: size * 0.3 };
+    /* Springy limits: up to about 1.5x when pulled, about 0.7x when pressed,
+       pinch 0.6x-1.7x (gentler with reduced motion). */
+    const cfg = { kA: 150, kS: 760, kHold: 1400, damp: reduced ? 15 : 4.6, kP: 1300, max: size * (reduced ? 0.45 : 0.9), squash: reduced ? 0.16 : 0.42, sigma: size * 0.34, pinchLo: reduced ? 0.8 : 0.6, pinchHi: reduced ? 1.3 : 1.7 };
     function area() {
       let a = 0;
       for (let q = 0; q < ring.length; q += 1) { const p = ring[q], r = ring[(q + 1) % ring.length]; a += x[p] * y[r] - x[r] * y[p]; }
@@ -181,9 +183,13 @@
     }
     const gauss = (k, ax, ay, sig) => Math.exp(-((rx[k] - ax) ** 2 + (ry[k] - ay) ** 2) / (sig * sig));
     /* Pull with a soft maximum: the farther you pull, the harder it gets. */
-    function softCap(d) { return cfg.max * Math.tanh(d / cfg.max); }
+    function softCap(d, m) { return m * Math.tanh(d / m); }
     function grab(ax, ay, dx, dy) {
-      const d = Math.hypot(dx, dy), e = d > 1e-6 ? softCap(d) / d : 0;
+      /* full stretch from the edges; grabbing the middle pulls less, so the
+         sides never fold over */
+      const edge = Math.min(1, Math.max(Math.abs(ax - size / 2), Math.abs(ay - size / 2)) / (size / 2));
+      const m = cfg.max * (0.4 + 0.6 * edge);
+      const d = Math.hypot(dx, dy), e = d > 1e-6 ? softCap(d, m) / d : 0;
       const ex = dx * e, ey = dy * e;
       for (let k = 0; k < N; k += 1) { const g = gauss(k, ax, ay, cfg.sigma); w[k] = g; ox[k] = ex * g; oy[k] = ey * g; }
       state.mode = 'grab'; state.stretch = Math.hypot(ex, ey) / cfg.max; state.squish = 0; state.pinch = 1;
@@ -194,7 +200,7 @@
       for (let k = 0; k < N; k += 1) {
         const g = gauss(k, ax, ay, cfg.sigma * 0.9), up = (size - ry[k]) / size;
         w[k] = 0.35 + 0.65 * g;
-        oy[k] = s * size * up + s * size * 0.25 * g;
+        oy[k] = s * size * up + s * size * 0.2 * g;
         ox[k] = (rx[k] - cx) * (s / (1 - s)) * 0.6 * (0.4 + 0.6 * Math.sin(Math.PI * Math.min(1, ry[k] / size)));
       }
       state.mode = 'press'; state.squish = s / cfg.squash; state.stretch = 0; state.pinch = 1;
@@ -202,7 +208,7 @@
     /* Two fingers: squeeze (scale < 1) or spread (scale > 1) along their line,
        the other way to keep the area. */
     function pinch(cx, cy, ux, uy, scale) {
-      const lo = reduced ? 0.8 : 0.6, hi = reduced ? 1.3 : 1.7;
+      const lo = cfg.pinchLo, hi = cfg.pinchHi;
       const sc = Math.max(lo, Math.min(hi, scale)), inv = 1 / sc, len = Math.hypot(ux, uy) || 1, u = [ux / len, uy / len], v = [-u[1], u[0]];
       for (let k = 0; k < N; k += 1) {
         const px = rx[k] - cx, py = ry[k] - cy, a = px * u[0] + py * u[1], b = px * v[0] + py * v[1];
@@ -225,6 +231,47 @@
       for (let k = 0; k < N; k += 1) { const d = (x[k] - px) ** 2 + (y[k] - py) ** 2; if (d < bd) { bd = d; best = k; } }
       return { x: rx[best], y: ry[best] };
     }
+    /* Where a resting spot is now (bilinear inside its mesh cell). */
+    function at(px, py) {
+      const fx = Math.max(0, Math.min(n - 1, px / h)), fy = Math.max(0, Math.min(n - 1, py / h));
+      const i = Math.min(n - 2, Math.floor(fx)), j = Math.min(n - 2, Math.floor(fy)), u = fx - i, v = fy - j, k = j * n + i;
+      const lerp = (A) => (A[k] * (1 - u) + A[k + 1] * u) * (1 - v) + (A[k + n] * (1 - u) + A[k + n + 1] * u) * v;
+      return { x: lerp(x), y: lerp(y) };
+    }
+    /* Smooth version of at(): Catmull-Rom across the grid, so a finer render
+       mesh has a curved, kink-free outline instead of straight cell edges. */
+    function smooth(px, py) {
+      const fx = Math.max(0, Math.min(n - 1, px / h)), fy = Math.max(0, Math.min(n - 1, py / h));
+      const i = Math.min(n - 2, Math.floor(fx)), j = Math.min(n - 2, Math.floor(fy)), u = fx - i, v = fy - j;
+      const w = t => [((-t + 2) * t - 1) * t / 2, (((3 * t - 5) * t) * t + 2) / 2, ((-3 * t + 4) * t + 1) * t / 2, ((t - 1) * t * t) / 2];
+      const wu = w(u), wv = w(v);
+      let sx = 0, sy = 0;
+      for (let b = 0; b < 4; b += 1) {
+        const jj = j - 1 + b;
+        for (let a2 = 0; a2 < 4; a2 += 1) {
+          const ii = i - 1 + a2;
+          /* outside the grid: extend the edge linearly so the border stays straight-ish */
+          const ci = Math.max(0, Math.min(n - 1, ii)), cj = Math.max(0, Math.min(n - 1, jj));
+          let X = x[cj * n + ci], Y = y[cj * n + ci];
+          if (ii !== ci || jj !== cj) {
+            const ki = ci + (ii < ci ? 1 : ii > ci ? -1 : 0), kj = cj + (jj < cj ? 1 : jj > cj ? -1 : 0), q = kj * n + ki, p0 = cj * n + ci;
+            X = 2 * x[p0] - x[q]; Y = 2 * y[p0] - y[q];
+          }
+          const ww = wu[a2] * wv[b];
+          sx += ww * X; sy += ww * Y;
+        }
+      }
+      return { x: sx, y: sy };
+    }
+    /* The face moves as one stiff piece: it follows the body under it, with only
+       a mild stretch (0.9-1.1x) and tilt (about 10 degrees at most). */
+    function faceFrame(fx, fy, r) {
+      const c = at(fx, fy), L = at(fx - r, fy), R = at(fx + r, fy), T = at(fx, fy - r), B = at(fx, fy + r);
+      const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+      const sx = clamp(Math.hypot(R.x - L.x, R.y - L.y) / (2 * r), 0.9, 1.1), sy = clamp(Math.hypot(B.x - T.x, B.y - T.y) / (2 * r), 0.9, 1.1);
+      const rot = clamp(Math.atan2(R.y - L.y, R.x - L.x), -0.18, 0.18);
+      return { x: c.x, y: c.y, sx, sy, rot };
+    }
     function maxOffset() { let m = 0; for (let k = 0; k < N; k += 1) m = Math.max(m, Math.hypot(x[k] - rx[k], y[k] - ry[k])); return m; }
     function energy() { let e = 0; for (let k = 0; k < N; k += 1) e += vx[k] * vx[k] + vy[k] * vy[k]; return e / N; }
     function atRest() { return !state.mode && maxOffset() < 0.25 && energy() < 0.05; }
@@ -234,7 +281,7 @@
       for (let k = 0; k < N; k += 1) { a = Math.min(a, x[k]); b = Math.max(b, x[k]); c = Math.min(c, y[k]); d = Math.max(d, y[k]); }
       return { minX: a, maxX: b, minY: c, maxY: d };
     }
-    return { n, N, size, x, y, vx, vy, rx, ry, cfg, state, A0, area, step, grab, press, pinch, release, nearest, maxOffset, energy, atRest, settle, bounds };
+    return { n, N, size, x, y, vx, vy, rx, ry, cfg, state, A0, area, at, smooth, faceFrame, step, grab, press, pinch, release, nearest, maxOffset, energy, atRest, settle, bounds };
   }
 
   /* Face: squint while squished, a surprised "O" while stretched far. */
@@ -246,7 +293,32 @@
   /* Vibration for squish/stretch strength 0..1: 6-30 ms. */
   function pulseMs(intensity) { return Math.round(6 + 24 * Math.max(0, Math.min(1, intensity))); }
 
-  const api = { softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
+  /* Crunchy vibration for the glowing squishy: a few short ticks with gaps,
+     like crackles. Stronger squish/stretch = more and longer ticks; every tick
+     is at most 12 ms and all ticks together stay within 30 ms. */
+  function crunchPattern(intensity) {
+    const i = Math.max(0, Math.min(1, Number(intensity) || 0));
+    const n = i < 0.34 ? 2 : 3, tick = Math.min(10, Math.round(5 + 5 * i));
+    const out = [];
+    for (let k = 0; k < n; k += 1) { if (k) out.push(20); out.push(k === n - 1 ? Math.min(12, tick + 2) : tick); }
+    let sum = 0;
+    for (let k = 0; k < out.length; k += 2) { out[k] = Math.min(out[k], 30 - sum); sum += out[k]; }
+    return out;
+  }
+  /* How many tiny clicks one crunch has, and over how long (ms). */
+  function crunchShape(intensity) {
+    const i = Math.max(0, Math.min(1, Number(intensity) || 0));
+    return { clicks: Math.round(4 + 14 * i), spanMs: Math.round(70 + 110 * i), peak: Math.min(0.05, 0.018 + 0.03 * i) };
+  }
+  /* Glow strength 0..1: a soft pulse at rest that brightens with squish/stretch
+     (reduced motion: steady, no pulse). */
+  function glowLevel(intensity, tSec, reduced) {
+    const i = Math.max(0, Math.min(1, Number(intensity) || 0));
+    const base = reduced ? 0.45 : 0.4 + 0.1 * Math.sin((tSec || 0) * 2.4);
+    return Math.min(1, base + 0.55 * i);
+  }
+
+  const api = { crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbSquishyCore = api;
 })(typeof self !== 'undefined' ? self : this);
