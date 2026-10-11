@@ -86,23 +86,133 @@ test('sound switch is on by default and remembered', () => {
   assert.equal(C.soundPref(s).get(), true);
 });
 
-test('winning rounds unlocks squishies one at a time, in order, and it is remembered', () => {
-  const s = memoryStorage();
+test('each locked squishy has its own challenge, ramping up, with rare and legendary ones', () => {
+  const locked = SQUISHIES.filter(x => x.locked).map(x => x.id);
+  assert.deepEqual(C.CHALLENGES.map(c => c.id), locked, 'one challenge per locked squishy, in shelf order');
+  assert.equal(new Set(C.CHALLENGES.map(c => c.kind)).size, C.CHALLENGES.length, 'all different kinds');
+  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'rare').map(c => c.id), ['basket', 'ark', 'coat']);
+  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'legendary').map(c => c.id), ['lamp']);
+  assert.equal(C.CHALLENGES[0].kind, 'memoryWins', 'the first one is easy');
+  assert.equal(C.CHALLENGES.at(-1).kind, 'final');
+  assert.equal(C.tierOf('lamb'), 'common');
+});
+
+test('challenges unlock their own squishy (and only that one), remembered', () => {
+  const s = memoryStorage(), st = C.stats(s), open = () => C.progress(s, SQUISHIES).unlocked();
+  const check = () => C.checkUnlocks(s, SQUISHIES, new Date(2026, 9, 11));
+  assert.deepEqual(check(), []);
+  assert.equal(open().length, 6);
+  st.memoryWon(14);
+  assert.deepEqual(check(), ['stone'], 'win Memory once');
+  assert.deepEqual(check(), [], 'not twice');
   const p = C.progress(s, SQUISHIES);
-  assert.equal(p.unlocked().length, 6);
-  const firstLocked = SQUISHIES.find(x => x.locked);
-  assert.equal(p.isOpen(firstLocked.id), false);
-  assert.equal(p.unlockNext().id, firstLocked.id);
-  assert.equal(C.progress(s, SQUISHIES).isOpen(firstLocked.id), true, 'remembered on the next visit');
-  let n = 0;
-  while (p.unlockNext()) n += 1;
-  assert.equal(p.unlocked().length, SQUISHIES.length);
-  assert.equal(n, SQUISHIES.filter(x => x.locked).length - 1);
-  assert.equal(p.unlockNext(), null);
-  s.setItem('msb_squishy_unlocked', '{bad json');
-  assert.equal(C.progress(s, SQUISHIES).unlocked().length, 6, 'broken data falls back safely');
-  s.setItem('msb_squishy_unlocked', JSON.stringify(['nope', 7]));
-  assert.equal(C.progress(s, SQUISHIES).unlocked().length, 6);
+  p.addStar('lamb'); p.addStar('dove');
+  assert.deepEqual(check(), []);
+  p.addStar('lion');
+  assert.deepEqual(check(), ['loaves'], 'learn 3 lessons');
+  for (let i = 0; i < 49; i += 1) st.squished();
+  assert.deepEqual(check(), []);
+  st.squished();
+  assert.deepEqual(check(), ['seed'], 'squish 50 times');
+  st.roundDone(3, 5); st.roundDone(4, 5); st.roundDone(4, 5);
+  assert.deepEqual(check(), [], 'a lost round does not count');
+  st.roundDone(4, 5);
+  assert.deepEqual(check(), ['bush'], 'win 3 rounds of Questions');
+  s.setItem('msb_match_progress', JSON.stringify({ open: 4, stars: { 1: 3, 2: 1, 3: 2 }, best: {} }));
+  assert.deepEqual(check(), []);
+  s.setItem('msb_match_progress', JSON.stringify({ open: 5, stars: { 1: 2, 2: 1, 3: 2, 4: 1 }, best: {} }));
+  assert.deepEqual(check(), ['basket'], 'finish the Noah chapter in Manna Match');
+  st.memoryWon(11);
+  assert.deepEqual(check(), []);
+  assert.equal(st.get().memoryBest, 11);
+  st.memoryWon(10);
+  assert.deepEqual(check(), ['tree'], 'win Memory in 10 moves or fewer');
+  st.memoryWon(16);
+  assert.equal(st.get().memoryBest, 10, 'best is kept');
+  st.roundDone(5, 5);
+  assert.deepEqual(check(), ['ark'], '5 of 5');
+  st.played(new Date(2026, 9, 30, 23, 50)); st.played(new Date(2026, 9, 31, 8));
+  assert.deepEqual(check(), []);
+  st.played(new Date(2026, 10, 1, 0, 5));
+  assert.deepEqual(check(), ['coat'], '3 days in a row, across a month end, by local date');
+  assert.deepEqual(check(), [], 'the lamp still needs 3 stars in Manna Match');
+  s.setItem('msb_match_progress', JSON.stringify({ open: 6, stars: { 1: 2, 2: 1, 3: 2, 4: 1, 5: 3 }, best: {} }));
+  assert.deepEqual(check(), ['lamp']);
+  assert.equal(C.progress(s, SQUISHIES).unlocked().length, SQUISHIES.length);
+});
+
+test('play streaks use local calendar days', () => {
+  assert.equal(C.dayKey(new Date(2026, 0, 5, 23, 59)), '2026-01-05');
+  assert.equal(C.longestStreak(['2026-10-09', '2026-10-11']), 1);
+  assert.equal(C.longestStreak(['2026-10-09', '2026-10-10', '2026-10-10', '2026-10-11', '2026-10-20']), 3);
+  assert.equal(C.longestStreak(['2026-12-31', '2027-01-01']), 2);
+  assert.equal(C.longestStreak(['2026-03-07', '2026-03-08', '2026-03-09']), 3, 'over a clock change');
+  const s = memoryStorage(), st = C.stats(s);
+  st.played(new Date(2026, 9, 1)); st.played(new Date(2026, 9, 1, 18));
+  assert.equal(st.get().days.length, 1, 'once per day');
+  st.played(new Date(2026, 9, 2)); st.played(new Date(2026, 9, 3));
+  assert.equal(st.get().bestStreak, 3);
+  for (let d = 5; d < 45; d += 2) st.played(new Date(2026, 9, d));
+  assert.ok(st.get().days.length <= 30, 'keeps a short list');
+  assert.equal(st.get().bestStreak, 3, 'the best streak is remembered');
+});
+
+test('the lamp opens last even when everything is done at once', () => {
+  const s = memoryStorage(), st = C.stats(s), p = C.progress(s, SQUISHIES);
+  st.memoryWon(8); st.roundDone(5, 5); st.roundDone(5, 5); st.roundDone(5, 5);
+  for (let i = 0; i < 60; i += 1) st.squished();
+  ['lamb', 'dove', 'fish'].forEach(id => p.addStar(id));
+  for (const d of [1, 2, 3]) st.played(new Date(2026, 4, d));
+  s.setItem('msb_match_progress', JSON.stringify({ open: 5, stars: { 1: 3, 2: 3, 3: 3, 4: 3 } }));
+  const opened = C.checkUnlocks(s, SQUISHIES);
+  assert.equal(opened.length, 9);
+  assert.equal(opened.at(-1), 'lamp');
+});
+
+test('squishies opened before keep open; nothing is ever locked again', () => {
+  const s = memoryStorage();
+  s.setItem('msb_squishy_unlocked', JSON.stringify(['stone', 'loaves', 'seed', 'bush']));
+  assert.deepEqual(C.checkUnlocks(s, SQUISHIES), []);
+  const open = C.progress(s, SQUISHIES).unlocked();
+  for (const id of ['stone', 'loaves', 'seed', 'bush']) assert.ok(open.includes(id), id);
+  assert.equal(open.length, 10);
+  /* the lamp counts the ones already open */
+  const lamp = C.challengeFor('lamp'), pr = C.challengeProgress(lamp, C.challengeContext(s, SQUISHIES));
+  assert.deepEqual([pr.have, pr.need], [4, 9]);
+  assert.equal(C.progress(s, SQUISHIES).unlock('stone'), false, 'already open');
+});
+
+test('achievements: badges with progress and the day they were earned', () => {
+  const s = memoryStorage(), st = C.stats(s);
+  let list = C.badges(s, SQUISHIES);
+  assert.equal(list.length, C.CHALLENGES.length + C.EXTRA_BADGES.length);
+  assert.ok(list.every(b => !b.earned));
+  st.squished();
+  C.checkUnlocks(s, SQUISHIES, new Date(2026, 9, 11));
+  list = C.badges(s, SQUISHIES);
+  assert.equal(list.find(b => b.id === 'first-squish').earned, '2026-10-11');
+  const seed = list.find(b => b.id === 'seed');
+  assert.deepEqual([seed.progress.have, seed.progress.need, seed.progress.done], [1, 50, false]);
+  assert.equal(seed.squishy, 'seed');
+  s.setItem(C.KEYS.stats, '{bad json');
+  assert.equal(C.stats(s).get().squishes, 0, 'broken data falls back safely');
+  s.setItem(C.KEYS.stats, JSON.stringify({ squishes: -5, memoryBest: 'x', days: ['nope', '2026-01-01'], badges: { a: 3, b: '2026-01-01' } }));
+  const v = C.stats(s).get();
+  assert.deepEqual([v.squishes, v.memoryBest, v.days, v.badges], [0, 0, ['2026-01-01'], { b: '2026-01-01' }]);
+  assert.ok(C.KEYS.stats.startsWith('msb_'), 'kept in the Export/Restore backup');
+});
+
+test('locked tiles show their challenge and progress; rare tiles sparkle; words have Spanish', () => {
+  const ui = read('./squishy.js'), i18n = read('./i18n.js'), css = read('./study-design.css');
+  assert.match(ui, /progressBar\(pr, text\)/);
+  assert.match(ui, /data-sq-view="\$\{id\}"|\['badges'/);
+  for (const k of ['RARE', 'LEGENDARY', 'Rare squishy unlocked!', 'Legendary squishy unlocked!']) assert.ok(i18n.includes(`"${k}":`), k);
+  assert.ok(i18n.includes('"Rare squishy unlocked!": "¡Squishy raro desbloqueado!"'));
+  const names = [...ui.match(/BADGE_NAME = \{([^}]+)\}/)[1].matchAll(/: '([^']+)'/g)].map(m => m[1]);
+  assert.equal(names.length, C.CHALLENGES.length + C.EXTRA_BADGES.length);
+  for (const k of names) assert.ok(i18n.includes(`"${k}":`), `missing Spanish for: ${k}`);
+  assert.match(css, /\.sq-tile\.rare/);
+  assert.match(css, /prefers-reduced-motion:reduce\)\{\.sq-tile\.rare/);
 });
 
 test('lesson stars are collected once each and remembered', () => {
@@ -357,7 +467,7 @@ test('the outline stays smooth while stretched, squished or pinched (no kinks)',
 });
 
 /* ---------- The final, glowing squishy ---------- */
-test('the glowing Light of the World lamp is the 15th squishy and unlocks last', () => {
+test('the glowing Light of the World lamp is the 15th squishy, legendary and unlocks last', () => {
   assert.equal(SQUISHIES.length, 15);
   const lamp = SQUISHIES.at(-1);
   assert.equal(lamp.id, 'lamp');
@@ -372,12 +482,8 @@ test('the glowing Light of the World lamp is the 15th squishy and unlocks last',
   assert.match(lamp.verse.es, /Yo soy la luz del mundo/);
   assert.equal(lamp.verse.en, verseAt('en', [43, 8, 12]));
   assert.equal(lamp.verse.es, verseAt('es', [43, 8, 12]));
-  const s = memoryStorage(), p = C.progress(s, SQUISHIES), order = [];
-  let next;
-  while ((next = p.unlockNext())) order.push(next.id);
-  assert.equal(order.length, 9);
-  assert.equal(order.at(-1), 'lamp', 'unlocked after all the other locked squishies');
-  assert.deepEqual(order.slice(0, 8), SQUISHIES.filter(x => x.locked && !x.final).map(x => x.id));
+  assert.equal(C.tierOf('lamp'), 'legendary');
+  assert.equal(C.challengeFor('lamp').kind, 'final');
 });
 
 test('crunchy sounds and vibration grow with the squish, stay soft and capped', () => {

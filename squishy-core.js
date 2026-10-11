@@ -4,7 +4,7 @@
 (function (root) {
   'use strict';
 
-  const KEYS = { sounds: 'msb_squishy_sounds', unlocked: 'msb_squishy_unlocked', stars: 'msb_squishy_stars' };
+  const KEYS = { sounds: 'msb_squishy_sounds', unlocked: 'msb_squishy_unlocked', stars: 'msb_squishy_stars', stats: 'msb_squishy_stats', match: 'msb_match_progress' };
 
   function readList(storage, key) {
     try { const v = JSON.parse(storage.getItem(key) || '[]'); return Array.isArray(v) ? v.filter(x => typeof x === 'string') : []; } catch { return []; }
@@ -45,7 +45,141 @@
       if (!list.includes(id)) { list.push(id); writeList(storage, KEYS.stars, list); }
       return list;
     }
-    return { unlocked, isOpen, nextLocked, unlockNext, stars, addStar, total: ids.length };
+    /* Open one squishy (its challenge was met). Already-open ones stay open. */
+    function unlock(id) {
+      if (!known(id)) return false;
+      const extra = readList(storage, KEYS.unlocked).filter(known);
+      if (unlocked().includes(id)) return false;
+      extra.push(id);
+      writeList(storage, KEYS.unlocked, [...new Set(extra)]);
+      return true;
+    }
+    return { unlocked, isOpen, nextLocked, unlockNext, unlock, stars, addStar, total: ids.length };
+  }
+
+  /* ---------- Unlock challenges ----------
+     Each locked squishy has its own challenge, from easy to hard. Some are
+     rare, and the glowing lamp is legendary. Squishies opened before this
+     (by the old "win any round" rule) stay open. */
+  const CHALLENGES = [
+    { id: 'stone', kind: 'memoryWins', n: 1, tier: 'common' },
+    { id: 'loaves', kind: 'lessons', n: 3, tier: 'common' },
+    { id: 'seed', kind: 'squishes', n: 50, tier: 'common' },
+    { id: 'bush', kind: 'questionWins', n: 3, tier: 'common' },
+    { id: 'basket', kind: 'matchChapter', n: 4, tier: 'rare' },
+    { id: 'tree', kind: 'memoryFast', n: 10, tier: 'common' },
+    { id: 'ark', kind: 'perfectRound', n: 1, tier: 'rare' },
+    { id: 'coat', kind: 'streak', n: 3, tier: 'rare' },
+    { id: 'lamp', kind: 'final', n: 0, tier: 'legendary' }
+  ];
+  /* Extra badges that do not open a squishy. */
+  const EXTRA_BADGES = [
+    { id: 'first-squish', kind: 'squishes', n: 1, tier: 'common' },
+    { id: 'squish-200', kind: 'squishes', n: 200, tier: 'rare' },
+    { id: 'all-lessons', kind: 'lessons', n: 15, tier: 'rare' },
+    { id: 'match-3star', kind: 'matchThreeStars', n: 1, tier: 'common' }
+  ];
+  const tierOf = id => (CHALLENGES.find(c => c.id === id) || {}).tier || 'common';
+
+  /* Local calendar day, e.g. "2026-10-11" (the phone's own time zone). */
+  function dayKey(date) {
+    const d = date || new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+  function dayNumber(key) { const [y, m, d] = key.split('-').map(Number); return Math.round(Date.UTC(y, m - 1, d) / 86400000); }
+  /* Longest run of days in a row in a list of day keys. */
+  function longestStreak(days) {
+    const nums = [...new Set(days.filter(k => /^\d{4}-\d{2}-\d{2}$/.test(k)).map(dayNumber))].sort((a, b) => a - b);
+    let best = 0, run = 0;
+    nums.forEach((n, i) => { run = i && n === nums[i - 1] + 1 ? run + 1 : 1; best = Math.max(best, run); });
+    return best;
+  }
+
+  /* Play counts kept for the challenges (one small JSON object). */
+  function stats(storage) {
+    const blank = () => ({ memoryWins: 0, memoryBest: 0, questionWins: 0, perfectRounds: 0, squishes: 0, days: [], bestStreak: 0, badges: {} });
+    const nat = v => (Number.isFinite(v) && v > 0 ? Math.floor(v) : 0);
+    function get() {
+      let v;
+      try { v = JSON.parse(storage.getItem(KEYS.stats) || '{}'); } catch { v = {}; }
+      if (!v || typeof v !== 'object' || Array.isArray(v)) v = {};
+      const out = blank();
+      for (const k of ['memoryWins', 'memoryBest', 'questionWins', 'perfectRounds', 'squishes', 'bestStreak']) out[k] = nat(v[k]);
+      out.days = Array.isArray(v.days) ? v.days.filter(k => typeof k === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(k)).slice(-30) : [];
+      if (v.badges && typeof v.badges === 'object') for (const [k, d] of Object.entries(v.badges)) if (typeof d === 'string') out.badges[k] = d;
+      return out;
+    }
+    function save(v) { try { storage.setItem(KEYS.stats, JSON.stringify(v)); } catch { /* full or blocked */ } return v; }
+    return {
+      get,
+      memoryWon(moves) { const v = get(); v.memoryWins += 1; v.memoryBest = v.memoryBest ? Math.min(v.memoryBest, moves) : moves; return save(v); },
+      roundDone(correct, count) { const v = get(); if (roundWon(correct, count)) v.questionWins += 1; if (count > 0 && correct === count) v.perfectRounds += 1; return save(v); },
+      squished() { const v = get(); v.squishes += 1; return save(v); },
+      played(date) {
+        const v = get(), k = dayKey(date);
+        if (!v.days.includes(k)) v.days = [...v.days, k].sort().slice(-30);
+        v.bestStreak = Math.max(v.bestStreak, longestStreak(v.days));
+        return save(v);
+      },
+      earn(id, date) { const v = get(); if (!v.badges[id]) { v.badges[id] = dayKey(date); save(v); return true; } return false; }
+    };
+  }
+
+  /* Manna Match progress, read safely (levels won and their stars). */
+  function matchStars(storage) {
+    try { const v = JSON.parse(storage.getItem(KEYS.match) || '{}'); return v && v.stars && typeof v.stars === 'object' ? v.stars : {}; } catch { return {}; }
+  }
+
+  /* How far along a challenge is: { have, need, done }. */
+  function challengeProgress(ch, ctx) {
+    const st = ctx.stats, cap = (have, need) => ({ have: Math.min(have, need), need, done: have >= need });
+    switch (ch.kind) {
+      case 'memoryWins': return cap(st.memoryWins, ch.n);
+      case 'lessons': return cap(ctx.lessons, ch.n);
+      case 'squishes': return cap(st.squishes, ch.n);
+      case 'questionWins': return cap(st.questionWins, ch.n);
+      case 'perfectRound': return cap(st.perfectRounds, ch.n);
+      case 'streak': return cap(Math.max(st.bestStreak, longestStreak(st.days)), ch.n);
+      case 'memoryFast': { const ok = st.memoryBest > 0 && st.memoryBest <= ch.n; return { have: ok ? 1 : 0, need: 1, done: ok, best: st.memoryBest || null }; }
+      case 'matchChapter': { let won = 0; for (let k = 1; k <= ch.n; k += 1) if ([1, 2, 3].includes(ctx.match[k])) won += 1; return cap(won, ch.n); }
+      case 'matchThreeStars': return cap(Object.values(ctx.match).filter(s => s === 3).length, ch.n);
+      case 'final': {
+        /* every other squishy open, and 3 stars on any Manna Match level */
+        const others = ctx.squishies.filter(x => x.id !== ch.id && x.locked);
+        const open = others.filter(x => ctx.unlocked.includes(x.id)).length;
+        const three = Object.values(ctx.match).some(s => s === 3) ? 1 : 0;
+        return cap(open + three, others.length + 1);
+      }
+      default: return { have: 0, need: 1, done: false };
+    }
+  }
+
+  /* Everything the shelf needs: the challenge, tier and progress of each
+     squishy and badge. */
+  function challengeContext(storage, squishies) {
+    const p = progress(storage, squishies);
+    return { stats: stats(storage).get(), lessons: p.stars().length, match: matchStars(storage), unlocked: p.unlocked(), squishies };
+  }
+  function challengeFor(id) { return CHALLENGES.find(c => c.id === id) || null; }
+
+  /* Open every locked squishy whose challenge is met, and record new badges.
+     Returns the newly opened squishy ids (the lamp last). */
+  function checkUnlocks(storage, squishies, date) {
+    const p = progress(storage, squishies), st = stats(storage), opened = [];
+    for (const ch of CHALLENGES) {
+      const ctx = challengeContext(storage, squishies);
+      if (challengeProgress(ch, ctx).done) {
+        st.earn(ch.id, date);
+        if (p.unlock(ch.id)) opened.push(ch.id);
+      }
+    }
+    const ctx = challengeContext(storage, squishies);
+    for (const b of EXTRA_BADGES) if (challengeProgress(b, ctx).done) st.earn(b.id, date);
+    return opened;
+  }
+  function badges(storage, squishies) {
+    const ctx = challengeContext(storage, squishies), earned = ctx.stats.badges;
+    return [...CHALLENGES, ...EXTRA_BADGES].map(b => ({ ...b, squishy: CHALLENGES.includes(b) ? b.id : null, earned: earned[b.id] || null, progress: challengeProgress(b, ctx) }));
   }
 
   /* How deep a press squashes: grows the longer you hold, like a slow-rise
@@ -318,7 +452,7 @@
     return Math.min(1, base + 0.55 * i);
   }
 
-  const api = { crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
+  const api = { CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbSquishyCore = api;
 })(typeof self !== 'undefined' ? self : this);

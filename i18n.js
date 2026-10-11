@@ -1092,6 +1092,55 @@
     "{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch.": "{name}. Aprieta para aplastarlo, arrastra para estirarlo, usa dos dedos para apretarlo o abrirlo. Teclas: Intro o Espacio lo aplastan, las flechas lo estiran."
   });
 
+  /* Squishy unlock challenges and achievements. */
+  Object.assign(ES, {
+    "Win a round of Memory": "Gana una ronda de Memoria",
+    "Win {n} rounds of Memory": "Gana {n} rondas de Memoria",
+    "Learn {n} squishy lessons": "Aprende {n} lecciones de squishies",
+    "Squish your first squishy": "Aprieta tu primer squishy",
+    "Squish squishies {n} times": "Aprieta squishies {n} veces",
+    "Win {n} rounds of Questions": "Gana {n} rondas de preguntas",
+    "Finish the Noah chapter in Manna Match": "Termina el capítulo de Noé en Combina el maná",
+    "Win Memory in {n} moves or fewer": "Gana Memoria en {n} jugadas o menos",
+    "Get 5 of 5 right in Questions": "Acierta 5 de 5 en Preguntas",
+    "Play {n} days in a row": "Juega {n} días seguidos",
+    "Get 3 stars on a Manna Match level": "Consigue 3 estrellas en un nivel de Combina el maná",
+    "Unlock every squishy and get 3 stars on a Manna Match level": "Desbloquea todos los squishies y consigue 3 estrellas en un nivel de Combina el maná",
+    "Your best: {n} moves": "Tu mejor marca: {n} jugadas",
+    "Achievements": "Logros",
+    "Badges": "Logros",
+    "The final squishy is locked.": "El squishy final está bloqueado.",
+    "Locked squishy.": "Squishy bloqueado.",
+    "Each locked squishy has its own challenge. Rare ones are harder!": "Cada squishy bloqueado tiene su propio reto. ¡Los raros son más difíciles!",
+    "Earned {date}": "Ganado el {date}",
+    "Badges earned: {n} of {total}": "Insignias ganadas: {n} de {total}",
+    "Get {n} right to win the round. Try again!": "Acierta {n} para ganar la ronda. ¡Inténtalo otra vez!",
+    "Answer 5 Bible questions. Get {n} right to win the round!": "Responde 5 preguntas de la Biblia. ¡Acierta {n} para ganar la ronda!",
+    "And there is more!": "¡Y hay más!",
+    "Next challenge:": "Próximo reto:",
+    "LEGENDARY ACHIEVEMENT": "LOGRO LEGENDARIO",
+    "RARE ACHIEVEMENT": "LOGRO RARO",
+    "Legendary squishy unlocked!": "¡Squishy legendario desbloqueado!",
+    "Rare squishy unlocked!": "¡Squishy raro desbloqueado!",
+    "Badge: {name}": "Insignia: {name}",
+    "To unlock it: {task}": "Para desbloquearlo: {task}",
+    "Good memory": "Buena memoria",
+    "Little learner": "Aprendiz estrella",
+    "Super squisher": "Súper apretones",
+    "Question pro": "Pro de las preguntas",
+    "Noah’s helper": "Ayudante de Noé",
+    "Quick memory": "Memoria veloz",
+    "Perfect score": "Puntaje perfecto",
+    "Three days in a row": "Tres días seguidos",
+    "Light of the world": "Luz del mundo",
+    "First squish": "Primer apretón",
+    "Squish galore": "¡Montones de apretones!",
+    "Every lesson learned": "Todas las lecciones",
+    "Three-star match": "Tres estrellas",
+    "RARE": "RARO",
+    "LEGENDARY": "LEGENDARIO"
+  });
+
   /* Bible match-3 game (Manna Match). */
   Object.assign(ES, {
     "Manna Match": "Combina el maná",
