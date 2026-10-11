@@ -546,7 +546,7 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .sq-topbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}
 .sq-count{font-weight:700;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08)}
 .sq-sound{margin-left:auto;min-height:44px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:inherit;font:inherit;font-weight:700}
-.sq-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:10px 0 14px}
+.sq-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:10px 0 14px}
 .sq-tab{min-height:48px;padding:4px 6px;border-radius:14px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:inherit;font:inherit;font-size:.82rem;font-weight:700;line-height:1.15}
 .sq-tab.active{background:var(--teal);color:rgb(6,36,32);border-color:transparent}
 .sq-hint{text-align:center;margin:8px 0}
@@ -744,3 +744,47 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .m3-confetti i:nth-child(5n+3){background:rgb(189,236,207)}
 .m3-confetti i:nth-child(5n+4){background:rgb(215,184,255)}
 @media (prefers-reduced-motion:reduce){.m3-piece,.m3-piece img,.m3-meter i{transition:none}.m3-node.current,.m3-piece.hint img,.m3-piece.born img,.m3-piece.sp1 img,.m3-piece.sp2 img,.m3-piece.sp3 img,.m3-piece.bomb img,.m3-stars.big i.on{animation:none}.m3-piece.hint img{filter:drop-shadow(0 0 7px rgb(255,250,200))}.m3-confetti,.m3-spark,.m3-beam,.m3-combo{display:none}}
+/* Squishy unlock challenges, rare tiers and achievements */
+.sq-tab{font-size:.72rem;padding:4px 2px;overflow-wrap:anywhere;min-width:0}
+.sq-tabs{gap:4px}
+.sq-req{display:block;font-size:.72rem;line-height:1.2;text-align:center;opacity:.92}
+.sq-req b{white-space:nowrap}
+.sq-req-best{display:block;font-size:.68rem;opacity:.75;text-align:center}
+.sq-bar{display:block;width:100%;height:7px;border-radius:999px;background:rgba(255,255,255,.14);overflow:hidden}
+.sq-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--teal),rgb(190,245,235))}
+.sq-tile.locked{justify-content:flex-start}
+.sq-tile.locked .sq-req{opacity:1}
+.sq-tier{position:absolute;top:5px;left:5px;z-index:2;padding:1px 6px;border-radius:999px;font-size:.58rem;font-weight:900;letter-spacing:.06em;background:rgb(150,105,235);color:rgb(255,255,255);box-shadow:0 0 8px rgba(190,150,255,.8)}
+.sq-tier.inline{position:static;display:inline-block;align-self:flex-start;vertical-align:middle}
+.sq-tile.rare,.sq-badge.rare{border:2px solid rgba(196,160,255,.9);background:linear-gradient(115deg,rgba(150,105,235,.14) 20%,rgba(230,210,255,.32) 45%,rgba(150,105,235,.14) 70%) 0 0/260% 100%;box-shadow:0 0 14px rgba(170,130,255,.45);animation:sq-shimmer 3.4s linear infinite}
+.sq-tile.legendary,.sq-badge.legendary{border:2px solid rgba(255,214,110,.95);box-shadow:0 0 18px rgba(255,205,90,.55)}
+.sq-tile.legendary .sq-tier,.sq-badge.legendary .sq-tier{background:linear-gradient(90deg,rgb(240,170,40),rgb(255,214,110));color:rgb(70,40,0);box-shadow:0 0 10px rgba(255,214,110,.9)}
+.sq-tile.rare::after,.sq-tile.legendary::after{content:"✦";position:absolute;top:6px;right:8px;font-size:.9rem;color:rgb(255,245,200);text-shadow:0 0 6px rgb(255,255,255);animation:sq-twinkle 1.8s ease-in-out infinite}
+@keyframes sq-twinkle{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.15)}}
+.sq-badges{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:8px}
+.sq-badge{position:relative;display:flex;align-items:center;gap:10px;padding:10px;border-radius:16px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05)}
+.sq-badge:not(.earned){opacity:.85}
+.sq-badge.earned:not(.rare):not(.legendary){border-color:rgba(120,230,170,.6)}
+.sq-medal{flex:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:radial-gradient(circle at 35% 30%,rgb(255,240,170),rgb(230,160,40));box-shadow:0 3px 0 rgb(160,100,20)}
+.sq-badge:not(.earned) .sq-medal{background:rgba(255,255,255,.12);box-shadow:none;font-size:1rem}
+.sq-badge-art{flex:none;width:44px}
+.sq-badge-art.dim{filter:brightness(0) opacity(.38)}
+.sq-badge-art.emoji{font-size:1.7rem;text-align:center}
+.sq-badge-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.sq-badge-body .sq-req{text-align:left}
+.sq-badge-date{font-size:.75rem;color:rgb(140,235,175);font-weight:700}
+.sq-next-ch{margin:6px 0 12px}
+.sq-ach-name{font-weight:800;margin:4px 0}
+.sq-ach-badge{margin:4px 0 12px}
+.sq-new-big{width:200px}
+.sq-celebrate.rare{background:radial-gradient(circle at 50% 45%,rgba(110,70,170,.6),rgba(0,0,0,.72) 70%)}
+.sq-celebrate-card.sq-ach{overflow:visible;border:2px solid rgba(196,160,255,.9);box-shadow:0 0 40px rgba(170,130,255,.5)}
+.sq-celebrate-card.sq-ach.legendary{border-color:rgba(255,214,110,.95);box-shadow:0 0 50px rgba(255,205,90,.6)}
+.sq-trophy{position:relative;width:96px;height:96px;margin:-58px auto 6px}
+.sq-trophy-rays{position:absolute;inset:-34px;border-radius:50%;background:repeating-conic-gradient(rgba(255,240,190,.55) 0 10deg,rgba(255,240,190,0) 10deg 24deg);-webkit-mask:radial-gradient(circle,rgb(0,0,0) 30%,transparent 70%);mask:radial-gradient(circle,rgb(0,0,0) 30%,transparent 70%);animation:sq-rays 9s linear infinite}
+.sq-trophy-medal{position:relative;display:flex;align-items:center;justify-content:center;width:96px;height:96px;border-radius:50%;font-size:3rem;background:radial-gradient(circle at 35% 30%,rgb(230,215,255),rgb(140,95,225));border:4px solid rgb(255,255,255);box-shadow:0 6px 0 rgb(90,55,160),0 0 30px rgba(190,150,255,.9)}
+.sq-trophy.legendary .sq-trophy-medal{background:radial-gradient(circle at 35% 30%,rgb(255,245,190),rgb(240,170,40));box-shadow:0 6px 0 rgb(160,100,20),0 0 40px rgba(255,214,110,1)}
+@keyframes sq-rays{to{transform:rotate(360deg)}}
+.sq-shine{position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%) 0 0/300% 100%;animation:sq-shine 2.2s ease-in-out .3s 2 both}
+@keyframes sq-shine{from{background-position:120% 0}to{background-position:-120% 0}}
+@media (prefers-reduced-motion:reduce){.sq-tile.rare,.sq-badge.rare,.sq-tile.rare::after,.sq-tile.legendary::after,.sq-trophy-rays{animation:none}.sq-shine{display:none}}

@@ -23,8 +23,40 @@
   const sounds = () => C().soundPref(store() || fallbackStore);
   const byId = id => D().SQUISHIES.find(x => x.id === id);
   const nameOf = x => x.name[lang()];
+  const store2 = () => store() || fallbackStore;
+  const stats = () => C().stats(store2());
+  const ctx = () => C().challengeContext(store2(), D().SQUISHIES);
+  const TIER_LABEL = { rare: 'RARE', legendary: 'LEGENDARY' };
+  /* What a challenge asks, in words. */
+  function challengeText(ch) {
+    switch (ch.kind) {
+      case 'memoryWins': return ch.n === 1 ? L('Win a round of Memory') : L('Win {n} rounds of Memory', { n: ch.n });
+      case 'lessons': return L('Learn {n} squishy lessons', { n: ch.n });
+      case 'squishes': return ch.n === 1 ? L('Squish your first squishy') : L('Squish squishies {n} times', { n: ch.n });
+      case 'questionWins': return L('Win {n} rounds of Questions', { n: ch.n });
+      case 'matchChapter': return L('Finish the Noah chapter in Manna Match');
+      case 'memoryFast': return L('Win Memory in {n} moves or fewer', { n: ch.n });
+      case 'perfectRound': return L('Get 5 of 5 right in Questions');
+      case 'streak': return L('Play {n} days in a row', { n: ch.n });
+      case 'matchThreeStars': return L('Get 3 stars on a Manna Match level');
+      case 'final': return L('Unlock every squishy and get 3 stars on a Manna Match level');
+      default: return '';
+    }
+  }
+  const BADGE_NAME = { stone: 'Good memory', loaves: 'Little learner', seed: 'Super squisher', bush: 'Question pro', basket: 'Noah’s helper', tree: 'Quick memory', ark: 'Perfect score', coat: 'Three days in a row', lamp: 'Light of the world', 'first-squish': 'First squish', 'squish-200': 'Squish galore', 'all-lessons': 'Every lesson learned', 'match-3star': 'Three-star match' };
+  const BADGE_ICON = { stone: '🃏', loaves: '📖', seed: '🤲', bush: '❓', basket: '🌈', tree: '⚡', ark: '💯', coat: '📅', lamp: '💡', 'first-squish': '👆', 'squish-200': '🎉', 'all-lessons': '🎓', 'match-3star': '⭐' };
+  /* "2026-10-11" -> "11 oct 2026" / "Oct 11, 2026" in the app language */
+  function niceDate(key) {
+    const [y, m, d] = String(key).split('-').map(Number);
+    if (!y || !m || !d) return key;
+    try { return new Date(y, m - 1, d).toLocaleDateString(lang() === 'es' ? 'es' : 'en', { year: 'numeric', month: 'short', day: 'numeric' }); } catch { return key; }
+  }
+  function progressBar(pr, text) {
+    const pct = Math.round((pr.have / Math.max(1, pr.need)) * 100);
+    return `<span class="sq-req">${esc(text)}${pr.done ? ' ✓' : ` <b>${pr.have}/${pr.need}</b>`}</span><span class="sq-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${pr.need}" aria-valuenow="${pr.have}" aria-label="${esc(text)}"><i style="width:${pct}%"></i></span>${pr.best && !pr.done ? `<span class="sq-req-best">${esc(L('Your best: {n} moves', { n: pr.best }))}</span>` : ''}`;
+  }
 
-  const ui = { root: null, view: 'shelf', playing: null, memory: null, round: null, guess: null, msg: '' };
+  const ui = { queue: [], root: null, view: 'shelf', playing: null, memory: null, round: null, guess: null, msg: '' };
 
   /* ---------- Sound (made on the device with Web Audio) ---------- */
   let ac = null, master = null;
@@ -110,6 +142,9 @@
     match: () => notes([880, 1320], { dur: 0.16, peak: 0.04, step: 0.09 }),
     wrong: () => voice({ f0: 330, f1: 262, dur: 0.22, peak: 0.035 }),
     crunch: () => crunch(0.45),
+    /* rare unlock: fanfare, then a sparkly climb; legendary adds a big bell */
+    rare: () => { SOUNDS.fanfare(); setTimeout(() => notes([1047, 1319, 1568, 2093, 2637], { type: 'sine', dur: 0.28, peak: 0.04, step: 0.07 }), 700); },
+    legendary: () => { SOUNDS.fanfare(); setTimeout(() => notes([784, 1047, 1319, 1568, 2093, 2637, 3136], { type: 'triangle', dur: 0.35, peak: 0.045, step: 0.08 }), 650); setTimeout(() => voice({ type: 'sine', f0: 523, dur: 1.6, peak: 0.06, vib: [5, 4] }), 1300); },
     fanfare: () => { notes([523, 659, 784], { type: 'triangle', dur: 0.25, peak: 0.06, step: 0.12 }); voice({ type: 'triangle', f0: 1047, dur: 0.7, peak: 0.06, delay: 0.36 }); notes([1568, 2093, 2637], { dur: 0.3, peak: 0.03, step: 0.07 }); }
   };
   function play(name) { if (SOUNDS[name]) SOUNDS[name](); }
@@ -127,13 +162,13 @@
     return `<div class="sq-topbar"><span class="sq-count" aria-label="${esc(L('Stars: {n} of {total}', { n: p.stars().length, total: p.total }))}">⭐ ${p.stars().length}/${p.total}</span><span class="sq-count" aria-label="${esc(L('Unlocked: {n} of {total}', { n: p.unlocked().length, total: p.total }))}">🔓 ${p.unlocked().length}/${p.total}</span><button type="button" class="sq-sound" role="switch" aria-checked="${on}" data-sq-sound>${on ? '🔊' : '🔈'} ${esc(L('Sounds'))}: ${esc(on ? L('On') : L('Off'))}</button></div>`;
   }
   function tabs() {
-    const t = [['shelf', '🧸 ' + L('Shelf')], ['memory', '🃏 ' + L('Memory')], ['questions', '❓ ' + L('Questions')], ['guess', '🔍 ' + L('Which squishy?')]];
+    const t = [['shelf', '🧸 ' + L('Shelf')], ['memory', '🃏 ' + L('Memory')], ['questions', '❓ ' + L('Questions')], ['guess', '🔍 ' + L('Which squishy?')], ['badges', '🏅 ' + L('Badges')]];
     return `<div class="sq-tabs" role="tablist" aria-label="${esc(L('Squishy games'))}">${t.map(([id, label]) => `<button type="button" role="tab" class="sq-tab${ui.view === id ? ' active' : ''}" aria-selected="${ui.view === id}" data-sq-view="${id}">${esc(label)}</button>`).join('')}</div>`;
   }
   function render() {
     const root = ui.root;
     if (!root || !root.isConnected) return;
-    const body = ui.view === 'memory' ? memoryHtml() : ui.view === 'questions' ? questionsHtml() : ui.view === 'guess' ? guessHtml() : shelfHtml();
+    const body = ui.view === 'badges' ? badgesHtml() : ui.view === 'memory' ? memoryHtml() : ui.view === 'questions' ? questionsHtml() : ui.view === 'guess' ? guessHtml() : shelfHtml();
     root.innerHTML = `<div class="squishy-screen" data-i18n-skip><button class="text-button back" type="button" data-squishy-exit>${esc(L('← Stories'))}</button><span class="eyebrow">${esc(L('BIBLE SQUISHIES'))}</span><h1>${esc(L('Bible squishies'))}</h1>${topBar()}${tabs()}<div class="sq-body" data-sq-body>${body}</div><div class="sq-play-host" data-sq-play-host></div><div class="sq-celebrate" data-sq-celebrate hidden></div></div>`;
     if (ui.playing) openPlay(ui.playing);
   }
@@ -141,15 +176,45 @@
   /* Shelf: tap a squishy to play with it. */
   function shelfHtml() {
     const p = prog(), open = p.unlocked(), stars = p.stars();
+    const c = ctx();
     const tiles = D().SQUISHIES.map(s => {
-      if (!open.includes(s.id) && s.final) return `<button type="button" class="sq-tile locked final" data-sq-locked aria-label="${esc(L('The final squishy is locked. Unlock all the others to find it!'))}"><span class="sq-art">${A().svg(s.id)}</span><span class="sq-lock" aria-hidden="true">🔒</span><span class="sq-name">${esc(L('✨ Final squishy'))}</span></button>`;
-      if (!open.includes(s.id)) return `<button type="button" class="sq-tile locked" data-sq-locked aria-label="${esc(L('Locked squishy. Win a game to unlock it.'))}"><span class="sq-art">${A().svg(s.id)}</span><span class="sq-lock" aria-hidden="true">🔒</span><span class="sq-name">${esc(L('Locked'))}</span></button>`;
-      return `<button type="button" class="sq-tile${s.glow ? ' glow' : ''}" data-sq-pick="${s.id}" aria-label="${esc(L('Play with {name}', { name: nameOf(s) }) + (stars.includes(s.id) ? ' ⭐' : ''))}">${s.glow ? '<span class="sq-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' : ''}<span class="sq-art">${A().svg(s.id)}</span>${stars.includes(s.id) ? '<span class="sq-star" aria-hidden="true">⭐</span>' : ''}<span class="sq-name">${esc(nameOf(s))}</span></button>`;
+      const tier = C().tierOf(s.id), ch = C().challengeFor(s.id);
+      const tierCls = tier === 'common' ? '' : ` ${tier}`;
+      const tag = TIER_LABEL[tier] ? `<span class="sq-tier" aria-hidden="true">${esc(L(TIER_LABEL[tier]))}</span>` : '';
+      if (!open.includes(s.id)) {
+        const text = ch ? challengeText(ch) : L('Locked');
+        const pr = ch ? C().challengeProgress(ch, c) : { have: 0, need: 1, done: false };
+        const label = `${s.final ? L('The final squishy is locked.') : L('Locked squishy.')} ${TIER_LABEL[tier] ? L(TIER_LABEL[tier]) + '. ' : ''}${text}: ${pr.have} / ${pr.need}`;
+        return `<button type="button" class="sq-tile locked${s.final ? ' final' : ''}${tierCls}" data-sq-locked="${s.id}" aria-label="${esc(label)}">${tag}<span class="sq-art">${A().svg(s.id)}</span><span class="sq-lock" aria-hidden="true">🔒</span><span class="sq-name">${esc(s.final ? L('✨ Final squishy') : L('Locked'))}</span>${progressBar(pr, text)}</button>`;
+      }
+      return `<button type="button" class="sq-tile${s.glow ? ' glow' : ''}${tierCls}" data-sq-pick="${s.id}" aria-label="${esc(L('Play with {name}', { name: nameOf(s) }) + (TIER_LABEL[tier] ? ' (' + L(TIER_LABEL[tier]) + ')' : '') + (stars.includes(s.id) ? ' ⭐' : ''))}">${tag}${s.glow ? '<span class="sq-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' : ''}<span class="sq-art">${A().svg(s.id)}</span>${stars.includes(s.id) ? '<span class="sq-star" aria-hidden="true">⭐</span>' : ''}<span class="sq-name">${esc(nameOf(s))}</span></button>`;
     }).join('');
     return `<p class="sq-hint">${esc(L('Tap a squishy to play with it: squish it, stretch it, and learn its Bible story.'))}</p>
       ${ui.msg ? `<p class="sq-msg" role="status">${esc(ui.msg)}</p>` : ''}
       <h2 class="sq-h2">${esc(L('Squishy shelf'))}</h2><div class="sq-grid">${tiles}</div>
-      ${p.nextLocked() ? `<p class="small muted sq-unlock-note">${esc(L('Win a round of Memory or Questions to unlock the next squishy.'))}</p>` : ''}`;
+      ${p.nextLocked() ? `<p class="small muted sq-unlock-note">${esc(L('Each locked squishy has its own challenge. Rare ones are harder!'))}</p>` : ''}`;
+  }
+
+  /* Achievements: every badge, earned or not, with progress. */
+  function badgesHtml() {
+    const list = C().badges(store2(), D().SQUISHIES);
+    const got = list.filter(b => b.earned).length;
+    const rows = list.map(b => {
+      const text = challengeText(b), tierCls = b.tier === 'common' ? '' : ` ${b.tier}`;
+      const art = b.squishy ? `<span class="sq-badge-art${b.earned ? '' : ' dim'}">${A().svg(b.squishy)}</span>` : `<span class="sq-badge-art emoji" aria-hidden="true">${BADGE_ICON[b.id] || '🏅'}</span>`;
+      const status = b.earned ? `<span class="sq-badge-date">✓ ${esc(L('Earned {date}', { date: niceDate(b.earned) }))}</span>` : progressBar(b.progress, text);
+      return `<li class="sq-badge${b.earned ? ' earned' : ''}${tierCls}"><span class="sq-medal" aria-hidden="true">${b.earned ? BADGE_ICON[b.id] || '🏅' : '🔒'}</span>${art}<span class="sq-badge-body"><strong>${esc(L(BADGE_NAME[b.id] || b.id))}</strong>${TIER_LABEL[b.tier] ? `<span class="sq-tier inline">${esc(L(TIER_LABEL[b.tier]))}</span>` : ''}${b.earned ? `<span class="sq-req">${esc(text)}</span>` : ''}${status}</span></li>`;
+    }).join('');
+    return `<h2 class="sq-h2">${esc(L('Achievements'))}</h2><p class="sq-hint">${esc(L('Badges earned: {n} of {total}', { n: got, total: list.length }))}</p><ul class="sq-badges">${rows}</ul>`;
+  }
+
+  /* Something counted toward the challenges: open any squishy whose
+     challenge is now met and celebrate it (rare ones get a special screen). */
+  function afterProgress(win) {
+    const opened = C().checkUnlocks(store2(), D().SQUISHIES);
+    if (opened.length) { ui.queue.push(...opened); if (!ui.root?.querySelector('[data-sq-celebrate]:not([hidden])')) setTimeout(() => celebrate(ui.queue.shift()), win ? 350 : 150); return true; }
+    if (win) setTimeout(() => celebrate(null), 350);
+    return false;
   }
 
   function cardHtml(x) {
@@ -445,7 +510,7 @@
     function kick() { if (pv && !pv.frame) { pv.last = 0; pv.frame = requestAnimationFrame(tick); } }
 
   function beginGesture(p) {
-    if (!p.gestured) { p.gestured = true; play(byId(p.id).sound); }
+    if (!p.gestured) { p.gestured = true; play(byId(p.id).sound); stats().squished(); afterProgress(false); }
   }
   function endGesture() {
     const p = pv; if (!p) return;
@@ -554,7 +619,7 @@
       if (C().isMatch(a, b)) {
         m.done.push(a.n, b.n); m.up = []; play('match'); vibrate(12);
         setTimeout(() => play(byId(a.id).sound), 200);
-        if (m.done.length === m.deck.length) { m.won = true; render(); setTimeout(() => celebrate('memory'), 350); return; }
+        if (m.done.length === m.deck.length) { m.won = true; stats().memoryWon(m.moves); render(); afterProgress(true); return; }
       } else {
         m.lock = true;
         setTimeout(() => { m.up = []; m.lock = false; if (ui.view === 'memory') render(); }, 900);
@@ -570,7 +635,7 @@
     const r = ui.round;
     if (r.done) {
       const won = C().roundWon(r.correct, r.qs.length);
-      return `<div class="card sq-result"><h2>${esc(won ? L('Great job!') : L('Almost!'))}</h2><p>${esc(L('You got {n} of {total} right.', { n: r.correct, total: r.qs.length }))}</p>${won ? '' : `<p class="muted">${esc(L('Get {n} right to unlock a squishy. Try again!', { n: C().PASS }))}</p>`}<button type="button" class="primary" data-sq-round-new>${esc(L('Play again'))}</button></div>`;
+      return `<div class="card sq-result"><h2>${esc(won ? L('Great job!') : L('Almost!'))}</h2><p>${esc(L('You got {n} of {total} right.', { n: r.correct, total: r.qs.length }))}</p>${won ? '' : `<p class="muted">${esc(L('Get {n} right to win the round. Try again!', { n: C().PASS }))}</p>`}<button type="button" class="primary" data-sq-round-new>${esc(L('Play again'))}</button></div>`;
     }
     const q = r.qs[r.i];
     const choices = q.choices.map((c, i) => {
@@ -579,7 +644,7 @@
       return `<button type="button" class="sq-choice${cls}" data-sq-choice="${i}" ${r.picked !== null ? 'disabled' : ''}>${esc(c)}</button>`;
     }).join('');
     const after = r.picked === null ? '' : `<p class="sq-feedback" role="status">${esc(r.picked === q.answer ? L('Yes! That’s right.') : L('Not quite. The answer is: {a}', { a: q.choices[q.answer] }))} <span class="muted">(${esc(q.ref)})</span></p><button type="button" class="primary" data-sq-next>${esc(r.i + 1 < r.qs.length ? L('Next') : L('See my score'))}</button>`;
-    return `<p class="muted">${esc(L('Answer 5 Bible questions. Get {n} right to unlock a squishy!', { n: C().PASS }))}</p><div class="card sq-question"><span class="eyebrow">${esc(L('Question {n} of {total}', { n: r.i + 1, total: r.qs.length }))}</span><h2>${esc(q.q)}</h2><div class="sq-choices">${choices}</div>${after}</div>`;
+    return `<p class="muted">${esc(L('Answer 5 Bible questions. Get {n} right to win the round!', { n: C().PASS }))}</p><div class="card sq-question"><span class="eyebrow">${esc(L('Question {n} of {total}', { n: r.i + 1, total: r.qs.length }))}</span><h2>${esc(q.q)}</h2><div class="sq-choices">${choices}</div>${after}</div>`;
   }
   function answer(i) {
     const r = ui.round; if (!r || r.done || r.picked !== null) return;
@@ -591,8 +656,8 @@
   function nextQuestion() {
     const r = ui.round; if (!r) return;
     if (r.i + 1 < r.qs.length) { r.i += 1; r.picked = null; render(); return; }
-    r.done = true; render();
-    if (C().roundWon(r.correct, r.qs.length)) setTimeout(() => celebrate('questions'), 300);
+    r.done = true; stats().roundDone(r.correct, r.qs.length); render();
+    afterProgress(C().roundWon(r.correct, r.qs.length));
   }
 
   /* ---------- Which squishy? ---------- */
@@ -613,23 +678,40 @@
     return `<div class="card sq-question"><span class="eyebrow">${esc(L('WHICH SQUISHY?'))}</span><h2>${esc(x.quiz[lang()])}</h2><div class="sq-grid sq-guess">${opts}</div>${after}</div>`;
   }
 
-  /* ---------- Unlock celebration ---------- */
-  function celebrate() {
+  /* ---------- Unlock celebration ----------
+     id: the squishy just opened, or null for a plain "you won" card.
+     Rare squishies get an achievement screen with a trophy badge and shine;
+     the legendary lamp gets an even grander one. */
+  function celebrate(id) {
     const box = ui.root && ui.root.querySelector('[data-sq-celebrate]');
     if (!box) return;
-    const next = prog().unlockNext();
-    const last = !!(next && next.final);
-    play('fanfare');
-    if (last) { setTimeout(() => play('twinkle'), 650); setTimeout(() => crunch(0.8, true), 1100); }
-    vibrate(last ? [20, 40, 30, 60, 8, 20, 8, 20, 10] : [20, 40, 30]);
-    const confetti = reduced() ? '' : `<div class="sq-confetti${last ? ' gold' : ''}" aria-hidden="true">${Array.from({ length: 28 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--d:${(i % 7) * 0.12}s;--r:${(i * 53) % 360}deg;--c:${i % 5}"></i>`).join('')}</div>`;
-    const inner = last
-      ? `<span class="eyebrow">✨ ${esc(L('THE FINAL SQUISHY!'))}</span><h2>${esc(L('You unlocked every squishy!'))}</h2><p>${esc(L('Meet {name}, the glowing one!', { name: nameOf(next) }))}</p><div class="sq-new sq-new-glow">${A().svg(next.id, nameOf(next))}</div><button type="button" class="primary" data-sq-meet="${next.id}">${esc(L('Squish it!'))}</button>`
-      : next
-      ? `<span class="eyebrow">${esc(L('NEW SQUISHY!'))}</span><h2>${esc(L('You unlocked {name}!', { name: nameOf(next) }))}</h2><div class="sq-new">${A().svg(next.id, nameOf(next))}</div><button type="button" class="primary" data-sq-meet="${next.id}">${esc(L('Squish it!'))}</button>`
-      : `<span class="eyebrow">${esc(L('YOU WON!'))}</span><h2>${esc(L('You already have every squishy. Well done!'))}</h2><button type="button" class="primary" data-sq-meet="">${esc(L('Back to the shelf'))}</button>`;
-    box.classList.toggle('final', last);
-    box.innerHTML = `${confetti}${last && !reduced() ? '<div class="sq-burst" aria-hidden="true"></div>' : ''}<div class="sq-celebrate-card card" role="dialog" aria-modal="true" aria-labelledby="sq-cele-title">${inner.replace('<h2>', '<h2 id="sq-cele-title">')}</div>`;
+    const x = id ? byId(id) : null, tier = id ? C().tierOf(id) : 'common', ch = id ? C().challengeFor(id) : null;
+    const big = tier !== 'common';
+    play(tier === 'legendary' ? 'legendary' : tier === 'rare' ? 'rare' : 'fanfare');
+    if (tier === 'legendary') { setTimeout(() => play('twinkle'), 900); setTimeout(() => crunch(0.8, true), 1500); }
+    vibrate(tier === 'legendary' ? [20, 40, 30, 60, 8, 20, 8, 20, 10, 40, 60] : tier === 'rare' ? [25, 40, 25, 40, 60] : [20, 40, 30]);
+    const conf = reduced() ? '' : `<div class="sq-confetti${big ? ' gold' : ''}" aria-hidden="true">${Array.from({ length: big ? 36 : 28 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--d:${(i % 7) * 0.12}s;--r:${(i * 53) % 360}deg;--c:${i % 5}"></i>`).join('')}</div>`;
+    const more = ui.queue.length ? `<p class="small muted">${esc(L('And there is more!'))}</p>` : '';
+    const button = x ? `<button type="button" class="primary" data-sq-meet="${x.id}">${esc(ui.queue.length ? L('Next') : L('Squish it!'))}</button>` : `<button type="button" class="primary" data-sq-meet="">${esc(L('Keep playing'))}</button>`;
+    let inner;
+    if (!x) {
+      /* a win that did not open a squishy: show the nearest challenge */
+      const c = ctx(), next = C().CHALLENGES.filter(k => !c.unlocked.includes(k.id)).map(k => ({ k, pr: C().challengeProgress(k, c) })).sort((a, b) => b.pr.have / b.pr.need - a.pr.have / a.pr.need)[0];
+      inner = `<span class="eyebrow">${esc(L('YOU WON!'))}</span><h2>${esc(L('Great job!'))}</h2>${next ? `<p>${esc(L('Next challenge:'))}</p><div class="sq-next-ch">${progressBar(next.pr, challengeText(next.k))}</div>` : `<p>${esc(L('You already have every squishy. Well done!'))}</p>`}${button}`;
+    } else if (big) {
+      const legend = tier === 'legendary';
+      inner = `<div class="sq-trophy${legend ? ' legendary' : ''}" aria-hidden="true"><span class="sq-trophy-rays"></span><span class="sq-trophy-medal">${legend ? '👑' : '🏆'}</span></div>
+        <span class="eyebrow">${esc(legend ? L('LEGENDARY ACHIEVEMENT') : L('RARE ACHIEVEMENT'))}</span><h2>${esc(legend ? L('Legendary squishy unlocked!') : L('Rare squishy unlocked!'))}</h2>
+        <p class="sq-ach-name">${esc(L('You unlocked {name}!', { name: nameOf(x) }))}</p>
+        <div class="sq-new sq-new-big${x.glow ? ' sq-new-glow' : ''}">${A().svg(x.id, nameOf(x))}</div>
+        <p class="sq-ach-badge"><span aria-hidden="true">${BADGE_ICON[x.id] || '🏅'}</span> ${esc(L('Badge: {name}', { name: L(BADGE_NAME[x.id]) }))}<br><span class="muted">${esc(challengeText(ch))}</span></p>${more}${button}`;
+    } else {
+      inner = `<span class="eyebrow">${esc(L('NEW SQUISHY!'))}</span><h2>${esc(L('You unlocked {name}!', { name: nameOf(x) }))}</h2><div class="sq-new">${A().svg(x.id, nameOf(x))}</div><p class="sq-ach-badge"><span aria-hidden="true">${BADGE_ICON[x.id] || '🏅'}</span> ${esc(L('Badge: {name}', { name: L(BADGE_NAME[x.id]) }))}</p>${more}${button}`;
+    }
+    box.classList.toggle('final', tier === 'legendary');
+    box.classList.toggle('rare', tier === 'rare');
+    const shine = big && !reduced() ? '<div class="sq-burst" aria-hidden="true"></div><div class="sq-shine" aria-hidden="true"></div>' : '';
+    box.innerHTML = `${conf}${shine}<div class="sq-celebrate-card card${big ? ' sq-ach ' + tier : ''}" role="dialog" aria-modal="true" aria-labelledby="sq-cele-title">${inner.replace('<h2>', '<h2 id="sq-cele-title">')}</div>`;
     box.hidden = false;
     box.querySelector('[data-sq-meet]')?.focus();
   }
@@ -653,10 +735,11 @@
     const sheet = ui.root.querySelector('[data-sq-sheet]');
     if (t.closest('[data-sq-learn]') && pv && sheet) { sheet.innerHTML = cardHtml(pv.x); sheet.hidden = false; play('twinkle'); sheet.querySelector('button')?.focus(); return; }
     if (t.closest('[data-sq-sheet-close]') && sheet) { sheet.hidden = true; if (window.MsbSpeech) MsbSpeech.stop(); pv && pv.canvas.focus({ preventScroll: true }); return; }
-    if (t.closest('[data-sq-locked]')) { ui.msg = L('This squishy is locked. Win a round of Memory or Questions to unlock it!'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); return; }
+    const lockedTile = t.closest('[data-sq-locked]');
+    if (lockedTile) { const ch = C().challengeFor(lockedTile.dataset.sqLocked); ui.msg = ch ? L('To unlock it: {task}', { task: challengeText(ch) }) : L('Locked'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); return; }
     const star = t.closest('[data-sq-star]');
     if (star) {
-      prog().addStar(star.dataset.sqStar); play('twinkle'); vibrate(15);
+      prog().addStar(star.dataset.sqStar); play('twinkle'); vibrate(15); afterProgress(false);
       if (sheet && pv) { sheet.innerHTML = cardHtml(pv.x); const c = ui.root.querySelector('.sq-count'); if (c) c.outerHTML = topBar().match(/<span class="sq-count"[^]*?<\/span>/)[0]; }
       else render();
       return;
@@ -679,6 +762,9 @@
     if (t.closest('[data-sq-guess-next]')) { newGuess(); render(); return; }
     const meet = t.closest('[data-sq-meet]');
     if (meet) {
+      const box = ui.root.querySelector('[data-sq-celebrate]');
+      if (ui.queue.length) { celebrate(ui.queue.shift()); return; }
+      if (!meet.dataset.sqMeet) { if (box) box.hidden = true; if (ui.view === 'memory') { newMemory(); render(); } else if (ui.view === 'questions') { newRound(); render(); } else render(); return; }
       ui.view = 'shelf'; ui.memory = null; ui.round = null; ui.msg = '';
       ui.playing = meet.dataset.sqMeet || null;
       render(); window.scrollTo({ top: 0, behavior: 'auto' });
@@ -686,7 +772,7 @@
   });
 
   window.MsbSquishy = {
-    open(root) { ui.root = root; render(); },
+    open(root) { ui.root = root; stats().played(); render(); afterProgress(false); },
     close() { closePlay(); ui.root = null; ui.view = 'shelf'; ui.memory = null; ui.round = null; ui.guess = null; ui.msg = ''; if (window.MsbSpeech) MsbSpeech.stop(); },
     _celebrate: celebrate,
     /* read-only snapshot of the play view, for checks */
