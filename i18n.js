@@ -930,6 +930,44 @@
     "The passages shown here are selected readings, not a complete Bible. Psalm numbering follows both the Septuagint and common English editions where they differ.": "Los pasajes que se muestran aquí son lecturas escogidas, no una Biblia completa. Cuando la numeración de los Salmos cambia, se muestran tanto la de la Septuaginta como la de las ediciones comunes."
   });
 
+  /* Coloring book: crayon names and sparkle pens. */
+  Object.assign(ES, {
+    "Red": "Rojo",
+    "Magenta": "Magenta",
+    "Pink": "Rosado",
+    "Coral": "Coral",
+    "Orange": "Naranja",
+    "Peach": "Durazno",
+    "Yellow": "Amarillo",
+    "Lemon": "Amarillo limón",
+    "Light green": "Verde claro",
+    "Green": "Verde",
+    "Mint": "Verde menta",
+    "Sky blue": "Celeste",
+    "Baby blue": "Azul bebé",
+    "Blue": "Azul",
+    "Navy": "Azul marino",
+    "Purple": "Morado",
+    "Lavender": "Lavanda",
+    "Light tan": "Canela claro",
+    "Tan": "Canela",
+    "Caramel": "Caramelo",
+    "Chocolate": "Chocolate",
+    "Dark brown": "Café oscuro",
+    "White": "Blanco",
+    "Light gray": "Gris claro",
+    "Gray": "Gris",
+    "Colors": "Colores",
+    "✨ Sparkle pens": "✨ Brillos",
+    "Sparkle pens": "Plumones de brillos",
+    "Gold glitter": "Brillo dorado",
+    "Silver glitter": "Brillo plateado",
+    "Pink glitter": "Brillo rosado",
+    "Purple glitter": "Brillo morado",
+    "Blue glitter": "Brillo azul",
+    "Rainbow glitter": "Brillo arcoíris"
+  });
+
   /* Lesson tags, Bible-note bylines, and the game-show menus. */
   Object.assign(ES, {
     "STUDY": "ESTUDIO",
