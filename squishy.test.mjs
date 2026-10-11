@@ -58,6 +58,11 @@ test('every Bible question has EN/ES text, 4 choices, and a verse that exists an
   }
   const rain = QUESTIONS.find(q => q.ref.en === 'Genesis 7:12');
   assert.equal(rain.choices.en[0], '40');
+  const ten = QUESTIONS.find(q => q.choices.en[0] === 'Ten');
+  assert.equal(ten.ref.en, 'Deuteronomy 10:4');
+  assert.equal(ten.ref.es, 'Deuteronomio 10:4');
+  assert.match(verseAt('en', ten.at.en), /ten commandments/);
+  assert.match(verseAt('es', ten.at.es), /diez palabras/);
 });
 
 test('every squishy has a drawing and a sound', () => {
