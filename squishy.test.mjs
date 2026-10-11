@@ -553,3 +553,147 @@ test('squint eyes are hidden by an attribute, so pictures drawn on a canvas have
     }
   } finally { g.window = prev; }
 });
+
+/* ---------- Own sounds, effects and secret tricks ---------- */
+const FX = require('./squishy-fx.js');
+const memStore = () => { const m = new Map(); return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)), removeItem: k => m.delete(k) }; };
+
+test('every squishy has its own sound voices, effect, trick and gesture', () => {
+  const ui = read('./squishy.js');
+  const ids = SQUISHIES.map(s => s.id);
+  assert.deepEqual(Object.keys(C.KITS).sort(), [...ids].sort());
+  const uniq = (list, what) => assert.equal(new Set(list).size, list.length, `${what} must be unique`);
+  const kits = ids.map(id => C.KITS[id]);
+  uniq(kits.map(k => k.sound.squish), 'squish voices');
+  uniq(kits.map(k => k.sound.release), 'release voices');
+  uniq(kits.map(k => k.sound.tone), 'stretch tones');
+  uniq(kits.map(k => k.fx), 'effects');
+  uniq(kits.map(k => k.trick), 'tricks');
+  /* tones differ in more than pitch: no two share wave + wobble + filter */
+  const tones = kits.map(k => C.TONES[k.sound.tone]).filter(Boolean);
+  uniq(tones.map(t => `${t.type}/${t.lfo}/${t.depth}/${t.filter}/${t.q}`), 'tone shapes');
+  for (const k of kits) {
+    assert.ok(C.GESTURES.includes(k.gesture), k.gesture);
+    assert.ok(k.sound.tone in C.TONES, k.sound.tone);
+    assert.ok(FX.FX[k.fx], k.fx);
+    assert.ok(FX.TRICKS[k.trick] && FX.TRICKS[k.trick].dur > 1000, k.trick);
+    assert.ok(new RegExp(`\\n    ${JSON.stringify(k.sound.squish).replace(/"/g, "'?")}: `).test(ui) || ui.includes(`    ${k.sound.squish}: d =>`), `squish voice ${k.sound.squish}`);
+    assert.ok(ui.includes(`    ${k.sound.release}: `) || ui.includes(`    '${k.sound.release}': `), `release voice ${k.sound.release}`);
+    assert.ok(ui.includes(`    ${k.trick}: () =>`) || ui.includes(`    '${k.trick}': () =>`), `trick sound ${k.trick}`);
+  }
+  /* effect particles are different: shape + color + where they start */
+  uniq(kits.filter(k => k.fx !== 'sparks').map(k => { const f = FX.FX[k.fx]; return `${f.shape}/${f.colors[0]}/${f.origin}`; }), 'particle looks');
+});
+
+/* a little finger: build pointer events for the recognizer */
+function gestRun(events) { const g = C.gestures(); const out = []; for (const [kind, x, y, t] of events) out.push(...(kind === 'poll' ? g.poll(t) : g[kind](x, y, t))); return out.map(o => o.type); }
+const taps = (n, gap = 200, at = [60, 60]) => { const ev = []; for (let i = 0; i < n; i += 1) { ev.push(['down', ...at, i * gap], ['up', ...at, i * gap + 80]); } return ev; };
+
+test('gestures: taps (double, triple, five) and tapping the top', () => {
+  assert.ok(gestRun(taps(2)).includes('doubleTap'));
+  assert.ok(!gestRun(taps(2)).includes('tripleTap'));
+  assert.ok(gestRun(taps(3)).includes('tripleTap'));
+  assert.ok(gestRun(taps(5)).includes('fiveTaps'));
+  /* taps far apart in time do not add up */
+  assert.ok(!gestRun(taps(2, 900)).includes('doubleTap'));
+  assert.ok(gestRun(taps(1, 200, [60, 10])).includes('tapTop'));
+  assert.ok(!gestRun(taps(1, 200, [60, 90])).includes('tapTop'));
+});
+
+test('gestures: hold and hold still fire while the finger is down', () => {
+  const hold = gestRun([['down', 60, 60, 0], ['poll', 0, 0, 1000], ['move', 64, 62, 1200], ['poll', 0, 0, 1600]]);
+  assert.deepEqual(hold, ['hold']);
+  const still = gestRun([['down', 60, 60, 0], ['poll', 0, 0, 1600], ['poll', 0, 0, 3100]]);
+  assert.deepEqual(still, ['hold', 'holdStill']);
+  /* wiggling breaks "still" */
+  assert.ok(!gestRun([['down', 60, 60, 0], ['move', 72, 60, 500], ['move', 60, 60, 900], ['poll', 0, 0, 3200]]).includes('holdStill'));
+  /* a short press is not a hold */
+  assert.ok(!gestRun([['down', 60, 60, 0], ['poll', 0, 0, 900], ['up', 60, 60, 1000]]).includes('hold'));
+});
+
+test('gestures: flick up, pull-and-release, stretch up, drag across', () => {
+  assert.ok(gestRun([['down', 60, 80, 0], ['move', 60, 70, 60], ['move', 61, 40, 110], ['up', 61, 20, 150]]).includes('flickUp'));
+  /* a slow pull up is not a flick, but it is a stretch up */
+  const slow = gestRun([['down', 60, 80, 0], ['move', 60, 60, 400], ['move', 60, 35, 800], ['move', 60, 30, 1000], ['up', 60, 30, 1300]]);
+  assert.ok(!slow.includes('flickUp')); assert.ok(slow.includes('stretchUp'));
+  assert.ok(gestRun([['down', 60, 60, 0], ['move', 20, 80, 300], ['move', 0, 100, 600], ['up', 0, 100, 700]]).includes('pullRelease'));
+  /* pulled far but brought back before letting go: no slingshot */
+  assert.ok(!gestRun([['down', 60, 60, 0], ['move', 0, 100, 400], ['move', 58, 62, 800], ['up', 58, 62, 900]]).includes('pullRelease'));
+  const across = []; for (let i = 0; i <= 20; i += 1) across.push(['move', -30 + i * 9, 60 + Math.sin(i / 3) * 10, i * 40]);
+  assert.ok(gestRun([['down', -30, 60, 0], ...across, ['up', 150, 60, 900]]).includes('dragAcross'));
+});
+
+test('gestures: circle, shake, left-right swipe and slow rocking', () => {
+  const circ = [['down', 90, 60, 0]];
+  for (let i = 1; i <= 24; i += 1) { const a = i / 24 * Math.PI * 2; circ.push(['move', 60 + 30 * Math.cos(a), 60 + 30 * Math.sin(a), i * 30]); }
+  assert.ok(gestRun([...circ, ['up', 90, 60, 760]]).includes('circle'));
+  /* a straight line is not a circle */
+  assert.ok(!gestRun([['down', 0, 60, 0], ...Array.from({ length: 10 }, (_, i) => ['move', i * 12, 60, i * 30]), ['up', 120, 60, 330]]).includes('circle'));
+  const zig = (n, step, amp) => { const ev = [['down', 60, 60, 0]]; for (let i = 1; i <= n; i += 1) ev.push(['move', 60 + (i % 2 ? amp : -amp), 60, i * step]); ev.push(['up', 60, 60, (n + 1) * step]); return ev; };
+  const fast = gestRun(zig(6, 90, 30));
+  assert.ok(fast.includes('shake')); assert.ok(fast.includes('swipeLR')); assert.ok(!fast.includes('rock'));
+  const slowRock = gestRun(zig(4, 450, 25));
+  assert.ok(slowRock.includes('rock')); assert.ok(!slowRock.includes('shake'));
+  /* one swipe only is none of them */
+  const one = gestRun([['down', 60, 60, 0], ['move', 100, 60, 100], ['up', 100, 60, 150]]);
+  for (const k of ['shake', 'swipeLR', 'rock']) assert.ok(!one.includes(k), k);
+});
+
+test('a trick needs that squishy and its own gesture', () => {
+  assert.ok(C.isTrick('dove', { type: 'flickUp' }));
+  assert.ok(!C.isTrick('lamb', { type: 'flickUp' }));
+  assert.ok(C.isTrick('lamb', { type: 'holdStill', ms: 3000 }));
+  assert.ok(!C.isTrick('lamb', { type: 'hold', ms: 1500 }));
+  assert.ok(C.isTrick('fish', { type: 'hold', ms: 1500 }));
+  assert.ok(C.isTrick('lion', { type: 'tripleTap' }) && C.isTrick('bush', { type: 'tripleTap' }));
+  assert.ok(C.isTrick('coat', { type: 'circle' }) && !C.isTrick('ark', { type: 'circle' }));
+});
+
+test('found tricks are remembered, hints show after some play, Trick master needs them all', () => {
+  const s = memStore(), st = C.stats(s);
+  assert.equal(C.trickRevealed('dove', st.get()), false);
+  for (let i = 0; i < C.HINT_AFTER; i += 1) st.squished('dove');
+  assert.equal(C.trickRevealed('dove', st.get()), true);
+  assert.equal(C.trickRevealed('lamb', st.get()), false);
+  assert.equal(st.trickFound('lamb'), true);
+  assert.equal(st.trickFound('lamb'), false, 'only the first time counts');
+  assert.equal(C.trickRevealed('lamb', st.get()), true);
+  C.checkUnlocks(s, SQUISHIES, new Date(2026, 9, 11));
+  let list = C.badges(s, SQUISHIES);
+  assert.ok(list.find(b => b.id === 'first-trick').earned);
+  const master = list.find(b => b.id === 'trick-master');
+  assert.equal(master.earned, null); assert.equal(master.progress.need, SQUISHIES.length); assert.equal(master.progress.have, 1);
+  for (const x of SQUISHIES) st.trickFound(x.id);
+  C.checkUnlocks(s, SQUISHIES, new Date(2026, 9, 11));
+  list = C.badges(s, SQUISHIES);
+  assert.equal(list.find(b => b.id === 'trick-master').earned, '2026-10-11');
+  /* junk in storage is ignored */
+  s.setItem('msb_squishy_stats', JSON.stringify({ tricks: ['dove', 'nope', 5], plays: { dove: 3, nope: 9, lamb: -2 } }));
+  assert.deepEqual(C.stats(s).get().tricks, ['dove']);
+  assert.deepEqual(C.stats(s).get().plays, { dove: 3, lamb: 0 });
+});
+
+test('tricks UI: hint chip, T key, toast, effects module wired in, Spanish for every trick word', () => {
+  const ui = read('./squishy.js'), i18n = read('./i18n.js'), html = read('./index.html'), sw = read('./sw.js');
+  assert.ok(html.includes('<script src="squishy-fx.js" defer>') && html.indexOf('squishy-fx.js') < html.indexOf('squishy.js"'));
+  assert.ok(sw.includes("'./squishy-fx.js'"));
+  assert.match(ui, /data-sq-trick/); assert.match(ui, /e\.key === 't' \|\| e\.key === 'T'/); assert.match(ui, /data-sq-toast/);
+  /* reduced motion: still picture of the trick, no particles */
+  assert.match(ui, /const t = red \? 0\.85/); assert.match(ui, /if \(!p \|\| !F \|\| reduced\(\)\) return;/);
+  const grab = name => { const m = ui.match(new RegExp(`const ${name} = \\{([^\\n]+)\\};`)); assert.ok(m, name); return [...m[1].matchAll(/: '([^']+)'/g)].map(x => x[1]); };
+  for (const k of [...grab('TRICK_NAME'), ...grab('TRICK_STORY'), ...grab('GESTURE_TEXT'), ...grab('TRICK_TEXT')]) assert.ok(i18n.includes(`${JSON.stringify(k)}:`), `missing Spanish for: ${k}`);
+  for (const id of Object.keys(C.KITS)) assert.ok(grab('TRICK_NAME').length === 15 && ui.includes(`${/-/.test(C.KITS[id].trick) ? `'${C.KITS[id].trick}'` : C.KITS[id].trick}: '`), id);
+});
+
+test('every trick animation draws without errors at any moment', () => {
+  const noop = () => {};
+  const g = new Proxy({ createRadialGradient: () => ({ addColorStop: noop }) }, { get: (o, k) => (k in o ? o[k] : noop), set: () => true });
+  const G = { cx: 300, cy: 400, S: 300, W: 600, H: 900, dpr: 2, ground: 560, px: 300, py: 400, path: [[300, 400], [500, 600]], text: 'X' };
+  for (const [id, tr] of Object.entries(FX.TRICKS)) for (const t of [0, 0.1, 0.33, 0.5, 0.66, 0.8, 0.95, 1]) {
+    const pose = tr.pose(t) || {};
+    for (const v of ['dx', 'dy', 'rot', 'sx', 'sy', 'alpha']) if (v in pose) assert.ok(Number.isFinite(pose[v]), `${id} ${v} @${t}`);
+    tr.over(g, t, G);
+  }
+  /* particles step and draw too */
+  for (const name of Object.keys(FX.FX)) { const pt = FX.spawn(name, { x: 0, y: 0, w: 100, h: 100 }, { x: 50, y: 50 }, Math.random, 3); if (!pt) continue; FX.step(pt, 0.1); FX.drawParticle(g, pt, 2); }
+});

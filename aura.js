@@ -535,8 +535,13 @@ const MSB_ACHIEVEMENTS=[
   {id:'friend-1',icon:'🤝',name:'Iron Sharpens Iron',nameEs:'Hierro con hierro se aguza',desc:'Get your friend code and join the friends circle.',descEs:'Obtén tu código de amistad y entra en el círculo de amigos.',points:25},
   {id:'multitask',icon:'🤹',name:'I can multitask',nameEs:'Puedo hacer varias cosas a la vez',desc:'One lesson and one game, same day. Look at you, doing both.',descEs:'Una lección y un juego el mismo día. ¡Mírate nada más, haciendo las dos cosas!',points:30},
   {id:'strong-woman',icon:'💪',name:'Strong woman or whatever 🤢',nameEs:'Mujer fuerte o lo que sea 🤢',desc:'Seven days in a row. The streak noticed.',descEs:'Siete días seguidos. La racha se dio cuenta.',points:40},
+  {id:'cold-brew',icon:'svg:cold-brew',name:'Salted Caramel Cold Brew',nameEs:'Cold brew de caramelo salado',desc:'Study for 45 minutes in one session. You earned a treat.',descEs:'Estudia 45 minutos en una sola sesión. Te ganaste un gustito.',points:45},
+  {id:'cold-brew-venti',icon:'svg:cold-brew-venti',name:'Venti Salted Caramel Cold Brew',nameEs:'Cold brew de caramelo salado Venti',desc:'Study for 2 hours in one session. Make it a Venti.',descEs:'Estudia 2 horas en una sola sesión. Que sea Venti.',points:90},
 ];
+/* Icons are emoji, or "svg:<name>" for the app's own drawings. */
+function msbAchIcon(a){const i=(a&&a.icon)||'🏆';if(i.startsWith('svg:')&&window.MsbStudySession)return MsbStudySession.icon(i==='svg:cold-brew-venti');return esc(i.startsWith('svg:')?'☕':i)}
 function msbAchText(item,field){const es=window.MsbI18n&&MsbI18n.lang()==='es';const alt=es?item[field+'Es']:null;return alt||item[field]||''}
+function msbStudyBestMinutes(){try{return window.MsbStudySession?MsbStudySession.bestMinutes(MsbStudySession.load(localStorage)):0}catch{return 0}}
 async function msbAchievementsCompute(){
   const store=msbStore(),idx=await msbBibleIndex().catch(()=>null),books=idx&&Array.isArray(idx.books)?idx.books:[];
   const bookTotal=b=>b?b.chapters-(b.chapterStart||1)+1:0;
@@ -556,8 +561,9 @@ async function msbAchievementsCompute(){
     'studies-1':(store.progress||[]).filter(p=>p.completed_at).length,'studies-all':[(store.progress||[]).filter(p=>p.completed_at).length,studiesTotal],
     'streak-7':streak,'notes-1':(store.notes||[]).filter(n=>(n.body||'').trim()).length,'verse-notes-1':(store.verseNotes||[]).length,'highlights-1':(store.highlights||[]).length,'friend-1':msbFriendsId()?1:0,
     'multitask':msbBadgeMultitask(store)?1:0,'strong-woman':msbBadgeStrong(streak)?7:streak,
+    'cold-brew':msbStudyBestMinutes(),'cold-brew-venti':msbStudyBestMinutes(),
   };
-  const targets={'first-chapter':1,'chapters-10':10,'chapters-50':50,'chapters-100':100,'chapters-250':250,'psalms-25':25,'streak-7':7,'notes-1':1,'verse-notes-1':1,'highlights-1':1,'friend-1':1,'multitask':1,'strong-woman':7};
+  const targets={'first-chapter':1,'chapters-10':10,'chapters-50':50,'chapters-100':100,'chapters-250':250,'psalms-25':25,'streak-7':7,'notes-1':1,'verse-notes-1':1,'highlights-1':1,'friend-1':1,'multitask':1,'strong-woman':7,'cold-brew':45,'cold-brew-venti':120};
   return MSB_ACHIEVEMENTS.map(a=>{const raw=cur[a.id];const current=Array.isArray(raw)?raw[0]:raw||0;const target=Array.isArray(raw)?raw[1]:targets[a.id]||1;return{...a,current:Math.min(current,target),target,unlocked:current>=target,unlockedAt:(store.achievements||{})[a.id]||null}});
 }
 async function msbAchievementsCheck(){
@@ -577,7 +583,7 @@ function showAchievement(a){
   if(window.hapticStrong)hapticStrong();
   const pop=document.createElement('div');pop.className='ach-pop';pop.setAttribute('role','status');
   const kicker=window.MsbI18n?MsbI18n.t('ACHIEVEMENT UNLOCKED'):'ACHIEVEMENT UNLOCKED';
-  pop.innerHTML=`<span class="ach-pop-icon">${esc(a.icon||'🏆')}</span><span class="ach-pop-body"><small>${esc(kicker)}</small><strong>${esc(msbAchText(a,'name'))}</strong><span>${esc(msbAchText(a,'desc'))}</span></span><span class="ach-pop-points">✦ ${a.points}</span>`;
+  pop.innerHTML=`<span class="ach-pop-icon">${msbAchIcon(a)}</span><span class="ach-pop-body"><small>${esc(kicker)}</small><strong>${esc(msbAchText(a,'name'))}</strong><span>${esc(msbAchText(a,'desc'))}</span></span><span class="ach-pop-points">✦ ${a.points}</span>`;
   document.body.appendChild(pop);
   requestAnimationFrame(()=>pop.classList.add('ach-pop-in'));
   setTimeout(()=>{pop.classList.remove('ach-pop-in');pop.classList.add('ach-pop-out')},4200);
@@ -595,7 +601,7 @@ async function achievementsScreen(){
   const list=r&&Array.isArray(r.list)?r.list:[];
   const unlocked=list.filter(a=>a.unlockedAt);
   const esAch=window.MsbI18n&&MsbI18n.lang()==='es';
-  const cards=list.map(a=>`<div class="card ach-card ${a.unlockedAt?'ach-unlocked':'ach-locked'}" data-ach="${esc(a.id)}"><span class="ach-icon">${esc(a.icon||'🏆')}</span><div class="ach-main"><strong>${esc(msbAchText(a,'name'))}</strong><p class="small muted">${esc(msbAchText(a,'desc'))}</p><div class="ach-bar"><i style="width:${a.target?Math.round(a.current/a.target*100):0}%"></i></div><small class="muted">${a.unlockedAt?(esAch?('Desbloqueado el '+new Date(a.unlockedAt*1000).toLocaleDateString('es')):('Unlocked '+new Date(a.unlockedAt*1000).toLocaleDateString())):(a.current+' / '+a.target)}</small></div><span class="ach-points">✦ ${a.points}</span></div>`).join('');
+  const cards=list.map(a=>`<div class="card ach-card ${a.unlockedAt?'ach-unlocked':'ach-locked'}" data-ach="${esc(a.id)}"><span class="ach-icon">${msbAchIcon(a)}</span><div class="ach-main"><strong>${esc(msbAchText(a,'name'))}</strong><p class="small muted">${esc(msbAchText(a,'desc'))}</p><div class="ach-bar"><i style="width:${a.target?Math.round(a.current/a.target*100):0}%"></i></div><small class="muted">${a.unlockedAt?(esAch?('Desbloqueado el '+new Date(a.unlockedAt*1000).toLocaleDateString('es')):('Unlocked '+new Date(a.unlockedAt*1000).toLocaleDateString())):(a.current+' / '+a.target)}</small></div><span class="ach-points">✦ ${a.points}</span></div>`).join('');
   screen.innerHTML=`<span class="eyebrow">ACHIEVEMENTS</span><h1>🏆 Your achievements</h1><p class="lead">${esAch?`Puntaje <strong>✦ ${r?r.score:0}</strong> · ${unlocked.length} de ${list.length} desbloqueados. Leer, estudiar, tomar notas y tener amigos: todo cuenta.`:`Score <strong>✦ ${r?r.score:0}</strong> · ${unlocked.length} of ${list.length} unlocked. Reading, studying, noting, and friends all count.`}</p>${cards||'<p class="muted">Achievements are unavailable right now.</p>'}<p><button class="secondary" data-nav="profile">Back to profile</button></p>`;
   if(window.MsbI18n)MsbI18n.apply(screen);
   window.scrollTo({top:0,behavior:'auto'});
@@ -805,3 +811,5 @@ window.addEventListener('load',()=>{setTimeout(()=>{msbFriendsSync().catch(()=>{
   },400);
   if(wanted)installArm();
 })();
+/* Long study sessions earn the cold brew badges (study-session.js). */
+if(window.MsbStudySession)MsbStudySession.start({screen:()=>state.screen,celebrate:()=>msbCelebrate()});
