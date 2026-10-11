@@ -4,7 +4,8 @@
    "at" is [book id, chapter, verse] in each translation (the RV1909 Jonás 2:10
    also holds the words of KJV Jonah 2:9).
    goals: score n | collect n of a piece | stones (break every stone tile).
-   stars: [score for 2 stars, score for 3 stars]; any win earns 1 star.
+   stars: [final score for 2 stars, for 3 stars]; any win earns 1 star, and
+   a win with half the moves or more unused earns at least 2.
    stones: 8 rows from the top, "#" is a stone tile. */
 (function (root) {
   'use strict';
@@ -180,8 +181,8 @@
         "es": "EN el principio crió Dios los cielos y la tierra."
       },
       "stars": [
-        1650,
-        2350
+        2400,
+        3750
       ]
     },
     {
@@ -233,8 +234,8 @@
         "es": "Y dijo Dios: Sea la luz: y fué la luz."
       },
       "stars": [
-        1700,
-        2400
+        2850,
+        3750
       ]
     },
     {
@@ -286,8 +287,8 @@
         "es": "Y la paloma volvió á él á la hora de la tarde; y he aquí que traía una hoja de oliva tomada en su pico: y entendió Noé que las aguas se habían retirado de sobre la tierra."
       },
       "stars": [
-        1650,
-        2100
+        2150,
+        3400
       ]
     },
     {
@@ -338,8 +339,8 @@
         "es": "Y acordarme he del pacto mío, que hay entre mí y vosotros y toda alma viviente de toda carne; y no serán más las aguas por diluvio para destruir toda carne."
       },
       "stars": [
-        2000,
-        2350
+        3000,
+        3500
       ]
     },
     {
@@ -391,8 +392,8 @@
         "es": "Y extendió Moisés su mano sobre la mar, é hizo Jehová que la mar se retirase por recio viento oriental toda aquella noche; y tornó la mar en seco, y las aguas quedaron divididas."
       },
       "stars": [
-        2100,
-        2750
+        3100,
+        4100
       ]
     },
     {
@@ -451,8 +452,8 @@
         "es": "Jehová peleará por vosotros, y vosotros estaréis quedos."
       },
       "stars": [
-        1500,
-        1900
+        3250,
+        3350
       ]
     },
     {
@@ -511,8 +512,8 @@
         "es": "Entonces el pueblo dió grita, y los sacerdotes tocaron las bocinas: y aconteció que como el pueblo hubo oído el sonido de la bocina, dió el pueblo grita con gran vocerío, y el muro cayó á plomo. El pueblo subió luego á la ciudad, cada uno en derecho de sí, y tomáronla."
       },
       "stars": [
-        1950,
-        3450
+        4300,
+        4400
       ]
     },
     {
@@ -571,8 +572,8 @@
         "es": "Mira que te mando que te esfuerces y seas valiente: no temas ni desmayes, porque Jehová tu Dios será contigo en donde quiera que fueres."
       },
       "stars": [
-        2550,
-        3400
+        4250,
+        4850
       ]
     },
     {
@@ -624,8 +625,8 @@
         "es": "Y Jehová respondió á Samuel: No mires á su parecer, ni á lo grande de su estatura, porque yo lo desecho; porque Jehová mira no lo que el hombre mira; pues que el hombre mira lo que está delante de sus ojos, mas Jehová mira el corazón."
       },
       "stars": [
-        1850,
-        2300
+        3150,
+        3700
       ]
     },
     {
@@ -676,8 +677,8 @@
         "es": "JEHOVÁ es mi pastor; nada me faltará."
       },
       "stars": [
-        2850,
-        3400
+        3850,
+        4550
       ]
     },
     {
@@ -728,8 +729,8 @@
         "es": "El Dios mío envió su ángel, el cual cerró la boca de los leones, para que no me hiciesen mal: porque delante de él se halló en mí justicia: y aun delante de ti, oh rey, yo no he hecho lo que no debiese."
       },
       "stars": [
-        3200,
-        3800
+        4100,
+        4900
       ]
     },
     {
@@ -788,8 +789,8 @@
         "es": "DIOS es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones."
       },
       "stars": [
-        2300,
-        3950
+        5000,
+        5100
       ]
     },
     {
@@ -841,8 +842,8 @@
         "es": "Yo empero con voz de alabanza te sacrificaré; pagaré lo que prometí. La salvación pertenece á Jehová. Y mandó Jehová al pez, y vomitó á Jonás en tierra."
       },
       "stars": [
-        2150,
-        2650
+        3650,
+        4000
       ]
     },
     {
@@ -901,8 +902,8 @@
         "es": "Y los hombres de Nínive creyeron á Dios, y pregonaron ayuno, y vistiéronse de sacos desde el mayor de ellos hasta el menor de ellos."
       },
       "stars": [
-        2050,
-        3450
+        3550,
+        4150
       ]
     },
     {
@@ -954,8 +955,8 @@
         "es": "Que os ha nacido hoy, en la ciudad de David, un Salvador, que es CRISTO el Señor."
       },
       "stars": [
-        2050,
-        2600
+        3000,
+        4350
       ]
     },
     {
@@ -1006,8 +1007,8 @@
         "es": "Gloria en las alturas á Dios, y en la tierra paz, buena voluntad para con los hombres."
       },
       "stars": [
-        3250,
-        3700
+        4100,
+        4650
       ]
     },
     {
@@ -1059,8 +1060,8 @@
         "es": "Un muchacho está aquí que tiene cinco panes de cebada y dos pececillos; ¿mas qué es esto entre tantos?"
       },
       "stars": [
-        2450,
-        3300
+        4250,
+        5250
       ]
     },
     {
@@ -1117,8 +1118,8 @@
         "es": "Y Jesús les dijo: Yo soy el pan de vida: el que á mí viene, nunca tendrá hambre; y el que en mí cree, no tendrá sed jamás."
       },
       "stars": [
-        2350,
-        3000
+        4250,
+        4650
       ]
     },
     {
@@ -1177,8 +1178,8 @@
         "es": "No está aquí; porque ha resucitado, como dijo. Venid, ved el lugar donde fué puesto el Señor."
       },
       "stars": [
-        2450,
-        3700
+        4550,
+        5250
       ]
     },
     {
@@ -1231,8 +1232,8 @@
         "es": "Dícele Jesús: Yo soy la resurrección y la vida: el que cree en mí, aunque esté muerto, vivirá."
       },
       "stars": [
-        2100,
-        2500
+        3200,
+        3800
       ]
     }
   ];

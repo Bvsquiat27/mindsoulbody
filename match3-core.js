@@ -326,8 +326,18 @@
   }
   /* When the goal is reached with moves to spare, each spare move is worth a
      little bonus. */
-  function finalScore(g) { return g.score + Math.max(0, g.movesLeft) * 60; }
-  function stars(level, score) { return score >= level.stars[1] ? 3 : score >= level.stars[0] ? 2 : 1; }
+  /* "Sugar crush": when the goal is reached, every unused move is worth a
+     big bonus, so finishing early scores high. */
+  const MOVE_BONUS = 150;
+  function moveBonus(g) { return Math.max(0, g.movesLeft) * MOVE_BONUS; }
+  function finalScore(g) { return g.score + moveBonus(g); }
+  /* Stars for a win: 2 or 3 from the final score (bonus included). A win
+     with at least half the moves unused always earns at least 2 stars. */
+  function stars(level, score, movesLeft) {
+    let n = score >= level.stars[1] ? 3 : score >= level.stars[0] ? 2 : 1;
+    if (Number.isFinite(movesLeft) && movesLeft >= Math.ceil(level.moves * 0.5)) n = Math.max(n, 2);
+    return n;
+  }
 
   /* Saved progress: which level is open, stars and best score per level. */
   function progress(storage, total) {
@@ -364,7 +374,7 @@
   /* Vibration length for a match: a bit longer for specials and big combos, capped. */
   function buzzMs(combo, specials) { return Math.min(30, 8 + 3 * Math.max(0, combo - 1) + 8 * Math.min(2, specials || 0)); }
 
-  const api = { W, H, N, EMPTY, BOMB, SP, KEYS, rng, xy, idx, adjacent, createGame, clone, findGroups, isValidSwap, allMoves, hasMove, hint, effect, gravity, resolve, play, shuffle, goals, status, finalScore, stars, progress, soundPref, buzzMs };
+  const api = { W, H, N, EMPTY, BOMB, SP, KEYS, rng, xy, idx, adjacent, createGame, clone, findGroups, isValidSwap, allMoves, hasMove, hint, effect, gravity, resolve, play, shuffle, goals, status, MOVE_BONUS, moveBonus, finalScore, stars, progress, soundPref, buzzMs };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbMatchCore = api;
 })(typeof self !== 'undefined' ? self : this);
