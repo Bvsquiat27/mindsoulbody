@@ -20,6 +20,9 @@
   const SIZES = [['small', 10, 'Small', 'Chico'], ['medium', 22, 'Medium', 'Mediano'], ['big', 40, 'Big', 'Grande']];
   const W = 1200, H = 675;
   const core = () => window.MsbColoringCore;
+  const fx = () => window.MsbColoringFx;
+  let prefStore = null;
+  const prefs = () => prefStore || (prefStore = core().prefs(window.localStorage));
   const es = () => !!(window.MsbI18n && MsbI18n.lang() === 'es');
   const t = (en, sp) => es() ? sp : en;
   const L = en => window.MsbI18n ? MsbI18n.t(en) : en;
@@ -34,21 +37,29 @@
     return `<section class="coloring-book" data-i18n-skip><h2>${t('Coloring book', 'Libro para colorear')}</h2><p class="muted">${t('Pick a picture, choose a color, and color it in with your finger.', 'Escoge un dibujo, elige un color y coloréalo con el dedo.')}</p><div class="coloring-grid">${PAGES.map(id => `<button type="button" class="card coloring-thumb" data-coloring-open="${id}"><img src="${thumb(id)}" width="400" height="225" alt="" loading="lazy" decoding="async"><span>${esc(titleOf(id))}</span></button>`).join('')}</div></section>`;
   }
 
+  function prefButton(name, label) {
+    const on = prefs().get(name);
+    return `<button type="button" class="coloring-tool coloring-pref${on ? ' active' : ''}" role="switch" aria-checked="${on}" data-coloring-pref="${name}">${esc(label)}<span class="coloring-pref-state">${esc(on ? L('On') : L('Off'))}</span></button>`;
+  }
+
   function screenHtml(title) {
-    const dots = COLORS.map(([hex, en], i) => `<button type="button" class="coloring-dot${i === 0 ? ' active' : ''}" data-coloring-color="${hex}" style="--dot:${hex}" aria-label="${esc(L(en))}" title="${esc(L(en))}" aria-pressed="${i === 0}"></button>`).join('');
-    const glitters = GLITTERS.map(([id, en]) => `<button type="button" class="coloring-dot coloring-glitter" data-coloring-glitter="${id}" style="--dot:${SWATCH[id]}" aria-label="${esc(L(en))}" title="${esc(L(en))}" aria-pressed="false"></button>`).join('');
+    const dots = COLORS.map(([hex, en], i) => `<button type="button" class="coloring-dot${i === 0 ? ' active' : ''}" data-haptic-self data-coloring-color="${hex}" style="--dot:${hex}" aria-label="${esc(L(en))}" title="${esc(L(en))}" aria-pressed="${i === 0}"></button>`).join('');
+    const glitters = GLITTERS.map(([id, en]) => `<button type="button" class="coloring-dot coloring-glitter" data-haptic-self data-coloring-glitter="${id}" style="--dot:${SWATCH[id]}" aria-label="${esc(L(en))}" title="${esc(L(en))}" aria-pressed="false"></button>`).join('');
     const sizes = SIZES.map(([id, px, en, sp]) => `<button type="button" class="coloring-tool coloring-size${id === 'medium' ? ' active' : ''}" data-coloring-size="${px}" aria-pressed="${id === 'medium'}" aria-label="${esc(t('Brush size: ' + en, 'Tamaño del pincel: ' + sp))}"><i style="--size:${Math.round(px / 2.5) + 4}px"></i>${esc(t(en, sp))}</button>`).join('');
     return `<div class="coloring-screen" data-i18n-skip><button class="text-button back" type="button" data-coloring-back>${t('← Stories', '← Historias')}</button><span class="eyebrow">${t('COLORING BOOK', 'LIBRO PARA COLOREAR')}</span><h1>${esc(title)}</h1>
-      <div class="coloring-stage"><canvas class="coloring-color" width="${W}" height="${H}"></canvas><canvas class="coloring-lines" width="${W}" height="${H}" role="img" aria-label="${esc(t('Coloring page: ', 'Dibujo para colorear: ') + title)}"></canvas></div>
+      <div class="coloring-stage"><div class="coloring-zoom"><canvas class="coloring-color" width="${W}" height="${H}"></canvas><canvas class="coloring-lines" width="${W}" height="${H}" role="img" aria-label="${esc(t('Coloring page: ', 'Dibujo para colorear: ') + title)}"></canvas><canvas class="coloring-fx" width="${W}" height="${H}" aria-hidden="true"></canvas></div></div>
       <p class="coloring-status muted" aria-live="polite">${t('Loading the picture…', 'Cargando el dibujo…')}</p>
+      <div class="coloring-zoombar" role="group" aria-label="${esc(L('Zoom'))}"><button type="button" class="coloring-tool coloring-zbtn" data-coloring-zoom="out" aria-label="${esc(L('Zoom out'))}" title="${esc(L('Zoom out'))}">−</button><span class="coloring-zoomlevel" data-coloring-zoomlevel aria-live="polite">1×</span><button type="button" class="coloring-tool coloring-zbtn" data-coloring-zoom="in" aria-label="${esc(L('Zoom in'))}" title="${esc(L('Zoom in'))}">+</button><button type="button" class="coloring-tool" data-coloring-zoom="fit">${esc(L('⤢ Fit'))}</button><button type="button" class="coloring-tool" data-coloring-move aria-pressed="false">${esc(L('✋ Move'))}</button></div>
+      <p class="coloring-zoomhint small muted">${esc(L('Pinch with two fingers to zoom and move the picture. One finger colors.'))}</p>
       <div class="coloring-dots" role="group" aria-label="${esc(L('Colors'))}">${dots}</div>
       <p class="coloring-sparkle-title">${esc(L('✨ Sparkle pens'))}</p>
       <div class="coloring-dots coloring-glitters" role="group" aria-label="${esc(L('Sparkle pens'))}">${glitters}</div>
       <div class="coloring-tools" role="group" aria-label="${t('Brush', 'Pincel')}">${sizes}<button type="button" class="coloring-tool" data-coloring-eraser aria-pressed="false">🧽 ${t('Eraser', 'Borrador')}</button></div>
-      <div class="coloring-tools"><button type="button" class="coloring-tool" data-coloring-undo>↶ ${t('Undo', 'Deshacer')}</button><button type="button" class="coloring-tool" data-coloring-clear>${t('Clear', 'Empezar de nuevo')}</button></div>
+      <div class="coloring-tools"><button type="button" class="coloring-tool" data-haptic-self data-coloring-undo>↶ ${t('Undo', 'Deshacer')}</button><button type="button" class="coloring-tool" data-coloring-clear>${t('Clear', 'Empezar de nuevo')}</button></div>
       <div class="coloring-save-row" role="group" aria-label="${esc(L('Save'))}"><button type="button" class="primary coloring-save" data-coloring-keep>${esc(L('💾 Save to My drawings'))}</button><button type="button" class="secondary coloring-save" data-coloring-save>${esc(L('📱 Save to phone'))}</button></div>
       <div class="coloring-save-choice" data-coloring-choice hidden><p>${esc(L('This picture is already in My drawings.'))}</p><button type="button" class="primary" data-coloring-keep-mode="update">${esc(L('Update the saved drawing'))}</button><button type="button" class="secondary" data-coloring-keep-mode="new">${esc(L('Save as a new copy'))}</button><button type="button" class="text-button" data-coloring-keep-mode="cancel">${esc(L('Cancel'))}</button></div>
-      <p class="coloring-save-status small" data-coloring-save-status aria-live="polite"></p></div>`;
+      <p class="coloring-save-status small" data-coloring-save-status aria-live="polite"></p>
+      <div class="coloring-tools coloring-prefs" role="group" aria-label="${esc(L('Sound and vibration'))}">${prefButton('sounds', '🔊 ' + L('Drawing sounds'))}${fx() && fx().canVibrate() ? prefButton('vibration', '📳 ' + L('Drawing vibration')) : ''}</div></div>`;
   }
 
   /* A soft round crayon tip: dense in the middle, feathered edge, a little grain. */
@@ -97,8 +108,16 @@
     root.innerHTML = screenHtml(title);
     const color = root.querySelector('.coloring-color'), lines = root.querySelector('.coloring-lines'), stage = root.querySelector('.coloring-stage');
     const status = root.querySelector('.coloring-status');
-    const s = session = { id, root, stage, color, lines, cctx: color.getContext('2d', { willReadFrequently: true }), ready: false, hex: COLORS[0][0], size: 22, eraser: false, glitter: null, trail: null, seed: 0, undo: core().undoStack(20), last: null, pointer: null, title, drawingId: null, busy: false };
+    const s = session = { id, root, stage, color, lines, cctx: color.getContext('2d', { willReadFrequently: true }), ready: false, hex: COLORS[0][0], size: 22, eraser: false, glitter: null, trail: null, seed: 0, undo: core().undoStack(20), last: null, pointer: null, title, drawingId: null, busy: false,
+      zoomEl: root.querySelector('.coloring-zoom'), view: { scale: 1, tx: 0, ty: 0 }, touches: new Map(), gesture: null, hold: false, moveMode: false, panFrom: null, strokeSize: 22, snap: false, tick: core().tickGate(120, 6), lastMove: null,
+      fxLayer: fx() ? fx().overlay(root.querySelector('.coloring-fx')) : null };
     stage.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+    stage.addEventListener('wheel', e => {
+      if (!e.ctrlKey || session !== s) return;
+      e.preventDefault();
+      const r = stage.getBoundingClientRect();
+      setView(s, core().zoomAt(s.view, Math.exp(-e.deltaY * 0.01), e.clientX - r.left, e.clientY - r.top, r.width, r.height));
+    }, { passive: false });
     try {
       let img;
       try { img = await loadImage(page(id)); } catch { img = await loadImage(thumb(id)); }
@@ -118,13 +137,38 @@
     return true;
   }
 
+  /* Finger position on the stage (unzoomed box) and in picture pixels. */
+  function local(s, event) {
+    const rect = s.stage.getBoundingClientRect();
+    return { x: event.clientX - rect.left, y: event.clientY - rect.top, w: rect.width, h: rect.height };
+  }
   function toCanvas(s, event) {
-    const rect = s.lines.getBoundingClientRect();
-    return { x: (event.clientX - rect.left) * W / rect.width, y: (event.clientY - rect.top) * H / rect.height };
+    const p = local(s, event);
+    return core().toPicture(p.x, p.y, s.view, p.w, p.h, W, H);
   }
 
+  function setView(s, view) {
+    s.view = view;
+    s.zoomEl.style.transform = view.scale === 1 ? '' : `translate(${view.tx}px, ${view.ty}px) scale(${view.scale})`;
+    const label = s.root.querySelector('[data-coloring-zoomlevel]');
+    if (label) label.textContent = `${Math.round(view.scale * 10) / 10}×`.replace('.', es() ? ',' : '.');
+    const zin = s.root.querySelector('[data-coloring-zoom="in"]'), zout = s.root.querySelector('[data-coloring-zoom="out"]');
+    if (zin) zin.disabled = view.scale >= core().MAX_ZOOM - 0.01;
+    if (zout) zout.disabled = view.scale <= 1.001;
+  }
+  function zoomButton(s, how) {
+    const r = s.stage.getBoundingClientRect();
+    if (how === 'fit') { setView(s, { scale: 1, tx: 0, ty: 0 }); return; }
+    setView(s, core().zoomAt(s.view, how === 'in' ? 1.5 : 1 / 1.5, r.width / 2, r.height / 2, r.width, r.height));
+  }
+
+  const soundsOn = () => prefs().get('sounds') && !(window.MsbStories && MsbStories.bedtimeOn && MsbStories.bedtimeOn());
+  const tapVibrationOn = () => { try { return localStorage.getItem('msb_tap_vibration') !== 'off'; } catch { return true; } };
+  function buzz(ms) { if (fx() && tapVibrationOn() && prefs().get('vibration')) fx().vibrate(ms); }
+  function feedback() { if (soundsOn() && fx()) fx().sound.pop(); buzz(10); }
+
   function stamp(s, pt) {
-    const ctx = s.cctx, tip = sprite(s.eraser ? '#000000' : s.hex, s.size), d = tip.width;
+    const ctx = s.cctx, tip = sprite(s.eraser ? '#000000' : s.hex, s.strokeSize), d = tip.width;
     ctx.globalCompositeOperation = s.eraser ? 'destination-out' : 'source-over';
     ctx.globalAlpha = s.eraser ? 1 : 0.9;
     ctx.drawImage(tip, pt.x - d / 2, pt.y - d / 2);
@@ -137,7 +181,7 @@
     const ctx = s.cctx;
     for (const op of ops) {
       if (op.t === 'tip') {
-        const tip = sprite(op.hex, s.size), d = tip.width;
+        const tip = sprite(op.hex, s.strokeSize), d = tip.width;
         ctx.globalAlpha = 0.9; ctx.drawImage(tip, op.x - d / 2, op.y - d / 2);
       } else {
         const sp = speckSprite(op.hex, op.r, op.star), d = sp.width;
@@ -150,7 +194,7 @@
   function strokeTo(s, pt) {
     if (s.trail) { drawOps(s, s.trail.add(pt)); return; }
     const from = s.last || pt;
-    for (const p of core().stampPoints(from, pt, Math.max(1.5, s.size * 0.22))) stamp(s, p);
+    for (const p of core().stampPoints(from, pt, Math.max(1.5, s.strokeSize * 0.22))) stamp(s, p);
     s.last = pt;
   }
 
@@ -238,48 +282,135 @@
     const s = session;
     if (!s || !s.root.isConnected || !event.target.closest('.coloring-screen')) return;
     const dot = event.target.closest('[data-coloring-color]');
-    if (dot) { s.hex = dot.dataset.coloringColor; s.glitter = null; s.eraser = false; pick(s, '[data-coloring-color],[data-coloring-glitter]', dot); pick(s, '[data-coloring-eraser]', null); return; }
+    if (dot) { feedback(); s.hex = dot.dataset.coloringColor; s.glitter = null; s.eraser = false; pick(s, '[data-coloring-color],[data-coloring-glitter]', dot); pick(s, '[data-coloring-eraser]', null); return; }
     const glitter = event.target.closest('[data-coloring-glitter]');
-    if (glitter) { s.glitter = glitter.dataset.coloringGlitter; s.eraser = false; pick(s, '[data-coloring-color],[data-coloring-glitter]', glitter); pick(s, '[data-coloring-eraser]', null); return; }
+    if (glitter) { feedback(); if (soundsOn() && fx()) fx().sound.twinkle(true); s.glitter = glitter.dataset.coloringGlitter; s.eraser = false; pick(s, '[data-coloring-color],[data-coloring-glitter]', glitter); pick(s, '[data-coloring-eraser]', null); return; }
     const size = event.target.closest('[data-coloring-size]');
     if (size) { s.size = Number(size.dataset.coloringSize) || 22; pick(s, '[data-coloring-size]', size); return; }
     const eraser = event.target.closest('[data-coloring-eraser]');
     if (eraser) { s.eraser = !s.eraser; pick(s, '[data-coloring-eraser]', s.eraser ? eraser : null); return; }
-    if (event.target.closest('[data-coloring-undo]')) { const prev = s.undo.pop(); if (prev) s.cctx.putImageData(prev, 0, 0); return; }
+    if (event.target.closest('[data-coloring-undo]')) { feedback(); const prev = s.undo.pop(); if (prev) s.cctx.putImageData(prev, 0, 0); return; }
     if (event.target.closest('[data-coloring-clear]')) { s.undo.push(s.cctx.getImageData(0, 0, W, H)); s.cctx.clearRect(0, 0, W, H); return; }
     if (event.target.closest('[data-coloring-save]')) { save(s); return; }
+    const zoom = event.target.closest('[data-coloring-zoom]');
+    if (zoom) { zoomButton(s, zoom.dataset.coloringZoom); return; }
+    const move = event.target.closest('[data-coloring-move]');
+    if (move) { s.moveMode = !s.moveMode; pick(s, '[data-coloring-move]', s.moveMode ? move : null); s.stage.classList.toggle('moving', s.moveMode); return; }
+    const pref = event.target.closest('[data-coloring-pref]');
+    if (pref) {
+      const name = pref.dataset.coloringPref, on = prefs().set(name, !prefs().get(name));
+      pref.setAttribute('aria-checked', String(on)); pref.classList.toggle('active', on);
+      pref.querySelector('.coloring-pref-state').textContent = on ? L('On') : L('Off');
+      if (on && name === 'sounds' && fx()) fx().sound.pop();
+      if (on && name === 'vibration') buzz(12);
+      if (!on && name === 'sounds' && fx()) fx().sound.scribbleStop(true);
+      return;
+    }
     const mode = event.target.closest('[data-coloring-keep-mode]');
     if (mode) { keep(s, mode.dataset.coloringKeepMode); return; }
     if (event.target.closest('[data-coloring-keep]')) keep(s, null);
   });
 
+  /* One finger colors. A second finger cancels that stroke and pinches or
+     pans the picture; drawing starts again once all fingers are lifted. In
+     Move mode (for people who can't pinch) one finger pans. */
+  function kindOf(s) { return s.eraser ? 'eraser' : s.glitter ? 'sparkle' : 'crayon'; }
+  function startStroke(s, event) {
+    s.pointer = event.pointerId;
+    s.undo.push(s.cctx.getImageData(0, 0, W, H));
+    s.snap = true;
+    s.last = null;
+    s.strokeSize = core().brushAt(s.size, s.view.scale);
+    s.trail = s.glitter && !s.eraser ? core().sparkleStroke(s.glitter, s.strokeSize, (s.seed += 1)) : null;
+    s.tick.reset();
+    s.lastMove = { ...local(s, event), at: performance.now() };
+    if (soundsOn() && fx()) fx().sound.scribbleStart(kindOf(s));
+    const pt = toCanvas(s, event);
+    strokeTo(s, pt);
+    if (s.fxLayer) s.fxLayer.tip(pt, kindOf(s), s.glitter || s.hex, s.strokeSize);
+  }
+  function cancelStroke(s) {
+    if (s.pointer === null) return;
+    const prev = s.snap ? s.undo.pop() : null;
+    if (prev) s.cctx.putImageData(prev, 0, 0);
+    s.pointer = null; s.trail = null; s.last = null; s.snap = false;
+    if (fx()) fx().sound.scribbleStop(true);
+    if (s.fxLayer) s.fxLayer.clear();
+  }
+  function finishStroke(s) {
+    if (s.trail) drawOps(s, s.trail.end());
+    s.trail = null; s.pointer = null; s.last = null; s.snap = false;
+    if (fx()) fx().sound.scribbleStop(false);
+  }
+  function pair(s) { const [a, b] = [...s.touches.values()]; return [a, b]; }
+
   document.addEventListener('pointerdown', event => {
     const s = session;
-    if (!s || !s.ready || s.pointer !== null || !event.target.closest('.coloring-stage') || !s.root.isConnected) return;
+    if (!s || !s.ready || !event.target.closest('.coloring-stage') || !s.root.isConnected) return;
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
     event.preventDefault();
-    s.pointer = event.pointerId;
     try { s.stage.setPointerCapture(event.pointerId); } catch { /* ignore */ }
-    s.undo.push(s.cctx.getImageData(0, 0, W, H));
-    s.last = null;
-    s.trail = s.glitter && !s.eraser ? core().sparkleStroke(s.glitter, s.size, (s.seed += 1)) : null;
-    strokeTo(s, toCanvas(s, event));
+    const p = local(s, event);
+    s.touches.set(event.pointerId, { x: p.x, y: p.y });
+    if (s.touches.size === 2) {
+      cancelStroke(s);
+      s.panFrom = null;
+      const [a, b] = pair(s);
+      s.gesture = { view: { ...s.view }, a: { ...a }, b: { ...b } };
+      s.hold = true;
+      return;
+    }
+    if (s.touches.size > 2 || s.hold || s.pointer !== null) return;
+    if (s.moveMode) { s.panFrom = { id: event.pointerId, x: p.x, y: p.y }; return; }
+    if (fx()) fx().sound.wake();
+    startStroke(s, event);
   });
   document.addEventListener('pointermove', event => {
     const s = session;
-    if (!s || s.pointer !== event.pointerId) return;
+    if (!s || !s.touches.has(event.pointerId)) return;
     event.preventDefault();
+    const p = local(s, event);
+    s.touches.set(event.pointerId, { x: p.x, y: p.y });
+    if (s.gesture && s.touches.size >= 2) {
+      const [a, b] = pair(s);
+      setView(s, core().pinchView(s.gesture.view, s.gesture.a, s.gesture.b, a, b, p.w, p.h));
+      return;
+    }
+    if (s.panFrom && s.panFrom.id === event.pointerId) {
+      setView(s, core().panView(s.view, p.x - s.panFrom.x, p.y - s.panFrom.y, p.w, p.h));
+      s.panFrom = { id: event.pointerId, x: p.x, y: p.y };
+      return;
+    }
+    if (s.pointer !== event.pointerId) return;
     const list = event.getCoalescedEvents ? event.getCoalescedEvents() : [];
-    for (const e of (list.length ? list : [event])) strokeTo(s, toCanvas(s, e));
+    let pt = null;
+    for (const e of (list.length ? list : [event])) { pt = toCanvas(s, e); strokeTo(s, pt); }
+    const now = performance.now(), prev = s.lastMove;
+    const dist = prev ? Math.hypot(p.x - prev.x, p.y - prev.y) : 0;
+    const speed = prev ? dist / Math.max(8, now - prev.at) : 0;
+    s.lastMove = { x: p.x, y: p.y, at: now };
+    if (pt && s.fxLayer) s.fxLayer.tip(pt, kindOf(s), s.glitter || s.hex, s.strokeSize);
+    if (dist > 0.5 && soundsOn() && fx()) { fx().sound.scribbleMove(speed); if (s.glitter && !s.eraser) fx().sound.twinkle(); }
+    if (s.tick.move(dist, now)) buzz(8);
   });
-  const end = event => { const s = session; if (s && s.pointer === event.pointerId) { if (s.trail) drawOps(s, s.trail.end()); s.trail = null; s.pointer = null; s.last = null; } };
+  const end = event => {
+    const s = session;
+    if (!s || !s.touches.has(event.pointerId)) return;
+    s.touches.delete(event.pointerId);
+    if (s.pointer === event.pointerId) finishStroke(s);
+    if (s.panFrom && s.panFrom.id === event.pointerId) s.panFrom = null;
+    if (s.touches.size < 2) s.gesture = null;
+    if (s.touches.size === 0) s.hold = false;
+  };
   document.addEventListener('pointerup', end);
   document.addEventListener('pointercancel', end);
+  window.addEventListener('resize', () => { const s = session; if (s && s.view.scale !== 1) setView(s, { scale: 1, tx: 0, ty: 0 }); });
 
   window.MsbColoring = {
     PAGES,
     gridHtml,
     open,
-    close() { session = null; },
+    close() { if (session && fx()) fx().sound.scribbleStop(true); session = null; },
     has: id => PAGES.includes(id),
     ready: () => !!(session && session.ready)
   };

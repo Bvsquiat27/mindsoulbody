@@ -42,6 +42,7 @@ function hapticControl(node){
   if(!button||button.disabled||button.getAttribute('aria-disabled')==='true')return null;
   if(button.classList.contains('bible-verse')||button.closest('.bible-verses'))return null;
   if(button.hasAttribute('data-rope-tap'))return null;
+  if(button.hasAttribute('data-haptic-self'))return null;
   const link=el.closest('a');
   if(link&&(link===button||button.contains(link))&&link.closest('.bible-page,.bible-study-card,.passage,.study-copy,.bible-verses'))return null;
   return button;

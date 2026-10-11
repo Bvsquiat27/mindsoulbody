@@ -168,7 +168,59 @@
     return rgba;
   }
 
-  const api = { lineLayer, flatten, undoStack, stampPoints, rng, hslHex, GLITTER, rainbowHue, sparkleStroke, paintOps };
+  /* Zoom and pan of the picture. The view is a CSS transform on the stage
+     content: translate(tx, ty) scale(scale), origin top-left, in stage pixels
+     (w x h). At scale 1 the picture fits the stage exactly. */
+  const MAX_ZOOM = 4;
+  function clampView(view, w, h, max) {
+    const scale = Math.min(max || MAX_ZOOM, Math.max(1, Number(view.scale) || 1));
+    const minX = w - w * scale, minY = h - h * scale;
+    return { scale, tx: Math.min(0, Math.max(minX, Number(view.tx) || 0)), ty: Math.min(0, Math.max(minY, Number(view.ty) || 0)) };
+  }
+  /* Stage point (px, py), e.g. a finger, to picture pixels (W x H). */
+  function toPicture(px, py, view, w, h, W, H) {
+    return { x: (px - view.tx) / view.scale * W / w, y: (py - view.ty) / view.scale * H / h };
+  }
+  /* Zoom by a factor while the stage point (cx, cy) stays under the finger. */
+  function zoomAt(view, factor, cx, cy, w, h, max) {
+    const scale = Math.min(max || MAX_ZOOM, Math.max(1, view.scale * factor));
+    const k = scale / view.scale;
+    return clampView({ scale, tx: cx - (cx - view.tx) * k, ty: cy - (cy - view.ty) * k }, w, h, max);
+  }
+  /* Two-finger pinch and pan: the picture point first under the midpoint of
+     the fingers follows the midpoint, scaled by the change in finger spread. */
+  function pinchView(start, a0, b0, a1, b1, w, h, max) {
+    const d0 = Math.hypot(b0.x - a0.x, b0.y - a0.y) || 1, d1 = Math.hypot(b1.x - a1.x, b1.y - a1.y) || 1;
+    const scale = Math.min(max || MAX_ZOOM, Math.max(1, start.scale * d1 / d0));
+    const m0 = { x: (a0.x + b0.x) / 2, y: (a0.y + b0.y) / 2 }, m1 = { x: (a1.x + b1.x) / 2, y: (a1.y + b1.y) / 2 };
+    const cx = (m0.x - start.tx) / start.scale, cy = (m0.y - start.ty) / start.scale;
+    return clampView({ scale, tx: m1.x - cx * scale, ty: m1.y - cy * scale }, w, h, max);
+  }
+  function panView(view, dx, dy, w, h, max) {
+    return clampView({ scale: view.scale, tx: view.tx + dx, ty: view.ty + dy }, w, h, max);
+  }
+  /* Brush size in picture pixels so the brush feels the same on screen at any zoom. */
+  function brushAt(size, scale) { return Math.max(2, Math.round(size / Math.max(1, scale || 1))); }
+
+  /* Coloring-screen switches (sounds, vibration), on unless turned off; remembered. */
+  const PREF_KEYS = { sounds: 'msb_coloring_sounds', vibration: 'msb_coloring_vibration' };
+  function prefs(storage) {
+    return {
+      get(name) { try { return storage.getItem(PREF_KEYS[name]) !== 'off'; } catch { return true; } },
+      set(name, on) { try { storage.setItem(PREF_KEYS[name], on ? 'on' : 'off'); } catch { /* private mode */ } return !!on; }
+    };
+  }
+  /* Gentle drawing ticks: at most one per `every` ms, and only after the finger
+     has really moved (`minMove` stage pixels) since the last tick. */
+  function tickGate(every, minMove) {
+    let at = -Infinity, moved = 0;
+    return {
+      move(dist, now) { moved += dist; if (now - at >= every && moved >= (minMove || 0)) { at = now; moved = 0; return true; } return false; },
+      reset() { at = -Infinity; moved = 0; }
+    };
+  }
+
+  const api = { lineLayer, flatten, undoStack, stampPoints, rng, hslHex, GLITTER, rainbowHue, sparkleStroke, paintOps, MAX_ZOOM, clampView, toPicture, zoomAt, pinchView, panView, brushAt, PREF_KEYS, prefs, tickGate };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbColoringCore = api;
 })(typeof self !== 'undefined' ? self : this);
