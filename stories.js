@@ -154,6 +154,7 @@
   let bedtime = null;
   let music = null;
   let coloringId = null;
+  let coloringDrawing = null;
   const coloring = () => window.MsbColoring;
   const storyTitle = id => { const item = stories.find(entry => entry.id === id); return item ? pick(item, 'title') : id; };
 
@@ -204,7 +205,7 @@
   }
 
   function show(root) {
-    if (coloringId && coloring()) { coloring().open(root, coloringId, storyTitle(coloringId)); return; }
+    if (coloringId && coloring()) { const drawingId = coloringDrawing; coloringDrawing = null; coloring().open(root, coloringId, storyTitle(coloringId), { drawingId }); return; }
     if (bedtime) showBedtime(root);
     else {
       const item = stories.find(entry => entry.id === openId);
@@ -375,6 +376,15 @@
 
   window.MsbStories = {
     show,
+    /* Reopen a coloring page, optionally with a drawing from My drawings loaded. */
+    openColoring(id, drawingId) {
+      if (!coloring() || !coloring().has(id)) return false;
+      openId = null;
+      bedtime = null;
+      coloringId = id;
+      coloringDrawing = drawingId || null;
+      return true;
+    },
     reset() {
       openId = null;
       coloringId = null;
