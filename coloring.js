@@ -17,7 +17,6 @@
   /* Sparkle pens: glitter ink plus bright specks (see MsbColoringCore.sparkleStroke). */
   const GLITTERS = [['gold', 'Gold glitter'], ['silver', 'Silver glitter'], ['pink', 'Pink glitter'], ['purple', 'Purple glitter'], ['blue', 'Blue glitter'], ['rainbow', 'Rainbow glitter']];
   const SWATCH = { gold: '#d9a400', silver: '#9ea7b2', pink: '#ff4fa3', purple: '#8a3ffc', blue: '#1f7cff', rainbow: 'conic-gradient(#ff3b3b,#ffb300,#ffee33,#3ddc84,#2f8cff,#9b4dff,#ff3b3b)' };
-  const SIZES = [['small', 10, 'Small', 'Chico'], ['medium', 22, 'Medium', 'Mediano'], ['big', 40, 'Big', 'Grande']];
   const W = 1200, H = 675;
   const core = () => window.MsbColoringCore;
   const fx = () => window.MsbColoringFx;
@@ -45,7 +44,7 @@
   function screenHtml(title) {
     const dots = COLORS.map(([hex, en], i) => `<button type="button" class="coloring-dot${i === 0 ? ' active' : ''}" data-haptic-self data-coloring-color="${hex}" style="--dot:${hex}" aria-label="${esc(L(en))}" title="${esc(L(en))}" aria-pressed="${i === 0}"></button>`).join('');
     const glitters = GLITTERS.map(([id, en]) => `<button type="button" class="coloring-dot coloring-glitter" data-haptic-self data-coloring-glitter="${id}" style="--dot:${SWATCH[id]}" aria-label="${esc(L(en))}" title="${esc(L(en))}" aria-pressed="false"></button>`).join('');
-    const sizes = SIZES.map(([id, px, en, sp]) => `<button type="button" class="coloring-tool coloring-size${id === 'medium' ? ' active' : ''}" data-coloring-size="${px}" aria-pressed="${id === 'medium'}" aria-label="${esc(t('Brush size: ' + en, 'Tamaño del pincel: ' + sp))}"><i style="--size:${Math.round(px / 2.5) + 4}px"></i>${esc(t(en, sp))}</button>`).join('');
+    const sizes = core().BRUSH_SIZES.map(([id, px, en]) => `<button type="button" class="coloring-size${px === core().DEFAULT_BRUSH ? ' active' : ''}" data-coloring-size="${px}" aria-pressed="${px === core().DEFAULT_BRUSH}" aria-label="${esc(L('Pen size: ') + L(en))}" title="${esc(L(en))}"><i style="--size:${core().sizeDot(px, 358, W)}px"></i></button>`).join('');
     return `<div class="coloring-screen" data-i18n-skip><button class="text-button back" type="button" data-coloring-back>${t('← Stories', '← Historias')}</button><span class="eyebrow">${t('COLORING BOOK', 'LIBRO PARA COLOREAR')}</span><h1>${esc(title)}</h1>
       <div class="coloring-stage"><div class="coloring-zoom"><canvas class="coloring-color" width="${W}" height="${H}"></canvas><canvas class="coloring-lines" width="${W}" height="${H}" role="img" aria-label="${esc(t('Coloring page: ', 'Dibujo para colorear: ') + title)}"></canvas><canvas class="coloring-fx" width="${W}" height="${H}" aria-hidden="true"></canvas></div></div>
       <p class="coloring-status muted" aria-live="polite">${t('Loading the picture…', 'Cargando el dibujo…')}</p>
@@ -54,7 +53,9 @@
       <div class="coloring-dots" role="group" aria-label="${esc(L('Colors'))}">${dots}</div>
       <p class="coloring-sparkle-title">${esc(L('✨ Sparkle pens'))}</p>
       <div class="coloring-dots coloring-glitters" role="group" aria-label="${esc(L('Sparkle pens'))}">${glitters}</div>
-      <div class="coloring-tools" role="group" aria-label="${t('Brush', 'Pincel')}">${sizes}<button type="button" class="coloring-tool" data-coloring-eraser aria-pressed="false">🧽 ${t('Eraser', 'Borrador')}</button></div>
+      <p class="coloring-size-title">${esc(L('✏️ Pen size'))}: <span data-coloring-size-name>${esc(L('Medium'))}</span></p>
+      <div class="coloring-sizes" role="group" aria-label="${esc(L('Pen size'))}">${sizes}</div>
+      <div class="coloring-tools"><button type="button" class="coloring-tool" data-coloring-eraser aria-pressed="false">🧽 ${t('Eraser', 'Borrador')}</button></div>
       <div class="coloring-tools"><button type="button" class="coloring-tool" data-haptic-self data-coloring-undo>↶ ${t('Undo', 'Deshacer')}</button><button type="button" class="coloring-tool" data-coloring-clear>${t('Clear', 'Empezar de nuevo')}</button></div>
       <div class="coloring-save-row" role="group" aria-label="${esc(L('Save'))}"><button type="button" class="primary coloring-save" data-coloring-keep>${esc(L('💾 Save to My drawings'))}</button><button type="button" class="secondary coloring-save" data-coloring-save>${esc(L('📱 Save to phone'))}</button></div>
       <div class="coloring-save-choice" data-coloring-choice hidden><p>${esc(L('This picture is already in My drawings.'))}</p><button type="button" class="primary" data-coloring-keep-mode="update">${esc(L('Update the saved drawing'))}</button><button type="button" class="secondary" data-coloring-keep-mode="new">${esc(L('Save as a new copy'))}</button><button type="button" class="text-button" data-coloring-keep-mode="cancel">${esc(L('Cancel'))}</button></div>
@@ -108,10 +109,11 @@
     root.innerHTML = screenHtml(title);
     const color = root.querySelector('.coloring-color'), lines = root.querySelector('.coloring-lines'), stage = root.querySelector('.coloring-stage');
     const status = root.querySelector('.coloring-status');
-    const s = session = { id, root, stage, color, lines, cctx: color.getContext('2d', { willReadFrequently: true }), ready: false, hex: COLORS[0][0], size: 22, eraser: false, glitter: null, trail: null, seed: 0, undo: core().undoStack(20), last: null, pointer: null, title, drawingId: null, busy: false,
-      zoomEl: root.querySelector('.coloring-zoom'), view: { scale: 1, tx: 0, ty: 0 }, touches: new Map(), gesture: null, hold: false, moveMode: false, panFrom: null, strokeSize: 22, snap: false, tick: core().tickGate(120, 6), lastMove: null,
+    const s = session = { id, root, stage, color, lines, cctx: color.getContext('2d', { willReadFrequently: true }), ready: false, hex: COLORS[0][0], size: core().DEFAULT_BRUSH, eraser: false, glitter: null, trail: null, seed: 0, undo: core().undoStack(20), last: null, pointer: null, title, drawingId: null, busy: false,
+      zoomEl: root.querySelector('.coloring-zoom'), view: { scale: 1, tx: 0, ty: 0 }, touches: new Map(), gesture: null, hold: false, moveMode: false, panFrom: null, strokeSize: core().DEFAULT_BRUSH, snap: false, tick: core().tickGate(120, 6), lastMove: null,
       fxLayer: fx() ? fx().overlay(root.querySelector('.coloring-fx')) : null };
     stage.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+    sizeDots(s);
     stage.addEventListener('wheel', e => {
       if (!e.ctrlKey || session !== s) return;
       e.preventDefault();
@@ -147,6 +149,16 @@
     return core().toPicture(p.x, p.y, s.view, p.w, p.h, W, H);
   }
 
+  /* Pen-size dots at the real width of the line they draw on this screen. */
+  function sizeDots(s) {
+    const w = s.stage.getBoundingClientRect().width || 358;
+    s.root.querySelectorAll('[data-coloring-size]').forEach(b => { const i = b.querySelector('i'); if (i) i.style.setProperty('--size', `${core().sizeDot(Number(b.dataset.coloringSize), w, W)}px`); });
+  }
+  function sizeName(s) {
+    const row = core().BRUSH_SIZES.find(([, px]) => px === s.size), node = s.root.querySelector('[data-coloring-size-name]');
+    if (row && node) node.textContent = L(row[2]);
+  }
+
   function setView(s, view) {
     s.view = view;
     s.zoomEl.style.transform = view.scale === 1 ? '' : `translate(${view.tx}px, ${view.ty}px) scale(${view.scale})`;
@@ -168,7 +180,8 @@
   function feedback() { if (soundsOn() && fx()) fx().sound.pop(); buzz(10); }
 
   function stamp(s, pt) {
-    const ctx = s.cctx, tip = sprite(s.eraser ? '#000000' : s.hex, s.strokeSize), d = tip.width;
+    /* the eraser reaches a little past the crayon's soft edge so no faint ring is left */
+    const ctx = s.cctx, tip = s.eraser ? sprite('#000000', Math.round(s.strokeSize * 1.2) + 1) : sprite(s.hex, s.strokeSize), d = tip.width;
     ctx.globalCompositeOperation = s.eraser ? 'destination-out' : 'source-over';
     ctx.globalAlpha = s.eraser ? 1 : 0.9;
     ctx.drawImage(tip, pt.x - d / 2, pt.y - d / 2);
@@ -286,7 +299,7 @@
     const glitter = event.target.closest('[data-coloring-glitter]');
     if (glitter) { feedback(); if (soundsOn() && fx()) fx().sound.twinkle(true); s.glitter = glitter.dataset.coloringGlitter; s.eraser = false; pick(s, '[data-coloring-color],[data-coloring-glitter]', glitter); pick(s, '[data-coloring-eraser]', null); return; }
     const size = event.target.closest('[data-coloring-size]');
-    if (size) { s.size = Number(size.dataset.coloringSize) || 22; pick(s, '[data-coloring-size]', size); return; }
+    if (size) { s.size = Number(size.dataset.coloringSize) || core().DEFAULT_BRUSH; pick(s, '[data-coloring-size]', size); sizeName(s); return; }
     const eraser = event.target.closest('[data-coloring-eraser]');
     if (eraser) { s.eraser = !s.eraser; pick(s, '[data-coloring-eraser]', s.eraser ? eraser : null); return; }
     if (event.target.closest('[data-coloring-undo]')) { feedback(); const prev = s.undo.pop(); if (prev) s.cctx.putImageData(prev, 0, 0); return; }
@@ -404,7 +417,7 @@
   };
   document.addEventListener('pointerup', end);
   document.addEventListener('pointercancel', end);
-  window.addEventListener('resize', () => { const s = session; if (s && s.view.scale !== 1) setView(s, { scale: 1, tx: 0, ty: 0 }); });
+  window.addEventListener('resize', () => { const s = session; if (!s) return; sizeDots(s); if (s.view.scale !== 1) setView(s, { scale: 1, tx: 0, ty: 0 }); });
 
   window.MsbColoring = {
     PAGES,
