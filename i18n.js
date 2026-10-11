@@ -1030,6 +1030,56 @@
     "Huge": "Enorme"
   });
 
+  /* Bible squishies game. */
+  Object.assign(ES, {
+    "Bible squishies": "Squishies de la Biblia",
+    "BIBLE SQUISHIES": "SQUISHIES DE LA BIBLIA",
+    "Squish a soft friend and learn its Bible story": "Aprieta a un amiguito suave y aprende su historia de la Biblia",
+    "Shelf": "Estante",
+    "Memory": "Memoria",
+    "Questions": "Preguntas",
+    "Which squishy?": "¿Cuál squishy?",
+    "WHICH SQUISHY?": "¿CUÁL SQUISHY?",
+    "Squishy games": "Juegos de squishies",
+    "Sounds": "Sonidos",
+    "Stars: {n} of {total}": "Estrellas: {n} de {total}",
+    "Unlocked: {n} of {total}": "Desbloqueados: {n} de {total}",
+    "Squish {name}": "Aprieta: {name}",
+    "Press and hold to squish. Drag to poke. Let go and watch it rise!": "Aprieta y mantén para aplastarlo. Arrastra para picarlo. ¡Suéltalo y mira cómo se levanta!",
+    "Squishy shelf": "Estante de squishies",
+    "Locked": "Bloqueado",
+    "Locked squishy. Win a game to unlock it.": "Squishy bloqueado. Gana un juego para desbloquearlo.",
+    "This squishy is locked. Win a round of Memory or Questions to unlock it!": "Este squishy está bloqueado. ¡Gana una ronda de Memoria o de Preguntas para desbloquearlo!",
+    "Win a round of Memory or Questions to unlock the next squishy.": "Gana una ronda de Memoria o de Preguntas para desbloquear el siguiente squishy.",
+    "BIBLE LESSON": "LECCIÓN DE LA BIBLIA",
+    "I learned it!": "¡Lo aprendí!",
+    "Star collected": "Estrella ganada",
+    "Match each squishy with its name. Find all the pairs to win!": "Junta cada squishy con su nombre. ¡Encuentra todas las parejas para ganar!",
+    "Moves: {n}": "Jugadas: {n}",
+    "Pairs: {n} of {total}": "Parejas: {n} de {total}",
+    "Picture: {name}": "Dibujo: {name}",
+    "Name: {name}": "Nombre: {name}",
+    "Card {n}, face down": "Carta {n}, boca abajo",
+    "Answer 5 Bible questions. Get {n} right to unlock a squishy!": "Contesta 5 preguntas de la Biblia. ¡Acierta {n} para desbloquear un squishy!",
+    "Question {n} of {total}": "Pregunta {n} de {total}",
+    "Yes! That’s right.": "¡Sí! Correcto.",
+    "Not quite. The answer is: {a}": "Casi. La respuesta es: {a}",
+    "See my score": "Ver mi puntaje",
+    "Great job!": "¡Muy bien!",
+    "Almost!": "¡Casi!",
+    "You got {n} of {total} right.": "Acertaste {n} de {total}.",
+    "Get {n} right to unlock a squishy. Try again!": "Acierta {n} para desbloquear un squishy. ¡Inténtalo otra vez!",
+    "Yes! It’s {name}.": "¡Sí! Es {name}.",
+    "It’s {name}!": "¡Es {name}!",
+    "NEW SQUISHY!": "¡NUEVO SQUISHY!",
+    "You unlocked {name}!": "¡Desbloqueaste: {name}!",
+    "Squish it!": "¡A apretarlo!",
+    "YOU WON!": "¡GANASTE!",
+    "You already have every squishy. Well done!": "Ya tienes todos los squishies. ¡Muy bien hecho!",
+    "Back to the shelf": "Volver al estante",
+    "New game": "Juego nuevo"
+  });
+
   /* Lesson tags, Bible-note bylines, and the game-show menus. */
   Object.assign(ES, {
     "STUDY": "ESTUDIO",
