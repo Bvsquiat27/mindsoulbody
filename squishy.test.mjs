@@ -194,8 +194,8 @@ test('pulling stretches the part near the finger, with a cap that resists harder
   const b = C.softBody();
   b.grab(60, 0, 0, -60); run(b, 1.5);
   const mid = box(b).h;
-  assert.ok(mid > 140, `stretched to ${mid}`);
-  assert.ok(b.y[Math.floor(b.n / 2)] < -20, 'top middle followed the finger up');
+  assert.ok(mid > 130, `stretched to ${mid}`);
+  assert.ok(b.y[Math.floor(b.n / 2)] < -15, 'top middle followed the finger up');
   assert.ok(Math.abs(b.y[b.N - 1 - Math.floor(b.n / 2)] - 120) < 15, 'bottom stays near its place');
   b.grab(60, 0, 0, -600); run(b, 1.5);
   const far = box(b).h;
@@ -203,6 +203,8 @@ test('pulling stretches the part near the finger, with a cap that resists harder
   const huge = box(b).h;
   assert.ok(far > mid && huge >= far - 0.5);
   assert.ok(huge < 120 + b.cfg.max + 2, `capped: ${huge}`);
+  assert.ok(huge <= 120 * 1.6, `springy but bounded: at most about 1.6x tall (${(huge / 120).toFixed(2)})`);
+  assert.ok(box(b).w > 120 * 0.9, 'does not pinch thin');
   assert.ok(huge - far < far - mid, 'more pull gives less stretch');
   assert.ok(b.state.stretch <= 1 && b.state.stretch > 0.9);
   assert.equal(C.mood(b.state), 'wow');
@@ -227,8 +229,9 @@ test('a press flattens it, dents under the finger and bulges the sides; area sta
   const light = box(b).h;
   b.press(60, 20, 1); run(b, 1.5);
   const r = box(b);
-  assert.ok(r.h < light && r.h < 100, `flatter: ${r.h}`);
-  assert.ok(r.w > 130, `wider: ${r.w}`);
+  assert.ok(r.h < light && r.h < 104, `flatter: ${r.h}`);
+  assert.ok(r.h >= 120 * 0.68, `not squashed flat: at least about 0.7x tall (${(r.h / 120).toFixed(2)})`);
+  assert.ok(r.w > 130 && r.w < 120 * 1.45, `wider: ${r.w}`);
   const ratio = b.area() / b.A0;
   assert.ok(ratio > 0.8 && ratio < 1.15, `area ratio ${ratio}`);
   const top = Math.floor(b.n / 2), side = 0;
@@ -239,13 +242,14 @@ test('a press flattens it, dents under the finger and bulges the sides; area sta
 
 test('two fingers squeeze it narrow or spread it wide, keeping its area', () => {
   const b = C.softBody();
-  b.pinch(60, 60, 1, 0, 0.4); run(b, 1.5);
+  b.pinch(60, 60, 1, 0, 0.1); run(b, 1.5);
   let r = box(b);
-  assert.ok(r.w < 90 && r.h > 140, `squeezed ${r.w}x${r.h}`);
+  assert.ok(r.w < 100 && r.h > 135, `squeezed ${r.w}x${r.h}`);
+  assert.ok(r.w >= 120 * 0.6 && r.h <= 120 * 1.6, `capped squeeze ${r.w}x${r.h}`);
   let ratio = b.area() / b.A0; assert.ok(ratio > 0.85 && ratio < 1.15, `area ${ratio}`);
-  b.pinch(60, 60, 1, 0, 5); run(b, 1.5);
+  b.pinch(60, 60, 1, 0, 9); run(b, 1.5);
   r = box(b);
-  assert.ok(r.w > 160 && r.w < 120 * 1.7 + 4 && r.h < 90, `spread ${r.w}x${r.h}`);
+  assert.ok(r.w > 140 && r.w <= 120 * 1.6 && r.h < 104 && r.h >= 120 * 0.6, `spread ${r.w}x${r.h}`);
   ratio = b.area() / b.A0; assert.ok(ratio > 0.85 && ratio < 1.15, `area ${ratio}`);
   b.release(); assert.ok(settleTime(b) < 5);
 });
@@ -281,7 +285,7 @@ test('vibration scales with how hard you squish or stretch, capped at 30 ms', ()
   assert.equal(C.pulseMs(1), 30);
   assert.equal(C.pulseMs(9), 30);
   const ui = read('./squishy.js');
-  assert.match(ui, /now - p\.buzzAt < 110/, 'throttled');
+  assert.match(ui, /now - p\.buzzAt < \(p\.glow \? 160 : 110\)/, 'throttled');
 });
 
 test('play view: canvas mesh, touch-action none, Learn bubble, keyboard, faces, and settings kept', () => {
@@ -303,5 +307,143 @@ test('play view: canvas mesh, touch-action none, Learn bubble, keyboard, faces, 
     const s = C.soundPref({ getItem: k => store.get(k) ?? null, setItem: (k, v) => store.set(k, String(v)) });
     s.set(false);
     assert.equal(C.soundPref({ getItem: k => store.get(k) ?? null, setItem: () => {} }).get(), false);
+  } finally { g.window = prev; }
+});
+
+test('the face stays one stiff piece: it follows the body with only a mild stretch and tilt', () => {
+  const b = C.softBody();
+  const f0 = b.faceFrame(60, 66, 19);
+  assert.deepEqual([f0.x, f0.y, f0.sx, f0.sy, f0.rot], [60, 66, 1, 1, 0]);
+  for (const act of [() => b.grab(60, 0, 0, -900), () => b.grab(0, 60, -900, 300), () => b.press(30, 30, 1), () => b.pinch(60, 60, 1, 1, 0.1), () => b.pinch(60, 60, 1, 0, 9)]) {
+    act(); run(b, 1.2);
+    const f = b.faceFrame(60, 66, 19);
+    assert.ok(f.sx >= 0.9 && f.sx <= 1.1 && f.sy >= 0.9 && f.sy <= 1.1, `scale ${f.sx} ${f.sy}`);
+    assert.ok(Math.abs(f.rot) <= 0.18 + 1e-9, `tilt ${f.rot}`);
+    b.release(); run(b, 4);
+  }
+  const art = read('./squishy-art.js'), ui = read('./squishy.js');
+  assert.match(art, /part === 'body'\) return ''/, 'body picture is drawn without its face');
+  assert.match(ui, /function drawFace/);
+  assert.match(ui, /A\(\)\.svg\(id, '', 'happy', 'body'\)/);
+});
+
+test('the outline stays smooth while stretched, squished or pinched (no kinks)', () => {
+  const b = C.softBody();
+  /* a contour through the picture (where the art's outline lives), on the
+     24-step render mesh that is sampled smoothly from the physics grid */
+  const R = 24, lo = 3, hi = 21, edge = [];
+  for (let i = lo; i <= hi; i += 1) edge.push([i, lo]);
+  for (let j = lo + 1; j <= hi; j += 1) edge.push([hi, j]);
+  for (let i = hi - 1; i >= lo; i -= 1) edge.push([i, hi]);
+  for (let j = hi - 1; j > lo; j -= 1) edge.push([lo, j]);
+  const isCorner = ([i, j]) => (i === lo || i === hi) && (j === lo || j === hi);
+  const worstTurn = () => {
+    let worst = 0;
+    const P = edge.map(([i, j]) => b.smooth(i * 120 / R, j * 120 / R));
+    for (let q = 0; q < edge.length; q += 1) {
+      if (isCorner(edge[q])) continue;
+      const A = P[(q + edge.length - 1) % edge.length], K = P[q], Cc = P[(q + 1) % edge.length];
+      const t1 = Math.atan2(K.y - A.y, K.x - A.x), t2 = Math.atan2(Cc.y - K.y, Cc.x - K.x);
+      let d = Math.abs(t2 - t1); if (d > Math.PI) d = 2 * Math.PI - d;
+      worst = Math.max(worst, d);
+    }
+    return worst;
+  };
+  for (const act of [() => b.grab(60, 0, 0, -900), () => b.grab(120, 60, 900, 0), () => b.grab(60, 60, 900, 0), () => b.grab(100, 100, 600, 600), () => b.press(60, 10, 1), () => b.pinch(60, 60, 1, 0, 0.1), () => b.pinch(60, 60, 1, 0, 9)]) {
+    act(); run(b, 1.5);
+    assert.ok(worstTurn() < 0.45, `kink ${worstTurn().toFixed(2)} rad`);
+    b.release(); run(b, 4);
+  }
+});
+
+/* ---------- The final, glowing squishy ---------- */
+test('the glowing Light of the World lamp is the 15th squishy and unlocks last', () => {
+  assert.equal(SQUISHIES.length, 15);
+  const lamp = SQUISHIES.at(-1);
+  assert.equal(lamp.id, 'lamp');
+  assert.equal(lamp.locked, true);
+  assert.equal(lamp.glow, true);
+  assert.equal(lamp.final, true);
+  assert.equal(lamp.sound, 'crunch');
+  assert.equal(SQUISHIES.filter(x => x.final).length, 1);
+  assert.equal(lamp.ref.en, 'John 8:12');
+  assert.equal(lamp.ref.es, 'Juan 8:12');
+  assert.match(lamp.verse.en, /I am the light of the world/);
+  assert.match(lamp.verse.es, /Yo soy la luz del mundo/);
+  assert.equal(lamp.verse.en, verseAt('en', [43, 8, 12]));
+  assert.equal(lamp.verse.es, verseAt('es', [43, 8, 12]));
+  const s = memoryStorage(), p = C.progress(s, SQUISHIES), order = [];
+  let next;
+  while ((next = p.unlockNext())) order.push(next.id);
+  assert.equal(order.length, 9);
+  assert.equal(order.at(-1), 'lamp', 'unlocked after all the other locked squishies');
+  assert.deepEqual(order.slice(0, 8), SQUISHIES.filter(x => x.locked && !x.final).map(x => x.id));
+});
+
+test('crunchy sounds and vibration grow with the squish, stay soft and capped', () => {
+  const small = C.crunchShape(0.1), big = C.crunchShape(1);
+  assert.ok(big.clicks > small.clicks && big.spanMs > small.spanMs && big.peak > small.peak);
+  assert.ok(C.crunchShape(50).peak <= 0.05, 'soft volume');
+  for (const i of [0, 0.2, 0.5, 0.9, 1, 7]) {
+    const pat = C.crunchPattern(i);
+    assert.equal(pat.length % 2, 1, 'ticks with gaps between');
+    const ticks = pat.filter((_, k) => k % 2 === 0), gaps = pat.filter((_, k) => k % 2 === 1);
+    assert.ok(ticks.every(t => t > 0 && t <= 12), `short ticks ${pat}`);
+    assert.ok(ticks.reduce((a, b) => a + b, 0) <= 30, `capped ${pat}`);
+    assert.ok(gaps.every(g => g >= 15));
+  }
+  assert.ok(C.crunchPattern(1).length > C.crunchPattern(0.1).length);
+  const ui = read('./squishy.js');
+  assert.match(ui, /\n    crunch: \(\) => crunch\(/);
+  assert.match(ui, /function crunch\(intensity, tail\)/);
+  assert.match(ui, /const a = audio\(\); if \(!a\) return;\n    try \{\n      if \(!noiseBuf\)/, 'crunch goes through audio(): sound switch and bedtime still apply');
+  assert.match(ui, /vibrate\(p\.glow \? C\(\)\.crunchPattern\(level\)/);
+  assert.match(ui, /msb_tap_vibration/);
+});
+
+test('glow: soft pulse that brightens with squish/stretch; steady with reduced motion', () => {
+  assert.ok(C.glowLevel(1, 0, false) > C.glowLevel(0, 0, false) + 0.4);
+  const pulse = [0, 0.5, 1, 1.5, 2].map(t => C.glowLevel(0, t, false));
+  assert.ok(Math.max(...pulse) - Math.min(...pulse) > 0.05, 'pulses');
+  const calm = [0, 0.5, 1, 1.5, 2].map(t => C.glowLevel(0, t, true));
+  assert.equal(new Set(calm).size, 1, 'no pulse with reduced motion');
+  assert.ok(C.glowLevel(5, 1, false) <= 1);
+  const ui = read('./squishy.js'), css = read('./study-design.css');
+  assert.match(ui, /if \(reduced\(\)\) \{ p\.sparks\.length = 0; return; \}/, 'no sparkles with reduced motion');
+  assert.match(css, /\.sq-tile\.glow/);
+  assert.match(css, /\.sq-tile\.locked\.final/);
+  const calmCss = css.slice(css.lastIndexOf('@media (prefers-reduced-motion:reduce){.sq-mcard'));
+  for (const sel of ['.sq-tile.glow .sq-art{animation:none', '.sq-sparks{display:none}', '.sq-tile.locked.final{animation:none}', '.sq-burst{display:none}']) assert.ok(calmCss.includes(sel), sel);
+});
+
+test('render mesh is smooth and exact at rest; the picture is drawn straight when not deformed', () => {
+  const b = C.softBody();
+  for (const [x, y] of [[0, 0], [17, 93], [60, 60], [120, 120], [33.3, 7.7]]) { const p = b.smooth(x, y); assert.ok(Math.hypot(p.x - x, p.y - y) < 1e-6, `${x},${y}`); }
+  const ui = read('./squishy.js');
+  assert.match(ui, /const RENDER = 24/);
+  assert.match(ui, /imageSmoothingQuality = 'high'/);
+  assert.match(ui, /devicePixelRatio/);
+  assert.match(ui, /if \(full\.ready && !b\.state\.mode && b\.maxOffset\(\) < 0\.3\)/, 'at rest: the original picture, unwarped');
+  assert.match(ui, /width="\$\{T\}" height="\$\{T\}"/, 'SVG drawn at the target resolution');
+});
+
+test('squint eyes are hidden by an attribute, so pictures drawn on a canvas have clean, matching eyes', () => {
+  const g = globalThis, prev = g.window;
+  g.window = {};
+  try {
+    const src = read('./squishy-art.js');
+    new Function(src)();
+    const A = g.window.MsbSquishyArt;
+    for (const id of A.ids) {
+      const happy = A.svg(id), squint = A.svg(id, '', 'squint'), face = A.svg(id, '', 'happy', 'face');
+      assert.match(happy, /<g class="sq-shut" display="none"/, `${id}: > < hidden at rest`);
+      assert.doesNotMatch(happy, /<g class="sq-open" display="none"/, `${id}: open eyes shown`);
+      assert.match(squint, /<g class="sq-open" display="none"/);
+      assert.match(squint, /<g class="sq-shut" display="inline"/);
+      assert.match(face, /sq-face/);
+      assert.doesNotMatch(A.svg(id, '', 'happy', 'body'), /sq-face/, `${id}: body picture has no face`);
+      const eyes = [...happy.matchAll(/<ellipse cx="(-?\d+)" cy="0" rx="5\.6" ry="6\.6"/g)].map(m => Number(m[1]));
+      assert.deepEqual(eyes, [-13, 13], `${id}: two matching eyes`);
+    }
   } finally { g.window = prev; }
 });

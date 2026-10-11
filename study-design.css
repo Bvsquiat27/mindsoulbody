@@ -620,4 +620,24 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .sq-confetti i:nth-child(5n+4){background:rgb(215,184,255)}
 @keyframes sq-fall{to{transform:translateY(110vh) rotate(calc(var(--r) + 540deg))}}
 @keyframes sq-pop{from{transform:scale(.3)}to{transform:scale(1)}}
-@media (prefers-reduced-motion:reduce){.sq-mcard{transition:none}.sq-new{animation:none}.sq-confetti{display:none}}
+/* The final, glowing squishy */
+.sq-tile.glow{border-color:rgba(255,214,110,.7);background:radial-gradient(circle at 50% 40%,rgba(255,226,140,.28),rgba(255,255,255,.05) 70%);box-shadow:0 0 18px rgba(255,205,90,.35);overflow:hidden}
+.sq-tile.glow .sq-art{filter:drop-shadow(0 0 8px rgba(255,214,110,.75));animation:sq-glow 2.6s ease-in-out infinite}
+.sq-sparks{position:absolute;inset:0;pointer-events:none}
+.sq-sparks i{position:absolute;bottom:22%;width:5px;height:5px;border-radius:50%;background:rgb(255,240,180);box-shadow:0 0 6px 2px rgba(255,220,120,.8);opacity:0;animation:sq-float 2.8s ease-in infinite}
+.sq-sparks i:nth-child(1){left:22%}.sq-sparks i:nth-child(2){left:44%;animation-delay:.7s}.sq-sparks i:nth-child(3){left:64%;animation-delay:1.4s}.sq-sparks i:nth-child(4){left:80%;animation-delay:2.1s}
+.sq-tile.locked.final{border-color:rgba(255,214,110,.45);background:linear-gradient(110deg,rgba(255,255,255,.04) 30%,rgba(255,226,140,.22) 50%,rgba(255,255,255,.04) 70%) 0 0/250% 100%;animation:sq-shimmer 3.2s linear infinite}
+.sq-tile.locked.final .sq-art{filter:brightness(0) opacity(.42) drop-shadow(0 0 6px rgba(255,214,110,.6))}
+.sq-tile.locked.final .sq-name{color:rgb(255,226,150);opacity:1}
+@keyframes sq-glow{0%,100%{filter:drop-shadow(0 0 5px rgba(255,214,110,.55))}50%{filter:drop-shadow(0 0 13px rgba(255,226,140,.95))}}
+@keyframes sq-float{0%{opacity:0;transform:translateY(0) scale(.6)}25%{opacity:1}100%{opacity:0;transform:translateY(-60px) scale(1)}}
+@keyframes sq-shimmer{0%{background-position:100% 0}100%{background-position:-150% 0}}
+.sq-celebrate.final{background:radial-gradient(circle at 50% 45%,rgba(120,90,20,.55),rgba(0,0,0,.7) 70%)}
+.sq-celebrate.final .sq-celebrate-card{border-color:rgba(255,214,110,.8);box-shadow:0 0 40px rgba(255,205,90,.45)}
+.sq-new-glow{filter:drop-shadow(0 0 16px rgba(255,220,120,.9))}
+.sq-burst{position:absolute;left:50%;top:45%;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;background:radial-gradient(circle,rgba(255,244,190,.9),rgba(255,214,110,.35) 35%,rgba(255,214,110,0) 70%);pointer-events:none;animation:sq-burst 1.6s ease-out both}
+@keyframes sq-burst{0%{transform:scale(.1);opacity:1}70%{opacity:.8}100%{transform:scale(1.6);opacity:0}}
+.sq-confetti.gold i{background:rgb(255,214,110)}
+.sq-confetti.gold i:nth-child(3n+1){background:rgb(255,240,180)}
+.sq-confetti.gold i:nth-child(3n+2){background:rgb(240,180,60);border-radius:50%;width:8px;height:8px}
+@media (prefers-reduced-motion:reduce){.sq-mcard{transition:none}.sq-new{animation:none}.sq-confetti{display:none}.sq-tile.glow .sq-art{animation:none;filter:drop-shadow(0 0 9px rgba(255,214,110,.8))}.sq-sparks{display:none}.sq-tile.locked.final{animation:none}.sq-burst{display:none}}
