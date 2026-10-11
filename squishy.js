@@ -24,7 +24,7 @@
   const byId = id => D().SQUISHIES.find(x => x.id === id);
   const nameOf = x => x.name[lang()];
 
-  const ui = { root: null, view: 'shelf', selected: 'lamb', card: null, memory: null, round: null, guess: null, msg: '' };
+  const ui = { root: null, view: 'shelf', playing: null, memory: null, round: null, guess: null, msg: '' };
 
   /* ---------- Sound (made on the device with Web Audio) ---------- */
   let ac = null, master = null;
@@ -115,22 +115,18 @@
     const root = ui.root;
     if (!root || !root.isConnected) return;
     const body = ui.view === 'memory' ? memoryHtml() : ui.view === 'questions' ? questionsHtml() : ui.view === 'guess' ? guessHtml() : shelfHtml();
-    root.innerHTML = `<div class="squishy-screen" data-i18n-skip><button class="text-button back" type="button" data-squishy-exit>${esc(L('← Stories'))}</button><span class="eyebrow">${esc(L('BIBLE SQUISHIES'))}</span><h1>${esc(L('Bible squishies'))}</h1>${topBar()}${tabs()}<div class="sq-body" data-sq-body>${body}</div><div class="sq-celebrate" data-sq-celebrate hidden></div></div>`;
-    bindStage();
+    root.innerHTML = `<div class="squishy-screen" data-i18n-skip><button class="text-button back" type="button" data-squishy-exit>${esc(L('← Stories'))}</button><span class="eyebrow">${esc(L('BIBLE SQUISHIES'))}</span><h1>${esc(L('Bible squishies'))}</h1>${topBar()}${tabs()}<div class="sq-body" data-sq-body>${body}</div><div class="sq-play-host" data-sq-play-host></div><div class="sq-celebrate" data-sq-celebrate hidden></div></div>`;
+    if (ui.playing) openPlay(ui.playing);
   }
 
-  /* Shelf: the big squishy to squish, its lesson card, and the shelf. */
+  /* Shelf: tap a squishy to play with it. */
   function shelfHtml() {
     const p = prog(), open = p.unlocked(), stars = p.stars();
-    if (!open.includes(ui.selected)) ui.selected = open[0];
-    const x = byId(ui.selected);
     const tiles = D().SQUISHIES.map(s => {
       if (!open.includes(s.id)) return `<button type="button" class="sq-tile locked" data-sq-locked aria-label="${esc(L('Locked squishy. Win a game to unlock it.'))}"><span class="sq-art">${A().svg(s.id)}</span><span class="sq-lock" aria-hidden="true">🔒</span><span class="sq-name">${esc(L('Locked'))}</span></button>`;
-      return `<button type="button" class="sq-tile${s.id === ui.selected ? ' active' : ''}" data-sq-pick="${s.id}" aria-pressed="${s.id === ui.selected}" aria-label="${esc(nameOf(s) + (stars.includes(s.id) ? ' ⭐' : ''))}"><span class="sq-art">${A().svg(s.id)}</span>${stars.includes(s.id) ? '<span class="sq-star" aria-hidden="true">⭐</span>' : ''}<span class="sq-name">${esc(nameOf(s))}</span></button>`;
+      return `<button type="button" class="sq-tile" data-sq-pick="${s.id}" aria-label="${esc(L('Play with {name}', { name: nameOf(s) }) + (stars.includes(s.id) ? ' ⭐' : ''))}"><span class="sq-art">${A().svg(s.id)}</span>${stars.includes(s.id) ? '<span class="sq-star" aria-hidden="true">⭐</span>' : ''}<span class="sq-name">${esc(nameOf(s))}</span></button>`;
     }).join('');
-    return `<div class="sq-stage" data-sq-stage><div class="sq-shadow" aria-hidden="true"></div><button type="button" class="sq-squishy" data-sq-squishy="${x.id}" data-haptic-self aria-label="${esc(L('Squish {name}', { name: nameOf(x) }))}">${A().svg(x.id, nameOf(x))}</button></div>
-      <p class="sq-hint muted" data-sq-hint>${esc(L('Press and hold to squish. Drag to poke. Let go and watch it rise!'))}</p>
-      <div data-sq-card>${ui.card === x.id ? cardHtml(x) : ''}</div>
+    return `<p class="sq-hint">${esc(L('Tap a squishy to play with it: squish it, stretch it, and learn its Bible story.'))}</p>
       ${ui.msg ? `<p class="sq-msg" role="status">${esc(ui.msg)}</p>` : ''}
       <h2 class="sq-h2">${esc(L('Squishy shelf'))}</h2><div class="sq-grid">${tiles}</div>
       ${p.nextLocked() ? `<p class="small muted sq-unlock-note">${esc(L('Win a round of Memory or Questions to unlock the next squishy.'))}</p>` : ''}`;
@@ -139,83 +135,275 @@
   function cardHtml(x) {
     const l = lang(), has = prog().stars().includes(x.id);
     const canSpeak = !!(window.MsbSpeech && MsbSpeech.supported && MsbSpeech.supported());
-    return `<article class="card sq-card" aria-live="polite"><span class="eyebrow">${esc(L('BIBLE LESSON'))}</span><h2>${esc(nameOf(x))}</h2><p>${esc(x.lesson[l])}</p>
+    return `<article class="card sq-card"><span class="eyebrow">${esc(L('BIBLE LESSON'))}</span><h2 id="sq-card-title">${esc(nameOf(x))}</h2><p>${esc(x.lesson[l])}</p>
       <blockquote class="sq-verse"><p>“${esc(x.verse[l])}”</p><cite>${esc(x.ref[l])} · ${l === 'es' ? 'RV1909' : 'KJV'}</cite></blockquote>
-      <div class="sq-card-actions">${canSpeak ? `<button type="button" class="secondary" data-sq-speak="${x.id}">🔊 ${esc(L('Read aloud'))}</button>` : ''}${has ? `<span class="sq-got">⭐ ${esc(L('Star collected'))}</span>` : `<button type="button" class="primary" data-sq-star="${x.id}">⭐ ${esc(L('I learned it!'))}</button>`}</div></article>`;
+      <div class="sq-card-actions">${canSpeak ? `<button type="button" class="secondary" data-sq-speak="${x.id}">🔊 ${esc(L('Read aloud'))}</button>` : ''}${has ? `<span class="sq-got">⭐ ${esc(L('Star collected'))}</span>` : `<button type="button" class="primary" data-sq-star="${x.id}">⭐ ${esc(L('I learned it!'))}</button>`}<button type="button" class="secondary" data-sq-sheet-close>${esc(L('Keep playing'))}</button></div></article>`;
   }
 
-  /* ---------- Squish physics ---------- */
-  let anim = null;
-  function bindStage() {
-    if (anim && anim.frame) cancelAnimationFrame(anim.frame);
-    const btn = ui.root.querySelector('[data-sq-squishy]');
-    if (!btn) { anim = null; return; }
-    anim = { el: btn, shadow: ui.root.querySelector('.sq-shadow'), st: { s: 0, vs: 0, dx: 0, vx: 0, dy: 0, vy: 0 }, held: false, start: 0, from: null, poke: { dx: 0, dy: 0 }, frame: 0, last: 0, squeezed: false, pointer: null };
+  /* ---------- Play view: a big soft-body squishy ---------- */
+  let pv = null;
+  const textures = new Map();
+  function texture(id, mood) {
+    const key = `${id}:${mood}`;
+    if (textures.has(key)) return textures.get(key);
+    const T = 360, entry = { ready: false, canvas: document.createElement('canvas'), mask: null };
+    entry.canvas.width = entry.canvas.height = T;
+    const img = new Image();
+    img.onload = () => {
+      const g = entry.canvas.getContext('2d');
+      g.drawImage(img, 0, 0, T, T);
+      entry.ready = true;
+      if (mood === 'happy') {
+        /* which mesh cells have any ink, so empty corners are skipped when drawing */
+        const n = pv ? pv.body.n : 11, data = g.getImageData(0, 0, T, T).data, cell = T / (n - 1), mask = new Uint8Array((n - 1) * (n - 1));
+        for (let j = 0; j < n - 1; j += 1) for (let i = 0; i < n - 1; i += 1) {
+          let any = 0;
+          for (let yy = Math.floor(j * cell); yy < Math.min(T, Math.ceil((j + 1) * cell)) && !any; yy += 3) for (let xx = Math.floor(i * cell); xx < Math.min(T, Math.ceil((i + 1) * cell)); xx += 3) if (data[(yy * T + xx) * 4 + 3] > 8) { any = 1; break; }
+          mask[j * (n - 1) + i] = any;
+        }
+        entry.mask = mask;
+      }
+      if (pv) pv.dirty = true;
+    };
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(A().svg(id, '', mood));
+    textures.set(key, entry);
+    return entry;
   }
-  function paint(a) {
-    const { s, dx, dy } = a.st;
-    a.el.style.transform = `translate(${dx.toFixed(2)}px, ${dy.toFixed(2)}px) skewX(${(-dx * 0.25).toFixed(2)}deg) scale(${(1 + s * 0.55).toFixed(4)}, ${(1 - s).toFixed(4)})`;
-    if (a.shadow) a.shadow.style.transform = `translateX(-50%) scale(${(1 + s * 0.6).toFixed(3)}, ${(1 + s * 0.3).toFixed(3)})`;
-    const sq = s > 0.17;
-    if (sq !== a.squeezed) { a.squeezed = sq; a.el.classList.toggle('squeezed', sq); }
+
+  function playHtml(x) {
+    const on = sounds().get();
+    return `<div class="sq-play" data-sq-play role="dialog" aria-modal="true" aria-labelledby="sq-play-title">
+      <div class="sq-play-top"><button type="button" class="sq-play-back" data-sq-play-back>${esc(L('← Shelf'))}</button><strong id="sq-play-title">${esc(nameOf(x))}</strong><button type="button" class="sq-sound" role="switch" aria-checked="${on}" data-sq-sound aria-label="${esc(L('Sounds'))}">${on ? '🔊' : '🔈'}</button></div>
+      <div class="sq-play-area" data-sq-area><canvas class="sq-canvas" data-sq-canvas tabindex="0" role="img" aria-label="${esc(L('{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch.', { name: nameOf(x) }))}"></canvas>
+        <button type="button" class="sq-learn" data-sq-learn hidden>📖 ${esc(L('Learn'))}</button></div>
+      <p class="sq-play-hint">${esc(L('Press to squish · drag to stretch · two fingers to squeeze or spread'))}</p>
+      <div class="sq-sheet" data-sq-sheet hidden></div></div>`;
   }
-  function tick(now) {
-    const a = anim;
-    if (!a) return;
-    const dt = a.last ? (now - a.last) / 1000 : 0.016;
-    a.last = now;
-    const target = a.held ? { s: C().pressDepth(now - a.start, reduced()), ...a.poke } : { s: 0, dx: 0, dy: 0 };
-    a.st = C().springStep(a.st, dt, target, a.held, reduced());
-    paint(a);
-    if (!a.held && C().atRest(a.st)) { a.st = { s: 0, vs: 0, dx: 0, vx: 0, dy: 0, vy: 0 }; paint(a); a.frame = 0; a.last = 0; return; }
-    a.frame = requestAnimationFrame(tick);
-  }
-  function kick() { if (anim && !anim.frame) { anim.last = 0; anim.frame = requestAnimationFrame(tick); } }
-  function press(clientX, clientY) {
-    const a = anim; if (!a || a.held) return;
-    a.held = true; a.start = performance.now(); a.from = { x: clientX, y: clientY }; a.poke = { dx: 0, dy: 0 };
-    play(byId(a.el.dataset.sqSquishy).sound);
-    vibrate(8);
+
+  function openPlay(id) {
+    const host = ui.root && ui.root.querySelector('[data-sq-play-host]');
+    const x = byId(id);
+    if (!host || !x) return;
+    closePlay(true);
+    ui.playing = id;
+    host.innerHTML = playHtml(x);
+    document.documentElement.classList.add('sq-locked');
+    const canvas = host.querySelector('[data-sq-canvas]'), area = host.querySelector('[data-sq-area]');
+    pv = { id, x, canvas, area, ctx: canvas.getContext('2d'), body: C().softBody({ reduced: reduced() }), pointers: new Map(), mode: null, anchor: null, start: 0, pinch0: null, frame: 0, last: 0, dirty: true, mood: 'happy', dpr: 1, scale: 1, ox: 0, oy: 0, buzzAt: 0, buzzLevel: 0, squelch: 0, gestured: false, held: false, tone: null, lastStretch: 0, giggleAt: 0 };
+    for (const m of ['happy', 'squint', 'wow']) texture(id, m);
+    layout();
     kick();
+    canvas.focus({ preventScroll: true });
   }
-  function release() {
-    const a = anim; if (!a || !a.held) return;
-    a.held = false;
-    const held = performance.now() - a.start;
-    vibrate(C().vibeMs(held));
-    play('release');
-    kick();
-    const id = a.el.dataset.sqSquishy;
-    if (ui.card !== id) {
-      ui.card = id;
-      const host = ui.root.querySelector('[data-sq-card]');
-      if (host) host.innerHTML = cardHtml(byId(id));
+  function closePlay(silent) {
+    if (!pv) return;
+    if (pv.frame) cancelAnimationFrame(pv.frame);
+    toneStop();
+    pv = null;
+    if (!silent) ui.playing = null;
+    document.documentElement.classList.remove('sq-locked');
+    const host = ui.root && ui.root.querySelector('[data-sq-play-host]');
+    if (host && !silent) host.innerHTML = '';
+  }
+  function layout() {
+    const p = pv; if (!p) return;
+    const r = p.area.getBoundingClientRect(), dpr = Math.min(2.5, window.devicePixelRatio || 1);
+    p.cw = Math.max(200, r.width); p.ch = Math.max(240, r.height); p.dpr = dpr;
+    p.canvas.width = Math.round(p.cw * dpr); p.canvas.height = Math.round(p.ch * dpr);
+    p.canvas.style.width = `${p.cw}px`; p.canvas.style.height = `${p.ch}px`;
+    p.scale = Math.min(p.cw, p.ch) * 0.58 / p.body.size;
+    p.ox = (p.cw - p.body.size * p.scale) / 2;
+    p.oy = p.ch * 0.58 - p.body.size * p.scale / 2;
+    p.dirty = true;
+  }
+  window.addEventListener('resize', () => { if (pv) layout(); });
+  const toBody = (p, cx, cy) => { const r = p.canvas.getBoundingClientRect(); return { x: (cx - r.left - p.ox) / p.scale, y: (cy - r.top - p.oy) / p.scale }; };
+
+  /* Draw the picture warped over the mesh: two textured triangles per cell. */
+  function draw() {
+    const p = pv; if (!p) return;
+    const g = p.ctx, b = p.body, n = b.n, T = 360, k = T / b.size, tex = texture(p.id, p.mood), base = texture(p.id, 'happy');
+    const img = tex.ready ? tex.canvas : base.ready ? base.canvas : null;
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.clearRect(0, 0, p.canvas.width, p.canvas.height);
+    if (!img) return;
+    const s = p.scale * p.dpr, ox = p.ox * p.dpr, oy = p.oy * p.dpr;
+    const bb = b.bounds();
+    g.fillStyle = 'rgba(0,0,0,0.28)';
+    g.beginPath();
+    g.ellipse(ox + (bb.minX + bb.maxX) / 2 * s, oy + Math.min(bb.maxY, b.size * 1.02) * s, (bb.maxX - bb.minX) * s * 0.36, 9 * p.dpr, 0, 0, Math.PI * 2);
+    g.fill();
+    const X = i => ox + b.x[i] * s, Y = i => oy + b.y[i] * s;
+    const mask = base.mask;
+    for (let j = 0; j < n - 1; j += 1) for (let i = 0; i < n - 1; i += 1) {
+      if (mask && !mask[j * (n - 1) + i]) continue;
+      const a = j * n + i, bq = a + 1, c = a + n, d = a + n + 1;
+      tri(g, img, b.rx[a] * k, b.ry[a] * k, b.rx[bq] * k, b.ry[bq] * k, b.rx[c] * k, b.ry[c] * k, X(a), Y(a), X(bq), Y(bq), X(c), Y(c));
+      tri(g, img, b.rx[bq] * k, b.ry[bq] * k, b.rx[d] * k, b.ry[d] * k, b.rx[c] * k, b.ry[c] * k, X(bq), Y(bq), X(d), Y(d), X(c), Y(c));
     }
   }
+  /* Affine-map one texture triangle (u) onto a screen triangle (d), clipped
+     slightly larger so neighbouring triangles meet without hairline seams. */
+  function tri(g, img, u0, v0, u1, v1, u2, v2, x0, y0, x1, y1, x2, y2) {
+    const det = (u1 - u0) * (v2 - v0) - (u2 - u0) * (v1 - v0);
+    if (!det) return;
+    const a = ((x1 - x0) * (v2 - v0) - (x2 - x0) * (v1 - v0)) / det, c = ((x2 - x0) * (u1 - u0) - (x1 - x0) * (u2 - u0)) / det;
+    const bb = ((y1 - y0) * (v2 - v0) - (y2 - y0) * (v1 - v0)) / det, d = ((y2 - y0) * (u1 - u0) - (y1 - y0) * (u2 - u0)) / det;
+    const e = x0 - a * u0 - c * v0, f = y0 - bb * u0 - d * v0;
+    const cx = (x0 + x1 + x2) / 3, cy = (y0 + y1 + y2) / 3, grow = (px, py) => { const dx = px - cx, dy = py - cy, l = Math.hypot(dx, dy) || 1; return [px + dx / l * 0.9, py + dy / l * 0.9]; };
+    const p0 = grow(x0, y0), p1 = grow(x1, y1), p2 = grow(x2, y2);
+    g.save();
+    g.beginPath(); g.moveTo(p0[0], p0[1]); g.lineTo(p1[0], p1[1]); g.lineTo(p2[0], p2[1]); g.closePath(); g.clip();
+    g.setTransform(a, bb, c, d, e, f);
+    g.drawImage(img, 0, 0);
+    g.restore();
+  }
+
+  /* Continuous stretchy tone: pitch rises with the stretch, only sounds while it changes. */
+  function toneStart() {
+    const a = audio(); if (!a || !pv || pv.tone) return;
+    try {
+      const osc = a.createOscillator(), f = a.createBiquadFilter(), gain = a.createGain(), lfo = a.createOscillator(), lg = a.createGain();
+      osc.type = 'triangle'; osc.frequency.value = 180; f.type = 'lowpass'; f.frequency.value = 900; gain.gain.value = 0;
+      lfo.frequency.value = 9; lg.gain.value = 6; lfo.connect(lg); lg.connect(osc.frequency);
+      osc.connect(f); f.connect(gain); gain.connect(master); osc.start(); lfo.start();
+      pv.tone = { osc, gain, lfo };
+    } catch { /* ignore */ }
+  }
+  function toneSet(amount, speed) {
+    const t = pv && pv.tone; if (!t || !ac) return;
+    const now = ac.currentTime;
+    t.osc.frequency.setTargetAtTime(170 + amount * 560, now, 0.03);
+    t.gain.gain.setTargetAtTime(Math.min(0.055, speed * 0.04), now, speed > 0.02 ? 0.03 : 0.08);
+  }
+  function toneStop() {
+    const t = pv && pv.tone; if (!t) return;
+    pv.tone = null;
+    try { t.gain.gain.setTargetAtTime(0, ac.currentTime, 0.04); t.osc.stop(ac.currentTime + 0.2); t.lfo.stop(ac.currentTime + 0.2); } catch { /* ignore */ }
+  }
+  function squelch(depth) { noise({ filter: 'lowpass', f0: 900, f1: 220, dur: 0.22, peak: 0.03 + depth * 0.03 }); voice({ f0: 240, f1: 140, dur: 0.18, peak: 0.025 + depth * 0.02 }); }
+  function boing(amount) { voice({ f0: 200 + amount * 340, f1: 95, dur: 0.45, peak: 0.04 + amount * 0.04, vib: [13, 26 + amount * 30] }); }
+
+  function buzz(level, now) {
+    const p = pv; if (!p) return;
+    if (now - p.buzzAt < 110 || Math.abs(level - p.buzzLevel) < 0.06 || level < 0.05) return;
+    p.buzzAt = now; p.buzzLevel = level;
+    vibrate(C().pulseMs(level));
+  }
+
+  function tick(now) {
+    const p = pv; if (!p) return;
+    p.frame = 0;
+    const dt = p.last ? (now - p.last) / 1000 : 1 / 60;
+    p.last = now;
+    const b = p.body, list = [...p.pointers.values()];
+    if (p.mode === 'pinch' && list.length >= 2) {
+      const [f0, f1] = list, d0 = p.pinch0.d, d1 = Math.hypot(f1.x - f0.x, f1.y - f0.y);
+      b.pinch(p.pinch0.cx, p.pinch0.cy, p.pinch0.ux, p.pinch0.uy, d1 / d0);
+    } else if (p.mode === 'grab' && list.length) {
+      const f = list[0];
+      b.grab(p.anchor.x, p.anchor.y, (f.x - f.x0) / p.scale, (f.y - f.y0) / p.scale);
+    } else if (p.mode === 'press') {
+      const hold = now - p.start, depth = 1 - Math.exp(-hold / 650);
+      b.press(p.anchor.x, p.anchor.y, depth);
+      const step = depth > 0.75 ? 2 : depth > 0.35 ? 1 : 0;
+      if (step > p.squelch) { p.squelch = step; squelch(depth); }
+    }
+    b.step(dt);
+    const st = b.state, amount = Math.max(st.stretch, st.squish);
+    if (st.mode === 'grab' || st.mode === 'pinch') { const sp = Math.abs(amount - p.lastStretch) / Math.max(dt, 0.008); toneSet(amount, sp); }
+    p.lastStretch = amount;
+    if (st.mode) buzz(amount, now);
+    const m = st.mode ? C().mood(st) : 'happy';
+    if (m !== p.mood) { p.mood = m; }
+    if (!st.mode && now - p.giggleAt > 1400 && b.energy() > 900) { p.giggleAt = now; play('giggle'); }
+    draw();
+    if (st.mode || !b.atRest()) p.frame = requestAnimationFrame(tick);
+    else { b.settle(); p.mood = 'happy'; draw(); p.last = 0; }
+  }
+    function kick() { if (pv && !pv.frame) { pv.last = 0; pv.frame = requestAnimationFrame(tick); } }
+
+  function beginGesture(p) {
+    if (!p.gestured) { p.gestured = true; play(byId(p.id).sound); }
+  }
+  function endGesture() {
+    const p = pv; if (!p) return;
+    const f = [...p.pointers.values()][0];
+    const was = p.body.release(f ? f.vx / p.scale : 0, f ? f.vy / p.scale : 0);
+    toneStop();
+    if (was.mode === 'grab' || was.mode === 'pinch') { if (was.stretch > 0.15) boing(was.stretch); else play('release'); vibrate(C().pulseMs(Math.max(was.stretch, was.squish))); }
+    else if (was.mode === 'press') { play('release'); vibrate(C().pulseMs(was.squish)); }
+    p.mode = null; p.squelch = 0; p.gestured = false; p.buzzLevel = 0;
+    const learn = p.area.querySelector('[data-sq-learn]');
+    if (learn && learn.hidden) learn.hidden = false;
+    kick();
+  }
+
   document.addEventListener('pointerdown', e => {
-    const a = anim;
-    if (!a || !a.el.isConnected || !e.target.closest('[data-sq-squishy]')) return;
+    const p = pv;
+    if (!p || e.target !== p.canvas) return;
     if (e.pointerType === 'mouse' && e.button !== 0) return;
     e.preventDefault();
-    a.pointer = e.pointerId;
-    try { a.el.setPointerCapture(e.pointerId); } catch { /* ignore */ }
-    press(e.clientX, e.clientY);
+    try { p.canvas.setPointerCapture(e.pointerId); } catch { /* ignore */ }
+    const now = performance.now();
+    p.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY, t: now, vx: 0, vy: 0 });
+    if (p.pointers.size === 2) {
+      const [a, b] = [...p.pointers.values()];
+      if (p.mode) { p.body.release(0, 0); }
+      const pa = toBody(p, a.x, a.y), pb = toBody(p, b.x, b.y);
+      p.pinch0 = { d: Math.max(20, Math.hypot(b.x - a.x, b.y - a.y)), cx: (pa.x + pb.x) / 2, cy: (pa.y + pb.y) / 2, ux: pb.x - pa.x, uy: pb.y - pa.y };
+      p.mode = 'pinch'; toneStart(); beginGesture(p); kick(); return;
+    }
+    if (p.pointers.size > 2 || p.mode) return;
+    const at = toBody(p, e.clientX, e.clientY);
+    p.anchor = p.body.nearest(at.x, at.y);
+    p.mode = 'press'; p.start = now; p.squelch = 0;
+    beginGesture(p); vibrate(8); kick();
   });
   document.addEventListener('pointermove', e => {
-    const a = anim;
-    if (!a || !a.held || a.pointer !== e.pointerId) return;
-    const size = a.el.getBoundingClientRect().width || 200;
-    a.poke = C().pokeOffset(e.clientX - a.from.x, e.clientY - a.from.y, reduced() ? size * 0.4 : size);
-  });
-  const up = e => { const a = anim; if (a && a.pointer === e.pointerId) { a.pointer = null; release(); } };
-  document.addEventListener('pointerup', up);
-  document.addEventListener('pointercancel', up);
-  document.addEventListener('keydown', e => {
-    const btn = e.target instanceof Element && e.target.closest('[data-sq-squishy]');
-    if (!btn || !anim || (e.key !== 'Enter' && e.key !== ' ') || e.repeat) return;
+    const p = pv;
+    if (!p || !p.pointers.has(e.pointerId)) return;
     e.preventDefault();
-    press(0, 0);
-    setTimeout(release, 450);
+    const f = p.pointers.get(e.pointerId), now = performance.now(), dt = Math.max(8, now - f.t);
+    f.vx = f.vx * 0.5 + (e.clientX - f.x) / dt * 1000 * 0.5; f.vy = f.vy * 0.5 + (e.clientY - f.y) / dt * 1000 * 0.5;
+    f.x = e.clientX; f.y = e.clientY; f.t = now;
+    if (p.mode === 'press' && Math.hypot(f.x - f.x0, f.y - f.y0) > 10) { p.mode = 'grab'; toneStart(); }
+    kick();
+  });
+  const lift = e => {
+    const p = pv;
+    if (!p || !p.pointers.has(e.pointerId)) return;
+    if (p.pointers.size === 1 || p.mode !== 'pinch') { endGesture(); p.pointers.delete(e.pointerId); return; }
+    /* pinch ended with one finger still down: let go of the pinch, wait for the last finger */
+    endGesture(); p.pointers.delete(e.pointerId); p.mode = 'wait';
+  };
+  document.addEventListener('pointerup', lift);
+  document.addEventListener('pointercancel', lift);
+  document.addEventListener('pointerup', () => { if (pv && pv.mode === 'wait' && pv.pointers.size === 0) pv.mode = null; });
+
+  /* Keyboard: Enter/Space squish, arrows stretch that way, Escape goes back. */
+  const ARROWS = { ArrowUp: [60, 6, 0, -1], ArrowDown: [60, 114, 0, 1], ArrowLeft: [6, 60, -1, 0], ArrowRight: [114, 60, 1, 0] };
+  document.addEventListener('keydown', e => {
+    const p = pv;
+    if (!p || e.target !== p.canvas) return;
+    if (e.key === 'Escape') { e.preventDefault(); closePlay(); render(); return; }
+    if (p.mode || e.repeat) { if (ARROWS[e.key] || e.key === ' ' || e.key === 'Enter') e.preventDefault(); return; }
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      p.anchor = { x: 60, y: 30 }; p.mode = 'press'; p.start = performance.now(); beginGesture(p); kick();
+      setTimeout(() => { if (pv === p && p.mode === 'press') endGesture(); }, 600);
+    } else if (ARROWS[e.key]) {
+      e.preventDefault();
+      const [ax, ay, dx, dy] = ARROWS[e.key], t0 = performance.now();
+      p.anchor = { x: ax, y: ay }; p.mode = 'key'; beginGesture(p); toneStart();
+      const pull = now => {
+        if (pv !== p || p.mode !== 'key') return;
+        const k = Math.min(1, (now - t0) / 450);
+        p.body.grab(ax, ay, dx * 90 * k, dy * 90 * k);
+        if (k < 1) requestAnimationFrame(pull); else setTimeout(() => { if (pv === p) endGesture(); }, 120);
+      };
+      requestAnimationFrame(pull); kick();
+    }
   });
 
   /* ---------- Memory game ---------- */
@@ -325,12 +513,27 @@
     if (!t || !ui.root || !t.closest('.squishy-screen')) return;
     const view = t.closest('[data-sq-view]');
     if (view) { ui.view = view.dataset.sqView; ui.msg = ''; if (ui.view === 'guess') newGuess(); render(); return; }
-    if (t.closest('[data-sq-sound]')) { const on = sounds().set(!sounds().get()); render(); if (on) play('match'); return; }
+    const snd = t.closest('[data-sq-sound]');
+    if (snd) {
+      const on = sounds().set(!sounds().get());
+      ui.root.querySelectorAll('[data-sq-sound]').forEach(b => { b.setAttribute('aria-checked', String(on)); b.textContent = b.closest('.sq-play') ? (on ? '🔊' : '🔈') : `${on ? '🔊' : '🔈'} ${L('Sounds')}: ${on ? L('On') : L('Off')}`; });
+      if (on) play('match');
+      return;
+    }
     const pick = t.closest('[data-sq-pick]');
-    if (pick) { ui.selected = pick.dataset.sqPick; ui.card = null; ui.msg = ''; render(); ui.root.querySelector('[data-sq-stage]')?.scrollIntoView({ block: 'center', behavior: reduced() ? 'auto' : 'smooth' }); return; }
+    if (pick) { ui.msg = ''; openPlay(pick.dataset.sqPick); return; }
+    if (t.closest('[data-sq-play-back]')) { closePlay(); if (window.MsbSpeech) MsbSpeech.stop(); render(); ui.root.querySelector('.sq-grid')?.scrollIntoView({ block: 'center' }); return; }
+    const sheet = ui.root.querySelector('[data-sq-sheet]');
+    if (t.closest('[data-sq-learn]') && pv && sheet) { sheet.innerHTML = cardHtml(pv.x); sheet.hidden = false; play('twinkle'); sheet.querySelector('button')?.focus(); return; }
+    if (t.closest('[data-sq-sheet-close]') && sheet) { sheet.hidden = true; if (window.MsbSpeech) MsbSpeech.stop(); pv && pv.canvas.focus({ preventScroll: true }); return; }
     if (t.closest('[data-sq-locked]')) { ui.msg = L('This squishy is locked. Win a round of Memory or Questions to unlock it!'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); return; }
     const star = t.closest('[data-sq-star]');
-    if (star) { prog().addStar(star.dataset.sqStar); play('twinkle'); vibrate(15); render(); return; }
+    if (star) {
+      prog().addStar(star.dataset.sqStar); play('twinkle'); vibrate(15);
+      if (sheet && pv) { sheet.innerHTML = cardHtml(pv.x); const c = ui.root.querySelector('.sq-count'); if (c) c.outerHTML = topBar().match(/<span class="sq-count"[^]*?<\/span>/)[0]; }
+      else render();
+      return;
+    }
     const speak = t.closest('[data-sq-speak]');
     if (speak && window.MsbSpeech) {
       const x = byId(speak.dataset.sqSpeak), l = lang();
@@ -349,15 +552,21 @@
     if (t.closest('[data-sq-guess-next]')) { newGuess(); render(); return; }
     const meet = t.closest('[data-sq-meet]');
     if (meet) {
-      if (meet.dataset.sqMeet) ui.selected = meet.dataset.sqMeet;
-      ui.view = 'shelf'; ui.card = null; ui.memory = null; ui.round = null; ui.msg = '';
+      ui.view = 'shelf'; ui.memory = null; ui.round = null; ui.msg = '';
+      ui.playing = meet.dataset.sqMeet || null;
       render(); window.scrollTo({ top: 0, behavior: 'auto' });
     }
   });
 
   window.MsbSquishy = {
     open(root) { ui.root = root; render(); },
-    close() { if (anim && anim.frame) cancelAnimationFrame(anim.frame); anim = null; ui.root = null; ui.view = 'shelf'; ui.card = null; ui.memory = null; ui.round = null; ui.guess = null; ui.msg = ''; if (window.MsbSpeech) MsbSpeech.stop(); },
-    _celebrate: celebrate
+    close() { closePlay(); ui.root = null; ui.view = 'shelf'; ui.memory = null; ui.round = null; ui.guess = null; ui.msg = ''; if (window.MsbSpeech) MsbSpeech.stop(); },
+    _celebrate: celebrate,
+    /* read-only snapshot of the play view, for checks */
+    _play() {
+      if (!pv) return null;
+      const r = pv.canvas.getBoundingClientRect(), b = pv.body, bb = b.bounds();
+      return { id: pv.id, mode: b.state.mode, stretch: b.state.stretch, squish: b.state.squish, mood: pv.mood, atRest: b.atRest(), area: b.area() / b.A0, w: bb.maxX - bb.minX, h: bb.maxY - bb.minY, minY: bb.minY, box: { x: r.left + pv.ox, y: r.top + pv.oy, size: b.size * pv.scale } };
+    }
   };
 })();

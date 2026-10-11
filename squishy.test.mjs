@@ -176,3 +176,132 @@ test('the game is wired in, precached, and its words have Spanish', () => {
   for (const k of new Set(keys)) assert.ok(i18n.includes(`"${k}":`), `missing Spanish for: ${k}`);
   for (const k of ['Bible squishies', 'Squish a soft friend and learn its Bible story']) assert.ok(i18n.includes(`"${k}":`), k);
 });
+
+/* ---------- Soft-body squish and stretch ---------- */
+const run = (b, sec) => { for (let i = 0; i < Math.round(sec * 60); i += 1) b.step(1 / 60); };
+const settleTime = b => { let t = 0; while (!b.atRest() && t < 60 * 8) { b.step(1 / 60); t += 1; } return t / 60; };
+const box = b => { const r = b.bounds(); return { w: r.maxX - r.minX, h: r.maxY - r.minY }; };
+
+test('soft body starts at rest and is a spring mesh of about 24-32 outline points', () => {
+  const b = C.softBody();
+  assert.equal(b.atRest(), true);
+  assert.equal(b.n * b.n, b.N);
+  assert.ok(b.n * 4 - 4 >= 24 && b.n * 4 - 4 <= 48);
+  assert.ok(Math.abs(b.area() - b.A0) < 1e-9);
+});
+
+test('pulling stretches the part near the finger, with a cap that resists harder the farther you pull', () => {
+  const b = C.softBody();
+  b.grab(60, 0, 0, -60); run(b, 1.5);
+  const mid = box(b).h;
+  assert.ok(mid > 140, `stretched to ${mid}`);
+  assert.ok(b.y[Math.floor(b.n / 2)] < -20, 'top middle followed the finger up');
+  assert.ok(Math.abs(b.y[b.N - 1 - Math.floor(b.n / 2)] - 120) < 15, 'bottom stays near its place');
+  b.grab(60, 0, 0, -600); run(b, 1.5);
+  const far = box(b).h;
+  b.grab(60, 0, 0, -6000); run(b, 1.5);
+  const huge = box(b).h;
+  assert.ok(far > mid && huge >= far - 0.5);
+  assert.ok(huge < 120 + b.cfg.max + 2, `capped: ${huge}`);
+  assert.ok(huge - far < far - mid, 'more pull gives less stretch');
+  assert.ok(b.state.stretch <= 1 && b.state.stretch > 0.9);
+  assert.equal(C.mood(b.state), 'wow');
+});
+
+test('release snaps back with a wobble, then settles exactly at rest', () => {
+  const b = C.softBody();
+  b.grab(60, 0, 0, -200); run(b, 1.5);
+  b.release(0, 0);
+  let below = 0;
+  for (let i = 0; i < 120; i += 1) { b.step(1 / 60); below = Math.max(below, b.y[Math.floor(b.n / 2)]); }
+  assert.ok(below > 2, `overshoots past rest (wobble): ${below}`);
+  const t = settleTime(b);
+  assert.ok(t < 5, `settles in ${t}s`);
+  assert.equal(b.atRest(), true);
+  assert.equal(C.mood(b.state), 'happy');
+});
+
+test('a press flattens it, dents under the finger and bulges the sides; area stays roughly the same', () => {
+  const b = C.softBody();
+  b.press(60, 20, 0.3); run(b, 1);
+  const light = box(b).h;
+  b.press(60, 20, 1); run(b, 1.5);
+  const r = box(b);
+  assert.ok(r.h < light && r.h < 100, `flatter: ${r.h}`);
+  assert.ok(r.w > 130, `wider: ${r.w}`);
+  const ratio = b.area() / b.A0;
+  assert.ok(ratio > 0.8 && ratio < 1.15, `area ratio ${ratio}`);
+  const top = Math.floor(b.n / 2), side = 0;
+  assert.ok(b.y[top] - b.ry[top] > b.y[side] - b.ry[side], 'deeper under the finger');
+  assert.equal(C.mood(b.state), 'squint');
+  b.release(); assert.ok(settleTime(b) < 5);
+});
+
+test('two fingers squeeze it narrow or spread it wide, keeping its area', () => {
+  const b = C.softBody();
+  b.pinch(60, 60, 1, 0, 0.4); run(b, 1.5);
+  let r = box(b);
+  assert.ok(r.w < 90 && r.h > 140, `squeezed ${r.w}x${r.h}`);
+  let ratio = b.area() / b.A0; assert.ok(ratio > 0.85 && ratio < 1.15, `area ${ratio}`);
+  b.pinch(60, 60, 1, 0, 5); run(b, 1.5);
+  r = box(b);
+  assert.ok(r.w > 160 && r.w < 120 * 1.7 + 4 && r.h < 90, `spread ${r.w}x${r.h}`);
+  ratio = b.area() / b.A0; assert.ok(ratio > 0.85 && ratio < 1.15, `area ${ratio}`);
+  b.release(); assert.ok(settleTime(b) < 5);
+});
+
+test('a fast flick makes it jiggle, and it still comes to rest', () => {
+  const b = C.softBody();
+  b.grab(60, 60, 30, 0); run(b, 0.3);
+  b.release(4000, 0);
+  run(b, 0.1);
+  assert.ok(b.energy() > 50 || b.maxOffset() > 5, 'moving after the flick');
+  assert.ok(settleTime(b) < 6);
+});
+
+test('reduced motion: gentler squash and stretch, less wobble, quicker settle', () => {
+  const soft = C.softBody(), calm = C.softBody({ reduced: true });
+  for (const b of [soft, calm]) { b.grab(60, 0, 0, -500); run(b, 1.5); }
+  assert.ok(box(calm).h < box(soft).h);
+  const over = b => { b.release(0, 0); let m = 0; for (let i = 0; i < 180; i += 1) { b.step(1 / 60); m = Math.max(m, b.y[Math.floor(b.n / 2)] - b.ry[Math.floor(b.n / 2)]); } return m; };
+  assert.ok(over(calm) < over(soft) / 3);
+  assert.ok(calm.cfg.squash < soft.cfg.squash);
+});
+
+test('the physics step is stable even on a very slow frame', () => {
+  const b = C.softBody();
+  b.grab(60, 0, 0, -300);
+  for (let i = 0; i < 20; i += 1) b.step(0.5);
+  for (let k = 0; k < b.N; k += 1) assert.ok(Number.isFinite(b.x[k]) && Math.abs(b.x[k]) < 1000);
+});
+
+test('vibration scales with how hard you squish or stretch, capped at 30 ms', () => {
+  assert.equal(C.pulseMs(0), 6);
+  assert.ok(C.pulseMs(0.5) > C.pulseMs(0.2));
+  assert.equal(C.pulseMs(1), 30);
+  assert.equal(C.pulseMs(9), 30);
+  const ui = read('./squishy.js');
+  assert.match(ui, /now - p\.buzzAt < 110/, 'throttled');
+});
+
+test('play view: canvas mesh, touch-action none, Learn bubble, keyboard, faces, and settings kept', () => {
+  const ui = read('./squishy.js'), css = read('./study-design.css'), art = read('./squishy-art.js');
+  assert.match(ui, /data-sq-learn/);
+  assert.match(ui, /data-sq-play-back/);
+  assert.match(ui, /ArrowUp/);
+  assert.match(ui, /e\.key === 'Enter' \|\| e\.key === ' '/);
+  assert.match(ui, /softBody\(\{ reduced: reduced\(\) \}\)/);
+  assert.match(ui, /bedtimeOn/);
+  assert.match(css, /\.sq-play-area\{[^}]*touch-action:none/);
+  assert.match(css, /\.sq-canvas\{[^}]*touch-action:none/);
+  for (const m of ['squint', 'wow']) assert.match(art, new RegExp(`look === '${m}'`));
+  const g = globalThis;
+  const prev = g.window;
+  g.window = {};
+  try {
+    const store = new Map();
+    const s = C.soundPref({ getItem: k => store.get(k) ?? null, setItem: (k, v) => store.set(k, String(v)) });
+    s.set(false);
+    assert.equal(C.soundPref({ getItem: k => store.get(k) ?? null, setItem: () => {} }).get(), false);
+  } finally { g.window = prev; }
+});

@@ -1077,7 +1077,14 @@
     "YOU WON!": "¡GANASTE!",
     "You already have every squishy. Well done!": "Ya tienes todos los squishies. ¡Muy bien hecho!",
     "Back to the shelf": "Volver al estante",
-    "New game": "Juego nuevo"
+    "New game": "Juego nuevo",
+    "Play with {name}": "Jugar con: {name}",
+    "Tap a squishy to play with it: squish it, stretch it, and learn its Bible story.": "Toca un squishy para jugar con él: apriétalo, estíralo y aprende su historia de la Biblia.",
+    "← Shelf": "← Estante",
+    "Learn": "Aprender",
+    "Keep playing": "Seguir jugando",
+    "Press to squish · drag to stretch · two fingers to squeeze or spread": "Aprieta para aplastar · arrastra para estirar · dos dedos para apretar o abrir",
+    "{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch.": "{name}. Aprieta para aplastarlo, arrastra para estirarlo, usa dos dedos para apretarlo o abrirlo. Teclas: Intro o Espacio lo aplastan, las flechas lo estiran."
   });
 
   /* Lesson tags, Bible-note bylines, and the game-show menus. */

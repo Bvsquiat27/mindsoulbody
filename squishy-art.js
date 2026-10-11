@@ -6,6 +6,7 @@
   'use strict';
   const INK = '#5b4660', EYE = '#3d2c3e';
   let uid = 0;
+  let look = 'happy';
 
   /* Outline trick: the same shapes drawn thick in ink first, then filled on
      top, so only the outer edge shows a line. */
@@ -14,11 +15,11 @@
   }
   function face(x, y, k = 1) {
     return `<g class="sq-face" transform="translate(${x} ${y}) scale(${k})">
-      <g class="sq-open"><ellipse cx="-13" cy="0" rx="5.6" ry="6.6" fill="${EYE}"/><ellipse cx="13" cy="0" rx="5.6" ry="6.6" fill="${EYE}"/>
+      <g class="sq-open"${look === 'squint' ? ' display="none"' : ''}><ellipse cx="-13" cy="0" rx="5.6" ry="6.6" fill="${EYE}"/><ellipse cx="13" cy="0" rx="5.6" ry="6.6" fill="${EYE}"/>
       <circle cx="-11" cy="-2.4" r="2.2" fill="#fff"/><circle cx="15" cy="-2.4" r="2.2" fill="#fff"/><circle cx="-14.6" cy="2.4" r="1.1" fill="#fff"/><circle cx="11.4" cy="2.4" r="1.1" fill="#fff"/></g>
-      <g class="sq-shut" fill="none" stroke="${EYE}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M-18 -4 L-10 0 L-18 4"/><path d="M18 -4 L10 0 L18 4"/></g>
+      <g class="sq-shut"${look === 'squint' ? ' style="display:inline"' : ''} fill="none" stroke="${EYE}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M-18 -4 L-10 0 L-18 4"/><path d="M18 -4 L10 0 L18 4"/></g>
       <ellipse cx="-21" cy="8" rx="5.5" ry="3.2" fill="#ff9db5" opacity=".7"/><ellipse cx="21" cy="8" rx="5.5" ry="3.2" fill="#ff9db5" opacity=".7"/>
-      <path class="sq-mouth" d="M-4.5 6.5 Q-2.2 9.5 0 6.8 Q2.2 9.5 4.5 6.5" fill="none" stroke="${EYE}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+      ${look === 'wow' ? `<ellipse class="sq-mouth" cx="0" cy="9" rx="3.6" ry="4.6" fill="${EYE}"/><ellipse cx="0" cy="10.4" rx="2" ry="1.8" fill="#ff8fa3"/>` : `<path class="sq-mouth" d="M-4.5 6.5 Q-2.2 9.5 0 6.8 Q2.2 9.5 4.5 6.5" fill="none" stroke="${EYE}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`}</g>`;
   }
   const shine = (x, y, rx, ry, rot = -25) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" transform="rotate(${rot} ${x} ${y})" fill="#fff" opacity=".55"/>`;
   const circles = list => list.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`).join('');
@@ -112,10 +113,14 @@
     }
   };
 
-  function svg(id, label) {
+  /* mood: 'happy' (default), 'squint' (squished: > < eyes) or 'wow' (stretched: O mouth). */
+  function svg(id, label, mood) {
     const draw = ART[id];
     if (!draw) return '';
-    return `<svg class="sq-svg" viewBox="0 0 120 120" ${label ? `role="img" aria-label="${String(label).replace(/"/g, '&quot;')}"` : 'aria-hidden="true"'} focusable="false">${draw()}</svg>`;
+    look = mood || 'happy';
+    const body = draw();
+    look = 'happy';
+    return `<svg class="sq-svg" xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" ${label ? `role="img" aria-label="${String(label).replace(/"/g, '&quot;')}"` : 'aria-hidden="true"'} focusable="false">${body}</svg>`;
   }
 
   window.MsbSquishyArt = { svg, ids: Object.keys(ART) };
