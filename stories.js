@@ -155,6 +155,7 @@
   let music = null;
   let coloringId = null;
   let coloringDrawing = null;
+  let squishyOn = false;
   const coloring = () => window.MsbColoring;
   const storyTitle = id => { const item = stories.find(entry => entry.id === id); return item ? pick(item, 'title') : id; };
 
@@ -165,7 +166,7 @@
 
   function showList(root) {
     const cards = stories.map(item => `<button class="card story-card" data-story="${esc(item.id)}">${picture(item, 'card')}<h2>${esc(pick(item, 'title'))}</h2><span>Open</span></button>`).join('');
-    root.innerHTML = `<span class="eyebrow">LITTLE ONES</span><h1>Stories for little ones</h1><p class="lead">Bible stories told simply, for a child close by.</p><button class="card bedtime-entry" type="button" data-bedtime><span class="eyebrow">LITTLE ONES</span><strong>Bedtime</strong><span>A story, a prayer, and a quiet night sky</span></button><div class="story-grid">${cards}</div>${coloring() ? coloring().gridHtml(storyTitle) : ''}`;
+    root.innerHTML = `<span class="eyebrow">LITTLE ONES</span><h1>Stories for little ones</h1><p class="lead">Bible stories told simply, for a child close by.</p><button class="card bedtime-entry" type="button" data-bedtime><span class="eyebrow">LITTLE ONES</span><strong>Bedtime</strong><span>A story, a prayer, and a quiet night sky</span></button>${window.MsbSquishy ? '<button class="card squishy-entry" type="button" data-squishy-open><span class="squishy-entry-art" aria-hidden="true">' + (window.MsbSquishyArt ? MsbSquishyArt.svg('lamb') + MsbSquishyArt.svg('star') : '') + '</span><span><span class="eyebrow">LITTLE ONES</span><strong>Bible squishies</strong><span>Squish a soft friend and learn its Bible story</span></span></button>' : ''}<div class="story-grid">${cards}</div>${coloring() ? coloring().gridHtml(storyTitle) : ''}`;
   }
 
   function showOne(root, item) {
@@ -205,6 +206,7 @@
   }
 
   function show(root) {
+    if (squishyOn && window.MsbSquishy) { MsbSquishy.open(root); return; }
     if (coloringId && coloring()) { const drawingId = coloringDrawing; coloringDrawing = null; coloring().open(root, coloringId, storyTitle(coloringId), { drawingId }); return; }
     if (bedtime) showBedtime(root);
     else {
@@ -352,6 +354,21 @@
       window.scrollTo({ top: 0, behavior: 'auto' });
       return;
     }
+    if (event.target.closest('[data-squishy-open]') && window.MsbSquishy) {
+      squishyOn = true;
+      bedtime = null;
+      if (window.MsbSpeech) MsbSpeech.stop();
+      refresh();
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+    if (event.target.closest('[data-squishy-exit]')) {
+      squishyOn = false;
+      if (window.MsbSquishy) MsbSquishy.close();
+      refresh();
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
     if (event.target.closest('[data-coloring-back]')) {
       coloringId = null;
       if (coloring()) coloring().close();
@@ -389,6 +406,8 @@
     reset() {
       openId = null;
       coloringId = null;
+      squishyOn = false;
+      if (window.MsbSquishy) MsbSquishy.close();
       if (window.MsbColoring) MsbColoring.close();
       bedtime = null;
       stopMusic();
