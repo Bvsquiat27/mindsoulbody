@@ -1247,19 +1247,19 @@
       },
       "at": {
         "en": [
-          2,
-          34,
-          28
+          5,
+          10,
+          4
         ],
         "es": [
-          2,
-          34,
-          28
+          5,
+          10,
+          4
         ]
       },
       "ref": {
-        "en": "Exodus 34:28",
-        "es": "Éxodo 34:28"
+        "en": "Deuteronomy 10:4",
+        "es": "Deuteronomio 10:4"
       },
       "key": {
         "en": "ten commandments",
