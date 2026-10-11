@@ -45,7 +45,10 @@
       <p class="coloring-sparkle-title">${esc(L('✨ Sparkle pens'))}</p>
       <div class="coloring-dots coloring-glitters" role="group" aria-label="${esc(L('Sparkle pens'))}">${glitters}</div>
       <div class="coloring-tools" role="group" aria-label="${t('Brush', 'Pincel')}">${sizes}<button type="button" class="coloring-tool" data-coloring-eraser aria-pressed="false">🧽 ${t('Eraser', 'Borrador')}</button></div>
-      <div class="coloring-tools"><button type="button" class="coloring-tool" data-coloring-undo>↶ ${t('Undo', 'Deshacer')}</button><button type="button" class="coloring-tool" data-coloring-clear>${t('Clear', 'Empezar de nuevo')}</button><button type="button" class="primary coloring-save" data-coloring-save>${t('Save picture', 'Guardar dibujo')}</button></div></div>`;
+      <div class="coloring-tools"><button type="button" class="coloring-tool" data-coloring-undo>↶ ${t('Undo', 'Deshacer')}</button><button type="button" class="coloring-tool" data-coloring-clear>${t('Clear', 'Empezar de nuevo')}</button></div>
+      <div class="coloring-save-row" role="group" aria-label="${esc(L('Save'))}"><button type="button" class="primary coloring-save" data-coloring-keep>${esc(L('💾 Save to My drawings'))}</button><button type="button" class="secondary coloring-save" data-coloring-save>${esc(L('📱 Save to phone'))}</button></div>
+      <div class="coloring-save-choice" data-coloring-choice hidden><p>${esc(L('This picture is already in My drawings.'))}</p><button type="button" class="primary" data-coloring-keep-mode="update">${esc(L('Update the saved drawing'))}</button><button type="button" class="secondary" data-coloring-keep-mode="new">${esc(L('Save as a new copy'))}</button><button type="button" class="text-button" data-coloring-keep-mode="cancel">${esc(L('Cancel'))}</button></div>
+      <p class="coloring-save-status small" data-coloring-save-status aria-live="polite"></p></div>`;
   }
 
   /* A soft round crayon tip: dense in the middle, feathered edge, a little grain. */
@@ -89,12 +92,12 @@
     return new Promise((resolve, reject) => { const img = new Image(); img.onload = () => resolve(img); img.onerror = () => reject(Error('image')); img.src = src; });
   }
 
-  async function open(root, id, title) {
+  async function open(root, id, title, opts = {}) {
     if (!PAGES.includes(id)) return false;
     root.innerHTML = screenHtml(title);
     const color = root.querySelector('.coloring-color'), lines = root.querySelector('.coloring-lines'), stage = root.querySelector('.coloring-stage');
     const status = root.querySelector('.coloring-status');
-    const s = session = { id, root, stage, color, lines, cctx: color.getContext('2d', { willReadFrequently: true }), ready: false, hex: COLORS[0][0], size: 22, eraser: false, glitter: null, trail: null, seed: 0, undo: core().undoStack(20), last: null, pointer: null };
+    const s = session = { id, root, stage, color, lines, cctx: color.getContext('2d', { willReadFrequently: true }), ready: false, hex: COLORS[0][0], size: 22, eraser: false, glitter: null, trail: null, seed: 0, undo: core().undoStack(20), last: null, pointer: null, title, drawingId: null, busy: false };
     stage.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
     try {
       let img;
@@ -108,6 +111,7 @@
       lines.getContext('2d').putImageData(out, 0, 0);
       s.ready = true;
       status.textContent = t('Color with your finger. The lines stay on top.', 'Colorea con el dedo. Las líneas se quedan encima.');
+      if (opts.drawingId) await loadDrawing(s, opts.drawingId, status);
     } catch {
       status.textContent = t('This picture is not on this device yet. Connect once to save it.', 'Este dibujo todavía no está en el dispositivo. Conéctate una vez para guardarlo.');
     }
@@ -154,15 +158,80 @@
     s.root.querySelectorAll(selector).forEach(b => { const on = b === button; b.classList.toggle('active', on); b.setAttribute('aria-pressed', String(on)); });
   }
 
-  function save(s) {
+  /* The finished picture: color under the outlines on white paper. */
+  function flatCanvas(s) {
     const out = document.createElement('canvas'); out.width = W; out.height = H;
     const ctx = out.getContext('2d');
     const flat = core().flatten(s.cctx.getImageData(0, 0, W, H).data, s.lines.getContext('2d').getImageData(0, 0, W, H).data);
     const img = ctx.createImageData(W, H); img.data.set(flat); ctx.putImageData(img, 0, 0);
-    const name = `${t('coloring', 'colorear')}-${s.id}.png`;
-    const go = url => { const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); };
-    if (out.toBlob) out.toBlob(blob => { if (!blob) return; const url = URL.createObjectURL(blob); go(url); setTimeout(() => URL.revokeObjectURL(url), 4000); }, 'image/png');
-    else go(out.toDataURL('image/png'));
+    return out;
+  }
+
+  function toBlob(canvas, type, quality) {
+    return new Promise(resolve => {
+      if (!canvas.toBlob) { resolve(null); return; }
+      canvas.toBlob(blob => resolve(blob || null), type, quality);
+    });
+  }
+
+  /* WebP keeps the color layer small and transparent; PNG when WebP is not offered. */
+  async function layerBlob(s) {
+    const webp = await toBlob(s.color, 'image/webp', 0.9);
+    if (webp && webp.type === 'image/webp') return webp;
+    return toBlob(s.color, 'image/png');
+  }
+
+  function saveStatus(s, text) { const node = s.root.querySelector('[data-coloring-save-status]'); if (node) node.textContent = text; }
+
+  /* Bring a saved drawing back onto the color layer so coloring can go on. */
+  async function loadDrawing(s, drawingId, status) {
+    try {
+      const row = await window.MsbDrawings?.store()?.get(drawingId);
+      if (!row || row.page !== s.id || !row.layer || session !== s) return;
+      const url = URL.createObjectURL(row.layer);
+      try {
+        const img = await loadImage(url);
+        if (session !== s) return;
+        s.cctx.clearRect(0, 0, W, H); s.cctx.drawImage(img, 0, 0, W, H);
+      } finally { URL.revokeObjectURL(url); }
+      s.drawingId = row.id;
+      status.textContent = L('Your saved drawing is back. Keep coloring!');
+    } catch { /* start with a clean page */ }
+  }
+
+  async function keep(s, mode) {
+    const store = window.MsbDrawings?.store();
+    if (!s.ready || s.busy) return;
+    if (!store) { saveStatus(s, L('Saving drawings is not available in this browser.')); return; }
+    const choice = s.root.querySelector('[data-coloring-choice]');
+    if (!mode && s.drawingId) { choice.hidden = false; choice.querySelector('button')?.focus(); return; }
+    choice.hidden = true;
+    if (mode === 'cancel') return;
+    s.busy = true;
+    saveStatus(s, L('Saving…'));
+    try {
+      const flat = flatCanvas(s);
+      const small = document.createElement('canvas'); small.width = 360; small.height = 203;
+      small.getContext('2d').drawImage(flat, 0, 0, 360, 203);
+      const [image, layer, thumbBlob] = await Promise.all([toBlob(flat, 'image/jpeg', 0.88), layerBlob(s), toBlob(small, 'image/jpeg', 0.8)]);
+      if (!image) throw Error('encode');
+      const row = await store.save({ page: s.id, title: s.title, image, layer, thumb: thumbBlob }, { updateId: mode === 'update' ? s.drawingId : null });
+      s.drawingId = row.id;
+      saveStatus(s, mode === 'update' ? L('Updated in My drawings (on your Profile).') : L('Saved in My drawings (on your Profile).'));
+      if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+    } catch {
+      saveStatus(s, L('That did not save. Please try again.'));
+    } finally { s.busy = false; }
+  }
+
+  async function save(s) {
+    if (!s.ready) return;
+    const blob = await toBlob(flatCanvas(s), 'image/png');
+    if (!blob) return;
+    if (window.MsbDrawings) { saveStatus(s, MsbDrawings.phoneMessage(await MsbDrawings.toPhone(blob, s.id, s.title))); return; }
+    const url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = `${L('coloring')}-${s.id}.png`; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
   }
 
   document.addEventListener('click', event => {
@@ -178,7 +247,10 @@
     if (eraser) { s.eraser = !s.eraser; pick(s, '[data-coloring-eraser]', s.eraser ? eraser : null); return; }
     if (event.target.closest('[data-coloring-undo]')) { const prev = s.undo.pop(); if (prev) s.cctx.putImageData(prev, 0, 0); return; }
     if (event.target.closest('[data-coloring-clear]')) { s.undo.push(s.cctx.getImageData(0, 0, W, H)); s.cctx.clearRect(0, 0, W, H); return; }
-    if (event.target.closest('[data-coloring-save]')) save(s);
+    if (event.target.closest('[data-coloring-save]')) { save(s); return; }
+    const mode = event.target.closest('[data-coloring-keep-mode]');
+    if (mode) { keep(s, mode.dataset.coloringKeepMode); return; }
+    if (event.target.closest('[data-coloring-keep]')) keep(s, null);
   });
 
   document.addEventListener('pointerdown', event => {

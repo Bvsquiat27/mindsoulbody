@@ -493,6 +493,26 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .coloring-glitters{grid-template-columns:repeat(6,minmax(0,1fr))}
 .coloring-glitter{background:radial-gradient(circle at 30% 28%,white 0 2px,transparent 3px),radial-gradient(circle at 68% 40%,white 0 1.5px,transparent 2.5px),radial-gradient(circle at 44% 72%,rgba(255,255,255,.9) 0 1.5px,transparent 2.5px),radial-gradient(circle at 74% 74%,white 0 1px,transparent 2px),var(--dot)}
 .coloring-status{min-height:1.4em}
+.coloring-save-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.coloring-save-row .coloring-save{min-width:0;padding:8px 10px;white-space:normal;line-height:1.2}
+.coloring-save-choice{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06)}
+.coloring-save-choice[hidden]{display:none}
+.coloring-save-choice p{flex:1 1 100%;margin:0}
+.coloring-save-choice button{min-height:48px}
+.coloring-save-status{min-height:1.4em}
+.drawings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+@media(min-width:720px){.drawings-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.drawings-grid>p,.drawings-grid>button.secondary{grid-column:1/-1}
+.drawing-thumb{display:flex;flex-direction:column;gap:4px;min-width:0;padding:8px;border-radius:14px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:inherit;font:inherit;text-align:left;min-height:48px}
+.drawing-thumb img{width:100%;height:auto;aspect-ratio:16/9;border-radius:10px;background:white;object-fit:contain}
+.drawing-name{font-weight:700;overflow-wrap:anywhere}
+.drawing-date{font-size:.85rem;opacity:.8}
+.drawing-big{display:block;width:100%;height:auto;aspect-ratio:16/9;border-radius:12px;background:white;margin:12px 0}
+.drawing-actions,.drawing-confirm{display:flex;flex-wrap:wrap;gap:8px}
+.drawing-actions button,.drawing-confirm button{min-height:48px;flex:1 1 140px}
+.drawing-confirm{margin-top:12px;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.25)}
+.drawing-confirm[hidden]{display:none}
+.drawing-confirm p{flex:1 1 100%;margin:0}
 /* Verse study notes inside the chapter must wrap on a phone. */
 .bible-primary,.bible-page{min-width:0}
 .bible-inline-notes,.bible-inline-notes .bible-study-card{min-width:0;max-width:100%;overflow-wrap:anywhere}

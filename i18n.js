@@ -387,7 +387,7 @@
     "Export backup": "Exportar copia",
     "Restore from backup": "Restaurar desde una copia",
     "Choose a backup file": "Elegir un archivo de copia",
-    "Notes, progress, themes, prayer, friends, memory verses, and settings live in this browser. Export a dated file, or restore one. Restoring replaces the saved data on this device.": "Las notas, el avance, los colores, la oración, los amigos, los versículos para memorizar y la configuración viven en este navegador. Exporta un archivo con fecha, o restaura uno. Restaurar reemplaza lo guardado en este dispositivo.",
+    "Notes, progress, themes, prayer, friends, memory verses, drawings, and settings live in this browser. Export a dated file, or restore one. Restoring replaces the saved data on this device.": "Las notas, el avance, los colores, la oración, los amigos, los versículos para memorizar, los dibujos y la configuración viven en este navegador. Exporta un archivo con fecha, o restaura uno. Restaurar reemplaza lo guardado en este dispositivo.",
     "Persistent storage is on, so the browser is less likely to clear your notes and progress.": "El almacenamiento persistente está activo, así que el navegador es menos propenso a borrar tus notas y tu avance.",
     "Persistent storage was requested. This browser may still clear data if storage is low — keep a backup.": "Se pidió almacenamiento persistente. Este navegador aún puede borrar datos si queda poco espacio: guarda una copia.",
     "This browser does not offer persistent storage. Export a backup so your notes are not only in this browser.": "Este navegador no ofrece almacenamiento persistente. Exporta una copia para que tus notas no vivan solo aquí.",
@@ -966,6 +966,39 @@
     "Purple glitter": "Brillo morado",
     "Blue glitter": "Brillo azul",
     "Rainbow glitter": "Brillo arcoíris"
+  });
+
+  /* Coloring book: My drawings on the Profile, and Save to phone. */
+  Object.assign(ES, {
+    "coloring": "colorear",
+    "Save": "Guardar",
+    "💾 Save to My drawings": "💾 Guardar en Mis dibujos",
+    "📱 Save to phone": "📱 Guardar en el teléfono",
+    "This picture is already in My drawings.": "Este dibujo ya está en Mis dibujos.",
+    "Update the saved drawing": "Actualizar el dibujo guardado",
+    "Save as a new copy": "Guardar como copia nueva",
+    "Saving…": "Guardando…",
+    "Saved in My drawings (on your Profile).": "Guardado en Mis dibujos (en tu Perfil).",
+    "Updated in My drawings (on your Profile).": "Actualizado en Mis dibujos (en tu Perfil).",
+    "That did not save. Please try again.": "No se guardó. Inténtalo otra vez.",
+    "Saving drawings is not available in this browser.": "Guardar dibujos no está disponible en este navegador.",
+    "Your saved drawing is back. Keep coloring!": "Aquí está tu dibujo guardado. ¡Sigue coloreando!",
+    "Sent. Choose Save image or Photos to keep it.": "Listo. Elige Guardar imagen o Fotos para quedártelo.",
+    "Picture saved to your downloads.": "Dibujo guardado en tus descargas.",
+    "ON THIS PHONE": "EN ESTE TELÉFONO",
+    "My drawings": "Mis dibujos",
+    "Pictures you save from the coloring book stay on this phone. They are not sent anywhere.": "Los dibujos que guardas del libro para colorear se quedan en este teléfono. No se envían a ningún lado.",
+    "Loading your drawings…": "Cargando tus dibujos…",
+    "Your drawings could not be opened.": "No se pudieron abrir tus dibujos.",
+    "No drawings yet. In Stories, open the coloring book, color a page, and tap Save to My drawings.": "Todavía no hay dibujos. En Historias, abre el libro para colorear, colorea un dibujo y toca Guardar en Mis dibujos.",
+    "Open the coloring book": "Abrir el libro para colorear",
+    "Colored picture: ": "Dibujo coloreado: ",
+    "🖍️ Keep coloring": "🖍️ Seguir coloreando",
+    "🗑️ Delete": "🗑️ Borrar",
+    "Delete this drawing from this phone? This cannot be undone.": "¿Borrar este dibujo de este teléfono? No se puede deshacer.",
+    "Yes, delete it": "Sí, bórralo",
+    "Keep it": "No, déjalo",
+    "Drawing deleted.": "Dibujo borrado."
   });
 
   /* Lesson tags, Bible-note bylines, and the game-show menus. */
