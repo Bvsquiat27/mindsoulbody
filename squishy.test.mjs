@@ -410,7 +410,7 @@ test('play view: canvas mesh, touch-action none, Learn bubble, keyboard, faces, 
   assert.match(ui, /data-sq-play-back/);
   assert.match(ui, /ArrowUp/);
   assert.match(ui, /e\.key === 'Enter' \|\| e\.key === ' '/);
-  assert.match(ui, /softBody\(\{ reduced: reduced\(\) \}\)/);
+  assert.match(ui, /softBody\(\{ reduced: reduced\(\), feel: C\(\)\.feelFor\(id\) \}\)/);
   assert.match(ui, /bedtimeOn/);
   assert.match(css, /\.sq-play-area\{[^}]*touch-action:none/);
   assert.match(css, /\.sq-canvas\{[^}]*touch-action:none/);
@@ -509,7 +509,8 @@ test('crunchy sounds and vibration grow with the squish, stay soft and capped', 
   assert.match(ui, /\n    crunch: \(\) => crunch\(/);
   assert.match(ui, /function crunch\(intensity, tail\)/);
   assert.match(ui, /const a = audio\(\); if \(!a\) return;\n    try \{\n      if \(!noiseBuf\)/, 'crunch goes through audio(): sound switch and bedtime still apply');
-  assert.match(ui, /vibrate\(p\.glow \? C\(\)\.crunchPattern\(level\)/);
+  assert.match(ui, /feelBuzz\('hold', level\)/);
+  assert.equal(C.feelPattern('lamp', 'hold', 0.8, 'medium', false).length, C.crunchPattern(0.8).length, 'the lamp still crackles');
   assert.match(ui, /msb_tap_vibration/);
 });
 
@@ -762,4 +763,53 @@ test('only trick squishies mention a secret trick; the first squish shows the le
   assert.match(ui, /if \(learn && learn\.hidden\) \{\s*learn\.hidden = false;[\s\S]{0,200}sheet\.innerHTML = cardHtml\(p\.x\); sheet\.hidden = false;/);
   assert.ok(i18n.includes('"Verified": "Verificado"'));
   for (const k of ['Gold', 'Teal', 'Black', 'Read Scripture with the Orthodox Church. A profile on this device keeps your notes and progress in this browser.']) assert.ok(new RegExp(`['"]${k.replace(/[.]/g, '\\.')}['"]:`).test(i18n), k);
+});
+
+test('every squishy has its own feel: softness, bounce and buzz', () => {
+  const ids = SQUISHIES.map(x => x.id);
+  assert.equal(ids.length, 25);
+  for (const id of ids) {
+    const f = C.FEEL[id];
+    assert.ok(f, id); assert.ok(C.BUZZ[f.buzz], `${id} buzz`);
+    assert.ok(f.soft >= 0.5 && f.soft <= 1.3 && f.bounce >= 0.55 && f.bounce <= 1.5, id);
+  }
+  /* lamb soft and slow, tomb and stone heavy, coin quick buzzes */
+  assert.ok(C.FEEL.lamb.soft > 1.2 && C.FEEL.lamb.bounce < 0.8 && C.FEEL.lamb.buzz === 'soft');
+  for (const id of ['tomb', 'stone']) assert.ok(C.FEEL[id].soft < 0.6 && C.FEEL[id].buzz === 'heavy', id);
+  assert.equal(C.FEEL.coin.buzz, 'quick');
+  const lamb = C.feelPattern('lamb', 'release', 1, 'medium'), tomb = C.feelPattern('tomb', 'release', 1, 'medium'), coin = C.feelPattern('coin', 'release', 1, 'medium');
+  const on = p => (Array.isArray(p) ? p.filter((_, i) => i % 2 === 0) : [p]);
+  assert.ok(Math.max(...on(tomb)) > 2 * Math.max(...on(lamb)), 'the tomb thuds harder than the lamb');
+  assert.ok(on(coin).length >= 4 && Math.max(...on(coin)) <= 12, 'the coin is quick little buzzes');
+  assert.ok(lamb[1] >= 80, 'the lamb waits slowly between pulses');
+  const pats = new Set(ids.map(id => JSON.stringify(C.feelPattern(id, 'release', 0.7, 'medium'))));
+  assert.ok(pats.size >= 12, `many different buzzes (${pats.size})`);
+  /* softness and bounce reach the soft body */
+  const soft = C.softBody({ feel: C.FEEL.lamb }), hard = C.softBody({ feel: C.FEEL.tomb });
+  assert.ok(soft.cfg.squash > 2 * hard.cfg.squash, 'the lamb squashes much deeper than the tomb');
+  assert.ok(C.softBody({ feel: C.FEEL.coin }).cfg.damp < soft.cfg.damp, 'the coin bounces livelier than the lamb');
+  assert.equal(C.softBody({ reduced: true, feel: C.FEEL.lamb }).cfg.squash, C.softBody({ reduced: true }).cfg.squash, 'reduced motion is never softer');
+});
+
+test('vibration strength Off/Light/Medium/Strong scales every pulse; reduced motion keeps one pulse', () => {
+  assert.deepEqual(C.VIBE_LEVELS, ['off', 'light', 'medium', 'strong']);
+  const m = new Map(), st = { getItem: k => m.get(k) ?? null, setItem: (k, v) => m.set(k, v) }, pref = C.vibePref(st);
+  assert.equal(pref.get(), 'medium');
+  assert.equal(pref.set('strong'), 'strong'); assert.equal(pref.get(), 'strong');
+  assert.equal(pref.set('loud'), 'medium');
+  assert.equal(C.scalePattern([20, 40, 20], 'off'), 0);
+  assert.deepEqual(C.scalePattern([20, 40, 20], 'light'), [10, 40, 10]);
+  assert.deepEqual(C.scalePattern([20, 40, 20], 'strong'), [32, 40, 32]);
+  assert.equal(C.scalePattern(100, 'strong'), 80, 'each pulse at most 80 ms');
+  for (const id of Object.keys(C.FEEL)) for (const lv of ['light', 'medium', 'strong']) {
+    const p = C.feelPattern(id, 'release', 1, lv), a = Array.isArray(p) ? p : [p];
+    assert.ok(a.reduce((x, y) => x + y, 0) <= 300 && a.length % 2 === 1, `${id} ${lv}`);
+  }
+  assert.equal(C.feelPattern('tomb', 'release', 1, 'off'), 0);
+  assert.equal(typeof C.feelPattern('coin', 'release', 1, 'medium', true), 'number', 'reduced motion: one pulse');
+  const ui = read('./squishy.js'), i18n = read('./i18n.js');
+  assert.match(ui, /localStorage\.getItem\('msb_tap_vibration'\) === 'off'\) return;[\s\S]{0,200}scalePattern\(pattern, vibe\(\)\.get\(\)\)/, 'the app switch wins, then the strength');
+  assert.match(ui, /es: \{ off: 'Apagada', light: 'Suave', medium: 'Media', strong: 'Fuerte' \}/);
+  assert.match(ui, /role="radiogroup"/);
+  assert.ok(i18n.includes('"Vibration strength": "Fuerza de la vibración"'));
 });

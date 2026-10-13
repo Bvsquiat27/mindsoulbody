@@ -562,6 +562,11 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .sq-learn{position:absolute;right:8px;bottom:8px;min-height:48px;padding:10px 18px;border:0;border-radius:999px;background:rgb(255,224,138);color:rgb(59,42,16);font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,0.4);animation:sq-bubble 2.4s ease-in-out infinite}
 .sq-learn[hidden]{display:none}
 @keyframes sq-bubble{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.sq-vibe{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;margin:10px 0 0}
+.sq-vibe-label{flex-basis:100%;text-align:center;font-size:14px;font-weight:700;color:rgb(228,219,239)}
+.sq-vibe-btn{min-height:40px;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.06);color:inherit;font:inherit;font-size:14px;font-weight:700}
+.sq-vibe-btn.on{background:rgb(255,214,110);color:rgb(60,40,10);border-color:rgb(255,214,110)}
+.sq-vibe-note{flex-basis:100%;margin:2px 0 0;text-align:center;font-size:13px;opacity:.8}
 .sq-play-hint{margin:8px 0 0;text-align:center;font-size:14px;color:rgb(228,219,239)}
 .sq-sheet{position:absolute;left:0;right:0;bottom:0;max-height:78%;overflow:auto;padding:12px 12px calc(14px + env(safe-area-inset-bottom));background:rgba(29,24,40,0.95);border-radius:24px 24px 0 0;box-shadow:0 -12px 40px rgba(0,0,0,0.6);touch-action:pan-y;overscroll-behavior:contain}
 .sq-sheet[hidden]{display:none}

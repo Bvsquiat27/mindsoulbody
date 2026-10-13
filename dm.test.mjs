@@ -91,3 +91,22 @@ test('reading a chat clears its unread badge in the cached friends list', () => 
   assert.equal(DM.clearUnread(r.list, 'A').changed, false);
   assert.deepEqual(DM.clearUnread(null, 'A'), { list: [], changed: false });
 });
+
+test('a read chat stays read when the friends list is refreshed from the server', () => {
+  const m = new Map(), st = { getItem: k => m.get(k) ?? null, setItem: (k, v) => m.set(k, String(v)) };
+  const rs = DM.readStore(st);
+  rs.mark('A', 3, 1000);
+  assert.equal(DM.READ_KEY, 'msb_dm_read');
+  assert.ok(DM.READ_KEY !== 'msb_friends_list', 'its own key, so a fetch cannot overwrite it');
+  /* the server still reports the old 3: no badge */
+  assert.deepEqual(rs.apply([{ code: 'A', unread: 3 }, { code: 'B', unread: 2 }]).map(f => f.unread), [0, 2]);
+  /* two new messages arrive: only those show */
+  assert.equal(rs.apply([{ code: 'A', unread: 5 }])[0].unread, 2);
+  /* the server catches up to 0: the marker is dropped, later counts show in full */
+  rs.apply([{ code: 'A', unread: 0 }]);
+  assert.equal(rs.apply([{ code: 'A', unread: 1 }])[0].unread, 1);
+  assert.equal(DM.unreadAfterRead(4, null), 4);
+  const aura = readFileSync(new URL('./aura.js', import.meta.url), 'utf8');
+  assert.match(aura, /MsbDM\.readStore\(localStorage\)\.apply\(rows\)/);
+  assert.doesNotMatch(aura, /DENOM_HELP|denom-help/);
+});
