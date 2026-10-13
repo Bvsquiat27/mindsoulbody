@@ -233,3 +233,7 @@ body{background:radial-gradient(ellipse 58% 25% at 50% -6%,var(--app-glow),trans
 .kid-badge-icon{font-size:1.5rem;line-height:1.2}
 .kid-badge strong{font-size:.74rem;line-height:1.15;overflow-wrap:anywhere}
 .kid-badge small{font-size:.64rem;opacity:.8}
+/* Verified account: a small glowing cross next to the name */
+.msb-verified{display:inline-block;margin-left:.3em;font-size:.9em;line-height:1;color:rgb(255,214,110);text-shadow:0 0 6px rgba(255,205,90,.9),0 0 14px rgba(255,190,70,.6);animation:msb-verified-glow 2.4s ease-in-out infinite;vertical-align:.05em}
+@keyframes msb-verified-glow{0%,100%{text-shadow:0 0 5px rgba(255,205,90,.75),0 0 10px rgba(255,190,70,.4)}50%{text-shadow:0 0 9px rgba(255,215,110,1),0 0 20px rgba(255,190,70,.75)}}
+@media (prefers-reduced-motion:reduce){.msb-verified{animation:none}}
