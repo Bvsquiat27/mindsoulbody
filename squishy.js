@@ -330,7 +330,7 @@
     return `<h2 class="sq-h2">${esc(L('Achievements'))}</h2><p class="sq-hint">${esc(L('Badges earned: {n} of {total}', { n: got, total: list.length }))}</p><ul class="sq-badges">${rows}</ul>${tricksHtml()}`;
   }
   /* Trade: give a friend a copy with a short code, or type a friend's code. */
-  const TRADE_ERR = { format: 'A code has 8 letters and numbers, like ABCD-1234.', checksum: 'That code doesn’t look right. Check each letter and try again.', own: 'That’s your own code! Share it with a friend instead.', used: 'This code was already used on this phone.' };
+  const TRADE_ERR = { format: 'A code has 8 letters and numbers, like ABCD-1234.', checksum: 'That code doesn’t look right. Check each letter and try again.', own: 'That’s your own code! Share it with a friend instead.', used: 'This code was already used on this phone.', legendary: 'Legendary squishies can’t be traded. Earn this one with its own challenge!' };
   function tradeHtml() {
     const T = TR();
     if (!T) return `<p class="sq-hint">${esc(L('Trading is not available right now.'))}</p>`;

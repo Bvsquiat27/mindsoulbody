@@ -47,13 +47,18 @@
     let v = 0; for (let i = 0; i < 6; i += 1) v = v * 32 + d[i];
     const raw = Math.imul((v - ADD) & MASK, INV) & MASK, idx = raw & 31;
     if (idx >= IDS.length) return { ok: false, reason: 'checksum' };
+    /* a real code for a squishy that became legendary (the bush): readable,
+       but it cannot be redeemed any more */
+    if (!tradable(IDS[idx])) return { ok: false, reason: 'legendary', id: IDS[idx], code: s };
     return { ok: true, id: IDS[idx], nonce: raw >>> 5, code: s };
   }
   const pretty = code => (code ? `${code.slice(0, 4)}-${code.slice(4)}` : '');
 
   function trades(storage) {
     const blank = () => ({ sent: [], got: [] });
-    const list = v => (Array.isArray(v) ? v.filter(x => x && typeof x.c === 'string' && /^[0-9A-Z]{8}$/.test(x.c) && tradable(x.id)) : []);
+    /* history keeps every known squishy (old bush trades included); only new
+       bush trades are blocked */
+    const list = v => (Array.isArray(v) ? v.filter(x => x && typeof x.c === 'string' && /^[0-9A-Z]{8}$/.test(x.c) && IDS.includes(x.id)) : []);
     function get() {
       let v = null;
       try { v = JSON.parse(storage.getItem(KEY)); } catch { v = null; }
@@ -75,6 +80,7 @@
       redeem(text, date = new Date()) {
         const r = readCode(text);
         if (!r.ok) return r;
+        if (!tradable(r.id)) return { ok: false, reason: 'legendary', id: r.id };
         const v = get();
         if (v.sent.some(x => x.c === r.code)) return { ok: false, reason: 'own', id: r.id };
         if (v.got.some(x => x.c === r.code)) return { ok: false, reason: 'used', id: r.id };

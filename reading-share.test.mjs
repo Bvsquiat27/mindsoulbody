@@ -39,7 +39,7 @@ test('friends read it in their own language', () => {
 
 test('wired in: opt-in toggle, sync only when on, friend profile, chat header, offline cache', () => {
   const aura = read('./aura.js'), dm = read('./dm.js'), html = read('./index.html'), sw = read('./sw.js'), i18n = read('./i18n.js');
-  assert.match(aura, /if\(RS&&RS\.pref\(localStorage\)\.get\(\)\)\{.{0,200}if\(reading\)out\.reading=reading\}return out\}/, 'stats carry reading only when sharing is on');
+  assert.match(aura, /if\(RS&&RS\.pref\(localStorage\)\.get\(\)\)\{.{0,500}if\(reading\)out\.reading=reading\}return out\}/, 'stats carry reading only when sharing is on');
   assert.match(aura, /id="reading-share" \$\{on\?'checked':''\}/);
   assert.match(aura, /event\.target\.id==='reading-share'[^}]*msbFriendsSync\(\)/, 'turning it on or off syncs at once');
   assert.match(aura, /READING NOW/);
@@ -48,4 +48,30 @@ test('wired in: opt-in toggle, sync only when on, friend profile, chat header, o
   assert.ok(html.indexOf('reading-share.js') > 0 && html.indexOf('reading-share.js') < html.indexOf('src="dm.js"'));
   assert.ok(sw.includes("'./reading-share.js'"));
   assert.ok(i18n.includes(`"Share what I'm reading with friends": "Compartir con mis amigos lo que estoy leyendo"`));
+});
+
+test('the shared study is the one last opened, not just the first unfinished', () => {
+  const studies = [{ id: 'one', title: 'First' }, { id: 'two', title: 'Second' }];
+  const r = RS.snapshot({ place: '', studies, progress: [], last: { id: 'deep-dive', title: 'A deeper study' }, now: 1 });
+  assert.equal(r.study, 'deep-dive'); assert.equal(r.studyTitle, 'A deeper study');
+  assert.equal(RS.snapshot({ place: '', studies, progress: [], last: null }).study, 'one', 'before any study is opened');
+  assert.ok(RS.LAST_STUDY_KEY.startsWith('msb_'));
+  const aura = read('./aura.js');
+  assert.match(aura, /if\(name==='study'&&id&&window\.MsbReadingShare\)\{try\{localStorage\.setItem\(MsbReadingShare\.LAST_STUDY_KEY,String\(id\)\)/, 'opening a study remembers it');
+  assert.match(aura, /const last=lastId\?study\(lastId\):null;const reading=RS\.snapshot\(\{[^}]*last\}\)/);
+});
+
+test('the friend profile speaks Spanish too', () => {
+  const aura = read('./aura.js'), i18n = read('./i18n.js');
+  for (const [en, es] of [['FRIEND', 'AMIGO'], ['Back to friends', 'Volver a amigos'], ['← Friends', '← Amigos']]) assert.ok(i18n.includes(`"${en}": "${es}"`), en);
+  assert.match(aura, /msbEs\(\)\?\(studies===1\?'estudio':'estudios'\)/);
+  assert.match(aura, /msbEs\(\)\?'Código de amigo':'Friend code'/);
+  assert.match(aura, /es\?'activo hace un momento':'active just now'/);
+});
+
+test('app scripts parse (a syntax error would break the whole app)', async () => {
+  const { execFileSync } = await import('node:child_process');
+  for (const f of ['aura.js', 'dm.js', 'reading-share.js', 'squishy.js', 'squishy-core.js', 'squishy-trade.js', 'match3.js', 'i18n.js']) {
+    execFileSync(process.execPath, ['--check', new URL(f, import.meta.url).pathname]);
+  }
 });

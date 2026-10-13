@@ -12,6 +12,7 @@
   'use strict';
   const KEY = 'msb_share_reading';
   const PLACE_KEY = 'lampstand_bible_place';
+  const LAST_STUDY_KEY = 'msb_last_study';
   const int = v => { const n = Math.floor(Number(v)); return Number.isFinite(n) ? n : 0; };
   const text = (v, max) => String(v ?? '').replace(/[\u0000-\u001f<>]/g, '').trim().slice(0, max);
 
@@ -41,7 +42,8 @@
     const place = String(o.place || '').match(/^(\d+):(\d+)$/);
     const studies = Array.isArray(o.studies) ? o.studies : [], progress = Array.isArray(o.progress) ? o.progress : [];
     const isDone = id => progress.some(p => p && p.study_id === id && p.completed_at);
-    const next = studies.find(s => s && s.id && !isDone(s.id));
+    /* the study last opened; before any is opened, the next unfinished one */
+    const next = o.last && o.last.id ? o.last : studies.find(s => s && s.id && !isDone(s.id));
     return clean({
       book: place ? place[1] : 0, chapter: place ? place[2] : 0,
       study: next ? next.id : '', studyTitle: next ? next.title : '',
@@ -67,5 +69,5 @@
     return (fetcher || fetch)(url).then(r => r.json()).then(j => { const m = {}; for (const b of (j && j.books) || []) m[b.id] = b.name; names[l] = m; return m; }).catch(() => ({}));
   }
   const bookNameNow = lang => id => ((names[lang === 'es' ? 'es' : 'en'] || {})[id] || '');
-  return { KEY, PLACE_KEY, pref, clean, snapshot, line, loadNames, bookNameNow };
+  return { KEY, PLACE_KEY, LAST_STUDY_KEY, pref, clean, snapshot, line, loadNames, bookNameNow };
 });
