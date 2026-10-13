@@ -119,6 +119,13 @@
     if (!mark || !n) return n;
     return Math.max(0, n - Math.max(0, Math.floor(Number(mark.n) || 0)));
   }
+  /* what to stamp when a chat is read: the server's current count (never
+     lower than an earlier stamp); nothing when there is nothing to hide */
+  function markCount(serverUnread, prev) {
+    const n = Math.max(0, Math.floor(Number(serverUnread) || 0)), was = prev ? Math.max(0, Math.floor(Number(prev.n) || 0)) : 0;
+    if (!n && !prev) return null;
+    return Math.max(n, was);
+  }
   function readStore(storage) {
     const read = () => { try { const v = JSON.parse(storage.getItem(READ_KEY)); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; } catch { return {}; } };
     const save = v => { try { storage.setItem(READ_KEY, JSON.stringify(v)); } catch { /* full */ } };
@@ -142,15 +149,15 @@
   const w = () => window;
   let poll = null, current = null, verseCache = { code: null, at: 0, list: [] };
   function stop() { if (poll) { clearInterval(poll); poll = null; } current = null; }
+  /* The friends cache keeps the server's raw counts; the read marker records
+     the server's count at the moment the chat was read. */
   function markRead(code) {
     try {
       const raw = JSON.parse(localStorage.getItem('msb_friends_list'));
       const f = (Array.isArray(raw) ? raw : []).find(x => x && x.code === code);
-      const marks = readStore(localStorage), prev = (() => { try { return (JSON.parse(localStorage.getItem(READ_KEY)) || {})[code]; } catch { return null; } })();
-      /* remember the server count that is now read (keep the higher one) */
-      marks.mark(code, Math.max(f ? Number(f.unread) || 0 : 0, prev ? prev.n : 0));
-      const r = clearUnread(raw, code);
-      if (r.changed) localStorage.setItem('msb_friends_list', JSON.stringify(r.list));
+      const prev = (() => { try { return (JSON.parse(localStorage.getItem(READ_KEY)) || {})[code] || null; } catch { return null; } })();
+      const n = markCount(f ? f.unread : 0, prev);
+      if (n !== null) readStore(localStorage).mark(code, n);
     } catch { /* no cache */ }
   }
   const me = () => (w().msbFriendsId ? w().msbFriendsId() : null);
@@ -262,5 +269,5 @@
     document.addEventListener('keydown', e => { const t = e.target; if (t && t.matches && t.matches('[data-dm-input]') && e.key === 'Enter' && !e.shiftKey && !e.isComposing && window.matchMedia('(pointer:fine)').matches) { e.preventDefault(); t.form.requestSubmit(); } });
     document.addEventListener('submit', e => { const f = e.target; if (f && f.matches && f.matches('[data-dm-form]')) { e.preventDefault(); send(f); } });
   }
-  return { LAST_KEY, READ_KEY, unreadAfterRead, readStore, MSG_EVERY, VERSE_EVERY, pollPlan, clearUnread, timeline, layout, dayLabel, shortAgo, previewOf, lastStore, openInbox, openThread, stop };
+  return { LAST_KEY, READ_KEY, unreadAfterRead, markCount, readStore, MSG_EVERY, VERSE_EVERY, pollPlan, clearUnread, timeline, layout, dayLabel, shortAgo, previewOf, lastStore, openInbox, openThread, stop };
 });

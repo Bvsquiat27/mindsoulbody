@@ -110,3 +110,19 @@ test('a read chat stays read when the friends list is refreshed from the server'
   assert.match(aura, /MsbDM\.readStore\(localStorage\)\.apply\(rows\)/);
   assert.doesNotMatch(aura, /DENOM_HELP|denom-help/);
 });
+
+test('read markers: stamped with the server count, applied after a fresh fetch too', () => {
+  assert.equal(DM.markCount(3, null), 3, 'the server count is stamped');
+  assert.equal(DM.markCount(0, null), null, 'no marker when nothing is unread');
+  assert.equal(DM.markCount(0, { n: 4 }), 4, 'never lower than an earlier stamp');
+  assert.equal(DM.markCount(6, { n: 4 }), 6);
+  const dm = readFileSync(new URL('./dm.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(dm.slice(dm.indexOf('function markRead('), dm.indexOf('const me = () =>')), /clearUnread|setItem\('msb_friends_list'/, 'the raw server counts stay in the cache');
+  const aura = readFileSync(new URL('./aura.js', import.meta.url), 'utf8');
+  const fetchLine = aura.split('\n').find(l => l.startsWith('async function msbFriendsFetch('));
+  assert.match(fetchLine, /MsbDM\.readStore\(localStorage\)\.apply\(rows\)/, 'a refresh from the server keeps read chats read');
+  /* the full trip: read with 2 unread, a refetch still says 2 -> 0 shown */
+  const m = new Map(), st = { getItem: k => m.get(k) ?? null, setItem: (k, v) => m.set(k, String(v)) };
+  DM.readStore(st).mark('A', DM.markCount(2, null));
+  assert.equal(DM.readStore(st).apply([{ code: 'A', unread: 2 }])[0].unread, 0);
+});
