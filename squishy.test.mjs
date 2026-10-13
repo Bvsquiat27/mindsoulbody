@@ -739,3 +739,16 @@ test('progress from removed tricks is kept: stored list untouched, earned trick 
   assert.equal(list.find(b => b.id === 'trick-master').earned, '2026-10-02');
   assert.deepEqual([list.find(b => b.id === 'trick-master').progress.have, list.find(b => b.id === 'trick-master').progress.need], [1, 2], 'only real tricks count now');
 });
+
+test('art fits its 120 x 120 picture: the drawings that reach past it are scaled and shifted, face spot too', () => {
+  const src = read('./squishy-art.js');
+  const fit = Function(`return ${src.match(/const FIT = (\{[^\n]+\});/)[1]}`)();
+  assert.ok(Object.keys(fit).length >= 10);
+  for (const [id, [s, dx, dy]] of Object.entries(fit)) {
+    assert.ok(SQUISHIES.some(x => x.id === id), id);
+    assert.ok(s > 0.9 && s <= 1, `${id} scale`); assert.ok(Math.abs(dx) <= 10 && Math.abs(dy) <= 10, `${id} shift`);
+  }
+  for (const id of ['wheat', 'ladder', 'donkey', 'jar', 'tomb', 'oil']) assert.ok(fit[id][2] > 0, `${id} moves down so its top is not cut`);
+  assert.match(src, /body = fitWrap\(id, body\);/);
+  assert.match(src, /x: f\[1\] \+ p\.x \* f\[0\], y: f\[2\] \+ p\.y \* f\[0\], k: p\.k \* f\[0\]/);
+});
