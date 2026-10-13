@@ -40,3 +40,26 @@ test('sign-up and profile edits pass the chosen name; nothing else does', () => 
   assert.match(aura, /await loadAccount\(\);msbFriendsSync\(\{name:String\(data\.get\('name'\)\|\|''\)\}\)/);
   assert.equal((aura.match(/msbFriendsSync\(\{/g) || []).length, 2);
 });
+
+test('verified cross: shown only when the server says so, on friends list, friend profile and own profile', async () => {
+  assert.match(aura, /if\(friend\.verified===true\)view\.verified=true;/, 'kept when the friends list is cleaned');
+  assert.match(aura, /function msbVerifiedHtml\(on\)\{return on===true\?/);
+  assert.match(aura, /<strong>\$\{esc\(f\.name\|\|'Friend'\)\}<\/strong>\$\{msbVerifiedHtml\(f\.verified\)\}/);
+  assert.match(aura, /<h1>\$\{esc\(name\)\}\$\{msbVerifiedHtml\(f\.verified\)\}<\/h1>/);
+  assert.match(aura, /msbVerifiedHtml\(\(msbFriendsId\(\)\|\|\{\}\)\.verified\)/);
+  const html = new Function(`${aura.split('\n').find(l => l.startsWith('function msbVerifiedHtml'))}\nreturn msbVerifiedHtml;`)();
+  assert.match(html(true), /msb-verified/);
+  for (const v of [false, undefined, 'true', 1]) assert.equal(html(v), '');
+  /* own flag comes from the sync reply and is cleared when the server stops sending it */
+  const h = harness({ code: 'MSB-AAAAAA', secret: 's' });
+  h.calls.length = 0;
+  const sync = new Function('MSB_FRIENDS_KEY', 'localStorage', 'msbFriendsId', 'msbFriendsPublicProfile', 'msbFriendsStats', 'msbStore', 'msbPublicImage', 'msbFriendsCall', 'toast', `${src}\nreturn msbFriendsSync;`);
+  const ls = new Map([['msb_friends_id', JSON.stringify({ code: 'MSB-AAAAAA', secret: 's' })]]);
+  let reply = { ok: true, verified: true };
+  const run = sync('msb_friends_id', { getItem: k => ls.get(k) ?? null, setItem: (k, v) => ls.set(k, v) }, () => JSON.parse(ls.get('msb_friends_id')), () => ({}), () => ({}), () => ({ profile: {} }), () => '', async () => reply, () => {});
+  await run();
+  assert.equal(JSON.parse(ls.get('msb_friends_id')).verified, true);
+  reply = { ok: true };
+  await run();
+  assert.equal('verified' in JSON.parse(ls.get('msb_friends_id')), false);
+});
