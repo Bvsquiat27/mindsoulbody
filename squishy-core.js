@@ -77,7 +77,17 @@
     tree: { sound: { squish: 'rustle', release: 'knock', tone: 'flutter' }, fx: 'falling-leaves', trick: 'zacchaeus', gesture: 'tapTop' },
     ark: { sound: { squish: 'creak', release: 'patter', tone: 'horn' }, fx: 'rain', trick: 'two-by-two', gesture: 'shake' },
     coat: { sound: { squish: 'swish', release: 'harp', tone: 'chorus' }, fx: 'ribbons', trick: 'twirl', gesture: 'circle' },
-    lamp: { sound: { squish: 'crunch', release: 'crunch-tail', tone: 'none' }, fx: 'sparks', trick: 'light-room', gesture: 'hold', ms: 1500 }
+    lamp: { sound: { squish: 'crunch', release: 'crunch-tail', tone: 'none' }, fx: 'sparks', trick: 'light-room', gesture: 'hold', ms: 1500 },
+    ladder: { sound: { squish: 'step', release: 'ascend', tone: 'choir' }, fx: 'halos', trick: 'angels', gesture: 'swipeUD' },
+    raven: { sound: { squish: 'caw', release: 'wingbeat', tone: 'rasp' }, fx: 'dark-feathers', trick: 'bread-flight', gesture: 'flickDown' },
+    wheat: { sound: { squish: 'sheaf', release: 'scatter', tone: 'breeze' }, fx: 'grains', trick: 'gleaning', gesture: 'stretchDown' },
+    oil: { sound: { squish: 'glug', release: 'pour', tone: 'viscous' }, fx: 'oil-drops', trick: 'overflow', gesture: 'hold', ms: 1500 },
+    coin: { sound: { squish: 'clink', release: 'jingle', tone: 'spin' }, fx: 'coins', trick: 'found', gesture: 'flickSide' },
+    donkey: { sound: { squish: 'heehaw', release: 'hoof', tone: 'bray' }, fx: 'kind-hearts', trick: 'inn', gesture: 'tripleTap' },
+    jar: { sound: { squish: 'shatter', release: 'trumpet', tone: 'torch' }, fx: 'shards', trick: 'trumpets', gesture: 'doubleTap' },
+    crown: { sound: { squish: 'jewel', release: 'royal', tone: 'regal' }, fx: 'jewels', trick: 'scepter', gesture: 'flickUp' },
+    boat: { sound: { squish: 'oar', release: 'haul', tone: 'sea' }, fx: 'spray', trick: 'net', gesture: 'swipeLR' },
+    tomb: { sound: { squish: 'rumble', release: 'alleluia', tone: 'dawn' }, fx: 'sunbeams', trick: 'risen', gesture: 'dragAcross' }
   };
   /* The stretch tone of each squishy: oscillator wave, base pitch and how
      far the pitch climbs with the stretch, wobble (lfo rate and depth) and
@@ -97,9 +107,19 @@
     flutter: { type: 'triangle', base: 200, range: 350, lfo: 5, depth: 9, filter: 900, q: 1.5 },
     horn: { type: 'sawtooth', base: 65, range: 110, lfo: 1.5, depth: 3, filter: 400, q: 1.2 },
     chorus: { type: 'triangle', base: 300, range: 600, lfo: 7, depth: 10, filter: 2200, q: 0.9 },
+    choir: { type: 'triangle', base: 500, range: 400, lfo: 5.5, depth: 6, filter: 2500, q: 1.1 },
+    rasp: { type: 'sawtooth', base: 260, range: 300, lfo: 22, depth: 8, filter: 1400, q: 4 },
+    breeze: { type: 'sine', base: 180, range: 260, lfo: 0.8, depth: 40, filter: 700, q: 0.6 },
+    viscous: { type: 'square', base: 140, range: 180, lfo: 3, depth: 15, filter: 350, q: 1.4 },
+    spin: { type: 'square', base: 600, range: 900, lfo: 18, depth: 40, filter: 4000, q: 0.9 },
+    bray: { type: 'sawtooth', base: 200, range: 300, lfo: 2.2, depth: 60, filter: 1500, q: 2 },
+    torch: { type: 'sawtooth', base: 90, range: 200, lfo: 9, depth: 20, filter: 700, q: 4 },
+    regal: { type: 'triangle', base: 392, range: 400, lfo: 4.5, depth: 7, filter: 3000, q: 1.2 },
+    sea: { type: 'sine', base: 140, range: 220, lfo: 0.6, depth: 25, filter: 600, q: 0.7 },
+    dawn: { type: 'triangle', base: 330, range: 660, lfo: 2.5, depth: 5, filter: 4000, q: 0.5 },
     none: null
   };
-  const GESTURES = ['tap', 'doubleTap', 'tripleTap', 'fiveTaps', 'tapTop', 'hold', 'holdStill', 'flickUp', 'pullRelease', 'dragAcross', 'swipeLR', 'shake', 'rock', 'circle', 'stretchUp'];
+  const GESTURES = ['tap', 'doubleTap', 'tripleTap', 'fiveTaps', 'tapTop', 'hold', 'holdStill', 'flickUp', 'pullRelease', 'dragAcross', 'swipeLR', 'shake', 'rock', 'circle', 'stretchUp', 'stretchDown', 'flickDown', 'flickSide', 'swipeUD'];
   const kitFor = id => KITS[id] || null;
 
   /* Gesture recognizer. Feed it pointer events in squishy units (the
@@ -149,10 +169,15 @@
       /* any 60-250 ms stretch right before letting go that went up fast */
       const flick = pts.some(p => { const fdt = t - p.t, fdx = x - p.x, fdy = y - p.y; return fdt >= 60 && fdt <= 250 && fdy < -22 && Math.abs(fdy) > Math.abs(fdx) * 1.3 && -fdy / fdt > 0.16; });
       if (flick || (ms < 200 && dy < -22 && Math.abs(dy) > Math.abs(dx) * 1.3)) out.push({ type: 'flickUp' });
+      /* the same quick throw, downward or sideways */
+      const throwTo = test => pts.some(p => { const fdt = t - p.t; return fdt >= 60 && fdt <= 250 && test(x - p.x, y - p.y, fdt); }) || (ms < 200 && test(dx, dy, Math.max(16, ms)));
+      if (throwTo((fx, fy, ft) => fy > 22 && Math.abs(fy) > Math.abs(fx) * 1.3 && fy / ft > 0.16)) out.push({ type: 'flickDown' });
+      if (throwTo((fx, fy, ft) => Math.abs(fx) > 22 && Math.abs(fx) > Math.abs(fy) * 1.3 && Math.abs(fx) / ft > 0.16)) out.push({ type: 'flickSide', dir: Math.sign(dx) || 1 });
       /* pulled far, then let go while still far (a slingshot) */
       if (c.max >= 55 && Math.hypot(dx, dy) >= 45) out.push({ type: 'pullRelease', dx, dy });
       /* slow pull upward */
       if (dy <= -45 && Math.abs(dx) < Math.abs(dy) * 0.7 && ms >= 350) out.push({ type: 'stretchUp' });
+      if (dy >= 45 && Math.abs(dx) < Math.abs(dy) * 0.7 && ms >= 350) out.push({ type: 'stretchDown' });
       /* a long drag across */
       let len = 0, minX = Infinity, maxX = -Infinity;
       pts.forEach((p, i) => { if (i) len += Math.hypot(p.x - pts[i - 1].x, p.y - pts[i - 1].y); minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x); });
@@ -171,6 +196,17 @@
       if (turns >= 2 && xDom && amp >= 20 && ms < 1600) out.push({ type: 'swipeLR', turns });
       if (turns >= 3 && ms <= 1500) out.push({ type: 'shake', turns });
       if (turns >= 2 && ms >= 1200 && len / ms < 0.25) out.push({ type: 'rock', turns });
+      /* up-and-down: the same count along y */
+      let vt = 0, vdir = 0, vext = pts[0].y, minY = Infinity, maxY = -Infinity;
+      for (const p of pts) {
+        const d = p.y - vext;
+        if (vdir >= 0 && d < -12) { if (vdir > 0) vt += 1; vdir = -1; vext = p.y; }
+        else if (vdir <= 0 && d > 12) { if (vdir < 0) vt += 1; vdir = 1; vext = p.y; }
+        if (vdir > 0 && p.y > vext) vext = p.y;
+        if (vdir < 0 && p.y < vext) vext = p.y;
+        minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y);
+      }
+      if (vt >= 2 && (maxY - minY) > 2 * (maxX - minX) && maxY - minY >= 25 && ms < 2500) out.push({ type: 'swipeUD', turns: vt });
       /* circling: total turning angle around the middle of the path */
       if (pts.length >= 8) {
         const mx = pts.reduce((a, p) => a + p.x, 0) / pts.length, my = pts.reduce((a, p) => a + p.y, 0) / pts.length;
@@ -211,6 +247,16 @@
     { id: 'tree', kind: 'memoryFast', n: 10, tier: 'common' },
     { id: 'ark', kind: 'perfectRound', n: 1, tier: 'rare' },
     { id: 'coat', kind: 'streak', n: 3, tier: 'rare' },
+    { id: 'ladder', kind: 'memoryWins', n: 4, tier: 'common' },
+    { id: 'raven', kind: 'lessons', n: 8, tier: 'common' },
+    { id: 'wheat', kind: 'squishes', n: 300, tier: 'common' },
+    { id: 'oil', kind: 'questionWins', n: 6, tier: 'common' },
+    { id: 'coin', kind: 'matchChapter', n: 10, tier: 'common' },
+    { id: 'donkey', kind: 'tricks', n: 5, tier: 'common' },
+    { id: 'jar', kind: 'streak', n: 5, tier: 'rare' },
+    { id: 'crown', kind: 'matchThreeStars', n: 5, tier: 'rare' },
+    { id: 'boat', kind: 'perfectRound', n: 3, tier: 'rare' },
+    { id: 'tomb', kind: 'matchChapter', n: 20, tier: 'legendary' },
     { id: 'lamp', kind: 'final', n: 0, tier: 'legendary' }
   ];
   /* Extra badges that do not open a squishy. */

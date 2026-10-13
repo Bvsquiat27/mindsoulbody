@@ -115,6 +115,94 @@
       return `<defs><clipPath id="${id}"><path d="${shape}"/></clipPath></defs><path d="${shape}" fill="${INK}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>
         <g clip-path="url(#${id})">${stripes}</g><path d="M50 20 Q60 32 70 20" fill="#fff8ef" stroke="${INK}" stroke-width="2"/>${shine(46, 40, 7, 4)}${face(60, 66, 0.66)}`;
     },
+    /* Jacob's ladder: a soft wooden ladder up to a little cloud */
+    ladder() {
+      return `${blob('<rect x="28" y="16" width="12" height="98" rx="6"/><rect x="80" y="16" width="12" height="98" rx="6"/>', '#e3b57a')}
+        <g fill="#d39c5c" stroke="${INK}" stroke-width="2.2"><rect x="36" y="30" width="48" height="7" rx="3.5"/><rect x="36" y="98" width="48" height="7" rx="3.5"/></g>
+        ${blob(circles([[48, 14, 10], [62, 9, 12], [76, 14, 10], [40, 20, 7], [84, 20, 7]]), '#ffffff')}
+        <path d="M62 2 L64 6 L68 6.5 L65 9 L66 13 L62 11 L58 13 L59 9 L56 6.5 L60 6 Z" fill="#ffe27a" stroke="${INK}" stroke-width="1.2" stroke-linejoin="round"/>
+        ${blob('<rect x="24" y="48" width="72" height="42" rx="18"/>', '#f6d9a8')}${shine(36, 56, 8, 4)}${face(60, 68, 0.72)}`;
+    },
+    /* Elijah's raven, carrying a little loaf */
+    raven() {
+      return `${blob('<path d="M22 80 L4 70 L10 94 Z"/><ellipse cx="56" cy="76" rx="36" ry="28"/><circle cx="72" cy="46" r="24"/>', '#7b7f9e')}
+        <ellipse cx="46" cy="80" rx="20" ry="13" transform="rotate(-15 46 80)" fill="#666a8a" stroke="${INK}" stroke-width="2"/>
+        <ellipse cx="72" cy="50" rx="17" ry="14" fill="#a9adc8"/>
+        <path d="M93 44 L108 50 L93 56 Z" fill="#ffb347" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
+        ${blob('<ellipse cx="108" cy="60" rx="9" ry="6"/>', '#f6c992')}<path d="M104 58 Q106 60 104 62 M110 58 Q112 60 110 62" fill="none" stroke="#d99a5b" stroke-width="1.4" stroke-linecap="round"/>
+        <g fill="#7a6370"><rect x="46" y="100" width="5" height="12" rx="2.5"/><rect x="62" y="100" width="5" height="12" rx="2.5"/></g>
+        ${shine(62, 30, 8, 4)}${face(72, 50, 0.56)}`;
+    },
+    /* Ruth's sheaf of wheat, tied with a ribbon */
+    wheat() {
+      const heads = [[30, 22], [44, 12], [60, 8], [76, 12], [90, 22]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="7" ry="12"/>`).join('');
+      return `${blob(heads, '#e9b949')}<g stroke="#c9952e" stroke-width="1.4" fill="none">${[[30, 22], [44, 12], [60, 8], [76, 12], [90, 22]].map(([x, y]) => `<path d="M${x} ${y - 8} L${x} ${y + 8} M${x - 4} ${y - 3} L${x} ${y} L${x + 4} ${y - 3} M${x - 4} ${y + 3} L${x} ${y + 6} L${x + 4} ${y + 3}"/>`).join('')}</g>
+        ${blob('<path d="M30 30 Q60 20 90 30 L84 64 Q96 96 92 112 L28 112 Q24 96 36 64 Z"/>', '#f2cf72')}
+        <g fill="none" stroke="#d9ac4a" stroke-width="2" stroke-linecap="round"><path d="M44 34 L46 62 M60 30 L60 62 M76 34 L74 62 M40 76 L36 108 M80 76 L84 108"/></g>
+        ${blob('<rect x="32" y="60" width="56" height="12" rx="6"/>', '#e07a5f')}
+        ${shine(42, 40, 6, 3)}${face(60, 90, 0.66)}`;
+    },
+    /* The widow's clay jar, oil still dripping */
+    oil() {
+      return `${blob('<path d="M42 30 L78 30 L74 44 Q104 54 100 84 Q96 110 60 110 Q24 110 20 84 Q16 54 46 44 Z"/><rect x="38" y="22" width="44" height="10" rx="5"/>', '#e8c39e')}
+        <path d="M26 66 Q60 76 94 66" fill="none" stroke="#c99a6c" stroke-width="2.4" stroke-linecap="round"/>
+        ${blob('<path d="M60 0 Q68 10 66 15 Q64 20 60 20 Q56 20 54 15 Q52 10 60 0 Z"/>', '#ffd166')}<ellipse cx="60" cy="25" rx="16" ry="3" fill="#ffd166" stroke="${INK}" stroke-width="1.6"/>
+        ${shine(38, 60, 8, 4)}${face(60, 86, 0.72)}`;
+    },
+    /* The lost coin, found and shining */
+    coin() {
+      return `${blob('<circle cx="60" cy="64" r="44"/>', '#ffd35a')}<circle cx="60" cy="64" r="35" fill="#f7c23f" stroke="#e0a92c" stroke-width="2.4"/>
+        <g fill="#fff6c4"><path d="M98 22 L100 28 L106 30 L100 32 L98 38 L96 32 L90 30 L96 28 Z"/><path d="M22 96 L23.5 100 L28 101.5 L23.5 103 L22 107 L20.5 103 L16 101.5 L20.5 100 Z"/></g>
+        ${shine(42, 40, 10, 5)}${face(60, 66, 0.78)}`;
+    },
+    /* The Good Samaritan's donkey */
+    donkey() {
+      return `${blob('<ellipse cx="38" cy="22" rx="8" ry="22" transform="rotate(-18 38 22)"/><ellipse cx="82" cy="22" rx="8" ry="22" transform="rotate(18 82 22)"/>', '#a8988f')}
+        <g fill="#e6b8c0"><ellipse cx="38" cy="24" rx="3.5" ry="14" transform="rotate(-18 38 24)"/><ellipse cx="82" cy="24" rx="3.5" ry="14" transform="rotate(18 82 24)"/></g>
+        ${blob('<ellipse cx="60" cy="62" rx="36" ry="34"/>', '#b8a9a0')}
+        <path d="M50 30 Q56 22 60 30 Q64 22 70 30" fill="#6b5a52" stroke="${INK}" stroke-width="1.8"/>
+        ${blob('<ellipse cx="60" cy="92" rx="26" ry="17"/>', '#e6dcd4')}<g fill="${EYE}"><ellipse cx="51" cy="92" rx="2.6" ry="3.4"/><ellipse cx="69" cy="92" rx="2.6" ry="3.4"/></g>
+        ${shine(42, 44, 8, 4)}${face(60, 62, 0.7)}`;
+    },
+    /* Gideon's clay pitcher with a torch inside and a trumpet */
+    jar() {
+      return `${blob('<path d="M60 0 Q76 18 70 32 Q66 40 60 40 Q54 40 50 32 Q44 18 60 0 Z"/>', '#ffb070')}<path d="M60 14 Q67 24 63 32 Q60 35 57 32 Q53 24 60 14 Z" fill="#ffe390"/>
+        ${blob('<path d="M94 58 Q114 58 112 76 Q110 92 92 90" fill="none"/><path d="M40 36 L80 36 L76 48 Q102 60 98 86 Q94 112 60 112 Q26 112 22 86 Q18 60 44 48 Z"/>', '#c97b5a')}
+        <path d="M94 58 Q112 58 110 76 Q108 90 92 88" fill="none" stroke="#c97b5a" stroke-width="5" stroke-linecap="round"/>
+        <g fill="#f2c14e" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"><path d="M4 70 L22 76 L22 84 L4 90 Z"/><rect x="20" y="77" width="10" height="6" rx="2"/></g>
+        <path d="M30 70 Q60 80 90 70" fill="none" stroke="#a65f40" stroke-width="2.4" stroke-linecap="round"/>
+        ${shine(40, 62, 8, 4)}${face(60, 88, 0.72)}`;
+    },
+    /* Queen Esther's crown */
+    crown() {
+      const shape = 'M14 48 L30 74 L42 34 L60 66 L78 34 L90 74 L106 48 L100 104 L20 104 Z';
+      return `${blob(`<path d="${shape}"/>`, '#ffd35a')}
+        <g stroke="${INK}" stroke-width="2"><circle cx="14" cy="46" r="6" fill="#ff8fb8"/><circle cx="42" cy="32" r="6" fill="#8fd0ff"/><circle cx="60" cy="24" r="7" fill="#ff8fb8"/><circle cx="78" cy="32" r="6" fill="#8fd0ff"/><circle cx="106" cy="46" r="6" fill="#ff8fb8"/></g>
+        <path d="M22 92 L98 92" stroke="#e0a92c" stroke-width="3" stroke-linecap="round"/>
+        <g stroke="${INK}" stroke-width="1.6"><ellipse cx="34" cy="98" rx="4" ry="3" fill="#b38cff"/><ellipse cx="86" cy="98" rx="4" ry="3" fill="#b38cff"/></g>
+        ${shine(30, 62, 6, 3.5)}${face(60, 80, 0.66)}`;
+    },
+    /* Peter's fishing boat with its net */
+    boat() {
+      return `<rect x="56" y="4" width="5" height="60" rx="2.5" fill="#a46a3f" stroke="${INK}" stroke-width="1.6"/>
+        ${blob('<path d="M62 8 Q92 26 94 52 L62 52 Z"/>', '#fffaf2')}
+        ${blob('<path d="M6 62 L114 62 Q104 104 60 104 Q16 104 6 62 Z"/>', '#c98f5e')}
+        <path d="M12 74 Q60 82 108 74" fill="none" stroke="#a96e3f" stroke-width="2"/>
+        <g fill="none" stroke="#8a7a6a" stroke-width="1.2"><path d="M18 64 L8 96 M26 64 L18 98 M10 74 L28 70 M8 86 L24 84"/></g>
+        <g fill="#ffb3c1" stroke="${INK}" stroke-width="1.4"><ellipse cx="14" cy="92" rx="6" ry="3.5"/><ellipse cx="22" cy="80" rx="6" ry="3.5"/></g>
+        <path d="M0 108 Q15 102 30 108 T60 108 T90 108 T120 108" fill="none" stroke="#8fc8f5" stroke-width="4" stroke-linecap="round"/>
+        ${shine(30, 70, 8, 3, -8)}${face(64, 82, 0.7)}`;
+    },
+    /* The stone rolled away from the empty tomb */
+    tomb() {
+      const rays = Array.from({ length: 7 }, (_, i) => { const a = Math.PI + (i + 0.5) / 7 * Math.PI; return `<path d="M60 58 L${(60 + Math.cos(a) * 58).toFixed(1)} ${(58 + Math.sin(a) * 58).toFixed(1)}"/>`; }).join('');
+      return `<g stroke="#ffe7a0" stroke-width="7" stroke-linecap="round" opacity=".8">${rays}</g>
+        ${blob('<path d="M14 112 L14 58 Q14 18 60 18 Q106 18 106 58 L106 112 Z"/>', '#b7ad9f')}
+        <path d="M34 112 L34 64 Q34 40 60 40 Q86 40 86 64 L86 112 Z" fill="#fff3c4" stroke="${INK}" stroke-width="2.2"/>
+        ${blob('<circle cx="74" cy="80" r="32"/>', '#d8d2c8')}<path d="M56 64 Q74 54 92 64" fill="none" stroke="#c4bdb1" stroke-width="2.4" stroke-linecap="round"/>
+        <g fill="#ff9db5" stroke="${INK}" stroke-width="1.4"><circle cx="20" cy="108" r="4"/><circle cx="28" cy="111" r="3.5"/><circle cx="110" cy="108" r="4"/></g>
+        ${shine(60, 62, 8, 4)}${face(74, 84, 0.66)}`;
+    },
     /* The final squishy: a little clay oil lamp with a glowing flame. */
     lamp() {
       const g = `sq-glow-${uid += 1}`, f = `sq-flame-${uid}`;

@@ -17,8 +17,8 @@ const verseAt = (l, [b, c, v]) => String((book(l === 'es' ? 'rvr/' : '', b).chap
 const index = { en: JSON.parse(read('./bible/index.json')).books, es: JSON.parse(read('./bible/rvr/index.json')).books };
 const label = (l, [b, c, v]) => `${index[l].find(x => x.id === b).name} ${c}:${v}`;
 
-test('there are about a dozen squishies, 6 open at the start and the rest locked', () => {
-  assert.ok(SQUISHIES.length >= 12 && SQUISHIES.length <= 20, String(SQUISHIES.length));
+test('there are 25 squishies, 6 open at the start and the rest locked', () => {
+  assert.ok(SQUISHIES.length === 25, String(SQUISHIES.length));
   assert.equal(SQUISHIES.filter(x => !x.locked).length, 6);
   assert.ok(SQUISHIES.filter(x => x.locked).length >= 6);
   assert.equal(new Set(SQUISHIES.map(x => x.id)).size, SQUISHIES.length);
@@ -89,9 +89,10 @@ test('sound switch is on by default and remembered', () => {
 test('each locked squishy has its own challenge, ramping up, with rare and legendary ones', () => {
   const locked = SQUISHIES.filter(x => x.locked).map(x => x.id);
   assert.deepEqual(C.CHALLENGES.map(c => c.id), locked, 'one challenge per locked squishy, in shelf order');
-  assert.equal(new Set(C.CHALLENGES.map(c => c.kind)).size, C.CHALLENGES.length, 'all different kinds');
-  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'rare').map(c => c.id), ['basket', 'ark', 'coat']);
-  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'legendary').map(c => c.id), ['lamp']);
+  assert.equal(new Set(C.CHALLENGES.map(c => `${c.kind}:${c.n}`)).size, C.CHALLENGES.length, 'all different goals');
+  for (const c of C.CHALLENGES) { const same = C.CHALLENGES.filter(d => d.kind === c.kind && d.kind !== 'final'); assert.ok(same.every((d, i) => i === 0 || d.n > same[i - 1].n), `${c.kind} ramps up`); }
+  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'rare').map(c => c.id), ['basket', 'ark', 'coat', 'jar', 'crown', 'boat']);
+  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'legendary').map(c => c.id), ['tomb', 'lamp']);
   assert.equal(C.CHALLENGES[0].kind, 'memoryWins', 'the first one is easy');
   assert.equal(C.CHALLENGES.at(-1).kind, 'final');
   assert.equal(C.tierOf('lamb'), 'common');
@@ -99,7 +100,8 @@ test('each locked squishy has its own challenge, ramping up, with rare and legen
 
 test('challenges unlock their own squishy (and only that one), remembered', () => {
   const s = memoryStorage(), st = C.stats(s), open = () => C.progress(s, SQUISHIES).unlocked();
-  const check = () => C.checkUnlocks(s, SQUISHIES, new Date(2026, 9, 11));
+  const FIRST = SQUISHIES.slice(0, 14).map(x => x.id).concat('lamp');
+  const check = () => C.checkUnlocks(s, SQUISHIES, new Date(2026, 9, 11)).filter(id => FIRST.includes(id));
   assert.deepEqual(check(), []);
   assert.equal(open().length, 6);
   st.memoryWon(14);
@@ -135,6 +137,8 @@ test('challenges unlock their own squishy (and only that one), remembered', () =
   assert.deepEqual(check(), []);
   st.played(new Date(2026, 10, 1, 0, 5));
   assert.deepEqual(check(), ['coat'], '3 days in a row, across a month end, by local date');
+  assert.deepEqual(check(), [], 'the lamp still needs the newer squishies');
+  for (const x of SQUISHIES.slice(14, -1)) C.progress(s, SQUISHIES).unlock(x.id);
   assert.deepEqual(check(), [], 'the lamp still needs 3 stars in Manna Match');
   s.setItem('msb_match_progress', JSON.stringify({ open: 6, stars: { 1: 2, 2: 1, 3: 2, 4: 1, 5: 3 }, best: {} }));
   assert.deepEqual(check(), ['lamp']);
@@ -159,13 +163,16 @@ test('play streaks use local calendar days', () => {
 
 test('the lamp opens last even when everything is done at once', () => {
   const s = memoryStorage(), st = C.stats(s), p = C.progress(s, SQUISHIES);
-  st.memoryWon(8); st.roundDone(5, 5); st.roundDone(5, 5); st.roundDone(5, 5);
-  for (let i = 0; i < 60; i += 1) st.squished();
-  ['lamb', 'dove', 'fish'].forEach(id => p.addStar(id));
-  for (const d of [1, 2, 3]) st.played(new Date(2026, 4, d));
-  s.setItem('msb_match_progress', JSON.stringify({ open: 5, stars: { 1: 3, 2: 3, 3: 3, 4: 3 } }));
+  for (let i = 0; i < 4; i += 1) st.memoryWon(8);
+  for (let i = 0; i < 6; i += 1) st.roundDone(5, 5);
+  for (let i = 0; i < 300; i += 1) st.squished();
+  SQUISHIES.slice(0, 8).forEach(x => p.addStar(x.id));
+  Object.keys(C.KITS).slice(0, 5).forEach(id => st.trickFound(id));
+  for (const d of [1, 2, 3, 4, 5]) st.played(new Date(2026, 4, d));
+  const stars = {}; for (let l = 1; l <= 20; l += 1) stars[l] = 3;
+  s.setItem('msb_match_progress', JSON.stringify({ open: 21, stars }));
   const opened = C.checkUnlocks(s, SQUISHIES);
-  assert.equal(opened.length, 9);
+  assert.equal(opened.length, 19);
   assert.equal(opened.at(-1), 'lamp');
 });
 
@@ -178,7 +185,7 @@ test('squishies opened before keep open; nothing is ever locked again', () => {
   assert.equal(open.length, 10);
   /* the lamp counts the ones already open */
   const lamp = C.challengeFor('lamp'), pr = C.challengeProgress(lamp, C.challengeContext(s, SQUISHIES));
-  assert.deepEqual([pr.have, pr.need], [4, 9]);
+  assert.deepEqual([pr.have, pr.need], [4, 19]);
   assert.equal(C.progress(s, SQUISHIES).unlock('stone'), false, 'already open');
 });
 
@@ -467,8 +474,8 @@ test('the outline stays smooth while stretched, squished or pinched (no kinks)',
 });
 
 /* ---------- The final, glowing squishy ---------- */
-test('the glowing Light of the World lamp is the 15th squishy, legendary and unlocks last', () => {
-  assert.equal(SQUISHIES.length, 15);
+test('the glowing Light of the World lamp is the last squishy, legendary and unlocks last', () => {
+  assert.equal(SQUISHIES.length, 25);
   const lamp = SQUISHIES.at(-1);
   assert.equal(lamp.id, 'lamp');
   assert.equal(lamp.locked, true);
@@ -682,7 +689,7 @@ test('tricks UI: hint chip, T key, toast, effects module wired in, Spanish for e
   assert.match(ui, /const t = red \? 0\.85/); assert.match(ui, /if \(!p \|\| !F \|\| reduced\(\)\) return;/);
   const grab = name => { const m = ui.match(new RegExp(`const ${name} = \\{([^\\n]+)\\};`)); assert.ok(m, name); return [...m[1].matchAll(/: '([^']+)'/g)].map(x => x[1]); };
   for (const k of [...grab('TRICK_NAME'), ...grab('TRICK_STORY'), ...grab('GESTURE_TEXT'), ...grab('TRICK_TEXT')]) assert.ok(i18n.includes(`${JSON.stringify(k)}:`), `missing Spanish for: ${k}`);
-  for (const id of Object.keys(C.KITS)) assert.ok(grab('TRICK_NAME').length === 15 && ui.includes(`${/-/.test(C.KITS[id].trick) ? `'${C.KITS[id].trick}'` : C.KITS[id].trick}: '`), id);
+  for (const id of Object.keys(C.KITS)) assert.ok(grab('TRICK_NAME').length === SQUISHIES.length && ui.includes(`${/-/.test(C.KITS[id].trick) ? `'${C.KITS[id].trick}'` : C.KITS[id].trick}: '`), id);
 });
 
 test('every trick animation draws without errors at any moment', () => {
@@ -696,4 +703,30 @@ test('every trick animation draws without errors at any moment', () => {
   }
   /* particles step and draw too */
   for (const name of Object.keys(FX.FX)) { const pt = FX.spawn(name, { x: 0, y: 0, w: 100, h: 100 }, { x: 50, y: 50 }, Math.random, 3); if (!pt) continue; FX.step(pt, 0.1); FX.drawParticle(g, pt, 2); }
+});
+
+test('ten newer squishies: Bible stories, own sound, trick and gesture, unlocked by their own goal', () => {
+  const NEW = ['ladder', 'raven', 'wheat', 'oil', 'coin', 'donkey', 'jar', 'crown', 'boat', 'tomb'];
+  assert.deepEqual(SQUISHIES.slice(14, -1).map(x => x.id), NEW);
+  for (const id of NEW) {
+    const x = SQUISHIES.find(q => q.id === id), k = C.KITS[id];
+    assert.ok(x.locked && C.challengeFor(id), id);
+    assert.ok(k && FX.TRICKS[k.trick] && FX.FX[k.fx] && C.GESTURES.includes(k.gesture), id);
+  }
+  const tricks = Object.values(C.KITS).map(k => k.trick), fxs = Object.values(C.KITS).map(k => k.fx);
+  assert.equal(new Set(tricks).size, tricks.length, 'every trick is different');
+  assert.equal(new Set(fxs).size, fxs.length, 'every effect is different');
+  const sig = Object.values(C.KITS).map(k => `${k.sound.squish}/${k.sound.release}/${k.sound.tone}`);
+  assert.equal(new Set(sig).size, sig.length, 'every voice is different');
+});
+
+test('new gestures: pull down slowly, flick down, flick sideways, swipe up and down', () => {
+  const has = (pts, g) => { const ev = pts.map(([x, y, t], i) => [i ? 'move' : 'down', 60 + x, 60 + y, t]); const [x, y, t] = pts.at(-1); ev.push(['up', 60 + x, 60 + y, t + 10]); return gestRun(ev).includes(g); };
+  assert.ok(has([[0, 0, 0], [0, 20, 150], [1, 40, 300], [0, 55, 450]], 'stretchDown'));
+  assert.ok(!has([[0, 0, 0], [0, 55, 100]], 'stretchDown'), 'too fast to be a stretch');
+  assert.ok(has([[0, 0, 0], [0, 10, 40], [0, 40, 100], [0, 70, 140]], 'flickDown'));
+  assert.ok(has([[0, 0, 0], [15, 0, 40], [45, 2, 100], [75, 1, 140]], 'flickSide'));
+  assert.ok(has([[0, 0, 0], [-15, 0, 40], [-45, 2, 100], [-75, 1, 140]], 'flickSide'));
+  assert.ok(has([[0, 0, 0], [0, -30, 200], [0, 30, 450], [0, -30, 700], [0, 30, 950]], 'swipeUD'));
+  assert.ok(!has([[0, 0, 0], [0, -30, 200], [0, 30, 450], [0, -30, 700], [0, 30, 950]], 'swipeLR'));
 });
