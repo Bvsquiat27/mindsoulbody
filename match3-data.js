@@ -130,6 +130,66 @@
         "en": "Jesus died on the cross for us and was laid in a tomb. But on the third day, the stone was rolled away. Jesus is alive!",
         "es": "Jesús murió en la cruz por nosotros y lo pusieron en una tumba. Pero al tercer día, la piedra había sido quitada. ¡Jesús vive!"
       }
+    },
+    {
+      "id": "pentecost",
+      "icon": "🔥",
+      "name": {
+        "en": "Pentecost",
+        "es": "Pentecostés"
+      },
+      "intro": {
+        "en": "Jesus went back to heaven and promised a Helper. On Pentecost the Holy Spirit came like wind and fire, and the church was born!",
+        "es": "Jesús volvió al cielo y prometió un Consolador. En Pentecostés el Espíritu Santo vino como viento y fuego, ¡y nació la iglesia!"
+      }
+    },
+    {
+      "id": "gate",
+      "icon": "🚪",
+      "name": {
+        "en": "The Beautiful Gate",
+        "es": "La puerta la Hermosa"
+      },
+      "intro": {
+        "en": "A man who could not walk sat at the temple gate every day. Peter and John had no money, but they had something better to give.",
+        "es": "Un hombre que no podía caminar se sentaba cada día en la puerta del templo. Pedro y Juan no tenían dinero, pero tenían algo mejor que dar."
+      }
+    },
+    {
+      "id": "road",
+      "icon": "✨",
+      "name": {
+        "en": "The road to Damascus",
+        "es": "El camino a Damasco"
+      },
+      "intro": {
+        "en": "Saul was against the followers of Jesus. On the road a bright light shone, Jesus spoke to him, and Saul’s heart was changed forever.",
+        "es": "Saulo estaba en contra de los seguidores de Jesús. En el camino brilló una gran luz, Jesús le habló, y el corazón de Saulo cambió para siempre."
+      }
+    },
+    {
+      "id": "prison",
+      "icon": "⛓️",
+      "name": {
+        "en": "Paul and Silas",
+        "es": "Pablo y Silas"
+      },
+      "intro": {
+        "en": "Paul and Silas were put in prison for telling people about Jesus. At midnight they sang, and God shook the walls!",
+        "es": "Pablo y Silas fueron encarcelados por hablar de Jesús. A medianoche cantaron, ¡y Dios sacudió los muros!"
+      }
+    },
+    {
+      "id": "heaven",
+      "icon": "👑",
+      "name": {
+        "en": "A new heaven",
+        "es": "Un cielo nuevo"
+      },
+      "intro": {
+        "en": "God showed John a beautiful promise. One day He will make everything new, and there will be no more tears!",
+        "es": "Dios le mostró a Juan una hermosa promesa. ¡Un día hará todo nuevo, y ya no habrá más lágrimas!"
+      }
     }
   ];
   const LEVELS = [
@@ -1234,6 +1294,582 @@
       "stars": [
         3200,
         3800
+      ]
+    },
+    {
+      "n": 21,
+      "chapter": "pentecost",
+      "seed": 23089,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "collect",
+          "piece": "heart",
+          "n": 22
+        }
+      ],
+      "moves": 26,
+      "stones": null,
+      "title": {
+        "en": "Wind and fire",
+        "es": "Viento y fuego"
+      },
+      "lesson": {
+        "en": "The Holy Spirit filled the disciples, and they told everyone about Jesus in many languages.",
+        "es": "El Espíritu Santo llenó a los discípulos, y hablaron de Jesús a todos en muchas lenguas."
+      },
+      "at": {
+        "en": [
+          44,
+          2,
+          4
+        ],
+        "es": [
+          44,
+          2,
+          4
+        ]
+      },
+      "ref": {
+        "en": "Acts 2:4",
+        "es": "Hechos 2:4"
+      },
+      "verse": {
+        "en": "And they were all filled with the Holy Ghost, and began to speak with other tongues, as the Spirit gave them utterance.",
+        "es": "Y fueron todos llenos del Espíritu Santo, y comenzaron á hablar en otras lenguas, como el Espíritu les daba que hablasen."
+      },
+      "stars": [
+        3050,
+        3350
+      ]
+    },
+    {
+      "n": 22,
+      "chapter": "pentecost",
+      "seed": 23238,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "score",
+          "n": 2600
+        }
+      ],
+      "moves": 26,
+      "stones": null,
+      "title": {
+        "en": "Three thousand friends",
+        "es": "Tres mil amigos"
+      },
+      "lesson": {
+        "en": "That day about three thousand people believed in Jesus and joined the church.",
+        "es": "Ese día unas tres mil personas creyeron en Jesús y se unieron a la iglesia."
+      },
+      "at": {
+        "en": [
+          44,
+          2,
+          41
+        ],
+        "es": [
+          44,
+          2,
+          41
+        ]
+      },
+      "ref": {
+        "en": "Acts 2:41",
+        "es": "Hechos 2:41"
+      },
+      "verse": {
+        "en": "Then they that gladly received his word were baptized: and the same day there were added unto them about three thousand souls.",
+        "es": "Así que, los que recibieron su palabra, fueron bautizados: y fueron añadidas á ellos aquel día como tres mil personas."
+      },
+      "stars": [
+        5150,
+        5650
+      ]
+    },
+    {
+      "n": 23,
+      "chapter": "gate",
+      "seed": 23829,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "stones"
+        }
+      ],
+      "moves": 26,
+      "stones": [
+        "........",
+        "........",
+        "........",
+        "...##...",
+        "..####..",
+        "...##...",
+        "........",
+        "........"
+      ],
+      "title": {
+        "en": "In Jesus’ name",
+        "es": "En el nombre de Jesús"
+      },
+      "lesson": {
+        "en": "Peter had no silver or gold, but in Jesus’ name the man stood up and walked!",
+        "es": "Pedro no tenía plata ni oro, ¡pero en el nombre de Jesús el hombre se levantó y caminó!"
+      },
+      "at": {
+        "en": [
+          44,
+          3,
+          6
+        ],
+        "es": [
+          44,
+          3,
+          6
+        ]
+      },
+      "ref": {
+        "en": "Acts 3:6",
+        "es": "Hechos 3:6"
+      },
+      "verse": {
+        "en": "Then Peter said, Silver and gold have I none; but such as I have give I thee: In the name of Jesus Christ of Nazareth rise up and walk.",
+        "es": "Y Pedro dijo: Ni tengo plata ni oro; mas lo que tengo te doy: en el nombre de Jesucristo de Nazaret, levántate y anda."
+      },
+      "stars": [
+        3200,
+        3500
+      ]
+    },
+    {
+      "n": 24,
+      "chapter": "gate",
+      "seed": 23367,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "collect",
+          "piece": "star",
+          "n": 16
+        },
+        {
+          "kind": "collect",
+          "piece": "leaf",
+          "n": 16
+        }
+      ],
+      "moves": 27,
+      "stones": null,
+      "title": {
+        "en": "Walking and leaping",
+        "es": "Andando y saltando"
+      },
+      "lesson": {
+        "en": "The man walked and jumped and praised God. When God helps us, we can thank Him with joy!",
+        "es": "El hombre andaba, saltaba y alababa a Dios. ¡Cuando Dios nos ayuda, podemos darle gracias con alegría!"
+      },
+      "at": {
+        "en": [
+          44,
+          3,
+          8
+        ],
+        "es": [
+          44,
+          3,
+          8
+        ]
+      },
+      "ref": {
+        "en": "Acts 3:8",
+        "es": "Hechos 3:8"
+      },
+      "verse": {
+        "en": "And he leaping up stood, and walked, and entered with them into the temple, walking, and leaping, and praising God.",
+        "es": "Y saltando, se puso en pie, y anduvo; y entró con ellos en el templo, andando, y saltando, y alabando á Dios."
+      },
+      "stars": [
+        3000,
+        3400
+      ]
+    },
+    {
+      "n": 25,
+      "chapter": "road",
+      "seed": 23620,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "collect",
+          "piece": "star",
+          "n": 24
+        }
+      ],
+      "moves": 26,
+      "stones": null,
+      "title": {
+        "en": "A light from heaven",
+        "es": "Una luz del cielo"
+      },
+      "lesson": {
+        "en": "A light from heaven shone around Saul. Jesus can reach anyone, even someone who was against Him.",
+        "es": "Una luz del cielo rodeó a Saulo. Jesús puede alcanzar a cualquiera, aun a alguien que estaba en su contra."
+      },
+      "at": {
+        "en": [
+          44,
+          9,
+          3
+        ],
+        "es": [
+          44,
+          9,
+          3
+        ]
+      },
+      "ref": {
+        "en": "Acts 9:3",
+        "es": "Hechos 9:3"
+      },
+      "verse": {
+        "en": "And as he journeyed, he came near Damascus: and suddenly there shined round about him a light from heaven:",
+        "es": "Y yendo por el camino, aconteció que llegando cerca de Damasco, súbitamente le cercó un resplandor de luz del cielo;"
+      },
+      "stars": [
+        2850,
+        3350
+      ]
+    },
+    {
+      "n": 26,
+      "chapter": "road",
+      "seed": 23652,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "stones"
+        }
+      ],
+      "moves": 27,
+      "stones": [
+        "........",
+        "........",
+        ".#....#.",
+        ".##..##.",
+        "........",
+        ".##..##.",
+        ".#....#.",
+        "........"
+      ],
+      "title": {
+        "en": "Eyes opened",
+        "es": "Ojos abiertos"
+      },
+      "lesson": {
+        "en": "Saul could see again, and he became Paul, who told the whole world about Jesus.",
+        "es": "Saulo pudo ver otra vez y llegó a ser Pablo, que habló de Jesús a todo el mundo."
+      },
+      "at": {
+        "en": [
+          44,
+          9,
+          18
+        ],
+        "es": [
+          44,
+          9,
+          18
+        ]
+      },
+      "ref": {
+        "en": "Acts 9:18",
+        "es": "Hechos 9:18"
+      },
+      "verse": {
+        "en": "And immediately there fell from his eyes as it had been scales: and he received sight forthwith, and arose, and was baptized.",
+        "es": "Y luego le cayeron de los ojos como escamas, y recibió al punto la vista: y levantándose, fué bautizado."
+      },
+      "stars": [
+        3150,
+        3300
+      ]
+    },
+    {
+      "n": 27,
+      "chapter": "prison",
+      "seed": 23632,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "score",
+          "n": 2900
+        }
+      ],
+      "moves": 29,
+      "stones": null,
+      "title": {
+        "en": "Songs at midnight",
+        "es": "Cantos a medianoche"
+      },
+      "lesson": {
+        "en": "Even in prison, Paul and Silas prayed and sang to God. We can praise God when things are hard.",
+        "es": "Aun en la cárcel, Pablo y Silas oraban y cantaban a Dios. Podemos alabar a Dios cuando las cosas son difíciles."
+      },
+      "at": {
+        "en": [
+          44,
+          16,
+          25
+        ],
+        "es": [
+          44,
+          16,
+          25
+        ]
+      },
+      "ref": {
+        "en": "Acts 16:25",
+        "es": "Hechos 16:25"
+      },
+      "verse": {
+        "en": "And at midnight Paul and Silas prayed, and sang praises unto God: and the prisoners heard them.",
+        "es": "Mas á media noche, orando Pablo y Silas, cantaban himnos á Dios: y los que estaban presos los oían."
+      },
+      "stars": [
+        3850,
+        4650
+      ]
+    },
+    {
+      "n": 28,
+      "chapter": "prison",
+      "seed": 24119,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "stones"
+        }
+      ],
+      "moves": 28,
+      "stones": [
+        "........",
+        "........",
+        "........",
+        "##....##",
+        "##....##",
+        "........",
+        "#.#..#.#",
+        "........"
+      ],
+      "title": {
+        "en": "The walls shake",
+        "es": "Los muros tiemblan"
+      },
+      "lesson": {
+        "en": "God sent an earthquake, the doors opened, and the chains fell off. Then the jailer and his family believed!",
+        "es": "Dios mandó un terremoto, las puertas se abrieron y las cadenas se soltaron. ¡Y el carcelero y su familia creyeron!"
+      },
+      "at": {
+        "en": [
+          44,
+          16,
+          26
+        ],
+        "es": [
+          44,
+          16,
+          26
+        ]
+      },
+      "ref": {
+        "en": "Acts 16:26",
+        "es": "Hechos 16:26"
+      },
+      "verse": {
+        "en": "And suddenly there was a great earthquake, so that the foundations of the prison were shaken: and immediately all the doors were opened, and every one's bands were loosed.",
+        "es": "Entonces fué hecho de repente un gran terremoto, de tal manera que los cimientos de la cárcel se movían; y luego todas las puertas se abrieron, y las prisiones de todos se soltaron."
+      },
+      "stars": [
+        3000,
+        3550
+      ]
+    },
+    {
+      "n": 29,
+      "chapter": "heaven",
+      "seed": 23943,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "collect",
+          "piece": "heart",
+          "n": 20
+        },
+        {
+          "kind": "collect",
+          "piece": "fish",
+          "n": 18
+        }
+      ],
+      "moves": 28,
+      "stones": null,
+      "title": {
+        "en": "No more tears",
+        "es": "No más lágrimas"
+      },
+      "lesson": {
+        "en": "God promises a day with no more crying or pain. He will wipe away every tear.",
+        "es": "Dios promete un día sin llanto ni dolor. Él enjugará toda lágrima."
+      },
+      "at": {
+        "en": [
+          66,
+          21,
+          4
+        ],
+        "es": [
+          66,
+          21,
+          4
+        ]
+      },
+      "ref": {
+        "en": "Revelation 21:4",
+        "es": "Apocalipsis 21:4"
+      },
+      "verse": {
+        "en": "And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying, neither shall there be any more pain: for the former things are passed away.",
+        "es": "Y limpiará Dios toda lágrima de los ojos de ellos; y la muerte no será más; y no habrá más llanto, ni clamor, ni dolor: porque las primeras cosas son pasadas."
+      },
+      "stars": [
+        2100,
+        2550
+      ]
+    },
+    {
+      "n": 30,
+      "chapter": "heaven",
+      "seed": 23975,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "stones"
+        }
+      ],
+      "moves": 30,
+      "stones": [
+        "........",
+        "........",
+        "..####..",
+        ".#....#.",
+        ".#....#.",
+        "..####..",
+        "........",
+        "........"
+      ],
+      "title": {
+        "en": "All things new",
+        "es": "Todo nuevo"
+      },
+      "lesson": {
+        "en": "Jesus says: Behold, I make all things new. His love never ends!",
+        "es": "Jesús dice: He aquí, yo hago nuevas todas las cosas. ¡Su amor nunca se acaba!"
+      },
+      "at": {
+        "en": [
+          66,
+          21,
+          5
+        ],
+        "es": [
+          66,
+          21,
+          5
+        ]
+      },
+      "ref": {
+        "en": "Revelation 21:5",
+        "es": "Apocalipsis 21:5"
+      },
+      "verse": {
+        "en": "And he that sat upon the throne said, Behold, I make all things new. And he said unto me, Write: for these words are true and faithful.",
+        "es": "Y el que estaba sentado en el trono dijo: He aquí, yo hago nuevas todas las cosas. Y me dijo: Escribe; porque estas palabras son fieles y verdaderas."
+      },
+      "stars": [
+        4250,
+        4750
       ]
     }
   ];

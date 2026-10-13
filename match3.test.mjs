@@ -31,9 +31,9 @@ function board(set = {}, level = testLevel) {
 const fakeStore = () => { const m = new Map(); return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)), m }; };
 
 /* ---------- Levels and lessons ---------- */
-test('20 levels in 10 Bible chapters, two each, in story order', () => {
-  assert.equal(LEVELS.length, 20);
-  assert.deepEqual(CHAPTERS.map(c => c.id), ['creation', 'noah', 'sea', 'jericho', 'david', 'daniel', 'jonah', 'birth', 'loaves', 'easter']);
+test('30 levels in 15 Bible chapters, two each, in story order', () => {
+  assert.equal(LEVELS.length, 30);
+  assert.deepEqual(CHAPTERS.map(c => c.id), ['creation', 'noah', 'sea', 'jericho', 'david', 'daniel', 'jonah', 'birth', 'loaves', 'easter', 'pentecost', 'gate', 'road', 'prison', 'heaven']);
   LEVELS.forEach((lv, i) => {
     assert.equal(lv.n, i + 1);
     assert.equal(lv.chapter, CHAPTERS[Math.floor(i / 2)].id, `level ${lv.n}`);
@@ -57,8 +57,8 @@ test('every lesson verse is word for word from the app KJV and RV1909 text', () 
     assert.equal(lv.ref[l], label(l, lv.at[l]), `level ${lv.n} ${l} reference`);
   }
   const refs = LEVELS.map(lv => lv.ref.en);
-  assert.deepEqual(refs, ['Genesis 1:1', 'Genesis 1:3', 'Genesis 8:11', 'Genesis 9:15', 'Exodus 14:21', 'Exodus 14:14', 'Joshua 6:20', 'Joshua 1:9', '1 Samuel 16:7', 'Psalms 23:1', 'Daniel 6:22', 'Psalms 46:1', 'Jonah 2:10', 'Jonah 3:5', 'Luke 2:11', 'Luke 2:14', 'John 6:9', 'John 6:35', 'Matthew 28:6', 'John 11:25']);
-  assert.equal(new Set(refs).size, 20);
+  assert.deepEqual(refs, ['Genesis 1:1', 'Genesis 1:3', 'Genesis 8:11', 'Genesis 9:15', 'Exodus 14:21', 'Exodus 14:14', 'Joshua 6:20', 'Joshua 1:9', '1 Samuel 16:7', 'Psalms 23:1', 'Daniel 6:22', 'Psalms 46:1', 'Jonah 2:10', 'Jonah 3:5', 'Luke 2:11', 'Luke 2:14', 'John 6:9', 'John 6:35', 'Matthew 28:6', 'John 11:25', 'Acts 2:4', 'Acts 2:41', 'Acts 3:6', 'Acts 3:8', 'Acts 9:3', 'Acts 9:18', 'Acts 16:25', 'Acts 16:26', 'Revelation 21:4', 'Revelation 21:5']);
+  assert.equal(new Set(refs).size, 30);
 });
 
 test('goals, moves, pieces and stones are sound, and stars rise', () => {
@@ -308,7 +308,7 @@ test('every level can be won, and a careful player wins most tries', () => {
     assert.equal(C.status(g, lv), 'won', `level ${lv.n} with the hint move every time`);
   }
   /* a player who takes the best move half the time and any move otherwise */
-  for (const n of [1, 2, 3, 6, 10, 20]) {
+  for (const n of [1, 2, 3, 6, 10, 20, 21, 23, 25, 26, 27, 28, 29, 30]) {
     const lv = LEVELS[n - 1];
     let wins = 0;
     for (let r = 0; r < 12; r += 1) {
@@ -427,4 +427,45 @@ test('the game is wired into Stories, precached, and its words have Spanish', ()
   for (const k of ['Manna Match', 'Match Bible pictures and learn a lesson in every level']) assert.ok(i18n.includes(`"${k}":`), k);
   assert.match(ui, /data-i18n-skip/);
   assert.doesNotMatch(ui, /_setMoves/, 'no move-changing test hook in the app');
+});
+
+test('the new chapters ramp up gently: more stones and goals, still winnable', () => {
+  const late = LEVELS.slice(20), early = LEVELS.slice(0, 20);
+  const avgMoves = a => a.reduce((s, l) => s + l.moves, 0) / a.length;
+  assert.ok(avgMoves(late) >= avgMoves(early), 'more moves to go with harder goals');
+  assert.ok(late.every(l => l.pieces.length === 6), 'six kinds of pieces in the last chapters');
+  assert.ok(late.slice(-2).some(l => l.goals.some(g => g.kind === 'stones')), 'the final level is a wall');
+  for (const l of late) assert.ok(l.moves <= 32);
+});
+
+test('old progress and stars carry over to the bigger map', () => {
+  const s = fakeStore();
+  const p = C.progress(s, 20);
+  for (let n = 1; n <= 20; n += 1) p.win(n, 3, 1000 + n);
+  const big = C.progress(s, 30).get();
+  assert.equal(big.open, 21, 'level 21 opens right after Easter');
+  assert.equal(big.stars[20], 3);
+  assert.equal(big.best[7], 1007);
+});
+
+test('walls crack in stages, then crumble with shake, debris, sound and buzz', () => {
+  const stone = new Uint8Array(C.N); stone[C.idx(3, 3)] = 1; stone[C.idx(5, 5)] = 1;
+  let chip = C.chipStones(stone, null, [C.idx(2, 3)]);
+  assert.equal(chip[C.idx(3, 3)], 1, 'a clear next to a stone cracks it');
+  assert.equal(chip[C.idx(5, 5)], 0, 'far stones stay whole');
+  chip = C.chipStones(stone, chip, [C.idx(3, 2), C.idx(4, 3)]);
+  assert.equal(chip[C.idx(3, 3)], 2, 'one more crack per step, however many neighbours cleared');
+  chip = C.chipStones(stone, chip, [C.idx(3, 4)]);
+  assert.equal(chip[C.idx(3, 3)], 2, 'two crack stages at most');
+  stone[C.idx(3, 3)] = 0;
+  assert.equal(C.chipStones(stone, chip, [])[C.idx(3, 3)], 0, 'a broken stone has no cracks left');
+  assert.deepEqual(C.breakFx(0, false), { shake: 0, debris: 0, buzz: 0, sound: null });
+  const one = C.breakFx(1, false), many = C.breakFx(4, false), last = C.breakFx(1, false, true);
+  assert.equal(one.sound, 'crumble'); assert.equal(many.sound, 'crash'); assert.equal(last.sound, 'crash');
+  assert.ok(many.shake > one.shake && last.shake > one.shake && many.shake <= 9);
+  assert.ok(one.debris > 0 && many.debris <= 8);
+  const calm = C.breakFx(4, true, true);
+  assert.equal(calm.shake, 0, 'no shaking with reduced motion');
+  assert.equal(calm.debris, 0, 'no flying debris with reduced motion');
+  assert.equal(calm.sound, 'crash');
 });
