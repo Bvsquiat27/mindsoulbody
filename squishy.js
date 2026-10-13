@@ -28,12 +28,15 @@
   const ctx = () => C().challengeContext(store2(), D().SQUISHIES);
   const TIER_LABEL = { rare: 'RARE', legendary: 'LEGENDARY' };
   const FXM = () => window.MsbSquishyFx;
+  const TR = () => window.MsbSquishyTrade;
+  const trades = () => TR().trades(store2());
+  const giftIds = () => (TR() ? trades().gifts() : []);
   const kit = id => C().kitFor(id);
   /* Secret tricks, in words */
-  const TRICK_NAME = { sleep: 'Safe with the Shepherd', olive: 'The olive leaf', jonah: 'Jonah on the shore', 'lie-down': 'The peaceful lion', manger: 'The way to the manger', arc: 'God’s promise', sling: 'Boink!', multiply: 'Food for 5000', grow: 'A tree for the birds', 'i-am': 'I AM', river: 'Found by the princess', zacchaeus: 'Come down, Zacchaeus!', 'two-by-two': 'Two by two', twirl: 'Coat of many colors', 'light-room': 'Light for the whole house', angels: 'Angels on the ladder', 'bread-flight': 'Breakfast by raven', gleaning: 'Grain for Naomi', overflow: 'Every jar full', found: 'Lost and found', inn: 'Safe at the inn', trumpets: 'Torches and trumpets', scepter: 'The golden scepter', net: 'A net full of fish', risen: 'The stone rolled away' };
-  const TRICK_STORY = { sleep: 'The Good Shepherd keeps his lambs safe while they sleep.', olive: 'The dove came back with an olive leaf: the flood was over!', jonah: 'The big fish kept Jonah safe and put him on dry land.', 'lie-down': 'God shut the lions’ mouths, and Daniel was safe.', manger: 'The star led the wise men to baby Jesus.', arc: 'The rainbow is God’s promise to Noah.', sling: 'Little David trusted God against the giant.', multiply: 'Jesus fed 5000 people, and 12 baskets were left over!', grow: 'The tiny mustard seed grows into a tree where birds rest.', 'i-am': 'God spoke to Moses from the bush: I AM.', river: 'Pharaoh’s daughter found baby Moses in the river.', zacchaeus: 'Jesus called Zacchaeus down from the tree.', 'two-by-two': 'The animals went into the ark two by two.', twirl: 'Jacob gave Joseph a coat of many colors.', 'light-room': 'Jesus is the light of the world.', angels: 'God told Jacob: I am with you wherever you go.', 'bread-flight': 'God sent ravens with bread and meat for Elijah.', gleaning: 'Ruth gathered grain to take care of Naomi.', overflow: 'God kept the oil flowing until every jar was full.', found: 'There is joy in heaven when one lost person is found.', inn: 'The Good Samaritan helped his neighbor. Go and do the same!', trumpets: 'God gave Gideon’s little army the victory.', scepter: 'Brave Esther was there for such a time as this.', net: 'Jesus filled Peter’s net with so many fish!', risen: 'The tomb is empty. Jesus is alive!' };
-  const GESTURE_TEXT = { holdStill: 'Hold it very still for 3 seconds', flickUp: 'Flick it up quickly', hold: 'Press and hold it', tripleTap: 'Tap it 3 times', dragAcross: 'Drag it all the way across', swipeLR: 'Swipe it left and right', pullRelease: 'Pull it far back and let go', fiveTaps: 'Tap it 5 times', stretchUp: 'Pull it slowly upward', rock: 'Rock it slowly side to side', tapTop: 'Tap the very top', shake: 'Shake it fast', circle: 'Drag it in a circle', doubleTap: 'Tap it twice', stretchDown: 'Pull it slowly downward', flickDown: 'Flick it down quickly', flickSide: 'Flick it to the side', swipeUD: 'Swipe it up and down' };
-  const TRICK_TEXT = { 'i-am': 'I AM', multiply: '5000 fed!', sling: 'BOINK!', found: 'Rejoice with me!', trumpets: 'Victory!', net: 'So many fish!', risen: 'He is risen!' };
+  const TRICK_NAME = { 'i-am': 'I AM', 'light-room': 'Light for the whole house' };
+  const TRICK_STORY = { 'i-am': 'God spoke to Moses from the bush: I AM.', 'light-room': 'Jesus is the light of the world.' };
+  const GESTURE_TEXT = { hold: 'Press and hold it', tripleTap: 'Tap it 3 times' };
+  const TRICK_TEXT = { 'i-am': 'I AM' };
   /* What a challenge asks, in words. */
   function challengeText(ch) {
     switch (ch.kind) {
@@ -47,12 +50,13 @@
       case 'streak': return L('Play {n} days in a row', { n: ch.n });
       case 'matchThreeStars': return ch.n > 1 ? L('Get 3 stars on {n} Manna Match levels', { n: ch.n }) : L('Get 3 stars on a Manna Match level');
       case 'final': return L('Unlock every squishy and get 3 stars on a Manna Match level');
+      case 'trades': return L('Trade a squishy with a friend');
       case 'tricks': return ch.n === 1 ? L('Find a secret trick') : ch.n ? L('Find {n} secret tricks', { n: ch.n }) : L('Find every secret trick');
       default: return '';
     }
   }
-  const BADGE_NAME = { stone: 'Good memory', loaves: 'Little learner', seed: 'Super squisher', bush: 'Question pro', basket: 'Noah’s helper', tree: 'Quick memory', ark: 'Perfect score', coat: 'Three days in a row', lamp: 'Light of the world', 'first-squish': 'First squish', 'squish-200': 'Squish galore', 'all-lessons': 'Every lesson learned', 'match-3star': 'Three-star match', 'first-trick': 'First trick', 'trick-master': 'Trick master', ladder: 'Memory champion', raven: 'Eager learner', wheat: 'Squish harvest', oil: 'Question star', coin: 'Halfway hero', donkey: 'Trick finder', jar: 'Five-day streak', crown: 'Star collector', boat: 'Triple perfect', tomb: 'Easter morning' };
-  const BADGE_ICON = { stone: '🃏', loaves: '📖', seed: '🤲', bush: '❓', basket: '🌈', tree: '⚡', ark: '💯', coat: '📅', lamp: '💡', 'first-squish': '👆', 'squish-200': '🎉', 'all-lessons': '🎓', 'match-3star': '⭐', 'first-trick': '✨', 'trick-master': '🎩', ladder: '🧠', raven: '📚', wheat: '🌾', oil: '🌟', coin: '🗺️', donkey: '🔍', jar: '🔥', crown: '👑', boat: '🎯', tomb: '🌅' };
+  const BADGE_NAME = { stone: 'Good memory', loaves: 'Little learner', seed: 'Super squisher', bush: 'Question pro', basket: 'Noah’s helper', tree: 'Quick memory', ark: 'Perfect score', coat: 'Three days in a row', lamp: 'Light of the world', 'first-squish': 'First squish', 'squish-200': 'Squish galore', 'all-lessons': 'Every lesson learned', 'match-3star': 'Three-star match', 'first-trick': 'First trick', 'trick-master': 'Trick master', friendship: 'Friendship', ladder: 'Memory champion', raven: 'Eager learner', wheat: 'Squish harvest', oil: 'Question star', coin: 'Halfway hero', donkey: 'Good neighbor', jar: 'Five-day streak', crown: 'Star collector', boat: 'Triple perfect', tomb: 'Easter morning' };
+  const BADGE_ICON = { stone: '🃏', loaves: '📖', seed: '🤲', bush: '❓', basket: '🌈', tree: '⚡', ark: '💯', coat: '📅', lamp: '💡', 'first-squish': '👆', 'squish-200': '🎉', 'all-lessons': '🎓', 'match-3star': '⭐', 'first-trick': '✨', 'trick-master': '🎩', friendship: '🤝', ladder: '🧠', raven: '📚', wheat: '🌾', oil: '🌟', coin: '🗺️', donkey: '💛', jar: '🔥', crown: '👑', boat: '🎯', tomb: '🌅' };
   /* "2026-10-11" -> "11 oct 2026" / "Oct 11, 2026" in the app language */
   function niceDate(key) {
     const [y, m, d] = String(key).split('-').map(Number);
@@ -64,7 +68,7 @@
     return `<span class="sq-req">${esc(text)}${pr.done ? ' ✓' : ` <b>${pr.have}/${pr.need}</b>`}</span><span class="sq-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${pr.need}" aria-valuenow="${pr.have}" aria-label="${esc(text)}"><i style="width:${pct}%"></i></span>${pr.best && !pr.done ? `<span class="sq-req-best">${esc(L('Your best: {n} moves', { n: pr.best }))}</span>` : ''}`;
   }
 
-  const ui = { queue: [], root: null, view: 'shelf', playing: null, memory: null, round: null, guess: null, msg: '' };
+  const ui = { queue: [], root: null, view: 'shelf', playing: null, memory: null, round: null, guess: null, msg: '', trade: { pick: null, code: null, codeId: null, note: '', err: '', got: null, typed: '' } };
 
   /* ---------- Sound (made on the device with Web Audio) ---------- */
   let ac = null, master = null;
@@ -224,33 +228,10 @@
   };
   /* The sound of each secret trick */
   const TRICK_SOUND = {
-    sleep: () => notes([784, 659, 587, 523], { type: 'sine', dur: 0.5, peak: 0.03, step: 0.32 }),
-    olive: () => { RELEASE.flutter(); setTimeout(() => { RELEASE.flutter(); SOUNDS.coo(); }, 1600); },
-    jonah: () => { setTimeout(() => voice({ f0: 300, f1: 70, dur: 0.35, peak: 0.07 }), 1100); setTimeout(() => RELEASE.splash(1), 2200); setTimeout(() => SOUNDS.chime(), 2900); },
-    'lie-down': () => voice({ type: 'sawtooth', f0: 100, f1: 85, dur: 1.6, peak: 0.04, filter: ['lowpass', 420], trem: 22, attack: 0.2 }),
-    manger: () => { notes([1568, 2093, 2637, 3136, 2637, 2093], { dur: 0.35, peak: 0.03, step: 0.14 }); setTimeout(() => SQUISH.bell(0.5), 1800); },
-    arc: () => notes([523, 587, 659, 698, 784, 880, 988, 1047], { type: 'triangle', dur: 0.4, peak: 0.03, step: 0.09 }),
-    sling: () => { voice({ type: 'sawtooth', f0: 140, f1: 520, dur: 0.3, peak: 0.04, filter: ['lowpass', 1500, 5] }); noise({ f0: 600, f1: 2400, dur: 0.4, peak: 0.04, delay: 0.45 }); setTimeout(() => voice({ f0: 420, f1: 120, dur: 0.5, peak: 0.07, vib: [14, 40] }), 1450); setTimeout(() => SQUISH.thud(0.6), 2900); },
-    multiply: () => { notes([523, 659, 784, 1047, 784, 1047, 1319], { type: 'triangle', dur: 0.22, peak: 0.035, step: 0.1 }); setTimeout(() => SOUNDS.giggle(), 1700); },
-    grow: () => { voice({ f0: 200, f1: 900, dur: 1.4, peak: 0.035, attack: 0.3 }); setTimeout(() => SOUNDS.pip(), 2400); setTimeout(() => SOUNDS.pip(), 2800); },
     'i-am': () => { SQUISH.crackle(1); [262, 330, 392, 523].forEach(f => voice({ type: 'triangle', f0: f, dur: 2.2, peak: 0.022, attack: 0.5, delay: 0.7 })); },
-    river: () => { SQUISH.slosh(0.6); setTimeout(() => SQUISH.slosh(0.4), 900); setTimeout(() => RELEASE.harp(1), 1900); },
-    zacchaeus: () => { notes([784, 659], { dur: 0.2, peak: 0.04, step: 0.22 }); setTimeout(() => RELEASE.knock(), 1400); setTimeout(() => RELEASE.knock(), 1900); setTimeout(() => SOUNDS.giggle(), 2800); },
-    'two-by-two': () => { SQUISH.creak(0.5); RELEASE.patter(); setTimeout(RELEASE.patter, 500); setTimeout(RELEASE.patter, 1000); setTimeout(() => SOUNDS.chime(), 2200); },
-    twirl: () => { SQUISH.swish(1); RELEASE.harp(1); setTimeout(() => RELEASE.glissando(1), 700); },
-    angels: () => { [0, 1].forEach(r => notes([523, 659, 784, 1047, 1319], { type: 'sine', dur: 0.35, peak: 0.025, step: 0.15, delay: r * 1.6 })); setTimeout(() => notes([1319, 1047, 784, 659, 523], { type: 'sine', dur: 0.35, peak: 0.025, step: 0.15 }), 900); },
-    'bread-flight': () => { RELEASE.wingbeat(); SOUNDS.caw(); setTimeout(() => { RELEASE.wingbeat(); SOUNDS.caw(); }, 1800); setTimeout(() => SOUNDS.chime(), 3000); },
-    gleaning: () => { RELEASE.scatter(); setTimeout(RELEASE.scatter, 700); setTimeout(RELEASE.scatter, 1400); setTimeout(() => SOUNDS.chime(), 3000); },
-    overflow: () => { [0, 630, 1260, 1890, 2520].forEach((d, i) => setTimeout(() => voice({ f0: 200 + i * 60, f1: 500 + i * 120, dur: 0.6, peak: 0.03 }), d + 500)); setTimeout(() => SOUNDS.twinkle(), 3500); },
-    found: () => { SQUISH.clink(1); RELEASE.jingle(); setTimeout(() => SQUISH.sheaf(0.6), 1100); setTimeout(() => { SOUNDS.giggle(); SOUNDS.fanfare(); }, 2700); },
-    inn: () => { setTimeout(() => SOUNDS.heehaw(), 1600); setTimeout(() => RELEASE.hoof(), 2000); setTimeout(() => RELEASE.hoof(), 2700); setTimeout(() => SOUNDS.chime(), 3700); },
-    trumpets: () => { SQUISH.shatter(1); setTimeout(() => SQUISH.crackle(1), 400); setTimeout(() => SOUNDS.trumpet(), 1000); setTimeout(() => SOUNDS.trumpet(), 1600); },
-    scepter: () => { SOUNDS.royal(); setTimeout(() => SQUISH.jewel(1), 1500); setTimeout(() => SOUNDS.twinkle(), 2200); },
-    net: () => { SQUISH.oar(1); setTimeout(() => RELEASE.haul(), 1300); setTimeout(() => RELEASE.haul(), 2100); setTimeout(() => SOUNDS.giggle(), 3300); },
-    risen: () => { SQUISH.rumble(1); setTimeout(() => SQUISH.rumble(0.6), 700); setTimeout(() => SOUNDS.alleluia(), 1700); setTimeout(() => SOUNDS.legendary(), 2400); },
     'light-room': () => { crunch(1, true); setTimeout(() => [523, 784, 1047, 1568].forEach(f => voice({ type: 'sine', f0: f, dur: 2, peak: 0.02, attack: 0.4 })), 500); }
   };
-  const TRICK_BUZZ = { risen: [30, 60, 30, 60, 60], trumpets: [40, 50, 40], sling: [20, 60, 40], 'light-room': [10, 30, 10, 30, 40], 'two-by-two': [15, 40, 15], jonah: [30, 80, 30] };
+  const TRICK_BUZZ = { 'light-room': [10, 30, 10, 30, 40] };
   function kitSquish(d) { const k = pv && kit(pv.id); if (k && SQUISH[k.sound.squish]) SQUISH[k.sound.squish](d); }
   function kitRelease(a) { const k = pv && kit(pv.id); if (k && RELEASE[k.sound.release]) RELEASE[k.sound.release](a); }
 
@@ -267,13 +248,13 @@
     return `<div class="sq-topbar"><span class="sq-count" aria-label="${esc(L('Stars: {n} of {total}', { n: p.stars().length, total: p.total }))}">⭐ ${p.stars().length}/${p.total}</span><span class="sq-count" aria-label="${esc(L('Unlocked: {n} of {total}', { n: p.unlocked().length, total: p.total }))}">🔓 ${p.unlocked().length}/${p.total}</span><button type="button" class="sq-sound" role="switch" aria-checked="${on}" data-sq-sound>${on ? '🔊' : '🔈'} ${esc(L('Sounds'))}: ${esc(on ? L('On') : L('Off'))}</button></div>`;
   }
   function tabs() {
-    const t = [['shelf', '🧸 ' + L('Shelf')], ['memory', '🃏 ' + L('Memory')], ['questions', '❓ ' + L('Questions')], ['guess', '🔍 ' + L('Which squishy?')], ['badges', '🏅 ' + L('Badges')]];
+    const t = [['shelf', '🧸 ' + L('Shelf')], ['memory', '🃏 ' + L('Memory')], ['questions', '❓ ' + L('Questions')], ['guess', '🔍 ' + L('Which squishy?')], ['trade', '🎁 ' + L('Trade')], ['badges', '🏅 ' + L('Badges')]];
     return `<div class="sq-tabs" role="tablist" aria-label="${esc(L('Squishy games'))}">${t.map(([id, label]) => `<button type="button" role="tab" class="sq-tab${ui.view === id ? ' active' : ''}" aria-selected="${ui.view === id}" data-sq-view="${id}">${esc(label)}</button>`).join('')}</div>`;
   }
   function render() {
     const root = ui.root;
     if (!root || !root.isConnected) return;
-    const body = ui.view === 'badges' ? badgesHtml() : ui.view === 'memory' ? memoryHtml() : ui.view === 'questions' ? questionsHtml() : ui.view === 'guess' ? guessHtml() : shelfHtml();
+    const body = ui.view === 'trade' ? tradeHtml() : ui.view === 'badges' ? badgesHtml() : ui.view === 'memory' ? memoryHtml() : ui.view === 'questions' ? questionsHtml() : ui.view === 'guess' ? guessHtml() : shelfHtml();
     root.innerHTML = `<div class="squishy-screen" data-i18n-skip><button class="text-button back" type="button" data-squishy-exit>${esc(L('← Stories'))}</button><span class="eyebrow">${esc(L('BIBLE SQUISHIES'))}</span><h1>${esc(L('Bible squishies'))}</h1>${topBar()}${tabs()}<div class="sq-body" data-sq-body>${body}</div><div class="sq-play-host" data-sq-play-host></div><div class="sq-celebrate" data-sq-celebrate hidden></div></div>`;
     if (ui.playing) openPlay(ui.playing);
   }
@@ -281,7 +262,7 @@
   /* Shelf: tap a squishy to play with it. */
   function shelfHtml() {
     const p = prog(), open = p.unlocked(), stars = p.stars();
-    const c = ctx(), tricksFound = c.stats.tricks;
+    const c = ctx(), tricksFound = c.stats.tricks.filter(id => C().hasTrick(id)), gifts = giftIds();
     const tiles = D().SQUISHIES.map(s => {
       const tier = C().tierOf(s.id), ch = C().challengeFor(s.id);
       const tierCls = tier === 'common' ? '' : ` ${tier}`;
@@ -292,7 +273,7 @@
         const label = `${s.final ? L('The final squishy is locked.') : L('Locked squishy.')} ${TIER_LABEL[tier] ? L(TIER_LABEL[tier]) + '. ' : ''}${text}: ${pr.have} / ${pr.need}`;
         return `<button type="button" class="sq-tile locked${s.final ? ' final' : ''}${tierCls}" data-sq-locked="${s.id}" aria-label="${esc(label)}">${tag}<span class="sq-art">${A().svg(s.id)}</span><span class="sq-lock" aria-hidden="true">🔒</span><span class="sq-name">${esc(s.final ? L('✨ Final squishy') : L('Locked'))}</span>${progressBar(pr, text)}</button>`;
       }
-      return `<button type="button" class="sq-tile${s.glow ? ' glow' : ''}${tierCls}" data-sq-pick="${s.id}" aria-label="${esc(L('Play with {name}', { name: nameOf(s) }) + (TIER_LABEL[tier] ? ' (' + L(TIER_LABEL[tier]) + ')' : '') + (stars.includes(s.id) ? ' ⭐' : ''))}">${tag}${s.glow ? '<span class="sq-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' : ''}<span class="sq-art">${A().svg(s.id)}</span>${stars.includes(s.id) ? '<span class="sq-star" aria-hidden="true">⭐</span>' : ''}${tricksFound.includes(s.id) ? '<span class="sq-trick-dot" aria-hidden="true">✨</span>' : ''}<span class="sq-name">${esc(nameOf(s))}</span></button>`;
+      return `<button type="button" class="sq-tile${s.glow ? ' glow' : ''}${tierCls}" data-sq-pick="${s.id}" aria-label="${esc(L('Play with {name}', { name: nameOf(s) }) + (TIER_LABEL[tier] ? ' (' + L(TIER_LABEL[tier]) + ')' : '') + (stars.includes(s.id) ? ' ⭐' : ''))}">${tag}${s.glow ? '<span class="sq-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' : ''}<span class="sq-art">${A().svg(s.id)}</span>${stars.includes(s.id) ? '<span class="sq-star" aria-hidden="true">⭐</span>' : ''}${tricksFound.includes(s.id) ? '<span class="sq-trick-dot" aria-hidden="true">✨</span>' : ''}${gifts.includes(s.id) ? `<span class="sq-gift" title="${esc(L('A gift from a friend'))}">🎀</span>` : ''}<span class="sq-name">${esc(nameOf(s))}</span></button>`;
     }).join('');
     return `<p class="sq-hint">${esc(L('Tap a squishy to play with it: squish it, stretch it, and learn its Bible story.'))}</p>
       ${ui.msg ? `<p class="sq-msg" role="status">${esc(ui.msg)}</p>` : ''}
@@ -312,9 +293,52 @@
     }).join('');
     return `<h2 class="sq-h2">${esc(L('Achievements'))}</h2><p class="sq-hint">${esc(L('Badges earned: {n} of {total}', { n: got, total: list.length }))}</p><ul class="sq-badges">${rows}</ul>${tricksHtml()}`;
   }
+  /* Trade: give a friend a copy with a short code, or type a friend's code. */
+  const TRADE_ERR = { format: 'A code has 8 letters and numbers, like ABCD-1234.', checksum: 'That code doesn’t look right. Check each letter and try again.', own: 'That’s your own code! Share it with a friend instead.', used: 'This code was already used on this phone.' };
+  function tradeHtml() {
+    const T = TR();
+    if (!T) return `<p class="sq-hint">${esc(L('Trading is not available right now.'))}</p>`;
+    const tr = ui.trade, open = prog().unlocked(), gifts = giftIds();
+    const mine = D().SQUISHIES.filter(x => open.includes(x.id) && T.tradable(x.id));
+    const picks = mine.map(x => `<button type="button" class="sq-tile sq-trade-pick${tr.pick === x.id ? ' active' : ''}" data-sq-trade-pick="${x.id}" aria-pressed="${tr.pick === x.id}"><span class="sq-art">${A().svg(x.id)}</span>${gifts.includes(x.id) ? '<span class="sq-gift" aria-hidden="true">🎀</span>' : ''}<span class="sq-name">${esc(nameOf(x))}</span></button>`).join('');
+    const codeBox = tr.code ? `<div class="sq-code-box" role="status"><span class="small">${esc(L('Your code for {name}', { name: nameOf(byId(tr.codeId)) }))}</span><strong class="sq-code" data-sq-code>${esc(T.pretty(tr.code))}</strong><span class="small muted">${esc(L('Your friend types it under Trade. You keep your squishy too!'))}</span><button type="button" class="primary" data-sq-trade-share>📤 ${esc(L('Share code'))}</button>${tr.note ? `<span class="small">${esc(tr.note)}</span>` : ''}</div>` : '';
+    const got = tr.got ? `<div class="sq-code-box sq-gift-box" role="status"><span class="sq-gift-art"><span class="sq-art">${A().svg(tr.got)}</span><span class="sq-gift big" aria-hidden="true">🎀</span></span><strong>${esc(L('You got {name} from a friend!', { name: nameOf(byId(tr.got)) }))}</strong><span class="small">🤝 ${esc(L('You both earn the Friendship badge.'))}</span><button type="button" class="secondary" data-sq-trade-back>🔁 ${esc(L('Send one back'))}</button></div>` : '';
+    return `<h2 class="sq-h2">🎁 ${esc(L('Give a friend a copy'))}</h2><p class="sq-hint">${esc(L('Pick one of your squishies and make a code. Legendary squishies stay on your shelf.'))}</p>
+      <div class="sq-grid sq-trade-grid" data-sq-trade-grid>${picks}</div>
+      <p class="sq-trade-actions"><button type="button" class="primary" data-sq-trade-make${tr.pick ? '' : ' disabled'}>✨ ${esc(L('Make a trade code'))}</button></p>${codeBox}
+      <h2 class="sq-h2">📥 ${esc(L('Got a code from a friend?'))}</h2>
+      <div class="sq-redeem"><label class="small" for="sq-trade-input">${esc(L('Type the code'))}</label><input id="sq-trade-input" class="sq-code-input" data-sq-trade-input maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-1234" value="${esc(tr.typed)}"><button type="button" class="primary" data-sq-trade-redeem>🎀 ${esc(L('Get my squishy'))}</button></div>
+      ${tr.err ? `<p class="sq-msg" role="alert">${esc(tr.err)}</p>` : ''}${got}`;
+  }
+  function makeTrade() {
+    const tr = ui.trade, code = trades().create(tr.pick, prog().unlocked());
+    if (!code) return;
+    tr.code = code; tr.codeId = tr.pick; tr.note = ''; tr.err = '';
+    play('twinkle'); vibrate(15); afterProgress(false); render();
+    ui.root.querySelector('[data-sq-code]')?.scrollIntoView({ block: 'center' });
+  }
+  async function shareTrade() {
+    const tr = ui.trade, code = TR().pretty(tr.code);
+    const text = L('I made you a Bible squishy! Open Bible squishies, tap Trade, and type this code: {code}', { code });
+    try {
+      if (navigator.share) { await navigator.share({ title: L('Bible squishies'), text }); tr.note = ''; }
+      else { await navigator.clipboard.writeText(text); tr.note = L('Copied! Paste it in a message to your friend.'); }
+    } catch { tr.note = navigator.share ? '' : L('Write the code down and give it to your friend.'); }
+    render();
+  }
+  function redeemTrade() {
+    const tr = ui.trade, input = ui.root.querySelector('[data-sq-trade-input]');
+    tr.typed = input ? input.value : ''; tr.got = null; tr.err = '';
+    const r = trades().redeem(tr.typed);
+    if (!r.ok) { tr.err = L(TRADE_ERR[r.reason] || TRADE_ERR.checksum); play('wrong'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); return; }
+    prog().unlock(r.id); tr.got = r.id; tr.typed = '';
+    play(byId(r.id).sound); play('twinkle'); vibrate([20, 40, 20]); afterProgress(false); render();
+    ui.root.querySelector('.sq-gift-box')?.scrollIntoView({ block: 'center' });
+  }
+
   /* Every squishy's secret trick: found ones by name, the rest a "?" */
   function tricksHtml() {
-    const st = stats().get(), all = D().SQUISHIES.filter(x => kit(x.id));
+    const st = stats().get(), all = D().SQUISHIES.filter(x => C().hasTrick(x.id));
     const found = all.filter(x => st.tricks.includes(x.id)).length;
     const rows = all.map(x => {
       const k = kit(x.id), got = st.tricks.includes(x.id), shown = C().trickRevealed(x.id, st);
@@ -391,14 +415,14 @@
       <div class="sq-play-top"><button type="button" class="sq-play-back" data-sq-play-back>${esc(L('← Shelf'))}</button><strong id="sq-play-title">${esc(nameOf(x))}</strong><button type="button" class="sq-sound" role="switch" aria-checked="${on}" data-sq-sound aria-label="${esc(L('Sounds'))}">${on ? '🔊' : '🔈'}</button></div>
       <div class="sq-play-area" data-sq-area><canvas class="sq-canvas" data-sq-canvas tabindex="0" role="img" aria-label="${esc(L('{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch, T does its secret trick.', { name: nameOf(x) }))}"></canvas>
         <button type="button" class="sq-learn" data-sq-learn hidden>📖 ${esc(L('Learn'))}</button>
-        <button type="button" class="sq-trick" data-sq-trick aria-live="polite">${esc(trickChip(x.id))}</button>
+        ${kit(x.id) && kit(x.id).trick ? `<button type="button" class="sq-trick" data-sq-trick aria-live="polite">${esc(trickChip(x.id))}</button>` : ''}
         <p class="sq-toast" data-sq-toast role="status" hidden></p></div>
       <p class="sq-play-hint">${esc(L('Press to squish · drag to stretch · two fingers to squeeze or spread'))}</p>
       <div class="sq-sheet" data-sq-sheet hidden></div></div>`;
   }
 
   function trickChip(id) {
-    const k = kit(id); if (!k) return '';
+    const k = kit(id); if (!k || !k.trick) return '';
     const st = stats().get();
     if (st.tricks.includes(id)) return `✨ ${L(TRICK_NAME[k.trick])} · ${L(GESTURE_TEXT[k.gesture])}`;
     if (C().trickRevealed(id, st)) return `✨ ${L('Secret trick')}: ${L(GESTURE_TEXT[k.gesture])}`;
@@ -736,7 +760,7 @@
     kick();
   }
   function doTrick(g) {
-    const p = pv, F = FXM(), k = kit(p && p.id); if (!p || !F || !k || (p.anim && p.anim.def !== HOP)) return;
+    const p = pv, F = FXM(), k = kit(p && p.id); if (!p || !F || !k || !k.trick || (p.anim && p.anim.def !== HOP)) return;
     if (p.mode && p.mode !== 'wait') { p.body.release(0, 0); toneStop(); p.mode = p.pointers.size ? 'wait' : null; p.gestured = false; }
     let path = null;
     if (g && g.path) { const s = p.scale * p.dpr; path = g.path.map(([x, y]) => [p.ox * p.dpr + x * s, p.oy * p.dpr + y * s]); }
@@ -948,6 +972,12 @@
   document.addEventListener('click', e => {
     const t = e.target instanceof Element ? e.target : null;
     if (!t || !ui.root || !t.closest('.squishy-screen')) return;
+    const tp = t.closest('[data-sq-trade-pick]');
+    if (tp) { ui.trade.pick = tp.dataset.sqTradePick; ui.trade.code = null; render(); ui.root.querySelector('[data-sq-trade-make]')?.scrollIntoView({ block: 'center' }); return; }
+    if (t.closest('[data-sq-trade-make]')) { makeTrade(); return; }
+    if (t.closest('[data-sq-trade-share]')) { shareTrade(); return; }
+    if (t.closest('[data-sq-trade-redeem]')) { redeemTrade(); return; }
+    if (t.closest('[data-sq-trade-back]')) { ui.trade.got = null; ui.trade.code = null; ui.trade.pick = null; render(); ui.root.querySelector('[data-sq-trade-grid]')?.scrollIntoView({ block: 'start' }); return; }
     const view = t.closest('[data-sq-view]');
     if (view) { ui.view = view.dataset.sqView; ui.msg = ''; if (ui.view === 'guess') newGuess(); render(); return; }
     const snd = t.closest('[data-sq-sound]');
@@ -1006,8 +1036,18 @@
 
   window.MsbSquishy = {
     open(root) { ui.root = root; stats().played(); render(); afterProgress(false); },
-    close() { closePlay(); ui.root = null; ui.view = 'shelf'; ui.memory = null; ui.round = null; ui.guess = null; ui.msg = ''; if (window.MsbSpeech) MsbSpeech.stop(); },
+    close() { closePlay(); ui.root = null; ui.trade = { pick: null, code: null, codeId: null, note: '', err: '', got: null, typed: '' }; ui.view = 'shelf'; ui.memory = null; ui.round = null; ui.guess = null; ui.msg = ''; if (window.MsbSpeech) MsbSpeech.stop(); },
     _celebrate: celebrate,
+    /* Kid badges for the Profile achievements screen (this phone only) */
+    kidBadges() {
+      if (!C() || !D()) return null;
+      const list = C().badges(store2(), D().SQUISHIES).map(b => ({ id: b.id, name: L(BADGE_NAME[b.id] || b.id), icon: BADGE_ICON[b.id] || '🏅', tier: b.tier, earned: b.earned || null, squishy: b.squishy || null }));
+      let stars = 0;
+      try { const m = JSON.parse(localStorage.getItem(C().KEYS.match)) || {}; Object.values(m.stars || {}).forEach(v => { stars += Math.max(0, Math.min(3, Number(v) || 0)); }); } catch { stars = 0; }
+      const levels = window.MsbMatch3Data && Array.isArray(MsbMatch3Data.LEVELS) ? MsbMatch3Data.LEVELS.length : 20;
+      const st = stats().get(), all = D().SQUISHIES.filter(x => C().hasTrick(x.id)).length;
+      return { badges: list, earned: list.filter(b => b.earned).length, match: { stars, max: levels * 3 }, tricks: { found: st.tricks.filter(id => C().hasTrick(id)).length, total: all }, gifts: giftIds().length };
+    },
     /* read-only snapshot of the play view, for checks */
     _play() {
       if (!pv) return null;

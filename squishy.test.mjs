@@ -166,8 +166,7 @@ test('the lamp opens last even when everything is done at once', () => {
   for (let i = 0; i < 4; i += 1) st.memoryWon(8);
   for (let i = 0; i < 6; i += 1) st.roundDone(5, 5);
   for (let i = 0; i < 300; i += 1) st.squished();
-  SQUISHIES.slice(0, 8).forEach(x => p.addStar(x.id));
-  Object.keys(C.KITS).slice(0, 5).forEach(id => st.trickFound(id));
+  SQUISHIES.slice(0, 12).forEach(x => p.addStar(x.id));
   for (const d of [1, 2, 3, 4, 5]) st.played(new Date(2026, 4, d));
   const stars = {}; for (let l = 1; l <= 20; l += 1) stars[l] = 3;
   s.setItem('msb_match_progress', JSON.stringify({ open: 21, stars }));
@@ -565,7 +564,7 @@ test('squint eyes are hidden by an attribute, so pictures drawn on a canvas have
 const FX = require('./squishy-fx.js');
 const memStore = () => { const m = new Map(); return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)), removeItem: k => m.delete(k) }; };
 
-test('every squishy has its own sound voices, effect, trick and gesture', () => {
+test('every squishy has its own sound voices and effect; only the burning bush and the lamp keep a secret trick', () => {
   const ui = read('./squishy.js');
   const ids = SQUISHIES.map(s => s.id);
   assert.deepEqual(Object.keys(C.KITS).sort(), [...ids].sort());
@@ -575,18 +574,19 @@ test('every squishy has its own sound voices, effect, trick and gesture', () => 
   uniq(kits.map(k => k.sound.release), 'release voices');
   uniq(kits.map(k => k.sound.tone), 'stretch tones');
   uniq(kits.map(k => k.fx), 'effects');
-  uniq(kits.map(k => k.trick), 'tricks');
+  assert.deepEqual(ids.filter(id => C.hasTrick(id)), ['bush', 'lamp']);
+  assert.deepEqual(Object.keys(FX.TRICKS).sort(), ['i-am', 'light-room']);
   /* tones differ in more than pitch: no two share wave + wobble + filter */
   const tones = kits.map(k => C.TONES[k.sound.tone]).filter(Boolean);
   uniq(tones.map(t => `${t.type}/${t.lfo}/${t.depth}/${t.filter}/${t.q}`), 'tone shapes');
   for (const k of kits) {
-    assert.ok(C.GESTURES.includes(k.gesture), k.gesture);
+    if (k.trick) assert.ok(C.GESTURES.includes(k.gesture), k.gesture); else assert.ok(!('gesture' in k), 'no gesture without a trick');
     assert.ok(k.sound.tone in C.TONES, k.sound.tone);
     assert.ok(FX.FX[k.fx], k.fx);
-    assert.ok(FX.TRICKS[k.trick] && FX.TRICKS[k.trick].dur > 1000, k.trick);
+    if (k.trick) assert.ok(FX.TRICKS[k.trick] && FX.TRICKS[k.trick].dur > 1000, k.trick);
     assert.ok(new RegExp(`\\n    ${JSON.stringify(k.sound.squish).replace(/"/g, "'?")}: `).test(ui) || ui.includes(`    ${k.sound.squish}: d =>`), `squish voice ${k.sound.squish}`);
     assert.ok(ui.includes(`    ${k.sound.release}: `) || ui.includes(`    '${k.sound.release}': `), `release voice ${k.sound.release}`);
-    assert.ok(ui.includes(`    ${k.trick}: () =>`) || ui.includes(`    '${k.trick}': () =>`), `trick sound ${k.trick}`);
+    if (k.trick) assert.ok(ui.includes(`    ${k.trick}: () =>`) || ui.includes(`    '${k.trick}': () =>`), `trick sound ${k.trick}`);
   }
   /* effect particles are different: shape + color + where they start */
   uniq(kits.filter(k => k.fx !== 'sparks').map(k => { const f = FX.FX[k.fx]; return `${f.shape}/${f.colors[0]}/${f.origin}`; }), 'particle looks');
@@ -647,30 +647,28 @@ test('gestures: circle, shake, left-right swipe and slow rocking', () => {
 });
 
 test('a trick needs that squishy and its own gesture', () => {
-  assert.ok(C.isTrick('dove', { type: 'flickUp' }));
-  assert.ok(!C.isTrick('lamb', { type: 'flickUp' }));
-  assert.ok(C.isTrick('lamb', { type: 'holdStill', ms: 3000 }));
-  assert.ok(!C.isTrick('lamb', { type: 'hold', ms: 1500 }));
-  assert.ok(C.isTrick('fish', { type: 'hold', ms: 1500 }));
-  assert.ok(C.isTrick('lion', { type: 'tripleTap' }) && C.isTrick('bush', { type: 'tripleTap' }));
-  assert.ok(C.isTrick('coat', { type: 'circle' }) && !C.isTrick('ark', { type: 'circle' }));
+  assert.ok(C.isTrick('bush', { type: 'tripleTap' }));
+  assert.ok(!C.isTrick('bush', { type: 'hold', ms: 2000 }));
+  assert.ok(C.isTrick('lamp', { type: 'hold', ms: 1500 }) && !C.isTrick('lamp', { type: 'hold', ms: 900 }));
+  for (const [id, g] of [['dove', 'flickUp'], ['lamb', 'holdStill'], ['lion', 'tripleTap'], ['coat', 'circle'], ['boat', 'swipeLR'], ['tomb', 'dragAcross']]) assert.ok(!C.isTrick(id, { type: g, ms: 3000 }), `${id} has no trick now`);
 });
 
 test('found tricks are remembered, hints show after some play, Trick master needs them all', () => {
   const s = memStore(), st = C.stats(s);
-  assert.equal(C.trickRevealed('dove', st.get()), false);
-  for (let i = 0; i < C.HINT_AFTER; i += 1) st.squished('dove');
-  assert.equal(C.trickRevealed('dove', st.get()), true);
-  assert.equal(C.trickRevealed('lamb', st.get()), false);
-  assert.equal(st.trickFound('lamb'), true);
-  assert.equal(st.trickFound('lamb'), false, 'only the first time counts');
-  assert.equal(C.trickRevealed('lamb', st.get()), true);
+  assert.equal(C.trickRevealed('bush', st.get()), false);
+  for (let i = 0; i < C.HINT_AFTER; i += 1) { st.squished('bush'); st.squished('dove'); }
+  assert.equal(C.trickRevealed('bush', st.get()), true);
+  assert.equal(C.trickRevealed('dove', st.get()), false, 'no trick, no hint');
+  assert.equal(C.trickRevealed('lamp', st.get()), false);
+  assert.equal(st.trickFound('lamp'), true);
+  assert.equal(st.trickFound('lamp'), false, 'only the first time counts');
+  assert.equal(C.trickRevealed('lamp', st.get()), true);
   C.checkUnlocks(s, SQUISHIES, new Date(2026, 9, 11));
   let list = C.badges(s, SQUISHIES);
   assert.ok(list.find(b => b.id === 'first-trick').earned);
   const master = list.find(b => b.id === 'trick-master');
-  assert.equal(master.earned, null); assert.equal(master.progress.need, SQUISHIES.length); assert.equal(master.progress.have, 1);
-  for (const x of SQUISHIES) st.trickFound(x.id);
+  assert.equal(master.earned, null); assert.equal(master.progress.need, 2); assert.equal(master.progress.have, 1);
+  st.trickFound('bush');
   C.checkUnlocks(s, SQUISHIES, new Date(2026, 9, 11));
   list = C.badges(s, SQUISHIES);
   assert.equal(list.find(b => b.id === 'trick-master').earned, '2026-10-11');
@@ -689,7 +687,7 @@ test('tricks UI: hint chip, T key, toast, effects module wired in, Spanish for e
   assert.match(ui, /const t = red \? 0\.85/); assert.match(ui, /if \(!p \|\| !F \|\| reduced\(\)\) return;/);
   const grab = name => { const m = ui.match(new RegExp(`const ${name} = \\{([^\\n]+)\\};`)); assert.ok(m, name); return [...m[1].matchAll(/: '([^']+)'/g)].map(x => x[1]); };
   for (const k of [...grab('TRICK_NAME'), ...grab('TRICK_STORY'), ...grab('GESTURE_TEXT'), ...grab('TRICK_TEXT')]) assert.ok(i18n.includes(`${JSON.stringify(k)}:`), `missing Spanish for: ${k}`);
-  for (const id of Object.keys(C.KITS)) assert.ok(grab('TRICK_NAME').length === SQUISHIES.length && ui.includes(`${/-/.test(C.KITS[id].trick) ? `'${C.KITS[id].trick}'` : C.KITS[id].trick}: '`), id);
+  for (const id of Object.keys(C.KITS).filter(C.hasTrick)) assert.ok(grab('TRICK_NAME').length === 2 && ui.includes(`${/-/.test(C.KITS[id].trick) ? `'${C.KITS[id].trick}'` : C.KITS[id].trick}: '`), id);
 });
 
 test('every trick animation draws without errors at any moment', () => {
@@ -705,16 +703,15 @@ test('every trick animation draws without errors at any moment', () => {
   for (const name of Object.keys(FX.FX)) { const pt = FX.spawn(name, { x: 0, y: 0, w: 100, h: 100 }, { x: 50, y: 50 }, Math.random, 3); if (!pt) continue; FX.step(pt, 0.1); FX.drawParticle(g, pt, 2); }
 });
 
-test('ten newer squishies: Bible stories, own sound, trick and gesture, unlocked by their own goal', () => {
+test('ten newer squishies: Bible stories, own sound and effect, no trick, unlocked by their own goal', () => {
   const NEW = ['ladder', 'raven', 'wheat', 'oil', 'coin', 'donkey', 'jar', 'crown', 'boat', 'tomb'];
   assert.deepEqual(SQUISHIES.slice(14, -1).map(x => x.id), NEW);
   for (const id of NEW) {
     const x = SQUISHIES.find(q => q.id === id), k = C.KITS[id];
     assert.ok(x.locked && C.challengeFor(id), id);
-    assert.ok(k && FX.TRICKS[k.trick] && FX.FX[k.fx] && C.GESTURES.includes(k.gesture), id);
+    assert.ok(k && FX.FX[k.fx] && !k.trick && !C.hasTrick(id), id);
   }
-  const tricks = Object.values(C.KITS).map(k => k.trick), fxs = Object.values(C.KITS).map(k => k.fx);
-  assert.equal(new Set(tricks).size, tricks.length, 'every trick is different');
+  const fxs = Object.values(C.KITS).map(k => k.fx);
   assert.equal(new Set(fxs).size, fxs.length, 'every effect is different');
   const sig = Object.values(C.KITS).map(k => `${k.sound.squish}/${k.sound.release}/${k.sound.tone}`);
   assert.equal(new Set(sig).size, sig.length, 'every voice is different');
@@ -729,4 +726,16 @@ test('new gestures: pull down slowly, flick down, flick sideways, swipe up and d
   assert.ok(has([[0, 0, 0], [-15, 0, 40], [-45, 2, 100], [-75, 1, 140]], 'flickSide'));
   assert.ok(has([[0, 0, 0], [0, -30, 200], [0, 30, 450], [0, -30, 700], [0, 30, 950]], 'swipeUD'));
   assert.ok(!has([[0, 0, 0], [0, -30, 200], [0, 30, 450], [0, -30, 700], [0, 30, 950]], 'swipeLR'));
+});
+
+test('progress from removed tricks is kept: stored list untouched, earned trick badges stay earned', () => {
+  const s = memoryStorage();
+  s.setItem('msb_squishy_stats', JSON.stringify({ tricks: ['dove', 'fish', 'bush'], badges: { 'first-trick': '2026-10-01', 'trick-master': '2026-10-02' } }));
+  C.checkUnlocks(s, SQUISHIES, new Date(2026, 9, 13));
+  const st = C.stats(s).get();
+  assert.deepEqual(st.tricks, ['dove', 'fish', 'bush']);
+  const list = C.badges(s, SQUISHIES);
+  assert.equal(list.find(b => b.id === 'first-trick').earned, '2026-10-01');
+  assert.equal(list.find(b => b.id === 'trick-master').earned, '2026-10-02');
+  assert.deepEqual([list.find(b => b.id === 'trick-master').progress.have, list.find(b => b.id === 'trick-master').progress.need], [1, 2], 'only real tricks count now');
 });

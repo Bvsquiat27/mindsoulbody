@@ -221,3 +221,15 @@ body{background:radial-gradient(ellipse 58% 25% at 50% -6%,var(--app-glow),trans
 .drag-feedback{margin:14px 0;border:1px solid #dcbf8466;background:#2b2415;border-radius:14px;padding:12px 14px;color:#f3ead6;line-height:1.45}
 .drag-card .primary:disabled{opacity:.45;cursor:not-allowed}
 .cold-brew-icon{width:1.3em;height:1.3em;vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+/* Kids' badges on the Profile achievements screen */
+.kid-badges h2{margin:0 0 4px}
+.kid-chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.kid-chip{display:inline-flex;gap:4px;align-items:center;padding:5px 10px;border-radius:999px;background:rgba(220,191,132,.16);font-size:.82rem}
+.kid-badge-grid{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kid-badge{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:14px;border:1px solid rgba(255,255,255,.14);text-align:center;opacity:.55;min-width:0}
+.kid-badge.earned{opacity:1;border-color:rgb(220,191,132);background:rgba(220,191,132,.1)}
+.kid-badge.earned.rare{border-color:rgb(190,150,255)}
+.kid-badge.earned.legendary{border-color:rgb(255,205,90);box-shadow:0 0 10px rgba(255,205,90,.35)}
+.kid-badge-icon{font-size:1.5rem;line-height:1.2}
+.kid-badge strong{font-size:.74rem;line-height:1.15;overflow-wrap:anywhere}
+.kid-badge small{font-size:.64rem;opacity:.8}

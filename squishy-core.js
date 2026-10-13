@@ -4,7 +4,7 @@
 (function (root) {
   'use strict';
 
-  const KEYS = { sounds: 'msb_squishy_sounds', unlocked: 'msb_squishy_unlocked', stars: 'msb_squishy_stars', stats: 'msb_squishy_stats', match: 'msb_match_progress' };
+  const KEYS = { sounds: 'msb_squishy_sounds', unlocked: 'msb_squishy_unlocked', stars: 'msb_squishy_stars', stats: 'msb_squishy_stats', match: 'msb_match_progress', trade: 'msb_squishy_trade' };
 
   function readList(storage, key) {
     try { const v = JSON.parse(storage.getItem(key) || '[]'); return Array.isArray(v) ? v.filter(x => typeof x === 'string') : []; } catch { return []; }
@@ -63,31 +63,31 @@
      fx: the little particles it gives off while you play.
      trick: a secret move tied to its Bible story, done with one gesture. */
   const KITS = {
-    lamb: { sound: { squish: 'bleat', release: 'mee', tone: 'warble' }, fx: 'hearts', trick: 'sleep', gesture: 'holdStill', ms: 3000 },
-    dove: { sound: { squish: 'coo', release: 'flutter', tone: 'whistle' }, fx: 'feathers', trick: 'olive', gesture: 'flickUp' },
-    fish: { sound: { squish: 'bubbles', release: 'splash', tone: 'blub' }, fx: 'bubbles', trick: 'jonah', gesture: 'hold', ms: 1500 },
-    lion: { sound: { squish: 'purr', release: 'roar', tone: 'growl' }, fx: 'roar-rings', trick: 'lie-down', gesture: 'tripleTap' },
-    star: { sound: { squish: 'bell', release: 'twinkle', tone: 'shimmer' }, fx: 'twinkles', trick: 'manger', gesture: 'dragAcross' },
-    rainbow: { sound: { squish: 'chord', release: 'glissando', tone: 'glide' }, fx: 'color-trail', trick: 'arc', gesture: 'swipeLR' },
-    stone: { sound: { squish: 'thud', release: 'clack', tone: 'twang' }, fx: 'dust', trick: 'sling', gesture: 'pullRelease' },
-    loaves: { sound: { squish: 'dough', release: 'crust', tone: 'hum' }, fx: 'crumbs', trick: 'multiply', gesture: 'fiveTaps' },
-    seed: { sound: { squish: 'pluck', release: 'sprout', tone: 'tremble' }, fx: 'leaves', trick: 'grow', gesture: 'stretchUp' },
+    lamb: { sound: { squish: 'bleat', release: 'mee', tone: 'warble' }, fx: 'hearts' },
+    dove: { sound: { squish: 'coo', release: 'flutter', tone: 'whistle' }, fx: 'feathers' },
+    fish: { sound: { squish: 'bubbles', release: 'splash', tone: 'blub' }, fx: 'bubbles' },
+    lion: { sound: { squish: 'purr', release: 'roar', tone: 'growl' }, fx: 'roar-rings' },
+    star: { sound: { squish: 'bell', release: 'twinkle', tone: 'shimmer' }, fx: 'twinkles' },
+    rainbow: { sound: { squish: 'chord', release: 'glissando', tone: 'glide' }, fx: 'color-trail' },
+    stone: { sound: { squish: 'thud', release: 'clack', tone: 'twang' }, fx: 'dust' },
+    loaves: { sound: { squish: 'dough', release: 'crust', tone: 'hum' }, fx: 'crumbs' },
+    seed: { sound: { squish: 'pluck', release: 'sprout', tone: 'tremble' }, fx: 'leaves' },
     bush: { sound: { squish: 'crackle', release: 'flare', tone: 'burn' }, fx: 'embers', trick: 'i-am', gesture: 'tripleTap' },
-    basket: { sound: { squish: 'slosh', release: 'drip', tone: 'wave' }, fx: 'ripples', trick: 'river', gesture: 'rock' },
-    tree: { sound: { squish: 'rustle', release: 'knock', tone: 'flutter' }, fx: 'falling-leaves', trick: 'zacchaeus', gesture: 'tapTop' },
-    ark: { sound: { squish: 'creak', release: 'patter', tone: 'horn' }, fx: 'rain', trick: 'two-by-two', gesture: 'shake' },
-    coat: { sound: { squish: 'swish', release: 'harp', tone: 'chorus' }, fx: 'ribbons', trick: 'twirl', gesture: 'circle' },
+    basket: { sound: { squish: 'slosh', release: 'drip', tone: 'wave' }, fx: 'ripples' },
+    tree: { sound: { squish: 'rustle', release: 'knock', tone: 'flutter' }, fx: 'falling-leaves' },
+    ark: { sound: { squish: 'creak', release: 'patter', tone: 'horn' }, fx: 'rain' },
+    coat: { sound: { squish: 'swish', release: 'harp', tone: 'chorus' }, fx: 'ribbons' },
     lamp: { sound: { squish: 'crunch', release: 'crunch-tail', tone: 'none' }, fx: 'sparks', trick: 'light-room', gesture: 'hold', ms: 1500 },
-    ladder: { sound: { squish: 'step', release: 'ascend', tone: 'choir' }, fx: 'halos', trick: 'angels', gesture: 'swipeUD' },
-    raven: { sound: { squish: 'caw', release: 'wingbeat', tone: 'rasp' }, fx: 'dark-feathers', trick: 'bread-flight', gesture: 'flickDown' },
-    wheat: { sound: { squish: 'sheaf', release: 'scatter', tone: 'breeze' }, fx: 'grains', trick: 'gleaning', gesture: 'stretchDown' },
-    oil: { sound: { squish: 'glug', release: 'pour', tone: 'viscous' }, fx: 'oil-drops', trick: 'overflow', gesture: 'hold', ms: 1500 },
-    coin: { sound: { squish: 'clink', release: 'jingle', tone: 'spin' }, fx: 'coins', trick: 'found', gesture: 'flickSide' },
-    donkey: { sound: { squish: 'heehaw', release: 'hoof', tone: 'bray' }, fx: 'kind-hearts', trick: 'inn', gesture: 'tripleTap' },
-    jar: { sound: { squish: 'shatter', release: 'trumpet', tone: 'torch' }, fx: 'shards', trick: 'trumpets', gesture: 'doubleTap' },
-    crown: { sound: { squish: 'jewel', release: 'royal', tone: 'regal' }, fx: 'jewels', trick: 'scepter', gesture: 'flickUp' },
-    boat: { sound: { squish: 'oar', release: 'haul', tone: 'sea' }, fx: 'spray', trick: 'net', gesture: 'swipeLR' },
-    tomb: { sound: { squish: 'rumble', release: 'alleluia', tone: 'dawn' }, fx: 'sunbeams', trick: 'risen', gesture: 'dragAcross' }
+    ladder: { sound: { squish: 'step', release: 'ascend', tone: 'choir' }, fx: 'halos' },
+    raven: { sound: { squish: 'caw', release: 'wingbeat', tone: 'rasp' }, fx: 'dark-feathers' },
+    wheat: { sound: { squish: 'sheaf', release: 'scatter', tone: 'breeze' }, fx: 'grains' },
+    oil: { sound: { squish: 'glug', release: 'pour', tone: 'viscous' }, fx: 'oil-drops' },
+    coin: { sound: { squish: 'clink', release: 'jingle', tone: 'spin' }, fx: 'coins' },
+    donkey: { sound: { squish: 'heehaw', release: 'hoof', tone: 'bray' }, fx: 'kind-hearts' },
+    jar: { sound: { squish: 'shatter', release: 'trumpet', tone: 'torch' }, fx: 'shards' },
+    crown: { sound: { squish: 'jewel', release: 'royal', tone: 'regal' }, fx: 'jewels' },
+    boat: { sound: { squish: 'oar', release: 'haul', tone: 'sea' }, fx: 'spray' },
+    tomb: { sound: { squish: 'rumble', release: 'alleluia', tone: 'dawn' }, fx: 'sunbeams' }
   };
   /* The stretch tone of each squishy: oscillator wave, base pitch and how
      far the pitch climbs with the stretch, wobble (lfo rate and depth) and
@@ -223,6 +223,9 @@
     return { down, move, up, poll, get active() { return !!cur; } };
   }
   /* Does this gesture do this squishy's trick? */
+  /* Only a few squishies keep a secret trick; the rest just have their own
+     voice and sparkle. */
+  const hasTrick = id => !!(KITS[id] && KITS[id].trick);
   function isTrick(id, g) {
     const k = KITS[id];
     if (!k || !g || g.type !== k.gesture) return false;
@@ -232,7 +235,7 @@
   /* The hint shows the gesture after the trick was found, or after a few
      plays with that squishy (a gentle nudge). */
   const HINT_AFTER = 12;
-  function trickRevealed(id, st) { return (st.tricks || []).includes(id) || ((st.plays || {})[id] || 0) >= HINT_AFTER; }
+  function trickRevealed(id, st) { return hasTrick(id) && ( (st.tricks || []).includes(id) || ((st.plays || {})[id] || 0) >= HINT_AFTER); }
 
   /* ---------- Unlock challenges ----------
      Each locked squishy has its own challenge, from easy to hard. Some are
@@ -252,7 +255,7 @@
     { id: 'wheat', kind: 'squishes', n: 300, tier: 'common' },
     { id: 'oil', kind: 'questionWins', n: 6, tier: 'common' },
     { id: 'coin', kind: 'matchChapter', n: 10, tier: 'common' },
-    { id: 'donkey', kind: 'tricks', n: 5, tier: 'common' },
+    { id: 'donkey', kind: 'lessons', n: 12, tier: 'common' },
     { id: 'jar', kind: 'streak', n: 5, tier: 'rare' },
     { id: 'crown', kind: 'matchThreeStars', n: 5, tier: 'rare' },
     { id: 'boat', kind: 'perfectRound', n: 3, tier: 'rare' },
@@ -266,7 +269,8 @@
     { id: 'all-lessons', kind: 'lessons', n: 15, tier: 'rare' },
     { id: 'match-3star', kind: 'matchThreeStars', n: 1, tier: 'common' },
     { id: 'first-trick', kind: 'tricks', n: 1, tier: 'common' },
-    { id: 'trick-master', kind: 'tricks', n: 0, tier: 'legendary' }
+    { id: 'trick-master', kind: 'tricks', n: 0, tier: 'legendary' },
+    { id: 'friendship', kind: 'trades', n: 1, tier: 'rare' }
   ];
   const tierOf = id => (CHALLENGES.find(c => c.id === id) || {}).tier || 'common';
 
@@ -336,7 +340,8 @@
       case 'memoryFast': { const ok = st.memoryBest > 0 && st.memoryBest <= ch.n; return { have: ok ? 1 : 0, need: 1, done: ok, best: st.memoryBest || null }; }
       case 'matchChapter': { let won = 0; for (let k = 1; k <= ch.n; k += 1) if ([1, 2, 3].includes(ctx.match[k])) won += 1; return cap(won, ch.n); }
       case 'matchThreeStars': return cap(Object.values(ctx.match).filter(s => s === 3).length, ch.n);
-      case 'tricks': { const all = ctx.squishies.filter(x => KITS[x.id]).length; return cap(ctx.stats.tricks.filter(id => ctx.squishies.some(x => x.id === id)).length, ch.n || all); }
+      case 'tricks': { const all = ctx.squishies.filter(x => hasTrick(x.id)).length; return cap(ctx.stats.tricks.filter(id => hasTrick(id) && ctx.squishies.some(x => x.id === id)).length, ch.n || all); }
+      case 'trades': return cap(ctx.trades || 0, ch.n);
       case 'final': {
         /* every other squishy open, and 3 stars on any Manna Match level */
         const others = ctx.squishies.filter(x => x.id !== ch.id && x.locked);
@@ -352,7 +357,9 @@
      squishy and badge. */
   function challengeContext(storage, squishies) {
     const p = progress(storage, squishies);
-    return { stats: stats(storage).get(), lessons: p.stars().length, match: matchStars(storage), unlocked: p.unlocked(), squishies };
+    let trades = 0;
+    try { const t = JSON.parse(storage.getItem(KEYS.trade)) || {}; trades = (Array.isArray(t.sent) ? t.sent.length : 0) + (Array.isArray(t.got) ? t.got.length : 0); } catch { trades = 0; }
+    return { stats: stats(storage).get(), lessons: p.stars().length, match: matchStars(storage), unlocked: p.unlocked(), squishies, trades };
   }
   function challengeFor(id) { return CHALLENGES.find(c => c.id === id) || null; }
 
@@ -646,7 +653,7 @@
     return Math.min(1, base + 0.55 * i);
   }
 
-  const api = { KITS, TONES, GESTURES, kitFor, gestures, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
+  const api = { KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbSquishyCore = api;
 })(typeof self !== 'undefined' ? self : this);

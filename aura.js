@@ -593,6 +593,16 @@ function msbSpeak(sayText,term,lang){try{const synth=window.speechSynthesis;if(!
 function msbWordChips(item){if(!item?.words?.length)return'';return `<div class="word-chips" role="group" aria-label="Hear the words of this lesson"><span class="word-chips-label">Hear the words</span>${item.words.map((w,i)=>`<button type="button" class="word-chip" data-say="${i}" aria-label="${msbEs()?'Escuchar cómo se dice':'Hear how to say'} ${esc(w.term)}">🔊 ${esc(w.term)}</button>`).join('')}</div>`}
 function hearWord(event){const b=event.target.closest('[data-say]');if(!b||state.screen!=='mini')return;const item=state.challenges.find(e=>e.id===state.selected);const w=item?.words?.[Number(b.dataset.say)];if(!w)return;if(!msbSpeak(w.say||w.term,w.term,w.lang))toast('Voice is not available on this device.')}
 async function msbCelebrate(){try{const r=await api('/bible/achievements/check','POST',{});(r.newly||[]).forEach((a,i)=>setTimeout(()=>showAchievement(a),i*500));return r}catch{return null}}
+/* Kids' badges from Bible squishies and Manna Match. Kept on this phone
+   only (friends do not see them). */
+function msbKidBadgesHtml(es){
+  const k=window.MsbSquishy&&MsbSquishy.kidBadges?MsbSquishy.kidBadges():null;
+  if(!k)return'';
+  const when=d=>{const t=new Date(d+'T12:00:00');return isNaN(t)?'':t.toLocaleDateString(es?'es':undefined)};
+  const tiles=k.badges.map(b=>`<li class="kid-badge${b.earned?' earned':''}${b.tier!=='common'?' '+esc(b.tier):''}" data-kid-badge="${esc(b.id)}"><span class="kid-badge-icon" aria-hidden="true">${b.earned?esc(b.icon):'🔒'}</span><strong>${esc(b.name)}</strong><small>${b.earned?(es?'Ganada el ':'Earned ')+esc(when(b.earned)):(es?'Por ganar':'Not yet')}</small></li>`).join('');
+  const chip=(icon,label,n,max)=>`<span class="kid-chip"><span aria-hidden="true">${icon}</span> ${label} <b>${n}/${max}</b></span>`;
+  return `<section class="card kid-badges" data-kid-badges><h2>🧸 ${es?'Insignias de niños':'Kids\u2019 badges'}</h2><p class="small muted">${es?'De Squishies bíblicos y Combina el maná. Se guardan solo en este teléfono.':'From Bible squishies and Manna Match. Kept on this phone only.'}</p><div class="kid-chips">${chip('🏅',es?'Insignias':'Badges',k.earned,k.badges.length)}${chip('⭐',es?'Estrellas de Combina el maná':'Manna Match stars',k.match.stars,k.match.max)}${chip('✨',es?'Trucos secretos':'Secret tricks',k.tricks.found,k.tricks.total)}${k.gifts?chip('🎀',es?'Regalos de amigos':'Gifts from friends',k.gifts,k.gifts):''}</div><ul class="kid-badge-grid">${tiles}</ul></section>`;
+}
 async function achievementsScreen(){
   state.screen='achievements';
   screen.innerHTML=`<span class="eyebrow">ACHIEVEMENTS</span><h1>🏆 Your achievements</h1><div class="loading">Counting the victories…</div>`;
@@ -602,7 +612,7 @@ async function achievementsScreen(){
   const unlocked=list.filter(a=>a.unlockedAt);
   const esAch=window.MsbI18n&&MsbI18n.lang()==='es';
   const cards=list.map(a=>`<div class="card ach-card ${a.unlockedAt?'ach-unlocked':'ach-locked'}" data-ach="${esc(a.id)}"><span class="ach-icon">${msbAchIcon(a)}</span><div class="ach-main"><strong>${esc(msbAchText(a,'name'))}</strong><p class="small muted">${esc(msbAchText(a,'desc'))}</p><div class="ach-bar"><i style="width:${a.target?Math.round(a.current/a.target*100):0}%"></i></div><small class="muted">${a.unlockedAt?(esAch?('Desbloqueado el '+new Date(a.unlockedAt*1000).toLocaleDateString('es')):('Unlocked '+new Date(a.unlockedAt*1000).toLocaleDateString())):(a.current+' / '+a.target)}</small></div><span class="ach-points">✦ ${a.points}</span></div>`).join('');
-  screen.innerHTML=`<span class="eyebrow">ACHIEVEMENTS</span><h1>🏆 Your achievements</h1><p class="lead">${esAch?`Puntaje <strong>✦ ${r?r.score:0}</strong> · ${unlocked.length} de ${list.length} desbloqueados. Leer, estudiar, tomar notas y tener amigos: todo cuenta.`:`Score <strong>✦ ${r?r.score:0}</strong> · ${unlocked.length} of ${list.length} unlocked. Reading, studying, noting, and friends all count.`}</p>${cards||'<p class="muted">Achievements are unavailable right now.</p>'}<p><button class="secondary" data-nav="profile">Back to profile</button></p>`;
+  screen.innerHTML=`<span class="eyebrow">ACHIEVEMENTS</span><h1>🏆 Your achievements</h1><p class="lead">${esAch?`Puntaje <strong>✦ ${r?r.score:0}</strong> · ${unlocked.length} de ${list.length} desbloqueados. Leer, estudiar, tomar notas y tener amigos: todo cuenta.`:`Score <strong>✦ ${r?r.score:0}</strong> · ${unlocked.length} of ${list.length} unlocked. Reading, studying, noting, and friends all count.`}</p>${cards||'<p class="muted">Achievements are unavailable right now.</p>'}${msbKidBadgesHtml(esAch)}<p><button class="secondary" data-nav="profile">Back to profile</button></p>`;
   if(window.MsbI18n)MsbI18n.apply(screen);
   window.scrollTo({top:0,behavior:'auto'});
 }
