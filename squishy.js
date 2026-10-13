@@ -359,7 +359,7 @@
   function cardHtml(x) {
     const l = lang(), has = prog().stars().includes(x.id);
     const canSpeak = !!(window.MsbSpeech && MsbSpeech.supported && MsbSpeech.supported());
-    return `<article class="card sq-card"><span class="eyebrow">${esc(L('BIBLE LESSON'))}</span><h2 id="sq-card-title">${esc(nameOf(x))}</h2><p>${esc(x.lesson[l])}</p>
+    return `<article class="card sq-card" aria-live="polite"><span class="eyebrow">${esc(L('BIBLE LESSON'))}</span><h2 id="sq-card-title">${esc(nameOf(x))}</h2><p>${esc(x.lesson[l])}</p>
       <blockquote class="sq-verse"><p>“${esc(x.verse[l])}”</p><cite>${esc(x.ref[l])} · ${l === 'es' ? 'RV1909' : 'KJV'}</cite></blockquote>
       <div class="sq-card-actions">${canSpeak ? `<button type="button" class="secondary" data-sq-speak="${x.id}">🔊 ${esc(L('Read aloud'))}</button>` : ''}${has ? `<span class="sq-got">⭐ ${esc(L('Star collected'))}</span>` : `<button type="button" class="primary" data-sq-star="${x.id}">⭐ ${esc(L('I learned it!'))}</button>`}<button type="button" class="secondary" data-sq-sheet-close>${esc(L('Keep playing'))}</button></div></article>`;
   }
@@ -413,7 +413,7 @@
     const on = sounds().get();
     return `<div class="sq-play" data-sq-play role="dialog" aria-modal="true" aria-labelledby="sq-play-title">
       <div class="sq-play-top"><button type="button" class="sq-play-back" data-sq-play-back>${esc(L('← Shelf'))}</button><strong id="sq-play-title">${esc(nameOf(x))}</strong><button type="button" class="sq-sound" role="switch" aria-checked="${on}" data-sq-sound aria-label="${esc(L('Sounds'))}">${on ? '🔊' : '🔈'}</button></div>
-      <div class="sq-play-area" data-sq-area><canvas class="sq-canvas" data-sq-canvas tabindex="0" role="img" aria-label="${esc(L('{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch, T does its secret trick.', { name: nameOf(x) }))}"></canvas>
+      <div class="sq-play-area" data-sq-area><canvas class="sq-canvas" data-sq-canvas tabindex="0" role="img" aria-label="${esc(kit(x.id) && kit(x.id).trick ? L('{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch, T does its secret trick.', { name: nameOf(x) }) : L('{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch.', { name: nameOf(x) }))}"></canvas>
         <button type="button" class="sq-learn" data-sq-learn hidden>📖 ${esc(L('Learn'))}</button>
         ${kit(x.id) && kit(x.id).trick ? `<button type="button" class="sq-trick" data-sq-trick aria-live="polite">${esc(trickChip(x.id))}</button>` : ''}
         <p class="sq-toast" data-sq-toast role="status" hidden></p></div>
@@ -724,8 +724,14 @@
     else if (was.mode === 'grab' || was.mode === 'pinch') { if (was.stretch > 0.15) boing(was.stretch); kitRelease(Math.max(was.stretch, was.squish)); vibrate(C().pulseMs(Math.max(was.stretch, was.squish))); }
     else if (was.mode === 'press') { kitRelease(was.squish); vibrate(C().pulseMs(was.squish)); }
     p.mode = null; p.squelch = 0; p.gestured = false; p.buzzLevel = 0;
+    /* the first squish brings up the Bible lesson card on its own; after
+       that the Learn button opens it again */
     const learn = p.area.querySelector('[data-sq-learn]');
-    if (learn && learn.hidden) learn.hidden = false;
+    if (learn && learn.hidden) {
+      learn.hidden = false;
+      const sheet = ui.root && ui.root.querySelector('[data-sq-sheet]');
+      if (sheet && sheet.hidden) setTimeout(() => { if (pv === p && sheet.isConnected && sheet.hidden) { sheet.innerHTML = cardHtml(p.x); sheet.hidden = false; } }, 450);
+    }
     refreshChip();
     kick();
   }

@@ -1089,6 +1089,11 @@
     "Meet {name}, the glowing one!": "¡Conoce a: {name}, el que brilla!",
     "Keep playing": "Seguir jugando",
     "Press to squish · drag to stretch · two fingers to squeeze or spread": "Aprieta para aplastar · arrastra para estirar · dos dedos para apretar o abrir",
+    "{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch.": "{name}. Aprieta para aplastarlo, arrastra para estirarlo, usa dos dedos para apretarlo o abrirlo. Teclas: Intro o Espacio lo aplastan, las flechas lo estiran.",
+    "Verified": "Verificado",
+    "Are you sure?": "¿Estás seguro?",
+    "Yes": "Sí",
+    "No": "No",
     "{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch, T does its secret trick.": "{name}. Aprieta para aplastarlo, arrastra para estirarlo, usa dos dedos para apretarlo o abrirlo. Teclas: Intro o Espacio lo aplastan, las flechas lo estiran, T hace su truco secreto."
   });
 

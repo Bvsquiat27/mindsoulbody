@@ -345,7 +345,9 @@
       case 'final': {
         /* every other squishy open, and 3 stars on any Manna Match level */
         const others = ctx.squishies.filter(x => x.id !== ch.id && x.locked);
-        const open = others.filter(x => ctx.unlocked.includes(x.id)).length;
+        /* a gifted squishy counts only once its own challenge is met */
+        const earned = (ctx.stats && ctx.stats.badges) || {}, gifts = ctx.gifts || [];
+        const open = others.filter(x => ctx.unlocked.includes(x.id) && (!gifts.includes(x.id) || earned[x.id])).length;
         const three = Object.values(ctx.match).some(s => s === 3) ? 1 : 0;
         return cap(open + three, others.length + 1);
       }
@@ -357,9 +359,12 @@
      squishy and badge. */
   function challengeContext(storage, squishies) {
     const p = progress(storage, squishies);
-    let trades = 0;
-    try { const t = JSON.parse(storage.getItem(KEYS.trade)) || {}; trades = (Array.isArray(t.sent) ? t.sent.length : 0) + (Array.isArray(t.got) ? t.got.length : 0); } catch { trades = 0; }
-    return { stats: stats(storage).get(), lessons: p.stars().length, match: matchStars(storage), unlocked: p.unlocked(), squishies, trades };
+    /* only a code actually redeemed on this phone counts as a trade; making a
+       code is not enough. Gifted squishies are remembered so they do not
+       count toward the lamp. */
+    let trades = 0, gifts = [];
+    try { const t = JSON.parse(storage.getItem(KEYS.trade)) || {}; const got = Array.isArray(t.got) ? t.got.filter(x => x && typeof x.id === 'string') : []; trades = got.length; gifts = [...new Set(got.map(x => x.id))]; } catch { trades = 0; gifts = []; }
+    return { stats: stats(storage).get(), lessons: p.stars().length, match: matchStars(storage), unlocked: p.unlocked(), squishies, trades, gifts };
   }
   function challengeFor(id) { return CHALLENGES.find(c => c.id === id) || null; }
 

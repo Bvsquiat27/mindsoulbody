@@ -68,3 +68,26 @@ test('DM screens: wired in, precached, sticky composer, verse cards open the rea
   assert.ok(i18n.includes('"💬 Messages":'));
   const bubbles = dm.match(/class="dm-bubble"[^>]*>/)[0]; assert.match(bubbles, /data-i18n-skip/, 'message text is never translated');
 });
+
+test('polling: messages every 4 s, verses on open/return or once a minute, nothing while hidden', () => {
+  assert.equal(DM.MSG_EVERY, 4000);
+  assert.ok(DM.VERSE_EVERY >= 60000);
+  assert.deepEqual(DM.pollPlan(100000, 0, false), { messages: true, verses: true }, 'first load fetches verses');
+  assert.deepEqual(DM.pollPlan(100000, 96000, false), { messages: true, verses: false }, 'a 4 s tick skips verses');
+  assert.deepEqual(DM.pollPlan(100000, 96000, false, true), { messages: true, verses: true }, 'opening or coming back fetches verses');
+  assert.deepEqual(DM.pollPlan(200000, 100000, false), { messages: true, verses: true }, 'once a minute');
+  assert.deepEqual(DM.pollPlan(200000, 0, true, true), { messages: false, verses: false }, 'hidden tab: no polling');
+  const src = readFileSync(new URL('./dm.js', import.meta.url), 'utf8');
+  assert.match(src, /document\.hidden/);
+  assert.match(src, /visibilitychange/);
+});
+
+test('reading a chat clears its unread badge in the cached friends list', () => {
+  const list = [{ code: 'A', name: 'a', unread: 3 }, { code: 'B', name: 'b', unread: 1 }];
+  const r = DM.clearUnread(list, 'A');
+  assert.equal(r.changed, true);
+  assert.deepEqual(r.list.map(f => f.unread), [0, 1]);
+  assert.equal(list[0].unread, 3, 'the input is not changed');
+  assert.equal(DM.clearUnread(r.list, 'A').changed, false);
+  assert.deepEqual(DM.clearUnread(null, 'A'), { list: [], changed: false });
+});

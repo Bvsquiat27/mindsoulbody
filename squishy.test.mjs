@@ -752,3 +752,14 @@ test('art fits its 120 x 120 picture: the drawings that reach past it are scaled
   assert.match(src, /body = fitWrap\(id, body\);/);
   assert.match(src, /x: f\[1\] \+ p\.x \* f\[0\], y: f\[2\] \+ p\.y \* f\[0\], k: p\.k \* f\[0\]/);
 });
+
+test('only trick squishies mention a secret trick; the first squish shows the lesson card', () => {
+  const ui = readFileSync(new URL('./squishy.js', import.meta.url), 'utf8');
+  const i18n = readFileSync(new URL('./i18n.js', import.meta.url), 'utf8');
+  assert.match(ui, /kit\(x\.id\) && kit\(x\.id\)\.trick \? L\('\{name\}\. Press to squish[^']*T does its secret trick\.'/);
+  assert.ok(i18n.includes('"{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch.":'));
+  assert.match(ui, /<article class="card sq-card" aria-live="polite">/);
+  assert.match(ui, /if \(learn && learn\.hidden\) \{\s*learn\.hidden = false;[\s\S]{0,200}sheet\.innerHTML = cardHtml\(p\.x\); sheet\.hidden = false;/);
+  assert.ok(i18n.includes('"Verified": "Verificado"'));
+  for (const k of ['Gold', 'Teal', 'Black', 'Read Scripture with the Orthodox Church. A profile on this device keeps your notes and progress in this browser.']) assert.ok(new RegExp(`['"]${k.replace(/[.]/g, '\\.')}['"]:`).test(i18n), k);
+});
