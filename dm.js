@@ -93,10 +93,33 @@
     };
   }
 
+  /* Polling: new messages every 4 s while the chat is open and the tab is
+     visible; shared verses only when the chat opens, when the tab comes back,
+     or once a minute. Nothing is fetched while the tab is hidden. */
+  const MSG_EVERY = 4000, VERSE_EVERY = 60000;
+  function pollPlan(now, lastVerseAt, hidden, force) {
+    if (hidden) return { messages: false, verses: false };
+    return { messages: true, verses: !!force || !lastVerseAt || now - lastVerseAt >= VERSE_EVERY };
+  }
+  /* After a chat is read, its unread count in the cached friends list is 0,
+     so the inbox badge clears without reopening Friends. */
+  function clearUnread(list, code) {
+    let changed = false;
+    const next = (Array.isArray(list) ? list : []).map(f => { if (f && f.code === code && f.unread) { changed = true; return { ...f, unread: 0 }; } return f; });
+    return { list: next, changed };
+  }
+
   /* ---------- screens (browser only) ---------- */
   const w = () => window;
-  let poll = null, current = null;
+  let poll = null, current = null, verseCache = { code: null, at: 0, list: [] };
   function stop() { if (poll) { clearInterval(poll); poll = null; } current = null; }
+  function markRead(code) {
+    try {
+      const raw = JSON.parse(localStorage.getItem('msb_friends_list'));
+      const r = clearUnread(raw, code);
+      if (r.changed) localStorage.setItem('msb_friends_list', JSON.stringify(r.list));
+    } catch { /* no cache */ }
+  }
   const me = () => (w().msbFriendsId ? w().msbFriendsId() : null);
   const friends = () => (w().msbFriendsCached ? w().msbFriendsCached() || [] : []);
   const friendOf = code => friends().find(f => f && f.code === code) || null;
@@ -136,14 +159,17 @@
       return `<div class="${cls}">${bubble}${meta}</div>`;
     }).join('');
   }
-  async function load(code) {
+  async function load(code, force) {
     const id = me();
     if (!id) return null;
     const call = w().msbFriendsCall;
+    if (verseCache.code !== code) verseCache = { code, at: 0, list: [] };
+    const plan = pollPlan(Date.now(), verseCache.at, false, force);
     const [msgs, verses] = await Promise.all([
       call('/msg/thread', { code: id.code, secret: id.secret, with: code }).then(r => (Array.isArray(r && r.messages) ? r.messages : [])),
-      call('/verse/thread', { code: id.code, secret: id.secret, with: code }).then(r => (Array.isArray(r && r.verses) ? r.verses : [])).catch(() => [])
+      plan.verses ? call('/verse/thread', { code: id.code, secret: id.secret, with: code }).then(r => { const list = Array.isArray(r && r.verses) ? r.verses : []; if (verseCache.code === code) { verseCache.at = Date.now(); verseCache.list = list; } return list; }).catch(() => verseCache.list) : Promise.resolve(verseCache.list)
     ]);
+    markRead(code);
     const items = timeline(msgs, verses, id.code);
     if (items.length) lastStore(localStorage).set(code, items[items.length - 1]);
     return items;
@@ -163,9 +189,11 @@
     stop(); setScreen('messages'); current = code;
     const f = friendOf(code) || { code, name: fallbackName || T('Friend') };
     host.innerHTML = `<div class="dm-screen dm-chat" data-dm-chat="${esc(code)}"><header class="dm-head"><button type="button" class="dm-back" data-dm-inbox-open aria-label="${esc(T('Back to messages'))}">←</button>${avatar(f, 'sm')}<button type="button" class="dm-head-name" data-action="friend-open" data-code="${esc(code)}"><strong data-i18n-skip>${esc(f.name || T('Friend'))}${verified(f)}</strong><small>${esc(T('Just between you two'))}</small></button></header><div class="dm-thread" data-dm-thread aria-live="polite"><p class="dm-empty muted">${esc(T('Loading messages…'))}</p></div><form class="dm-composer" data-dm-form><textarea data-dm-input rows="1" maxlength="2000" placeholder="${esc(T('Message…'))}" aria-label="${esc(T('Message'))}"></textarea><button type="submit" class="dm-send" aria-label="${esc(T('Send'))}" data-dm-send disabled>➤</button></form></div>`;
-    const run = () => load(code).then(items => { if (items && current === code && onScreen('messages')) paint(code, items); }).catch(e => { const box = document.querySelector('[data-dm-thread]'); if (box && !box.dataset.sig) box.innerHTML = `<p class="dm-empty muted">${esc(e && e.message ? e.message : T('Could not load messages.'))}</p>`; });
-    run();
-    poll = setInterval(() => { if (current !== code || !document.querySelector(`[data-dm-chat="${CSS.escape(code)}"]`)) { stop(); return; } run(); }, 4000);
+    const run = force => load(code, force).then(items => { if (items && current === code && onScreen('messages')) paint(code, items); }).catch(e => { const box = document.querySelector('[data-dm-thread]'); if (box && !box.dataset.sig) box.innerHTML = `<p class="dm-empty muted">${esc(e && e.message ? e.message : T('Could not load messages.'))}</p>`; });
+    run(true);
+    poll = setInterval(() => { if (current !== code || !document.querySelector(`[data-dm-chat="${CSS.escape(code)}"]`)) { stop(); return; } if (pollPlan(Date.now(), verseCache.at, document.hidden).messages) run(false); }, MSG_EVERY);
+    const back = () => { if (current !== code || !document.querySelector(`[data-dm-chat="${CSS.escape(code)}"]`)) { document.removeEventListener('visibilitychange', back); window.removeEventListener('focus', back); return; } if (!document.hidden) run(Date.now() - verseCache.at > 3000); };
+    document.addEventListener('visibilitychange', back); window.addEventListener('focus', back);
   }
   async function send(form) {
     const code = current, id = me(), input = form.querySelector('[data-dm-input]'), btn = form.querySelector('[data-dm-send]');
@@ -201,5 +229,5 @@
     document.addEventListener('keydown', e => { const t = e.target; if (t && t.matches && t.matches('[data-dm-input]') && e.key === 'Enter' && !e.shiftKey && !e.isComposing && window.matchMedia('(pointer:fine)').matches) { e.preventDefault(); t.form.requestSubmit(); } });
     document.addEventListener('submit', e => { const f = e.target; if (f && f.matches && f.matches('[data-dm-form]')) { e.preventDefault(); send(f); } });
   }
-  return { LAST_KEY, timeline, layout, dayLabel, shortAgo, previewOf, lastStore, openInbox, openThread, stop };
+  return { LAST_KEY, MSG_EVERY, VERSE_EVERY, pollPlan, clearUnread, timeline, layout, dayLabel, shortAgo, previewOf, lastStore, openInbox, openThread, stop };
 });

@@ -12,7 +12,8 @@ function harness(saved) {
     msbFriendsId: () => JSON.parse(ls.get('msb_friends_id')),
     msbFriendsPublicProfile: () => ({ handle: 'reader_1', city: 'Town' }),
     msbFriendsStats: () => ({}), msbStore: () => ({ profile: { name: 'Profile Name' } }), msbPublicImage: () => '',
-    msbFriendsCall: async (path, body) => { calls.push({ path, body }); return { ok: true }; }, toast: () => {}
+    msbFriendsCall: async (path, body) => { calls.push({ path, body }); return { ok: true }; }, toast: () => {},
+    msbDenomPending: () => '', MSB_DENOM_PENDING_KEY: 'msb_denom_pending'
   };
   const sync = new Function(...Object.keys(env), `${src}\nreturn msbFriendsSync;`)(...Object.values(env));
   return { sync, calls, saved: () => JSON.parse(ls.get('msb_friends_id')) };
@@ -53,7 +54,7 @@ test('verified cross: shown only when the server says so, on friends list, frien
   /* own flag comes from the sync reply and is cleared when the server stops sending it */
   const h = harness({ code: 'MSB-AAAAAA', secret: 's' });
   h.calls.length = 0;
-  const sync = new Function('MSB_FRIENDS_KEY', 'localStorage', 'msbFriendsId', 'msbFriendsPublicProfile', 'msbFriendsStats', 'msbStore', 'msbPublicImage', 'msbFriendsCall', 'toast', `${src}\nreturn msbFriendsSync;`);
+  const sync = new Function('MSB_FRIENDS_KEY', 'localStorage', 'msbFriendsId', 'msbFriendsPublicProfile', 'msbFriendsStats', 'msbStore', 'msbPublicImage', 'msbFriendsCall', 'toast', `const msbDenomPending = () => '';\n${src}\nreturn msbFriendsSync;`);
   const ls = new Map([['msb_friends_id', JSON.stringify({ code: 'MSB-AAAAAA', secret: 's' })]]);
   let reply = { ok: true, verified: true };
   const run = sync('msb_friends_id', { getItem: k => ls.get(k) ?? null, setItem: (k, v) => ls.set(k, v) }, () => JSON.parse(ls.get('msb_friends_id')), () => ({}), () => ({}), () => ({ profile: {} }), () => '', async () => reply, () => {});

@@ -70,16 +70,20 @@ test('you keep yours, your friend gets a copy once, and your own code does not w
   assert.deepEqual(ta.gifts(), ['ark']);
 });
 
-test('both friends get the Friendship badge; trades live in the backup', () => {
+test('the Friendship badge needs a code actually redeemed, not just made; trades live in the backup', () => {
   const a = mem(), b = mem();
   const code = T.trades(a).create('dove', ['dove']);
   C.checkUnlocks(a, SQUISHIES, new Date(2026, 9, 13));
-  assert.equal(C.badges(a, SQUISHIES).find(x => x.id === 'friendship').earned, '2026-10-13');
+  assert.equal(C.badges(a, SQUISHIES).find(x => x.id === 'friendship').earned, null, 'making a code alone earns nothing');
   assert.equal(C.badges(b, SQUISHIES).find(x => x.id === 'friendship').earned, null);
   T.trades(b).redeem(code);
   C.progress(b, SQUISHIES).unlock('dove');
   C.checkUnlocks(b, SQUISHIES, new Date(2026, 9, 14));
   assert.equal(C.badges(b, SQUISHIES).find(x => x.id === 'friendship').earned, '2026-10-14');
+  /* a return gift earns the giver the badge too */
+  T.trades(a).redeem(T.trades(b).create('dove', ['dove']));
+  C.checkUnlocks(a, SQUISHIES, new Date(2026, 9, 15));
+  assert.equal(C.badges(a, SQUISHIES).find(x => x.id === 'friendship').earned, '2026-10-15');
   assert.ok(T.KEY.startsWith('msb_'));
   /* junk in storage is ignored */
   a.setItem(T.KEY, JSON.stringify({ sent: [{ c: 'nope', id: 'ark' }, 5], got: 'x' }));
@@ -104,4 +108,20 @@ test('kid badges show on the own Profile achievements, with no worker change for
   assert.match(aura, /MsbSquishy\.kidBadges\(\)/);
   assert.match(ui, /kidBadges\(\) \{/);
   for (const k of ['Trick master', 'Friendship']) assert.match(ui, new RegExp(`'${k}'`));
+});
+
+test('gifted squishies do not count toward the lamp until their own challenge is met', () => {
+  const s = mem(), p = C.progress(s, SQUISHIES);
+  const others = SQUISHIES.filter(x => x.locked && x.id !== 'lamp');
+  for (const x of others) p.unlock(x.id);
+  s.setItem('msb_match_progress', JSON.stringify({ open: 2, stars: { 1: 3 }, best: {} }));
+  const lamp = C.CHALLENGES.find(c => c.id === 'lamp');
+  assert.equal(C.challengeProgress(lamp, C.challengeContext(s, SQUISHIES)).done, true, 'all opened by play');
+  const gift = others.find(x => T.tradable(x.id) && C.tierOf(x.id) === 'rare').id;
+  s.setItem(T.KEY, JSON.stringify({ sent: [], got: [{ c: T.makeCode(gift, () => 0.2), id: gift, at: 1 }] }));
+  const pr = C.challengeProgress(lamp, C.challengeContext(s, SQUISHIES));
+  assert.equal(pr.done, false, 'a gifted rare does not count');
+  assert.equal(pr.have, pr.need - 1);
+  const st = JSON.parse(s.getItem('msb_squishy_stats') || '{}'); st.badges = { ...(st.badges || {}), [gift]: '2026-10-13' }; s.setItem('msb_squishy_stats', JSON.stringify(st));
+  assert.equal(C.challengeProgress(lamp, C.challengeContext(s, SQUISHIES)).done, true, 'once its challenge is earned it counts');
 });
