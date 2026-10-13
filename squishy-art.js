@@ -223,6 +223,11 @@
   /* part: 'all' (default), 'body' (everything but the face) or 'face' (only
      the face, at its usual spot). The play view warps the body but keeps the
      face as one stiff piece so the character stays recognizable. */
+  /* A few drawings reach past the 120 x 120 picture. Each gets a small
+     scale and shift (from its measured bounds) so nothing is clipped and
+     there are 2 units of room on every side. [scale, dx, dy] */
+  const FIT = {loaves: [1, -3, 0], coat: [0.959, 2.0, 0], ladder: [0.951, 0, 6.75], wheat: [0.959, 0, 7.75], oil: [1, 0, 4], donkey: [0.991, 0, 6.96], jar: [0.991, 0, 3.98], boat: [0.935, 3.87, 0], tomb: [0.967, 2.0, 4.9], lamp: [0.967, -1.87, 0]};
+  const fitWrap = (id, body) => { const f = FIT[id]; return f ? `<g transform="translate(${f[1]} ${f[2]}) scale(${f[0]})">${body}</g>` : body; };
   function svg(id, label, mood, which) {
     const draw = ART[id];
     if (!draw) return '';
@@ -235,11 +240,17 @@
       body = f ? face(f.x, f.y, f.k) : '';
     }
     look = 'happy'; part = 'all';
+    body = fitWrap(id, body);
     return `<svg class="sq-svg" xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" ${label ? `role="img" aria-label="${String(label).replace(/"/g, '&quot;')}"` : 'aria-hidden="true"'} focusable="false">${body}</svg>`;
   }
 
   /* Where the face sits (in the 120 x 120 picture) and its size. */
-  function faceAt(id) { faceSpot = null; if (ART[id]) { part = 'body'; ART[id](); part = 'all'; } return faceSpot; }
+  function faceAt(id) {
+    faceSpot = null;
+    if (ART[id]) { part = 'body'; ART[id](); part = 'all'; }
+    const f = FIT[id], p = faceSpot;
+    return p && f ? { ...p, x: f[1] + p.x * f[0], y: f[2] + p.y * f[0], k: p.k * f[0] } : p;
+  }
 
-  window.MsbSquishyArt = { svg, faceAt, ids: Object.keys(ART) };
+  window.MsbSquishyArt = { svg, faceAt, FIT, ids: Object.keys(ART) };
 })();
