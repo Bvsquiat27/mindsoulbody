@@ -46,6 +46,7 @@
       case 'questionWins': return L('Win {n} rounds of Questions', { n: ch.n });
       case 'matchChapter': return ch.n === 4 ? L('Finish the Noah chapter in Manna Match') : ch.n >= 20 ? L('Finish Manna Match all the way to Easter') : L('Win Manna Match levels 1 to {n}', { n: ch.n });
       case 'memoryFast': return L('Win Memory in {n} moves or fewer', { n: ch.n });
+      case 'perfectLegend': return L('Get 5 of 5 right in Questions {n} times', { n: ch.n });
       case 'perfectRound': return ch.n > 1 ? L('Get 5 of 5 right in Questions {n} times', { n: ch.n }) : L('Get 5 of 5 right in Questions');
       case 'streak': return L('Play {n} days in a row', { n: ch.n });
       case 'matchThreeStars': return ch.n > 1 ? L('Get 3 stars on {n} Manna Match levels', { n: ch.n }) : L('Get 3 stars on a Manna Match level');

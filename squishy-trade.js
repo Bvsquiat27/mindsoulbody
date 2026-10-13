@@ -14,13 +14,14 @@
   /* Fixed order, so codes keep working when squishies are added. Legendary
      squishies are not in the list: they cannot be traded. */
   const IDS = ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow', 'stone', 'loaves', 'seed', 'bush', 'basket', 'tree', 'ark', 'coat', 'ladder', 'raven', 'wheat', 'oil', 'coin', 'donkey', 'jar', 'crown', 'boat'];
-  const LEGENDARY = ['lamp', 'tomb'];
+  const LEGENDARY = ['lamp', 'tomb', 'bush'];
   const KEY = 'msb_squishy_trade';
   const MASK = (1 << 30) - 1, MUL = 0x2545F4B, ADD = 0x1B873593 & MASK, SALT = 613;
   const W = [3, 7, 11, 17, 23, 29], P = 1021;
   /* inverse of MUL modulo 2^30 (Newton steps) */
   let INV = MUL; for (let i = 0; i < 5; i += 1) INV = Math.imul(INV, 2 - Math.imul(MUL, INV)); INV &= MASK;
-  const tradable = id => IDS.includes(id);
+  /* the bush stays in IDS (fixed code order) but became legendary */
+  const tradable = id => IDS.includes(id) && !LEGENDARY.includes(id);
   const sum = d => d.reduce((s, v, i) => (s + W[i] * (v + 1)) % P, SALT);
 
   function makeCode(id, rand = Math.random) {

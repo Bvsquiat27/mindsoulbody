@@ -245,7 +245,8 @@
     { id: 'stone', kind: 'memoryWins', n: 1, tier: 'common' },
     { id: 'loaves', kind: 'lessons', n: 3, tier: 'common' },
     { id: 'seed', kind: 'squishes', n: 50, tier: 'common' },
-    { id: 'bush', kind: 'questionWins', n: 3, tier: 'common' },
+    /* the burning bush is legendary: 10 perfect rounds of Bible questions */
+    { id: 'bush', kind: 'perfectLegend', n: 10, tier: 'legendary' },
     { id: 'basket', kind: 'matchChapter', n: 4, tier: 'rare' },
     { id: 'tree', kind: 'memoryFast', n: 10, tier: 'common' },
     { id: 'ark', kind: 'perfectRound', n: 1, tier: 'rare' },
@@ -335,7 +336,7 @@
       case 'lessons': return cap(ctx.lessons, ch.n);
       case 'squishes': return cap(st.squishes, ch.n);
       case 'questionWins': return cap(st.questionWins, ch.n);
-      case 'perfectRound': return cap(st.perfectRounds, ch.n);
+      case 'perfectRound': case 'perfectLegend': return cap(st.perfectRounds, ch.n);
       case 'streak': return cap(Math.max(st.bestStreak, longestStreak(st.days)), ch.n);
       case 'memoryFast': { const ok = st.memoryBest > 0 && st.memoryBest <= ch.n; return { have: ok ? 1 : 0, need: 1, done: ok, best: st.memoryBest || null }; }
       case 'matchChapter': { let won = 0; for (let k = 1; k <= ch.n; k += 1) if ([1, 2, 3].includes(ctx.match[k])) won += 1; return cap(won, ch.n); }
