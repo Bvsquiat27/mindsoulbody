@@ -526,6 +526,376 @@
       }
     },
     {
+      "id": "ladder",
+      "sound": "chime",
+      "locked": true,
+      "name": {
+        "en": "Jacob's Ladder",
+        "es": "La escalera de Jacob"
+      },
+      "lesson": {
+        "en": "Jacob was all alone, far from home. God showed him a ladder up to heaven with angels on it, and promised: “I am with you wherever you go.”",
+        "es": "Jacob estaba solo, lejos de casa. Dios le mostró una escalera hasta el cielo con ángeles, y le prometió: «Yo estoy contigo dondequiera que vayas»."
+      },
+      "quiz": {
+        "en": "Jacob dreamed of angels going up and down. Which squishy reaches up to heaven?",
+        "es": "Jacob soñó con ángeles que subían y bajaban. ¿Cuál squishy llega hasta el cielo?"
+      },
+      "at": {
+        "en": [
+          1,
+          28,
+          12
+        ],
+        "es": [
+          1,
+          28,
+          12
+        ]
+      },
+      "ref": {
+        "en": "Genesis 28:12",
+        "es": "Génesis 28:12"
+      },
+      "verse": {
+        "en": "And he dreamed, and behold a ladder set up on the earth, and the top of it reached to heaven: and behold the angels of God ascending and descending on it.",
+        "es": "Y soñó, y he aquí una escala que estaba apoyada en tierra, y su cabeza tocaba en el cielo: y he aquí ángeles de Dios que subían y descendían por ella."
+      }
+    },
+    {
+      "id": "raven",
+      "sound": "caw",
+      "locked": true,
+      "name": {
+        "en": "Elijah's Raven",
+        "es": "El cuervo de Elías"
+      },
+      "lesson": {
+        "en": "When there was no food, God sent ravens to bring Elijah bread and meat every morning and every evening. God takes care of you too!",
+        "es": "Cuando no había comida, Dios envió cuervos para llevarle a Elías pan y carne cada mañana y cada tarde. ¡Dios también te cuida a ti!"
+      },
+      "quiz": {
+        "en": "Which squishy brought bread to Elijah?",
+        "es": "¿Cuál squishy le llevó pan a Elías?"
+      },
+      "at": {
+        "en": [
+          11,
+          17,
+          6
+        ],
+        "es": [
+          11,
+          17,
+          6
+        ]
+      },
+      "ref": {
+        "en": "1 Kings 17:6",
+        "es": "1 Reyes 17:6"
+      },
+      "verse": {
+        "en": "And the ravens brought him bread and flesh in the morning, and bread and flesh in the evening; and he drank of the brook.",
+        "es": "Y los cuervos le traían pan y carne por la mañana, y pan y carne á la tarde; y bebía del arroyo."
+      }
+    },
+    {
+      "id": "wheat",
+      "sound": "rustle",
+      "locked": true,
+      "name": {
+        "en": "Ruth's Wheat",
+        "es": "El trigo de Rut"
+      },
+      "lesson": {
+        "en": "Ruth stayed with Naomi and took care of her, gathering grain in the fields. She was loyal and kind, and God blessed her.",
+        "es": "Rut se quedó con Noemí y la cuidó, recogiendo espigas en el campo. Fue fiel y bondadosa, y Dios la bendijo."
+      },
+      "quiz": {
+        "en": "Ruth gathered grain to care for Naomi. Which squishy is a bundle of wheat?",
+        "es": "Rut recogió espigas para cuidar a Noemí. ¿Cuál squishy es un manojo de trigo?"
+      },
+      "at": {
+        "en": [
+          8,
+          1,
+          16
+        ],
+        "es": [
+          8,
+          1,
+          16
+        ]
+      },
+      "ref": {
+        "en": "Ruth 1:16",
+        "es": "Rut 1:16"
+      },
+      "verse": {
+        "en": "And Ruth said, Intreat me not to leave thee, or to return from following after thee: for whither thou goest, I will go; and where thou lodgest, I will lodge: thy people shall be my people, and thy God my God:",
+        "es": "Y Ruth respondió: No me ruegues que te deje, y me aparte de ti: porque donde quiera que tú fueres, iré yo; y donde quiera que vivieres, viviré. Tu pueblo será mi pueblo, y tu Dios mi Dios."
+      }
+    },
+    {
+      "id": "oil",
+      "sound": "glug",
+      "locked": true,
+      "name": {
+        "en": "Widow's Oil Jar",
+        "es": "La vasija de aceite"
+      },
+      "lesson": {
+        "en": "A poor widow had only a little oil. She poured it into every jar she could find, and God kept it flowing until all the jars were full!",
+        "es": "Una viuda pobre solo tenía un poco de aceite. Lo echó en todas las vasijas que encontró, ¡y Dios lo hizo seguir saliendo hasta llenarlas todas!"
+      },
+      "quiz": {
+        "en": "God kept the oil flowing for the widow. Which squishy is her jar?",
+        "es": "Dios hizo que el aceite siguiera saliendo para la viuda. ¿Cuál squishy es su vasija?"
+      },
+      "at": {
+        "en": [
+          12,
+          4,
+          6
+        ],
+        "es": [
+          12,
+          4,
+          6
+        ]
+      },
+      "ref": {
+        "en": "2 Kings 4:6",
+        "es": "2 Reyes 4:6"
+      },
+      "verse": {
+        "en": "And it came to pass, when the vessels were full, that she said unto her son, Bring me yet a vessel. And he said unto her, There is not a vessel more. And the oil stayed.",
+        "es": "Y como los vasos fueron llenos, dijo á un hijo suyo: Tráeme aún otro vaso. Y él dijo: No hay más vasos. Entonces cesó el aceite."
+      }
+    },
+    {
+      "id": "coin",
+      "sound": "clink",
+      "locked": true,
+      "name": {
+        "en": "The Lost Coin",
+        "es": "La moneda perdida"
+      },
+      "lesson": {
+        "en": "A woman lost one coin. She lit a lamp and swept the whole house until she found it, then she called her friends to celebrate! God is that happy when one person comes back to Him.",
+        "es": "Una mujer perdió una moneda. Encendió una lámpara y barrió toda la casa hasta encontrarla, ¡y llamó a sus amigas para celebrar! Así de feliz está Dios cuando una persona vuelve a él."
+      },
+      "quiz": {
+        "en": "Which squishy was lost and then found with great joy?",
+        "es": "¿Cuál squishy se perdió y luego se encontró con mucha alegría?"
+      },
+      "at": {
+        "en": [
+          42,
+          15,
+          10
+        ],
+        "es": [
+          42,
+          15,
+          10
+        ]
+      },
+      "ref": {
+        "en": "Luke 15:10",
+        "es": "Lucas 15:10"
+      },
+      "verse": {
+        "en": "Likewise, I say unto you, there is joy in the presence of the angels of God over one sinner that repenteth.",
+        "es": "Así os digo que hay gozo delante de los ángeles de Dios por un pecador que se arrepiente."
+      }
+    },
+    {
+      "id": "donkey",
+      "sound": "heehaw",
+      "locked": true,
+      "name": {
+        "en": "Good Samaritan's Donkey",
+        "es": "El burrito del buen samaritano"
+      },
+      "lesson": {
+        "en": "A man was hurt by the road. The Good Samaritan stopped, bandaged him, put him on his donkey and took him to an inn. Jesus says: go and do the same.",
+        "es": "Un hombre estaba herido junto al camino. El buen samaritano se detuvo, lo vendó, lo subió a su burrito y lo llevó a un mesón. Jesús dice: ve y haz tú lo mismo."
+      },
+      "quiz": {
+        "en": "Which squishy carried the hurt man to the inn?",
+        "es": "¿Cuál squishy llevó al hombre herido al mesón?"
+      },
+      "at": {
+        "en": [
+          42,
+          10,
+          37
+        ],
+        "es": [
+          42,
+          10,
+          37
+        ]
+      },
+      "ref": {
+        "en": "Luke 10:37",
+        "es": "Lucas 10:37"
+      },
+      "verse": {
+        "en": "And he said, He that shewed mercy on him. Then said Jesus unto him, Go, and do thou likewise.",
+        "es": "Y él dijo: El que usó con él de misericordia. Entonces Jesús le dijo: Ve, y haz tú lo mismo."
+      }
+    },
+    {
+      "id": "jar",
+      "sound": "trumpet",
+      "locked": true,
+      "name": {
+        "en": "Gideon's Jar",
+        "es": "El cántaro de Gedeón"
+      },
+      "lesson": {
+        "en": "Gideon had only 300 men. They broke their jars, held up their torches and blew their trumpets, and God gave them the victory. God can do big things with just a few!",
+        "es": "Gedeón solo tenía 300 hombres. Quebraron sus cántaros, levantaron sus antorchas y tocaron sus trompetas, y Dios les dio la victoria. ¡Dios hace cosas grandes con muy pocos!"
+      },
+      "quiz": {
+        "en": "Gideon's men broke their jars and their torches shone. Which squishy is a jar with a torch?",
+        "es": "Los hombres de Gedeón quebraron sus cántaros y brillaron sus antorchas. ¿Cuál squishy es un cántaro con antorcha?"
+      },
+      "at": {
+        "en": [
+          7,
+          7,
+          20
+        ],
+        "es": [
+          7,
+          7,
+          20
+        ]
+      },
+      "ref": {
+        "en": "Judges 7:20",
+        "es": "Jueces 7:20"
+      },
+      "verse": {
+        "en": "And the three companies blew the trumpets, and brake the pitchers, and held the lamps in their left hands, and the trumpets in their right hands to blow withal: and they cried, The sword of the LORD, and of Gideon.",
+        "es": "Y los tres escuadrones tocaron las bocinas, y quebrando los cántaros tomaron en las manos izquierdas las teas, y en las derechas los cuernos con que tañían, y dieron grita: ¡La espada de Jehová y de Gedeón!"
+      }
+    },
+    {
+      "id": "crown",
+      "sound": "royal",
+      "locked": true,
+      "name": {
+        "en": "Esther's Crown",
+        "es": "La corona de Ester"
+      },
+      "lesson": {
+        "en": "Queen Esther was brave. She went to the king to save her people, and the king held out his golden scepter. God put her there “for such a time as this.”",
+        "es": "La reina Ester fue valiente. Fue a ver al rey para salvar a su pueblo, y el rey le extendió su cetro de oro. Dios la puso allí «para esta hora»."
+      },
+      "quiz": {
+        "en": "Which squishy is the crown of brave Queen Esther?",
+        "es": "¿Cuál squishy es la corona de la valiente reina Ester?"
+      },
+      "at": {
+        "en": [
+          17,
+          4,
+          14
+        ],
+        "es": [
+          17,
+          4,
+          14
+        ]
+      },
+      "ref": {
+        "en": "Esther 4:14",
+        "es": "Ester 4:14"
+      },
+      "verse": {
+        "en": "For if thou altogether holdest thy peace at this time, then shall there enlargement and deliverance arise to the Jews from another place; but thou and thy father's house shall be destroyed: and who knoweth whether thou art come to the kingdom for such a time as this?",
+        "es": "Porque si absolutamente callares en este tiempo, respiro y libertación tendrán los Judíos de otra parte; mas tú y la casa de tu padre pereceréis. ¿Y quién sabe si para esta hora te han hecho llegar al reino?"
+      }
+    },
+    {
+      "id": "boat",
+      "sound": "whoosh",
+      "locked": true,
+      "name": {
+        "en": "Peter's Boat",
+        "es": "La barca de Pedro"
+      },
+      "lesson": {
+        "en": "Peter fished all night and caught nothing. Jesus said, “Let down your nets,” and the net filled with so many fish it began to break! Then Jesus made Peter a fisher of people.",
+        "es": "Pedro pescó toda la noche y no sacó nada. Jesús le dijo: «Echa tus redes», ¡y la red se llenó de tantos peces que se rompía! Luego Jesús hizo a Pedro pescador de hombres."
+      },
+      "quiz": {
+        "en": "Which squishy had a net so full of fish it began to break?",
+        "es": "¿Cuál squishy tuvo una red tan llena de peces que se rompía?"
+      },
+      "at": {
+        "en": [
+          42,
+          5,
+          6
+        ],
+        "es": [
+          42,
+          5,
+          6
+        ]
+      },
+      "ref": {
+        "en": "Luke 5:6",
+        "es": "Lucas 5:6"
+      },
+      "verse": {
+        "en": "And when they had this done, they inclosed a great multitude of fishes: and their net brake.",
+        "es": "Y habiéndolo hecho, encerraron gran multitud de pescado, que su red se rompía."
+      }
+    },
+    {
+      "id": "tomb",
+      "sound": "alleluia",
+      "locked": true,
+      "name": {
+        "en": "Empty Tomb Stone",
+        "es": "La piedra de la tumba vacía"
+      },
+      "lesson": {
+        "en": "On Easter morning the big stone was rolled away and the tomb was empty. Jesus is alive! He is risen, just as He said.",
+        "es": "En la mañana de Pascua la gran piedra fue quitada y la tumba estaba vacía. ¡Jesús vive! Ha resucitado, como dijo."
+      },
+      "quiz": {
+        "en": "On Easter morning the stone was rolled away. Which squishy is that stone?",
+        "es": "En la mañana de Pascua quitaron la piedra. ¿Cuál squishy es esa piedra?"
+      },
+      "at": {
+        "en": [
+          40,
+          28,
+          6
+        ],
+        "es": [
+          40,
+          28,
+          6
+        ]
+      },
+      "ref": {
+        "en": "Matthew 28:6",
+        "es": "Mateo 28:6"
+      },
+      "verse": {
+        "en": "He is not here: for he is risen, as he said. Come, see the place where the Lord lay.",
+        "es": "No está aquí; porque ha resucitado, como dijo. Venid, ved el lugar donde fué puesto el Señor."
+      }
+    },
+    {
       "id": "lamp",
       "sound": "crunch",
       "locked": true,
