@@ -507,8 +507,8 @@ test('crunchy sounds and vibration grow with the squish, stay soft and capped', 
   assert.ok(C.crunchPattern(1).length > C.crunchPattern(0.1).length);
   const ui = read('./squishy.js');
   assert.match(ui, /\n    crunch: \(\) => crunch\(/);
-  assert.match(ui, /function crunch\(intensity, tail\)/);
-  assert.match(ui, /const a = audio\(\); if \(!a\) return;\n    try \{\n      if \(!noiseBuf\)/, 'crunch goes through audio(): sound switch and bedtime still apply');
+  assert.match(ui, /function crunch\(intensity, tail, again\)/);
+  assert.match(ui, /function crunch\(intensity, tail, again\) \{\n    const a = audio\(\); if \(!a\) return;/, 'crunch goes through audio(): sound switch and bedtime still apply');
   assert.match(ui, /feelBuzz\('hold', level\)/);
   assert.equal(C.feelPattern('lamp', 'hold', 0.8, 'medium', false).length, C.crunchPattern(0.8).length, 'the lamp still crackles');
   assert.match(ui, /msb_tap_vibration/);
@@ -812,4 +812,23 @@ test('vibration strength Off/Light/Medium/Strong scales every pulse; reduced mot
   assert.match(ui, /es: \{ off: 'Apagada', light: 'Suave', medium: 'Media', strong: 'Fuerte' \}/);
   assert.match(ui, /role="radiogroup"/);
   assert.ok(i18n.includes('"Vibration strength": "Fuerza de la vibración"'));
+});
+
+test('first squish sound is quick: warm audio on open, resume on touch and return, fast attacks', () => {
+  const ui = read('./squishy.js');
+  assert.match(ui, /new Ctor\(\{ latencyHint: 'interactive' \}\)/);
+  assert.match(ui, /function warmAudio\(\)[\s\S]{0,400}makeNoise\(a\)[\s\S]{0,300}g\.gain\.value = 0;[^\n]*src\.start\(0\)/, 'noise built and a silent blip for iOS');
+  assert.match(ui, /if \(!host \|\| !x\) return;\n    warmAudio\(\);/, 'warmed when the play view opens');
+  assert.match(ui, /addEventListener\('pointerdown', \(\) => \{ if \(pv && ac && ac\.state !== 'running'\) audio\(\); \}, true\)/);
+  assert.match(ui, /visibilitychange', \(\) => \{ if \(!document\.hidden && pv/);
+  assert.match(ui, /a\.resume\(\)\.then\(again/, 'sounds wait for resume() when the device is waking');
+  for (const name of ['bleat', 'coo', 'purr']) {
+    const m = ui.match(new RegExp(`\\n    ${name}: d => voice\\(\\{[^\\n]*attack: ([0-9.]+)`));
+    assert.ok(m && Number(m[1]) <= 0.01, `${name} attack ${m && m[1]}`);
+  }
+  assert.match(ui, /exponentialRampToValueAtTime\(o\.peak \|\| 0\.04, t \+ \(o\.attack \|\| 0\.006\)\)/, 'noise fades in within 6 ms');
+  assert.match(ui, /delay: k === 0 \? 0 : rr\(\) \* 0\.25/, 'the bush crackle starts at once');
+  assert.match(ui, /swish: d => \{[^\n]*voice\(\{ type: 'triangle', f0: 784, dur: 0\.4, peak: 0\.02 \}\)/, 'coat tone with no offset');
+  assert.match(ui, /alleluia: a => \[523, 659, 784\][^\n]*attack: 0\.15/, 'soft choir kept');
+  assert.match(ui, /p\.pointers\.delete\(e\.pointerId\); kitSquish\(0\.3\); return;/, 'a tap during a trick still squishes');
 });
