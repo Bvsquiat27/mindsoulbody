@@ -1213,7 +1213,7 @@
     "Star collector": "Coleccionista de estrellas",
     "Triple perfect": "Triple perfecto",
     "Easter morning": "Mañana de Pascua",
-    "Finish every Manna Match level, all the way to Easter": "Termina todos los niveles de Combina el maná, hasta la Pascua",
+    "Finish Manna Match all the way to Easter": "Termina Combina el maná hasta la Pascua",
     "Win Manna Match levels 1 to {n}": "Gana los niveles 1 a {n} de Combina el maná",
     "Find {n} secret tricks": "Descubre {n} trucos secretos",
     "Safe with the Shepherd": "A salvo con el Pastor",

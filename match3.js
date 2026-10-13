@@ -29,7 +29,7 @@
   const PIECE_ONE = { star: 'Star', fish: 'Fish', grapes: 'Grapes', loaf: 'Bread', leaf: 'Olive leaf', heart: 'Heart' };
   const SPECIAL_NAME = { 1: 'trumpet (clears a row)', 2: 'trumpet (clears a column)', 3: 'light (clears around it)' };
 
-  const ui = { showMoves: null, root: null, view: 'map', n: 1, g: null, busy: false, sel: -1, els: new Map(), stone: null, hintTimer: 0, hinted: null, drag: null, msg: '', result: null, collected: {}, score: 0 };
+  const ui = { showMoves: null, root: null, view: 'map', n: 1, g: null, busy: false, sel: -1, els: new Map(), stone: null, chip: null, hintTimer: 0, hinted: null, drag: null, msg: '', result: null, collected: {}, score: 0 };
 
   /* ---------- Sound (made on the device with Web Audio) ---------- */
   let ac = null, master = null, noiseBuf = null;
@@ -87,6 +87,9 @@
     star: () => notes([1047, 1319, 1568, 2093], { type: 'sine', dur: 0.22, peak: 0.04, step: 0.06 }),
     fanfare: () => { notes([523, 659, 784], { type: 'triangle', dur: 0.25, peak: 0.06, step: 0.12 }); voice({ type: 'triangle', f0: 1047, dur: 0.7, peak: 0.06, delay: 0.36 }); notes([1568, 2093, 2637], { dur: 0.3, peak: 0.03, step: 0.07, delay: 0.5 }); },
     soft: () => notes([523, 494, 440], { type: 'sine', dur: 0.3, peak: 0.04, step: 0.16 }),
+    /* stone breaking: a gritty crumble, or a deep crash for big breaks */
+    crumble: n => { noise({ f0: 1800, f1: 250, dur: 0.28, peak: 0.07 + 0.01 * Math.min(3, n || 1), q: 0.7 }); voice({ type: 'triangle', f0: 140, f1: 60, dur: 0.22, peak: 0.06 }); noise({ f0: 3000, f1: 1200, dur: 0.12, peak: 0.03, q: 2, delay: 0.08 }); },
+    crash: () => { noise({ f0: 2500, f1: 120, dur: 0.6, peak: 0.13, q: 0.5 }); voice({ type: 'sine', f0: 110, f1: 38, dur: 0.55, peak: 0.12 }); noise({ f0: 4000, f1: 900, dur: 0.18, peak: 0.04, q: 3, delay: 0.14 }); noise({ f0: 3200, f1: 800, dur: 0.16, peak: 0.03, q: 3, delay: 0.3 }); },
     shuffle: () => noise({ f0: 500, f1: 1500, dur: 0.5, peak: 0.05, q: 0.6 })
   };
   function sound(name, arg) { if (SOUNDS[name]) SOUNDS[name](arg); }
@@ -234,7 +237,8 @@
   }
   function renderStones() {
     const b = board(); if (!b) return;
-    b.querySelectorAll('.m3-cell').forEach((c, i) => c.classList.toggle('stone', !!ui.stone[i]));
+    const chip = ui.chip || [];
+    b.querySelectorAll('.m3-cell').forEach((c, i) => { c.classList.toggle('stone', !!ui.stone[i]); c.classList.toggle('chip1', !!ui.stone[i] && chip[i] === 1); c.classList.toggle('chip2', !!ui.stone[i] && chip[i] >= 2); });
   }
   function mountBoard() {
     const b = board(), g = ui.g;
@@ -362,13 +366,16 @@
     sound('pop', step.combo);
     vibrate(C().buzzMs(step.combo, step.fired.length));
     if (step.combo > 1) bubble(fx, L('Combo x{n}!', { n: step.combo }));
+    let broke = 0;
     for (const c of step.cleared) {
       const el = ui.els.get(c.id);
       if (c.t >= 0 && c.t < C().BOMB) { const name = ui.g.pieces[c.t]; ui.collected[name] = (ui.collected[name] || 0) + 1; }
-      if (ui.stone[c.i]) { ui.stone[c.i] = 0; crack(fx, c.i); }
+      if (ui.stone[c.i]) { ui.stone[c.i] = 0; broke += 1; crack(fx, c.i, ui.chip ? ui.chip[c.i] : 0); }
       if (el) { el.classList.add('pop'); ui.els.delete(c.id); setTimeout(() => el.remove(), T().pop + 40); }
       sparkle(fx, c.i, c.t);
     }
+    ui.chip = C().chipStones(ui.stone, ui.chip, step.cleared.map(c => c.i));
+    if (broke) crumble(broke, ui.stone.every(v => !v));
     renderStones();
     ui.score = step.score;
     updateStatus();
@@ -402,11 +409,32 @@
       setTimeout(() => s.remove(), 650);
     }
   }
-  function crack(fx, i) {
+  /* a stone splits along its cracks, then bits fly out and dust settles */
+  function crack(fx, i, stage) {
     if (!fx) return;
     const [cx, cy] = cellCenter(i), s = document.createElement('i');
-    s.className = 'm3-crack'; s.style.cssText = `left:${cx}%;top:${cy}%`;
-    fx.appendChild(s); setTimeout(() => s.remove(), 600);
+    s.className = `m3-crack s${Math.min(2, stage || 0)}`; s.style.cssText = `left:${cx}%;top:${cy}%`;
+    fx.appendChild(s); setTimeout(() => s.remove(), 650);
+    const n = C().breakFx(1, reduced()).debris;
+    for (let k = 0; k < n; k += 1) {
+      const d = document.createElement('i'), ang = (k / n) * Math.PI * 2 + i * 0.7, r = 22 + ((i * 7 + k * 13) % 18);
+      d.className = `m3-debris${k % 3 ? '' : ' big'}`;
+      d.style.cssText = `left:${cx}%;top:${cy}%;--dx:${(Math.cos(ang) * r).toFixed(1)}px;--dy:${(Math.sin(ang) * r - 10).toFixed(1)}px;--r:${(k * 67 + i * 31) % 360}deg`;
+      fx.appendChild(d); setTimeout(() => d.remove(), 800);
+    }
+    if (n) { const p = document.createElement('i'); p.className = 'm3-dust'; p.style.cssText = `left:${cx}%;top:${cy}%`; fx.appendChild(p); setTimeout(() => p.remove(), 900); }
+  }
+  /* the whole wall shakes, rumbles and buzzes when stones fall */
+  function crumble(n, last) {
+    const f = C().breakFx(n, reduced(), last);
+    sound(f.sound, n);
+    vibrate(f.buzz);
+    const b = board();
+    if (b && f.shake) {
+      b.classList.remove('m3-shake'); b.getBoundingClientRect();
+      b.style.setProperty('--amp', `${f.shake}px`); b.classList.add('m3-shake');
+      setTimeout(() => b.classList.remove('m3-shake'), 420);
+    }
   }
   function beam(fx, f) {
     if (!fx) return;
@@ -496,7 +524,7 @@
   function startLevel(n) {
     const lv = levelOf(n);
     ui.n = n; ui.showMoves = null; ui.g = C().createGame(lv); ui.view = 'board'; ui.sel = -1; ui.busy = false; ui.msg = ''; ui.result = null;
-    ui.collected = {}; ui.score = 0; ui.stone = ui.g.stone.slice();
+    ui.collected = {}; ui.score = 0; ui.stone = ui.g.stone.slice(); ui.chip = new Uint8Array(C().N);
     render();
     window.scrollTo({ top: 0, behavior: 'auto' });
   }

@@ -349,7 +349,10 @@
       const st = {}, best = {};
       for (const [k, s] of Object.entries(v.stars || {})) if (/^\d+$/.test(k) && Number(k) >= 1 && Number(k) <= total && [1, 2, 3].includes(s)) st[k] = s;
       for (const [k, s] of Object.entries(v.best || {})) if (/^\d+$/.test(k) && Number.isFinite(s) && s >= 0) best[k] = Math.round(s);
-      return { open, stars: st, best };
+      /* the level after the highest win is always open, so a player who
+         finished the old last level finds the new ones unlocked */
+      const won = Object.keys(st).map(Number).reduce((a, b) => Math.max(a, b), 0);
+      return { open: Math.max(open, Math.min(total, won + 1)), stars: st, best };
     };
     return {
       get: clean,
@@ -374,7 +377,36 @@
   /* Vibration length for a match: a bit longer for specials and big combos, capped. */
   function buzzMs(combo, specials) { return Math.min(30, 8 + 3 * Math.max(0, combo - 1) + 8 * Math.min(2, specials || 0)); }
 
-  const api = { W, H, N, EMPTY, BOMB, SP, KEYS, rng, xy, idx, adjacent, createGame, clone, findGroups, isValidSwap, allMoves, hasMove, hint, effect, gravity, resolve, play, shuffle, goals, status, MOVE_BONUS, moveBonus, finalScore, stars, progress, soundPref, buzzMs };
+  /* Wall destruction (looks only; a stone still breaks in one clear).
+     chipStones: a stone next to a cleared cell that is still standing gets a
+     crack, up to 2 crack stages. breakFx: how big the crumble is when n
+     stones break in one step (shake in px, debris bits, buzz pattern); with
+     reduced motion there is no shake and no flying debris. */
+  function chipStones(stone, chip, clearedCells) {
+    const next = Uint8Array.from(chip || new Uint8Array(N)), hit = new Set();
+    for (const i of clearedCells) {
+      const [x, y] = xy(i);
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const nx = x + dx, ny = y + dy;
+        if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+        const j = idx(nx, ny);
+        if (stone[j] && !hit.has(j)) { hit.add(j); next[j] = Math.min(2, next[j] + 1); }
+      }
+    }
+    for (let i = 0; i < N; i += 1) if (!stone[i]) next[i] = 0;
+    return next;
+  }
+  function breakFx(n, reducedMotion, last) {
+    if (!n) return { shake: 0, debris: 0, buzz: 0, sound: null };
+    const big = n >= 3 || !!last;
+    return {
+      shake: reducedMotion ? 0 : Math.min(9, 2 + 2 * n + (last ? 3 : 0)),
+      debris: reducedMotion ? 0 : Math.min(8, 5 + n),
+      buzz: big ? [25, 30, 45] : Math.min(30, 12 + 6 * n),
+      sound: big ? 'crash' : 'crumble'
+    };
+  }
+  const api = { chipStones, breakFx, W, H, N, EMPTY, BOMB, SP, KEYS, rng, xy, idx, adjacent, createGame, clone, findGroups, isValidSwap, allMoves, hasMove, hint, effect, gravity, resolve, play, shuffle, goals, status, MOVE_BONUS, moveBonus, finalScore, stars, progress, soundPref, buzzMs };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbMatchCore = api;
 })(typeof self !== 'undefined' ? self : this);
