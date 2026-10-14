@@ -230,5 +230,18 @@
     ui.root = null; ui.picking = false;
   }
 
-  return { POLL_MS, LEGEND_MIN, model, tradableMine, open, close, isOpen: () => !!ui.root, _ui: ui };
+  /* Friends screen: open requests and rooms (read once when the screen opens, never polled) */
+  function listHtml(trades, lang) {
+    const es = lang === 'es', tt = (en, sp, v) => fmt(es ? sp : en, v);
+    const live = (Array.isArray(trades) ? trades : []).filter(t => t && (t.status === 'requested' || t.status === 'open'));
+    const rows = live.map(t => {
+      const friend = (t.names && t.names[t.other]) || tt('Friend', 'Amigo');
+      const label = t.status === 'open' ? tt('Trade room with {name} is open', 'Sala de intercambio abierta con {name}', { name: friend })
+        : t.to === t.me ? tt('{name} wants to trade squishies', '{name} quiere cambiar squishies', { name: friend }) : tt('Waiting for {name}', 'Esperando a {name}', { name: friend });
+      return `<li><span>${esc(label)}</span> <button type="button" class="secondary" data-action="trade-resume" data-trade="${esc(t.id)}">${esc(t.status === 'requested' && t.to === t.me ? tt('See request', 'Ver solicitud') : tt('Open', 'Abrir'))}</button></li>`;
+    }).join('');
+    return `<section class="card sr-list" data-i18n-skip><span class="eyebrow">${esc(tt('SQUISHY TRADES', 'INTERCAMBIOS DE SQUISHIES'))}</span>${rows ? `<ul>${rows}</ul>` : `<p class="muted">${esc(tt('No trades right now. Open a friend and press “Trade squishies”.', 'No hay intercambios ahora. Abre un amigo y pulsa «Cambiar squishies».'))}</p>`}</section>`;
+  }
+
+  return { POLL_MS, LEGEND_MIN, model, tradableMine, listHtml, open, close, isOpen: () => !!ui.root, _ui: ui };
 });
