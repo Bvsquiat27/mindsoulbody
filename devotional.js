@@ -39,12 +39,24 @@
 
   /* ---------- settings ---------- */
   function readSettings(store = root.localStorage) {
-    try { const v = JSON.parse(store.getItem(PUSH_KEY) || 'null'); if (v && typeof v === 'object') return { on: !!v.on, time: /^\d\d:\d\d$/.test(v.time) ? v.time : '07:00', endpoint: v.endpoint || '', auth: v.auth || '', synced: v.synced || '' }; } catch { /* bad JSON */ }
-    return { on: false, time: '07:00', endpoint: '', auth: '', synced: '' };
+    try { const v = JSON.parse(store.getItem(PUSH_KEY) || 'null'); if (v && typeof v === 'object') return { on: !!v.on, time: /^\d\d:\d\d$/.test(v.time) ? v.time : '07:00', endpoint: v.endpoint || '', auth: v.auth || '', synced: v.synced || '', reenable: !!v.reenable }; } catch { /* bad JSON */ }
+    return { on: false, time: '07:00', endpoint: '', auth: '', synced: '', reenable: false };
   }
   function saveSettings(v, store = root.localStorage) { try { store.setItem(PUSH_KEY, JSON.stringify(v)); } catch { /* private mode */ } }
 
-  if (typeof document === 'undefined') return { orthodoxPascha, forDate, forKey, keyOf, readSettings, saveSettings, PUSH_KEY, VAPID_PUBLIC };
+  /* aura.js exposes its router as window.msbNav (and the classic global nav) */
+  const navFn = () => (typeof root.msbNav === 'function' ? root.msbNav : typeof root.nav === 'function' ? root.nav : null);
+  /* on:true restored from a backup (or permission revoked) without a live
+     permission: show it as off and ask to turn it on again */
+  function reconcile(perm, store = root.localStorage) {
+    const s = readSettings(store);
+    if (!s.on || perm === 'granted') return s;
+    const next = { ...s, on: false, endpoint: '', auth: '', synced: '', reenable: true };
+    saveSettings(next, store);
+    return next;
+  }
+
+  if (typeof document === 'undefined') return { reconcile, navFn, orthodoxPascha, forDate, forKey, keyOf, readSettings, saveSettings, PUSH_KEY, VAPID_PUBLIC };
 
   /* ---------- browser UI ---------- */
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -78,7 +90,7 @@
   }
   function open(key) {
     viewKey = key || keyOf(new Date());
-    if (typeof root.nav === 'function') root.nav('devotional'); else show(viewKey);
+    const go = navFn(); if (go) go('devotional'); else show(viewKey);
   }
 
   /* ---------- push ---------- */
@@ -110,11 +122,11 @@
     return tr('This browser cannot show reminders. Try Chrome on Android, or install the app.', 'Este navegador no puede mostrar recordatorios. Prueba Chrome en Android, o instala la app.');
   }
   function settingsHtml() {
-    const s = readSettings(), note = supportNote(), denied = support() && Notification.permission === 'denied';
+    const s = support() ? reconcile(Notification.permission) : reconcile('unsupported'), note = supportNote(), denied = support() && Notification.permission === 'denied';
     return `<section class="card dev-settings" id="dev-settings" data-i18n-skip><div class="tap-vibration-copy"><span class="eyebrow">${esc(tr('MORNING DEVOTIONAL', 'DEVOCIONAL DE LA MAÑANA'))}</span><h2>${esc(tr('Daily reminder', 'Recordatorio diario'))}</h2><p class="muted">${esc(tr('A notification each morning with the title of the day and the first line of its verse. Tap it to open the devotional.', 'Una notificación cada mañana con el título del día y la primera línea de su versículo. Tócala para abrir el devocional.'))}</p></div>
       <button type="button" class="tap-vibration-toggle" data-dev-push-toggle role="switch" aria-checked="${s.on}" aria-label="${esc(tr('Daily reminder', 'Recordatorio diario'))}" ${note && !s.on ? 'disabled' : ''}><span class="tap-vibration-knob" aria-hidden="true"></span><span class="tap-vibration-state">${s.on ? tr('On', 'Sí') : tr('Off', 'No')}</span></button>
       <div class="dev-time-row"><label for="dev-time">${esc(tr('Time', 'Hora'))}</label><input id="dev-time" type="time" step="300" value="${esc(s.time)}" data-dev-time class="text-input"> ${s.on ? `<button type="button" class="secondary" data-dev-push-test>${esc(tr('Send a test', 'Enviar una prueba'))}</button>` : ''}</div>
-      <p class="small muted" data-dev-status role="status">${esc(note || (denied ? tr('Notifications are blocked for this site. Allow them in your browser settings, then try again.', 'Las notificaciones están bloqueadas para este sitio. Permítelas en la configuración del navegador y vuelve a intentarlo.') : s.on ? tr('On. Your phone’s time zone is used.', 'Activado. Se usa la zona horaria de tu teléfono.') : tr('Off by default. Nothing is sent until you turn it on.', 'Desactivado por defecto. No se envía nada hasta que lo actives.')))}</p></section>`;
+      <p class="small muted" data-dev-status role="status">${esc(note || (s.reenable ? tr('Your reminder was restored, but this device has not allowed notifications yet. Turn it on again to keep getting it.', 'Tu recordatorio se restauró, pero este dispositivo todavía no ha permitido notificaciones. Actívalo otra vez para seguir recibiéndolo.') + (denied ? ' ' + tr('First allow notifications for this site in your browser settings.', 'Primero permite las notificaciones para este sitio en la configuración del navegador.') : '') : denied ? tr('Notifications are blocked for this site. Allow them in your browser settings, then try again.', 'Las notificaciones están bloqueadas para este sitio. Permítelas en la configuración del navegador y vuelve a intentarlo.') : s.reenable ? tr('Your reminder was restored, but this device has not allowed notifications yet. Turn it on again to keep getting it.', 'Tu recordatorio se restauró, pero este dispositivo todavía no ha permitido notificaciones. Actívalo otra vez para seguir recibiéndolo.') : s.on ? tr('On. Your phone’s time zone is used.', 'Activado. Se usa la zona horaria de tu teléfono.') : tr('Off by default. Nothing is sent until you turn it on.', 'Desactivado por defecto. No se envía nada hasta que lo actives.')))}</p></section>`;
   }
   function repaintSettings(msg) {
     const el = document.getElementById('dev-settings'); if (!el) return;
@@ -128,7 +140,7 @@
     const perm = await Notification.requestPermission();
     if (perm !== 'granted') { repaintSettings(tr('Notifications were not allowed, so the reminder stays off.', 'No se permitieron las notificaciones, así que el recordatorio sigue desactivado.')); return; }
     const r = await register(s.time);
-    saveSettings({ ...s, on: true, endpoint: r.endpoint, auth: r.auth, synced: keyOf(new Date()) });
+    saveSettings({ ...s, on: true, endpoint: r.endpoint, auth: r.auth, synced: keyOf(new Date()), reenable: false });
     repaintSettings(tr(`Reminder set for ${s.time} each morning.`, `Recordatorio listo para las ${s.time} cada mañana.`));
   }
   async function turnOff() {
@@ -143,7 +155,8 @@
   }
   /* keep the server copy current (time zone, language, a restored backup) once a day */
   async function resync() {
-    const s = readSettings();
+    const before = readSettings(), s = support() ? reconcile(Notification.permission) : reconcile('unsupported');
+    if (before.on && !s.on) { repaintSettings(); toast(tr('Your morning reminder is off on this device. Turn it on again in Profile.', 'Tu recordatorio de la mañana está desactivado en este dispositivo. Actívalo otra vez en Perfil.')); return; }
     if (!s.on || !support() || Notification.permission !== 'granted' || s.synced === keyOf(new Date())) return;
     try { const r = await register(s.time); saveSettings({ ...s, endpoint: r.endpoint, auth: r.auth, synced: keyOf(new Date()) }); } catch { /* try again next launch */ }
   }
@@ -167,7 +180,7 @@
     let k = null; try { k = new URLSearchParams(location.search).get('devotional'); } catch { /* */ }
     if (!k) return;
     try { history.replaceState(null, '', location.pathname + location.hash); } catch { /* */ }
-    const go = (n = 0) => { if (typeof root.nav === 'function' && document.querySelector('#screen *')) open(parseKey(k) ? k : ''); else if (n < 80) setTimeout(() => go(n + 1), 100); };
+    const go = (n = 0) => { if (navFn() && document.querySelector('#screen *')) open(parseKey(k) ? k : ''); else if (n < 80) setTimeout(() => go(n + 1), 100); };
     go();
   }
   if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('message', (ev) => { if (ev.data && ev.data.type === 'msb-open-devotional') open(ev.data.date); });
@@ -175,5 +188,5 @@
   registerScreen();
   root.addEventListener('load', () => { registerScreen(); deepLink(); setTimeout(resync, 3000); });
 
-  return { orthodoxPascha, forDate, forKey, keyOf, readSettings, saveSettings, homeCard, settingsHtml, show, open, PUSH_KEY, VAPID_PUBLIC };
+  return { reconcile, navFn, orthodoxPascha, forDate, forKey, keyOf, readSettings, saveSettings, homeCard, settingsHtml, show, open, PUSH_KEY, VAPID_PUBLIC };
 });

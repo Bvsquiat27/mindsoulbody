@@ -51,7 +51,7 @@ test('push text table is generated from the same content', () => {
 });
 test('reminder is off by default at 07:00 and stored under an msb_ key', () => {
   const store = { m: {}, getItem(k) { return this.m[k] ?? null; }, setItem(k, v) { this.m[k] = v; } };
-  assert.deepEqual(M.readSettings(store), { on: false, time: '07:00', endpoint: '', auth: '', synced: '' });
+  assert.deepEqual(M.readSettings(store), { on: false, time: '07:00', endpoint: '', auth: '', synced: '', reenable: false });
   assert.match(M.PUSH_KEY, /^msb_/);
 });
 test('wired in: script tags, home card, profile setting, SW precache and push handlers', () => {
@@ -62,4 +62,21 @@ test('wired in: script tags, home card, profile setting, SW precache and push ha
   const toml = readFileSync(new URL('./worker/wrangler.friends.toml', import.meta.url), 'utf8');
   assert.match(toml, /crons = \["\*\/5 \* \* \* \*"\]/); assert.doesNotMatch(toml, /VAPID_PRIVATE_KEY\s*=/);
   assert.match(toml, new RegExp(M.VAPID_PUBLIC));
+});
+
+test('a restored on:true without notification permission shows as off with a re-enable prompt', () => {
+  const store = { m: {}, getItem(k) { return this.m[k] ?? null; }, setItem(k, v) { this.m[k] = v; } };
+  M.saveSettings({ on: true, time: '06:30', endpoint: 'https://fcm.googleapis.com/x', auth: 'a', synced: '2026-01-01' }, store);
+  assert.equal(M.reconcile('granted', store).on, true);
+  const s = M.reconcile('default', store);
+  assert.deepEqual([s.on, s.reenable, s.time, s.endpoint], [false, true, '06:30', '']);
+  assert.equal(M.readSettings(store).reenable, true);
+  const src = readFileSync(new URL('./devotional.js', import.meta.url), 'utf8');
+  assert.match(src, /Turn it on again/); assert.match(src, /Actívalo otra vez/);
+});
+test('the notification deep link uses window.msbNav from aura.js', () => {
+  const src = readFileSync(new URL('./devotional.js', import.meta.url), 'utf8'), aura = readFileSync(new URL('./aura.js', import.meta.url), 'utf8');
+  assert.match(aura, /window\.msbNav=nav/);
+  assert.match(src, /root\.msbNav/);
+  assert.doesNotMatch(src, /typeof root\.nav === 'function' &&/);
 });
