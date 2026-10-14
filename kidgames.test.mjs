@@ -31,7 +31,8 @@ test('every game verse is word for word from the app KJV and RV1909 text, with i
 });
 
 test('Who Said It? quotes are exact pieces of their verses, with EN/ES speakers', () => {
-  assert.ok(D.QUOTES.length >= 12);
+  assert.equal(D.QUOTES.length, 35);
+  assert.equal(new Set(D.QUOTES.map(q => q.quote.en)).size, 35, 'no quote twice');
   for (const q of D.QUOTES) {
     assert.ok(D.PEOPLE[q.who] && D.PEOPLE[q.who].en && D.PEOPLE[q.who].es, q.who);
     for (const l of ['en', 'es']) assert.ok(q.verse.text[l].includes(q.quote[l]), `${q.who} ${l}: "${q.quote[l]}"`);
@@ -44,6 +45,7 @@ test('Who Said It? quotes are exact pieces of their verses, with EN/ES speakers'
 });
 
 test('word search: every puzzle builds in EN and ES, and each word reads off the grid', () => {
+  assert.equal(D.WORDSEARCH.length, 14); assert.equal(new Set(D.WORDSEARCH.map(p => p.id)).size, 14);
   for (const p of D.WORDSEARCH) for (const l of ['en', 'es']) {
     assert.ok(p.title[l] && p.words[l].length >= 5, `${p.id} ${l}`);
     const z = C.wordSearch(p.words[l], 10, `${p.id}|${l}`, l);
@@ -66,6 +68,7 @@ test('word search: every puzzle builds in EN and ES, and each word reads off the
 
 test('story order: picture sets are in Bible order, use the app story art, and never start solved', () => {
   const bibleOrder = Object.keys(D.PICTURES);
+  assert.equal(D.ORDER.length, 10); assert.equal(new Set(D.ORDER.map(o => o.id)).size, 10);
   for (const set of D.ORDER) {
     assert.ok(set.cards.length >= 5 && set.cards.length <= 6, set.id);
     const pos = set.cards.map(id => bibleOrder.indexOf(id));
@@ -119,7 +122,7 @@ test('games are wired in, precached, in Spanish, and follow sound, vibration and
 });
 
 test('verse builder: verses split into words in order; the next word always falls; stars by mistakes', () => {
-  assert.equal(D.VERSES.length, 6);
+  assert.equal(D.VERSES.length, 14);
   for (const x of D.VERSES) for (const l of ['en', 'es']) {
     const w = C.verseWords(x.verse.text[l]);
     assert.equal(w.join(' '), x.verse.text[l].replace(/\s+/g, ' '));
@@ -138,8 +141,9 @@ test('verse builder: verses split into words in order; the next word always fall
   assert.match(read('./kg-verse.js'), /const changed = added \|\|/, 'new falling words are drawn as soon as they spawn');
 });
 
-test('map journey: two routes, each stop on the map with an EN/ES question, 3 choices and a verse', () => {
-  assert.deepEqual(D.MAPS.map(m => m.id), ['exodus', 'paul']);
+test('map journey: six routes, each stop on the map with an EN/ES question, 3 choices and a verse', () => {
+  assert.deepEqual(D.MAPS.map(m => m.id), ['exodus', 'paul', 'abraham', 'jonah', 'ruth', 'magi']);
+  for (const m of D.MAPS) assert.ok(new RegExp(`\\n    ${m.land}: \\(\\) =>`).test(read('./kg-map.js')), `${m.id} has a map drawing`);
   for (const m of D.MAPS) {
     assert.ok(m.stops.length >= 6);
     for (const st of m.stops) {
@@ -222,7 +226,7 @@ test('second polish pass: map stories, stamps, coach, level cards, clean sling r
   const map = read('./kg-map.js'), sling = read('./kg-sling.js'), kg = read('./kidgames.js'), css = read('./kidgames.css');
   /* every stop of both journeys has a story in EN and ES, a stamp and a weather */
   const block = map.slice(map.indexOf('const STORY'), map.indexOf('const storyOf'));
-  for (const id of ['exodus', 'paul']) {
+  for (const id of D.MAPS.map(m => m.id)) {
     const part = block.slice(block.indexOf(id + ':'));
     const n = D.MAPS.find(m => m.id === id).stops.length;
     const rows = part.split('\n').filter(l => /\{ w: '/.test(l)).slice(0, n);
@@ -305,6 +309,6 @@ test('sling levels 6-15: new paths, the zap stone, new courage verses; shield co
   const sq = read('./squishy.js');
   assert.match(sq, /<details class="sq-sent"\$\{ui\.trade\.sentOpen \? ' open' : ''\}>/);
   assert.match(sq, /ui\.trade\.sentOpen = true;/);
-  assert.equal((read('./kg-map.js').match(/onerror=/g) || []).length, 2, 'map travelers fall back if the art is missing');
+  assert.equal((read('./kg-map.js').match(/onerror=/g) || []).length, 1, 'map travelers fall back if the art is missing'); assert.match(read('./kg-map.js'), /mp-trav-fb" y="-6" text-anchor="middle" font-size="24">\$\{travEmoji\(m\)\}/, 'journeys without painted art use an emoji traveler');
   assert.match(read('./kg-sling.js'), /burstAt\(s, e\.x, gChest\(e\)/);
 });

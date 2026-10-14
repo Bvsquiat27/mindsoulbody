@@ -29,7 +29,50 @@
       { w: 'rain', stamp: '🔥', en: 'Shipwrecked, but everyone was safe! The islanders lit a fire, and a snake could not hurt Paul.', es: '¡Naufragaron, pero todos se salvaron! Los isleños encendieron un fuego, y una víbora no pudo dañar a Pablo.' },
       { w: 'clear', stamp: '🏛️', en: 'At last, Rome! Paul told everyone who came to him about Jesus, boldly.', es: '¡Por fin, Roma! Pablo habló de Jesús con valor a todos los que venían a verlo.' },
     ],
+    abraham: [
+      { w: 'clear', stamp: '📣', en: 'God spoke to Abram in Ur: leave your home and go to the land I will show you. Abram trusted God!', es: 'Dios le habló a Abram en Ur: sal de tu tierra y ve a la tierra que te mostraré. ¡Abram confió en Dios!' },
+      { w: 'wind', stamp: '🐪', en: 'Abram packed up his tents and camels. His nephew Lot came along on the long trip.', es: 'Abram recogió sus tiendas y camellos. Su sobrino Lot fue con él en el largo viaje.' },
+      { w: 'heat', stamp: '🌳', en: 'At Shechem, God appeared to Abram and promised: I will give this land to your family.', es: 'En Siquem, Dios se le apareció a Abram y le prometió: daré esta tierra a tu familia.' },
+      { w: 'dawn', stamp: '🪨', en: 'Near Bethel, Abram pitched his tent, built an altar and prayed to the LORD.', es: 'Cerca de Bethel, Abram puso su tienda, edificó un altar y oró a Jehová.' },
+      { w: 'clear', stamp: '⛺', en: 'Abram moved his tent to the big oak trees of Mamre in Hebron, and worshipped God there.', es: 'Abram llevó su tienda a los grandes árboles de Mamre en Hebrón, y adoró a Dios allí.' },
+      { w: 'dawn', stamp: '✨', en: 'One night God said: look up and count the stars! Your family will be that many.', es: 'Una noche Dios dijo: ¡mira al cielo y cuenta las estrellas! Así de grande será tu familia.' },
+    ],
+    jonah: [
+      { w: 'clear', stamp: '🎟️', en: 'God told Jonah to go to Nineveh, but Jonah ran the other way and got on a ship at Joppa.', es: 'Dios le dijo a Jonás que fuera a Nínive, pero Jonás huyó y se subió a un barco en Jope.' },
+      { w: 'storm', stamp: '⛈️', en: 'God sent a huge storm! The sailors were scared, and Jonah said: throw me into the sea.', es: '¡Dios mandó una gran tormenta! Los marineros tenían miedo, y Jonás dijo: échenme al mar.' },
+      { w: 'rain', stamp: '🐋', en: 'God sent a great fish to swallow Jonah. Inside the fish, Jonah prayed to God.', es: 'Dios mandó un gran pez que se tragó a Jonás. Dentro del pez, Jonás oró a Dios.' },
+      { w: 'dawn', stamp: '🏖️', en: 'God spoke to the fish, and it put Jonah out on the beach. A second chance!', es: 'Dios le habló al pez, y este dejó a Jonás en la playa. ¡Una segunda oportunidad!' },
+      { w: 'heat', stamp: '🏙️', en: 'This time Jonah obeyed and went to Nineveh. The people were sorry, and God forgave them.', es: 'Esta vez Jonás obedeció y fue a Nínive. La gente se arrepintió, y Dios los perdonó.' },
+      { w: 'heat', stamp: '🌿', en: 'God grew a plant to give Jonah shade, and taught him how much He loves every person.', es: 'Dios hizo crecer una planta para dar sombra a Jonás, y le enseñó cuánto ama a cada persona.' },
+    ],
+    ruth: [
+      { w: 'wind', stamp: '🤝', en: 'Naomi was going home. Ruth hugged her and said: where you go, I will go. Your God is my God.', es: 'Noemí volvía a casa. Rut la abrazó y dijo: donde tú vayas, iré yo. Tu Dios es mi Dios.' },
+      { w: 'heat', stamp: '👣', en: 'Ruth and Naomi walked the long, dusty road together, all the way to Bethlehem.', es: 'Rut y Noemí caminaron juntas el largo camino polvoriento, hasta llegar a Belén.' },
+      { w: 'dawn', stamp: '🏘️', en: 'The whole town came out to see them! It was the start of the barley harvest.', es: '¡Todo el pueblo salió a verlas! Era el principio de la siega de la cebada.' },
+      { w: 'clear', stamp: '🌾', en: 'Ruth gathered grain in a field. It belonged to Boaz, a kind man from Naomi’s family.', es: 'Rut recogió espigas en un campo. Era de Booz, un hombre bueno de la familia de Noemí.' },
+      { w: 'clear', stamp: '🕊️', en: 'Boaz blessed Ruth: you came to trust God, like a little bird under His wings.', es: 'Booz bendijo a Rut: viniste a confiar en Dios, como un pajarito bajo sus alas.' },
+      { w: 'dawn', stamp: '👶', en: 'Boaz married Ruth, and baby Obed was born. He became the grandpa of King David!', es: 'Booz se casó con Rut, y nació el bebé Obed. ¡Fue el abuelo del rey David!' },
+    ],
+    magi: [
+      { w: 'dawn', stamp: '🌟', en: 'Far in the east, wise men saw a brand-new star. A King is born! they said.', es: 'Muy lejos en el oriente, unos magos vieron una estrella nueva. ¡Ha nacido un Rey!, dijeron.' },
+      { w: 'wind', stamp: '🐫', en: 'They packed treasures on their camels and rode across the desert for many days.', es: 'Cargaron tesoros en sus camellos y cruzaron el desierto por muchos días.' },
+      { w: 'clear', stamp: '🏰', en: 'In Jerusalem they asked about the King. Then the star went ahead of them again!', es: 'En Jerusalén preguntaron por el Rey. ¡Luego la estrella volvió a ir delante de ellos!' },
+      { w: 'dawn', stamp: '😊', en: 'When they saw the star stop, they were so happy they could hardly stand still!', es: '¡Cuando vieron que la estrella se detuvo, se pusieron muy, muy felices!' },
+      { w: 'clear', stamp: '🎁', en: 'They found little Jesus with Mary, bowed down and gave Him gold, frankincense and myrrh.', es: 'Encontraron al niño Jesús con María, se inclinaron y le dieron oro, incienso y mirra.' },
+      { w: 'dawn', stamp: '💭', en: 'God warned them in a dream, so they went home by another road, safe and glad.', es: 'Dios les avisó en un sueño, y volvieron a casa por otro camino, a salvo y contentos.' },
+    ],
   };
+  const TRAV = { exodus: ['img/map/map-exodus.webp', 50, '🐪'], paul: ['img/map/map-paul.webp', 41, '⛵'] };
+  const END = {
+    paul: ['God kept Paul and everyone on the ship safe, all the way to Rome.', 'Dios cuidó a Pablo y a todos en el barco, hasta llegar a Roma.'],
+    abraham: ['Abram trusted God and went. God kept His promise to him, step by step.', 'Abram confió en Dios y fue. Dios le cumplió su promesa, paso a paso.'],
+    jonah: ['God gave Jonah a second chance, and showed His love to a whole city.', 'Dios le dio a Jonás una segunda oportunidad, y mostró su amor a toda una ciudad.'],
+    ruth: ['Ruth stayed loyal to Naomi, and God took care of them both.', 'Rut fue fiel a Noemí, y Dios cuidó de las dos.'],
+    magi: ['The wise men followed the star all the way to Jesus, the true King.', 'Los magos siguieron la estrella hasta llegar a Jesús, el Rey verdadero.'],
+  };
+  const isSea = m => m.land === 'sea' || m.land === 'jonah';
+  const travEmoji = m => (TRAV[m.id] ? TRAV[m.id][2] : m.travel || '🚶');
+  const travArt = m => { const a = TRAV[m.id]; return a ? `<image onerror="this.style.display='none';this.nextElementSibling.style.display=''" href="${a[0]}" x="${-a[1] / 2}" y="-38" width="${a[1]}" height="40"/><text class="mp-trav-fb" y="-6" text-anchor="middle" font-size="24" style="display:none">${a[2]}</text>` : `<text class="mp-trav-fb" y="-6" text-anchor="middle" font-size="24">${travEmoji(m)}</text>`; };
   const storyOf = (m, i) => (STORY[m.id] && STORY[m.id][i]) || { w: 'clear', stamp: '⭐', en: '', es: '' };
 
   /* passport stamps on this phone (msb_ key: covered by Export/Restore) */
@@ -73,6 +116,38 @@
       ${MOUNT(230, 70, 0.9)}${MOUNT(350, 70)}${MOUNT(60, 30, 0.8)}${PALM(380, 210)}${PALM(240, 182)}
       ${SEA_FRIEND}
       <text x="38" y="30" class="mp-label">${esc(t('Italy', 'Italia'))}</text><text x="196" y="34" class="mp-label">${esc(t('Greece', 'Grecia'))}</text><text x="160" y="268" class="mp-label">${esc(t('Africa', 'África'))}</text><text x="200" y="210" class="mp-label small">${esc(t('Great Sea', 'Mar Grande'))}</text>`,
+    abraham: () => `<rect width="400" height="280" fill="url(#mpSand)"/>
+      <path d="M0 0 H40 Q56 80 44 160 Q36 220 52 280 H0 Z" fill="url(#mpSea)" stroke="#5a86a6" stroke-width="1"/>
+      <path d="M232 0 Q260 70 300 120 Q340 170 360 240 L380 280" fill="none" stroke="#6f9fbf" stroke-width="6" stroke-linecap="round"/><path d="M232 0 Q260 70 300 120 Q340 170 360 240 L380 280" fill="none" stroke="#9cc6e4" stroke-width="2" stroke-linecap="round"/>
+      <path d="M300 0 Q330 60 352 110 Q376 170 390 230" fill="none" stroke="#6f9fbf" stroke-width="5" stroke-linecap="round"/><path d="M300 0 Q330 60 352 110 Q376 170 390 230" fill="none" stroke="#9cc6e4" stroke-width="1.8" stroke-linecap="round"/>
+      ${WAVES(8, 120)}${WAVES(6, 220)}
+      ${MOUNT(150, 100, 0.9)}${MOUNT(170, 96, 0.7)}${MOUNT(70, 196, 0.8)}${MOUNT(200, 200, 0.9)}
+      ${PALM(320, 200)}${PALM(330, 206)}${PALM(270, 80)}${PALM(118, 176)}${TENT(84, 236)}${TENT(96, 240)}${TENT(260, 58)}
+      <text x="300" y="262" class="mp-label">Ur</text><text x="70" y="40" class="mp-label">${esc(t('Canaan', 'Canaán'))}</text><text x="170" y="150" class="mp-label small">${esc(t('Desert', 'Desierto'))}</text><text x="236" y="114" class="mp-label small">${esc(t('Euphrates', 'Éufrates'))}</text>`,
+    jonah: () => `<rect width="400" height="280" fill="url(#mpSea)"/>
+      ${[[30, 200], [70, 140], [200, 100], [160, 240], [40, 60], [230, 220], [110, 40]].map(([x, y]) => WAVES(x, y)).join('')}
+      <path d="M300 0 H400 V280 H280 Q300 244 286 212 Q306 170 310 120 Q296 60 300 0 Z" fill="url(#mpSand)" stroke="#8a6a3a" stroke-width="1.1"/>
+      ${MOUNT(352, 160, 0.9)}${MOUNT(372, 150, 0.7)}${PALM(330, 100)}${PALM(376, 240)}${TENT(316, 248)}
+      <g transform="translate(372 112)" fill="#d9b874" stroke="#7a5a32" stroke-width="1"><rect x="-22" y="0" width="12" height="12"/><rect x="-8" y="-6" width="14" height="18"/><rect x="8" y="2" width="12" height="10"/></g>
+      <g transform="translate(150 214)"><path d="M0 0C8-12 34-12 44 0C34 8 8 8 0 0Z" fill="#6b8fb0" stroke="#3f6382"/><path d="M44 0L54-8L52 2L54 10Z" fill="#6b8fb0" stroke="#3f6382"/><circle cx="9" cy="-3" r="1.4" fill="#1d2f3d"/></g>
+      <text x="80" y="110" class="mp-label">${esc(t('Great Sea', 'Mar Grande'))}</text><text x="336" y="196" class="mp-label small">${esc(t('Land', 'Tierra'))}</text>`,
+    ruth: () => `<rect width="400" height="280" fill="url(#mpSand)"/>
+      <rect width="400" height="280" fill="#9fbf6a" opacity=".28"/>
+      <path d="M206 176 Q196 220 210 270 Q226 280 236 262 Q246 220 230 176 Q218 164 206 176 Z" fill="url(#mpSea)" stroke="#5a86a6" stroke-width="1"/>
+      ${MOUNT(300, 250, 1)}${MOUNT(330, 244, 1.2)}${MOUNT(370, 252, 0.9)}${MOUNT(60, 220, 0.8)}
+      ${[[60, 150], [80, 166], [110, 186], [130, 160], [50, 186]].map(([x, y]) => `<path d="M${x} ${y}v-10M${x} ${y - 10}l-3-4M${x} ${y - 10}l3-4M${x} ${y - 6}l-3-3M${x} ${y - 6}l3-3" stroke="#c9a03a" stroke-width="1.4" fill="none"/>`).join('')}
+      <g transform="translate(150 90)" fill="#e7d3a3" stroke="#7a5a32" stroke-width="1"><rect x="-14" y="-8" width="10" height="10"/><rect x="0" y="-12" width="12" height="14"/><rect x="14" y="-6" width="9" height="8"/></g>
+      ${PALM(270, 90)}${PALM(30, 80)}
+      <text x="40" y="40" class="mp-label">${esc(t('Judah', 'Judá'))}</text><text x="176" y="268" class="mp-label small">${esc(t('Salt Sea', 'Mar Salado'))}</text>`,
+    magi: () => `<rect width="400" height="280" fill="#2c3460"/>
+      <rect width="400" height="280" fill="url(#mpSand)" opacity=".25"/>
+      ${Array.from({ length: 40 }, (_, k) => `<circle cx="${(k * 97) % 400}" cy="${(k * 53) % 150}" r="${k % 3 ? 0.8 : 1.4}" fill="#fff8d8" opacity=".8"/>`).join('')}
+      <g transform="translate(130 40)"><path d="M0-14L3-3L14 0L3 3L0 14L-3 3L-14 0L-3-3Z" fill="#ffe27a"/><circle r="4" fill="#fffbe6"/></g>
+      <path d="M0 200 Q80 170 160 196 Q240 222 320 190 Q370 172 400 186 V280 H0 Z" fill="#c9a66b" opacity=".9"/>
+      <path d="M0 236 Q100 214 200 240 Q300 262 400 232 V280 H0 Z" fill="#b8954f"/>
+      ${PALM(150, 196)}${PALM(330, 188)}${TENT(110, 236)}
+      <g transform="translate(130 110)" fill="#d9c49a" stroke="#5a4426" stroke-width="1"><rect x="-16" y="-8" width="12" height="10"/><rect x="-2" y="-14" width="14" height="16"/><path d="M-2-14L5-20L12-14Z"/></g>
+      <text x="70" y="160" class="mp-label small" style="fill:#f6e7c1">${esc(t('Jerusalem', 'Jerusalén'))}</text><text x="140" y="264" class="mp-label small">${esc(t('Bethlehem', 'Belén'))}</text>`,
   };
 
   function weather(kind) {
@@ -99,13 +174,13 @@
     const c = whole ? { tx: 0, ty: 0, z: 1 } : cam(here.x, here.y);
     const at = s.from != null && !reduced() ? st[s.from] : here;
     const wx = whole ? 'clear' : storyOf(m, s.stop).w;
-    return `<div class="mp-wrap${m.land === 'sea' ? ' sea' : ''}"><svg class="mp-map" viewBox="0 0 400 280" role="img" aria-label="${esc(t('Map: {title}, stop {n} of {total}, {stop}', 'Mapa: {title}, parada {n} de {total}, {stop}', { title: name(m.title), n: s.stop + 1, total: st.length, stop: name(here.name) }))}">
+    return `<div class="mp-wrap${isSea(m) ? ' sea' : ''}"><svg class="mp-map" viewBox="0 0 400 280" role="img" aria-label="${esc(t('Map: {title}, stop {n} of {total}, {stop}', 'Mapa: {title}, parada {n} de {total}, {stop}', { title: name(m.title), n: s.stop + 1, total: st.length, stop: name(here.name) }))}">
       <defs><linearGradient id="mpSand" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4e3b8"/><stop offset="1" stop-color="#e3c98e"/></linearGradient><linearGradient id="mpSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9cde3"/><stop offset="1" stop-color="#86b3cf"/></linearGradient><radialGradient id="mpGlow"><stop offset="0" stop-color="rgba(255,220,120,.85)"/><stop offset="1" stop-color="rgba(255,220,120,0)"/></radialGradient><linearGradient id="mpDawn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(255,170,190,.30)"/><stop offset="1" stop-color="rgba(255,230,180,.05)"/></linearGradient><radialGradient id="mpVig" cx=".5" cy=".5" r=".75"><stop offset=".62" stop-color="rgba(120,80,30,0)"/><stop offset="1" stop-color="rgba(110,70,25,.55)"/></radialGradient><filter id="mpGrain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 .45  0 0 0 0 .3  0 0 0 0 .12  0 0 0 .18 0"/></filter></defs>
       <g class="mp-cam" data-mp-cam style="${camCss(c)}">
         ${LAND[m.land]()}
         <polyline points="${pts}" class="mp-route"/><polyline points="${done}" class="mp-route done${s.from != null && !reduced() ? ' draw' : ''}"/>
         ${dots}
-        <g class="mp-trav${s.react ? ' ' + s.react : ''}${whole ? ' win' : ''}" data-mp-trav transform="translate(${at.x} ${at.y - 2})"><g class="mp-trav-art"><ellipse cx="0" cy="1" rx="16" ry="3" fill="rgba(60,40,20,.25)"/><g class="mp-bob">${m.land === 'sea' ? '<image onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'\'" href="img/map/map-paul.webp" x="-21" y="-38" width="41" height="40"/><text class="mp-trav-fb" y="-6" text-anchor="middle" font-size="24" style="display:none">⛵</text>' : '<image onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'\'" href="img/map/map-exodus.webp" x="-25" y="-38" width="50" height="40"/><text class="mp-trav-fb" y="-6" text-anchor="middle" font-size="24" style="display:none">🐪</text>'}</g></g>${s.react === 'yes' ? '<text class="mp-bubble" y="-30" text-anchor="middle">!</text>' : s.react === 'no' ? '<text class="mp-bubble" y="-30" text-anchor="middle">?</text>' : ''}${whole ? '<path class="mp-flag" d="M10-30V-14M10-30L20-26L10-22" stroke="#4d2f17" fill="#ffd35a"/>' : ''}</g>
+        <g class="mp-trav${s.react ? ' ' + s.react : ''}${whole ? ' win' : ''}" data-mp-trav transform="translate(${at.x} ${at.y - 2})"><g class="mp-trav-art"><ellipse cx="0" cy="1" rx="16" ry="3" fill="rgba(60,40,20,.25)"/><g class="mp-bob">${travArt(m)}</g></g>${s.react === 'yes' ? '<text class="mp-bubble" y="-30" text-anchor="middle">!</text>' : s.react === 'no' ? '<text class="mp-bubble" y="-30" text-anchor="middle">?</text>' : ''}${whole ? '<path class="mp-flag" d="M10-30V-14M10-30L20-26L10-22" stroke="#4d2f17" fill="#ffd35a"/>' : ''}</g>
       </g>
       <g class="mp-clouds" data-mp-clouds style="${camCss(c, 1.25).replace(/scale\([^)]*\)/, '')}"><g class="mp-cloud c1"><ellipse cx="80" cy="60" rx="30" ry="10"/><ellipse cx="98" cy="54" rx="18" ry="9"/></g><g class="mp-cloud c2"><ellipse cx="280" cy="200" rx="34" ry="11"/><ellipse cx="300" cy="193" rx="20" ry="9"/></g><g class="mp-cloud c3"><ellipse cx="420" cy="110" rx="26" ry="9"/></g></g>
       ${weather(wx)}
@@ -132,19 +207,19 @@
     const m = maps()[s.at], l = lang();
     const kui = K._ui;
     const tut = coach('map', t('Map Journey', 'Viaje en el mapa'), [
-      { icon: m.land === 'sea' ? '⛵' : '🐪', text: t('Travel stop by stop along the red route.', 'Viaja parada por parada por la ruta roja.') },
+      { icon: travEmoji(m), text: t('Travel stop by stop along the red route.', 'Viaja parada por parada por la ruta roja.') },
       { icon: '📜', text: t('Read what happened there, then answer the question.', 'Lee lo que pasó allí y responde la pregunta.') },
       { icon: '🔖', text: t('A right answer stamps your passport. Fewer mistakes, more stars!', 'Una respuesta correcta sella tu pasaporte. ¡Menos errores, más estrellas!') },
     ], kui.coachForce === 'map');
     if (s.done) {
       const n = C().stars(s.mistakes), all = stamps().list(m.id).length === m.stops.length;
-      const msg = m.id === 'paul' ? t('God kept Paul and everyone on the ship safe, all the way to Rome.', 'Dios cuidó a Pablo y a todos en el barco, hasta llegar a Roma.') : t('God led His people every step of the way, with water, bread and His good law.', 'Dios guió a su pueblo en cada paso, con agua, pan y su buena ley.');
+      const msg = END[m.id] ? t(...END[m.id]) : t('God led His people every step of the way, with water, bread and His good law.', 'Dios guió a su pueblo en cada paso, con agua, pan y su buena ley.');
       const other = maps().findIndex((x, i) => i !== s.at);
       return `${mapSvg(s)}${levelCard({ eyebrow: t('JOURNEY COMPLETE!', '¡VIAJE COMPLETO!'), title: name(m.title), stars: n, record: s.record, text: msg, reward: all ? t('Passport complete: all {n} stamps!', 'Pasaporte completo: ¡los {n} sellos!', { n: m.stops.length }) : '', extra: passport(m), actions: `${other >= 0 ? `<button type="button" class="primary" data-mp-pick="${other}">${esc(name(maps()[other].title))} ${maps()[other].icon}</button>` : ''}<button type="button" class="secondary" data-mp-pick="${s.at}">${esc(t('Travel again', 'Viajar otra vez'))}</button><button type="button" class="secondary" data-mp-list>${esc(t('Pick a journey', 'Escoger un viaje'))}</button>` })}`;
     }
     const stop = m.stops[s.stop], ev = storyOf(m, s.stop);
     const opts = s.opts.map((o, i) => `<button type="button" class="mini-choice${s.answered && o.right ? ' correct' : ''}${s.wrong.includes(i) ? ' incorrect' : ''}" data-mp-opt="${i}" ${s.answered || s.wrong.includes(i) ? 'disabled' : ''}>${esc(o.text)}</button>`).join('');
-    const after = s.answered ? verseHtml(stop.verse, t('RIGHT!', '¡CORRECTO!'), `<button type="button" class="primary" data-mp-go>${esc(s.stop + 1 < m.stops.length ? (m.id === 'paul' ? t('Sail on ⛵', 'Seguir navegando ⛵') : t('Walk on 🐪', 'Seguir caminando 🐪')) : t('Finish the journey', 'Terminar el viaje'))}</button>`) : `<p class="kg-msg" role="status" aria-live="polite" data-kg-msg>${esc(s.wrong.length ? t('Not quite. Read the story again and try another answer!', 'Casi. ¡Lee la historia otra vez y prueba otra respuesta!') : '')}</p>`;
+    const after = s.answered ? verseHtml(stop.verse, t('RIGHT!', '¡CORRECTO!'), `<button type="button" class="primary" data-mp-go>${esc(s.stop + 1 < m.stops.length ? (isSea(m) ? t('Sail on', 'Seguir navegando') : t('Walk on', 'Seguir caminando')) + ' ' + travEmoji(m) : t('Finish the journey', 'Terminar el viaje'))}</button>`) : `<p class="kg-msg" role="status" aria-live="polite" data-kg-msg>${esc(s.wrong.length ? t('Not quite. Read the story again and try another answer!', 'Casi. ¡Lee la historia otra vez y prueba otra respuesta!') : '')}</p>`;
     const event = `<article class="mp-event${s.answered ? ' stamped' : ''}" data-mp-event><div class="mp-event-head"><span class="mp-step">${esc(t('Stop {n} of {total}', 'Parada {n} de {total}', { n: s.stop + 1, total: m.stops.length }))}</span><span class="mp-wxchip"><span aria-hidden="true">${weatherIcon(ev.w)}</span> ${esc(weatherName(ev.w))}</span></div><h2 class="mp-place">${esc(name(stop.name))}</h2><p class="mp-story">${esc(ev[l] || '')}</p><span class="mp-stampslot" aria-hidden="true">${s.answered ? `<span class="mp-stampmark">${ev.stamp}</span>` : ''}</span></article>`;
     return `${tut}<p class="kg-sub">${esc(name(m.title))}</p>${mapSvg(s)}${passport(m, s.fresh)}<div class="mp-q-area" data-mp-q>${event}<p class="kg-lead mp-q">${esc(stop.q[l])}</p><div class="mini-choices">${opts}</div>${after}</div>`;
   }
@@ -159,7 +234,7 @@
     const c0 = cam(a.x, a.y), c1 = cam(b.x, b.y), mx = (a.x + b.x) / 2 + (b.y - a.y) * 0.25, my = (a.y + b.y) / 2 - Math.abs(b.x - a.x) * 0.18 - 10;
     const T0 = performance.now(), DUR = 1500, ease = k => (k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
     camEl.style.transition = 'none'; camEl.setAttribute('style', camCss(c0)); cl.setAttribute('style', camCss(c0, 1.25).replace(/scale\([^)]*\)/, ''));
-    sound(m.land === 'sea' ? 'wave' : 'steps');
+    sound(isSea(m) ? 'wave' : 'steps');
     const step = now => {
       if (!tr.isConnected) return;
       const k = Math.min(1, (now - T0) / DUR), e = ease(k), u = 1 - e;
@@ -168,7 +243,7 @@
       const c = { tx: c0.tx + (c1.tx - c0.tx) * e, ty: c0.ty + (c1.ty - c0.ty) * e, z: ZOOM };
       camEl.setAttribute('style', camCss(c)); cl.setAttribute('style', camCss(c, 1.25).replace(/scale\([^)]*\)/, ''));
       if (k < 1) anim = requestAnimationFrame(step);
-      else { tr.setAttribute('transform', `translate(${b.x} ${b.y - 2})`); sound('page'); if (storyOf(m, s.stop).w === 'storm') sound('thunder'); else if (m.land === 'sea') sound('gull'); }
+      else { tr.setAttribute('transform', `translate(${b.x} ${b.y - 2})`); sound('page'); if (storyOf(m, s.stop).w === 'storm') sound('thunder'); else if (isSea(m)) sound('gull'); }
     };
     anim = requestAnimationFrame(step);
   }
@@ -210,7 +285,7 @@
         if (s.stop + 1 >= m.stops.length) {
           const n = C().stars(s.mistakes), before = Number(prog().get().best[`map:${m.id}`]) || 0;
           s.done = true; s.record = n > before; prog().finish('map', m.id); prog().best(`map:${m.id}`, n);
-          sound('fanfare'); starPings(n); if (s.record) setTimeout(() => sound('record'), 1400); setTimeout(() => sound(m.land === 'sea' ? 'bells' : 'cheer'), 900);
+          sound('fanfare'); starPings(n); if (s.record) setTimeout(() => sound('record'), 1400); setTimeout(() => sound(isSea(m) ? 'bells' : 'cheer'), 900);
           celebrate('gold'); buzz([20, 40, 30, 40, 60]); render(); award(); window.scrollTo({ top: 0, behavior: 'auto' }); return;
         }
         s.from = s.stop; s.stop += 1; s.answered = false; s.wrong = []; s.fresh = null; s.react = ''; s.opts = C().stopChoices(m.stops[s.stop], lang());

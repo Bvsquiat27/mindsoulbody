@@ -190,6 +190,66 @@
         "en": "God showed John a beautiful promise. One day He will make everything new, and there will be no more tears!",
         "es": "Dios le mostró a Juan una hermosa promesa. ¡Un día hará todo nuevo, y ya no habrá más lágrimas!"
       }
+    },
+    {
+      "id": "ruth",
+      "icon": "🌾",
+      "name": {
+        "en": "Ruth and Naomi",
+        "es": "Rut y Noemí"
+      },
+      "intro": {
+        "en": "Ruth loved her mother-in-law Naomi and would not leave her. Together they walked to Bethlehem, and God took care of them!",
+        "es": "Rut amaba a su suegra Noemí y no quiso dejarla. Juntas caminaron hasta Belén, ¡y Dios las cuidó!"
+      }
+    },
+    {
+      "id": "carmel",
+      "icon": "🔥",
+      "name": {
+        "en": "Elijah on Mount Carmel",
+        "es": "Elías en el monte Carmelo"
+      },
+      "intro": {
+        "en": "Elijah asked God to show the people that He is the true God. God sent fire from heaven, even on a wet altar!",
+        "es": "Elías le pidió a Dios que mostrara al pueblo que Él es el Dios verdadero. ¡Dios mandó fuego del cielo, aun sobre un altar mojado!"
+      }
+    },
+    {
+      "id": "esther",
+      "icon": "👑",
+      "name": {
+        "en": "Queen Esther",
+        "es": "La reina Ester"
+      },
+      "intro": {
+        "en": "Esther was a brave queen. She asked the king to save her people, and God used her to bring them joy!",
+        "es": "Ester fue una reina valiente. Le pidió al rey que salvara a su pueblo, ¡y Dios la usó para darles alegría!"
+      }
+    },
+    {
+      "id": "tree",
+      "icon": "🌳",
+      "name": {
+        "en": "Zacchaeus",
+        "es": "Zaqueo"
+      },
+      "intro": {
+        "en": "Zacchaeus was a short man who climbed a tree to see Jesus. Jesus called him by name and came to his house!",
+        "es": "Zaqueo era un hombre bajito que se subió a un árbol para ver a Jesús. ¡Jesús lo llamó por su nombre y fue a su casa!"
+      }
+    },
+    {
+      "id": "lost",
+      "icon": "🐑",
+      "name": {
+        "en": "The lost sheep",
+        "es": "La oveja perdida"
+      },
+      "intro": {
+        "en": "A shepherd had a hundred sheep, and one got lost. He looked until he found it, and carried it home with joy!",
+        "es": "Un pastor tenía cien ovejas, y una se perdió. La buscó hasta encontrarla, ¡y la llevó a casa con alegría!"
+      }
     }
   ];
   const LEVELS = [
@@ -1870,6 +1930,590 @@
       "stars": [
         4250,
         4750
+      ]
+    },
+    {
+      "n": 31,
+      "chapter": "ruth",
+      "seed": 25348,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "collect",
+          "piece": "leaf",
+          "n": 20
+        },
+        {
+          "kind": "score",
+          "n": 2400
+        }
+      ],
+      "moves": 28,
+      "stones": null,
+      "title": {
+        "en": "Where you go, I will go",
+        "es": "Donde tú vayas, iré yo"
+      },
+      "lesson": {
+        "en": "Ruth stayed with Naomi and chose to love God too. Real friends stay close!",
+        "es": "Rut se quedó con Noemí y escogió amar a Dios también. ¡Los buenos amigos se quedan cerca!"
+      },
+      "at": {
+        "en": [
+          8,
+          1,
+          16
+        ],
+        "es": [
+          8,
+          1,
+          16
+        ]
+      },
+      "ref": {
+        "en": "Ruth 1:16",
+        "es": "Rut 1:16"
+      },
+      "verse": {
+        "en": "And Ruth said, Intreat me not to leave thee, or to return from following after thee: for whither thou goest, I will go; and where thou lodgest, I will lodge: thy people shall be my people, and thy God my God:",
+        "es": "Y Ruth respondió: No me ruegues que te deje, y me aparte de ti: porque donde quiera que tú fueres, iré yo; y donde quiera que vivieres, viviré. Tu pueblo será mi pueblo, y tu Dios mi Dios."
+      },
+      "stars": [
+        3050,
+        4050
+      ]
+    },
+    {
+      "n": 32,
+      "chapter": "ruth",
+      "seed": 25387,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "stones"
+        }
+      ],
+      "moves": 28,
+      "stones": [
+        "........",
+        "........",
+        ".#.##.#.",
+        "........",
+        ".#.##.#.",
+        "........",
+        "........",
+        "........"
+      ],
+      "title": {
+        "en": "Under His wings",
+        "es": "Debajo de sus alas"
+      },
+      "lesson": {
+        "en": "Ruth came to trust God, and He covered her like a bird covers its babies with its wings.",
+        "es": "Rut vino a confiar en Dios, y Él la cubrió como un ave cubre a sus pollitos con sus alas."
+      },
+      "at": {
+        "en": [
+          8,
+          2,
+          12
+        ],
+        "es": [
+          8,
+          2,
+          12
+        ]
+      },
+      "ref": {
+        "en": "Ruth 2:12",
+        "es": "Rut 2:12"
+      },
+      "verse": {
+        "en": "The LORD recompense thy work, and a full reward be given thee of the LORD God of Israel, under whose wings thou art come to trust.",
+        "es": "Jehová galardone tu obra, y tu remuneración sea llena por Jehová Dios de Israel, que has venido para cubrirte debajo de sus alas."
+      },
+      "stars": [
+        3250,
+        3600
+      ]
+    },
+    {
+      "n": 33,
+      "chapter": "carmel",
+      "seed": 25441,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "score",
+          "n": 3000
+        }
+      ],
+      "moves": 28,
+      "stones": null,
+      "title": {
+        "en": "Fire from heaven",
+        "es": "Fuego del cielo"
+      },
+      "lesson": {
+        "en": "Nothing is too hard for God. He answered Elijah’s prayer with fire!",
+        "es": "Nada es difícil para Dios. ¡Respondió la oración de Elías con fuego!"
+      },
+      "at": {
+        "en": [
+          11,
+          18,
+          38
+        ],
+        "es": [
+          11,
+          18,
+          38
+        ]
+      },
+      "ref": {
+        "en": "1 Kings 18:38",
+        "es": "1 Reyes 18:38"
+      },
+      "verse": {
+        "en": "Then the fire of the LORD fell, and consumed the burnt sacrifice, and the wood, and the stones, and the dust, and licked up the water that was in the trench.",
+        "es": "Entonces cayó fuego de Jehová, el cual consumió el holocausto, y la leña, y las piedras, y el polvo, y aun lamió las aguas que estaban en la reguera."
+      },
+      "stars": [
+        4400,
+        5200
+      ]
+    },
+    {
+      "n": 34,
+      "chapter": "carmel",
+      "seed": 25458,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "collect",
+          "piece": "star",
+          "n": 22
+        },
+        {
+          "kind": "collect",
+          "piece": "heart",
+          "n": 18
+        }
+      ],
+      "moves": 29,
+      "stones": null,
+      "title": {
+        "en": "The LORD is God",
+        "es": "¡Jehová es el Dios!"
+      },
+      "lesson": {
+        "en": "When the people saw what God did, they all said: The LORD, He is God!",
+        "es": "Cuando el pueblo vio lo que Dios hizo, todos dijeron: ¡Jehová es el Dios!"
+      },
+      "at": {
+        "en": [
+          11,
+          18,
+          39
+        ],
+        "es": [
+          11,
+          18,
+          39
+        ]
+      },
+      "ref": {
+        "en": "1 Kings 18:39",
+        "es": "1 Reyes 18:39"
+      },
+      "verse": {
+        "en": "And when all the people saw it, they fell on their faces: and they said, The LORD, he is the God; the LORD, he is the God.",
+        "es": "Y viéndolo todo el pueblo, cayeron sobre sus rostros, y dijeron: ¡Jehová es el Dios! ¡Jehová es el Dios!"
+      },
+      "stars": [
+        2750,
+        3600
+      ]
+    },
+    {
+      "n": 35,
+      "chapter": "esther",
+      "seed": 25498,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "stones"
+        }
+      ],
+      "moves": 29,
+      "stones": [
+        "........",
+        "..#..#..",
+        ".##..##.",
+        "........",
+        "........",
+        ".##..##.",
+        "..#..#..",
+        "........"
+      ],
+      "title": {
+        "en": "For such a time as this",
+        "es": "Para esta hora"
+      },
+      "lesson": {
+        "en": "God put Esther in the right place at the right time. He has a plan for you too!",
+        "es": "Dios puso a Ester en el lugar justo en el momento justo. ¡Él tiene un plan para ti también!"
+      },
+      "at": {
+        "en": [
+          17,
+          4,
+          14
+        ],
+        "es": [
+          17,
+          4,
+          14
+        ]
+      },
+      "ref": {
+        "en": "Esther 4:14",
+        "es": "Ester 4:14"
+      },
+      "verse": {
+        "en": "For if thou altogether holdest thy peace at this time, then shall there enlargement and deliverance arise to the Jews from another place; but thou and thy father's house shall be destroyed: and who knoweth whether thou art come to the kingdom for such a time as this?",
+        "es": "Porque si absolutamente callares en este tiempo, respiro y libertación tendrán los Judíos de otra parte; mas tú y la casa de tu padre pereceréis. ¿Y quién sabe si para esta hora te han hecho llegar al reino?"
+      },
+      "stars": [
+        4000,
+        4700
+      ]
+    },
+    {
+      "n": 36,
+      "chapter": "esther",
+      "seed": 25539,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "score",
+          "n": 2500
+        }
+      ],
+      "moves": 29,
+      "stones": null,
+      "title": {
+        "en": "Light and gladness",
+        "es": "Luz y alegría"
+      },
+      "lesson": {
+        "en": "God turned a sad day into a happy one. His people had light and joy!",
+        "es": "Dios cambió un día triste en un día feliz. ¡Su pueblo tuvo luz y gozo!"
+      },
+      "at": {
+        "en": [
+          17,
+          8,
+          16
+        ],
+        "es": [
+          17,
+          8,
+          16
+        ]
+      },
+      "ref": {
+        "en": "Esther 8:16",
+        "es": "Ester 8:16"
+      },
+      "verse": {
+        "en": "The Jews had light, and gladness, and joy, and honour.",
+        "es": "Los Judíos tuvieron luz y alegría, y gozo y honra."
+      },
+      "stars": [
+        3150,
+        4300
+      ]
+    },
+    {
+      "n": 37,
+      "chapter": "tree",
+      "seed": 25569,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "collect",
+          "piece": "leaf",
+          "n": 24
+        },
+        {
+          "kind": "collect",
+          "piece": "grapes",
+          "n": 18
+        }
+      ],
+      "moves": 29,
+      "stones": null,
+      "title": {
+        "en": "Come down!",
+        "es": "¡Desciende!"
+      },
+      "lesson": {
+        "en": "Jesus saw Zacchaeus up in the tree and called him by name. Jesus knows your name too!",
+        "es": "Jesús vio a Zaqueo en el árbol y lo llamó por su nombre. ¡Jesús también sabe tu nombre!"
+      },
+      "at": {
+        "en": [
+          42,
+          19,
+          5
+        ],
+        "es": [
+          42,
+          19,
+          5
+        ]
+      },
+      "ref": {
+        "en": "Luke 19:5",
+        "es": "Lucas 19:5"
+      },
+      "verse": {
+        "en": "And when Jesus came to the place, he looked up, and saw him, and said unto him, Zacchæus, make haste, and come down; for to day I must abide at thy house.",
+        "es": "Y como vino á aquel lugar Jesús, mirando, le vió, y díjole: Zaqueo, date priesa, desciende, porque hoy es necesario que pose en tu casa."
+      },
+      "stars": [
+        2650,
+        3450
+      ]
+    },
+    {
+      "n": 38,
+      "chapter": "tree",
+      "seed": 25608,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "stones"
+        }
+      ],
+      "moves": 30,
+      "stones": [
+        "........",
+        "...##...",
+        "..####..",
+        "...##...",
+        "...##...",
+        "...##...",
+        "..#..#..",
+        "........"
+      ],
+      "title": {
+        "en": "Seek and save",
+        "es": "Buscar y salvar"
+      },
+      "lesson": {
+        "en": "Jesus came to look for people who are lost and bring them home to God.",
+        "es": "Jesús vino a buscar a los que estaban perdidos y llevarlos de vuelta a Dios."
+      },
+      "at": {
+        "en": [
+          42,
+          19,
+          10
+        ],
+        "es": [
+          42,
+          19,
+          10
+        ]
+      },
+      "ref": {
+        "en": "Luke 19:10",
+        "es": "Lucas 19:10"
+      },
+      "verse": {
+        "en": "For the Son of man is come to seek and to save that which was lost.",
+        "es": "Porque el Hijo del hombre vino á buscar y á salvar lo que se había perdido."
+      },
+      "stars": [
+        2900,
+        3850
+      ]
+    },
+    {
+      "n": 39,
+      "chapter": "lost",
+      "seed": 25646,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "score",
+          "n": 2500
+        },
+        {
+          "kind": "collect",
+          "piece": "heart",
+          "n": 16
+        }
+      ],
+      "moves": 30,
+      "stones": null,
+      "title": {
+        "en": "Found!",
+        "es": "¡Encontrada!"
+      },
+      "lesson": {
+        "en": "The shepherd was so happy when he found his sheep. God is that happy when we come to Him!",
+        "es": "El pastor se alegró mucho al encontrar su oveja. ¡Así se alegra Dios cuando venimos a Él!"
+      },
+      "at": {
+        "en": [
+          42,
+          15,
+          6
+        ],
+        "es": [
+          42,
+          15,
+          6
+        ]
+      },
+      "ref": {
+        "en": "Luke 15:6",
+        "es": "Lucas 15:6"
+      },
+      "verse": {
+        "en": "And when he cometh home, he calleth together his friends and neighbours, saying unto them, Rejoice with me; for I have found my sheep which was lost.",
+        "es": "Y viniendo á casa, junta á los amigos y á los vecinos, diciéndoles: Dadme el parabién, porque he hallado mi oveja que se había perdido."
+      },
+      "stars": [
+        3950,
+        4300
+      ]
+    },
+    {
+      "n": 40,
+      "chapter": "lost",
+      "seed": 25680,
+      "pieces": [
+        "star",
+        "fish",
+        "grapes",
+        "loaf",
+        "leaf",
+        "heart"
+      ],
+      "goals": [
+        {
+          "kind": "stones"
+        }
+      ],
+      "moves": 30,
+      "stones": [
+        "........",
+        "........",
+        ".#.##.#.",
+        "........",
+        "........",
+        ".#.##.#.",
+        "........",
+        "........"
+      ],
+      "title": {
+        "en": "The good shepherd",
+        "es": "El buen pastor"
+      },
+      "lesson": {
+        "en": "Jesus is our good shepherd. He loves His sheep so much that He gave His life for them.",
+        "es": "Jesús es nuestro buen pastor. Ama tanto a sus ovejas que dio su vida por ellas."
+      },
+      "at": {
+        "en": [
+          43,
+          10,
+          11
+        ],
+        "es": [
+          43,
+          10,
+          11
+        ]
+      },
+      "ref": {
+        "en": "John 10:11",
+        "es": "Juan 10:11"
+      },
+      "verse": {
+        "en": "I am the good shepherd: the good shepherd giveth his life for the sheep.",
+        "es": "Yo soy el buen pastor: el buen pastor su vida da por las ovejas."
+      },
+      "stars": [
+        4000,
+        4350
       ]
     }
   ];
