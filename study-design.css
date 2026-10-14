@@ -863,3 +863,10 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .my-note p{margin:6px 0 0;white-space:pre-wrap}
 .my-note-verse{margin:6px 0 0;font-style:italic}
 .my-note-verse cite{display:block;font-style:normal;font-size:.85rem;opacity:.8}
+/* Friend lessons */
+.friend-chip-button{cursor:pointer;border:1px solid color-mix(in srgb,var(--teal) 45%,transparent);min-height:32px}
+.friend-lessons{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:10px}
+.friend-lesson{padding:0;overflow:hidden}
+.friend-lesson-open{display:grid;gap:2px;width:100%;text-align:left;padding:12px 14px;background:none;border:0;color:inherit;font:inherit;cursor:pointer;min-height:44px}
+.friend-lesson-note{margin:0;padding:0 14px 12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.friend-lesson-note .eyebrow{display:block}

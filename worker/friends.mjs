@@ -36,7 +36,7 @@
    Public /scores never includes friend codes. */
 
 import { handlePush, runPushCron } from './push.mjs';
-import { handleMyNotes } from './mynotes.mjs';
+import { handleMyNotes, handleLessons } from './mynotes.mjs';
 
 const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const SHOWS = ['jeopardy', 'millionaire', 'feud', 'sound', 'babel', 'defend', 'doctrine'];
@@ -580,7 +580,7 @@ export const SQUISHY_IDS = ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow', '
   'lily', 'key', 'pearl', 'manna', 'scroll', 'shofar', 'tablets', 'elephant', 'honeycomb', 'anchor', 'shield', 'chariot', 'lamp'];
 /* everyone starts with these, so they are not traded; the lamp never is */
 export const SQUISHY_STARTERS = ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow'];
-export const SQUISHY_LEGENDARY = ['bush', 'tomb', 'chariot', 'tablets', 'lamp'];
+export const SQUISHY_LEGENDARY = ['bush', 'tomb', 'chariot', 'tablets', 'lamp', 'shield'];
 export const TRADE_RULES = {
   LEGEND_MIN: 5, NEED_MAX: 12, OFFER_MAX: 12, ACTIVE_MAX: 5, INDEX_MAX: 20,
   REQUEST_TTL_MS: 30 * 60 * 1000, OPEN_TTL_MS: 30 * 60 * 1000, MAX_LIFE_MS: 2 * 60 * 60 * 1000,
@@ -1499,6 +1499,10 @@ export async function handleFriends(request, env) {
       return reply(note);
     }
 
+    if (url.pathname.startsWith('/lessons/')) {
+      const [data, code = 200] = await handleLessons(url.pathname, body, env, { authed, friendsBothWays, takeRate });
+      return reply(data, code);
+    }
     if (url.pathname.startsWith('/mynotes/')) {
       const [data, code = 200] = await handleMyNotes(url.pathname, body, env, { authed, friendsBothWays, takeRate });
       return reply(data, code);

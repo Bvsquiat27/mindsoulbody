@@ -57,7 +57,7 @@
   }
   function profileHtml(opts) {
     const notes = collect(opts);
-    return `<section class="card my-notes" id="my-notes" data-i18n-skip><span class="eyebrow">${esc(tr('JOURNAL', 'DIARIO'))}</span><h2>${esc(tr('My notes', 'Mis notas'))}</h2>${switchHtml()}${listHtml(notes, true)}</section>`;
+    return `<section class="card my-notes" id="my-notes" data-i18n-skip><span class="eyebrow">${esc(tr('JOURNAL', 'DIARIO'))}</span><h2>${esc(tr('My notes', 'Mis notas'))}</h2>${switchHtml()}${lessonsSwitchHtml()}${listHtml(notes, true)}</section>`;
   }
 
   /* ---------- sync (only with a friend code) ---------- */
@@ -127,6 +127,17 @@
     });
     doc.addEventListener('click', async (e) => {
       const t = e.target && e.target.closest ? e.target : null; if (!t) return;
+      if (t.closest('[data-lessons-share]')) {
+        const b = t.closest('[data-lessons-share]');
+        if (b.getAttribute('aria-busy') === 'true') return;
+        const on = b.getAttribute('aria-checked') !== 'true';
+        const paint = (v) => { b.setAttribute('aria-checked', String(v)); b.querySelector('.tap-vibration-state').textContent = v ? tr('On', 'Sí') : tr('Off', 'No'); };
+        setLessonsShared(on); paint(on); b.setAttribute('aria-busy', 'true');
+        try { await syncLessons(ctx.syncOpts(), true); ctx.toast(on ? tr('Friends can see your lessons.', 'Tus amigos pueden ver tus lecciones.') : tr('Your lessons are private.', 'Tus lecciones son privadas.')); }
+        catch { setLessonsShared(!on); paint(!on); ctx.toast(tr('Could not change it. Check your connection.', 'No se pudo cambiar. Revisa tu conexión.')); }
+        finally { b.removeAttribute('aria-busy'); }
+        return;
+      }
       if (t.closest('[data-notes-share]')) {
         const b = t.closest('[data-notes-share]');
         if (b.getAttribute('aria-busy') === 'true') return;
@@ -162,5 +173,71 @@
     });
   }
 
-  return { KEY, SHARE_KEY, MAX, readAll, get, save, shared, setShared, collect, listHtml, profileHtml, boxHtml, shareText, syncNow, syncSoon, friendNotes, fillFriend, wire };
+
+  /* ---------- lesson progress for friends ---------- */
+  const LESSONS_SHARE_KEY = 'msb_lessons_share';
+  function lessonsShared(ls = store()) { return ls.getItem(LESSONS_SHARE_KEY) !== '0'; }
+  function setLessonsShared(on, ls = store()) { ls.setItem(LESSONS_SHARE_KEY, on ? '1' : '0'); return on; }
+  const LESSON_ID = /^[a-z0-9][a-z0-9_-]{0,79}$/i;
+  function lessonsPayload(opts = {}) {
+    const done = (opts.progress || []).filter((r) => r && r.completed_at && LESSON_ID.test(String(r.study_id)))
+      .map((r) => ({ id: String(r.study_id), ts: Number(r.completed_at) * 1000 || null, score: Number.isInteger(r.quiz_score) ? r.quiz_score : null }))
+      .sort((a, b) => (b.ts || 0) - (a.ts || 0)).slice(0, 500);
+    const last = opts.lastStudy && LESSON_ID.test(String(opts.lastStudy)) ? String(opts.lastStudy) : null;
+    const current = last && !done.some((d) => d.id === last) ? { id: last, ts: Date.now() } : null;
+    return { current, done };
+  }
+  let lessonTimer = null, lastLessonSig = '';
+  function syncLessonsSoon(opts) { if (opts) opts0 = opts; clearTimeout(lessonTimer); lessonTimer = setTimeout(() => syncLessons().catch(() => null), 4000); }
+  async function syncLessons(opts, force) {
+    if (opts) opts0 = opts;
+    const me = ids(); if (!me) return { skipped: true };
+    const hidden = !lessonsShared();
+    const lessons = hidden ? { current: null, done: [] } : lessonsPayload(opts0);
+    const sig = JSON.stringify([hidden, lessons.current && lessons.current.id, lessons.done.map((d) => [d.id, d.score])]);
+    if (!force && sig === lastLessonSig) return { skipped: true };
+    const r = await post('/lessons/sync', { code: me.code, secret: me.secret, hidden, lessons });
+    lastLessonSig = sig;
+    return r;
+  }
+  function lessonsSwitchHtml() {
+    const on = lessonsShared();
+    return `<div class="my-notes-share"><div><strong>${esc(tr('Friends can see my lessons', 'Mis amigos pueden ver mis lecciones'))}</strong><p class="small muted">${esc(tr('On by default. Friends see the lesson you are on and the ones you finished.', 'Activado de forma predeterminada. Tus amigos ven la lección en la que vas y las que terminaste.'))}</p></div><button type="button" class="tap-vibration-toggle" data-lessons-share role="switch" aria-checked="${on}" aria-label="${esc(tr('Friends can see my lessons', 'Mis amigos pueden ver mis lecciones'))}"><span class="tap-vibration-knob" aria-hidden="true"></span><span class="tap-vibration-state">${on ? tr('On', 'Sí') : tr('Off', 'No')}</span></button></div>`;
+  }
+  /* friend's lessons view: current, finished (date, quiz) and their note per lesson */
+  function friendLessonsHtml(name, lessons, notes, look) {
+    const noteFor = (id) => (notes && !notes.hidden ? (notes.notes || []).find((n) => n.kind === 'study' && n.key === id) : null);
+    const row = (id, extra) => {
+      const s = look(id); if (!s) return '';
+      const n = noteFor(id);
+      return `<li class="card friend-lesson"><button type="button" class="friend-lesson-open" data-lesson="${esc(id)}"><span class="lesson-meta">${esc(s.reference || '')}</span><strong>${esc(s.title)}</strong>${extra}</button>${n ? `<p class="friend-lesson-note"><span class="eyebrow">${esc(tr('THEIR NOTE', 'SU NOTA'))}</span>${esc(n.text)}</p>` : ''}</li>`;
+    };
+    let body = '';
+    if (lessons.hidden) body = `<p class="muted">${esc(tr('This friend keeps their lessons private.', 'Este amigo mantiene sus lecciones en privado.'))}</p>`;
+    else {
+      const cur = lessons.current && look(lessons.current.id) ? row(lessons.current.id, `<span class="small muted">${esc(tr('Reading now', 'Leyendo ahora'))}</span>`) : '';
+      const done = (lessons.done || []).map((d) => {
+        const s = look(d.id); if (!s) return '';
+        const total = s.quizTotal || 0;
+        const bits = [d.ts ? `✓ ${when(d.ts)}` : '✓', d.score != null && total ? tr(`Quiz ${d.score}/${total}`, `Prueba ${d.score}/${total}`) : ''].filter(Boolean).join(' · ');
+        return row(d.id, `<span class="small muted">${esc(bits)}</span>`);
+      }).filter(Boolean);
+      body = `<h2>${esc(tr('On now', 'En curso'))}</h2>${cur ? `<ul class="friend-lessons">${cur}</ul>` : `<p class="muted">${esc(tr('No lesson open right now.', 'Ninguna lección abierta ahora.'))}</p>`}<h2>${esc(tr('Finished', 'Terminadas'))} · ${done.length}</h2>${done.length ? `<ul class="friend-lessons">${done.join('')}</ul>` : `<p class="muted">${esc(tr('No finished lessons shared yet.', 'Todavía no hay lecciones terminadas.'))}</p>`}${notes && notes.hidden ? `<p class="small muted">${esc(tr('Their notes are private.', 'Sus notas son privadas.'))}</p>` : ''}`;
+    }
+    return `<button class="text-button back" data-action="friend-open" data-code="${esc(lessons.code || '')}">← ${esc(name)}</button><span class="eyebrow">${esc(tr('LESSONS', 'LECCIONES'))}</span><h1>${esc(tr(`${name}’s lessons`, `Las lecciones de ${name}`))}</h1><p class="lead">${esc(tr('Tap a lesson to open it for yourself.', 'Toca una lección para abrirla tú.'))}</p>${body}`;
+  }
+  async function fillFriendLessons(el, code, name, look) {
+    const me = ids();
+    el.innerHTML = `<p class="muted" role="status" style="padding:24px 0">${esc(tr('Loading…', 'Cargando…'))}</p>`;
+    if (!me) { el.innerHTML = `<p class="muted">${esc(tr('Get a friend code on your profile first.', 'Primero obtén un código de amigo en tu perfil.'))}</p>`; return; }
+    try {
+      const [lessons, notes] = await Promise.all([post('/lessons/friend', { code: me.code, secret: me.secret, friend: code }), post('/mynotes/friend', { code: me.code, secret: me.secret, friend: code }).catch(() => null)]);
+      if (!el.isConnected) return;
+      el.innerHTML = friendLessonsHtml(name, { ...lessons, code }, notes, look);
+    } catch (err) {
+      if (el.isConnected) el.innerHTML = `<button class="text-button back" data-action="friend-open" data-code="${esc(code)}">← ${esc(name)}</button><div class="empty error" role="alert"><p>${esc(err.status === 403 ? tr('Lessons show once you are both friends.', 'Las lecciones se ven cuando los dos son amigos.') : tr('Lessons could not load right now.', 'No se pudieron cargar las lecciones ahora.'))}</p><button type="button" class="primary" data-action="friend-lessons" data-code="${esc(code)}">${esc(tr('Try again', 'Intentar de nuevo'))}</button></div>`;
+    }
+  }
+
+  return { LESSONS_SHARE_KEY, lessonsShared, setLessonsShared, lessonsPayload, syncLessons, syncLessonsSoon, friendLessonsHtml, fillFriendLessons, KEY, SHARE_KEY, MAX, readAll, get, save, shared, setShared, collect, listHtml, profileHtml, boxHtml, shareText, syncNow, syncSoon, friendNotes, fillFriend, wire };
 });
