@@ -207,6 +207,15 @@
     root.innerHTML = `<button class="text-button back" data-bedtime-back type="button">← Stories</button><article class="story-read" data-read-block data-i18n-skip><span class="eyebrow">${es() ? 'HORA DE DORMIR' : 'BEDTIME'}</span>${picture(item, 'hero')}<h1 class="story-title">${esc(pick(item, 'title'))}</h1><p class="story-body">${esc(pick(item, 'body'))}</p></article>${speechRow()}<p><button class="primary" type="button" data-bedtime-next="prayer">A small prayer</button></p>`;
   }
 
+  /* the coloring book may render a moment after Stories: wait for it, then scroll */
+  function scrollToColoring(tries = 40) {
+    const book = document.querySelector('.coloring-book');
+    if (book) { book.scrollIntoView({ block: 'start', behavior: 'auto' }); return true; }
+    if (tries <= 0) { window.scrollTo({ top: 0, behavior: 'auto' }); return false; }
+    setTimeout(() => scrollToColoring(tries - 1), 75);
+    return false;
+  }
+
   function show(root) {
     if (squishyOn && window.MsbSquishy) { MsbSquishy.open(root); return; }
     if (matchOn && window.MsbMatch) { MsbMatch.open(root); return; }
@@ -370,7 +379,7 @@
       refresh();
       const game = go.dataset.sqGoGame;
       if (kidGamesOn && game && game !== 'hub') MsbKidGames.openGame(game);
-      else if (go.hasAttribute('data-sq-go-color')) { const book = document.querySelector('.coloring-book'); if (book) { book.scrollIntoView({ block: 'start' }); return; } }
+      else if (go.hasAttribute('data-sq-go-color')) { scrollToColoring(); return; }
       window.scrollTo({ top: 0, behavior: 'auto' });
       return;
     }
