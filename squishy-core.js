@@ -295,11 +295,11 @@
     { id: 'scroll', kind: 'kgDone', game: 'wordsearch', n: 3, tier: 'common' },
     { id: 'shofar', kind: 'kgBest', game: 'who', n: 8, tier: 'common' },
     { id: 'tablets', kind: 'kgDone', game: 'order', n: 4, tier: 'rare' },
-    { id: 'elephant', kind: 'kgDone', game: 'ark', n: 1, tier: 'common' },
+    { id: 'elephant', kind: 'kgDone', game: 'map', n: 1, tier: 'common' },
     { id: 'honeycomb', kind: 'kgDone', game: 'verse', n: 3, tier: 'rare' },
     { id: 'anchor', kind: 'kgDone', game: 'map', n: 2, tier: 'rare' },
     { id: 'shield', kind: 'kgDone', game: 'sling', n: 4, tier: 'rare' },
-    { id: 'chariot', kind: 'kgAll', n: 7, tier: 'legendary' },
+    { id: 'chariot', kind: 'kgAll', n: 6, tier: 'legendary' },
     { id: 'lamp', kind: 'final', n: 0, tier: 'legendary' }
   ];
   /* Extra badges that do not open a squishy. */
@@ -372,7 +372,7 @@
   }
 
   /* Kids' Bible games progress (msb_kidgames), read safely. */
-  const KID_GAMES = ['wordsearch', 'order', 'who', 'verse', 'ark', 'map', 'sling'];
+  const KID_GAMES = ['wordsearch', 'order', 'who', 'verse', 'map', 'sling'];
   function kidGames(storage) {
     try {
       const v = JSON.parse(storage.getItem('msb_kidgames') || '{}') || {};
@@ -390,7 +390,7 @@
        a one-time goal (a best score, a whole chapter…) needs fresh rounds of
        that same game (AGAIN below).
      Old progress alone never brings it back instantly. */
-  const AGAIN = { memoryFast: 3, perfectLegend: 0, matchChapter: 5, kgBest: 1, kgAll: 7, lessons: 0, streak: 0, tricks: 0 };
+  const AGAIN = { memoryFast: 3, perfectLegend: 0, matchChapter: 5, kgBest: 1, kgAll: 6, lessons: 0, streak: 0, tricks: 0 };
   function counters(storage) {
     const st = stats(storage).get(), kid = (() => { try { const v = JSON.parse(storage.getItem('msb_kidgames') || '{}') || {}; return v.plays && typeof v.plays === 'object' ? v.plays : {}; } catch { return {}; } })();
     let matchWins = 0, trades = 0;

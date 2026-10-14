@@ -91,35 +91,12 @@
 .kg-vb-drop.nope{animation:kgShake .35s}
 @keyframes kgShake{0%,100%{translate:0}25%{translate:-6px}75%{translate:6px}}
 /* ark builder */
-.kg-ark-cloud{position:absolute;top:4px;left:10%;font-size:30px;animation:kgDrift 9s linear infinite alternate}
-.kg-ark-cloud.c2{left:60%;animation-duration:12s}
 @keyframes kgDrift{to{transform:translateX(40px)}}
 .kg-rain{position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 9px,rgba(200,225,255,.55) 9px 11px);background-size:40px 40px;animation:kgRain .5s linear infinite}
 @keyframes kgRain{to{background-position:-12px 40px}}
-.kg-ark-timer{display:flex;align-items:center;gap:8px;margin:6px 0}
-.kg-ark-bar{flex:1;height:14px;border-radius:7px;background:rgba(255,255,255,.12);overflow:hidden}
-.kg-ark-bar i{display:block;height:100%;background:linear-gradient(90deg,#2fe0cf,#7ad3ff);transition:width .25s linear}
-.kg-ark-bar i.low{background:linear-gradient(90deg,#ff6b6b,#ffb347)}
-.kg-ark-hull{font-size:30px}
-.kg-ark-in{flex:1;min-width:0;font-size:20px;line-height:1.3;overflow-wrap:anywhere}
-.kg-ark-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:8px 0 14px}
-.kg-ark-card{aspect-ratio:1;min-width:0;border-radius:16px;border:2px solid rgba(255,255,255,.18);background:#1f3a2c;font-size:clamp(30px,9vw,44px);display:grid;place-items:center;padding:0;transition:transform .15s,border-color .15s}
-.kg-ark-card.sel{border-color:var(--gold);transform:scale(1.07);background:#2f5440}
-.kg-ark-card.gone{opacity:.25;border-style:dashed}
-.kg-ark-lesson{margin:12px 0;padding:16px;border-radius:16px;background:rgba(255,255,255,.05);line-height:1.55}
+.kg-lesson{margin:12px 0;padding:16px;border-radius:16px;background:rgba(255,255,255,.05);line-height:1.55}
 /* map journey */
 /* david's sling */
-.kg-sl-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 0 8px}
-.kg-sl-stones{display:flex;gap:6px}
-.kg-sl-stones i{width:18px;height:14px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)}
-.kg-sl-stones i.on{background:#9a948c;border-color:#d8d2c8}
-.kg-sl-field{border-radius:18px;overflow:hidden;border:2px solid #6b8f4a;touch-action:none;user-select:none;-webkit-user-select:none}
-.kg-sl-canvas{display:block;touch-action:none}
-.kg-sl-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end;margin:6px 0 14px}
-.kg-sl-controls label{display:grid;gap:4px;font-weight:700;font-size:14px;min-width:0}
-.kg-sl-controls input{width:100%;accent-color:var(--teal);min-height:32px}
-.kg-sl-controls button{grid-column:1/-1}
-.kg-sl-intro{font-size:17px}
 .kg-tile-art .kg-tile-icon svg{width:50px;height:50px}
 .kg-squishy-pop small{display:block;font-size:11px;opacity:.85;font-weight:500}
 .kg-squishy-pop.tier-rare{background:linear-gradient(135deg,#6d4fd8,#9b7bff);color:#fff}
@@ -130,59 +107,7 @@
 .kg-celebrate.gold i{color:#ffd35a}
 @keyframes kgFall{0%{opacity:0;transform:translateY(0) rotate(0)}10%{opacity:1}100%{opacity:0;transform:translateY(105vh) rotate(var(--r))}}
 @media (prefers-reduced-motion:reduce){.kg-celebrate{display:none}}
-/* Ark Builder scene */
-.kg-ark-scene{display:block;width:100%;height:auto;border-radius:18px;margin:0 0 8px;box-shadow:0 6px 18px rgba(0,0,0,.25),inset 0 0 0 2px rgba(255,255,255,.08)}
-.kg-ark-scene .sky{transition:opacity 1.2s ease}
-.kg-ark-scene .grey,.kg-ark-scene .storm{opacity:0}
-.kg-ark-scene.phase-grey .grey,.kg-ark-scene.phase-storm .storm{opacity:1}
-.kg-ark-scene .kg-ark-sunball{transition:opacity 1s}
-.kg-ark-scene.phase-grey .kg-ark-sunball,.kg-ark-scene.phase-storm .kg-ark-sunball{opacity:0}
-.kg-ark-clouds ellipse{fill:#fff;transition:fill 1.2s}
-.phase-grey .kg-ark-clouds ellipse{fill:#d6dde3}
-.phase-storm .kg-ark-clouds ellipse{fill:#6d7884}
-.kg-ark-clouds .c1{animation:kgArkDrift 9s ease-in-out infinite alternate}
-.kg-ark-clouds .c2{animation:kgArkDrift 12s ease-in-out infinite alternate-reverse}
-.kg-ark-rain line{stroke:rgba(200,225,255,.75);stroke-width:1.6;animation:kgArkRain .7s linear infinite;animation-delay:var(--d)}
-.kg-ark-flash{fill:#fff;opacity:0;animation:kgArkFlash 4.2s infinite}
-.kg-ark-water{transition:transform .3s linear}
-.kg-ark-water path:first-child{animation:kgArkWave 3s ease-in-out infinite alternate}
-.phase-storm .kg-ark-boat-g{animation-duration:1.6s}
-.kg-ark-walk{animation:kgArkWalk .9s ease-out forwards}
-.kg-ark-rainbow{animation:kgArkFade 1.2s ease-out both}
-.kg-ark-dove{animation:kgArkDove 2.4s ease-out both}
-.kg-ark-count{margin:4px 0;text-align:center}
-.kg-ark-streak{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:99px;background:#ffd35a;color:#3b2414;font-weight:800;animation:kgArkPop .4s ease-out}
-.kg-ark-card{position:relative;background:linear-gradient(180deg,#d9a96c,#a8723f) !important;border:2px solid #5a3a20 !important;color:#2b1a0c !important;box-shadow:inset 0 0 0 3px rgba(255,255,255,.18),0 3px 0 #4d2f17;transition:transform .15s}
-.kg-ark-card .kg-ark-face{display:block;font-size:28px;line-height:1.1}
-.kg-ark-card small{display:block;font-size:10px;font-weight:700;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kg-ark-card.sel{transform:translateY(-4px) scale(1.06);box-shadow:0 0 0 3px #ffd35a,0 6px 0 #4d2f17;animation:kgArkPop .25s ease-out}
-.kg-ark-card.wrong{animation:kgArkShake .4s}
-.kg-ark-card.leave{animation:kgArkLeave .6s ease-in forwards}
-.kg-ark-card.gone{opacity:.25;box-shadow:none}
-.kg-ark-bar i.low{background:#ff6b6b !important;animation:kgArkPulse .8s infinite alternate}
-@keyframes kgArkDrift{to{transform:translateX(26px)}}
-@keyframes kgArkRain{from{transform:translateY(0)}to{transform:translateY(190px)}}
-@keyframes kgArkFlash{0%,88%,100%{opacity:0}90%{opacity:.7}92%{opacity:.1}94%{opacity:.5}}
-@keyframes kgArkWave{to{transform:translateX(-14px)}}
-@keyframes kgArkBob{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1.2deg) translateY(-2px)}}
-@keyframes kgArkWalk{0%{transform:translate(0,0)}35%{transform:translate(18px,-10px)}70%{transform:translate(36px,-18px)}100%{transform:translate(48px,-24px);opacity:0}}
-@keyframes kgArkFade{from{opacity:0}to{opacity:1}}
-@keyframes kgArkDove{from{transform:translate(380px,10px)}to{transform:translate(250px,34px)}}
-@keyframes kgArkPop{50%{transform:translateY(-4px) scale(1.12)}}
-@keyframes kgArkShake{20%,60%{transform:translateX(-6px) rotate(-3deg)}40%,80%{transform:translateX(6px) rotate(3deg)}}
-@keyframes kgArkLeave{to{transform:translateY(-40px) scale(.4);opacity:0}}
-@keyframes kgArkPulse{to{opacity:.55}}
-@media (prefers-reduced-motion:reduce){.kg-ark-scene *,.kg-ark-card,.kg-ark-streak,.kg-ark-bar i{animation:none !important;transition:none !important}}
-/* a friend's squishy collection */
-.friend-squishies .fsq-grid{list-style:none;margin:10px 0 6px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
-.fsq-tile{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px 10px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);min-width:0;text-align:center}
-.fsq-tile.fsq-rare{border-color:rgba(167,139,250,.55)}
-.fsq-tile.fsq-legendary{border-color:rgba(250,204,21,.7);box-shadow:0 0 12px rgba(250,204,21,.18)}
-.fsq-art svg{width:58px;height:58px;display:block}
-.fsq-name{font-size:12px;line-height:1.2;overflow-wrap:anywhere}
-.fsq-tag{font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;background:rgba(167,139,250,.25)}
-.fsq-tag.legend{background:rgba(250,204,21,.25)}
-.fsq-tag.never{background:rgba(255,255,255,.12)}
+@keyframes mpFlash{0%,88%,100%{opacity:0}90%{opacity:.7}92%{opacity:.1}94%{opacity:.5}}
 /* ---------- shared: coach, level card, floating text ---------- */
 .kg-coach{position:fixed;inset:0;z-index:70;display:grid;place-items:center;padding:18px;background:rgba(8,20,18,.62);animation:kgFadeIn .25s ease-out}
 .kg-coach-card{max-width:340px;width:100%;padding:20px 18px;border-radius:22px;background:linear-gradient(180deg,#fff8e6,#f3e2b5);color:#3b2a14;box-shadow:0 18px 40px rgba(0,0,0,.4),inset 0 0 0 3px #e2c98f;animation:kgPopIn .35s cubic-bezier(.2,1.4,.4,1)}
@@ -243,7 +168,7 @@
 .mp-compass{animation:mpSpinIn 1.2s ease-out}
 .mp-wx line{stroke:rgba(210,230,255,.8);stroke-width:1.4;animation:mpRain .65s linear infinite;animation-delay:var(--d)}
 .mp-wx.rain line{stroke-width:1;animation-duration:.9s}
-.mp-flash{fill:#fff;opacity:0;animation:kgArkFlash 4.6s infinite}
+.mp-flash{fill:#fff;opacity:0;animation:mpFlash 4.6s infinite}
 .mp-wx.wind path{fill:none;stroke:rgba(255,255,255,.75);stroke-width:1.6;stroke-linecap:round;animation:mpWind 2.6s linear infinite;animation-delay:var(--d)}
 .mp-wx.heat circle{animation:mpPulse 3s ease-in-out infinite}
 .mp-wx.dawn circle{animation:mpTwinkle 1.6s ease-in-out infinite alternate;animation-delay:var(--d)}
@@ -280,30 +205,33 @@
 @keyframes mpBird{from{transform:translate(-40px,80px)}to{transform:translate(440px,40px)}}
 @keyframes mpStamp{0%{opacity:0;transform:scale(2.4) rotate(-30deg)}70%{opacity:1;transform:scale(.9) rotate(-12deg)}100%{transform:scale(1) rotate(-12deg)}}
 @media (prefers-reduced-motion:reduce){.kg-coach,.kg-coach-card,.kg-coach-card li,.kg-levelcard,.kg-lc-record,.kg-float,.mp-wrap *,.mp-slot,.mp-event,.mp-stampmark{animation:none !important;transition:none !important}.kg-lc-stars i{transform:none}}
-/* Ark second pass: parallax, Noah, sparks */
-.kg-ark-stage{position:relative;--px:0}
-.kg-ark-far{transform:translateX(calc(var(--px) * -6px));animation:kgArkFar 14s ease-in-out infinite alternate}
-.kg-ark-mid{transform:translateX(calc(var(--px) * -12px))}
-.kg-ark-near{transform:translateX(calc(var(--px) * -22px))}
-.kg-ark-far,.kg-ark-mid,.kg-ark-near{transition:transform .25s ease-out}
-.kg-noah .kg-noah-body{transform-origin:0 16px;animation:kgNoahIdle 2.4s ease-in-out infinite}
-.kg-noah.cheer .kg-noah-body{animation:kgNoahJump .45s cubic-bezier(.3,1.6,.5,1) 2}
-.kg-noah.cheer .kg-noah-arm,.kg-noah.win .kg-noah-arm{transform-origin:6px 0;animation:kgNoahWave .35s ease-in-out infinite alternate}
-.kg-noah.oops .kg-noah-body{animation:kgNoahShake .4s}
-.kg-noah.win .kg-noah-body{animation:kgNoahJump .7s cubic-bezier(.3,1.6,.5,1) infinite}
-.kg-noah-say{font:900 11px system-ui;fill:#fff;paint-order:stroke;stroke:#3b2414;stroke-width:3px}
-.kg-ark-newwin{animation:kgArkWin .6s cubic-bezier(.2,1.6,.4,1)}
-.kg-ark-fx{position:absolute;inset:0;pointer-events:none;overflow:visible}
-.kg-ark-spark{position:absolute;left:50%;top:42%;font-style:normal;font-size:14px;color:#ffd35a;text-shadow:0 0 6px rgba(255,211,90,.8);animation:kgSpark .8s ease-out forwards}
-.kg-ark-spark:nth-child(even){color:#ff9db5}
-.kg-ark-card.sel{animation:kgSquash .3s ease-out}
-@keyframes kgArkFar{to{transform:translateX(calc(var(--px) * -6px - 8px))}}
-@keyframes kgNoahIdle{50%{transform:scale(1.02,.98)}}
-@keyframes kgNoahJump{40%{transform:translateY(-7px) scale(.94,1.08)}75%{transform:translateY(0) scale(1.1,.9)}}
-@keyframes kgNoahWave{from{transform:rotate(-20deg)}to{transform:rotate(25deg)}}
-@keyframes kgNoahShake{25%,75%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
-@keyframes kgArkWin{0%{transform:scale(.3);transform-box:fill-box;transform-origin:center}100%{transform:scale(1);transform-box:fill-box;transform-origin:center}}
-@keyframes kgSpark{from{opacity:1;transform:translate(-50%,-50%) rotate(var(--a)) translateY(0) scale(.6)}to{opacity:0;transform:translate(-50%,-50%) rotate(var(--a)) translateY(calc(var(--d) * -1)) scale(1.1)}}
-@keyframes kgSquash{0%{transform:scale(1)}30%{transform:scale(1.18,.84)}60%{transform:translateY(-6px) scale(.92,1.1)}100%{transform:translateY(-4px) scale(1.06)}}
-.kg-ark-newwin{transform-box:fill-box;transform-origin:center}
-@media (prefers-reduced-motion:reduce){.kg-ark-far,.kg-ark-mid,.kg-ark-near,.kg-noah *,.kg-ark-newwin,.kg-ark-spark{animation:none !important;transform:none !important}}
+
+/* ---------- David's Sling (stone chain) ---------- */
+.zm-top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:4px 0 8px}
+.zm-field{position:relative;border-radius:20px;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35),0 0 0 3px #b08a57,0 0 0 6px #6b4a2b}
+.zm-canvas{display:block;touch-action:none;outline:none}
+.zm-canvas:focus-visible{box-shadow:inset 0 0 0 4px #ffd35a}
+.zm-danger{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;box-shadow:inset 0 0 50px 12px rgba(220,30,30,.65);animation:zmPulse .8s ease-in-out infinite alternate}
+.zm-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 4px}
+.zm-hold{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:62px}
+.zm-swap{flex:1;max-width:180px}
+.zm-dot{position:relative;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 32% 30%,#fff 0 8%,var(--c) 22%,var(--d) 100%);box-shadow:0 3px 6px rgba(0,0,0,.35)}
+.zm-dot.big{width:40px;height:40px}
+.zm-dot i{display:block;width:34%;height:34%;background:rgba(255,255,255,.8)}
+.zm-dot .m-circle{border-radius:50%}
+.zm-dot .m-triangle{clip-path:polygon(50% 0,100% 100%,0 100%)}
+.zm-dot .m-diamond{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.zm-dot .m-star{clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+@keyframes zmPulse{from{filter:brightness(.8)}to{filter:brightness(1.2)}}
+@media (prefers-reduced-motion:reduce){.zm-danger{animation:none}}
+.zm-bar .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* a friend's squishy collection */
+.friend-squishies .fsq-grid{list-style:none;margin:10px 0 6px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.fsq-tile{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px 10px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);min-width:0;text-align:center}
+.fsq-tile.fsq-rare{border-color:rgba(167,139,250,.55)}
+.fsq-tile.fsq-legendary{border-color:rgba(250,204,21,.7);box-shadow:0 0 12px rgba(250,204,21,.18)}
+.fsq-art svg{width:58px;height:58px;display:block}
+.fsq-name{font-size:12px;line-height:1.2;overflow-wrap:anywhere}
+.fsq-tag{font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;background:rgba(167,139,250,.25)}
+.fsq-tag.legend{background:rgba(250,204,21,.25)}
+.fsq-tag.never{background:rgba(255,255,255,.12)}
