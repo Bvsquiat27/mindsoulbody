@@ -79,7 +79,11 @@ test('trade requests need friends, the friend accepts, and only one room per pai
   assert.equal(again.data.existing, true);
   assert.equal(again.data.trade.id, r.data.trade.id);
   assert.equal((await call(kv, '/trade/accept', { ...a, trade: r.data.trade.id })).status, 409, 'the asker cannot accept their own request');
-  assert.equal((await call(kv, '/trade/update', { ...a, trade: r.data.trade.id, offer: ['ark'] })).status, 409, 'no moves before it opens');
+  const early = await call(kv, '/trade/update', { ...a, trade: r.data.trade.id, offer: ['ark'] });
+  assert.equal(early.status, 200, 'the asker fills their side while the request waits');
+  assert.equal(early.data.trade.status, 'requested'); assert.deepEqual(early.data.trade.offers[a.code], ['ark']);
+  assert.equal((await call(kv, '/trade/update', { ...a, trade: r.data.trade.id, ask: 'more' })).status, 409, 'no asking for more before the friend is in');
+  assert.equal((await call(kv, '/trade/confirm', { ...a, trade: r.data.trade.id, rev: early.data.trade.rev })).status, 409, 'no ✓ before it opens');
   const list = (await call(kv, '/trade/list', b)).data.trades;
   assert.equal(list[0].id, r.data.trade.id);
   assert.equal((await call(kv, '/trade/state', { code: stranger.code, secret: stranger.secret, trade: r.data.trade.id })).status, 404, 'strangers cannot peek');
@@ -205,4 +209,33 @@ test('rooms expire, X backs out, and over-eager clients are rate limited', async
   kv.data.set(`rate:trade:${b.code}`, JSON.stringify({ start: Date.now(), n: TRADE_RULES.RATE_REQUEST }));
   assert.equal((await call(kv, '/trade/request', { ...b, with: a.code })).status, 429);
   assert.equal((await call(kv, '/trade/state', { ...a, secret: 'wrong', trade: id2 })).status, 401);
+});
+
+test('live from the first tap: the request can carry an offer, and the friend opens the room by moving on the board', async () => {
+  const kv = memoryKv();
+  const { a, b } = await pair(kv, ['ark', 'tablets'], ['coin', 'jar', 'key', 'pearl', 'oil', 'crown']);
+  assert.ok(SQUISHY_LEGENDARY.includes('tablets'), 'the tablets are legendary');
+  assert.equal((await call(kv, '/trade/request', { ...a, with: b.code, offer: ['lamp'] })).status, 400, 'the first offer is checked too');
+  assert.equal((await call(kv, '/trade/request', { ...a, with: b.code, offer: ['coin'] })).status, 400, 'only your own squishies');
+  const r = await call(kv, '/trade/request', { ...a, with: b.code, offer: ['tablets'] });
+  assert.equal(r.status, 200);
+  const t = r.data.trade;
+  assert.equal(t.status, 'requested'); assert.deepEqual(t.offers[a.code], ['tablets']);
+  assert.equal(t.need[a.code], TRADE_RULES.LEGEND_MIN, 'a legendary asks for 5 from the start');
+  const seen = (await call(kv, '/trade/state', { ...b, trade: t.id })).data.trade;
+  assert.deepEqual(seen.offers[a.code], ['tablets'], 'the friend sees the board right away');
+  const moved = await call(kv, '/trade/update', { ...b, trade: t.id, offer: ['coin', 'jar', 'key', 'pearl'] });
+  assert.equal(moved.data.trade.status, 'open', 'the friend\u2019s first move opens the room');
+  assert.equal(moved.data.trade.ready, false, 'tablets need 5 back');
+  const five = (await call(kv, '/trade/update', { ...b, trade: t.id, offer: ['coin', 'jar', 'key', 'pearl', 'oil'] })).data.trade;
+  assert.equal(five.ready, true);
+  await call(kv, '/trade/confirm', { ...a, trade: t.id, rev: five.rev });
+  const done = (await call(kv, '/trade/confirm', { ...b, trade: t.id, rev: five.rev })).data.trade;
+  assert.equal(done.status, 'done');
+  assert.ok(user(kv, b.code).squishies.ids.includes('tablets'));
+  assert.ok(!user(kv, a.code).squishies.ids.includes('tablets'));
+  const opened = await call(kv, '/trade/request', { ...b, with: a.code });
+  const empty = await call(kv, '/trade/update', { ...a, trade: opened.data.trade.id, offer: [] });
+  assert.equal(empty.data.trade.status, 'open', 'opening with no change still opens the room');
+  assert.equal((await call(kv, '/trade/state', { ...b, trade: opened.data.trade.id })).data.trade.status, 'open');
 });

@@ -568,17 +568,19 @@ function cleanStudyVerses(input) {
    trades:<code> → [trade ids], newest first, max TRADE_INDEX_MAX
    rate:trade:<code> → 30 trade requests per hour
    rate:trade-move:<code> → 600 board changes per hour
-   rate:trade-read:<code> → 1800 state reads per hour (the board polls only while open) */
+   rate:trade-read:<code> → 3600 state reads per hour (the board polls only while open)
+   The board is live from the first tap: the asker can fill their side while
+   the request waits, and the friend's first move on the board opens it. */
 export const SQUISHY_IDS = ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow', 'stone', 'loaves', 'seed', 'bush', 'basket', 'tree', 'ark', 'coat',
   'ladder', 'raven', 'wheat', 'oil', 'coin', 'donkey', 'jar', 'crown', 'boat', 'tomb',
   'lily', 'key', 'pearl', 'manna', 'scroll', 'shofar', 'tablets', 'elephant', 'honeycomb', 'anchor', 'shield', 'chariot', 'lamp'];
 /* everyone starts with these, so they are not traded; the lamp never is */
 export const SQUISHY_STARTERS = ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow'];
-export const SQUISHY_LEGENDARY = ['bush', 'tomb', 'chariot', 'lamp'];
+export const SQUISHY_LEGENDARY = ['bush', 'tomb', 'chariot', 'tablets', 'lamp'];
 export const TRADE_RULES = {
   LEGEND_MIN: 5, NEED_MAX: 12, OFFER_MAX: 12, ACTIVE_MAX: 5, INDEX_MAX: 20,
   REQUEST_TTL_MS: 30 * 60 * 1000, OPEN_TTL_MS: 30 * 60 * 1000, MAX_LIFE_MS: 2 * 60 * 60 * 1000,
-  RATE_REQUEST: 30, RATE_MOVE: 600, RATE_READ: 1800, PENDING_MAX: 20,
+  RATE_REQUEST: 30, RATE_MOVE: 600, RATE_READ: 3600, PENDING_MAX: 20,
 };
 const TRADE_KV_TTL = 2 * 60 * 60;
 const TRADE_ID = /^[a-f0-9]{16}$/;
@@ -629,6 +631,20 @@ export function applySquishies(user, input) {
 export function publicSquishies(user) {
   const rec = squishyRecord(user);
   return rec.public && rec.updatedAt ? rec.ids : null;
+}
+
+/* a side of the board: known, tradable, owned, not promised in another trade */
+async function checkOffer(env, me, raw, tradeId) {
+  if (!Array.isArray(raw) || raw.length > TRADE_RULES.OFFER_MAX) return { error: 'That offer is not valid', status: 400 };
+  const offer = cleanSquishyIds(raw);
+  if (offer.length !== raw.length) return { error: 'That offer is not valid', status: 400 };
+  if (offer.includes('lamp')) return { error: 'The lamp can never be traded', reason: 'lamp', status: 400 };
+  if (offer.some((id) => !tradableSquishy(id))) return { error: 'Starter squishies are not traded', reason: 'starter', status: 400 };
+  const owned = squishyRecord(me).ids;
+  if (offer.some((id) => !owned.includes(id))) return { error: 'You can only offer squishies you have', reason: 'owned', status: 400 };
+  const locked = await lockedElsewhere(env, me.code, tradeId);
+  if (offer.some((id) => locked.has(id))) return { error: 'That squishy is already in another trade', reason: 'locked', status: 409 };
+  return { offer };
 }
 
 async function loadTrade(env, id) {
@@ -723,9 +739,15 @@ export async function handleTrade(path, body, env, authedUser) {
     if (same) return [{ ok: true, trade: tradeView(same, me.code), existing: true }];
     if (mine.length >= TRADE_RULES.ACTIVE_MAX) return [{ error: 'You have too many open trades' }, 429];
     if (theirs.length >= TRADE_RULES.ACTIVE_MAX) return [{ error: 'Your friend has too many open trades' }, 429];
+    let first = [];
+    if (body && Object.prototype.hasOwnProperty.call(body, 'offer')) {
+      const c = await checkOffer(env, me, body.offer, null);
+      if (c.error) return [{ error: c.error, ...(c.reason ? { reason: c.reason } : {}) }, c.status];
+      first = c.offer;
+    }
     const t = {
       id: randomHex(8), from: me.code, to: friend.code, names: { [me.code]: me.name || 'Friend', [friend.code]: friend.name || 'Friend' },
-      status: 'requested', offers: { [me.code]: [], [friend.code]: [] }, need: { [me.code]: 0, [friend.code]: 0 },
+      status: 'requested', offers: { [me.code]: first, [friend.code]: [] }, need: { [me.code]: first.some((id) => SQUISHY_LEGENDARY.includes(id)) ? TRADE_RULES.LEGEND_MIN : 0, [friend.code]: 0 },
       rev: 1, checks: { [me.code]: 0, [friend.code]: 0 }, note: null, createdAt: now, updatedAt: now, expiresAt: now + TRADE_RULES.REQUEST_TTL_MS,
     };
     await saveTrade(env, t);
@@ -770,22 +792,27 @@ export async function handleTrade(path, body, env, authedUser) {
     return [{ ok: true, trade: tradeView(t, me.code) }];
   }
 
-  if (t.status !== 'open') return [{ error: 'The trade room is not open yet' }, 409];
+  /* a live board from the first tap: while the request waits, the asker may
+     change their side, and the friend's first move on the board opens it */
+  let opened = false;
+  if (path === '/trade/update' && t.status === 'requested') {
+    if (t.to === me.code) {
+      opened = true;
+      t.status = 'open';
+      t.expiresAt = Math.min(t.createdAt + TRADE_RULES.MAX_LIFE_MS, now + TRADE_RULES.OPEN_TTL_MS);
+      t.rev += 1;
+    } else if (body?.ask === 'more') return [{ error: 'The trade room is not open yet' }, 409];
+  }
+  if (t.status !== 'open' && !(path === '/trade/update' && t.status === 'requested')) return [{ error: 'The trade room is not open yet' }, 409];
   const touch = () => { t.expiresAt = Math.min(t.createdAt + TRADE_RULES.MAX_LIFE_MS, now + TRADE_RULES.OPEN_TTL_MS); };
 
   if (path === '/trade/update') {
     /* your own offer, how many you want back, or "more please" */
     let changed = false;
     if (body && Object.prototype.hasOwnProperty.call(body, 'offer')) {
-      if (!Array.isArray(body.offer) || body.offer.length > TRADE_RULES.OFFER_MAX) return [{ error: 'That offer is not valid' }, 400];
-      const offer = cleanSquishyIds(body.offer);
-      if (offer.length !== body.offer.length) return [{ error: 'That offer is not valid' }, 400];
-      if (offer.includes('lamp')) return [{ error: 'The lamp can never be traded', reason: 'lamp' }, 400];
-      if (offer.some((id) => !tradableSquishy(id))) return [{ error: 'Starter squishies are not traded', reason: 'starter' }, 400];
-      const owned = squishyRecord(me).ids;
-      if (offer.some((id) => !owned.includes(id))) return [{ error: 'You can only offer squishies you have', reason: 'owned' }, 400];
-      const locked = await lockedElsewhere(env, me.code, t.id);
-      if (offer.some((id) => locked.has(id))) return [{ error: 'That squishy is already in another trade', reason: 'locked' }, 409];
+      const c = await checkOffer(env, me, body.offer, t.id);
+      if (c.error) return [{ error: c.error, ...(c.reason ? { reason: c.reason } : {}) }, c.status];
+      const offer = c.offer;
       if (offer.join() !== (t.offers[me.code] || []).join()) { t.offers[me.code] = offer; changed = true; }
     }
     if (body && Object.prototype.hasOwnProperty.call(body, 'need')) {
@@ -800,7 +827,7 @@ export async function handleTrade(path, body, env, authedUser) {
       if (body?.ask !== 'more') t.note = null;
       touch();
       await saveTrade(env, t);
-    }
+    } else if (opened) await saveTrade(env, t);
     return [{ ok: true, trade: tradeView(t, me.code) }];
   }
 
