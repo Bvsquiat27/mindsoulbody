@@ -8,6 +8,7 @@ export const MYNOTES_LIMITS = {
   TOTAL: 200000,     // bytes stored per user
   SYNC_RATE: 30,     // syncs per hour
   READ_RATE: 120,    // friend reads per hour
+  HIDE_RATE: 300,    // hide-only syncs per hour: their own bucket, so hiding always works
 };
 const KINDS = ['devotional', 'study'];
 
@@ -49,10 +50,12 @@ export async function handleMyNotes(path, body, env, deps) {
   if (a.error) return [{ error: a.error }, a.status];
   const me = a.user;
   if (path === '/mynotes/sync') {
-    if (!(await deps.takeRate(env, `rate:mynotes:${me.code}`, MYNOTES_LIMITS.SYNC_RATE))) return [{ error: 'Too many note syncs this hour' }, 429];
     const hidden = body?.hidden === true;
+    const bucket = hidden ? [`rate:mynotes-hide:${me.code}`, MYNOTES_LIMITS.HIDE_RATE] : [`rate:mynotes:${me.code}`, MYNOTES_LIMITS.SYNC_RATE];
+    if (!(await deps.takeRate(env, bucket[0], bucket[1]))) return [{ error: 'Too many note syncs this hour' }, 429];
     let notes = [];
-    if (body && Object.prototype.hasOwnProperty.call(body, 'notes')) {
+    if (hidden) notes = [];
+    else if (body && Object.prototype.hasOwnProperty.call(body, 'notes')) {
       const c = cleanNotes(body.notes);
       if (c.error) return [{ error: c.error }, 400];
       notes = c.notes;
