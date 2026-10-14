@@ -1187,7 +1187,7 @@
     "Give a squishy to a friend": "Regala un squishy a un amigo",
     "Trade Room": "Sala de intercambio",
     "Or give a squishy with a code": "O regala un squishy con un código",
-    "Pick one of your squishies and make a code. It goes to your friend and leaves your shelf. Legendary squishies stay on your shelf.": "Elige uno de tus squishies y crea un código. Se va con tu amigo y sale de tu estante. Los squishies legendarios se quedan en tu estante.",
+    "Pick one of your squishies and make a code. It goes to your friend and leaves your shelf. Codes can’t send legendary squishies: trade those in the Trade Room.": "Elige uno de tus squishies y crea un código. Se va con tu amigo y sale de tu estante. Los códigos no pueden enviar squishies legendarios: cámbialos en la Sala de intercambio.",
     "Make a trade code": "Crear código de cambio",
     "Got a code from a friend?": "¿Te dieron un código?",
     "Type the code": "Escribe el código",

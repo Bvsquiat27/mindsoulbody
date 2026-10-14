@@ -109,3 +109,10 @@ test('the Trade tab and the friend profile open the room straight away', () => {
   assert.match(aura, /kind==='trade-open'\)\{msbTradeLobby\(button\.dataset\.code\)/);
   assert.match(read('./kidgames.css'), /\.sr-friend\{/);
 });
+
+test('one legendary list: the room reuses squishy-trade.js, and the code screen points legendaries to the Trade Room', () => {
+  assert.equal(R.LEGENDARY, require('./squishy-trade.js').LEGENDARY);
+  assert.doesNotMatch(read('./squishy-room.js'), /LEGENDARY = \[/);
+  for (const f of ['./squishy.js', './i18n.js']) assert.doesNotMatch(read(f), /Legendary squishies stay on your shelf|se quedan en tu estante/);
+  assert.match(read('./i18n.js'), /Los códigos no pueden enviar squishies legendarios: cámbialos en la Sala de intercambio\./);
+});

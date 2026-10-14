@@ -16,7 +16,9 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
   const POLL_MS = 1500, LIST_MS = 6000, LEGEND_MIN = 5, NEED_MAX = 12, OFFER_MAX = 12;
-  const LEGENDARY = ['bush', 'tomb', 'chariot', 'tablets', 'lamp'];
+  /* one list for the whole app: squishy-trade.js (loaded first) owns it */
+  const TRADE = typeof module === 'object' && module.exports ? require('./squishy-trade.js') : (typeof self !== 'undefined' ? self : this).MsbSquishyTrade;
+  const LEGENDARY = TRADE.LEGENDARY;
   const W = () => (typeof window !== 'undefined' ? window : {});
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
   const fmt = (s, v) => String(s).replace(/\{(\w+)\}/g, (_, k) => (v && v[k] != null ? v[k] : ''));
