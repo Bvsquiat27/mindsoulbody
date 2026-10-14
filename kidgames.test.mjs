@@ -97,9 +97,9 @@ test('progress lives in one msb_ key that Export/Restore covers; badges get a da
 
 test('games are wired in, precached, in Spanish, and follow sound, vibration and reduced-motion settings', () => {
   const html = read('./index.html'), sw = read('./sw.js'), stories = read('./stories.js'), ui = read('./kidgames.js');
-  const files = ['kidgames-data.js', 'kidgames-core.js', 'kidgames.js', 'kg-wordsearch.js', 'kg-order.js', 'kg-who.js'];
+  const files = ['kidgames-data.js', 'kidgames-core.js', 'kidgames.js', 'kg-wordsearch.js', 'kg-order.js', 'kg-who.js', 'kg-verse.js', 'kg-ark.js'];
   for (const f of files) { assert.ok(html.includes(`<script src="${f}" defer></script>`), f); assert.ok(sw.includes(`'./${f}'`), f); }
-  assert.ok(html.indexOf('kg-who.js') < html.indexOf('stories.js'));
+  assert.ok(html.indexOf('kg-ark.js') < html.indexOf('stories.js'));
   assert.match(stories, /data-kg-enter/); assert.match(stories, /data-kg-exit/); assert.match(stories, /MsbKidGames\.close\(\)/);
   assert.match(ui, /msb_tap_vibration/); assert.match(ui, /prefers-reduced-motion/); assert.match(ui, /data-i18n-skip/);
   assert.match(ui, /aria-live="polite"/);
@@ -108,7 +108,7 @@ test('games are wired in, precached, in Spanish, and follow sound, vibration and
   assert.match(html, /<link rel="stylesheet" href="kidgames.css">/); assert.ok(sw.includes("'./kidgames.css'"));
   assert.match(css, /prefers-reduced-motion:reduce\)\{\.kg-screen/);
   assert.match(css, /\.kg-ws-grid\{[^}]*touch-action:none/);
-  for (const f of ['kg-wordsearch.js', 'kg-order.js', 'kg-who.js']) {
+  for (const f of ['kg-wordsearch.js', 'kg-order.js', 'kg-who.js', 'kg-verse.js', 'kg-ark.js']) {
     const src = read(`./${f}`);
     const pairs = [...src.matchAll(/t\('((?:[^'\\]|\\.)*)', '((?:[^'\\]|\\.)*)'/g)];
     assert.ok(pairs.length > 8, f);
@@ -116,4 +116,39 @@ test('games are wired in, precached, in Spanish, and follow sound, vibration and
     assert.match(src, /name: \{ en: '[^']+', es: '[^']+' \}/);
   }
   for (const f of files) assert.doesNotThrow(() => new Function(read(`./${f}`)), f);
+});
+
+test('verse builder: verses split into words in order; the next word always falls; stars by mistakes', () => {
+  assert.equal(D.VERSES.length, 6);
+  for (const x of D.VERSES) for (const l of ['en', 'es']) {
+    const w = C.verseWords(x.verse.text[l]);
+    assert.equal(w.join(' '), x.verse.text[l].replace(/\s+/g, ' '));
+    assert.ok(w.length >= 7 && w.length <= 16, `${x.id} ${l}: ${w.length} words`);
+    for (let have = 0; have < w.length; have += 1) {
+      assert.equal(C.nextFalling(w, have, []), have, 'needed word comes first');
+      const other = C.nextFalling(w, have, [have], C.rng(have));
+      if (other !== null) assert.ok(other > have && other < have + 6);
+    }
+    assert.equal(C.nextFalling(w, w.length, []), null);
+  }
+  const w = ['a', 'b', 'a', 'c'];
+  assert.ok(C.wordFits(w, 0, 2), 'a copy of the same word counts'); assert.ok(!C.wordFits(w, 0, 1));
+  assert.deepEqual([C.stars(0), C.stars(2), C.stars(5)], [3, 2, 1]);
+  assert.match(read('./kg-verse.js'), /reduced\(\)/, 'still words with reduced motion');
+  assert.match(read('./kg-verse.js'), /const changed = added \|\|/, 'new falling words are drawn as soon as they spawn');
+});
+
+test('ark builder: each level is pairs of known animals with EN/ES names, a timer, and an obedience lesson', () => {
+  for (const lv of D.ARK.levels) {
+    assert.equal(new Set(lv.pairs).size, lv.pairs.length);
+    for (const a of lv.pairs) { assert.ok(D.ARK.animals[a], a); assert.ok(D.ARK.names[a].en && D.ARK.names[a].es, a); }
+    const deck = C.arkDeck(lv.pairs, C.rng(1));
+    assert.equal(deck.length, lv.pairs.length * 2);
+    for (const a of lv.pairs) assert.equal(deck.filter(x => x === a).length, 2);
+    assert.ok(lv.seconds >= 45);
+  }
+  assert.ok(D.ARK.lesson.en.includes('obey') && /obedec/i.test(D.ARK.lesson.es));
+  assert.deepEqual([C.arkStars(30, 60), C.arkStars(15, 60), C.arkStars(5, 60)], [3, 2, 1]);
+  const ark = read('./kg-ark.js');
+  assert.match(ark, /document\.hidden/, 'timer pauses when hidden'); assert.match(ark, /role="timer"/);
 });
