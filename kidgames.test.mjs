@@ -250,7 +250,33 @@ test('sling follow-up: Giant courage counts the new levels, old clears carry ove
   pr.finish('sling', 'z5'); assert.equal(giant.test(pr.get()), true);
   const sling = read('./kg-sling.js');
   assert.ok(sling.includes("'New Sling! Your cleared levels are open in the new game.', '¡Nueva Honda!"));
-  assert.doesNotMatch(read('./kidgames.js'), /Ark Builder|thunder: \(\)|knock: \(\)/);
+  assert.doesNotMatch(read('./kidgames.js'), /Ark Builder|knock: \(\)|rain: \(\)/);
   assert.ok(read('./i18n.js').includes('"Finish 1 Map Journey": "Termina 1 ruta de Viaje en el mapa"'));
   assert.match(read('./squishy.js'), /ch\.n === 1 \? 'Finish 1 Map Journey'/);
+});
+
+test('every sound() a kid game plays exists, and old Sling stars carry over', () => {
+  const ui = read('./kidgames.js'), fx = ui.slice(ui.indexOf('const SOUND = {'), ui.indexOf('\n  };', ui.indexOf('const SOUND = {')));
+  const names = new Set();
+  for (const f of ['kidgames.js', 'kg-wordsearch.js', 'kg-order.js', 'kg-who.js', 'kg-verse.js', 'kg-map.js', 'kg-sling.js']) for (const m of read(`./${f}`).matchAll(/\bsound\('([a-z]+)'/g)) names.add(m[1]);
+  assert.ok(names.has('thunder'));
+  for (const n of names) assert.match(fx, new RegExp(`\\b${n}: \\(`), `sound "${n}" exists`);
+  const m = new Map(), s = { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)) };
+  s.setItem('msb_kidgames', JSON.stringify({ done: { sling: ['s1', 's2'] }, best: { 'sling:s1': 3, 'sling:s2': 2, 'sling:z2': 3, who: 4 }, plays: {}, badges: {} }));
+  const pr = C.progress(s); assert.ok(pr.migrateSling());
+  assert.deepEqual(pr.get().best, { 'sling:z1': 3, 'sling:z2': 3, who: 4 });
+});
+
+test('orphaned old Sling stars move to the new levels on their own; painted art is precached', () => {
+  const m = new Map(), s = { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)) };
+  s.setItem('msb_kidgames', JSON.stringify({ done: { sling: ['z1'] }, best: { 'sling:s3': 2, 'sling:z1': 1 }, plays: {}, badges: {} }));
+  const pr = C.progress(s);
+  assert.equal(pr.migrateSling(), false, 'no levels moved, so no note');
+  assert.deepEqual(pr.get().best, { 'sling:z1': 1, 'sling:z3': 2 });
+  assert.deepEqual(pr.done('sling'), ['z1']);
+  const sw = read('./sw.js'), sling = read('./kg-sling.js'), map = read('./kg-map.js');
+  for (const n of ['goliath-idle', 'goliath-angry', 'goliath-hit', 'goliath-laugh', 'david', 'valley']) { assert.ok(sw.includes(`'${n}'`), n); assert.ok(existsSync(new URL(`./img/sling/${n}.webp`, import.meta.url)), n); }
+  for (const n of ['map-exodus', 'map-paul']) { assert.ok(map.includes(`img/map/${n}.webp`)); assert.ok(existsSync(new URL(`./img/map/${n}.webp`, import.meta.url)), n); }
+  assert.match(sling, /img\/sling\/\$\{name\}\.webp/);
+  assert.match(sling, /goliath-\$\{pose === 'fall' \? 'hit' : pose\}/);
 });

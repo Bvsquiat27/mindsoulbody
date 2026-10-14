@@ -75,6 +75,8 @@
     bong: () => { tone(330, { f1: 300, dur: 0.6, peak: 0.05 }); tone(660, { dur: 0.4, peak: 0.02 }); },
     hooray: () => { run([523, 659, 784, 1047, 1319, 1568], { dur: 0.24, peak: 0.05, type: 'triangle', step: 0.09 }); noise({ f0: 1500, q: 0.6, dur: 0.9, peak: 0.02, attack: 0.2, delay: 0.3 }); },
     giantfall: () => { tone(110, { f1: 50, dur: 0.7, peak: 0.08 }); noise({ filter: 'lowpass', f0: 380, dur: 0.6, peak: 0.06, delay: 0.25 }); },
+    /* Map Journey storms */
+    thunder: () => { noise({ filter: 'lowpass', f0: 600, f1: 80, dur: 1.4, peak: 0.08, attack: 0.03 }); tone(60, { f1: 40, dur: 1, peak: 0.05 }); },
     rainbow: () => run([784, 988, 1175, 1568, 1976, 2349], { dur: 0.5, peak: 0.035, step: 0.07 }),
     combo: () => run([880, 1175, 1568], { dur: 0.1, peak: 0.04, step: 0.05, type: 'triangle' }),
     /* music stingers: little chords so levels open and close like a real game */

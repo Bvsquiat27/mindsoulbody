@@ -27,6 +27,7 @@
 
   function start() { return { view: 'pick', at: 0 }; }
   function begin(s, i) {
+    ['goliath-idle', 'goliath-angry', 'goliath-hit', 'goliath-laugh', 'david', 'valley'].forEach(spr);
     stop();
     const lv = S().levels[i], path = C().zumaPath(lv.path), z = C().zumaStart(lv);
     Object.assign(s, { view: 'play', at: i, z, path, cur: C().zumaNext(z), next: C().zumaNext(z), aim: -Math.PI / 2, shot: null, parts: [], texts: [], shake: 0, freeze: 0, time: 0, popped: 0, best: 0,
@@ -65,6 +66,18 @@
   /* ---------- drawing ---------- */
   const rr = (g, x, y, w, h, r) => { g.beginPath(); if (g.roundRect) g.roundRect(x, y, w, h, r); else g.rect(x, y, w, h); };
   let bg = null, bgKey = '';
+  /* painted sprites (original art, cached by the service worker); the vector
+     drawing below stays as a fallback until they load or if offline-missing */
+  const SPR = {};
+  /* Goliath's drawn height: as tall as fits above the end of the track */
+  const gHeight = e => Math.max(104, Math.min(150, e.y + 2));
+  const gChest = e => e.y - gHeight(e) * 0.55;
+  function spr(name) {
+    if (typeof Image === 'undefined') return null;
+    let im = SPR[name];
+    if (!im) { im = SPR[name] = new Image(); im.decoding = 'async'; im.onload = () => { bg = null; }; im.src = `img/sling/${name}.webp`; }
+    return im.complete && im.naturalWidth ? im : null;
+  }
   function background(w, h, path) {
     const key = `${w}x${h}:${path.name}`; if (bg && bgKey === key) return bg;
     const c = document.createElement('canvas'); c.width = w; c.height = h;
@@ -73,19 +86,23 @@
     /* the valley of Elah from above: warm grass, a brook, flowers and rocks */
     const ground = g.createLinearGradient(0, 0, 0, 480); ground.addColorStop(0, '#b9d98a'); ground.addColorStop(0.5, '#a3cc72'); ground.addColorStop(1, '#8fbf5f');
     g.fillStyle = ground; g.fillRect(0, 0, 360, 480);
+    const paint = spr('valley');
+    if (paint) { const sc = Math.max(360 / paint.naturalWidth, 480 / paint.naturalHeight); g.drawImage(paint, (360 - paint.naturalWidth * sc) / 2, (480 - paint.naturalHeight * sc) / 2, paint.naturalWidth * sc, paint.naturalHeight * sc); }
+    else {
     g.fillStyle = 'rgba(255,255,255,.08)'; for (let i = 0; i < 40; i += 1) { g.beginPath(); g.ellipse((i * 97) % 360, (i * 61) % 480, 28, 12, 0, 0, TAU); g.fill(); }
     g.strokeStyle = 'rgba(120,200,240,.55)'; g.lineWidth = 9; g.lineCap = 'round'; g.beginPath(); g.moveTo(-10, 300); g.bezierCurveTo(90, 270, 120, 340, 200, 320); g.bezierCurveTo(280, 300, 300, 360, 370, 340); g.stroke();
     g.strokeStyle = 'rgba(255,255,255,.4)'; g.lineWidth = 2; g.beginPath(); g.moveTo(-10, 298); g.bezierCurveTo(90, 268, 120, 338, 200, 318); g.stroke();
     for (let i = 0; i < 26; i += 1) { const x = (i * 131) % 360, y = (i * 83 + 20) % 480; g.fillStyle = ['#ffd166', '#ff9db5', '#ffffff', '#c9a7ff'][i % 4]; for (let a = 0; a < 5; a += 1) { g.beginPath(); g.arc(x + Math.cos(a * 1.26) * 2.6, y + Math.sin(a * 1.26) * 2.6, 1.8, 0, TAU); g.fill(); } g.fillStyle = '#f4a300'; g.beginPath(); g.arc(x, y, 1.3, 0, TAU); g.fill(); }
     for (let i = 0; i < 12; i += 1) { const x = (i * 173 + 40) % 360, y = (i * 113 + 60) % 480; g.fillStyle = '#9e9a8f'; g.beginPath(); g.ellipse(x, y, 7, 5, 0.4, 0, TAU); g.fill(); g.fillStyle = 'rgba(255,255,255,.35)'; g.beginPath(); g.ellipse(x - 2, y - 2, 3, 1.6, 0.4, 0, TAU); g.fill(); }
     g.strokeStyle = '#6fa34a'; g.lineWidth = 1.4; for (let i = 0; i < 60; i += 1) { const x = (i * 59) % 360, y = (i * 137) % 480; g.beginPath(); g.moveTo(x, y + 5); g.lineTo(x - 2, y - 2); g.moveTo(x, y + 5); g.lineTo(x + 2, y - 3); g.stroke(); }
+    }
     /* the carved stone track */
     const line = (wd, col, dash) => { g.strokeStyle = col; g.lineWidth = wd; g.lineJoin = 'round'; g.lineCap = 'round'; g.setLineDash(dash || []); g.beginPath(); path.pts.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y))); g.stroke(); g.setLineDash([]); };
-    line(34, 'rgba(60,40,20,.25)'); line(30, '#7a5a34'); line(25, '#b08a57'); line(19, '#9c7748'); line(2, 'rgba(255,240,210,.45)', [6, 8]);
+    line(38, 'rgba(40,25,10,.28)'); line(32, '#6b4a2b'); line(27, '#c49a62'); line(21, '#a87e4c'); line(8, 'rgba(255,235,200,.12)'); line(2, 'rgba(255,240,210,.5)', [6, 8]);
     /* the giant's camp: tents and a dark pit at the end of the track */
     const e = path.goliath;
     g.fillStyle = 'rgba(40,25,10,.55)'; g.beginPath(); g.ellipse(e.x, e.y + 4, 20, 10, 0, 0, TAU); g.fill();
-    for (const [dx, dy, cl] of [[-46, -10, '#e8d4b0'], [40, -4, '#d9b98a']]) { const x = e.x + dx, y = e.y + dy; if (x < 10 || x > 350) continue; g.fillStyle = cl; g.beginPath(); g.moveTo(x - 13, y + 9); g.lineTo(x, y - 9); g.lineTo(x + 13, y + 9); g.closePath(); g.fill(); g.strokeStyle = '#8a6a3a'; g.lineWidth = 1; g.stroke(); g.strokeStyle = '#c0392b'; g.beginPath(); g.moveTo(x, y - 9); g.lineTo(x, y - 17); g.stroke(); }
+    if (!paint) for (const [dx, dy, cl] of [[-46, -10, '#e8d4b0'], [40, -4, '#d9b98a']]) { const x = e.x + dx, y = e.y + dy; if (x < 10 || x > 350) continue; g.fillStyle = cl; g.beginPath(); g.moveTo(x - 13, y + 9); g.lineTo(x, y - 9); g.lineTo(x + 13, y + 9); g.closePath(); g.fill(); g.strokeStyle = '#8a6a3a'; g.lineWidth = 1; g.stroke(); g.strokeStyle = '#c0392b'; g.beginPath(); g.moveTo(x, y - 9); g.lineTo(x, y - 17); g.stroke(); }
     bg = c; bgKey = key; return c;
   }
   function stoneArt(g, x, y, st, r, glow) {
@@ -104,7 +121,10 @@
     else { for (let i = 0; i < 10; i += 1) { const a = -Math.PI / 2 + i * Math.PI / 5, rr2 = i % 2 ? m * 0.45 : m; g.lineTo(Math.cos(a) * rr2, Math.sin(a) * rr2 + 1); } g.closePath(); }
     g.fill();
     if (st.p) { g.font = `${Math.round(r * 1.05)}px system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#fff'; g.strokeStyle = 'rgba(0,0,0,.5)'; g.lineWidth = 3; g.strokeText(POWER[st.p].icon, 0, 1); g.fillText(POWER[st.p].icon, 0, 1); }
-    g.fillStyle = 'rgba(255,255,255,.55)'; g.beginPath(); g.ellipse(-r * 0.38, -r * 0.42, r * 0.28, r * 0.16, -0.6, 0, TAU); g.fill();
+    g.fillStyle = 'rgba(255,255,255,.6)'; g.beginPath(); g.ellipse(-r * 0.38, -r * 0.42, r * 0.3, r * 0.17, -0.6, 0, TAU); g.fill();
+    g.fillStyle = 'rgba(255,255,255,.9)'; g.beginPath(); g.arc(-r * 0.5, -r * 0.5, r * 0.08, 0, TAU); g.fill();
+    g.strokeStyle = 'rgba(255,255,255,.35)'; g.lineWidth = 1; g.beginPath(); g.arc(0, 0, r * 0.8, 0.3, 1.6); g.stroke();
+    g.strokeStyle = c.dark; g.globalAlpha = 0.7; g.lineWidth = 1.2; g.beginPath(); g.arc(0, 0, r - 0.5, 0, TAU); g.stroke(); g.globalAlpha = 1;
     g.restore();
   }
   /* Goliath: an original, exaggerated cartoon giant. Bronze helmet with a red
@@ -114,6 +134,18 @@
     const e = s.path.goliath, calm = reduced();
     const pose = s.falling > 0 ? 'fall' : s.gT > 0 ? s.gpose : (s.z.head / s.path.len > 0.7 || s.final) ? 'angry' : s.lost ? 'laugh' : 'idle';
     const sc = 0.82;
+    const sp = spr(`goliath-${pose === 'fall' ? 'hit' : pose}`);
+    if (sp) {
+      g.save(); g.translate(e.x, e.y + 8);
+      if (pose === 'fall') { const f = Math.min(1, s.falling); g.translate(f * 10, 0); g.rotate(-f * 1.45); g.globalAlpha = 1 - Math.max(0, f - 0.85) * 2; }
+      let sx = 0; if (!calm && pose === 'hit') sx = Math.sin(time * 70) * 3; else if (!calm && (pose === 'angry' || pose === 'laugh')) sx = Math.sin(time * 40) * 1.2;
+      const breathe = calm ? 1 : 1 + Math.sin(time * 2.2) * 0.012, H = gHeight(e), W = H * sp.naturalWidth / sp.naturalHeight;
+      if (pose !== 'fall') { g.fillStyle = 'rgba(0,0,0,.28)'; g.beginPath(); g.ellipse(0, 0, W * 0.38, 8, 0, 0, TAU); g.fill(); }
+      g.translate(sx, 0); g.scale(1, breathe);
+      if (pose === 'hit' && !calm && s.gT > 0) g.filter = 'brightness(1.5)';
+      g.drawImage(sp, -W / 2, -H, W, H); g.filter = 'none';
+      g.restore();
+    } else {
     g.save(); g.translate(e.x, e.y + 6);
     if (pose === 'fall') { const f = Math.min(1, s.falling); g.translate(f * 8, 0); g.rotate(-f * 1.45); }
     let shakeX = 0; if (!calm && (pose === 'angry' || pose === 'laugh')) shakeX = Math.sin(time * 40) * (pose === 'angry' ? 1.2 : 0.8);
@@ -175,10 +207,11 @@
     if (pose === 'angry' && !calm) { g.fillStyle = 'rgba(255,255,255,.7)'; for (const sx of [-30, 30]) { const f = (time * 1.5 + (sx > 0 ? 0.5 : 0)) % 1; g.beginPath(); g.arc(sx + sx * f * 0.3, -160 - f * 20, 4 + f * 5, 0, TAU); g.globalAlpha = 1 - f; g.fill(); g.globalAlpha = 1; } }
     if ((pose === 'hit' || pose === 'fall') && !calm) { g.fillStyle = '#ffd35a'; for (let i = 0; i < 4; i += 1) { const a = time * 5 + i * TAU / 4; g.font = '12px system-ui'; g.fillText('★', Math.cos(a) * 26 - 5, -172 + Math.sin(a) * 6); } }
     g.restore();
+    }
     /* "Ha ha!" when the chain reaches him */
     if (s.lost) { g.font = 'bold 15px system-ui, sans-serif'; g.textAlign = 'center'; g.lineWidth = 4; g.strokeStyle = 'rgba(0,0,0,.5)'; g.fillStyle = '#fff'; const tx = Math.min(320, Math.max(40, e.x)), ty = Math.max(20, e.y - 150); g.strokeText(t('Ha ha!', '¡Ja ja!'), tx, ty); g.fillText(t('Ha ha!', '¡Ja ja!'), tx, ty); }
     /* the target ring for the final stone */
-    if (s.final && !s.won && !s.falling) { const r = 34 + (calm ? 0 : Math.sin(time * 6) * 4); g.strokeStyle = 'rgba(255,211,90,.95)'; g.lineWidth = 3; g.setLineDash([6, 6]); g.beginPath(); g.arc(e.x, e.y - 100 * sc, r, 0, TAU); g.stroke(); g.setLineDash([]); }
+    if (s.final && !s.won && !s.falling) { const r = 34 + (calm ? 0 : Math.sin(time * 6) * 4); g.strokeStyle = 'rgba(255,211,90,.95)'; g.lineWidth = 3; g.setLineDash([6, 6]); g.beginPath(); g.arc(e.x, gChest(e), r, 0, TAU); g.stroke(); g.setLineDash([]); }
   }
   /* David in the middle: turns to aim, whirls the sling, cheers, worries, jumps */
   function david(g, s, time) {
@@ -191,6 +224,22 @@
     const rk = g.createLinearGradient(0, 8, 0, 28); rk.addColorStop(0, '#cfc6b8'); rk.addColorStop(1, '#8f877b'); g.fillStyle = rk; g.beginPath(); g.ellipse(0, 18, 30, 10, 0, 0, TAU); g.fill();
     /* the aim guide is drawn by the caller; here the body */
     g.translate(0, hop);
+    const dv = spr('david');
+    if (dv) {
+      const H = 62, W = H * dv.naturalWidth / dv.naturalHeight, flip = Math.cos(s.aim) > 0.15 ? -1 : 1;
+      g.save(); if (pose === 'sad') g.rotate(0.12); g.scale(flip, 1);
+      if (pose === 'worried' && !calm) g.translate(Math.sin(time * 30) * 0.8, 0);
+      g.drawImage(dv, -W / 2, 20 - H, W, H); g.restore();
+      if (pose === 'worried' && !calm) { g.fillStyle = '#7ad3ff'; g.beginPath(); g.moveTo(16, -34); g.quadraticCurveTo(20, -27, 16, -25); g.quadraticCurveTo(12, -27, 16, -34); g.fill(); }
+      if (!s.won && !s.lost) {
+        const a = s.aim, whirl = calm ? 0 : time * 9, hx = Math.cos(a) * 20, hy = -26 + Math.sin(a) * 14;
+        const px = hx + Math.cos(a + Math.sin(whirl) * 0.5) * 10, py = hy + Math.sin(a + Math.sin(whirl) * 0.5) * 10;
+        g.strokeStyle = '#6b4a2b'; g.lineWidth = 1.6; g.beginPath(); g.moveTo(0, -30); g.quadraticCurveTo(hx, hy - 6, px, py); g.stroke();
+        if (!s.shot) stoneArt(g, px, py, s.cur, 8, true);
+        stoneArt(g, 16, 12, s.next, 5);
+      }
+      g.restore(); return;
+    }
     g.fillStyle = '#e8b64c'; g.beginPath(); g.moveTo(-10, -4); g.lineTo(10, -4); g.lineTo(13, 16); g.lineTo(-13, 16); g.closePath(); g.fill();
     g.fillStyle = '#8b5a2b'; g.fillRect(-11, 4, 22, 3);
     g.fillStyle = '#a0703c'; rr(g, 6, 6, 8, 8, 2); g.fill();
@@ -227,7 +276,7 @@
     for (let k = 20; k < 620; k += 6) {
       const x = d.x + dx * k, y = d.y + dy * k;
       if (x < -10 || x > 370 || y < -10 || y > 490) return { x, y, hit: false };
-      if (s.final) { const e = s.path.goliath; if (Math.hypot(x - e.x, y - (e.y - 82)) < 34) return { x, y, hit: true }; }
+      if (s.final) { const e = s.path.goliath; if (Math.hypot(x - e.x, y - gChest(e)) < 34) return { x, y, hit: true }; }
       else if (C().zumaHit(s.z, s.path, x, y) >= 0) return { x, y, hit: true };
     }
     return null;
@@ -351,7 +400,7 @@
             const sp = s.shot, steps = 3;
             for (let i = 0; i < steps && s.shot; i += 1) {
               sp.x += sp.vx * dt / steps; sp.y += sp.vy * dt / steps;
-              if (s.final) { const e = s.path.goliath; if (Math.hypot(sp.x - e.x, sp.y - (e.y - 82)) < 36) { s.shot = null; s.gpose = 'hit'; s.gT = 0.6; s.freeze = reduced() ? 0 : 0.18; s.shake = 0.6; sound('bong'); sound('crack'); buzz([40, 30, 60]); burstAt(s, e.x, e.y - 82, '#ffd35a', 22); say(s, t('Down he goes!', '¡Al suelo!'), 180, 120, '#ffd35a', 24); s.falling = 0.001; sound('giantfall'); } }
+              if (s.final) { const e = s.path.goliath; if (Math.hypot(sp.x - e.x, sp.y - gChest(e)) < 36) { s.shot = null; s.gpose = 'hit'; s.gT = 0.6; s.freeze = reduced() ? 0 : 0.18; s.shake = 0.6; sound('bong'); sound('crack'); buzz([40, 30, 60]); burstAt(s, e.x, e.y - 82, '#ffd35a', 22); say(s, t('Down he goes!', '¡Al suelo!'), 180, 120, '#ffd35a', 24); s.falling = 0.001; sound('giantfall'); } }
               else { const hit = C().zumaHit(s.z, s.path, sp.x, sp.y); if (hit >= 0) { landShot(ui, s, hit, sp.x, sp.y); refreshBar(s); } }
               if (s.shot && (sp.x < -20 || sp.x > 380 || sp.y < -20 || sp.y > 500)) { s.shot = null; s.cur = s.next; s.next = C().zumaNext(s.z); refreshBar(s); }
             }
