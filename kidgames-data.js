@@ -203,6 +203,584 @@
    "es": "Dios le dijo a Noé que construyera el arca y metiera a los animales de dos en dos. Noé no discutió ni esperó. Obedeció paso a paso, y Dios cuidó a todos los que estaban en el arca. Cuando escuchamos a Dios y hacemos lo que nos dice, aunque sea difícil, podemos confiar en que él nos cuida."
   }
  },
+ "MAPS": [
+  {
+   "id": "exodus",
+   "icon": "🏜️",
+   "title": {
+    "en": "The Exodus",
+    "es": "El Éxodo"
+   },
+   "travel": "🚶",
+   "land": "exodus",
+   "stops": [
+    {
+     "x": 92,
+     "y": 96,
+     "name": {
+      "en": "The Red Sea",
+      "es": "El mar Rojo"
+     },
+     "q": {
+      "en": "What did God do at the Red Sea?",
+      "es": "¿Qué hizo Dios en el mar Rojo?"
+     },
+     "choices": {
+      "en": [
+       "Made a dry path through the sea",
+       "Sent a big ship",
+       "Froze the water"
+      ],
+      "es": [
+       "Abrió un camino seco en el mar",
+       "Mandó un barco grande",
+       "Congeló el agua"
+      ]
+     },
+     "verse": {
+      "at": {
+       "en": [
+        2,
+        14,
+        21
+       ],
+       "es": [
+        2,
+        14,
+        21
+       ]
+      },
+      "text": {
+       "en": "And Moses stretched out his hand over the sea; and the LORD caused the sea to go back by a strong east wind all that night, and made the sea dry land, and the waters were divided.",
+       "es": "Y extendió Moisés su mano sobre la mar, é hizo Jehová que la mar se retirase por recio viento oriental toda aquella noche; y tornó la mar en seco, y las aguas quedaron divididas."
+      },
+      "ref": {
+       "en": "Exodus 14:21",
+       "es": "Éxodo 14:21"
+      }
+     }
+    },
+    {
+     "x": 130,
+     "y": 150,
+     "name": {
+      "en": "Marah",
+      "es": "Mara"
+     },
+     "q": {
+      "en": "The water at Marah was bitter. What did God make it?",
+      "es": "El agua de Mara era amarga. ¿Cómo la dejó Dios?"
+     },
+     "choices": {
+      "en": [
+       "Sweet",
+       "Salty",
+       "Hot"
+      ],
+      "es": [
+       "Dulce",
+       "Salada",
+       "Caliente"
+      ]
+     },
+     "verse": {
+      "at": {
+       "en": [
+        2,
+        15,
+        25
+       ],
+       "es": [
+        2,
+        15,
+        25
+       ]
+      },
+      "text": {
+       "en": "And he cried unto the LORD; and the LORD shewed him a tree, which when he had cast into the waters, the waters were made sweet: there he made for them a statute and an ordinance, and there he proved them,",
+       "es": "Y Moisés clamó á Jehová; y Jehová le mostró un árbol, el cual metídolo que hubo dentro de las aguas, las aguas se endulzaron. Allí les dió estatutos y ordenanzas, y allí los probó;"
+      },
+      "ref": {
+       "en": "Exodus 15:25",
+       "es": "Éxodo 15:25"
+      }
+     }
+    },
+    {
+     "x": 150,
+     "y": 182,
+     "name": {
+      "en": "Elim",
+      "es": "Elim"
+     },
+     "q": {
+      "en": "How many wells of water were at Elim?",
+      "es": "¿Cuántas fuentes de agua había en Elim?"
+     },
+     "choices": {
+      "en": [
+       "Twelve",
+       "Three",
+       "Forty"
+      ],
+      "es": [
+       "Doce",
+       "Tres",
+       "Cuarenta"
+      ]
+     },
+     "verse": {
+      "at": {
+       "en": [
+        2,
+        15,
+        27
+       ],
+       "es": [
+        2,
+        15,
+        27
+       ]
+      },
+      "text": {
+       "en": "And they came to Elim, where were twelve wells of water, and threescore and ten palm trees: and they encamped there by the waters.",
+       "es": "Y llegaron á Elim, donde había doce fuentes de aguas, y setenta palmas; y asentaron allí junto á las aguas."
+      },
+      "ref": {
+       "en": "Exodus 15:27",
+       "es": "Éxodo 15:27"
+      }
+     }
+    },
+    {
+     "x": 196,
+     "y": 214,
+     "name": {
+      "en": "Wilderness of Sin",
+      "es": "Desierto de Sin"
+     },
+     "q": {
+      "en": "What bread did God send from heaven?",
+      "es": "¿Qué pan mandó Dios del cielo?"
+     },
+     "choices": {
+      "en": [
+       "Manna",
+       "Pizza",
+       "Cake"
+      ],
+      "es": [
+       "El maná",
+       "Pizza",
+       "Pastel"
+      ]
+     },
+     "verse": {
+      "at": {
+       "en": [
+        2,
+        16,
+        15
+       ],
+       "es": [
+        2,
+        16,
+        15
+       ]
+      },
+      "text": {
+       "en": "And when the children of Israel saw it, they said one to another, It is manna: for they wist not what it was. And Moses said unto them, This is the bread which the LORD hath given you to eat.",
+       "es": "Y viéndolo los hijos de Israel, se dijeron unos á otros: ¿Qué es esto? porque no sabían qué era. Entonces Moisés les dijo: Es el pan que Jehová os da para comer."
+      },
+      "ref": {
+       "en": "Exodus 16:15",
+       "es": "Éxodo 16:15"
+      }
+     }
+    },
+    {
+     "x": 236,
+     "y": 236,
+     "name": {
+      "en": "Rephidim",
+      "es": "Refidim"
+     },
+     "q": {
+      "en": "Where did the water come from at Horeb?",
+      "es": "¿De dónde salió el agua en Horeb?"
+     },
+     "choices": {
+      "en": [
+       "Out of a rock",
+       "From the clouds",
+       "From a river"
+      ],
+      "es": [
+       "De una peña",
+       "De las nubes",
+       "De un río"
+      ]
+     },
+     "verse": {
+      "at": {
+       "en": [
+        2,
+        17,
+        6
+       ],
+       "es": [
+        2,
+        17,
+        6
+       ]
+      },
+      "text": {
+       "en": "Behold, I will stand before thee there upon the rock in Horeb; and thou shalt smite the rock, and there shall come water out of it, that the people may drink. And Moses did so in the sight of the elders of Israel.",
+       "es": "He aquí que yo estoy delante de ti allí sobre la peña en Horeb; y herirás la peña, y saldrán de ella aguas, y beberá el pueblo. Y Moisés lo hizo así en presencia de los ancianos de Israel."
+      },
+      "ref": {
+       "en": "Exodus 17:6",
+       "es": "Éxodo 17:6"
+      }
+     }
+    },
+    {
+     "x": 262,
+     "y": 252,
+     "name": {
+      "en": "Mount Sinai",
+      "es": "Monte Sinaí"
+     },
+     "q": {
+      "en": "What did God give His people at Mount Sinai?",
+      "es": "¿Qué le dio Dios a su pueblo en el monte Sinaí?"
+     },
+     "choices": {
+      "en": [
+       "The Ten Commandments",
+       "A golden crown",
+       "A new city"
+      ],
+      "es": [
+       "Los Diez Mandamientos",
+       "Una corona de oro",
+       "Una ciudad nueva"
+      ]
+     },
+     "verse": {
+      "at": {
+       "en": [
+        2,
+        20,
+        3
+       ],
+       "es": [
+        2,
+        20,
+        3
+       ]
+      },
+      "text": {
+       "en": "Thou shalt have no other gods before me.",
+       "es": "No tendrás dioses ajenos delante de mí."
+      },
+      "ref": {
+       "en": "Exodus 20:3",
+       "es": "Éxodo 20:3"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "paul",
+   "icon": "⛵",
+   "title": {
+    "en": "Paul sails to Rome",
+    "es": "Pablo navega a Roma"
+   },
+   "travel": "⛵",
+   "land": "sea",
+   "stops": [
+    {
+     "x": 368,
+     "y": 196,
+     "name": {
+      "en": "Caesarea",
+      "es": "Cesarea"
+     },
+     "q": {
+      "en": "Where was Paul’s ship going?",
+      "es": "¿Adónde iba el barco de Pablo?"
+     },
+     "choices": {
+      "en": [
+       "Italy",
+       "Egypt",
+       "Spain"
+      ],
+      "es": [
+       "Italia",
+       "Egipto",
+       "España"
+      ]
+     },
+     "verse": {
+      "at": {
+       "en": [
+        44,
+        27,
+        1
+       ],
+       "es": [
+        44,
+        27,
+        1
+       ]
+      },
+      "text": {
+       "en": "And when it was determined that we should sail into Italy, they delivered Paul and certain other prisoners unto one named Julius, a centurion of Augustus' band.",
+       "es": "MAS como fué determinado que habíamos de navegar para Italia, entregaron á Pablo y á algunos otros presos á un centurión, llamado Julio, de la compañía Augusta."
+      },
+      "ref": {
+       "en": "Acts 27:1",
+       "es": "Hechos 27:1"
+      }
+     }
+    },
+    {
+     "x": 372,
+     "y": 150,
+     "name": {
+      "en": "Sidon",
+      "es": "Sidón"
+     },
+     "q": {
+      "en": "What did kind Julius let Paul do at Sidon?",
+      "es": "¿Qué le permitió el amable Julio a Pablo en Sidón?"
+     },
+     "choices": {
+      "en": [
+       "Visit his friends",
+       "Go home",
+       "Buy a boat"
+      ],
+      "es": [
+       "Visitar a sus amigos",
+       "Volver a casa",
+       "Comprar un barco"
+      ]
+     },
+     "verse": {
+      "at": {
+       "en": [
+        44,
+        27,
+        3
+       ],
+       "es": [
+        44,
+        27,
+        3
+       ]
+      },
+      "text": {
+       "en": "And the next day we touched at Sidon. And Julius courteously entreated Paul, and gave him liberty to go unto his friends to refresh himself.",
+       "es": "Y otro día llegamos á Sidón; y Julio, tratando á Pablo con humanidad, permitióle que fuese á los amigos, para ser de ellos asistido."
+      },
+      "ref": {
+       "en": "Acts 27:3",
+       "es": "Hechos 27:3"
+      }
+     }
+    },
+    {
+     "x": 238,
+     "y": 186,
+     "name": {
+      "en": "Crete",
+      "es": "Creta"
+     },
+     "q": {
+      "en": "What did Paul warn the sailors about?",
+      "es": "¿De qué advirtió Pablo a los marineros?"
+     },
+     "choices": {
+      "en": [
+       "The trip would bring harm",
+       "They had no food",
+       "The sea was too small"
+      ],
+      "es": [
+       "El viaje traería daño",
+       "No tenían comida",
+       "El mar era muy chico"
+      ]
+     },
+     "verse": {
+      "at": {
+       "en": [
+        44,
+        27,
+        10
+       ],
+       "es": [
+        44,
+        27,
+        10
+       ]
+      },
+      "text": {
+       "en": "and said unto them, Sirs, I perceive that this voyage will be with hurt and much damage, not only of the lading and ship, but also of our lives.",
+       "es": "Diciéndoles: Varones, veo que con trabajo y mucho daño, no sólo de la cargazón y de la nave, mas aun de nuestras personas, habrá de ser la navegación."
+      },
+      "ref": {
+       "en": "Acts 27:10",
+       "es": "Hechos 27:10"
+      }
+     }
+    },
+    {
+     "x": 170,
+     "y": 214,
+     "name": {
+      "en": "The storm",
+      "es": "La tormenta"
+     },
+     "q": {
+      "en": "In the storm, what did Paul tell everyone?",
+      "es": "En la tormenta, ¿qué les dijo Pablo a todos?"
+     },
+     "choices": {
+      "en": [
+       "Be of good cheer; I believe God",
+       "Jump into the sea",
+       "Hide below and cry"
+      ],
+      "es": [
+       "Tened buen ánimo; confío en Dios",
+       "Salten al mar",
+       "Escóndanse y lloren"
+      ]
+     },
+     "verse": {
+      "at": {
+       "en": [
+        44,
+        27,
+        25
+       ],
+       "es": [
+        44,
+        27,
+        25
+       ]
+      },
+      "text": {
+       "en": "Wherefore, sirs, be of good cheer: for I believe God, that it shall be even as it was told me.",
+       "es": "Por tanto, oh varones, tened buen ánimo; porque yo confío en Dios que será así como me ha dicho;"
+      },
+      "ref": {
+       "en": "Acts 27:25",
+       "es": "Hechos 27:25"
+      }
+     }
+    },
+    {
+     "x": 108,
+     "y": 178,
+     "name": {
+      "en": "Malta",
+      "es": "Malta"
+     },
+     "q": {
+      "en": "On Malta a snake bit Paul. What happened?",
+      "es": "En Malta una víbora mordió a Pablo. ¿Qué pasó?"
+     },
+     "choices": {
+      "en": [
+       "He shook it off and was not hurt",
+       "He became very sick",
+       "He ran away"
+      ],
+      "es": [
+       "La sacudió al fuego y no le pasó nada",
+       "Se enfermó mucho",
+       "Salió corriendo"
+      ]
+     },
+     "verse": {
+      "at": {
+       "en": [
+        44,
+        28,
+        5
+       ],
+       "es": [
+        44,
+        28,
+        5
+       ]
+      },
+      "text": {
+       "en": "And he shook off the beast into the fire, and felt no harm.",
+       "es": "Mas él, sacudiendo la víbora en el fuego, ningún mal padeció."
+      },
+      "ref": {
+       "en": "Acts 28:5",
+       "es": "Hechos 28:5"
+      }
+     }
+    },
+    {
+     "x": 88,
+     "y": 60,
+     "name": {
+      "en": "Rome",
+      "es": "Roma"
+     },
+     "q": {
+      "en": "What did Paul do in Rome?",
+      "es": "¿Qué hizo Pablo en Roma?"
+     },
+     "choices": {
+      "en": [
+       "Taught about the Lord Jesus",
+       "Became a soldier",
+       "Built a ship"
+      ],
+      "es": [
+       "Enseñó del Señor Jesucristo",
+       "Se hizo soldado",
+       "Construyó un barco"
+      ]
+     },
+     "verse": {
+      "at": {
+       "en": [
+        44,
+        28,
+        31
+       ],
+       "es": [
+        44,
+        28,
+        31
+       ]
+      },
+      "text": {
+       "en": "preaching the kingdom of God, and teaching those things which concern the Lord Jesus Christ, with all confidence, no man forbidding him.",
+       "es": "Predicando el reino de Dios y enseñando lo que es del Señor Jesucristo con toda libertad, sin impedimento."
+      },
+      "ref": {
+       "en": "Acts 28:31",
+       "es": "Hechos 28:31"
+      }
+     }
+    }
+   ]
+  }
+ ],
  "ORDER": [
   {
    "id": "beginnings",
@@ -892,6 +1470,241 @@
    }
   }
  ],
+ "SLING": {
+  "intro": {
+   "at": {
+    "en": [
+     9,
+     17,
+     40
+    ],
+    "es": [
+     9,
+     17,
+     40
+    ]
+   },
+   "text": {
+    "en": "And he took his staff in his hand, and chose him five smooth stones out of the brook, and put them in a shepherd's bag which he had, even in a scrip; and his sling was in his hand: and he drew near to the Philistine.",
+    "es": "Tomó su cayado en su mano, y escogióse cinco piedras lisas del arroyo, y púsolas en el saco pastoril y en el zurrón que traía, y con su honda en su mano vase hacia el Filisteo."
+   },
+   "ref": {
+    "en": "1 Samuel 17:40",
+    "es": "1 Samuel 17:40"
+   }
+  },
+  "levels": [
+   {
+    "id": "s1",
+    "targets": [
+     {
+      "x": 300,
+      "y": 200,
+      "r": 18,
+      "kind": "jar"
+     },
+     {
+      "x": 340,
+      "y": 150,
+      "r": 18,
+      "kind": "jar"
+     }
+    ],
+    "rocks": [],
+    "verse": {
+     "at": {
+      "en": [
+       6,
+       1,
+       9
+      ],
+      "es": [
+       6,
+       1,
+       9
+      ]
+     },
+     "text": {
+      "en": "Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee whithersoever thou goest.",
+      "es": "Mira que te mando que te esfuerces y seas valiente: no temas ni desmayes, porque Jehová tu Dios será contigo en donde quiera que fueres."
+     },
+     "ref": {
+      "en": "Joshua 1:9",
+      "es": "Josué 1:9"
+     }
+    }
+   },
+   {
+    "id": "s2",
+    "targets": [
+     {
+      "x": 270,
+      "y": 120,
+      "r": 16,
+      "kind": "jar"
+     },
+     {
+      "x": 330,
+      "y": 210,
+      "r": 16,
+      "kind": "jar"
+     },
+     {
+      "x": 360,
+      "y": 90,
+      "r": 16,
+      "kind": "jar"
+     }
+    ],
+    "rocks": [
+     {
+      "x": 210,
+      "y": 200,
+      "w": 22,
+      "h": 90
+     }
+    ],
+    "verse": {
+     "at": {
+      "en": [
+       19,
+       27,
+       1
+      ],
+      "es": [
+       19,
+       27,
+       1
+      ]
+     },
+     "text": {
+      "en": "The LORD is my light and my salvation; whom shall I fear? The LORD is the strength of my life; of whom shall I be afraid?",
+      "es": "JEHOVÁ es mi luz y mi salvación: ¿de quién temeré? Jehová es la fortaleza de mi vida: ¿de quién he de atemorizarme?"
+     },
+     "ref": {
+      "en": "Psalms 27:1",
+      "es": "Salmos 27:1"
+     }
+    }
+   },
+   {
+    "id": "s3",
+    "targets": [
+     {
+      "x": 250,
+      "y": 80,
+      "r": 15,
+      "kind": "shield"
+     },
+     {
+      "x": 320,
+      "y": 160,
+      "r": 15,
+      "kind": "spear"
+     },
+     {
+      "x": 370,
+      "y": 230,
+      "r": 15,
+      "kind": "shield"
+     }
+    ],
+    "rocks": [
+     {
+      "x": 200,
+      "y": 140,
+      "w": 20,
+      "h": 150
+     }
+    ],
+    "verse": {
+     "at": {
+      "en": [
+       23,
+       41,
+       10
+      ],
+      "es": [
+       23,
+       41,
+       10
+      ]
+     },
+     "text": {
+      "en": "Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.",
+      "es": "No temas, que yo soy contigo; no desmayes, que yo soy tu Dios que te esfuerzo: siempre te ayudaré, siempre te sustentaré con la diestra de mi justicia."
+     },
+     "ref": {
+      "en": "Isaiah 41:10",
+      "es": "Isaías 41:10"
+     }
+    }
+   },
+   {
+    "id": "s4",
+    "targets": [
+     {
+      "x": 352,
+      "y": 74,
+      "r": 14,
+      "kind": "helmet"
+     },
+     {
+      "x": 290,
+      "y": 200,
+      "r": 14,
+      "kind": "shield"
+     },
+     {
+      "x": 340,
+      "y": 150,
+      "r": 14,
+      "kind": "spear"
+     }
+    ],
+    "rocks": [
+     {
+      "x": 230,
+      "y": 110,
+      "w": 20,
+      "h": 70
+     },
+     {
+      "x": 180,
+      "y": 220,
+      "w": 40,
+      "h": 70
+     }
+    ],
+    "verse": {
+     "at": {
+      "en": [
+       9,
+       17,
+       45
+      ],
+      "es": [
+       9,
+       17,
+       45
+      ]
+     },
+     "text": {
+      "en": "Then said David to the Philistine, Thou comest to me with a sword, and with a spear, and with a shield: but I come to thee in the name of the LORD of hosts, the God of the armies of Israel, whom thou hast defied.",
+      "es": "Entonces dijo David al Filisteo: Tú vienes á mí con espada y lanza y escudo; mas yo vengo á ti en el nombre de Jehová de los ejércitos, el Dios de los escuadrones de Israel, que tú has provocado."
+     },
+     "ref": {
+      "en": "1 Samuel 17:45",
+      "es": "1 Samuel 17:45"
+     }
+    }
+   }
+  ],
+  "lesson": {
+   "en": "David was only a shepherd boy, and Goliath was a giant. But David was not afraid, because he trusted God. Courage is not having no fear; it is trusting God and doing what is right even when you feel small.",
+   "es": "David era solo un pastorcito, y Goliat era un gigante. Pero David no tuvo miedo, porque confiaba en Dios. Ser valiente no es no sentir miedo; es confiar en Dios y hacer lo correcto aunque te sientas pequeño."
+  }
+ },
  "VERSES": [
   {
    "id": "trust",

@@ -121,6 +121,43 @@
   /* Stars by how much of the rain timer was left. */
   const arkStars = (left, total) => (left >= total * 0.45 ? 3 : left >= total * 0.2 ? 2 : 1);
 
+  /* ---------- Map Journey ---------- */
+  /* The stop's choices in a mixed order; the first in the data is right. */
+  const stopChoices = (stop, lang, rand = Math.random) => shuffle(stop.choices[lang].map((text, i) => ({ text, right: i === 0 })), rand);
+
+  /* ---------- David's Sling (light physics, 400 x 300 world, y down) ---------- */
+  const SLING = { x: 62, y: 222, maxPull: 90, power: 6.6, gravity: 320, radius: 6, W: 400, H: 300 };
+  /* Pull back from the sling (dx, dy from the pouch); the stone flies the other way. */
+  function slingShot(dx, dy) {
+    const len = Math.hypot(dx, dy) || 1, k = Math.min(1, SLING.maxPull / len);
+    return { x: SLING.x, y: SLING.y, vx: -dx * k * SLING.power, vy: -dy * k * SLING.power, alive: true, t: 0 };
+  }
+  /* Same shot from an angle (degrees above flat) and power 0..1, for buttons/keys. */
+  function slingAim(angleDeg, power) {
+    const a = angleDeg * Math.PI / 180, len = SLING.maxPull * Math.max(0.1, Math.min(1, power));
+    return slingShot(-Math.cos(a) * len, Math.sin(a) * len);
+  }
+  /* Move the stone one step; returns the ids of targets hit this step. */
+  function slingStep(stone, dt, targets, rocks) {
+    const hits = [];
+    if (!stone.alive) return hits;
+    const n = Math.max(1, Math.ceil(dt / 0.008)), h = dt / n;
+    for (let k = 0; k < n && stone.alive; k += 1) {
+      stone.vy += SLING.gravity * h; stone.x += stone.vx * h; stone.y += stone.vy * h; stone.t += h;
+      for (const tg of targets) if (!tg.down && Math.hypot(stone.x - tg.x, stone.y - tg.y) <= tg.r + SLING.radius) { tg.down = true; hits.push(tg); }
+      for (const r of rocks || []) if (stone.x + SLING.radius > r.x && stone.x - SLING.radius < r.x + r.w && stone.y + SLING.radius > r.y && stone.y - SLING.radius < r.y + r.h) stone.alive = false;
+      if (stone.y > SLING.H + 20 || stone.x > SLING.W + 20 || stone.x < -20 || stone.t > 6) stone.alive = false;
+    }
+    return hits;
+  }
+  /* The first few points of the flight, for the dotted aim line. */
+  function slingPreview(dx, dy, steps = 9, gap = 0.06) {
+    const s = slingShot(dx, dy), out = [];
+    for (let i = 1; i <= steps; i += 1) { const t = i * gap; out.push([s.x + s.vx * t, s.y + s.vy * t + SLING.gravity * t * t / 2]); }
+    return out;
+  }
+  const slingStars = left => (left >= 2 ? 3 : left >= 1 ? 2 : 1);
+
   /* ---------- Progress (one msb_ key) ---------- */
   const today = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   const blank = () => ({ done: {}, best: {}, plays: {}, badges: {} });
@@ -178,8 +215,12 @@
       { id: 'kg-verse-all', game: 'verse', icon: '💛', name: { en: 'Hidden in my heart', es: 'Guardado en mi corazón' }, goal: { en: 'Build every memory verse', es: 'Arma todos los versículos' }, test: all('verse', 6) },
       { id: 'kg-ark-1', game: 'ark', icon: '🛶', name: { en: 'Two by two', es: 'De dos en dos' }, goal: { en: 'Load the ark before the rain', es: 'Llena el arca antes de la lluvia' }, test: v => count(v, 'ark') >= 1 },
       { id: 'kg-ark-all', game: 'ark', icon: '🌈', name: { en: 'Faithful like Noah', es: 'Fiel como Noé' }, goal: { en: 'Finish every Ark Builder level', es: 'Termina todos los niveles del arca' }, test: all('ark', 3) },
+      { id: 'kg-map-1', game: 'map', icon: '🗺️', name: { en: 'Bible traveler', es: 'Viajero bíblico' }, goal: { en: 'Finish a Map Journey', es: 'Termina un viaje en el mapa' }, test: v => count(v, 'map') >= 1 },
+      { id: 'kg-map-all', game: 'map', icon: '🧭', name: { en: 'Faithful explorer', es: 'Explorador fiel' }, goal: { en: 'Finish every Map Journey', es: 'Termina todos los viajes' }, test: all('map', 2) },
+      { id: 'kg-sling-1', game: 'sling', icon: '🪨', name: { en: 'Brave like David', es: 'Valiente como David' }, goal: { en: 'Clear a David\u2019s Sling level', es: 'Supera un nivel de La honda de David' }, test: v => count(v, 'sling') >= 1 },
+      { id: 'kg-sling-all', game: 'sling', icon: '🛡️', name: { en: 'Giant courage', es: 'Valor de gigante' }, goal: { en: 'Clear every David\u2019s Sling level', es: 'Supera todos los niveles de La honda de David' }, test: all('sling', 4) },
       { id: 'kg-who-10', game: 'who', icon: '🗣️', name: { en: 'Voice of the Bible', es: 'Voces de la Biblia' }, goal: { en: 'Get 10 in a row in Who Said It?', es: 'Acierta 10 seguidas en ¿Quién lo dijo?' }, test: v => (Number(v.best.who) || 0) >= 10 },
     ];
   }
-  return { KEYS, hash, rng, shuffle, scramble, gridWord, wordSearch, lineCells, findWord, orderMarks, isOrdered, moveItem, choices, verseWords, nextFalling, wordFits, stars, arkDeck, arkStars, progress, soundPref, badgeDefs, today };
+  return { KEYS, hash, rng, shuffle, scramble, gridWord, wordSearch, lineCells, findWord, orderMarks, isOrdered, moveItem, choices, verseWords, nextFalling, wordFits, stars, arkDeck, arkStars, stopChoices, SLING, slingShot, slingAim, slingStep, slingPreview, slingStars, progress, soundPref, badgeDefs, today };
 });
