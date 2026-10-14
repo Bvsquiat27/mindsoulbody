@@ -137,7 +137,7 @@
     if (!friends.length) { toast('Add a friend first — then you can send a verse.'); return; }
     if (!window.msbDialogHtml) { toast('Sending verses is coming soon.'); return; }
     const options = friends.map(friend => `<option value="${esc(friend.code)}">${esc(friend.name || 'Friend')}</option>`).join('');
-    msbDialogHtml(`<span class="eyebrow">SEND A VERSE</span><h2 id="dialog-title">Send to a friend</h2><p data-i18n-skip>${esc(payload.reference || '')}</p><p class="verse-send-text" data-i18n-skip>${esc(payload.text || '')}</p><form id="verse-send-form"><label>Choose a friend<select name="to" required>${options}</select></label><label>A short note (optional)<textarea name="note" maxlength="280" rows="3" placeholder="A short note (optional)"></textarea></label><button class="primary" type="submit">Send</button></form>`);
+    msbDialogHtml(`<span class="eyebrow">SEND A VERSE</span><h2 id="dialog-title">Send to a friend</h2><p data-i18n-skip>${esc(payload.reference || '')}</p><p class="verse-send-text" data-i18n-skip>${esc(payload.text || '')}</p><form id="verse-send-form"><label>Choose a friend<select name="to" required>${options}</select></label><label>A short note (optional)<textarea name="note" maxlength="280" rows="3" placeholder="A short note (optional)">${esc(String(payload.note || '').slice(0, 280))}</textarea></label><button class="primary" type="submit">Send</button></form>`);
     const form = document.getElementById('verse-send-form');
     if (!form) return;
     form.onsubmit = async event => {

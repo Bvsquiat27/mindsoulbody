@@ -118,9 +118,20 @@
       <section class="card dev-read"><span class="eyebrow">${esc(tr('REFLECTION', 'REFLEXIÓN'))}</span><p>${esc(L.reflection)}</p></section>
       ${f ? `<section class="card dev-father"><span class="eyebrow">${esc(tr('FROM THE FATHERS', 'DE LOS PADRES'))}</span><p>${esc(es() ? f.bodyEs : f.body)}</p><p class="small muted">${esc(f.author)}${f.sourceLabel ? ' · ' + esc(f.sourceLabel) : ''} · <a href="${esc(f.source)}" target="_blank" rel="noopener">${esc(tr('source', 'fuente'))}</a>${es() ? ' · traducción al español' : ''}</p></section>` : ''}
       <section class="card dev-prayer"><span class="eyebrow">${esc(tr('PRAYER', 'ORACIÓN'))}</span><p>${esc(L.prayer)}</p></section>
+      <div id="dev-notes-slot"></div>
       <nav class="dev-days" aria-label="${esc(tr('Other days', 'Otros días'))}"><button type="button" class="secondary" data-dev-step="-1">← ${esc(tr('Yesterday', 'Ayer'))}</button>${today ? '' : `<button type="button" class="secondary" data-dev-open="${keyOf(new Date())}">${esc(tr('Today', 'Hoy'))}</button>`}<button type="button" class="secondary" data-dev-step="1">${esc(tr('Tomorrow', 'Mañana'))} →</button></nav>
       <p class="small muted dev-foot">${esc(tr('Morning reminder: turn it on in Profile.', 'Recordatorio de la mañana: actívalo en Perfil.'))} <button type="button" class="text-button" data-nav="profile">${esc(tr('Profile', 'Perfil'))}</button></p>
     </article>`;
+    fillNotes(viewKey);
+  }
+  function noteMeta(key) {
+    const dt = parseKey(key); if (!dt || !ready()) return {};
+    const e = forDate(dt.getFullYear(), dt.getMonth() + 1, dt.getDate()), L = es() ? e.es : e.en;
+    return { title: L.title, ref: L.ref, verse: L.verses[0], lang: es() ? 'es' : 'en', book: e.book, chapter: e.chapter, v: e.verse };
+  }
+  function fillNotes(key) {
+    if (!root.msbLoadMyNotes) return;
+    root.msbLoadMyNotes().then((m) => { const slot = document.getElementById('dev-notes-slot'); if (slot && document.querySelector('.dev-page')) slot.outerHTML = m.boxHtml(key); }).catch(() => null);
   }
   function open(key) {
     viewKey = key || keyOf(new Date());
@@ -234,5 +245,5 @@
   registerScreen();
   root.addEventListener('load', () => { registerScreen(); deepLink(); setTimeout(resync, 3000); });
 
-  return { fallbackVerse, ensureData, reconcile, navFn, orthodoxPascha, forDate, forKey, keyOf, readSettings, saveSettings, homeCard, settingsHtml, show, open, PUSH_KEY, VAPID_PUBLIC };
+  return { noteMeta, fallbackVerse, ensureData, reconcile, navFn, orthodoxPascha, forDate, forKey, keyOf, readSettings, saveSettings, homeCard, settingsHtml, show, open, PUSH_KEY, VAPID_PUBLIC };
 });
