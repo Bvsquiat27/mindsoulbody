@@ -70,7 +70,7 @@
       case 'final': return L('Unlock every squishy and get 3 stars on a Manna Match level');
       case 'trades': return L('Trade a squishy with a friend');
       case 'colored': return L('Color {n} different pages', { n: ch.n });
-      case 'kgDone': return L(KG_TEXT[ch.game] || '', { n: ch.n });
+      case 'kgDone': return L(ch.game === 'map' && ch.n === 1 ? 'Finish 1 Map Journey' : KG_TEXT[ch.game] || '', { n: ch.n });
       case 'kgBest': return L('Get {n} in a row in Who Said It?', { n: ch.n });
       case 'kgAll': return L('Finish each of the 6 Bible games once');
       case 'tricks': return ch.n === 1 ? L('Find a secret trick') : ch.n ? L('Find {n} secret tricks', { n: ch.n }) : L('Find every secret trick');

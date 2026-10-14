@@ -237,3 +237,20 @@ test('second polish pass: map stories, stamps, coach, level cards, clean sling r
   assert.match(map, /if \(!tr \|\| reduced\(\)\) return;/);
   assert.match(sling, /reduced\(\)/);
 });
+
+test('sling follow-up: Giant courage counts the new levels, old clears carry over once, no ark sounds left', () => {
+  const mem = () => { const m = new Map(); return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)) }; };
+  const s = mem(); s.setItem('msb_kidgames', JSON.stringify({ done: { sling: ['s1', 's2', 's3', 's4'] }, best: {}, plays: {}, badges: {} }));
+  const pr = C.progress(s), giant = C.badgeDefs({ sling: 5 }).find(b => b.id === 'kg-sling-all');
+  assert.equal(giant.test(pr.get()), false, 'old ids do not count');
+  assert.equal(pr.migrateSling(), true);
+  assert.deepEqual(pr.done('sling'), ['z1', 'z2', 'z3', 'z4']);
+  assert.equal(pr.migrateSling(), false, 'only once');
+  assert.equal(giant.test(pr.get()), false);
+  pr.finish('sling', 'z5'); assert.equal(giant.test(pr.get()), true);
+  const sling = read('./kg-sling.js');
+  assert.ok(sling.includes("'New Sling! Your cleared levels are open in the new game.', '¡Nueva Honda!"));
+  assert.doesNotMatch(read('./kidgames.js'), /Ark Builder|thunder: \(\)|knock: \(\)/);
+  assert.ok(read('./i18n.js').includes('"Finish 1 Map Journey": "Termina 1 ruta de Viaje en el mapa"'));
+  assert.match(read('./squishy.js'), /ch\.n === 1 \? 'Finish 1 Map Journey'/);
+});

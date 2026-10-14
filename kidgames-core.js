@@ -263,6 +263,14 @@
       /* keep the highest score; returns true when it is a new best */
       best(game, n) { const v = read(); const old = Number(v.best[game]) || 0; if (n > old) { v.best[game] = n; write(v); return true; } return false; },
       done(game) { return (read().done[game] || []).slice(); },
+      /* the old Sling levels (s1-s4) became the new z1-z4: carry them over once; true when it happened */
+      migrateSling() {
+        const v = read(), list = v.done.sling || [];
+        if (!list.some(id => /^s\d+$/.test(id))) return false;
+        const out = [];
+        for (const id of list) { const n = /^s(\d+)$/.exec(id); const z = n ? `z${n[1]}` : id; if (!out.includes(z)) out.push(z); }
+        v.done.sling = out; write(v); return true;
+      },
       /* stamp newly earned badges with today's date; returns the new ones */
       award(defs) {
         const v = read(); const fresh = [];
@@ -278,7 +286,7 @@
       set(on) { try { storage.setItem(KEYS.sounds, on ? 'on' : 'off'); } catch { /* ignore */ } return !!on; }
     };
   }
-  const count = (v, g) => (v.done[g] || []).length;
+  const count = (v, g) => (v.done[g] || []).filter(id => g !== 'sling' || /^z\d+$/.test(id)).length;
   /* Badge rules. "total" is how many puzzles/levels that game has. */
   function badgeDefs(totals = {}) {
     const all = (g, n) => v => count(v, g) >= (totals[g] || n);
