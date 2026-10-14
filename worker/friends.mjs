@@ -29,10 +29,13 @@
      rate:study:<code> → { start, n }  40 writes per hour
      rate:study-delete:<code> → { start, n }  200 deletes per hour
      squishy collection and trade keys: see the "Bible squishies" section
+     push:* and rate:push-*: morning devotional reminders, see push.mjs
 
    The account secret is a random 32-hex string returned once at register.
    Only its SHA-256 hex digest is stored. Compare it in constant time.
    Public /scores never includes friend codes. */
+
+import { handlePush, runPushCron } from './push.mjs';
 
 const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const SHOWS = ['jeopardy', 'millionaire', 'feud', 'sound', 'babel', 'defend', 'doctrine'];
@@ -905,6 +908,11 @@ export async function handleFriends(request, env) {
     const { body, error, status } = await readBody(request);
     if (error) return reply({ error }, status);
 
+    if (url.pathname.startsWith('/push/')) {
+      const [data, code = 200] = await handlePush(url.pathname, body, env, clientIp(request));
+      return reply(data, code);
+    }
+
     if (url.pathname === '/register') {
       if (!(await takeRate(env, `rate:register:${clientIp(request)}`, RATE_LIMITS.register))) return reply({ error: 'Too many new friend codes this hour' }, 429);
       const name = cleanName(body?.name) || 'Friend';
@@ -1500,4 +1508,7 @@ export async function handleFriends(request, env) {
   }
 }
 
-export default { fetch: handleFriends };
+export default {
+  fetch: handleFriends,
+  scheduled(event, env, ctx) { ctx.waitUntil(runPushCron(env).catch(() => null)); },
+};
