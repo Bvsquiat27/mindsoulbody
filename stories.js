@@ -67,6 +67,15 @@
       bodyEs: "Por fin, el pueblo de Dios había salido de Egipto. Pero llegaron a la orilla de un mar muy grande, y los carros del rey venían detrás. La gente tenía miedo. Moisés dijo: “No tengan miedo. El Señor va a pelear por ustedes. Solo quédense tranquilos.” Moisés extendió la mano sobre el mar. Toda la noche sopló un viento fuerte, y el agua se abrió como dos paredes altas. El pueblo cruzó por tierra seca: mamás y papás, niños y abuelos, ovejas y cabras. Dios abrió un camino donde no había camino."
     },
     {
+      id: "ruth",
+      title: "Ruth stays with Naomi",
+      titleEs: "Rut se queda con Noemí",
+      alt: "A young woman gathering grain in a golden field, with a kind man watching from the path",
+      altEs: "Una joven recogiendo espigas en un campo dorado, y un hombre bueno mirando desde el camino",
+      body: "Naomi was old and sad. Her husband and her sons had died, and she wanted to go home to Bethlehem. Her son’s wife Ruth hugged her and would not let go. “Where you go, I will go,” Ruth said. “Your people will be my people, and your God will be my God.” So they walked the long road together. In Bethlehem, Ruth worked hard in the fields, picking up the grain the workers left behind. The field belonged to Boaz, a kind man. He told his workers to leave extra grain for her. Later Boaz married Ruth, and they had a baby boy. That baby grew up to be King David’s grandpa. God took care of Ruth and Naomi.",
+      bodyEs: "Noemí era mayor y estaba triste. Su esposo y sus hijos habían muerto, y quería volver a su casa en Belén. Rut, la esposa de su hijo, la abrazó y no la quiso soltar. “Donde tú vayas, iré yo”, dijo Rut. “Tu pueblo será mi pueblo, y tu Dios será mi Dios.” Así que caminaron juntas el largo camino. En Belén, Rut trabajó mucho en los campos, recogiendo las espigas que dejaban los segadores. El campo era de Booz, un hombre bueno. Él les dijo a sus segadores que dejaran más espigas para ella. Después Booz se casó con Rut, y tuvieron un niño. Ese niño llegó a ser el abuelo del rey David. Dios cuidó de Rut y de Noemí."
+    },
+    {
       id: 'samuel',
       title: "Samuel hears God",
       titleEs: "Samuel escucha a Dios",
@@ -85,6 +94,15 @@
       bodyEs: 'Goliat era un soldado gigante. Todos los días le gritaba al pueblo de Dios. Los soldados de Israel tenían miedo. David era joven. Cuidaba ovejas. Le dijo al rey: “Dios me ayudó cuando vino un león. Dios me va a ayudar ahora.” David no se puso una armadura pesada. Recogió cinco piedras lisas. Corrió hacia el gigante y confió en Dios. Una piedra fue suficiente. El pueblo aprendió que Dios es más fuerte que cualquier bravucón.'
     },
     {
+      id: "elijah",
+      title: "Elijah and the ravens",
+      titleEs: "Elías y los cuervos",
+      alt: "An old prophet resting by a stream while ravens fly down to him",
+      altEs: "Un profeta anciano descansando junto a un arroyo mientras unos cuervos vuelan hacia él",
+      body: "Elijah was God’s helper. He told the king, “There will be no rain for a long time.” The land became dry, and there was little food. God told Elijah, “Go and hide by the brook. You can drink the water, and I will send the ravens to feed you.” Elijah obeyed. Every morning and every evening, big black birds flew down with bread and meat in their beaks. Elijah drank cool water from the little stream. He was all alone, but he was never forgotten. God knew just where he was, and God sent him what he needed, day after day. God knows where you are too, and He takes care of you.",
+      bodyEs: "Elías era un ayudante de Dios. Le dijo al rey: “No va a llover por mucho tiempo.” La tierra se secó, y había poca comida. Dios le dijo a Elías: “Ve y escóndete junto al arroyo. Allí beberás agua, y yo mandaré a los cuervos a darte de comer.” Elías obedeció. Cada mañana y cada tarde, unas grandes aves negras bajaban volando con pan y carne en el pico. Elías bebía agua fresca del arroyito. Estaba solo, pero nunca fue olvidado. Dios sabía dónde estaba, y le mandaba lo que necesitaba, día tras día. Dios también sabe dónde estás tú, y te cuida."
+    },
+    {
       id: 'daniel',
       title: 'Daniel and the lions',
       titleEs: 'Daniel y los leones',
@@ -92,6 +110,15 @@
       altEs: 'Un hombre a salvo entre los leones',
       body: 'Daniel loved God and prayed every day. Some men were jealous. They tricked the king into making a bad rule: nobody could pray except to the king. Daniel prayed anyway, with his window open. The king was sad, but he had to put Daniel in a den of lions. That night the king could not sleep. In the morning he ran to the den. Daniel was safe. God had sent an angel to shut the lions’ mouths. Daniel said, “My God sent his angel.”',
       bodyEs: 'Daniel amaba a Dios y oraba todos los días. Unos hombres tuvieron celos. Engañaron al rey para que hiciera una ley mala: nadie podía orar a nadie más que al rey. Daniel oró de todos modos, con la ventana abierta. El rey se puso triste, pero tuvo que meter a Daniel en un foso de leones. Esa noche el rey no pudo dormir. Muy de mañana corrió al foso. Daniel estaba sano y salvo. Dios había enviado un ángel para cerrar la boca de los leones. Daniel dijo: “Mi Dios envió a su ángel.”'
+    },
+    {
+      id: "esther",
+      title: "Brave Queen Esther",
+      titleEs: "La valiente reina Ester",
+      alt: "A queen in purple bowing before a king who holds out his golden scepter",
+      altEs: "Una reina vestida de morado inclinándose ante un rey que le extiende su cetro de oro",
+      body: "Esther was a young woman from God’s people, and she became queen of a big kingdom. A proud man named Haman tricked the king into making a terrible rule against God’s people. Esther’s cousin Mordecai said, “Maybe God made you queen for a time like this.” But no one could go to the king without being called. Esther was afraid. She asked everyone to pray, and then she went in, very brave. The king held out his golden scepter and smiled. “What do you want, Queen Esther?” She told him the truth, and the king saved her people. God used one brave queen to help many, many families.",
+      bodyEs: "Ester era una joven del pueblo de Dios, y llegó a ser reina de un gran reino. Un hombre orgulloso llamado Amán engañó al rey para que hiciera una ley terrible contra el pueblo de Dios. Mardoqueo, el primo de Ester, le dijo: “Quizás Dios te hizo reina para un momento como este.” Pero nadie podía entrar a ver al rey sin que él lo llamara. Ester tenía miedo. Pidió a todos que oraran, y luego entró, muy valiente. El rey le extendió su cetro de oro y sonrió. “¿Qué deseas, reina Ester?” Ella le dijo la verdad, y el rey salvó a su pueblo. Dios usó a una reina valiente para ayudar a muchísimas familias."
     },
     {
       id: 'jonah',
@@ -110,6 +137,15 @@
       altEs: 'María, José y el niño Jesús',
       body: 'Mary and Joseph traveled to Bethlehem. The inn was full, so they stayed where the animals were. That night Mary had a baby. She wrapped Him in cloth and laid Him in a manger. Angels told shepherds in the fields, “A Savior is born.” The shepherds hurried and found the baby, just as the angel said. They went home praising God. Jesus is God come close, small enough to be held.',
       bodyEs: 'María y José viajaron a Belén. El mesón estaba lleno, así que se quedaron donde estaban los animales. Esa noche María tuvo un bebé. Lo envolvió en pañales y lo acostó en un pesebre. Los ángeles les dijeron a unos pastores en el campo: “Ha nacido un Salvador.” Los pastores fueron de prisa y encontraron al bebé, tal como dijo el ángel. Volvieron a casa alabando a Dios. Jesús es Dios que se acerca, tan pequeñito que se podía cargar en brazos.'
+    },
+    {
+      id: "baptism",
+      title: "Jesus is baptized",
+      titleEs: "El bautismo de Jesús",
+      alt: "John baptizing Jesus in a river while a dove comes down in the light",
+      altEs: "Juan bautizando a Jesús en un río mientras una paloma baja en la luz",
+      body: "John lived in the wilderness and told people to get ready, because God’s promised King was coming. Many people came to the Jordan River, and John baptized them in the water. One day Jesus came too. John said, “I need You to baptize me!” But Jesus asked John to baptize Him, because it was right. So Jesus went down into the river. When He came up out of the water, heaven opened. The Holy Spirit came down like a gentle dove and rested on Him. And a voice from heaven said, “This is my beloved Son, and I am very happy with Him.” The Father, the Son, and the Holy Spirit were all there together.",
+      bodyEs: "Juan vivía en el desierto y le decía a la gente que se preparara, porque venía el Rey que Dios había prometido. Mucha gente iba al río Jordán, y Juan los bautizaba en el agua. Un día Jesús también vino. Juan le dijo: “¡Yo necesito que tú me bautices!” Pero Jesús le pidió a Juan que lo bautizara, porque así era justo. Entonces Jesús entró en el río. Cuando salió del agua, el cielo se abrió. El Espíritu Santo bajó como una paloma suave y se posó sobre él. Y una voz del cielo dijo: “Este es mi Hijo amado, y estoy muy contento con él.” El Padre, el Hijo y el Espíritu Santo estaban allí juntos."
     },
     {
       id: 'storm',
@@ -148,6 +184,33 @@
       bodyEs: 'Jesús contó una historia. Un pastor tenía cien ovejas. Una se alejó. El pastor no dijo: “Bueno, todavía tengo noventa y nueve.” Salió a buscarla. Buscó hasta encontrarla. Luego estaba tan feliz que la puso sobre sus hombros y la llevó a casa y llamó a sus amigos para celebrar. Jesús dijo que el cielo se alegra así cuando una persona regresa. Si alguna vez te sientes perdido, Dios ya te está buscando.'
     },
     {
+      id: "samaritan",
+      title: "The good Samaritan",
+      titleEs: "El buen samaritano",
+      alt: "A kind traveler kneeling to bandage a hurt man beside a donkey on a rocky road",
+      altEs: "Un viajero bondadoso arrodillado vendando a un hombre herido junto a un burro en un camino de piedras",
+      body: "Someone asked Jesus, “Who is my neighbor?” So Jesus told a story. A man was walking on a lonely road. Robbers hurt him, took his things, and left him by the road. A priest came by. He saw the man, but he crossed to the other side. Another man came by, and he walked past too. Then a Samaritan came, a man from a different people. He stopped. He knelt down, cleaned the hurt places, and wrapped them with cloth. He put the man on his own donkey, took him to an inn, and paid for his care. “Which one was a good neighbor?” Jesus asked. “The one who was kind,” the man said. Jesus said, “Go, and you do the same.”",
+      bodyEs: "Alguien le preguntó a Jesús: “¿Quién es mi prójimo?” Entonces Jesús contó una historia. Un hombre iba por un camino solitario. Unos ladrones lo lastimaron, le quitaron sus cosas y lo dejaron junto al camino. Pasó un sacerdote. Vio al hombre, pero se fue por el otro lado. Pasó otro hombre, y también siguió de largo. Luego llegó un samaritano, un hombre de otro pueblo. Él se detuvo. Se arrodilló, le limpió las heridas y se las vendó. Lo subió a su propio burro, lo llevó a una posada y pagó para que lo cuidaran. “¿Cuál fue buen prójimo?”, preguntó Jesús. “El que fue bondadoso”, dijo el hombre. Jesús le dijo: “Ve, y haz tú lo mismo.”"
+    },
+    {
+      id: "zacchaeus",
+      title: "Zacchaeus climbs a tree",
+      titleEs: "Zaqueo sube al árbol",
+      alt: "A small man up in a big tree as Jesus and a crowd walk below",
+      altEs: "Un hombre pequeño arriba en un árbol grande mientras Jesús y la gente pasan abajo",
+      body: "Zacchaeus was a rich man in the town of Jericho. He collected money for the rulers, and he often took too much. People did not like him. One day Jesus came to town, and a big crowd filled the street. Zacchaeus wanted to see Jesus, but he was short. So he ran ahead and climbed up a sycamore tree. When Jesus came to that spot, He stopped and looked up. “Zacchaeus, hurry and come down,” Jesus said. “Today I am coming to your house.” Zacchaeus hurried down, full of joy. His heart changed. “I will give half of what I have to the poor,” he said, “and pay back anyone I cheated, four times as much!” Jesus came to find people who are lost.",
+      bodyEs: "Zaqueo era un hombre rico de la ciudad de Jericó. Cobraba dinero para los gobernantes, y muchas veces cobraba de más. A la gente no le caía bien. Un día Jesús llegó a la ciudad, y una gran multitud llenó la calle. Zaqueo quería ver a Jesús, pero era bajito. Así que corrió adelante y se subió a un árbol sicómoro. Cuando Jesús llegó a ese lugar, se detuvo y miró hacia arriba. “Zaqueo, date prisa y baja”, le dijo Jesús. “Hoy voy a tu casa.” Zaqueo bajó de prisa, lleno de alegría. Su corazón cambió. “Daré la mitad de lo que tengo a los pobres”, dijo, “¡y a quien le haya cobrado de más, le devolveré cuatro veces más!” Jesús vino a buscar a los que están perdidos."
+    },
+    {
+      id: "bartimaeus",
+      title: "Bartimaeus can see",
+      titleEs: "Bartimeo puede ver",
+      alt: "A man sitting by the road reaching up toward Jesus with joy",
+      altEs: "Un hombre sentado junto al camino que extiende las manos hacia Jesús con alegría",
+      body: "Bartimaeus could not see. Every day he sat by the road near Jericho and asked people for help. One day he heard a crowd coming. “Who is it?” he asked. “Jesus is passing by!” So Bartimaeus called out as loud as he could: “Jesus, Son of David, have mercy on me!” People told him to be quiet. But he called even louder. Jesus stopped. “Call him,” Jesus said. Bartimaeus threw off his coat, jumped up, and came to Jesus. “What do you want Me to do for you?” Jesus asked. “Lord, I want to see.” Jesus said, “Go, your faith has made you well.” Right away he could see! And Bartimaeus followed Jesus down the road.",
+      bodyEs: "Bartimeo no podía ver. Todos los días se sentaba junto al camino cerca de Jericó y pedía ayuda a la gente. Un día oyó que venía una multitud. “¿Quién es?”, preguntó. “¡Es Jesús que pasa!” Entonces Bartimeo gritó con todas sus fuerzas: “¡Jesús, Hijo de David, ten misericordia de mí!” La gente le decía que se callara. Pero él gritaba todavía más fuerte. Jesús se detuvo. “Llámenlo”, dijo Jesús. Bartimeo tiró su capa, se levantó de un salto y fue a Jesús. “¿Qué quieres que haga por ti?”, le preguntó Jesús. “Señor, quiero ver.” Jesús le dijo: “Ve, tu fe te ha salvado.” ¡Enseguida pudo ver! Y Bartimeo siguió a Jesús por el camino."
+    },
+    {
       id: 'easter',
       title: 'Easter morning',
       titleEs: 'La mañana de la Resurrección',
@@ -160,6 +223,13 @@
   /* One verse per story, word for word from bible/NN.json (KJV) and
      bible/rvr/NN.json (Reina-Valera 1909). A test checks them. */
   const VERSES = {
+  "elijah": {"ref":[11,17,6],"en":"And the ravens brought him bread and flesh in the morning, and bread and flesh in the evening; and he drank of the brook.","es":"Y los cuervos le traían pan y carne por la mañana, y pan y carne á la tarde; y bebía del arroyo.","refEn":"1 Kings 17:6","refEs":"1 Reyes 17:6"},
+  "ruth": {"ref":[8,1,16],"en":"And Ruth said, Intreat me not to leave thee, or to return from following after thee: for whither thou goest, I will go; and where thou lodgest, I will lodge: thy people shall be my people, and thy God my God:","es":"Y Ruth respondió: No me ruegues que te deje, y me aparte de ti: porque donde quiera que tú fueres, iré yo; y donde quiera que vivieres, viviré. Tu pueblo será mi pueblo, y tu Dios mi Dios.","refEn":"Ruth 1:16","refEs":"Rut 1:16"},
+  "esther": {"ref":[17,4,14],"en":"For if thou altogether holdest thy peace at this time, then shall there enlargement and deliverance arise to the Jews from another place; but thou and thy father's house shall be destroyed: and who knoweth whether thou art come to the kingdom for such a time as this?","es":"Porque si absolutamente callares en este tiempo, respiro y libertación tendrán los Judíos de otra parte; mas tú y la casa de tu padre pereceréis. ¿Y quién sabe si para esta hora te han hecho llegar al reino?","refEn":"Esther 4:14","refEs":"Ester 4:14"},
+  "zacchaeus": {"ref":[42,19,10],"en":"For the Son of man is come to seek and to save that which was lost.","es":"Porque el Hijo del hombre vino á buscar y á salvar lo que se había perdido.","refEn":"Luke 19:10","refEs":"Lucas 19:10"},
+  "samaritan": {"ref":[42,10,37],"en":"And he said, He that shewed mercy on him. Then said Jesus unto him, Go, and do thou likewise.","es":"Y él dijo: El que usó con él de misericordia. Entonces Jesús le dijo: Ve, y haz tú lo mismo.","refEn":"Luke 10:37","refEs":"Lucas 10:37"},
+  "bartimaeus": {"ref":[41,10,52],"en":"And Jesus said unto him, Go thy way; thy faith hath made thee whole. And immediately he received his sight, and followed Jesus in the way.","es":"Y Jesús le dijo: Ve, tu fe te ha salvado. Y luego cobró la vista, y seguía á Jesús en el camino.","refEn":"Mark 10:52","refEs":"Marcos 10:52"},
+  "baptism": {"ref":[40,3,17],"en":"and lo a voice from heaven, saying, This is my beloved Son, in whom I am well pleased.","es":"Y he aquí una voz de los cielos que decía: Este es mi Hijo amado, en el cual tengo contentamiento.","refEn":"Matthew 3:17","refEs":"Mateo 3:17"},
   "creation": {
   "ref": [
   1,

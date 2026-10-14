@@ -34,6 +34,7 @@
 .kg-pick.done{border-color:var(--teal)}
 .kg-pick.done small{color:var(--teal);font-weight:700}
 .kg-pick-icon{font-size:30px;flex:none!important;width:44px;align-items:center}
+.mp-pick-art{width:44px;height:auto;max-height:40px;object-fit:contain}
 .kg-pick-img{width:56px;height:56px;border-radius:12px;object-fit:cover;flex:none}
 .kg-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}
 .kg-verse{margin:16px 0;padding:20px;border:1px solid var(--gold);border-radius:20px;background:radial-gradient(circle at 85% 0,rgba(220,191,132,.18),transparent 55%),linear-gradient(145deg,#1d2c2c,#121a1b);text-align:center;animation:kgPop .45s ease-out}
@@ -296,3 +297,4 @@ button.sr-sym{cursor:pointer}
 @keyframes srUp{from{transform:translateY(100%)}}
 @media (prefers-reduced-motion:reduce){.sr-board,.sr-dove,.sr-sym,.sr-tile,.sr-picker{animation:none !important}}
 .kg-sl-intro{font-size:17px}
+.kg-coach-ico .mp-pick-art{width:34px;max-height:32px}
