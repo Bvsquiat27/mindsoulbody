@@ -116,3 +116,23 @@ test('one legendary list: the room reuses squishy-trade.js, and the code screen 
   for (const f of ['./squishy.js', './i18n.js']) assert.doesNotMatch(read(f), /Legendary squishies stay on your shelf|se quedan en tu estante/);
   assert.match(read('./i18n.js'), /Los códigos no pueden enviar squishies legendarios: cámbialos en la Sala de intercambio\./);
 });
+
+test('a full app redraw (EN/ES switch) keeps the Trade Room in the new language and keeps polling; a failed ack is shown', () => {
+  const aura = read('./aura.js');
+  assert.match(aura, /else if\(state\.screen==='trade'\)msbTradeRedraw\(\);/);
+  assert.match(aura, /MsbSquishyRoom\.redraw\(root,msbEs\(\)\?'es':'en'\)/);
+  assert.match(aura, /\/trade\/ack'[^\n]*\.catch\(\(\)=>toast\(msbEs\(\)\?'No se pudo confirmar el cambio con el servidor\. Se volverá a intentar\.':'Could not confirm the trade with the server\. It will try again\.'\)\)/);
+  const s = { getItem: () => '[]', setItem() {} };
+  globalThis.window = { MsbSquishyData: { SQUISHIES }, MsbSquishyCore: C }; globalThis.document = { hidden: false };
+  const mk = () => ({ innerHTML: '', isConnected: true, addEventListener() {}, removeEventListener() {}, contains: () => true, querySelector: () => null });
+  const call = async p => (p === '/trade/list' ? { trades: [] } : { trade: trade() });
+  try {
+    assert.equal(R.redraw(mk(), 'es'), false, 'nothing to redraw before the room opens');
+    const a = mk(); R.open(a, { trade: trade(), friends: [], ready: true, call, storage: s, lang: 'en' });
+    assert.match(a.innerHTML, /Trade Room/);
+    a.isConnected = false; const b = mk();
+    assert.equal(R.redraw(b, 'es'), true);
+    assert.match(b.innerHTML, /Sala de intercambio/); assert.doesNotMatch(b.innerHTML, /Your offer/);
+    assert.ok(R._ui.timer, 'still polling');
+  } finally { R.close(); delete globalThis.window; delete globalThis.document; }
+});
