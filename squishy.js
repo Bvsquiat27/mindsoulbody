@@ -375,6 +375,16 @@
     const body = ui.view === 'trade' ? tradeHtml() : ui.view === 'badges' ? badgesHtml() : ui.view === 'memory' ? memoryHtml() : ui.view === 'questions' ? questionsHtml() : ui.view === 'guess' ? guessHtml() : shelfHtml();
     root.innerHTML = `<div class="squishy-screen" data-i18n-skip><button class="text-button back" type="button" data-squishy-exit>${esc(L('← Bible games'))}</button><span class="eyebrow">${esc(L('BIBLE SQUISHIES'))}</span><h1>${esc(L('Bible squishies'))}</h1>${topBar()}${tabs()}<div class="sq-body" data-sq-body>${body}</div><div class="sq-play-host" data-sq-play-host></div><div class="sq-celebrate" data-sq-celebrate hidden></div></div>`;
     if (ui.playing) openPlay(ui.playing);
+    mountRoom();
+  }
+  /* the Trade tab opens the live Trade Room at once: the board, your
+     squishies to tap, and every friend to choose from */
+  function mountRoom() {
+    const R = window.MsbSquishyRoom, host = ui.root && ui.root.querySelector('[data-sq-room]');
+    if (!R) return;
+    if (!host) { if (R.isOpen() && R._ui.root && !R._ui.root.isConnected) R.close(); return; }
+    if (R.isOpen()) R.attach(host);
+    else R.open(host, window.msbTradeOpts({ lang: lang() === 'es' ? 'es' : 'en' }));
   }
 
   /* Shelf: tap a squishy to play with it. */
@@ -423,12 +433,13 @@
     const picks = mine.map(x => `<button type="button" class="sq-tile sq-trade-pick${tr.pick === x.id ? ' active' : ''}" data-sq-trade-pick="${x.id}" aria-pressed="${tr.pick === x.id}"><span class="sq-art">${A().svg(x.id)}</span>${gifts.includes(x.id) ? '<span class="sq-gift" aria-hidden="true">🎀</span>' : ''}<span class="sq-name">${esc(nameOf(x))}</span></button>`).join('');
     const codeBox = tr.code ? `<div class="sq-code-box" role="status"><span class="small">${esc(L('Your code for {name}', { name: nameOf(byId(tr.codeId)) }))}</span><strong class="sq-code" data-sq-code>${esc(T.pretty(tr.code))}</strong><span class="small muted">${esc(L('Your friend types it under Trade. It left your shelf; win it back anytime by doing its goal again.'))}</span><button type="button" class="primary" data-sq-trade-share>📤 ${esc(L('Share code'))}</button>${tr.note ? `<span class="small">${esc(tr.note)}</span>` : ''}</div>` : '';
     const got = tr.got ? `<div class="sq-code-box sq-gift-box" role="status"><span class="sq-gift-art"><span class="sq-art">${A().svg(tr.got)}</span><span class="sq-gift big" aria-hidden="true">🎀</span></span><strong>${esc(L('You got {name} from a friend!', { name: nameOf(byId(tr.got)) }))}</strong><span class="small">🤝 ${esc(L('You both earn the Friendship badge.'))}</span><button type="button" class="secondary" data-sq-trade-back>🔁 ${esc(L('Send one back'))}</button></div>` : '';
-    return `<h2 class="sq-h2">🎁 ${esc(L('Give a squishy to a friend'))}</h2><p class="sq-hint">${esc(L('Pick one of your squishies and make a code. It goes to your friend and leaves your shelf. Legendary squishies stay on your shelf.'))}</p><p class="sq-hint small">${esc(L('If a squishy ever leaves your shelf in a trade, you can win it back: do its goal again after the trade (fresh play, not old progress).'))}</p>
+    const room = window.MsbSquishyRoom && window.msbTradeOpts ? `<h2 class="sq-h2">🔁 ${esc(L('Trade Room'))}</h2><div class="sr-root" data-sq-room></div><details class="sq-gift-code"><summary>${esc(L('Or give a squishy with a code'))}</summary>` : '';
+    return `${room}<h2 class="sq-h2">🎁 ${esc(L('Give a squishy to a friend'))}</h2><p class="sq-hint">${esc(L('Pick one of your squishies and make a code. It goes to your friend and leaves your shelf. Codes can’t send legendary squishies: trade those in the Trade Room.'))}</p><p class="sq-hint small">${esc(L('If a squishy ever leaves your shelf in a trade, you can win it back: do its goal again after the trade (fresh play, not old progress).'))}</p>
       <div class="sq-grid sq-trade-grid" data-sq-trade-grid>${picks}</div>
       <p class="sq-trade-actions"><button type="button" class="primary" data-sq-trade-make${tr.pick ? '' : ' disabled'}>✨ ${esc(L('Make a trade code'))}</button></p>${sentHtml(tr)}${tr.confirm && tr.pick ? `<div class="sq-code-box sq-confirm" role="alertdialog" aria-labelledby="sq-give-q"><strong id="sq-give-q">${esc(L('Give {name} away?', { name: nameOf(byId(tr.pick)) }))}</strong><span class="small">${esc(L('It leaves your shelf when you make the code. You can win it back by doing its goal again.'))}</span><span class="sq-confirm-row"><button type="button" class="primary" data-sq-trade-yes>🎁 ${esc(L('Yes, give it'))}</button><button type="button" class="secondary" data-sq-trade-no>${esc(L('Keep it'))}</button></span></div>` : ''}${codeBox}
       <h2 class="sq-h2">📥 ${esc(L('Got a code from a friend?'))}</h2>
       <div class="sq-redeem"><label class="small" for="sq-trade-input">${esc(L('Type the code'))}</label><input id="sq-trade-input" class="sq-code-input" data-sq-trade-input maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-1234" value="${esc(tr.typed)}"><button type="button" class="primary" data-sq-trade-redeem>🎀 ${esc(L('Get my squishy'))}</button></div>
-      ${tr.err ? `<p class="sq-msg" role="alert">${esc(tr.err)}</p>` : ''}${got}`;
+      ${tr.err ? `<p class="sq-msg" role="alert">${esc(tr.err)}</p>` : ''}${got}${room ? '</details>' : ''}`;
   }
   /* giving is for real: ask first, then the squishy leaves this shelf */
   /* every code made on this phone, newest first, so none is ever lost */
@@ -1216,7 +1227,7 @@
       enqueue(waiting, 150);
       afterProgress(false);
     },
-    close() { if (ui.celebrateT) clearTimeout(ui.celebrateT); ui.celebrateT = null; ui.showing = null; ui.queue = []; closePlay(); ui.root = null; ui.trade = { pick: null, code: null, codeId: null, note: '', err: '', got: null, typed: '' }; ui.view = 'shelf'; ui.memory = null; ui.round = null; ui.guess = null; ui.msg = ''; if (window.MsbSpeech) MsbSpeech.stop(); },
+    close() { if (window.MsbSquishyRoom && MsbSquishyRoom.isOpen() && MsbSquishyRoom._ui.root && MsbSquishyRoom._ui.root.hasAttribute('data-sq-room')) MsbSquishyRoom.close(); if (ui.celebrateT) clearTimeout(ui.celebrateT); ui.celebrateT = null; ui.showing = null; ui.queue = []; closePlay(); ui.root = null; ui.trade = { pick: null, code: null, codeId: null, note: '', err: '', got: null, typed: '' }; ui.view = 'shelf'; ui.memory = null; ui.round = null; ui.guess = null; ui.msg = ''; if (window.MsbSpeech) MsbSpeech.stop(); },
     _celebrate: celebrate,
     /* Progress made outside the squishy screen (coloring, the kids' Bible
        games): unlock any squishy whose challenge is now met. Returns the new
