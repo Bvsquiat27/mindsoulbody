@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v110';
+const CACHE_VERSION = 'v111';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -36,6 +36,7 @@ const SHELL = [
   './icon-maskable-512.png',
   './aura.css',
   './study-design.css',
+  './kidgames.css',
   './aura.js',
   './bible-reader.js',
   './trivia-game.js',
@@ -62,6 +63,12 @@ const SHELL = [
   './match3-core.js',
   './match3-art.js',
   './match3.js',
+  './kidgames-data.js',
+  './kidgames-core.js',
+  './kidgames.js',
+  './kg-wordsearch.js',
+  './kg-order.js',
+  './kg-who.js',
   './stories.js',
   './reading-share.js',
   './dm.js',
