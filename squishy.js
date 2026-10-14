@@ -768,13 +768,13 @@
     else if (was.mode === 'grab' || was.mode === 'pinch') { if (was.stretch > 0.15) boing(was.stretch); kitRelease(Math.max(was.stretch, was.squish)); feelBuzz('release', Math.max(was.stretch, was.squish)); }
     else if (was.mode === 'press') { kitRelease(was.squish); feelBuzz('release', was.squish); }
     p.mode = null; p.squelch = 0; p.gestured = false; p.buzzLevel = 0;
-    /* the first squish brings up the Bible lesson card on its own; after
-       that the Learn button opens it again */
+    /* the very first squish of each squishy (ever, on this device) brings up
+       the Bible lesson card on its own; after that the Learn button opens it */
     const learn = p.area.querySelector('[data-sq-learn]');
     if (learn && learn.hidden) {
       learn.hidden = false;
       const sheet = ui.root && ui.root.querySelector('[data-sq-sheet]');
-      if (sheet && sheet.hidden) setTimeout(() => { if (pv === p && sheet.isConnected && sheet.hidden) { sheet.innerHTML = cardHtml(p.x); sheet.hidden = false; } }, 450);
+      if (sheet && sheet.hidden && C().lessonSeen(store2()).first(p.id)) setTimeout(() => { if (pv === p && sheet.isConnected && sheet.hidden) { sheet.innerHTML = cardHtml(p.x); sheet.hidden = false; } }, 450);
     }
     refreshChip();
     kick();

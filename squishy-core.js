@@ -4,7 +4,7 @@
 (function (root) {
   'use strict';
 
-  const KEYS = { sounds: 'msb_squishy_sounds', unlocked: 'msb_squishy_unlocked', stars: 'msb_squishy_stars', stats: 'msb_squishy_stats', match: 'msb_match_progress', trade: 'msb_squishy_trade' };
+  const KEYS = { sounds: 'msb_squishy_sounds', unlocked: 'msb_squishy_unlocked', stars: 'msb_squishy_stars', stats: 'msb_squishy_stats', match: 'msb_match_progress', trade: 'msb_squishy_trade', lessonSeen: 'msb_squishy_lesson_seen' };
 
   function readList(storage, key) {
     try { const v = JSON.parse(storage.getItem(key) || '[]'); return Array.isArray(v) ? v.filter(x => typeof x === 'string') : []; } catch { return []; }
@@ -736,7 +736,25 @@
     return Math.min(1, base + 0.55 * i);
   }
 
-  const api = { FEEL, BUZZ, feelFor, VIBE_LEVELS, VIBE_SCALE, vibePref, scalePattern, feelPattern, KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
+  /* The lesson card pops up by itself only the first time each squishy is
+     squished (kept in an msb_ key, so it is in Export/Restore); after that
+     the Learn button opens it. A squishy whose lesson star was already
+     collected counts as seen. */
+  function lessonSeen(storage) {
+    const read = () => { try { const v = JSON.parse(storage.getItem(KEYS.lessonSeen)); return Array.isArray(v) ? v.filter(x => typeof x === 'string') : []; } catch { return []; } };
+    let stars = [];
+    try { const v = JSON.parse(storage.getItem(KEYS.stars)); stars = Array.isArray(v) ? v : []; } catch { stars = []; }
+    return {
+      has: id => read().includes(id) || stars.includes(id),
+      /* true only the first time for this squishy, and remembers it */
+      first(id) {
+        if (!id || read().includes(id) || stars.includes(id)) return false;
+        try { storage.setItem(KEYS.lessonSeen, JSON.stringify([...read(), id].slice(-100))); } catch { /* full */ }
+        return true;
+      }
+    };
+  }
+  const api = { lessonSeen, FEEL, BUZZ, feelFor, VIBE_LEVELS, VIBE_SCALE, vibePref, scalePattern, feelPattern, KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbSquishyCore = api;
 })(typeof self !== 'undefined' ? self : this);

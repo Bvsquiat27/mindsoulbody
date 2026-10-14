@@ -760,7 +760,8 @@ test('only trick squishies mention a secret trick; the first squish shows the le
   assert.match(ui, /kit\(x\.id\) && kit\(x\.id\)\.trick \? L\('\{name\}\. Press to squish[^']*T does its secret trick\.'/);
   assert.ok(i18n.includes('"{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch.":'));
   assert.match(ui, /<article class="card sq-card" aria-live="polite">/);
-  assert.match(ui, /if \(learn && learn\.hidden\) \{\s*learn\.hidden = false;[\s\S]{0,200}sheet\.innerHTML = cardHtml\(p\.x\); sheet\.hidden = false;/);
+  assert.match(ui, /if \(learn && learn\.hidden\) \{\s*learn\.hidden = false;[\s\S]{0,400}sheet\.innerHTML = cardHtml\(p\.x\); sheet\.hidden = false;/);
+  assert.match(ui, /sheet\.hidden && C\(\)\.lessonSeen\(store2\(\)\)\.first\(p\.id\)\) setTimeout/, 'only the first squish of each squishy');
   assert.ok(i18n.includes('"Verified": "Verificado"'));
   for (const k of ['Gold', 'Teal', 'Black', 'Read Scripture with the Orthodox Church. A profile on this device keeps your notes and progress in this browser.']) assert.ok(new RegExp(`['"]${k.replace(/[.]/g, '\\.')}['"]:`).test(i18n), k);
 });
@@ -851,4 +852,20 @@ test('the burning bush is legendary: 10 perfect rounds, keeps I AM, cannot be tr
   assert.ok(C.progress(old, SQUISHIES).unlocked().includes('bush'), 'an already opened bush stays open');
   const ui = read('./squishy.js');
   assert.match(ui, /case 'perfectLegend': return L\('Get 5 of 5 right in Questions \{n\} times', \{ n: ch\.n \}\);/);
+});
+
+test('the lesson card pops up by itself only the first time each squishy is squished', () => {
+  const s = memoryStorage(), seen = C.lessonSeen(s);
+  assert.equal(seen.first('lamb'), true, 'first squish of the lamb');
+  assert.equal(seen.first('lamb'), false, 'not again');
+  assert.equal(C.lessonSeen(s).first('lamb'), false, 'remembered after closing and reopening');
+  assert.equal(seen.first('dove'), true, 'each squishy has its own first time');
+  assert.ok(C.KEYS.lessonSeen.startsWith('msb_'), 'covered by Export/Restore (msb_ keys)');
+  const aura = read('./aura.js');
+  assert.match(aura, /MSB_BACKUP_PREFIXES=\['msb_'/);
+  /* a squishy whose lesson star was already collected counts as seen */
+  C.progress(s, SQUISHIES).addStar('lion');
+  assert.equal(C.lessonSeen(s).first('lion'), false);
+  s.setItem(C.KEYS.lessonSeen, '{bad');
+  assert.equal(C.lessonSeen(s).first('fish'), true, 'junk is ignored');
 });
