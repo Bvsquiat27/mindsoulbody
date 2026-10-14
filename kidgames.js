@@ -154,7 +154,8 @@
   const GAMES = [];
   const register = g => { GAMES.push(g); };
   const totals = () => Object.fromEntries(GAMES.map(g => [g.id, g.total ? g.total() : 0]));
-  const badgeDefs = () => C().badgeDefs(totals()).filter(b => GAMES.some(g => g.id === b.game));
+  /* a retired game's badges stay visible to anyone who earned them */
+  const badgeDefs = () => C().badgeDefs(totals()).filter(b => GAMES.some(g => g.id === b.game) || (b.retired && prog().get().badges[b.id]));
 
   const ui = { root: null, game: null, state: null, msg: '' };
   const name = o => (o && typeof o === 'object' ? o[lang()] || o.en : o);
