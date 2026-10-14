@@ -62,7 +62,7 @@
       { w: 'dawn', stamp: '💭', en: 'God warned them in a dream, so they went home by another road, safe and glad.', es: 'Dios les avisó en un sueño, y volvieron a casa por otro camino, a salvo y contentos.' },
     ],
   };
-  const TRAV = { exodus: ['img/map/map-exodus.webp', 50, '🐪'], paul: ['img/map/map-paul.webp', 41, '⛵'], abraham: ['img/map/map-abraham.webp', 53, '🐪'], jonah: ['img/map/map-jonah.webp', 56, '⛵'], ruth: ['img/map/map-ruth.webp', 34, '🚶'], magi: ['img/map/map-magi.webp', 81, '🐫'] };
+  const TRAV = { exodus: ['img/map/map-exodus.webp', 50, '🚶'], paul: ['img/map/map-paul.webp', 41, '⛵'], abraham: ['img/map/map-abraham.webp', 53, '🐪'], jonah: ['img/map/map-jonah.webp', 56, '⛵'], ruth: ['img/map/map-ruth.webp', 34, '🚶'], magi: ['img/map/map-magi.webp', 81, '🐫'] };
   const END = {
     paul: ['God kept Paul and everyone on the ship safe, all the way to Rome.', 'Dios cuidó a Pablo y a todos en el barco, hasta llegar a Roma.'],
     abraham: ['Abram trusted God and went. God kept His promise to him, step by step.', 'Abram confió en Dios y fue. Dios le cumplió su promesa, paso a paso.'],
@@ -72,7 +72,11 @@
   };
   const isSea = m => m.land === 'sea' || m.land === 'jonah';
   const travEmoji = m => (TRAV[m.id] ? TRAV[m.id][2] : m.travel || '🚶');
-  const travArt = m => { const a = TRAV[m.id]; return a ? `<image onerror="this.style.display='none';this.nextElementSibling.style.display=''" href="${a[0]}" x="${-a[1] / 2}" y="-38" width="${a[1]}" height="40"/><text class="mp-trav-fb" y="-6" text-anchor="middle" font-size="24" style="display:none">${a[2]}</text>` : `<text class="mp-trav-fb" y="-6" text-anchor="middle" font-size="24">${travEmoji(m)}</text>`; };
+  const travArt = m => { const a = TRAV[m.id]; return a ? `<image data-mp-fb href="${a[0]}" x="${-a[1] / 2}" y="-38" width="${a[1]}" height="40"/><text class="mp-trav-fb" y="-6" text-anchor="middle" font-size="24" style="display:none">${a[2]}</text>` : `<text class="mp-trav-fb" y="-6" text-anchor="middle" font-size="24">${travEmoji(m)}</text>`; };
+  /* Missing traveler art: hide the picture and show the emoji next to it.
+     The page CSP blocks inline onerror handlers, so one capturing listener
+     does it for every [data-mp-fb] image (map, trip list, how-to-play). */
+  if (typeof document !== 'undefined' && document.addEventListener) document.addEventListener('error', e => { const el = e.target; if (!el || !el.hasAttribute || !el.hasAttribute('data-mp-fb')) return; el.style.display = 'none'; if (el.nextElementSibling) el.nextElementSibling.style.display = ''; }, true);
   const storyOf = (m, i) => (STORY[m.id] && STORY[m.id][i]) || { w: 'clear', stamp: '⭐', en: '', es: '' };
 
   /* passport stamps on this phone (msb_ key: covered by Export/Restore) */
@@ -199,7 +203,7 @@
   const starRow = n => `<span class="kg-stars" aria-label="${esc(t('{n} of 3 stars', '{n} de 3 estrellas', { n }))}">${[1, 2, 3].map(k => `<i class="${k <= n ? 'on' : ''}" aria-hidden="true">★</i>`).join('')}</span>`;
   function pickHtml() {
     const v = prog().get();
-    return `<p class="kg-lead">${esc(t('Travel with God\u2019s people. Answer at every stop to move on and collect its stamp.', 'Viaja con el pueblo de Dios. Responde en cada parada para seguir y ganar su sello.'))}</p><ul class="kg-picks mp-picks">${maps().map((m, i) => { const st = Number(v.best[`map:${m.id}`]) || 0; return `<li><button type="button" class="card kg-pick mp-pick${st ? ' done' : ''}" data-mp-pick="${i}"><span class="kg-pick-icon" aria-hidden="true">${TRAV[m.id] ? `<img class="mp-pick-art" src="${TRAV[m.id][0]}" alt="" loading="lazy" decoding="async" width="${TRAV[m.id][1]}" height="40">` : m.icon}</span><span><strong>${esc(name(m.title))}</strong><small>${esc(t('{n} stops', '{n} paradas', { n: m.stops.length }))}</small>${st ? starRow(st) : ''}${passport(m)}</span></button></li>`; }).join('')}</ul>`;
+    return `<p class="kg-lead">${esc(t('Travel with God\u2019s people. Answer at every stop to move on and collect its stamp.', 'Viaja con el pueblo de Dios. Responde en cada parada para seguir y ganar su sello.'))}</p><ul class="kg-picks mp-picks">${maps().map((m, i) => { const st = Number(v.best[`map:${m.id}`]) || 0; return `<li><button type="button" class="card kg-pick mp-pick${st ? ' done' : ''}" data-mp-pick="${i}"><span class="kg-pick-icon" aria-hidden="true">${TRAV[m.id] ? `<img class="mp-pick-art" src="${TRAV[m.id][0]}" alt="" loading="lazy" decoding="async" width="${TRAV[m.id][1]}" height="40" data-mp-fb><span class="mp-pick-fb" style="display:none">${m.icon}</span>` : m.icon}</span><span><strong>${esc(name(m.title))}</strong><small>${esc(t('{n} stops', '{n} paradas', { n: m.stops.length }))}</small>${st ? starRow(st) : ''}${passport(m)}</span></button></li>`; }).join('')}</ul>`;
   }
   const weatherName = w => ({ storm: t('Storm', 'Tormenta'), rain: t('Rain', 'Lluvia'), wind: t('Windy', 'Viento'), heat: t('Hot sun', 'Sol fuerte'), dawn: t('Morning', 'Mañana'), clear: t('Clear sky', 'Cielo claro') })[w] || '';
   const weatherIcon = w => ({ storm: '⛈️', rain: '🌧️', wind: '💨', heat: '☀️', dawn: '🌅', clear: '🌤️' })[w] || '';
@@ -207,7 +211,7 @@
     const m = maps()[s.at], l = lang();
     const kui = K._ui;
     const tut = coach('map', t('Map Journey', 'Viaje en el mapa'), [
-      { icon: TRAV[m.id] ? `<img class="mp-pick-art" src="${TRAV[m.id][0]}" alt="" decoding="async">` : travEmoji(m), text: t('Travel stop by stop along the red route.', 'Viaja parada por parada por la ruta roja.') },
+      { icon: TRAV[m.id] ? `<img class="mp-pick-art" src="${TRAV[m.id][0]}" alt="" decoding="async" data-mp-fb><span class="mp-pick-fb" style="display:none">${travEmoji(m)}</span>` : travEmoji(m), text: t('Travel stop by stop along the red route.', 'Viaja parada por parada por la ruta roja.') },
       { icon: '📜', text: t('Read what happened there, then answer the question.', 'Lee lo que pasó allí y responde la pregunta.') },
       { icon: '🔖', text: t('A right answer stamps your passport. Fewer mistakes, more stars!', 'Una respuesta correcta sella tu pasaporte. ¡Menos errores, más estrellas!') },
     ], kui.coachForce === 'map');

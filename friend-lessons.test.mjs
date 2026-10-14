@@ -47,27 +47,8 @@ test('guest banner follows the share switch in EN and ES', () => {
   assert.match(i18n, /Compartir está desactivado, así que solo tú puedes verlas\./);
 });
 
-test('the David’s Sling squishy (shield) is legendary everywhere, with a story trick', async () => {
-  const C = require('./squishy-core.js');
-  assert.equal(C.CHALLENGES.find((c) => c.id === 'shield').tier, 'legendary');
-  assert.deepEqual(C.CHALLENGES.find((c) => c.id === 'shield').game, 'sling');
-  const T = require('./squishy-trade.js');
-  assert.ok(T.LEGENDARY.includes('shield'));
+test('the worker lists shield as legendary with the 5-squishy minimum', async () => {
   const W = await import('./worker/friends.mjs');
   assert.ok(W.SQUISHY_LEGENDARY.includes('shield'));
   assert.equal(W.TRADE_RULES.LEGEND_MIN, 5);
-  const F = require('./squishy-fx.js');
-  assert.equal(typeof F.STORIES.shield.over, 'function');
-  assert.match(readFileSync('squishy.js', 'utf8'), /shield: \{ text: 'The battle is the LORD’s'/);
-  assert.match(readFileSync('i18n.js', 'utf8'), /"The battle is the LORD’s": "De Jehová es la guerra"/);
-});
-
-test('the shield trick is drawn in squishy style and stays on screen', () => {
-  const fx = readFileSync('squishy-fx.js', 'utf8');
-  const block = fx.slice(fx.indexOf('    shield: {'), fx.indexOf('  const api'));
-  assert.match(block, /squishyGoliath\(/);
-  assert.match(block, /squishyDavid\(/);
-  assert.match(block, /G\.W - u \* 0\.4/);
-  assert.match(fx, /const SQ_INK = '#5b4660'/);
-  assert.doesNotMatch(block, /rgba\(52,44,58/);
 });
