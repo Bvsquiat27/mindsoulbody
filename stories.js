@@ -428,7 +428,7 @@
   function pick(item, field) { return es() ? item[field + 'Es'] : item[field]; }
 
   /* Repainted covers ship under new names (art is never edited in place). */
-  const STORY_ART_V2 = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
+  const STORY_ART_V2 = ['creation', 'noah', 'stars', 'ladder', 'redsea', 'samuel', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
   const artName = id => (STORY_ART_V2.includes(id) ? `${id}-v2` : id);
   function picture(item, size) {
     const full = `img/stories/${artName(item.id)}.webp`;
