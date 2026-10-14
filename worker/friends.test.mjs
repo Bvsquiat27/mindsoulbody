@@ -1084,3 +1084,20 @@ test('messages, notes, and shared notes require friendship in both directions', 
   assert.equal(oneWay.status, 403);
   assert.deepEqual((await kv.get(`user:${mary.code}`, 'json')).threads || {}, {});
 });
+
+test('reading share: friends see it only while it is sent; junk is dropped', async () => {
+  const kv = memoryKv();
+  const a = (await read(await call(kv, '/register', { name: 'A' }))).data;
+  const b = (await read(await call(kv, '/register', { name: 'B' }))).data;
+  await call(kv, '/friend/add', { code: b.code, secret: b.secret, friendCode: a.code });
+  await call(kv, '/friend/accept', { code: a.code, secret: a.secret, friendCode: b.code });
+  await call(kv, '/sync', { code: a.code, secret: a.secret, stats: { studies: 1, reading: { book: 43, chapter: 3, study: 'good-shepherd', studyTitle: 'The <b>Good</b> Shepherd', done: 1, total: 12, at: 5, note: 'private' } } });
+  let row = (await read(await call(kv, '/friends', { code: b.code, secret: b.secret }))).data[0];
+  assert.deepEqual(row.stats.reading, { book: 43, chapter: 3, study: 'good-shepherd', studyTitle: 'The bGood/b Shepherd', done: 1, total: 12, at: 5 });
+  await call(kv, '/sync', { code: a.code, secret: a.secret, stats: { studies: 1 } });
+  row = (await read(await call(kv, '/friends', { code: b.code, secret: b.secret }))).data[0];
+  assert.equal(row.stats.reading, undefined, 'turning sharing off clears it');
+  await call(kv, '/sync', { code: a.code, secret: a.secret, stats: { reading: { book: 900, study: '<script>' } } });
+  row = (await read(await call(kv, '/friends', { code: b.code, secret: b.secret }))).data[0];
+  assert.equal(row.stats.reading, undefined);
+});

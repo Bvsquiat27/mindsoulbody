@@ -131,7 +131,30 @@ function cleanStats(input) {
   const levelsSrc = src.levels && typeof src.levels === 'object' ? src.levels : {};
   const levels = {};
   for (const k of SHOWS) levels[k] = int(levelsSrc[k]);
-  return { bests: pick(src.bests), levels, studies: int(src.studies) };
+  const out = { bests: pick(src.bests), levels, studies: int(src.studies) };
+  const reading = cleanReading(src.reading);
+  if (reading) out.reading = reading;
+  return out;
+}
+
+/* Opt-in "what I'm reading" (client: reading-share.js). Only small known
+   fields; absent when the user does not share, so turning it off clears it. */
+function cleanReading(input) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) return null;
+  const out = {};
+  const book = Math.floor(num(input.book)), chapter = Math.floor(num(input.chapter));
+  if (book >= 1 && book <= 78 && chapter >= 1 && chapter <= 150) { out.book = book; out.chapter = chapter; }
+  const study = String(input.study ?? '').trim().toLowerCase();
+  if (/^[a-z0-9-]{1,60}$/.test(study)) {
+    out.study = study;
+    const title = String(input.studyTitle ?? '').replace(/[\u0000-\u001f<>]/g, '').trim().slice(0, 120);
+    if (title) out.studyTitle = title;
+  }
+  const total = Math.floor(num(input.total)), done = Math.floor(num(input.done));
+  if (total >= 1 && total <= 500 && done >= 0 && done <= total) { out.done = done; out.total = total; }
+  const at = Math.floor(num(input.at));
+  if (at > 0) out.at = at;
+  return out.book || out.study || out.total ? out : null;
 }
 
 function cleanNoteRef(input) {
