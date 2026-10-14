@@ -266,3 +266,17 @@ test('every sound() a kid game plays exists, and old Sling stars carry over', ()
   const pr = C.progress(s); assert.ok(pr.migrateSling());
   assert.deepEqual(pr.get().best, { 'sling:z1': 3, 'sling:z2': 3, who: 4 });
 });
+
+test('orphaned old Sling stars move to the new levels on their own; painted art is precached', () => {
+  const m = new Map(), s = { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)) };
+  s.setItem('msb_kidgames', JSON.stringify({ done: { sling: ['z1'] }, best: { 'sling:s3': 2, 'sling:z1': 1 }, plays: {}, badges: {} }));
+  const pr = C.progress(s);
+  assert.equal(pr.migrateSling(), false, 'no levels moved, so no note');
+  assert.deepEqual(pr.get().best, { 'sling:z1': 1, 'sling:z3': 2 });
+  assert.deepEqual(pr.done('sling'), ['z1']);
+  const sw = read('./sw.js'), sling = read('./kg-sling.js'), map = read('./kg-map.js');
+  for (const n of ['goliath-idle', 'goliath-angry', 'goliath-hit', 'goliath-laugh', 'david', 'valley']) { assert.ok(sw.includes(`'${n}'`), n); assert.ok(existsSync(new URL(`./img/sling/${n}.webp`, import.meta.url)), n); }
+  for (const n of ['map-exodus', 'map-paul']) { assert.ok(map.includes(`img/map/${n}.webp`)); assert.ok(existsSync(new URL(`./img/map/${n}.webp`, import.meta.url)), n); }
+  assert.match(sling, /img\/sling\/\$\{name\}\.webp/);
+  assert.match(sling, /goliath-\$\{pose === 'fall' \? 'hit' : pose\}/);
+});

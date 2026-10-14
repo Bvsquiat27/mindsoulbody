@@ -74,8 +74,6 @@
       ${SEA_FRIEND}
       <text x="38" y="30" class="mp-label">${esc(t('Italy', 'Italia'))}</text><text x="196" y="34" class="mp-label">${esc(t('Greece', 'Grecia'))}</text><text x="160" y="268" class="mp-label">${esc(t('Africa', 'África'))}</text><text x="200" y="210" class="mp-label small">${esc(t('Great Sea', 'Mar Grande'))}</text>`,
   };
-  const CARAVAN = `<g class="mp-trav-art"><ellipse cx="0" cy="3" rx="11" ry="2.5" fill="rgba(60,40,20,.25)"/><g class="mp-bob"><path d="M-10 -2C-10-8-6-11-2-10C0-14 4-14 6-10C8-9 9-6 9-2Z" fill="#c8955a" stroke="#6b4423" stroke-width="1"/><path d="M9-4L13-11L15-11L12-3Z" fill="#c8955a" stroke="#6b4423" stroke-width="1"/><path d="M-8-2V3M-4-2V3M4-2V3M8-2V3" stroke="#6b4423" stroke-width="1.4"/><circle cx="1" cy="-17" r="3.2" fill="#f1c9a0" stroke="#6b4423" stroke-width=".8"/><path d="M-2-18C-1-22 3-22 4-18Z" fill="#3f78b5"/><path d="M-2-14L4-14L3-9L-1-9Z" fill="#a33d2f"/></g></g>`;
-  const SHIP = `<g class="mp-trav-art"><g class="mp-bob"><path d="M-13-2H13L9 5H-9Z" fill="#8a5a32" stroke="#4d2f17" stroke-width="1"/><path d="M0-2V-24" stroke="#4d2f17" stroke-width="1.4"/><path d="M1-23C9-19 10-9 1-5Z" fill="#f6ecd4" stroke="#a08560" stroke-width=".8"/><path d="M-1-21C-8-17-8-9-1-6Z" fill="#efe1bf" stroke="#a08560" stroke-width=".8"/><path d="M0-24L6-22L0-20Z" fill="#a33d2f"/><path d="M-12 6q3-2 6 0t6 0t6 0t6 0" stroke="#e8f3fb" stroke-width="1" fill="none"/></g></g>`;
 
   function weather(kind) {
     if (reduced()) return '';
@@ -107,7 +105,7 @@
         ${LAND[m.land]()}
         <polyline points="${pts}" class="mp-route"/><polyline points="${done}" class="mp-route done${s.from != null && !reduced() ? ' draw' : ''}"/>
         ${dots}
-        <g class="mp-trav${s.react ? ' ' + s.react : ''}${whole ? ' win' : ''}" data-mp-trav transform="translate(${at.x} ${at.y - 2})"><g transform="scale(1.45)">${m.land === 'sea' ? SHIP : CARAVAN}</g>${s.react === 'yes' ? '<text class="mp-bubble" y="-30" text-anchor="middle">!</text>' : s.react === 'no' ? '<text class="mp-bubble" y="-30" text-anchor="middle">?</text>' : ''}${whole ? '<path class="mp-flag" d="M10-30V-14M10-30L20-26L10-22" stroke="#4d2f17" fill="#ffd35a"/>' : ''}</g>
+        <g class="mp-trav${s.react ? ' ' + s.react : ''}${whole ? ' win' : ''}" data-mp-trav transform="translate(${at.x} ${at.y - 2})"><g class="mp-trav-art"><ellipse cx="0" cy="1" rx="16" ry="3" fill="rgba(60,40,20,.25)"/><g class="mp-bob">${m.land === 'sea' ? '<image href="img/map/map-paul.webp" x="-21" y="-38" width="41" height="40"/>' : '<image href="img/map/map-exodus.webp" x="-25" y="-38" width="50" height="40"/>'}</g></g>${s.react === 'yes' ? '<text class="mp-bubble" y="-30" text-anchor="middle">!</text>' : s.react === 'no' ? '<text class="mp-bubble" y="-30" text-anchor="middle">?</text>' : ''}${whole ? '<path class="mp-flag" d="M10-30V-14M10-30L20-26L10-22" stroke="#4d2f17" fill="#ffd35a"/>' : ''}</g>
       </g>
       <g class="mp-clouds" data-mp-clouds style="${camCss(c, 1.25).replace(/scale\([^)]*\)/, '')}"><g class="mp-cloud c1"><ellipse cx="80" cy="60" rx="30" ry="10"/><ellipse cx="98" cy="54" rx="18" ry="9"/></g><g class="mp-cloud c2"><ellipse cx="280" cy="200" rx="34" ry="11"/><ellipse cx="300" cy="193" rx="20" ry="9"/></g><g class="mp-cloud c3"><ellipse cx="420" cy="110" rx="26" ry="9"/></g></g>
       ${weather(wx)}
