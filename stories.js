@@ -468,8 +468,10 @@
         /* bedtime read-aloud carries on to the next story when one finishes on its own */
         if (!token || !bedtime || bedtime.readToken !== token || !token.last || token.stopped) return;
         token.stopped = true;
-        bedtime.advance = setTimeout(() => {
+        bedtime.advance = setTimeout(function next() {
           if (!bedtime || bedtime.readToken !== token || bedtime.step !== 'story') return;
+          /* paused during the gap: hold here and carry on when Pause is tapped again */
+          if (bedtime.held) { bedtime.pendingAdvance = next; return; }
           const at = stories.indexOf(bedtimeStory());
           if (at >= stories.length - 1) { bedtime.reading = false; return; }
           bedtime.story = stories[at + 1].id; refresh(); window.scrollTo({ top: 0, behavior: 'auto' });
@@ -561,6 +563,7 @@
     const reading = !!bedtime.reading;
     clearTimeout(bedtime.advance);
     bedtime.readToken = null;
+    bedtime.held = false; bedtime.pendingAdvance = null;
     if (window.MsbSpeech) MsbSpeech.stop();
     bedtime.reading = reading;
     bedtime.story = stories[(at + dir + stories.length) % stories.length].id;
@@ -568,9 +571,19 @@
     window.scrollTo({ top: 0, behavior: 'auto' });
     const nav = document.querySelector(`[data-bedtime-step="${dir}"]`); if (nav) nav.focus({ preventScroll: true });
   }
-  /* Stop and Pause end the bedtime read-aloud chain (capture runs before speech.js) */
+  /* Stop ends the bedtime read-aloud chain. Pause is a toggle in speech.js: it only
+     holds the move to the next story, and resuming carries the chain on.
+     (capture runs before speech.js flips the button) */
   document.addEventListener('click', event => {
-    if (bedtime && event.target.closest && event.target.closest('#screen [data-speech-stop], #screen [data-speech-pause]')) { bedtime.reading = false; clearTimeout(bedtime.advance); if (bedtime.readToken) bedtime.readToken.stopped = true; }
+    if (!bedtime || !event.target.closest) return;
+    if (event.target.closest('#screen [data-speech-stop]')) { bedtime.reading = false; bedtime.held = false; bedtime.pendingAdvance = null; clearTimeout(bedtime.advance); if (bedtime.readToken) bedtime.readToken.stopped = true; return; }
+    const pause = event.target.closest('#screen [data-speech-pause]');
+    if (pause && bedtime.reading) {
+      const resuming = pause.getAttribute('aria-pressed') === 'true' || !!bedtime.held;
+      bedtime.held = !resuming;
+      if (resuming && bedtime.pendingAdvance) { const go = bedtime.pendingAdvance; bedtime.pendingAdvance = null; setTimeout(() => { pause.setAttribute('aria-pressed', 'false'); go(); }, 0); }
+      else if (!resuming) setTimeout(() => pause.setAttribute('aria-pressed', 'true'), 0);
+    }
   }, true);
   function refresh() {
     const root = document.getElementById('screen');

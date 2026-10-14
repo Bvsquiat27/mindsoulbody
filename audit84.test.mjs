@@ -18,12 +18,12 @@ test('reader art list includes the new stories', () => {
   const br = readFileSync('bible-reader.js', 'utf8');
   for (const id of ['ladder', 'redsea', 'samuel']) assert.match(br.split('\n').find((l) => l.includes('STORY_ART_FILES =')), new RegExp(`'${id}'`));
 });
-test('Pause ends the bedtime read-aloud chain', () => {
-  assert.match(readFileSync('stories.js', 'utf8'), /#screen \[data-speech-stop\], #screen \[data-speech-pause\]/);
+test('Pause holds rather than ends the bedtime chain', () => {
+  assert.match(readFileSync('stories.js', 'utf8'), /bedtime\.held = !resuming/);
 });
 test('no wording says notes stay private, in EN or ES', () => {
   for (const src of [aura, i18n]) {
-    assert.doesNotMatch(src, /notes stay private|journal itself stays private|private notes|notas siguen|diario se queda privado|No se sincronizan con otros|PRIVATE JOURNAL|not uploaded|DIARIO PRIVADO|No se suben/);
+    assert.doesNotMatch(src, /notes stay private|journal itself stays private|private notes|notas siguen|diario se queda privado|No se sincronizan con otros|PRIVATE JOURNAL|not uploaded|DIARIO PRIVADO|No se suben|(They|Notes and progress) stay in this browser|Se quedan en este navegador|SAVED IN THIS BROWSER/);
   }
 });
 test('study notes sync when saved', () => {
@@ -40,7 +40,20 @@ test('shared text never contains an empty verse', () => {
 });
 
 test('study journal box follows the share switch', () => {
-  assert.match(aura, /localStorage\.getItem\('msb_notes_share'\)==='0'\?'Only you can see these notes/);
+  assert.match(aura, /!state\.user\?\.registered\?'Create a study profile to save notes/);
+  assert.match(aura, /!msbNotesShared\(\)\?'Only you can see these notes/);
   assert.match(i18n, /Tus amigos pueden ver estas notas/);
   assert.match(i18n, /Solo tú puedes ver estas notas/);
+});
+
+test('bedtime Pause holds the chain and resume carries it on; Stop ends it', () => {
+  const src = readFileSync('stories.js', 'utf8');
+  assert.doesNotMatch(src, /\[data-speech-stop\], #screen \[data-speech-pause\]/);
+  assert.match(src, /if \(bedtime\.held\) \{ bedtime\.pendingAdvance = next; return; \}/);
+  assert.match(src, /resuming && bedtime\.pendingAdvance/);
+});
+test('devotional data is prefetched so share runs inside the tap', () => {
+  const src = readFileSync('my-notes.js', 'utf8');
+  assert.match(src, /prefetch so Share can run inside the tap/);
+  assert.match(src, /if \(!meta\.verse\) \{ try \{ await/);
 });
