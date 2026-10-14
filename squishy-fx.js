@@ -169,7 +169,49 @@
       } }
   
   };
-  const api = { FX, TRICKS, spawn, step, drawParticle, emo, glowText, ease, seg };
+  /* Story tricks for every legendary squishy: one button plays its Bible
+     moment. Reduced motion shows one calm still frame (see drawAnim). */
+  const rays = (g, G, n, len, a, col, spin) => { g.save(); g.globalCompositeOperation = 'lighter'; g.translate(G.cx, G.cy); g.rotate(spin || 0); for (let k = 0; k < n; k += 1) { g.rotate(Math.PI * 2 / n); const grd = g.createLinearGradient(0, 0, len, 0); grd.addColorStop(0, col.replace('A', (0.55 * a).toFixed(3))); grd.addColorStop(1, col.replace('A', '0')); g.fillStyle = grd; g.beginPath(); g.moveTo(0, -G.S * 0.03); g.lineTo(len, -G.S * 0.12); g.lineTo(len, G.S * 0.12); g.lineTo(0, G.S * 0.03); g.fill(); } g.restore(); };
+  const STORIES = {
+    /* Elijah goes up by a whirlwind in a chariot of fire (2 Kings 2:11) */
+    chariot: { dur: 4200, pose: t => { const up = ease(seg(t, 0.35, 0.9)); return { dy: -up * 1.6, rot: Math.sin(t * 30) * 0.06 * (1 - up), sx: 1 - up * 0.3, sy: 1 - up * 0.3, alpha: 1 - seg(t, 0.85, 1) }; },
+      over(g, t, G) {
+        g.save(); g.globalCompositeOperation = 'lighter';
+        const a = Math.sin(Math.PI * seg(t, 0, 1));
+        for (let k = 0; k < 40; k += 1) { const h = (k / 40), ang = t * 22 + k * 0.9, r = G.S * (0.25 + h * 0.5), x = G.cx + Math.cos(ang) * r, y = G.ground - h * G.S * 2.2 + Math.sin(ang) * r * 0.25 - ease(seg(t, 0.35, 0.9)) * G.S;
+          g.fillStyle = k % 3 ? `rgba(255,140,40,${(0.5 * a).toFixed(3)})` : `rgba(255,230,120,${(0.6 * a).toFixed(3)})`; g.beginPath(); g.arc(x, y, G.S * 0.035 * (1 - h * 0.5), 0, Math.PI * 2); g.fill(); }
+        g.restore();
+        glowText(g, G.text, G.cx, G.S * 0.35, G.S * 0.16, ease(seg(t, 0.15, 0.35)) * (1 - seg(t, 0.92, 1)));
+      } },
+    /* The stone is rolled away and light shines out of the empty tomb */
+    tomb: { dur: 4000, pose: t => { const roll = ease(seg(t, 0.15, 0.55)); return { dx: roll * 0.9, rot: roll * Math.PI * 1.2, mood: roll > 0.9 ? 'happy' : undefined }; },
+      over(g, t, G) {
+        const open = ease(seg(t, 0.3, 0.7));
+        const grd = g.createRadialGradient(G.cx, G.cy, 0, G.cx, G.cy, G.S * 1.4); grd.addColorStop(0, `rgba(255,250,220,${(0.95 * open).toFixed(3)})`); grd.addColorStop(1, 'rgba(255,240,180,0)');
+        g.save(); g.globalCompositeOperation = 'lighter'; g.fillStyle = grd; g.fillRect(0, 0, G.W, G.H); g.restore();
+        rays(g, G, 12, G.S * 2 * open, open * (1 - seg(t, 0.9, 1)), 'rgba(255,240,170,A)', t * 0.6);
+        glowText(g, G.text, G.cx, G.S * 0.35, G.S * 0.16, ease(seg(t, 0.5, 0.7)) * (1 - seg(t, 0.94, 1)));
+      } },
+    /* The commandments are carved while lightning flashes on Sinai */
+    tablets: { dur: 4400, pose: t => ({ sx: 1 + 0.03 * Math.sin(t * 20) * (1 - seg(t, 0.7, 1)), sy: 1 + 0.03 * Math.sin(t * 20) * (1 - seg(t, 0.7, 1)) }),
+      over(g, t, G) {
+        const flash = [0.12, 0.3, 0.48].reduce((m, c) => Math.max(m, 1 - Math.abs(t - c) * 25), 0);
+        if (flash > 0) { g.save(); g.fillStyle = `rgba(230,240,255,${(0.6 * flash).toFixed(3)})`; g.fillRect(0, 0, G.W, G.H); g.strokeStyle = `rgba(255,255,255,${flash.toFixed(3)})`; g.lineWidth = G.S * 0.02; g.beginPath(); let x = G.cx + G.S * 0.2, y = 0; g.moveTo(x, y); while (y < G.cy - G.S * 0.3) { x += (Math.sin(y * 13 + t * 99) * 0.5) * G.S * 0.12; y += G.S * 0.12; g.lineTo(x, y); } g.stroke(); g.restore(); }
+        const carve = ease(seg(t, 0.15, 0.8)), glow = Math.sin(Math.PI * seg(t, 0.1, 1));
+        g.save(); g.globalCompositeOperation = 'lighter'; g.strokeStyle = `rgba(255,220,120,${(0.85 * glow).toFixed(3)})`; g.lineWidth = G.S * 0.012; g.lineCap = 'round';
+        for (let k = 0; k < 10; k += 1) { if (carve * 10 < k) break; const col = k < 5 ? -1 : 1, row = k % 5, x0 = G.cx + col * G.S * 0.2 - G.S * 0.1, y = G.cy - G.S * 0.18 + row * G.S * 0.085, w = G.S * 0.2 * Math.min(1, carve * 10 - k);
+          g.beginPath(); g.moveTo(x0, y); g.lineTo(x0 + w, y); g.stroke(); }
+        g.restore();
+        glowText(g, G.text, G.cx, G.S * 0.35, G.S * 0.14, ease(seg(t, 0.6, 0.8)) * (1 - seg(t, 0.94, 1)));
+      } },
+    /* "I AM THAT I AM": the bush blazes and is not burnt up */
+    bush: { dur: 3800, pose: t => ({ sx: 1 + 0.03 * Math.sin(t * 44), sy: 1 + 0.04 * Math.cos(t * 39), mood: 'happy' }),
+      over(g, t, G) { TRICKS['i-am'].over(g, t, { ...G, text: '' }); rays(g, G, 8, G.S * 1.3 * ease(seg(t, 0.2, 0.6)), Math.sin(Math.PI * t), 'rgba(255,170,60,A)', -t); glowText(g, G.text, G.cx, G.cy - G.S * 0.8, Math.min(G.S * 0.14, G.W * 0.9 / Math.max(6, G.text.length) * 1.6), ease(seg(t, 0.25, 0.5)) * (1 - seg(t, 0.92, 1) * 0.5)); } },
+    /* "I am the light of the world": rays reach every corner */
+    lamp: { dur: 4000, pose: t => ({ sx: 1 + 0.05 * Math.sin(t * 8), sy: 1 + 0.05 * Math.sin(t * 8) }),
+      over(g, t, G) { TRICKS['light-room'].over(g, t, G); rays(g, G, 16, G.S * 3 * ease(seg(t, 0.25, 0.7)), Math.sin(Math.PI * seg(t, 0.2, 1)), 'rgba(255,235,150,A)', t * 0.8); glowText(g, G.text, G.cx, G.S * 0.35, G.S * 0.15, ease(seg(t, 0.4, 0.6)) * (1 - seg(t, 0.94, 1))); } },
+  };
+  const api = { FX, TRICKS, STORIES, spawn, step, drawParticle, emo, glowText, ease, seg };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbSquishyFx = api;
 })(typeof self !== 'undefined' ? self : this);
