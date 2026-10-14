@@ -1273,6 +1273,8 @@
     "Put {n} stories in order": "Ordena {n} historias",
     "Build {n} verses in Verse Builder": "Arma {n} versículos en Arma el versículo",
     "Finish {n} Map Journeys": "Termina {n} rutas de Viaje en el mapa",
+    "Put every Story Order set in order and get 3 stars on {n} Manna Match levels": "Ordena todos los grupos de Ordena la historia y consigue 3 estrellas en {n} niveles de Combina el maná",
+    "play {n} more rounds of Story Order or Manna Match": "juega {n} rondas más de Ordena la historia o Combina el maná",
     "Finish 1 Map Journey": "Termina 1 ruta de Viaje en el mapa",
     "Finish {n} levels of David’s Sling": "Termina {n} niveles de La honda de David",
     "Finish Manna Match all the way to Easter": "Termina Combina el maná hasta la Pascua",

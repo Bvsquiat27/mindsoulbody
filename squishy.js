@@ -51,6 +51,7 @@
       case 'trades': return L('trade {n} more times with a friend', { n: need });
       case 'kgDone': case 'kgBest': return L('finish {n} more rounds of that Bible game', { n: need });
       case 'kgAll': return L('play each of the 6 Bible games again');
+      case 'tabletsLegend': return L('play {n} more rounds of Story Order or Manna Match', { n: need });
       default: return challengeText(ch);
     }
   }
@@ -73,6 +74,7 @@
       case 'kgDone': return L(ch.game === 'map' && ch.n === 1 ? 'Finish 1 Map Journey' : KG_TEXT[ch.game] || '', { n: ch.n });
       case 'kgBest': return L('Get {n} in a row in Who Said It?', { n: ch.n });
       case 'kgAll': return L('Finish each of the 6 Bible games once');
+      case 'tabletsLegend': return L('Put every Story Order set in order and get 3 stars on {n} Manna Match levels', { n: ch.n });
       case 'tricks': return ch.n === 1 ? L('Find a secret trick') : ch.n ? L('Find {n} secret tricks', { n: ch.n }) : L('Find every secret trick');
       default: return '';
     }
@@ -411,7 +413,7 @@
     const list = trades().get().sent.slice(-12).reverse();
     if (!list.length) return '';
     const rows = list.map(x => `<li><span class="sq-art sq-sent-art">${A().svg(x.id)}</span><span><strong>${esc(nameOf(byId(x.id)))}</strong><small class="sq-code-small">${esc(TR().pretty(x.c))}</small></span><button type="button" class="secondary" data-sq-sent="${esc(x.c)}"${tr.code === x.c ? ' aria-pressed="true"' : ''}>${esc(L('Show again'))}</button></li>`).join('');
-    return `<details class="sq-sent"${tr.code ? '' : ''}><summary>📮 ${esc(L('My sent codes'))} (${list.length})</summary><p class="small muted">${esc(L('If your friend has not typed a code yet, show it again here.'))}</p><ul>${rows}</ul></details>`;
+    return `<details class="sq-sent"${ui.trade.sentOpen ? ' open' : ''}><summary>📮 ${esc(L('My sent codes'))} (${list.length})</summary><p class="small muted">${esc(L('If your friend has not typed a code yet, show it again here.'))}</p><ul>${rows}</ul></details>`;
   }
   function makeTrade() {
     const tr = ui.trade, code = trades().create(tr.pick, prog().unlocked(), Math.random, new Date(), id => C().tradeAway(store2(), D().SQUISHIES, id));
@@ -1116,7 +1118,7 @@
     if (t.closest('[data-sq-trade-make]')) { if (ui.trade.pick) { ui.trade.confirm = true; render(); ui.root.querySelector('[data-sq-trade-yes]')?.focus(); } return; }
     if (t.closest('[data-sq-trade-yes]')) { makeTrade(); return; }
     const sent = t.closest('[data-sq-sent]');
-    if (sent) { const x = trades().get().sent.find(v => v.c === sent.dataset.sqSent); if (x) { ui.trade.code = x.c; ui.trade.codeId = x.id; ui.trade.confirm = false; render(); ui.root.querySelector('[data-sq-code]')?.scrollIntoView({ block: 'center' }); } return; }
+    if (sent) { const x = trades().get().sent.find(v => v.c === sent.dataset.sqSent); if (x) { ui.trade.sentOpen = true; ui.trade.code = x.c; ui.trade.codeId = x.id; ui.trade.confirm = false; render(); ui.root.querySelector('[data-sq-code]')?.scrollIntoView({ block: 'center' }); } return; }
     if (t.closest('[data-sq-trade-no]')) { ui.trade.confirm = false; render(); return; }
     if (t.closest('[data-sq-trade-share]')) { shareTrade(); return; }
     if (t.closest('[data-sq-trade-redeem]')) { redeemTrade(); return; }
