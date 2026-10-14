@@ -13,8 +13,13 @@
   const ALPHA = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
   /* Fixed order, so codes keep working when squishies are added. Legendary
      squishies are not in the list: they cannot be traded. */
-  const IDS = ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow', 'stone', 'loaves', 'seed', 'bush', 'basket', 'tree', 'ark', 'coat', 'ladder', 'raven', 'wheat', 'oil', 'coin', 'donkey', 'jar', 'crown', 'boat'];
-  const LEGENDARY = ['lamp', 'tomb', 'bush'];
+  const IDS = ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow', 'stone', 'loaves', 'seed', 'bush', 'basket', 'tree', 'ark', 'coat', 'ladder', 'raven', 'wheat', 'oil', 'coin', 'donkey', 'jar', 'crown', 'boat',
+    /* won in the games (added after the first 23; index 31 and up use the
+       extended slot below, so older codes read exactly as before) */
+    'lily', 'key', 'pearl', 'manna', 'scroll', 'shofar', 'tablets', 'elephant', 'honeycomb', 'anchor', 'shield'];
+  const LEGENDARY = ['lamp', 'tomb', 'bush', 'chariot'];
+  /* 5 bits hold indexes 0-30 directly; 31 means "31 + the next 5 bits" */
+  const EXT = 31;
   const KEY = 'msb_squishy_trade';
   const MASK = (1 << 30) - 1, MUL = 0x2545F4B, ADD = 0x1B873593 & MASK, SALT = 613;
   const W = [3, 7, 11, 17, 23, 29], P = 1021;
@@ -27,8 +32,9 @@
   function makeCode(id, rand = Math.random) {
     const idx = IDS.indexOf(id);
     if (idx < 0) return null;
-    const nonce = Math.floor(rand() * (1 << 25)) & ((1 << 25) - 1);
-    const v = ((Math.imul((idx | (nonce << 5)) & MASK, MUL) & MASK) + ADD) & MASK;
+    let nonce = Math.floor(rand() * (1 << 25)) & ((1 << 25) - 1), low = idx;
+    if (idx >= EXT) { low = EXT; nonce = ((nonce >>> 5) << 5) | (idx - EXT); }
+    const v = ((Math.imul((low | (nonce << 5)) & MASK, MUL) & MASK) + ADD) & MASK;
     const d = []; for (let i = 5; i >= 0; i -= 1) d.push((v >>> (i * 5)) & 31);
     const c = sum(d);
     return [...d, c >> 5, c & 31].map(x => ALPHA[x]).join('');
@@ -45,7 +51,7 @@
     const c = sum(d.slice(0, 6));
     if (d[6] !== c >> 5 || d[7] !== (c & 31)) return { ok: false, reason: 'checksum' };
     let v = 0; for (let i = 0; i < 6; i += 1) v = v * 32 + d[i];
-    const raw = Math.imul((v - ADD) & MASK, INV) & MASK, idx = raw & 31;
+    const raw = Math.imul((v - ADD) & MASK, INV) & MASK, idx = (raw & 31) === EXT ? EXT + ((raw >>> 5) & 31) : raw & 31;
     if (idx >= IDS.length) return { ok: false, reason: 'checksum' };
     /* a real code for a squishy that became legendary (the bush): readable,
        but it cannot be redeemed any more */

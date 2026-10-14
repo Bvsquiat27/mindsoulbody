@@ -87,7 +87,20 @@
     jar: { sound: { squish: 'shatter', release: 'trumpet', tone: 'torch' }, fx: 'shards' },
     crown: { sound: { squish: 'jewel', release: 'royal', tone: 'regal' }, fx: 'jewels' },
     boat: { sound: { squish: 'oar', release: 'haul', tone: 'sea' }, fx: 'spray' },
-    tomb: { sound: { squish: 'rumble', release: 'alleluia', tone: 'dawn' }, fx: 'sunbeams' }
+    tomb: { sound: { squish: 'rumble', release: 'alleluia', tone: 'dawn' }, fx: 'sunbeams' },
+    /* newer squishies, each won in one of the games */
+    lily: { sound: { squish: 'petal', release: 'bloom', tone: 'meadow' }, fx: 'petals' },
+    key: { sound: { squish: 'turn', release: 'unlock', tone: 'tumbler' }, fx: 'keysparks' },
+    pearl: { sound: { squish: 'shimmerpop', release: 'pearlroll', tone: 'nacre' }, fx: 'pearls' },
+    manna: { sound: { squish: 'flake', release: 'sprinkle', tone: 'dew' }, fx: 'manna-flakes' },
+    scroll: { sound: { squish: 'unroll', release: 'rollup', tone: 'parchment' }, fx: 'letters' },
+    shofar: { sound: { squish: 'blast', release: 'echo', tone: 'hornblow' }, fx: 'soundwaves' },
+    tablets: { sound: { squish: 'chisel', release: 'settle', tone: 'stonehum' }, fx: 'stone-chips' },
+    elephant: { sound: { squish: 'stomp', release: 'toot', tone: 'trunk' }, fx: 'puffs' },
+    honeycomb: { sound: { squish: 'buzz', release: 'drizzle', tone: 'honey' }, fx: 'honey-drops' },
+    anchor: { sound: { squish: 'chain', release: 'splashdown', tone: 'deep' }, fx: 'anchor-bubbles' },
+    shield: { sound: { squish: 'clang', release: 'ring-out', tone: 'brass' }, fx: 'glints' },
+    chariot: { sound: { squish: 'gallop', release: 'whirl', tone: 'whirlwind' }, fx: 'fire-trail' }
   };
   /* The stretch tone of each squishy: oscillator wave, base pitch and how
      far the pitch climbs with the stretch, wobble (lfo rate and depth) and
@@ -117,6 +130,18 @@
     regal: { type: 'triangle', base: 392, range: 400, lfo: 4.5, depth: 7, filter: 3000, q: 1.2 },
     sea: { type: 'sine', base: 140, range: 220, lfo: 0.6, depth: 25, filter: 600, q: 0.7 },
     dawn: { type: 'triangle', base: 330, range: 660, lfo: 2.5, depth: 5, filter: 4000, q: 0.5 },
+    meadow: { type: 'sine', base: 520, range: 520, lfo: 4, depth: 8, filter: 2600, q: 0.6 },
+    tumbler: { type: 'square', base: 300, range: 500, lfo: 11, depth: 12, filter: 1800, q: 3 },
+    nacre: { type: 'sine', base: 700, range: 800, lfo: 7, depth: 6, filter: 6000, q: 0.5 },
+    dew: { type: 'triangle', base: 900, range: 700, lfo: 1.2, depth: 10, filter: 5000, q: 0.4 },
+    parchment: { type: 'sawtooth', base: 220, range: 240, lfo: 3.5, depth: 6, filter: 1100, q: 0.9 },
+    hornblow: { type: 'sawtooth', base: 150, range: 300, lfo: 5, depth: 4, filter: 1500, q: 1.6 },
+    stonehum: { type: 'square', base: 80, range: 120, lfo: 2, depth: 2, filter: 300, q: 1 },
+    trunk: { type: 'sawtooth', base: 180, range: 420, lfo: 6.5, depth: 30, filter: 1700, q: 2.5 },
+    honey: { type: 'sine', base: 240, range: 260, lfo: 1.8, depth: 14, filter: 900, q: 0.9 },
+    deep: { type: 'sine', base: 90, range: 140, lfo: 0.9, depth: 12, filter: 450, q: 0.8 },
+    brass: { type: 'square', base: 330, range: 420, lfo: 8, depth: 5, filter: 2400, q: 1.8 },
+    whirlwind: { type: 'sawtooth', base: 200, range: 900, lfo: 13, depth: 35, filter: 2800, q: 1.3 },
     none: null
   };
   const GESTURES = ['tap', 'doubleTap', 'tripleTap', 'fiveTaps', 'tapTop', 'hold', 'holdStill', 'flickUp', 'pullRelease', 'dragAcross', 'swipeLR', 'shake', 'rock', 'circle', 'stretchUp', 'stretchDown', 'flickDown', 'flickSide', 'swipeUD'];
@@ -261,6 +286,20 @@
     { id: 'crown', kind: 'matchThreeStars', n: 5, tier: 'rare' },
     { id: 'boat', kind: 'perfectRound', n: 3, tier: 'rare' },
     { id: 'tomb', kind: 'matchChapter', n: 20, tier: 'legendary' },
+    /* won in the games: coloring, Questions, Memory, Manna Match, then the
+       seven Bible games (kids' games hub); the chariot needs all seven */
+    { id: 'lily', kind: 'colored', n: 3, tier: 'common' },
+    { id: 'key', kind: 'questionWins', n: 10, tier: 'common' },
+    { id: 'pearl', kind: 'memoryWins', n: 8, tier: 'rare' },
+    { id: 'manna', kind: 'matchThreeStars', n: 10, tier: 'common' },
+    { id: 'scroll', kind: 'kgDone', game: 'wordsearch', n: 3, tier: 'common' },
+    { id: 'shofar', kind: 'kgBest', game: 'who', n: 8, tier: 'common' },
+    { id: 'tablets', kind: 'kgDone', game: 'order', n: 4, tier: 'rare' },
+    { id: 'elephant', kind: 'kgDone', game: 'ark', n: 1, tier: 'common' },
+    { id: 'honeycomb', kind: 'kgDone', game: 'verse', n: 3, tier: 'rare' },
+    { id: 'anchor', kind: 'kgDone', game: 'map', n: 2, tier: 'rare' },
+    { id: 'shield', kind: 'kgDone', game: 'sling', n: 4, tier: 'rare' },
+    { id: 'chariot', kind: 'kgAll', n: 7, tier: 'legendary' },
     { id: 'lamp', kind: 'final', n: 0, tier: 'legendary' }
   ];
   /* Extra badges that do not open a squishy. */
@@ -291,7 +330,7 @@
 
   /* Play counts kept for the challenges (one small JSON object). */
   function stats(storage) {
-    const blank = () => ({ memoryWins: 0, memoryBest: 0, questionWins: 0, perfectRounds: 0, squishes: 0, days: [], bestStreak: 0, badges: {}, tricks: [], plays: {} });
+    const blank = () => ({ memoryWins: 0, memoryBest: 0, questionWins: 0, perfectRounds: 0, squishes: 0, days: [], bestStreak: 0, badges: {}, tricks: [], plays: {}, colored: [] });
     const nat = v => (Number.isFinite(v) && v > 0 ? Math.floor(v) : 0);
     function get() {
       let v;
@@ -303,6 +342,7 @@
       if (v.badges && typeof v.badges === 'object') for (const [k, d] of Object.entries(v.badges)) if (typeof d === 'string') out.badges[k] = d;
       out.tricks = Array.isArray(v.tricks) ? [...new Set(v.tricks.filter(k => typeof k === 'string' && KITS[k]))] : [];
       if (v.plays && typeof v.plays === 'object') for (const [k, n] of Object.entries(v.plays)) if (KITS[k]) out.plays[k] = nat(n);
+      out.colored = Array.isArray(v.colored) ? [...new Set(v.colored.filter(k => typeof k === 'string' && /^[\w:.-]{1,60}$/.test(k)))].slice(0, 60) : [];
       return out;
     }
     function save(v) { try { storage.setItem(KEYS.stats, JSON.stringify(v)); } catch { /* full or blocked */ } return v; }
@@ -319,6 +359,8 @@
         v.bestStreak = Math.max(v.bestStreak, longestStreak(v.days));
         return save(v);
       },
+      /* a coloring page saved (counted once per page) */
+      colored(page) { const v = get(); if (typeof page === 'string' && /^[\w:.-]{1,60}$/.test(page) && !v.colored.includes(page)) { v.colored.push(page); save(v); } return v; },
       earn(id, date) { const v = get(); if (!v.badges[id]) { v.badges[id] = dayKey(date); save(v); return true; } return false; }
     };
   }
@@ -326,6 +368,17 @@
   /* Manna Match progress, read safely (levels won and their stars). */
   function matchStars(storage) {
     try { const v = JSON.parse(storage.getItem(KEYS.match) || '{}'); return v && v.stars && typeof v.stars === 'object' ? v.stars : {}; } catch { return {}; }
+  }
+
+  /* Kids' Bible games progress (msb_kidgames), read safely. */
+  const KID_GAMES = ['wordsearch', 'order', 'who', 'verse', 'ark', 'map', 'sling'];
+  function kidGames(storage) {
+    try {
+      const v = JSON.parse(storage.getItem('msb_kidgames') || '{}') || {};
+      const done = {}, best = {};
+      for (const g of KID_GAMES) { done[g] = Array.isArray(v.done && v.done[g]) ? new Set(v.done[g].filter(x => typeof x === 'string')).size : 0; best[g] = Math.max(0, Math.floor(Number(v.best && v.best[g]) || 0)); }
+      return { done, best };
+    } catch { return { done: {}, best: {} }; }
   }
 
   /* How far along a challenge is: { have, need, done }. */
@@ -343,6 +396,10 @@
       case 'matchThreeStars': return cap(Object.values(ctx.match).filter(s => s === 3).length, ch.n);
       case 'tricks': { const all = ctx.squishies.filter(x => hasTrick(x.id)).length; return cap(ctx.stats.tricks.filter(id => hasTrick(id) && ctx.squishies.some(x => x.id === id)).length, ch.n || all); }
       case 'trades': return cap(ctx.trades || 0, ch.n);
+      case 'colored': return cap((st.colored || []).length, ch.n);
+      case 'kgDone': return cap((ctx.kid && ctx.kid.done[ch.game]) || 0, ch.n);
+      case 'kgBest': return cap((ctx.kid && ctx.kid.best[ch.game]) || 0, ch.n);
+      case 'kgAll': return cap(KID_GAMES.filter(g => ctx.kid && ctx.kid.done[g] > 0).length, ch.n);
       case 'final': {
         /* every other squishy open, and 3 stars on any Manna Match level */
         const others = ctx.squishies.filter(x => x.id !== ch.id && x.locked);
@@ -365,7 +422,7 @@
        count toward the lamp. */
     let trades = 0, gifts = [];
     try { const t = JSON.parse(storage.getItem(KEYS.trade)) || {}; const got = Array.isArray(t.got) ? t.got.filter(x => x && typeof x.id === 'string') : []; trades = got.length; gifts = [...new Set(got.map(x => x.id))]; } catch { trades = 0; gifts = []; }
-    return { stats: stats(storage).get(), lessons: p.stars().length, match: matchStars(storage), unlocked: p.unlocked(), squishies, trades, gifts };
+    return { stats: stats(storage).get(), lessons: p.stars().length, match: matchStars(storage), unlocked: p.unlocked(), squishies, trades, gifts, kid: kidGames(storage) };
   }
   function challengeFor(id) { return CHALLENGES.find(c => c.id === id) || null; }
 
@@ -668,7 +725,13 @@
     coin: { soft: 0.6, bounce: 1.5, buzz: 'quick' }, donkey: { soft: 1, bounce: 1.1, buzz: 'thump' },
     jar: { soft: 0.7, bounce: 1, buzz: 'clink' }, crown: { soft: 0.7, bounce: 1.25, buzz: 'twinkle' },
     boat: { soft: 1.05, bounce: 1.2, buzz: 'splash' }, tomb: { soft: 0.5, bounce: 0.55, buzz: 'heavy' },
-    lamp: { soft: 1, bounce: 1, buzz: 'crunch' }
+    lamp: { soft: 1, bounce: 1, buzz: 'crunch' },
+    lily: { soft: 1.25, bounce: 1.05, buzz: 'soft' }, key: { soft: 0.6, bounce: 1.35, buzz: 'clink' },
+    pearl: { soft: 0.65, bounce: 1.45, buzz: 'pop' }, manna: { soft: 1.3, bounce: 0.65, buzz: 'crumbly' },
+    scroll: { soft: 0.9, bounce: 0.85, buzz: 'steps' }, shofar: { soft: 0.85, bounce: 1.15, buzz: 'roar' },
+    tablets: { soft: 0.5, bounce: 0.6, buzz: 'heavy' }, elephant: { soft: 1.15, bounce: 0.7, buzz: 'thump' },
+    honeycomb: { soft: 1.2, bounce: 0.75, buzz: 'warm' }, anchor: { soft: 0.55, bounce: 0.65, buzz: 'splash' },
+    shield: { soft: 0.6, bounce: 1.2, buzz: 'clink' }, chariot: { soft: 0.85, bounce: 1.3, buzz: 'roar' }
   };
   const feelFor = id => FEEL[id] || { soft: 1, bounce: 1, buzz: 'pop' };
   const VIBE_LEVELS = ['off', 'light', 'medium', 'strong'];
@@ -754,7 +817,7 @@
       }
     };
   }
-  const api = { lessonSeen, FEEL, BUZZ, feelFor, VIBE_LEVELS, VIBE_SCALE, vibePref, scalePattern, feelPattern, KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
+  const api = { KID_GAMES, kidGames, lessonSeen, FEEL, BUZZ, feelFor, VIBE_LEVELS, VIBE_SCALE, vibePref, scalePattern, feelPattern, KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbSquishyCore = api;
 })(typeof self !== 'undefined' ? self : this);

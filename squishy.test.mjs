@@ -17,8 +17,8 @@ const verseAt = (l, [b, c, v]) => String((book(l === 'es' ? 'rvr/' : '', b).chap
 const index = { en: JSON.parse(read('./bible/index.json')).books, es: JSON.parse(read('./bible/rvr/index.json')).books };
 const label = (l, [b, c, v]) => `${index[l].find(x => x.id === b).name} ${c}:${v}`;
 
-test('there are 25 squishies, 6 open at the start and the rest locked', () => {
-  assert.ok(SQUISHIES.length === 25, String(SQUISHIES.length));
+test('there are 37 squishies, 6 open at the start and the rest locked', () => {
+  assert.ok(SQUISHIES.length === 37, String(SQUISHIES.length));
   assert.equal(SQUISHIES.filter(x => !x.locked).length, 6);
   assert.ok(SQUISHIES.filter(x => x.locked).length >= 6);
   assert.equal(new Set(SQUISHIES.map(x => x.id)).size, SQUISHIES.length);
@@ -89,10 +89,10 @@ test('sound switch is on by default and remembered', () => {
 test('each locked squishy has its own challenge, ramping up, with rare and legendary ones', () => {
   const locked = SQUISHIES.filter(x => x.locked).map(x => x.id);
   assert.deepEqual(C.CHALLENGES.map(c => c.id), locked, 'one challenge per locked squishy, in shelf order');
-  assert.equal(new Set(C.CHALLENGES.map(c => `${c.kind}:${c.n}`)).size, C.CHALLENGES.length, 'all different goals');
-  for (const c of C.CHALLENGES) { const same = C.CHALLENGES.filter(d => d.kind === c.kind && d.kind !== 'final'); assert.ok(same.every((d, i) => i === 0 || d.n > same[i - 1].n), `${c.kind} ramps up`); }
-  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'rare').map(c => c.id), ['basket', 'ark', 'coat', 'jar', 'crown', 'boat']);
-  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'legendary').map(c => c.id), ['bush', 'tomb', 'lamp']);
+  assert.equal(new Set(C.CHALLENGES.map(c => `${c.kind}:${c.game || ''}:${c.n}`)).size, C.CHALLENGES.length, 'all different goals');
+  for (const c of C.CHALLENGES) { const same = C.CHALLENGES.filter(d => d.kind === c.kind && d.game === c.game && d.kind !== 'final'); assert.ok(same.every((d, i) => i === 0 || d.n > same[i - 1].n), `${c.kind} ramps up`); }
+  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'rare').map(c => c.id), ['basket', 'ark', 'coat', 'jar', 'crown', 'boat', 'pearl', 'tablets', 'honeycomb', 'anchor', 'shield']);
+  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'legendary').map(c => c.id), ['bush', 'tomb', 'chariot', 'lamp']);
   assert.equal(C.CHALLENGES[0].kind, 'memoryWins', 'the first one is easy');
   assert.equal(C.CHALLENGES.at(-1).kind, 'final');
   assert.equal(C.tierOf('lamb'), 'common');
@@ -161,6 +161,8 @@ test('play streaks use local calendar days', () => {
   assert.equal(st.get().bestStreak, 3, 'the best streak is remembered');
 });
 
+const KG_ALL = { done: { wordsearch: ['w1', 'w2', 'w3'], order: ['o1', 'o2', 'o3', 'o4'], who: ['round'], verse: ['v1', 'v2', 'v3'], ark: ['a1'], map: ['m1', 'm2'], sling: ['s1', 's2', 's3', 's4'] }, best: { who: 9 }, plays: {}, badges: {} };
+
 test('the lamp opens last even when everything is done at once', () => {
   const s = memoryStorage(), st = C.stats(s), p = C.progress(s, SQUISHIES);
   for (let i = 0; i < 4; i += 1) st.memoryWon(8);
@@ -170,8 +172,11 @@ test('the lamp opens last even when everything is done at once', () => {
   for (const d of [1, 2, 3, 4, 5]) st.played(new Date(2026, 4, d));
   const stars = {}; for (let l = 1; l <= 20; l += 1) stars[l] = 3;
   s.setItem('msb_match_progress', JSON.stringify({ open: 21, stars }));
+  for (let i = 0; i < 4; i += 1) st.memoryWon(8);
+  for (const page of ['a', 'b', 'c']) st.colored(page);
+  s.setItem('msb_kidgames', JSON.stringify(KG_ALL));
   const opened = C.checkUnlocks(s, SQUISHIES);
-  assert.equal(opened.length, 19);
+  assert.equal(opened.length, 31);
   assert.equal(opened.at(-1), 'lamp');
 });
 
@@ -184,7 +189,7 @@ test('squishies opened before keep open; nothing is ever locked again', () => {
   assert.equal(open.length, 10);
   /* the lamp counts the ones already open */
   const lamp = C.challengeFor('lamp'), pr = C.challengeProgress(lamp, C.challengeContext(s, SQUISHIES));
-  assert.deepEqual([pr.have, pr.need], [4, 19]);
+  assert.deepEqual([pr.have, pr.need], [4, 31]);
   assert.equal(C.progress(s, SQUISHIES).unlock('stone'), false, 'already open');
 });
 
@@ -474,7 +479,7 @@ test('the outline stays smooth while stretched, squished or pinched (no kinks)',
 
 /* ---------- The final, glowing squishy ---------- */
 test('the glowing Light of the World lamp is the last squishy, legendary and unlocks last', () => {
-  assert.equal(SQUISHIES.length, 25);
+  assert.equal(SQUISHIES.length, 37);
   const lamp = SQUISHIES.at(-1);
   assert.equal(lamp.id, 'lamp');
   assert.equal(lamp.locked, true);
@@ -706,7 +711,7 @@ test('every trick animation draws without errors at any moment', () => {
 
 test('ten newer squishies: Bible stories, own sound and effect, no trick, unlocked by their own goal', () => {
   const NEW = ['ladder', 'raven', 'wheat', 'oil', 'coin', 'donkey', 'jar', 'crown', 'boat', 'tomb'];
-  assert.deepEqual(SQUISHIES.slice(14, -1).map(x => x.id), NEW);
+  assert.deepEqual(SQUISHIES.slice(14, 24).map(x => x.id), NEW);
   for (const id of NEW) {
     const x = SQUISHIES.find(q => q.id === id), k = C.KITS[id];
     assert.ok(x.locked && C.challengeFor(id), id);
@@ -768,7 +773,7 @@ test('only trick squishies mention a secret trick; the first squish shows the le
 
 test('every squishy has its own feel: softness, bounce and buzz', () => {
   const ids = SQUISHIES.map(x => x.id);
-  assert.equal(ids.length, 25);
+  assert.equal(ids.length, 37);
   for (const id of ids) {
     const f = C.FEEL[id];
     assert.ok(f, id); assert.ok(C.BUZZ[f.buzz], `${id} buzz`);
@@ -868,4 +873,62 @@ test('the lesson card pops up by itself only the first time each squishy is squi
   assert.equal(C.lessonSeen(s).first('lion'), false);
   s.setItem(C.KEYS.lessonSeen, '{bad');
   assert.equal(C.lessonSeen(s).first('fish'), true, 'junk is ignored');
+});
+
+/* ---------- Twelve squishies won in the games ---------- */
+const GAME_SQ = ['lily', 'key', 'pearl', 'manna', 'scroll', 'shofar', 'tablets', 'elephant', 'honeycomb', 'anchor', 'shield', 'chariot'];
+
+test('twelve game squishies: before the lamp, own art, sound, voice, effect, feel and badge, no trick', () => {
+  assert.deepEqual(SQUISHIES.slice(24, -1).map(x => x.id), GAME_SQ);
+  const ui = read('./squishy.js'), i18n = read('./i18n.js');
+  for (const id of GAME_SQ) {
+    const x = SQUISHIES.find(q => q.id === id), k = C.KITS[id];
+    assert.ok(x.locked && C.challengeFor(id), id);
+    assert.ok(k && FX.FX[k.fx] && !k.trick && !C.hasTrick(id), `${id} no trick`);
+    assert.ok(C.TONES[k.sound.tone], `${id} tone`);
+    assert.match(ui, new RegExp(`\\n    '?${k.sound.squish}'?: d =>`), `${id} squish voice`);
+    assert.match(ui, new RegExp(`\\n    '?${k.sound.release}'?: (a|\\(\\)) =>`), `${id} release voice`);
+    assert.ok(C.FEEL[id], `${id} feel`);
+    const badge = ui.match(new RegExp(`${id}: '([^']+)'`));
+    assert.ok(badge, `${id} badge`);
+    assert.ok(i18n.includes(`"${badge[1]}":`), `${id} badge ES`);
+  }
+  const tones = Object.values(C.TONES).filter(Boolean).map(t => JSON.stringify(t));
+  assert.equal(new Set(tones).size, tones.length, 'every tone is different');
+  const fx = Object.values(FX.FX).map(f => `${f.shape}/${f.colors[0]}/${f.origin}`);
+  assert.equal(new Set(fx).size, fx.length, 'every effect looks different');
+  assert.equal(C.tierOf('chariot'), 'legendary');
+});
+
+test('game squishies unlock from coloring, Questions, Memory, Manna Match and each Bible game', () => {
+  const s = memoryStorage(), st = C.stats(s);
+  const ctx = () => C.challengeContext(s, SQUISHIES), pr = id => C.challengeProgress(C.challengeFor(id), ctx());
+  assert.deepEqual([pr('lily').have, pr('scroll').have, pr('chariot').have], [0, 0, 0]);
+  st.colored('noah'); st.colored('noah'); st.colored('ark');
+  assert.equal(pr('lily').have, 2, 'the same page counts once');
+  st.colored('<bad page>');
+  assert.equal(pr('lily').have, 2, 'odd ids are ignored');
+  st.colored('jonah');
+  assert.ok(pr('lily').done);
+  s.setItem('msb_kidgames', JSON.stringify({ done: { wordsearch: ['a', 'b', 'b'], sling: 'x' }, best: { who: 7 } }));
+  assert.deepEqual([pr('scroll').have, pr('shield').have, pr('shofar').have], [2, 0, 7], 'repeats and bad data do not count');
+  s.setItem('msb_kidgames', '{oops');
+  assert.equal(pr('scroll').have, 0, 'broken data is safe');
+  s.setItem('msb_kidgames', JSON.stringify({ ...KG_ALL, done: { ...KG_ALL.done, map: [] } }));
+  assert.deepEqual([pr('chariot').have, pr('chariot').need, pr('chariot').done], [6, 7, false], 'the chariot needs all seven games');
+  s.setItem('msb_kidgames', JSON.stringify(KG_ALL));
+  const opened = C.checkUnlocks(s, SQUISHIES);
+  for (const id of ['lily', 'scroll', 'shofar', 'tablets', 'elephant', 'honeycomb', 'anchor', 'shield', 'chariot']) assert.ok(opened.includes(id), id);
+  assert.ok(!opened.includes('lamp'), 'the lamp still waits for the rest');
+  assert.equal(C.stats(s).get().colored.length, 3, 'colored pages are kept in the stats (backed up with msb_)');
+});
+
+test('the games report progress to the squishies and show a note', () => {
+  const ui = read('./squishy.js'), kg = read('./kidgames.js'), col = read('./coloring.js'), i18n = read('./i18n.js');
+  assert.match(ui, /gameProgress\(colorPage\) \{/);
+  assert.match(kg, /MsbSquishy\.gameProgress \? MsbSquishy\.gameProgress\(\) : \[\]/);
+  assert.match(kg, /New squishy: \{name\}!', '¡Nuevo squishy: \{name\}!'/);
+  assert.match(col, /MsbSquishy\.gameProgress\(s\.id\)/);
+  assert.ok(i18n.includes('"New squishy: {name}!": "¡Nuevo squishy: {name}!"'));
+  for (const k of ['Color {n} different pages', 'Score {n} or more in Who Said It?', 'Finish each of the 7 Bible games once', 'Finish {n} Word Search puzzles', 'Put {n} stories in order', 'Load the ark in Ark Builder', 'Build {n} verses in Verse Builder', 'Finish {n} Map Journeys', 'Finish {n} levels of David’s Sling']) assert.ok(i18n.includes(`"${k}":`), k);
 });

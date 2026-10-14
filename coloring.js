@@ -274,7 +274,8 @@
       if (!image) throw Error('encode');
       const row = await store.save({ page: s.id, title: s.title, image, layer, thumb: thumbBlob }, { updateId: mode === 'update' ? s.drawingId : null });
       s.drawingId = row.id;
-      saveStatus(s, mode === 'update' ? L('Updated in My drawings (on your Profile).') : L('Saved in My drawings (on your Profile).'));
+      const won = window.MsbSquishy && MsbSquishy.gameProgress ? MsbSquishy.gameProgress(s.id) : [];
+      saveStatus(s, (mode === 'update' ? L('Updated in My drawings (on your Profile).') : L('Saved in My drawings (on your Profile).')) + won.map(x => ' ' + L('New squishy: {name}!', { name: x.name })).join(''));
       if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
     } catch {
       saveStatus(s, L('That did not save. Please try again.'));

@@ -52,6 +52,17 @@ test('legendary squishies cannot be traded', () => {
   for (const x of SQUISHIES) assert.equal(T.tradable(x.id), C.tierOf(x.id) !== 'legendary', x.id);
 });
 
+test('codes work for every tradable squishy, the newer ones too; older codes read the same', () => {
+  assert.equal(T.IDS.length, 34);
+  assert.deepEqual(T.IDS.slice(0, 23), ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow', 'stone', 'loaves', 'seed', 'bush', 'basket', 'tree', 'ark', 'coat', 'ladder', 'raven', 'wheat', 'oil', 'coin', 'donkey', 'jar', 'crown', 'boat'], 'fixed order kept');
+  for (const id of T.IDS.filter(T.tradable)) for (const r of [0, 0.37, 0.999999]) {
+    const c = T.makeCode(id, () => r), back = T.readCode(c);
+    assert.deepEqual([back.ok, back.id], [true, id], `${id} ${r}`);
+  }
+  assert.equal(T.makeCode('chariot'), null, 'the legendary chariot is not traded by code');
+  for (const x of SQUISHIES) assert.ok(T.IDS.includes(x.id) || C.tierOf(x.id) === 'legendary', x.id);
+});
+
 test('you keep yours, your friend gets a copy once, and your own code does not work for you', () => {
   const a = mem(), b = mem();
   const ta = T.trades(a), tb = T.trades(b);

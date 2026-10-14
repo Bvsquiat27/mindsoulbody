@@ -38,6 +38,18 @@
     jewels: { shape: 'star4', colors: ['rgb(143,208,255)', 'rgb(255,143,184)', 'rgb(179,140,255)'], origin: 'body', vx: [-30, 30], vy: [-50, -20], spin: 2, life: [0.8, 1.2], size: [3, 5], rate: 9 },
     spray: { shape: 'bubble', colors: ['rgb(220,240,255)', 'rgb(180,220,250)'], origin: 'ground', vx: [-60, 60], vy: [-110, -60], gravity: 200, life: [0.6, 0.9], size: [2, 4], rate: 12 },
     sunbeams: { shape: 'ray', colors: ['rgb(255,231,160)', 'rgb(255,246,210)'], origin: 'center', vx: [0, 0], vy: [0, 0], spin: 0.4, grow: 1.5, life: [1, 1.6], size: [14, 22], rate: 4 },
+    petals: { shape: 'leaf', colors: ['rgb(255,182,214)', 'rgb(255,214,230)'], origin: 'above', vx: [-25, 25], vy: [20, 45], sway: 28, spin: 2, life: [1.6, 2.2], size: [4, 7], rate: 7 },
+    keysparks: { shape: 'star4', colors: ['rgb(255,200,90)', 'rgb(255,236,170)'], origin: 'center', vx: [-70, 70], vy: [-70, 50], spin: 4, life: [0.5, 0.8], size: [3, 5], rate: 10 },
+    pearls: { shape: 'bubble', colors: ['rgb(250,245,255)', 'rgb(235,225,250)'], origin: 'ground', vx: [-40, 40], vy: [-90, -50], gravity: 160, life: [0.8, 1.2], size: [3, 5], rate: 8 },
+    'manna-flakes': { shape: 'dot', colors: ['rgb(255,252,235)', 'rgb(240,232,210)'], origin: 'above', vx: [-12, 12], vy: [30, 60], sway: 16, life: [1.4, 2], size: [2, 4], rate: 16 },
+    letters: { shape: 'grain', colors: ['rgb(120,90,60)', 'rgb(150,115,80)'], origin: 'top', vx: [-30, 30], vy: [-60, -30], sway: 12, spin: 2, life: [1, 1.4], size: [3, 4], rate: 7 },
+    soundwaves: { shape: 'ring', colors: ['rgb(230,200,140)', 'rgb(250,225,170)'], origin: 'top', vx: [-30, -10], vy: [-10, 10], grow: 7, life: [0.6, 0.9], size: [6, 9], rate: 4 },
+    'stone-chips': { shape: 'crumb', colors: ['rgb(200,195,185)', 'rgb(170,165,155)'], origin: 'top', vx: [-60, 60], vy: [-100, -50], gravity: 340, spin: 7, life: [0.7, 1], size: [2, 4], rate: 7 },
+    puffs: { shape: 'puff', colors: ['rgba(205,210,225,0.85)', 'rgba(180,188,205,0.85)'], origin: 'ground', vx: [-80, 80], vy: [-20, -4], grow: 1.4, life: [0.6, 0.9], size: [5, 9], rate: 6 },
+    'honey-drops': { shape: 'drop', colors: ['rgb(245,170,40)', 'rgb(255,200,80)'], origin: 'top', vx: [-15, 15], vy: [-40, -10], gravity: 220, life: [0.9, 1.3], size: [5, 8], rate: 6 },
+    'anchor-bubbles': { shape: 'bubble', colors: ['rgb(90,160,220)', 'rgb(140,195,240)'], origin: 'ground', vx: [-10, 10], vy: [-80, -50], sway: 14, grow: 0.5, life: [1.1, 1.6], size: [3, 6], rate: 8 },
+    glints: { shape: 'star4', colors: ['rgb(220,230,240)', 'rgb(255,255,255)'], origin: 'body', vx: [-10, 10], vy: [-20, 0], spin: 5, life: [0.4, 0.7], size: [3, 6], rate: 9 },
+    'fire-trail': { shape: 'ember', colors: ['rgb(255,90,40)', 'rgb(255,160,60)', 'rgb(255,220,110)'], origin: 'ground', vx: [-90, -40], vy: [-60, -20], sway: 10, flicker: true, life: [0.6, 1], size: [3, 6], rate: 14 },
     /* extra (not a squishy's own): the big fish's water spout */
     fountain: { shape: 'drop', colors: ['rgb(120,190,255)', 'rgb(190,230,255)'], origin: 'top', vx: [-50, 50], vy: [-300, -200], gravity: 520, life: [0.7, 1], size: [6, 9], rate: 0.0001 },
     sparks: { shape: 'none', colors: [], origin: 'body', vx: [0, 0], vy: [0, 0], life: [0, 0], size: [0, 0], rate: 0 }
