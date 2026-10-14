@@ -1185,6 +1185,8 @@
     "Yes, give it": "Sí, regalarlo",
     "Keep it": "Quedármelo",
     "Give a squishy to a friend": "Regala un squishy a un amigo",
+    "Trade Room": "Sala de intercambio",
+    "Or give a squishy with a code": "O regala un squishy con un código",
     "Pick one of your squishies and make a code. It goes to your friend and leaves your shelf. Legendary squishies stay on your shelf.": "Elige uno de tus squishies y crea un código. Se va con tu amigo y sale de tu estante. Los squishies legendarios se quedan en tu estante.",
     "Make a trade code": "Crear código de cambio",
     "Got a code from a friend?": "¿Te dieron un código?",
