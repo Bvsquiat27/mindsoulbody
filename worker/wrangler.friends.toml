@@ -9,3 +9,13 @@ preview_urls = false
 [[kv_namespaces]]
 binding = "FRIENDS"
 id = "2429d982103e4d7cabcbda5ad113fc94"
+
+# Morning devotional reminders: check every 5 minutes for subscriptions that are due.
+[triggers]
+crons = ["*/5 * * * *"]
+
+# Public half of the VAPID key pair. The private half is the VAPID_PRIVATE_KEY secret
+# (wrangler secret put VAPID_PRIVATE_KEY). Never put the private key in this file.
+[vars]
+VAPID_PUBLIC_KEY = "BGrEYSYxakeHZiJCFXktJNmtRZRsx0mvE-WGYf7X3CFuogYNuece5P-8a4uBfgS6SuanX7kaTgr0WO4tNtd1ADQ"
+VAPID_SUBJECT = "https://bvsquiat27.github.io/mindsoulbody/"

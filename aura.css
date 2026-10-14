@@ -288,3 +288,14 @@ button.dm-verse:hover{border-color:rgb(232,205,150)}
 .dm-send:disabled{opacity:.4;cursor:default}
 @media(max-width:1024px){.dm-composer{bottom:calc(66px + env(safe-area-inset-bottom))}.dm-head{top:0}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Morning devotional: big verse card, cozy reading */
+.dev-home h2{margin:6px 0 8px}.dev-home-verse{font-family:"Cormorant Garamond",Georgia,serif;font-size:21px;line-height:1.35;margin:0 0 4px;overflow-wrap:anywhere}
+.dev-page{max-width:720px;margin:0 auto;overflow-wrap:anywhere}.dev-head h1{margin:6px 0 14px;text-wrap:balance}.dev-feast{margin:8px 0 0;color:#ffd98a;font-weight:700;letter-spacing:.02em}
+.dev-verse{position:relative;overflow:hidden;padding:clamp(24px,5vw,44px);border-radius:28px;margin:6px 0 18px;border:1px solid #dec4f079;background:radial-gradient(circle at 92% 8%,#ffe3a6a8,transparent 34%),radial-gradient(circle at 10% 110%,#ec90bf80,transparent 50%),linear-gradient(130deg,#a17fdb,#55396e 60%,#2c2340);box-shadow:0 22px 60px #7a4fb92d;color:#fff}
+.dev-verse .eyebrow{color:#f5e9ff}.dev-verse blockquote{margin:14px 0 14px;font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(25px,6.6vw,38px);line-height:1.25;text-shadow:0 2px 16px #2b164270}
+.dev-vn{font-family:Outfit,system-ui,sans-serif;font-size:.45em;vertical-align:super;opacity:.75;margin:0 .25em 0 .1em}.dev-ref{margin:0 0 14px;font-weight:600;color:#f6eafe}
+.dev-read p,.dev-prayer p,.dev-father p:first-of-type{font-size:18px;line-height:1.7}.dev-prayer p{font-family:"Cormorant Garamond",Georgia,serif;font-size:22px;font-style:italic;line-height:1.45}
+.dev-father p:first-of-type{font-family:"Cormorant Garamond",Georgia,serif;font-size:20px}.dev-days{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;margin:18px 0}.dev-foot{margin-bottom:30px}
+.dev-settings .dev-time-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}.dev-settings input[type=time]{width:auto;min-width:130px}
+.dev-settings{display:grid;grid-template-columns:1fr auto;gap:0 14px;align-items:start}.dev-settings .dev-time-row,.dev-settings [data-dev-status]{grid-column:1/-1}

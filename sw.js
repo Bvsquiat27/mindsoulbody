@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v131';
+const CACHE_VERSION = 'v132';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -44,6 +44,8 @@ const SHELL = [
   './prayers.js',
   './orthodox-day.js',
   './study-tools.js',
+  './devotional-data.js',
+  './devotional.js',
   './achievements-rules.js',
   './study-session.js',
   './i18n.js',
@@ -320,4 +322,33 @@ self.addEventListener('fetch', (event) => {
         return Response.error();
       }))
   );
+});
+
+/* Morning devotional reminder (sent by the friends worker, see worker/push.mjs).
+   The payload is { title, body, url, tag, date, lang }. It reads like a text
+   message; tapping it opens that day's devotional. */
+self.addEventListener('push', (event) => {
+  let msg = {};
+  try { msg = event.data ? event.data.json() : {}; } catch { msg = { title: 'Mind Soul & Body', body: event.data ? event.data.text() : '' }; }
+  const title = String(msg.title || 'Mind Soul & Body').slice(0, 120);
+  event.waitUntil(self.registration.showNotification(title, {
+    body: String(msg.body || '').slice(0, 240),
+    icon: './icon-192.png',
+    badge: './icon-192.png',
+    tag: String(msg.tag || 'msb-devotional'),
+    lang: msg.lang === 'es' ? 'es' : 'en',
+    data: { url: String(msg.url || './'), date: /^\d{4}-\d{2}-\d{2}$/.test(msg.date) ? msg.date : '' },
+  }));
+});
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const data = event.notification.data || {};
+  const target = new URL(data.url || './', self.registration.scope);
+  if (target.origin !== self.location.origin) return;
+  event.waitUntil((async () => {
+    const wins = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    const win = wins.find((w) => w.url.startsWith(self.registration.scope));
+    if (win) { await win.focus(); win.postMessage({ type: 'msb-open-devotional', date: data.date || '' }); return; }
+    await self.clients.openWindow(target.href);
+  })());
 });
