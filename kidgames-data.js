@@ -1490,6 +1490,393 @@
       "es": "1 Samuel 17:47"
      }
     }
+   },
+   {
+    "id": "z6",
+    "path": "zig",
+    "speed": 34,
+    "colors": 5,
+    "count": 50,
+    "powers": [
+     "slow",
+     "bomb"
+    ],
+    "title": {
+     "en": "Back and forth",
+     "es": "Ida y vuelta"
+    },
+    "verse": {
+     "at": {
+      "en": [
+       19,
+       56,
+       3
+      ],
+      "es": [
+       19,
+       56,
+       3
+      ]
+     },
+     "text": {
+      "en": "What time I am afraid, I will trust in thee.",
+      "es": "En el día que temo, yo en ti confío."
+     },
+     "ref": {
+      "en": "Psalms 56:3",
+      "es": "Salmos 56:3"
+     }
+    }
+   },
+   {
+    "id": "z7",
+    "path": "ribbon",
+    "speed": 35,
+    "colors": 5,
+    "count": 52,
+    "powers": [
+     "reverse",
+     "bomb"
+    ],
+    "title": {
+     "en": "The ribbon road",
+     "es": "El camino de cinta"
+    },
+    "verse": {
+     "at": {
+      "en": [
+       23,
+       40,
+       31
+      ],
+      "es": [
+       23,
+       40,
+       31
+      ]
+     },
+     "text": {
+      "en": "but they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint.",
+      "es": "Mas los que esperan á Jehová tendrán nuevas fuerzas; levantarán las alas como águilas; correrán, y no se cansarán; caminarán, y no se fatigarán."
+     },
+     "ref": {
+      "en": "Isaiah 40:31",
+      "es": "Isaías 40:31"
+     }
+    }
+   },
+   {
+    "id": "z8",
+    "path": "ridge",
+    "speed": 36,
+    "colors": 5,
+    "count": 54,
+    "powers": [
+     "slow",
+     "reverse",
+     "bomb"
+    ],
+    "title": {
+     "en": "Over the ridge",
+     "es": "Sobre la loma"
+    },
+    "verse": {
+     "at": {
+      "en": [
+       19,
+       46,
+       1
+      ],
+      "es": [
+       19,
+       46,
+       1
+      ]
+     },
+     "text": {
+      "en": "God is our refuge and strength, A very present help in trouble.",
+      "es": "DIOS es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones."
+     },
+     "ref": {
+      "en": "Psalms 46:1",
+      "es": "Salmos 46:1"
+     }
+    }
+   },
+   {
+    "id": "z9",
+    "path": "coil",
+    "speed": 36,
+    "colors": 5,
+    "count": 56,
+    "powers": [
+     "slow",
+     "reverse",
+     "bomb"
+    ],
+    "title": {
+     "en": "The coil",
+     "es": "La espiral"
+    },
+    "verse": {
+     "at": {
+      "en": [
+       55,
+       1,
+       7
+      ],
+      "es": [
+       55,
+       1,
+       7
+      ]
+     },
+     "text": {
+      "en": "For God hath not given us the spirit of fear; but of power, and of love, and of a sound mind.",
+      "es": "Porque no nos ha dado Dios el espíritu de temor, sino el de fortaleza, y de amor, y de templanza."
+     },
+     "ref": {
+      "en": "2 Timothy 1:7",
+      "es": "2 Timoteo 1:7"
+     }
+    }
+   },
+   {
+    "id": "z10",
+    "path": "whirl",
+    "speed": 37,
+    "colors": 5,
+    "count": 58,
+    "powers": [
+     "slow",
+     "zap",
+     "bomb"
+    ],
+    "title": {
+     "en": "The whirlwind",
+     "es": "El remolino"
+    },
+    "verse": {
+     "at": {
+      "en": [
+       50,
+       4,
+       13
+      ],
+      "es": [
+       50,
+       4,
+       13
+      ]
+     },
+     "text": {
+      "en": "I can do all things through Christ which strengtheneth me.",
+      "es": "Todo lo puedo en Cristo que me fortalece."
+     },
+     "ref": {
+      "en": "Philippians 4:13",
+      "es": "Filipenses 4:13"
+     }
+    }
+   },
+   {
+    "id": "z11",
+    "path": "serpent",
+    "speed": 38,
+    "colors": 5,
+    "count": 60,
+    "powers": [
+     "reverse",
+     "zap",
+     "bomb",
+     "slow"
+    ],
+    "title": {
+     "en": "The long snake",
+     "es": "La gran serpiente"
+    },
+    "verse": {
+     "at": {
+      "en": [
+       20,
+       3,
+       5
+      ],
+      "es": [
+       20,
+       3,
+       5
+      ]
+     },
+     "text": {
+      "en": "Trust in the LORD with all thine heart; And lean not unto thine own understanding.",
+      "es": "Fíate de Jehová de todo tu corazón, y no estribes en tu prudencia."
+     },
+     "ref": {
+      "en": "Proverbs 3:5",
+      "es": "Proverbios 3:5"
+     }
+    }
+   },
+   {
+    "id": "z12",
+    "path": "twin",
+    "speed": 39,
+    "colors": 5,
+    "count": 62,
+    "powers": [
+     "slow",
+     "zap",
+     "reverse",
+     "bomb"
+    ],
+    "title": {
+     "en": "Twin trails",
+     "es": "Senderos gemelos"
+    },
+    "verse": {
+     "at": {
+      "en": [
+       19,
+       23,
+       4
+      ],
+      "es": [
+       19,
+       23,
+       4
+      ]
+     },
+     "text": {
+      "en": "Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me; Thy rod and thy staff they comfort me.",
+      "es": "Aunque ande en valle de sombra de muerte, no temeré mal alguno; porque tú estarás conmigo: tu vara y tu cayado me infundirán aliento."
+     },
+     "ref": {
+      "en": "Psalms 23:4",
+      "es": "Salmos 23:4"
+     }
+    }
+   },
+   {
+    "id": "z13",
+    "path": "maze",
+    "speed": 40,
+    "colors": 5,
+    "count": 64,
+    "powers": [
+     "slow",
+     "zap",
+     "reverse",
+     "bomb",
+     "bomb"
+    ],
+    "title": {
+     "en": "The maze",
+     "es": "El laberinto"
+    },
+    "verse": {
+     "at": {
+      "en": [
+       45,
+       8,
+       31
+      ],
+      "es": [
+       45,
+       8,
+       31
+      ]
+     },
+     "text": {
+      "en": "What shall we then say to these things? If God be for us, who can be against us?",
+      "es": "¿Pues qué diremos á esto? Si Dios por nosotros, ¿quién contra nosotros?"
+     },
+     "ref": {
+      "en": "Romans 8:31",
+      "es": "Romanos 8:31"
+     }
+    }
+   },
+   {
+    "id": "z14",
+    "path": "giant",
+    "speed": 41,
+    "colors": 5,
+    "count": 66,
+    "powers": [
+     "slow",
+     "zap",
+     "reverse",
+     "bomb",
+     "zap"
+    ],
+    "title": {
+     "en": "The giant’s path",
+     "es": "El camino del gigante"
+    },
+    "verse": {
+     "at": {
+      "en": [
+       46,
+       16,
+       13
+      ],
+      "es": [
+       46,
+       16,
+       13
+      ]
+     },
+     "text": {
+      "en": "Watch ye, stand fast in the faith, quit you like men, be strong.",
+      "es": "Velad, estad firmes en la fe; portaos varonilmente, y esforzaos."
+     },
+     "ref": {
+      "en": "1 Corinthians 16:13",
+      "es": "1 Corintios 16:13"
+     }
+    }
+   },
+   {
+    "id": "z15",
+    "path": "storm",
+    "speed": 42,
+    "colors": 5,
+    "count": 68,
+    "powers": [
+     "slow",
+     "zap",
+     "reverse",
+     "bomb",
+     "zap",
+     "slow"
+    ],
+    "title": {
+     "en": "The final stand",
+     "es": "La última batalla"
+    },
+    "verse": {
+     "at": {
+      "en": [
+       49,
+       6,
+       10
+      ],
+      "es": [
+       49,
+       6,
+       10
+      ]
+     },
+     "text": {
+      "en": "Finally, my brethren, be strong in the Lord, and in the power of his might.",
+      "es": "Por lo demás, hermanos míos, confortaos en el Señor, y en la potencia de su fortaleza."
+     },
+     "ref": {
+      "en": "Ephesians 6:10",
+      "es": "Efesios 6:10"
+     }
+    }
    }
   ]
  },

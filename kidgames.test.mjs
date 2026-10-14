@@ -153,10 +153,13 @@ test('map journey: two routes, each stop on the map with an EN/ES question, 3 ch
 });
 
 test('david\u2019s sling: a stone chain rolls toward Goliath; match 3 pops and pulls back; powers; stars', () => {
-  const lvls = D.SLING.levels; assert.equal(lvls.length, 5);
+  const lvls = D.SLING.levels; assert.equal(lvls.length, 15); assert.deepEqual(lvls.map(l => l.id), Array.from({ length: 15 }, (_, i) => `z${i + 1}`));
   let prev = 0;
   for (const lv of lvls) {
-    assert.ok(lv.speed > prev, 'levels speed up'); prev = lv.speed;
+    assert.ok(lv.speed >= prev && (!prev || lv.speed - prev <= 4), 'a gentle speed ramp'); prev = lv.speed;
+    const P = C.zumaPath(lv.path), g = P.goliath, dv = P.david;
+    assert.ok(g.y >= 86, `${lv.id}: Goliath fits above the end of the track`);
+    assert.ok(!(Math.abs(g.x - dv.x) < 65 && g.y - 120 < dv.y + 20 && g.y > dv.y - 45), `${lv.id}: Goliath does not stand on David`);
     assert.ok(lv.title.en && lv.title.es && lv.verse, lv.id);
     const path = C.zumaPath(lv.path);
     assert.ok(path.len > 600, lv.id);
@@ -235,7 +238,9 @@ test('second polish pass: map stories, stamps, coach, level cards, clean sling r
   assert.match(css, /prefers-reduced-motion:reduce\)\{\.kg-coach/);
   assert.match(css, /prefers-reduced-motion:reduce\)\{\.zm-danger/);
   assert.match(map, /if \(!tr \|\| reduced\(\)\) return;/);
-  assert.match(sling, /reduced\(\)/);
+  assert.match(sling, /s\.freeze = reduced\(\) \? 0/);
+  assert.match(css, /prefers-reduced-motion:reduce\)\{\.zm-danger\{animation:none/);
+  assert.match(css, /\.kg-sl-intro\{font-size:17px\}/);
 });
 
 test('sling follow-up: Giant courage counts the new levels, old clears carry over once, no ark sounds left', () => {
@@ -279,4 +284,27 @@ test('orphaned old Sling stars move to the new levels on their own; painted art 
   for (const n of ['map-exodus', 'map-paul']) { assert.ok(map.includes(`img/map/${n}.webp`)); assert.ok(existsSync(new URL(`./img/map/${n}.webp`, import.meta.url)), n); }
   assert.match(sling, /img\/sling\/\$\{name\}\.webp/);
   assert.match(sling, /goliath-\$\{pose === 'fall' \? 'hit' : pose\}/);
+});
+
+test('sling levels 6-15: new paths, the zap stone, new courage verses; shield counts only new levels', () => {
+  const lv = D.SLING.levels;
+  assert.equal(new Set(lv.map(l => l.path)).size, 15, 'every level has its own path');
+  assert.ok(lv.slice(0, 9).every(l => !l.powers.includes('zap')) && lv.slice(9).every(l => l.powers.includes('zap')), 'zap arrives late');
+  assert.equal(new Set(lv.map(l => l.verse.ref.en)).size, 15, 'a different verse each level');
+  const mk = cs => ({ balls: cs.map((c, id) => ({ c, p: null, id })), head: 600, speed: 20, slowT: 0, revT: 0, maxFrac: 0, nextId: 99, started: true, lost: false, cleared: false });
+  const z = mk([3, 1, 2, 2, 2, 4, 1, 1, 0]); z.balls[3].p = 'zap';
+  const ev = C.zumaResolve(z, 3);
+  assert.ok(ev[0].powers.includes('zap'));
+  assert.ok(!z.balls.some(b => b.c === 2), 'all the twos are gone');
+  assert.equal(z.head, 600 - (9 - z.balls.length) * C.ZUMA.D);
+  assert.match(read('./kg-sling.js'), /zap: \{ icon: '⚡'/);
+  const SC = require('./squishy-core.js'), m = new Map(), st = { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)) };
+  st.setItem('msb_kidgames', JSON.stringify({ done: { sling: ['s1', 's2', 's3', 's4', 'z1'] } }));
+  const ctx = SC.challengeContext(st, require('./squishy-data.js').SQUISHIES);
+  assert.equal(ctx.kid.done.sling, 1, 'old level ids do not count toward the shield');
+  const sq = read('./squishy.js');
+  assert.match(sq, /<details class="sq-sent"\$\{ui\.trade\.sentOpen \? ' open' : ''\}>/);
+  assert.match(sq, /ui\.trade\.sentOpen = true;/);
+  assert.equal((read('./kg-map.js').match(/onerror=/g) || []).length, 2, 'map travelers fall back if the art is missing');
+  assert.match(read('./kg-sling.js'), /burstAt\(s, e\.x, gChest\(e\)/);
 });
