@@ -312,3 +312,11 @@ test('sling levels 6-15: new paths, the zap stone, new courage verses; shield co
   assert.equal((read('./kg-map.js').match(/onerror=/g) || []).length, 1, 'map travelers fall back if the art is missing'); assert.match(read('./kg-map.js'), /mp-trav-fb" y="-6" text-anchor="middle" font-size="24">\$\{travEmoji\(m\)\}/, 'journeys without painted art use an emoji traveler');
   assert.match(read('./kg-sling.js'), /burstAt\(s, e\.x, gChest\(e\)/);
 });
+
+test('David’s Sling shows only the painted art: no drawn fallback, field hidden until the pictures load', () => {
+  const src = readFileSync(new URL('./kg-sling.js', import.meta.url), 'utf8');
+  assert.match(src, /function preloadArt\(\)/);
+  assert.match(src, /if \(!artLoaded\(\)\) \{[\s\S]*?cv\.style\.visibility = 'hidden'/);
+  assert.doesNotMatch(src, /\} else \{\n    g\.save\(\); g\.translate\(e\.x, e\.y \+ 6\)/);
+  assert.doesNotMatch(src, /bezierCurveTo\(90, 270/);
+});
