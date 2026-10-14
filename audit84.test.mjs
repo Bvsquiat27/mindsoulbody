@@ -57,3 +57,21 @@ test('devotional data is prefetched so share runs inside the tap', () => {
   assert.match(src, /prefetch so Share can run inside the tap/);
   assert.match(src, /if \(!meta\.verse\) \{ try \{ await/);
 });
+
+/* General sweep: any sentence saying something stays on this device / in this
+   browser must be about data that really is local. Notes and lessons are shared
+   with friends unless the switch is off, so such a sentence about them fails. */
+test('privacy sweep: no "stays local" claim about notes or lessons', async () => {
+  const { readdirSync } = await import('node:fs');
+  const files = readdirSync('.').filter((f) => /\.(js|html)$/.test(f));
+  const PHRASE = /(stays? on this device|stays? in this browser|in this browser|se quedan?\b|en este navegador)/i;
+  /* local-only topics that may keep the wording */
+  const EXEMPT = /highlight|subrayado|memory verse|These verses|versículos para memorizar|Today’s count|rope|knot|drawings? is not available|dibujos|password|contraseña|This account|Esta cuenta|Reina-Valera 1909 no incluye|The lines stay on top|líneas se quedan|amigos se quedan cerca|Study together is coming soon|Estudiar juntos|persistent storage|almacenamiento persistente|live in this browser|viven en este navegador|kidgames|match3|Signed-out reading|Progress stays|With a friend code|Con un código de amigo|Sharing is off|Compartir está desactivado|Saving drawings|are saved in this browser|se guardan en este navegador|Export a backup|Exporta una copia|Exporta un archivo/i;
+  const bad = [];
+  for (const f of files) {
+    for (const sentence of readFileSync(f, 'utf8').split(/(?<=[.!?])\s+|\n/)) {
+      if (PHRASE.test(sentence) && !EXEMPT.test(sentence) && /note|nota|lesson|lecci|progress|avance|journal|diario/i.test(sentence)) bad.push(`${f}: ${sentence.trim().slice(0, 140)}`);
+    }
+  }
+  assert.deepEqual(bad, []);
+});
