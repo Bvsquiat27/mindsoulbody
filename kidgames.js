@@ -42,6 +42,20 @@
       osc.connect(g); g.connect(master); osc.start(at); osc.stop(at + dur + 0.05);
     } catch { /* ignore */ }
   }
+  /* filtered noise: cracks, rain, whooshes, splashes */
+  function noise(o = {}) {
+    const a = audio(); if (!a) return;
+    try {
+      const at = a.currentTime + (o.delay || 0), dur = o.dur || 0.2;
+      const len = Math.max(1, Math.floor(a.sampleRate * dur)), buf = a.createBuffer(1, len, a.sampleRate), d = buf.getChannelData(0);
+      for (let i = 0; i < len; i += 1) d[i] = Math.random() * 2 - 1;
+      const src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
+      src.buffer = buf; f.type = o.filter || 'bandpass'; f.Q.value = o.q || 1;
+      f.frequency.setValueAtTime(o.f0 || 1200, at); if (o.f1) f.frequency.exponentialRampToValueAtTime(o.f1, at + dur);
+      g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(o.peak || 0.05, at + (o.attack || 0.008)); g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+      src.connect(f); f.connect(g); g.connect(master); src.start(at); src.stop(at + dur + 0.05);
+    } catch { /* ignore */ }
+  }
   const run = (fs, o = {}) => fs.forEach((f, i) => tone(f, { ...o, delay: (o.delay || 0) + i * (o.step || 0.09) }));
   const SOUND = {
     tap: () => tone(740, { dur: 0.06, peak: 0.03 }),
@@ -51,8 +65,41 @@
     win: () => run([523, 659, 784, 1047, 1319], { dur: 0.22, peak: 0.055, type: 'triangle', step: 0.11 }),
     badge: () => run([784, 988, 1175, 1568], { dur: 0.3, peak: 0.05, step: 0.12 }),
     whoosh: () => tone(300, { f1: 900, dur: 0.18, peak: 0.03, type: 'sawtooth' }),
-    thud: () => tone(140, { f1: 70, dur: 0.18, peak: 0.07 }),
+    thud: () => { tone(140, { f1: 70, dur: 0.18, peak: 0.07 }); noise({ filter: 'lowpass', f0: 500, dur: 0.12, peak: 0.04 }); },
+    /* David's Sling */
+    whirl: () => [0, 0.11, 0.22].forEach((d, i) => noise({ f0: 500 + i * 250, f1: 1400 + i * 300, q: 2, dur: 0.1, peak: 0.022, delay: d })),
+    sling: () => { noise({ f0: 400, f1: 2600, q: 1.4, dur: 0.28, peak: 0.05 }); tone(220, { f1: 520, dur: 0.12, peak: 0.02, type: 'triangle' }); },
+    crack: () => { noise({ filter: 'highpass', f0: 1800, dur: 0.09, peak: 0.07 }); [0.03, 0.07, 0.12].forEach(d => tone(1800 + Math.random() * 1600, { dur: 0.05, peak: 0.02, delay: d })); },
+    clang: () => { tone(620, { dur: 0.5, peak: 0.04, type: 'square' }); tone(1480, { dur: 0.35, peak: 0.02 }); tone(2210, { dur: 0.25, peak: 0.012 }); },
+    tock: () => { tone(420, { f1: 300, dur: 0.08, peak: 0.06, type: 'triangle' }); noise({ f0: 900, q: 4, dur: 0.05, peak: 0.03 }); },
+    bong: () => { tone(330, { f1: 300, dur: 0.6, peak: 0.05 }); tone(660, { dur: 0.4, peak: 0.02 }); },
+    hooray: () => { run([523, 659, 784, 1047, 1319, 1568], { dur: 0.24, peak: 0.05, type: 'triangle', step: 0.09 }); noise({ f0: 1500, q: 0.6, dur: 0.9, peak: 0.02, attack: 0.2, delay: 0.3 }); },
+    giantfall: () => { tone(110, { f1: 50, dur: 0.7, peak: 0.08 }); noise({ filter: 'lowpass', f0: 380, dur: 0.6, peak: 0.06, delay: 0.25 }); },
+    /* Ark Builder */
+    knock: () => [0, 0.09].forEach(d => { tone(240, { f1: 170, dur: 0.07, peak: 0.06, type: 'triangle', delay: d }); noise({ f0: 700, q: 3, dur: 0.04, peak: 0.025, delay: d }); }),
+    hop: () => { tone(500, { f1: 900, dur: 0.1, peak: 0.035, type: 'triangle' }); tone(650, { f1: 1150, dur: 0.1, peak: 0.03, type: 'triangle', delay: 0.12 }); },
+    thunder: () => { noise({ filter: 'lowpass', f0: 600, f1: 80, dur: 1.4, peak: 0.08, attack: 0.03 }); tone(60, { f1: 40, dur: 1, peak: 0.05 }); },
+    rain: () => noise({ filter: 'highpass', f0: 3000, dur: 1.2, peak: 0.018, attack: 0.3 }),
+    rainbow: () => run([784, 988, 1175, 1568, 1976, 2349], { dur: 0.5, peak: 0.035, step: 0.07 }),
+    combo: () => run([880, 1175, 1568], { dur: 0.1, peak: 0.04, step: 0.05, type: 'triangle' }),
   };
+  /* one cute call per animal: a short pitch pattern */
+  function animalCall(i) {
+    const base = [330, 392, 440, 523, 587, 659, 740, 784][i % 8];
+    tone(base, { f1: base * 1.25, dur: 0.12, peak: 0.04, type: i % 2 ? 'triangle' : 'square' });
+    tone(base * 1.5, { f1: base * 1.1, dur: 0.14, peak: 0.03, type: 'triangle', delay: 0.12 });
+  }
+  /* A burst of confetti, stars and doves over the screen (skipped with reduced motion). */
+  function celebrate(kind) {
+    if (reduced()) return;
+    const host = document.body; if (!host) return;
+    const box = document.createElement('div');
+    box.className = 'kg-celebrate' + (kind === 'gold' ? ' gold' : ''); box.setAttribute('aria-hidden', 'true');
+    const bits = ['★', '✦', '🕊️', '✿', '★', '✦', '❤'];
+    box.innerHTML = Array.from({ length: 34 }, (_, i) => `<i style="--x:${(i * 29) % 100}vw;--d:${(i % 9) * 0.07}s;--r:${(i * 47) % 360}deg;--c:${['#ffd35a', '#7ad3ff', '#ff9db5', '#9be37a', '#c9a7ff'][i % 5]}">${bits[i % bits.length]}</i>`).join('');
+    host.appendChild(box);
+    setTimeout(() => box.remove(), 2600);
+  }
   const sound = n => { try { SOUND[n] && SOUND[n](); } catch { /* ignore */ } };
   /* Vibration follows the app's tap-vibration setting (Android only). */
   function buzz(pattern) {
@@ -88,7 +135,7 @@
     const box = ui.root.querySelector('[data-kg-badge-pop]');
     if (!box) return;
     box.innerHTML = list.map(b => `<span class="kg-badge-pop"><span aria-hidden="true">${b.icon}</span> ${esc(t('New badge: {name}', '¡Nueva insignia: {name}!', { name: name(b.name) }))}</span>`).join('')
-      + squishies.map(x => `<span class="kg-badge-pop kg-squishy-pop"><span aria-hidden="true">🧸</span> ${esc(t('New squishy: {name}!', '¡Nuevo squishy: {name}!', { name: x.name }))}</span>`).join('');
+      + squishies.map(x => `<span class="kg-badge-pop kg-squishy-pop tier-${esc(x.tier || 'common')}"><span aria-hidden="true">${x.tier === 'legendary' ? '👑' : x.tier === 'rare' ? '💎' : '🧸'}</span> ${esc(x.tier === 'legendary' ? t('LEGENDARY squishy: {name}!', '¡Squishy LEGENDARIO: {name}!', { name: x.name }) : x.tier === 'rare' ? t('Rare squishy: {name}!', '¡Squishy raro: {name}!', { name: x.name }) : t('New squishy: {name}!', '¡Nuevo squishy: {name}!', { name: x.name }))}<small>${esc(t('Open Bible squishies to celebrate', 'Abre Squishies de la Biblia para celebrar'))}</small></span>`).join('');
     box.hidden = false;
     clearTimeout(badgeToast.timer);
     badgeToast.timer = setTimeout(() => { if (box.isConnected) box.hidden = true; }, 4200);
@@ -146,7 +193,7 @@
       return badgeDefs().map(b => ({ id: b.id, name: name(b.name), icon: b.icon, tier: 'common', earned: v.badges[b.id] || null }));
     },
     _ui: ui,
-    _helpers: { t, esc, lang, name, sound, buzz, prog, award, render, verseHtml, gameHead, reduced, register }
+    _helpers: { t, esc, lang, name, sound, buzz, prog, award, render, verseHtml, gameHead, reduced, register, celebrate, animalCall, noise }
   };
   window.MsbKidGames = api;
 })();

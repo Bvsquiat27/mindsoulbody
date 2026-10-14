@@ -36,7 +36,7 @@ test('a finished swap is applied once: given ones leave, received ones arrive as
   assert.deepEqual(S.applyPending(s, [{ trade: 'bad' }, null], SQUISHIES, C).ack, []);
 });
 
-test('a squishy traded away does not come back by its own challenge; trading it back works', () => {
+test('a squishy traded away comes back only by fresh play after the trade, or by trading it back', () => {
   const s = mem(), st = C.stats(s);
   st.memoryWon(14);
   C.checkUnlocks(s, SQUISHIES);
@@ -44,9 +44,14 @@ test('a squishy traded away does not come back by its own challenge; trading it 
   S.applyPending(s, [{ trade: '1'.repeat(16), give: ['stone'], get: ['jar'] }], SQUISHIES, C);
   assert.deepEqual(C.checkUnlocks(s, SQUISHIES), [], 'stone stays with the friend');
   assert.ok(!C.progress(s, SQUISHIES).unlocked().includes('stone'));
+  assert.ok(C.awayList(s).stone, 'stone can be won back');
   S.applyPending(s, [{ trade: '2'.repeat(16), give: ['jar'], get: ['stone'] }], SQUISHIES, C);
   assert.ok(C.progress(s, SQUISHIES).unlocked().includes('stone'));
   assert.deepEqual(C.roomLedger(s).away, ['jar']);
+  assert.ok(!C.awayList(s).stone, 'traded back: nothing left to win back');
+  /* the jar left too: fresh rounds bring it back with the usual unlock */
+  const ch = C.CHALLENGES.find(c => c.id === 'jar');
+  assert.equal(C.wonBackProgress(s, ch).done, false);
 });
 
 test('gifted legendaries do not count toward the lamp unless their challenge is earned; room trades count as trades', () => {

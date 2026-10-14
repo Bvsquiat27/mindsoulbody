@@ -3,7 +3,7 @@
 (() => {
   'use strict';
   const K = window.MsbKidGames; if (!K) return;
-  const { t, esc, lang, name, sound, buzz, prog, award, render, verseHtml, gameHead, reduced } = K._helpers;
+  const { t, esc, lang, name, sound, buzz, prog, award, render, verseHtml, gameHead, reduced, celebrate } = K._helpers;
   const D = () => window.MsbKidGamesData, C = () => window.MsbKidGamesCore;
   const list = () => D().VERSES;
   const COLS = 3, MAX_FALL = 4, CALM_SLOTS = 6;
@@ -92,7 +92,7 @@
         s.won = true; stop();
         const x = list()[s.at];
         prog().finish('verse', x.id); prog().best(`verse:${x.id}`, C().stars(s.mistakes));
-        setTimeout(() => sound('win'), 150); buzz([20, 40, 30]);
+        setTimeout(() => sound('win'), 150); celebrate(); buzz([20, 40, 30]);
         render(); award();
         const v = document.querySelector('.kg-verse'); if (v && v.scrollIntoView) v.scrollIntoView({ block: 'center', behavior: reduced() ? 'auto' : 'smooth' });
         return;

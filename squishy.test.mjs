@@ -930,5 +930,66 @@ test('the games report progress to the squishies and show a note', () => {
   assert.match(kg, /New squishy: \{name\}!', '¡Nuevo squishy: \{name\}!'/);
   assert.match(col, /MsbSquishy\.gameProgress\(s\.id\)/);
   assert.ok(i18n.includes('"New squishy: {name}!": "¡Nuevo squishy: {name}!"'));
-  for (const k of ['Color {n} different pages', 'Score {n} or more in Who Said It?', 'Finish each of the 7 Bible games once', 'Finish {n} Word Search puzzles', 'Put {n} stories in order', 'Load the ark in Ark Builder', 'Build {n} verses in Verse Builder', 'Finish {n} Map Journeys', 'Finish {n} levels of David’s Sling']) assert.ok(i18n.includes(`"${k}":`), k);
+  for (const k of ['Color {n} different pages', 'Get {n} in a row in Who Said It?', 'Finish each of the 7 Bible games once', 'Finish {n} Word Search puzzles', 'Put {n} stories in order', 'Load the ark in Ark Builder', 'Build {n} verses in Verse Builder', 'Finish {n} Map Journeys', 'Finish {n} levels of David’s Sling']) assert.ok(i18n.includes(`"${k}":`), k);
+});
+
+/* ---------- Winning a squishy back after a trade ---------- */
+test('a squishy traded away comes back only by doing its goal again with fresh play', () => {
+  const s = memoryStorage(), st = C.stats(s);
+  for (let i = 0; i < 10; i += 1) st.roundDone(4, 5);
+  C.checkUnlocks(s, SQUISHIES);
+  assert.ok(C.progress(s, SQUISHIES).unlocked().includes('key'), 'key won with 10 Questions wins');
+  assert.equal(C.tradeAway(s, SQUISHIES, 'key'), true);
+  assert.equal(C.tradeAway(s, SQUISHIES, 'lamp'), false, 'the lamp never leaves');
+  assert.equal(C.tradeAway(s, SQUISHIES, 'lamb'), false, 'starters never leave');
+  assert.ok(!C.progress(s, SQUISHIES).unlocked().includes('key'));
+  assert.deepEqual(C.checkUnlocks(s, SQUISHIES), [], 'old progress does not bring it back instantly');
+  for (let i = 0; i < 9; i += 1) st.roundDone(4, 5);
+  const pr = C.wonBackProgress(s, C.challengeFor('key'));
+  assert.deepEqual([pr.have, pr.need, pr.done, pr.again], [9, 10, false, true]);
+  assert.deepEqual(C.checkUnlocks(s, SQUISHIES), []);
+  st.roundDone(4, 5);
+  assert.deepEqual(C.checkUnlocks(s, SQUISHIES), ['key'], 'the full count again: back, with the normal unlock (and celebration)');
+  assert.deepEqual(C.awayList(s), {}, 'nothing left to win back');
+});
+
+test('one-time goals need fresh rounds of the same game; trading it back clears the rule', () => {
+  const s = memoryStorage();
+  s.setItem('msb_squishy_unlocked', JSON.stringify(['tomb', 'shofar']));
+  s.setItem('msb_match_progress', JSON.stringify({ open: 21, stars: Object.fromEntries(Array.from({ length: 20 }, (_, i) => [i + 1, 2])), best: {}, wins: 20 }));
+  s.setItem('msb_kidgames', JSON.stringify({ done: { who: ['round'] }, best: { who: 9 }, plays: { who: 3 } }));
+  C.tradeAway(s, SQUISHIES, 'tomb'); C.tradeAway(s, SQUISHIES, 'shofar');
+  const two = () => C.checkUnlocks(s, SQUISHIES).filter(id => id === 'tomb' || id === 'shofar').sort();
+  assert.deepEqual(two(), []);
+  assert.equal(C.AGAIN.matchChapter, 5);
+  s.setItem('msb_match_progress', JSON.stringify({ ...JSON.parse(s.getItem('msb_match_progress')), wins: 24 }));
+  assert.deepEqual(two(), [], '4 fresh level wins are not enough for the tomb');
+  s.setItem('msb_match_progress', JSON.stringify({ ...JSON.parse(s.getItem('msb_match_progress')), wins: 25 }));
+  s.setItem('msb_kidgames', JSON.stringify({ done: { who: ['round'] }, best: { who: 9 }, plays: { who: 4 } }));
+  assert.deepEqual(two(), ['shofar', 'tomb']);
+  /* trading it back in removes the win-back rule */
+  C.tradeAway(s, SQUISHIES, 'ark');
+  assert.ok(C.awayList(s).ark);
+  assert.equal(C.cameBack(s, 'ark'), true);
+  assert.deepEqual(Object.keys(C.awayList(s)), []);
+});
+
+test('the win-back rule is explained in EN/ES and shown on the locked tile', () => {
+  const ui = read('./squishy.js'), i18n = read('./i18n.js');
+  assert.match(ui, /C\(\)\.wonBackProgress\(store2\(\), ch\)/);
+  const keys = [...ui.matchAll(/L\('([^']+)'/g)].map(m => m[1]);
+  for (const k of new Set(keys)) assert.ok(i18n.includes(`"${k}":`), `missing Spanish for: ${k}`);
+  assert.ok(i18n.includes('"Traded a squishy away? You can always win it back: do its goal again after the trade (fresh play, not old progress).":'));
+  for (const k of [C.KEYS.away, 'msb_squishy_celebrate']) assert.ok(k.startsWith('msb_'), k);
+});
+
+test('squishies won in a game or coloring get the full celebration; badge icons are all different', () => {
+  const ui = read('./squishy.js'), who = read('./kg-who.js');
+  assert.match(ui, /queueCelebrations\(won\.map\(x => x\.id\)\)/);
+  assert.match(ui, /const waiting = takeCelebrations\(\);/);
+  assert.match(ui, /play\(top\);/, 'the rare or legendary fanfare plays where it was won');
+  assert.match(who, /if \(s\.k >= s\.order\.length\) award\(\);/, 'Who Said It awards at the end of a round');
+  const icons = Object.values(Function(`return ${ui.match(/const BADGE_ICON = (\{[^\n]+\});/)[1]}`)());
+  assert.equal(new Set(icons).size, icons.length);
+  assert.ok(read('./i18n.js').includes('"Get {n} in a row in Who Said It?": "Acierta {n} seguidas en ¿Quién lo dijo?"'));
 });
