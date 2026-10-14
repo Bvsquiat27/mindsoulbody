@@ -116,47 +116,136 @@
   const wordFits = (words, have, i) => i >= 0 && i < words.length && have < words.length && words[i] === words[have];
   const stars = mistakes => (mistakes <= 0 ? 3 : mistakes <= 2 ? 2 : 1);
 
-  /* ---------- Ark Builder ---------- */
-  const arkDeck = (pairs, rand = Math.random) => scramble(pairs.flatMap(a => [a, a]), rand);
-  /* Stars by how much of the rain timer was left. */
-  const arkStars = (left, total) => (left >= total * 0.45 ? 3 : left >= total * 0.2 ? 2 : 1);
-
   /* ---------- Map Journey ---------- */
   /* The stop's choices in a mixed order; the first in the data is right. */
   const stopChoices = (stop, lang, rand = Math.random) => shuffle(stop.choices[lang].map((text, i) => ({ text, right: i === 0 })), rand);
 
-  /* ---------- David's Sling (light physics, 400 x 300 world, y down) ---------- */
-  const SLING = { x: 62, y: 222, maxPull: 90, power: 6.6, gravity: 320, radius: 6, W: 400, H: 300 };
-  /* Pull back from the sling (dx, dy from the pouch); the stone flies the other way. */
-  function slingShot(dx, dy) {
-    const len = Math.hypot(dx, dy) || 1, k = Math.min(1, SLING.maxPull / len);
-    return { x: SLING.x, y: SLING.y, vx: -dx * k * SLING.power, vy: -dy * k * SLING.power, alive: true, t: 0 };
-  }
-  /* Same shot from an angle (degrees above flat) and power 0..1, for buttons/keys. */
-  function slingAim(angleDeg, power) {
-    const a = angleDeg * Math.PI / 180, len = SLING.maxPull * Math.max(0.1, Math.min(1, power));
-    return slingShot(-Math.cos(a) * len, Math.sin(a) * len);
-  }
-  /* Move the stone one step; returns the ids of targets hit this step. */
-  function slingStep(stone, dt, targets, rocks) {
-    const hits = [];
-    if (!stone.alive) return hits;
-    const n = Math.max(1, Math.ceil(dt / 0.008)), h = dt / n;
-    for (let k = 0; k < n && stone.alive; k += 1) {
-      stone.vy += SLING.gravity * h; stone.x += stone.vx * h; stone.y += stone.vy * h; stone.t += h;
-      for (const tg of targets) if (!tg.down && Math.hypot(stone.x - tg.x, stone.y - tg.y) <= tg.r + SLING.radius) { tg.down = true; hits.push(tg); }
-      for (const r of rocks || []) if (stone.x + SLING.radius > r.x && stone.x - SLING.radius < r.x + r.w && stone.y + SLING.radius > r.y && stone.y - SLING.radius < r.y + r.h) stone.alive = false;
-      if (stone.y > SLING.H + 20 || stone.x > SLING.W + 20 || stone.x < -20 || stone.t > 6) stone.alive = false;
+  /* ---------- David's Sling: a chain of stones rolls along a winding path
+     toward Goliath. David, in the middle, slings stones into the chain;
+     3 or more of a color pop, and the gap pulls the front back (chain
+     reactions). Field 360 x 480, y down. Pure functions, tested. ---------- */
+  const ZUMA = { W: 360, H: 480, R: 12, D: 24, shot: 620, rush: 6 };
+  const ZPATHS = {
+    valley: { david: [180, 262], pts: [[400, 440], [40, 440], [40, 92], [296, 92]] },
+    brook: { david: [196, 262], pts: [[400, 452], [28, 452], [28, 52], [332, 52], [332, 372], [108, 372], [108, 150], [262, 150]] },
+    spiral: { david: [180, 272], spiral: { cx: 180, cy: 262, r0: 196, r1: 92, a0: Math.PI / 2, turns: 1.5 } },
+    hills: { david: [180, 262], wave: 9, pts: [[400, 436], [36, 436], [36, 88], [300, 88]] },
+    camp: { david: [196, 258], wave: 6, pts: [[400, 456], [26, 456], [26, 48], [334, 48], [334, 376], [104, 376], [104, 146], [258, 146]] },
+    /* levels 6-15: S-curves, spirals, twin lanes and long mazes */
+    zig: { david: [180, 246], pts: [[400, 452], [36, 452], [36, 372], [322, 372], [322, 122], [60, 122]] },
+    whirl: { david: [180, 256], spiral: { cx: 180, cy: 250, r0: 196, r1: 98, a0: 0, turns: 1.6 } },
+    ribbon: { david: [180, 250], wave: 12, pts: [[-30, 440], [324, 440], [324, 70], [60, 70], [60, 200]] },
+    twin: { david: [214, 250], pts: [[400, 456], [26, 456], [26, 40], [100, 40], [100, 400], [334, 400], [334, 110], [190, 110]] },
+    coil: { david: [180, 262], spiral: { cx: 180, cy: 262, r0: 205, r1: 120, a0: Math.PI, turns: 1.25 } },
+    ridge: { david: [180, 262], wave: 14, pts: [[400, 448], [30, 448], [30, 84], [330, 84], [330, 330]] },
+    serpent: { david: [180, 262], wave: 8, pts: [[400, 456], [26, 456], [26, 380], [334, 380], [334, 150], [26, 150], [26, 46], [334, 46], [334, 124]] },
+    maze: { david: [196, 258], pts: [[400, 458], [24, 458], [24, 44], [336, 44], [336, 380], [100, 380], [100, 140], [264, 140], [264, 300]] },
+    storm: { david: [180, 262], wave: 7, spiral: { cx: 180, cy: 262, r0: 210, r1: 96, a0: Math.PI / 2, turns: 2.25 } },
+    giant: { david: [196, 258], wave: 9, pts: [[400, 458], [22, 458], [22, 40], [338, 40], [338, 384], [96, 384], [96, 134], [270, 134], [270, 312]] },
+  };
+  /* a smooth path: straight runs with rounded corners (Chaikin), optional gentle waves */
+  function zumaPath(name) {
+    const P = ZPATHS[name] || ZPATHS.valley;
+    let pts;
+    if (P.spiral) {
+      const sp = P.spiral, n = 240; pts = [];
+      for (let i = 0; i <= n; i += 1) { const k = i / n, a = sp.a0 + k * sp.turns * Math.PI * 2, r = sp.r0 + (sp.r1 - sp.r0) * k; pts.push([sp.cx + Math.cos(a) * r, sp.cy + Math.sin(a) * r]); }
+    } else {
+      pts = P.pts.map(p => p.slice());
+      for (let it = 0; it < 4; it += 1) {
+        const out = [pts[0]];
+        for (let i = 0; i < pts.length - 1; i += 1) { const [a, b] = [pts[i], pts[i + 1]]; out.push([a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25], [a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]); }
+        out.push(pts[pts.length - 1]); pts = out;
+      }
     }
-    return hits;
+    /* resample every 2 units, add waves across the path */
+    const dense = [pts[0]];
+    for (let i = 1; i < pts.length; i += 1) { const [a, b] = [pts[i - 1], pts[i]], L = Math.hypot(b[0] - a[0], b[1] - a[1]), n = Math.max(1, Math.ceil(L / 2)); for (let k = 1; k <= n; k += 1) dense.push([a[0] + (b[0] - a[0]) * k / n, a[1] + (b[1] - a[1]) * k / n]); }
+    const cum = [0]; for (let i = 1; i < dense.length; i += 1) cum.push(cum[i - 1] + Math.hypot(dense[i][0] - dense[i - 1][0], dense[i][1] - dense[i - 1][1]));
+    const base = dense.map(q => q.slice());
+    if (P.wave) for (let i = 1; i < dense.length - 1; i += 1) { const [a, b] = [base[i - 1], base[i + 1]], dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1, w = Math.sin(cum[i] / 46) * P.wave * Math.min(1, cum[i] / 80, (cum[cum.length - 1] - cum[i]) / 80); dense[i] = [base[i][0] - dy / l * w, base[i][1] + dx / l * w]; }
+    const len2 = [0]; for (let i = 1; i < dense.length; i += 1) len2.push(len2[i - 1] + Math.hypot(dense[i][0] - dense[i - 1][0], dense[i][1] - dense[i - 1][1]));
+    const total = len2[len2.length - 1];
+    function at(d) {
+      const x = Math.max(0, Math.min(total, d));
+      let lo = 0, hi = len2.length - 1; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (len2[m] <= x) lo = m; else hi = m; }
+      const seg = len2[hi] - len2[lo] || 1, k = (x - len2[lo]) / seg, a = dense[lo], b = dense[hi];
+      return { x: a[0] + (b[0] - a[0]) * k, y: a[1] + (b[1] - a[1]) * k, a: Math.atan2(b[1] - a[1], b[0] - a[0]) };
+    }
+    const end = at(total);
+    return { name, len: total, at, pts: dense, david: { x: P.david[0], y: P.david[1] }, goliath: { x: end.x, y: end.y } };
   }
-  /* The first few points of the flight, for the dotted aim line. */
-  function slingPreview(dx, dy, steps = 9, gap = 0.06) {
-    const s = slingShot(dx, dy), out = [];
-    for (let i = 1; i <= steps; i += 1) { const t = i * gap; out.push([s.x + s.vx * t, s.y + s.vy * t + SLING.gravity * t * t / 2]); }
-    return out;
+  /* a new level: the chain (colors mixed so short runs appear) with its power stones */
+  function zumaStart(lv, rand = Math.random) {
+    const balls = [];
+    for (let i = 0; i < lv.count; i += 1) {
+      let c = Math.floor(rand() * lv.colors);
+      if (i >= 2 && balls[i - 1].c === c && balls[i - 2].c === c) c = (c + 1) % lv.colors;
+      balls.push({ c, p: null, id: i });
+    }
+    (lv.powers || []).forEach((p, k) => { const i = Math.floor(lv.count * (0.25 + 0.5 * (k + 1) / (lv.powers.length + 1))); if (balls[i]) balls[i].p = p; });
+    return { balls, head: 0, speed: lv.speed, slowT: 0, revT: 0, maxFrac: 0, nextId: lv.count, combo: 0, lost: false, cleared: false, colors: lv.colors };
   }
-  const slingStars = left => (left >= 2 ? 3 : left >= 1 ? 2 : 1);
+  function zumaPos(z, i) { return z.head - i * ZUMA.D; }
+  /* move the chain; a fast roll-in at the start, slow and reverse power-ups */
+  function zumaStep(z, dt, path) {
+    if (z.lost || !z.balls.length) return;
+    const rushTo = Math.min((z.balls.length - 1) * ZUMA.D, path.len * 0.42);
+    let v = z.speed;
+    if (z.head < rushTo && !z.started) v *= ZUMA.rush; else z.started = true;
+    if (z.slowT > 0) { z.slowT -= dt; v *= 0.4; }
+    if (z.revT > 0) { z.revT -= dt; v = -z.speed * 1.6; }
+    z.head = Math.max(Math.min(z.head, (z.balls.length - 1) * ZUMA.D), z.head + v * dt);
+    z.maxFrac = Math.max(z.maxFrac, z.head / path.len);
+    if (z.head >= path.len) z.lost = true;
+  }
+  /* which ball of the chain a shot at (x, y) touches, or -1 */
+  function zumaHit(z, path, x, y) {
+    let best = -1, bd = ZUMA.D * 0.95;
+    z.balls.forEach((b, i) => { const d = zumaPos(z, i); if (d < 0) return; const p = path.at(d), dist = Math.hypot(p.x - x, p.y - y); if (dist < bd) { bd = dist; best = i; } });
+    return best;
+  }
+  /* put the shot into the chain next to ball i: in front of it if the shot is
+     on its front side. The front of the chain is pushed forward one stone. */
+  function zumaInsert(z, path, i, shot, x, y) {
+    const p = path.at(zumaPos(z, i)), ahead = (x - p.x) * Math.cos(p.a) + (y - p.y) * Math.sin(p.a) > 0;
+    const k = ahead ? i : i + 1;
+    z.balls.splice(k, 0, { c: shot.c, p: shot.p || null, id: z.nextId++ });
+    z.head += ZUMA.D;
+    return k;
+  }
+  /* pop runs of 3+ around index k, then keep popping where the gap closes
+     (chain reactions). Bombs also take 2 stones on each side. */
+  function zumaResolve(z, k) {
+    const events = []; let combo = 0, at = k;
+    while (at >= 0 && at < z.balls.length) {
+      const c = z.balls[at].c; let a = at, b = at;
+      while (a > 0 && z.balls[a - 1].c === c) a -= 1;
+      while (b < z.balls.length - 1 && z.balls[b + 1].c === c) b += 1;
+      if (b - a + 1 < 3) break;
+      combo += 1;
+      let powers = z.balls.slice(a, b + 1).map(x => x.p).filter(Boolean);
+      if (powers.includes('bomb')) { a = Math.max(0, a - 2); b = Math.min(z.balls.length - 1, b + 2); powers = z.balls.slice(a, b + 1).map(x => x.p).filter(Boolean); }
+      const gone = z.balls.splice(a, b - a + 1);
+      z.head -= gone.length * ZUMA.D;
+      if (powers.includes('slow')) z.slowT = 5;
+      if (powers.includes('reverse')) z.revT = 2.4;
+      if (powers.includes('zap')) { let n = 0; for (let i = z.balls.length - 1; i >= 0 && n < 8; i -= 1) if (z.balls[i].c === c) { z.balls.splice(i, 1); n += 1; if (i < a) a -= 1; gone.push({ c }); } z.head -= n * ZUMA.D; }
+      events.push({ count: gone.length, combo, color: c, from: a, powers, balls: gone });
+      /* the gap closes: does the stone in front match the one behind? */
+      if (a <= 0 || a >= z.balls.length || z.balls[a - 1].c !== z.balls[a].c) break;
+      at = a;
+    }
+    if (!z.balls.length) z.cleared = true;
+    return events;
+  }
+  /* the next stone David holds: a color still in the chain */
+  function zumaNext(z, rand = Math.random) {
+    const left = [...new Set(z.balls.map(b => b.c))];
+    return { c: left.length ? left[Math.floor(rand() * left.length)] : 0 };
+  }
+  /* stars by how close the chain came to Goliath */
+  const zumaStars = maxFrac => (maxFrac < 0.6 ? 3 : maxFrac < 0.82 ? 2 : 1);
 
   /* ---------- Progress (one msb_ key) ---------- */
   const today = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -186,6 +275,18 @@
       /* keep the highest score; returns true when it is a new best */
       best(game, n) { const v = read(); const old = Number(v.best[game]) || 0; if (n > old) { v.best[game] = n; write(v); return true; } return false; },
       done(game) { return (read().done[game] || []).slice(); },
+      /* the old Sling levels (s1-s4) became the new z1-z4: carry them over once; true when it happened */
+      migrateSling() {
+        const v = read(), list = v.done.sling || [];
+        const orphans = Object.keys(v.best).some(k => /^sling:s\d+$/.test(k));
+        const oldDone = list.some(id => /^s\d+$/.test(id));
+        if (!oldDone && !orphans) return false;
+        const out = [];
+        for (const id of list) { const n = /^s(\d+)$/.exec(id); const z = n ? `z${n[1]}` : id; if (!out.includes(z)) out.push(z); }
+        v.done.sling = out;
+        for (const k of Object.keys(v.best)) { const m = /^sling:s(\d+)$/.exec(k); if (!m) continue; const nk = `sling:z${m[1]}`; v.best[nk] = Math.max(Number(v.best[nk]) || 0, Number(v.best[k]) || 0); delete v.best[k]; }
+        write(v); return oldDone; /* the note shows only when levels moved */
+      },
       /* stamp newly earned badges with today's date; returns the new ones */
       award(defs) {
         const v = read(); const fresh = [];
@@ -201,7 +302,7 @@
       set(on) { try { storage.setItem(KEYS.sounds, on ? 'on' : 'off'); } catch { /* ignore */ } return !!on; }
     };
   }
-  const count = (v, g) => (v.done[g] || []).length;
+  const count = (v, g) => (v.done[g] || []).filter(id => g !== 'sling' || /^z\d+$/.test(id)).length;
   /* Badge rules. "total" is how many puzzles/levels that game has. */
   function badgeDefs(totals = {}) {
     const all = (g, n) => v => count(v, g) >= (totals[g] || n);
@@ -213,8 +314,8 @@
       { id: 'kg-who-5', game: 'who', icon: '💬', name: { en: 'Good listener', es: 'Buen oyente' }, goal: { en: 'Get 5 in a row in Who Said It?', es: 'Acierta 5 seguidas en ¿Quién lo dijo?' }, test: v => (Number(v.best.who) || 0) >= 5 },
       { id: 'kg-verse-1', game: 'verse', icon: '🧩', name: { en: 'Verse builder', es: 'Constructor de versículos' }, goal: { en: 'Build a memory verse', es: 'Arma un versículo para memorizar' }, test: v => count(v, 'verse') >= 1 },
       { id: 'kg-verse-all', game: 'verse', icon: '💛', name: { en: 'Hidden in my heart', es: 'Guardado en mi corazón' }, goal: { en: 'Build every memory verse', es: 'Arma todos los versículos' }, test: all('verse', 6) },
-      { id: 'kg-ark-1', game: 'ark', icon: '🛶', name: { en: 'Two by two', es: 'De dos en dos' }, goal: { en: 'Load the ark before the rain', es: 'Llena el arca antes de la lluvia' }, test: v => count(v, 'ark') >= 1 },
-      { id: 'kg-ark-all', game: 'ark', icon: '🌈', name: { en: 'Faithful like Noah', es: 'Fiel como Noé' }, goal: { en: 'Finish every Ark Builder level', es: 'Termina todos los niveles del arca' }, test: all('ark', 3) },
+      { id: 'kg-ark-1', game: 'ark', icon: '🛶', name: { en: 'Two by two', es: 'De dos en dos' }, goal: { en: 'Load the ark before the rain', es: 'Llena el arca antes de la lluvia' }, retired: true, test: () => false },
+      { id: 'kg-ark-all', game: 'ark', icon: '🌈', name: { en: 'Faithful like Noah', es: 'Fiel como Noé' }, goal: { en: 'Finish every Ark Builder level', es: 'Termina todos los niveles del arca' }, retired: true, test: () => false },
       { id: 'kg-map-1', game: 'map', icon: '🗺️', name: { en: 'Bible traveler', es: 'Viajero bíblico' }, goal: { en: 'Finish a Map Journey', es: 'Termina un viaje en el mapa' }, test: v => count(v, 'map') >= 1 },
       { id: 'kg-map-all', game: 'map', icon: '🧭', name: { en: 'Faithful explorer', es: 'Explorador fiel' }, goal: { en: 'Finish every Map Journey', es: 'Termina todos los viajes' }, test: all('map', 2) },
       { id: 'kg-sling-1', game: 'sling', icon: '🪨', name: { en: 'Brave like David', es: 'Valiente como David' }, goal: { en: 'Clear a David\u2019s Sling level', es: 'Supera un nivel de La honda de David' }, test: v => count(v, 'sling') >= 1 },
@@ -222,5 +323,5 @@
       { id: 'kg-who-10', game: 'who', icon: '🗣️', name: { en: 'Voice of the Bible', es: 'Voces de la Biblia' }, goal: { en: 'Get 10 in a row in Who Said It?', es: 'Acierta 10 seguidas en ¿Quién lo dijo?' }, test: v => (Number(v.best.who) || 0) >= 10 },
     ];
   }
-  return { KEYS, hash, rng, shuffle, scramble, gridWord, wordSearch, lineCells, findWord, orderMarks, isOrdered, moveItem, choices, verseWords, nextFalling, wordFits, stars, arkDeck, arkStars, stopChoices, SLING, slingShot, slingAim, slingStep, slingPreview, slingStars, progress, soundPref, badgeDefs, today };
+  return { KEYS, hash, rng, shuffle, scramble, gridWord, wordSearch, lineCells, findWord, orderMarks, isOrdered, moveItem, choices, verseWords, nextFalling, wordFits, stars, stopChoices, ZUMA, zumaPath, zumaPos, zumaStart, zumaStep, zumaHit, zumaInsert, zumaResolve, zumaNext, zumaStars, progress, soundPref, badgeDefs, today };
 });

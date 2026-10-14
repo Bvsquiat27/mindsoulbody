@@ -3,7 +3,9 @@
    number, scrambled, then a 2-character keyed checksum. The checksum is a
    weighted sum modulo a prime, so any single mistyped character or any two
    swapped characters are always rejected. Everything stays on this phone:
-   the giver keeps their squishy, the friend who types the code gets a copy. */
+   making a code GIVES the squishy away (it leaves the giver's shelf and can
+   be won back by doing its goal again); the friend who types the code gets
+   it. Every code made is kept in the sent history so it can be shown again. */
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
@@ -17,7 +19,7 @@
     /* won in the games (added after the first 23; index 31 and up use the
        extended slot below, so older codes read exactly as before) */
     'lily', 'key', 'pearl', 'manna', 'scroll', 'shofar', 'tablets', 'elephant', 'honeycomb', 'anchor', 'shield'];
-  const LEGENDARY = ['lamp', 'tomb', 'bush', 'chariot'];
+  const LEGENDARY = ['lamp', 'tomb', 'bush', 'chariot', 'tablets'];
   /* 5 bits hold indexes 0-30 directly; 31 means "31 + the next 5 bits" */
   const EXT = 31;
   const KEY = 'msb_squishy_trade';
@@ -74,13 +76,16 @@
     function save(v) { try { storage.setItem(KEY, JSON.stringify(v)); } catch { /* full or blocked */ } return v; }
     return {
       get,
-      /* the giver keeps their squishy; the code is remembered so it cannot
-         be redeemed on this same phone */
-      create(id, owned, rand = Math.random, date = new Date()) {
+      /* trading GIVES the squishy away: give(id) takes it off this phone's
+         shelf (MsbSquishyCore.tradeAway), and it can be won back later by
+         playing its goal again. The code is remembered so it cannot be
+         redeemed on this same phone. */
+      create(id, owned, rand = Math.random, date = new Date(), give = null) {
         if (!tradable(id) || !(owned || []).includes(id)) return null;
         const c = makeCode(id, rand), v = get();
         v.sent.push({ c, id, at: date.getTime() });
         save(v);
+        if (typeof give === 'function') give(id);
         return c;
       },
       redeem(text, date = new Date()) {

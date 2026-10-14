@@ -31,9 +31,9 @@ function board(set = {}, level = testLevel) {
 const fakeStore = () => { const m = new Map(); return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)), m }; };
 
 /* ---------- Levels and lessons ---------- */
-test('30 levels in 15 Bible chapters, two each, in story order', () => {
-  assert.equal(LEVELS.length, 30);
-  assert.deepEqual(CHAPTERS.map(c => c.id), ['creation', 'noah', 'sea', 'jericho', 'david', 'daniel', 'jonah', 'birth', 'loaves', 'easter', 'pentecost', 'gate', 'road', 'prison', 'heaven']);
+test('40 levels in 20 Bible chapters, two each: 15 in story order, then 5 more stories', () => {
+  assert.equal(LEVELS.length, 40);
+  assert.deepEqual(CHAPTERS.map(c => c.id), ['creation', 'noah', 'sea', 'jericho', 'david', 'daniel', 'jonah', 'birth', 'loaves', 'easter', 'pentecost', 'gate', 'road', 'prison', 'heaven', 'ruth', 'carmel', 'esther', 'tree', 'lost']);
   LEVELS.forEach((lv, i) => {
     assert.equal(lv.n, i + 1);
     assert.equal(lv.chapter, CHAPTERS[Math.floor(i / 2)].id, `level ${lv.n}`);
@@ -57,8 +57,8 @@ test('every lesson verse is word for word from the app KJV and RV1909 text', () 
     assert.equal(lv.ref[l], label(l, lv.at[l]), `level ${lv.n} ${l} reference`);
   }
   const refs = LEVELS.map(lv => lv.ref.en);
-  assert.deepEqual(refs, ['Genesis 1:1', 'Genesis 1:3', 'Genesis 8:11', 'Genesis 9:15', 'Exodus 14:21', 'Exodus 14:14', 'Joshua 6:20', 'Joshua 1:9', '1 Samuel 16:7', 'Psalms 23:1', 'Daniel 6:22', 'Psalms 46:1', 'Jonah 2:10', 'Jonah 3:5', 'Luke 2:11', 'Luke 2:14', 'John 6:9', 'John 6:35', 'Matthew 28:6', 'John 11:25', 'Acts 2:4', 'Acts 2:41', 'Acts 3:6', 'Acts 3:8', 'Acts 9:3', 'Acts 9:18', 'Acts 16:25', 'Acts 16:26', 'Revelation 21:4', 'Revelation 21:5']);
-  assert.equal(new Set(refs).size, 30);
+  assert.deepEqual(refs, ['Genesis 1:1', 'Genesis 1:3', 'Genesis 8:11', 'Genesis 9:15', 'Exodus 14:21', 'Exodus 14:14', 'Joshua 6:20', 'Joshua 1:9', '1 Samuel 16:7', 'Psalms 23:1', 'Daniel 6:22', 'Psalms 46:1', 'Jonah 2:10', 'Jonah 3:5', 'Luke 2:11', 'Luke 2:14', 'John 6:9', 'John 6:35', 'Matthew 28:6', 'John 11:25', 'Acts 2:4', 'Acts 2:41', 'Acts 3:6', 'Acts 3:8', 'Acts 9:3', 'Acts 9:18', 'Acts 16:25', 'Acts 16:26', 'Revelation 21:4', 'Revelation 21:5', 'Ruth 1:16', 'Ruth 2:12', '1 Kings 18:38', '1 Kings 18:39', 'Esther 4:14', 'Esther 8:16', 'Luke 19:5', 'Luke 19:10', 'Luke 15:6', 'John 10:11']);
+  assert.equal(new Set(refs).size, 40);
 });
 
 test('goals, moves, pieces and stones are sound, and stars rise', () => {
@@ -81,6 +81,8 @@ test('goals, moves, pieces and stones are sound, and stars rise', () => {
   /* gentle start: the first levels use 5 kinds of pieces and are short */
   assert.equal(LEVELS[0].pieces.length, 5);
   assert.equal(LEVELS[0].goals[0].kind, 'score');
+  /* the new chapters ramp gently: no new level asks for more moves than 30 or fewer than 28 */
+  for (const lv of LEVELS.slice(30)) assert.ok(lv.moves >= 28 && lv.moves <= 30, `level ${lv.n}`);
 });
 
 /* ---------- Board ---------- */
@@ -308,7 +310,7 @@ test('every level can be won, and a careful player wins most tries', () => {
     assert.equal(C.status(g, lv), 'won', `level ${lv.n} with the hint move every time`);
   }
   /* a player who takes the best move half the time and any move otherwise */
-  for (const n of [1, 2, 3, 6, 10, 20, 21, 23, 25, 26, 27, 28, 29, 30]) {
+  for (const n of [1, 2, 3, 6, 10, 20, 21, 23, 25, 26, 27, 28, 29, 30, 31, 33, 35, 37, 39, 40]) {
     const lv = LEVELS[n - 1];
     let wins = 0;
     for (let r = 0; r < 12; r += 1) {
@@ -359,15 +361,15 @@ test('progress: levels open in order, best stars and scores are kept and saved',
   assert.ok(C.KEYS.progress.startsWith('msb_'));
   assert.ok(C.KEYS.sounds.startsWith('msb_'));
   const again = C.progress(s, 20).get();
-  assert.deepEqual(again, { open: 3, stars: { 1: 2, 2: 3 }, best: { 1: 1500, 2: 2000 } });
+  assert.deepEqual(again, { open: 3, stars: { 1: 2, 2: 3 }, best: { 1: 1500, 2: 2000 }, wins: 3 }, 'every win is counted, replays too');
   /* the last level stays the last */
   p.win(20, 1, 10);
   assert.equal(p.get().open, 20);
   /* broken or odd saved data falls back safely */
   s.setItem(C.KEYS.progress, '{bad json');
-  assert.deepEqual(C.progress(s, 20).get(), { open: 1, stars: {}, best: {} });
+  assert.deepEqual(C.progress(s, 20).get(), { open: 1, stars: {}, best: {}, wins: 0 });
   s.setItem(C.KEYS.progress, JSON.stringify({ open: 99, stars: { 1: 7, 2: 3, x: 2 }, best: { 1: -5, 2: 40 } }));
-  assert.deepEqual(C.progress(s, 20).get(), { open: 20, stars: { 2: 3 }, best: { 2: 40 } });
+  assert.deepEqual(C.progress(s, 20).get(), { open: 20, stars: { 2: 3 }, best: { 2: 40 }, wins: 0 });
 });
 
 test('backups include the game progress (msb_ prefix)', () => {

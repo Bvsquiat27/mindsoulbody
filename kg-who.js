@@ -3,7 +3,7 @@
 (() => {
   'use strict';
   const K = window.MsbKidGames; if (!K) return;
-  const { t, esc, lang, name, sound, buzz, prog, award, render, gameHead } = K._helpers;
+  const { t, esc, lang, name, sound, buzz, prog, award, render, gameHead, celebrate } = K._helpers;
   const D = () => window.MsbKidGamesData, C = () => window.MsbKidGamesCore;
   const ROUND = 10, METER = 10;
 
@@ -54,8 +54,11 @@
       if (el.closest('[data-who-next]')) {
         s.k += 1; s.answered = null;
         if (s.k < s.order.length) s.opts = C().choices(D().QUOTES, s.order[s.k]);
-        else prog().finish('who', 'round');
-        sound('tap'); render();
+        else { prog().finish('who', 'round'); sound('win'); celebrate(); }
+        if (s.k < s.order.length) sound('tap');
+        render();
+        /* the round is finished: badges and squishy goals (the chariot needs it) */
+        if (s.k >= s.order.length) award();
         const f = document.querySelector('.kg-who-choice, [data-who-again]'); if (f) f.focus();
         return;
       }
