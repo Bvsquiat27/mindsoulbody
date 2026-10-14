@@ -75,11 +75,6 @@
     bong: () => { tone(330, { f1: 300, dur: 0.6, peak: 0.05 }); tone(660, { dur: 0.4, peak: 0.02 }); },
     hooray: () => { run([523, 659, 784, 1047, 1319, 1568], { dur: 0.24, peak: 0.05, type: 'triangle', step: 0.09 }); noise({ f0: 1500, q: 0.6, dur: 0.9, peak: 0.02, attack: 0.2, delay: 0.3 }); },
     giantfall: () => { tone(110, { f1: 50, dur: 0.7, peak: 0.08 }); noise({ filter: 'lowpass', f0: 380, dur: 0.6, peak: 0.06, delay: 0.25 }); },
-    /* Ark Builder */
-    knock: () => [0, 0.09].forEach(d => { tone(240, { f1: 170, dur: 0.07, peak: 0.06, type: 'triangle', delay: d }); noise({ f0: 700, q: 3, dur: 0.04, peak: 0.025, delay: d }); }),
-    hop: () => { tone(500, { f1: 900, dur: 0.1, peak: 0.035, type: 'triangle' }); tone(650, { f1: 1150, dur: 0.1, peak: 0.03, type: 'triangle', delay: 0.12 }); },
-    thunder: () => { noise({ filter: 'lowpass', f0: 600, f1: 80, dur: 1.4, peak: 0.08, attack: 0.03 }); tone(60, { f1: 40, dur: 1, peak: 0.05 }); },
-    rain: () => noise({ filter: 'highpass', f0: 3000, dur: 1.2, peak: 0.018, attack: 0.3 }),
     rainbow: () => run([784, 988, 1175, 1568, 1976, 2349], { dur: 0.5, peak: 0.035, step: 0.07 }),
     combo: () => run([880, 1175, 1568], { dur: 0.1, peak: 0.04, step: 0.05, type: 'triangle' }),
     /* music stingers: little chords so levels open and close like a real game */
@@ -154,7 +149,8 @@
   const GAMES = [];
   const register = g => { GAMES.push(g); };
   const totals = () => Object.fromEntries(GAMES.map(g => [g.id, g.total ? g.total() : 0]));
-  const badgeDefs = () => C().badgeDefs(totals()).filter(b => GAMES.some(g => g.id === b.game));
+  /* a retired game's badges stay visible to anyone who earned them */
+  const badgeDefs = () => C().badgeDefs(totals()).filter(b => GAMES.some(g => g.id === b.game) || (b.retired && prog().get().badges[b.id]));
 
   const ui = { root: null, game: null, state: null, msg: '' };
   const name = o => (o && typeof o === 'object' ? o[lang()] || o.en : o);

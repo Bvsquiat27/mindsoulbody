@@ -161,7 +161,7 @@ test('play streaks use local calendar days', () => {
   assert.equal(st.get().bestStreak, 3, 'the best streak is remembered');
 });
 
-const KG_ALL = { done: { wordsearch: ['w1', 'w2', 'w3'], order: ['o1', 'o2', 'o3', 'o4'], who: ['round'], verse: ['v1', 'v2', 'v3'], ark: ['a1'], map: ['m1', 'm2'], sling: ['s1', 's2', 's3', 's4'] }, best: { who: 9 }, plays: {}, badges: {} };
+const KG_ALL = { done: { wordsearch: ['w1', 'w2', 'w3'], order: ['o1', 'o2', 'o3', 'o4'], who: ['round'], verse: ['v1', 'v2', 'v3'], map: ['m1', 'm2'], sling: ['s1', 's2', 's3', 's4'] }, best: { who: 9 }, plays: {}, badges: {} };
 
 test('the lamp opens last even when everything is done at once', () => {
   const s = memoryStorage(), st = C.stats(s), p = C.progress(s, SQUISHIES);
@@ -915,7 +915,7 @@ test('game squishies unlock from coloring, Questions, Memory, Manna Match and ea
   s.setItem('msb_kidgames', '{oops');
   assert.equal(pr('scroll').have, 0, 'broken data is safe');
   s.setItem('msb_kidgames', JSON.stringify({ ...KG_ALL, done: { ...KG_ALL.done, map: [] } }));
-  assert.deepEqual([pr('chariot').have, pr('chariot').need, pr('chariot').done], [6, 7, false], 'the chariot needs all seven games');
+  assert.deepEqual([pr('chariot').have, pr('chariot').need, pr('chariot').done], [5, 6, false], 'the chariot needs all six games');
   s.setItem('msb_kidgames', JSON.stringify(KG_ALL));
   const opened = C.checkUnlocks(s, SQUISHIES);
   for (const id of ['lily', 'scroll', 'shofar', 'tablets', 'elephant', 'honeycomb', 'anchor', 'shield', 'chariot']) assert.ok(opened.includes(id), id);
@@ -930,7 +930,7 @@ test('the games report progress to the squishies and show a note', () => {
   assert.match(kg, /New squishy: \{name\}!', '¡Nuevo squishy: \{name\}!'/);
   assert.match(col, /MsbSquishy\.gameProgress\(s\.id\)/);
   assert.ok(i18n.includes('"New squishy: {name}!": "¡Nuevo squishy: {name}!"'));
-  for (const k of ['Color {n} different pages', 'Get {n} in a row in Who Said It?', 'Finish each of the 7 Bible games once', 'Finish {n} Word Search puzzles', 'Put {n} stories in order', 'Load the ark in Ark Builder', 'Build {n} verses in Verse Builder', 'Finish {n} Map Journeys', 'Finish {n} levels of David’s Sling']) assert.ok(i18n.includes(`"${k}":`), k);
+  for (const k of ['Color {n} different pages', 'Get {n} in a row in Who Said It?', 'Finish each of the 6 Bible games once', 'Finish {n} Word Search puzzles', 'Put {n} stories in order', 'Build {n} verses in Verse Builder', 'Finish {n} Map Journeys', 'Finish {n} levels of David’s Sling']) assert.ok(i18n.includes(`"${k}":`), k);
 });
 
 /* ---------- Winning a squishy back after a trade ---------- */
@@ -1034,4 +1034,26 @@ test('the trade screen asks before giving, says it is a gift, and the locked til
   assert.match(ui, /back \? `\$\{L\('Win it back: \{goal\}'/);
   for (const k of ['Give a squishy to a friend', 'Give {name} away?', 'Yes, give it', 'Keep it', 'It leaves your shelf when you make the code. You can win it back by doing its goal again.']) assert.ok(i18n.includes(`"${k}":`), k);
   assert.ok(!ui.includes('Give a friend a copy') && !ui.includes('You keep your squishy too'));
+});
+
+test('trade audit: sent codes can be shown again, starters are not offered, one Spanish word, confirm resets', () => {
+  const T = require('./squishy-trade.js');
+  const ui = read('./squishy.js'), i18n = read('./i18n.js'), tr = read('./squishy-trade.js');
+  /* a code made is always in the sent history */
+  const s = memoryStorage();
+  const code = T.trades(s).create('key', ['key']);
+  assert.deepEqual(T.trades(s).get().sent.map(x => [x.c, x.id]), [[code, 'key']]);
+  assert.match(ui, /function sentHtml\(tr\)/);
+  assert.match(ui, /data-sq-sent="\$\{esc\(x\.c\)\}"/);
+  assert.ok(i18n.includes('"My sent codes": "Mis códigos enviados"'));
+  /* starters never appear in the picker */
+  assert.match(ui, /SQUISHIES\.filter\(x => x\.locked && open\.includes\(x\.id\) && T\.tradable\(x\.id\)\)/);
+  /* the tab is "Cambiar" and the instructions say the same */
+  assert.ok(i18n.includes('"Trade": "Cambiar"'));
+  assert.ok(!/en Intercambio/.test(i18n));
+  assert.ok(i18n.includes('en la pestaña Cambiar'));
+  /* the header no longer promises a copy */
+  assert.ok(!/the giver keeps their squishy/.test(tr));
+  /* changing the pick closes the give-away question */
+  assert.match(ui, /ui\.trade\.pick = tp\.dataset\.sqTradePick; ui\.trade\.confirm = false;/);
 });

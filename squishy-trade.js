@@ -3,7 +3,9 @@
    number, scrambled, then a 2-character keyed checksum. The checksum is a
    weighted sum modulo a prime, so any single mistyped character or any two
    swapped characters are always rejected. Everything stays on this phone:
-   the giver keeps their squishy, the friend who types the code gets a copy. */
+   making a code GIVES the squishy away (it leaves the giver's shelf and can
+   be won back by doing its goal again); the friend who types the code gets
+   it. Every code made is kept in the sent history so it can be shown again. */
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
