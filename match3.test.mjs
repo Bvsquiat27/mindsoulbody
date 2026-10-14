@@ -359,15 +359,15 @@ test('progress: levels open in order, best stars and scores are kept and saved',
   assert.ok(C.KEYS.progress.startsWith('msb_'));
   assert.ok(C.KEYS.sounds.startsWith('msb_'));
   const again = C.progress(s, 20).get();
-  assert.deepEqual(again, { open: 3, stars: { 1: 2, 2: 3 }, best: { 1: 1500, 2: 2000 } });
+  assert.deepEqual(again, { open: 3, stars: { 1: 2, 2: 3 }, best: { 1: 1500, 2: 2000 }, wins: 3 }, 'every win is counted, replays too');
   /* the last level stays the last */
   p.win(20, 1, 10);
   assert.equal(p.get().open, 20);
   /* broken or odd saved data falls back safely */
   s.setItem(C.KEYS.progress, '{bad json');
-  assert.deepEqual(C.progress(s, 20).get(), { open: 1, stars: {}, best: {} });
+  assert.deepEqual(C.progress(s, 20).get(), { open: 1, stars: {}, best: {}, wins: 0 });
   s.setItem(C.KEYS.progress, JSON.stringify({ open: 99, stars: { 1: 7, 2: 3, x: 2 }, best: { 1: -5, 2: 40 } }));
-  assert.deepEqual(C.progress(s, 20).get(), { open: 20, stars: { 2: 3 }, best: { 2: 40 } });
+  assert.deepEqual(C.progress(s, 20).get(), { open: 20, stars: { 2: 3 }, best: { 2: 40 }, wins: 0 });
 });
 
 test('backups include the game progress (msb_ prefix)', () => {

@@ -4,7 +4,7 @@
 (() => {
   'use strict';
   const K = window.MsbKidGames; if (!K) return;
-  const { t, esc, lang, name, sound, buzz, prog, award, render, verseHtml, gameHead, reduced } = K._helpers;
+  const { t, esc, lang, name, sound, buzz, prog, award, render, verseHtml, gameHead, reduced, celebrate } = K._helpers;
   const D = () => window.MsbKidGamesData, C = () => window.MsbKidGamesCore;
   const maps = () => D().MAPS;
 
@@ -83,7 +83,7 @@
       }
       if (el.closest('[data-mp-go]')) {
         const m = maps()[s.at];
-        if (s.stop + 1 >= m.stops.length) { s.done = true; prog().finish('map', m.id); prog().best(`map:${m.id}`, C().stars(s.mistakes)); sound('win'); buzz([20, 40, 30]); render(); award(); window.scrollTo({ top: 0, behavior: 'auto' }); return; }
+        if (s.stop + 1 >= m.stops.length) { s.done = true; prog().finish('map', m.id); prog().best(`map:${m.id}`, C().stars(s.mistakes)); sound('win'); celebrate(); buzz([20, 40, 30]); render(); award(); window.scrollTo({ top: 0, behavior: 'auto' }); return; }
         s.from = s.stop; s.stop += 1; s.answered = false; s.wrong = []; s.opts = C().stopChoices(m.stops[s.stop], lang());
         sound('whoosh'); buzz(10); render();
         const map = document.querySelector('.kg-map-wrap'); if (map) map.scrollIntoView({ block: 'start', behavior: reduced() ? 'auto' : 'smooth' });
