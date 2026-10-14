@@ -9,200 +9,6 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
   return {
- "ARK": {
-  "animals": {
-   "lion": "🦁",
-   "elephant": "🐘",
-   "giraffe": "🦒",
-   "sheep": "🐑",
-   "cow": "🐄",
-   "horse": "🐎",
-   "camel": "🐪",
-   "rabbit": "🐇",
-   "turtle": "🐢",
-   "fox": "🦊",
-   "bear": "🐻",
-   "monkey": "🐒",
-   "rooster": "🐓",
-   "owl": "🦉",
-   "zebra": "🦓",
-   "pig": "🐖"
-  },
-  "names": {
-   "lion": {
-    "en": "lions",
-    "es": "leones"
-   },
-   "elephant": {
-    "en": "elephants",
-    "es": "elefantes"
-   },
-   "giraffe": {
-    "en": "giraffes",
-    "es": "jirafas"
-   },
-   "sheep": {
-    "en": "sheep",
-    "es": "ovejas"
-   },
-   "cow": {
-    "en": "cows",
-    "es": "vacas"
-   },
-   "horse": {
-    "en": "horses",
-    "es": "caballos"
-   },
-   "camel": {
-    "en": "camels",
-    "es": "camellos"
-   },
-   "rabbit": {
-    "en": "rabbits",
-    "es": "conejos"
-   },
-   "turtle": {
-    "en": "turtles",
-    "es": "tortugas"
-   },
-   "fox": {
-    "en": "foxes",
-    "es": "zorros"
-   },
-   "bear": {
-    "en": "bears",
-    "es": "osos"
-   },
-   "monkey": {
-    "en": "monkeys",
-    "es": "monos"
-   },
-   "rooster": {
-    "en": "roosters",
-    "es": "gallos"
-   },
-   "owl": {
-    "en": "owls",
-    "es": "búhos"
-   },
-   "zebra": {
-    "en": "zebras",
-    "es": "cebras"
-   },
-   "pig": {
-    "en": "pigs",
-    "es": "cerdos"
-   }
-  },
-  "levels": [
-   {
-    "id": "ark1",
-    "pairs": [
-     "lion",
-     "elephant",
-     "giraffe",
-     "sheep"
-    ],
-    "seconds": 50,
-    "verse": {
-     "at": {
-      "en": [
-       1,
-       7,
-       9
-      ],
-      "es": [
-       1,
-       7,
-       9
-      ]
-     },
-     "text": {
-      "en": "there went in two and two unto Noah into the ark, the male and the female, as God had commanded Noah.",
-      "es": "De dos en dos entraron á Noé en el arca: macho y hembra, como mandó Dios á Noé."
-     },
-     "ref": {
-      "en": "Genesis 7:9",
-      "es": "Génesis 7:9"
-     }
-    }
-   },
-   {
-    "id": "ark2",
-    "pairs": [
-     "cow",
-     "horse",
-     "camel",
-     "rabbit",
-     "turtle",
-     "fox"
-    ],
-    "seconds": 60,
-    "verse": {
-     "at": {
-      "en": [
-       1,
-       6,
-       22
-      ],
-      "es": [
-       1,
-       6,
-       22
-      ]
-     },
-     "text": {
-      "en": "Thus did Noah; according to all that God commanded him, so did he.",
-      "es": "E hízolo así Noé; hizo conforme á todo lo que Dios le mandó."
-     },
-     "ref": {
-      "en": "Genesis 6:22",
-      "es": "Génesis 6:22"
-     }
-    }
-   },
-   {
-    "id": "ark3",
-    "pairs": [
-     "bear",
-     "monkey",
-     "rooster",
-     "owl",
-     "zebra",
-     "pig",
-     "horse",
-     "sheep"
-    ],
-    "seconds": 70,
-    "verse": {
-     "at": {
-      "en": [
-       1,
-       9,
-       13
-      ],
-      "es": [
-       1,
-       9,
-       13
-      ]
-     },
-     "text": {
-      "en": "I do set my bow in the cloud, and it shall be for a token of a covenant between me and the earth.",
-      "es": "Mi arco pondré en las nubes, el cual será por señal de convenio entre mí y la tierra."
-     },
-     "ref": {
-      "en": "Genesis 9:13",
-      "es": "Génesis 9:13"
-     }
-    }
-   }
-  ],
-  "lesson": {
-   "en": "God told Noah to build the ark and bring the animals in, two by two. Noah did not argue or wait. He obeyed, step by step, and God kept everyone in the ark safe. When we listen to God and do what He says, even when it is hard, we can trust Him to take care of us.",
-   "es": "Dios le dijo a Noé que construyera el arca y metiera a los animales de dos en dos. Noé no discutió ni esperó. Obedeció paso a paso, y Dios cuidó a todos los que estaban en el arca. Cuando escuchamos a Dios y hacemos lo que nos dice, aunque sea difícil, podemos confiar en que él nos cuida."
-  }
- },
  "MAPS": [
   {
    "id": "exodus",
@@ -1493,24 +1299,24 @@
     "es": "1 Samuel 17:40"
    }
   },
+  "lesson": {
+   "en": "David was only a shepherd boy, and Goliath was a giant. But David was not afraid, because he trusted God. Courage is not having no fear; it is trusting God and doing what is right even when you feel small.",
+   "es": "David era solo un pastorcito, y Goliat era un gigante. Pero David no tuvo miedo, porque confiaba en Dios. Ser valiente no es no sentir miedo; es confiar en Dios y hacer lo correcto aunque te sientas pequeño."
+  },
   "levels": [
    {
-    "id": "s1",
-    "targets": [
-     {
-      "x": 300,
-      "y": 200,
-      "r": 18,
-      "kind": "jar"
-     },
-     {
-      "x": 340,
-      "y": 150,
-      "r": 18,
-      "kind": "jar"
-     }
+    "id": "z1",
+    "path": "valley",
+    "speed": 18,
+    "colors": 3,
+    "count": 26,
+    "powers": [
+     "slow"
     ],
-    "rocks": [],
+    "title": {
+     "en": "The brook valley",
+     "es": "El valle del arroyo"
+    },
     "verse": {
      "at": {
       "en": [
@@ -1535,35 +1341,19 @@
     }
    },
    {
-    "id": "s2",
-    "targets": [
-     {
-      "x": 270,
-      "y": 120,
-      "r": 16,
-      "kind": "jar"
-     },
-     {
-      "x": 330,
-      "y": 210,
-      "r": 16,
-      "kind": "jar"
-     },
-     {
-      "x": 360,
-      "y": 90,
-      "r": 16,
-      "kind": "jar"
-     }
+    "id": "z2",
+    "path": "brook",
+    "speed": 22,
+    "colors": 4,
+    "count": 32,
+    "powers": [
+     "slow",
+     "bomb"
     ],
-    "rocks": [
-     {
-      "x": 210,
-      "y": 200,
-      "w": 22,
-      "h": 90
-     }
-    ],
+    "title": {
+     "en": "Along the brook",
+     "es": "A lo largo del arroyo"
+    },
     "verse": {
      "at": {
       "en": [
@@ -1588,35 +1378,57 @@
     }
    },
    {
-    "id": "s3",
-    "targets": [
-     {
-      "x": 250,
-      "y": 80,
-      "r": 15,
-      "kind": "shield"
-     },
-     {
-      "x": 320,
-      "y": 160,
-      "r": 15,
-      "kind": "spear"
-     },
-     {
-      "x": 370,
-      "y": 230,
-      "r": 15,
-      "kind": "shield"
-     }
+    "id": "z3",
+    "path": "spiral",
+    "speed": 25,
+    "colors": 4,
+    "count": 38,
+    "powers": [
+     "reverse",
+     "bomb"
     ],
-    "rocks": [
-     {
-      "x": 200,
-      "y": 140,
-      "w": 20,
-      "h": 150
+    "title": {
+     "en": "The battle line",
+     "es": "La línea de batalla"
+    },
+    "verse": {
+     "at": {
+      "en": [
+       5,
+       31,
+       6
+      ],
+      "es": [
+       5,
+       31,
+       6
+      ]
+     },
+     "text": {
+      "en": "Be strong and of a good courage, fear not, nor be afraid of them: for the LORD thy God, he it is that doth go with thee; he will not fail thee, nor forsake thee.",
+      "es": "Esforzaos y cobrad ánimo; no temáis, ni tengáis miedo de ellos: que Jehová tu Dios es el que va contigo: no te dejará ni te desamparará."
+     },
+     "ref": {
+      "en": "Deuteronomy 31:6",
+      "es": "Deuteronomio 31:6"
      }
+    }
+   },
+   {
+    "id": "z4",
+    "path": "hills",
+    "speed": 29,
+    "colors": 5,
+    "count": 42,
+    "powers": [
+     "slow",
+     "reverse",
+     "bomb"
     ],
+    "title": {
+     "en": "The hills of Elah",
+     "es": "Las colinas de Ela"
+    },
     "verse": {
      "at": {
       "en": [
@@ -1641,69 +1453,45 @@
     }
    },
    {
-    "id": "s4",
-    "targets": [
-     {
-      "x": 352,
-      "y": 74,
-      "r": 14,
-      "kind": "helmet"
-     },
-     {
-      "x": 290,
-      "y": 200,
-      "r": 14,
-      "kind": "shield"
-     },
-     {
-      "x": 340,
-      "y": 150,
-      "r": 14,
-      "kind": "spear"
-     }
+    "id": "z5",
+    "path": "camp",
+    "speed": 33,
+    "colors": 5,
+    "count": 48,
+    "powers": [
+     "slow",
+     "reverse",
+     "bomb",
+     "bomb"
     ],
-    "rocks": [
-     {
-      "x": 230,
-      "y": 110,
-      "w": 20,
-      "h": 70
-     },
-     {
-      "x": 180,
-      "y": 220,
-      "w": 40,
-      "h": 70
-     }
-    ],
+    "title": {
+     "en": "The giant’s camp",
+     "es": "El campamento del gigante"
+    },
     "verse": {
      "at": {
       "en": [
        9,
        17,
-       45
+       47
       ],
       "es": [
        9,
        17,
-       45
+       47
       ]
      },
      "text": {
-      "en": "Then said David to the Philistine, Thou comest to me with a sword, and with a spear, and with a shield: but I come to thee in the name of the LORD of hosts, the God of the armies of Israel, whom thou hast defied.",
-      "es": "Entonces dijo David al Filisteo: Tú vienes á mí con espada y lanza y escudo; mas yo vengo á ti en el nombre de Jehová de los ejércitos, el Dios de los escuadrones de Israel, que tú has provocado."
+      "en": "And all this assembly shall know that the LORD saveth not with sword and spear: for the battle is the LORD's, and he will give you into our hands.",
+      "es": "Y sabrá toda esta congregación que Jehová no salva con espada y lanza; porque de Jehová es la guerra, y él os entregará en nuestras manos."
      },
      "ref": {
-      "en": "1 Samuel 17:45",
-      "es": "1 Samuel 17:45"
+      "en": "1 Samuel 17:47",
+      "es": "1 Samuel 17:47"
      }
     }
    }
-  ],
-  "lesson": {
-   "en": "David was only a shepherd boy, and Goliath was a giant. But David was not afraid, because he trusted God. Courage is not having no fear; it is trusting God and doing what is right even when you feel small.",
-   "es": "David era solo un pastorcito, y Goliat era un gigante. Pero David no tuvo miedo, porque confiaba en Dios. Ser valiente no es no sentir miedo; es confiar en Dios y hacer lo correcto aunque te sientas pequeño."
-  }
+  ]
  },
  "VERSES": [
   {

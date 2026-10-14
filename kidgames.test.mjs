@@ -97,7 +97,7 @@ test('progress lives in one msb_ key that Export/Restore covers; badges get a da
 
 test('games are wired in, precached, in Spanish, and follow sound, vibration and reduced-motion settings', () => {
   const html = read('./index.html'), sw = read('./sw.js'), stories = read('./stories.js'), ui = read('./kidgames.js');
-  const files = ['kidgames-data.js', 'kidgames-core.js', 'kidgames.js', 'kg-wordsearch.js', 'kg-order.js', 'kg-who.js', 'kg-verse.js', 'kg-ark.js', 'kg-map.js', 'kg-sling.js'];
+  const files = ['kidgames-data.js', 'kidgames-core.js', 'kidgames.js', 'kg-wordsearch.js', 'kg-order.js', 'kg-who.js', 'kg-verse.js', 'kg-map.js', 'kg-sling.js'];
   for (const f of files) { assert.ok(html.includes(`<script src="${f}" defer></script>`), f); assert.ok(sw.includes(`'./${f}'`), f); }
   assert.ok(html.indexOf('kg-sling.js') < html.indexOf('stories.js'));
   assert.match(stories, /data-kg-enter/); assert.match(stories, /data-kg-exit/); assert.match(stories, /MsbKidGames\.close\(\)/);
@@ -108,7 +108,7 @@ test('games are wired in, precached, in Spanish, and follow sound, vibration and
   assert.match(html, /<link rel="stylesheet" href="kidgames.css">/); assert.ok(sw.includes("'./kidgames.css'"));
   assert.match(css, /prefers-reduced-motion:reduce\)\{\.kg-screen/);
   assert.match(css, /\.kg-ws-grid\{[^}]*touch-action:none/);
-  for (const f of ['kg-wordsearch.js', 'kg-order.js', 'kg-who.js', 'kg-verse.js', 'kg-ark.js', 'kg-map.js', 'kg-sling.js']) {
+  for (const f of ['kg-wordsearch.js', 'kg-order.js', 'kg-who.js', 'kg-verse.js', 'kg-map.js', 'kg-sling.js']) {
     const src = read(`./${f}`);
     const pairs = [...src.matchAll(/t\('((?:[^'\\]|\\.)*)', '((?:[^'\\]|\\.)*)'/g)];
     assert.ok(pairs.length > 8, f);
@@ -138,21 +138,6 @@ test('verse builder: verses split into words in order; the next word always fall
   assert.match(read('./kg-verse.js'), /const changed = added \|\|/, 'new falling words are drawn as soon as they spawn');
 });
 
-test('ark builder: each level is pairs of known animals with EN/ES names, a timer, and an obedience lesson', () => {
-  for (const lv of D.ARK.levels) {
-    assert.equal(new Set(lv.pairs).size, lv.pairs.length);
-    for (const a of lv.pairs) { assert.ok(D.ARK.animals[a], a); assert.ok(D.ARK.names[a].en && D.ARK.names[a].es, a); }
-    const deck = C.arkDeck(lv.pairs, C.rng(1));
-    assert.equal(deck.length, lv.pairs.length * 2);
-    for (const a of lv.pairs) assert.equal(deck.filter(x => x === a).length, 2);
-    assert.ok(lv.seconds >= 45);
-  }
-  assert.ok(D.ARK.lesson.en.includes('obey') && /obedec/i.test(D.ARK.lesson.es));
-  assert.deepEqual([C.arkStars(30, 60), C.arkStars(15, 60), C.arkStars(5, 60)], [3, 2, 1]);
-  const ark = read('./kg-ark.js');
-  assert.match(ark, /document\.hidden/, 'timer pauses when hidden'); assert.match(ark, /role="timer"/);
-});
-
 test('map journey: two routes, each stop on the map with an EN/ES question, 3 choices and a verse', () => {
   assert.deepEqual(D.MAPS.map(m => m.id), ['exodus', 'paul']);
   for (const m of D.MAPS) {
@@ -167,25 +152,50 @@ test('map journey: two routes, each stop on the map with an EN/ES question, 3 ch
   assert.match(read('./kg-map.js'), /reduced\(\)/);
 });
 
-test('david\u2019s sling: five stones; every target can be hit with some aim; rocks block; stars by stones left', () => {
-  for (const lv of D.SLING.levels) {
-    for (const tg of lv.targets) {
-      let hit = false;
-      for (let a = -10; a <= 80 && !hit; a += 2) for (let p = 0.2; p <= 1 && !hit; p += 0.04) {
-        const st = C.slingAim(a, p), T = lv.targets.map(x => ({ ...x }));
-        for (let i = 0; i < 900 && st.alive; i += 1) C.slingStep(st, 1 / 120, T, lv.rocks);
-        hit = T.find(x => x.x === tg.x && x.y === tg.y).down;
-      }
-      assert.ok(hit, `${lv.id} target at ${tg.x},${tg.y} is reachable`);
-    }
+test('david\u2019s sling: a stone chain rolls toward Goliath; match 3 pops and pulls back; powers; stars', () => {
+  const lvls = D.SLING.levels; assert.equal(lvls.length, 5);
+  let prev = 0;
+  for (const lv of lvls) {
+    assert.ok(lv.speed > prev, 'levels speed up'); prev = lv.speed;
+    assert.ok(lv.title.en && lv.title.es && lv.verse, lv.id);
+    const path = C.zumaPath(lv.path);
+    assert.ok(path.len > 600, lv.id);
+    const min = Math.min(...path.pts.map(p => Math.hypot(p[0] - path.david.x, p[1] - path.david.y)));
+    assert.ok(min > 60, `${lv.id}: the path stays clear of David`);
+    for (const [x, y] of path.pts) assert.ok(x >= -60 && x <= 420 && y >= 0 && y <= 480, `${lv.id} near the field`);
+    assert.ok(path.goliath.x > 0 && path.goliath.x < 360, `${lv.id}: Goliath stands in the field`);
+    const z = C.zumaStart(lv, C.rng(3));
+    assert.equal(z.balls.length, lv.count);
+    for (let i = 2; i < z.balls.length; i += 1) assert.ok(!(z.balls[i].c === z.balls[i - 1].c && z.balls[i].c === z.balls[i - 2].c), 'no ready-made triples');
+    assert.equal(z.balls.filter(b => b.p).length, lv.powers.length);
   }
-  const st = C.slingShot(-40, 0); C.slingStep(st, 0.5, [], [{ x: 70, y: 0, w: 20, h: 300 }]);
-  assert.equal(st.alive, false, 'a rock stops the stone');
-  const flat = C.slingShot(-1000, 0); assert.ok(Math.abs(flat.vx - C.SLING.maxPull * C.SLING.power) < 1e-9, 'pull is capped');
-  assert.deepEqual([C.slingStars(3), C.slingStars(1), C.slingStars(0)], [3, 2, 1]);
+  /* resolve: three of a kind pop and the chain closes up */
+  const mk = (cs, head = 500) => ({ balls: cs.map((c, id) => ({ c, p: null, id })), head, speed: 20, slowT: 0, revT: 0, maxFrac: 0, nextId: 99, started: true, lost: false, cleared: false });
+  let z = mk([1, 2, 2, 2, 3, 3, 1]);
+  let ev = C.zumaResolve(z, 2);
+  assert.equal(ev[0].count, 3); assert.deepEqual(z.balls.map(b => b.c), [1, 3, 3, 1]); assert.equal(z.head, 500 - 3 * C.ZUMA.D, 'the front pulls back');
+  /* chain reaction: the gap closes on two runs that pop too */
+  z = mk([1, 1, 2, 2, 2, 1, 4]);
+  ev = C.zumaResolve(z, 3);
+  assert.equal(ev.length, 2); assert.equal(ev[1].combo, 2); assert.deepEqual(z.balls.map(b => b.c), [4]);
+  z = mk([2, 2, 2]); C.zumaResolve(z, 1); assert.ok(z.cleared);
+  /* insert pushes the front forward one stone */
+  const path = C.zumaPath(lvls[0].path); z = mk([0, 1, 0], 300);
+  const k = C.zumaInsert(z, path, 1, { c: 1 }, path.at(300 - C.ZUMA.D).x, path.at(300 - C.ZUMA.D).y);
+  assert.equal(z.balls.length, 4); assert.equal(z.balls[k].c, 1); assert.equal(z.head, 300 + C.ZUMA.D);
+  /* bomb takes two on each side; slow and reverse change the rolling */
+  z = mk([0, 1, 2, 2, 2, 3, 4, 0]); z.balls[3].p = 'bomb'; ev = C.zumaResolve(z, 3);
+  assert.equal(ev[0].count, 7);
+  z = mk([5, 5, 5, 0]); z.balls[1].p = 'slow'; C.zumaResolve(z, 1); assert.ok(z.slowT > 0);
+  z = mk([5, 5, 5, 0]); z.balls[1].p = 'reverse'; C.zumaResolve(z, 1); assert.ok(z.revT > 0);
+  const roll = p => { const q = mk([0, 1, 0, 1, 0, 1, 0, 1], 400); if (p) q[p] = 2; C.zumaStep(q, 0.5, path); return q.head - 400; };
+  assert.ok(roll('slowT') < roll(null) && roll(null) > 0 && roll('revT') < 0);
+  const lost = mk([0], path.len - 1); C.zumaStep(lost, 1, path); assert.ok(lost.lost, 'the chain reaching Goliath loses');
+  assert.deepEqual([C.zumaStars(0.3), C.zumaStars(0.7), C.zumaStars(0.95)], [3, 2, 1]);
+  assert.equal(typeof C.zumaPos, 'function'); assert.equal(typeof C.zumaHit, 'function');
   const ui = read('./kg-sling.js');
-  assert.match(ui, /data-sl-throw/, 'buttons can throw without dragging'); assert.match(ui, /type="range"/);
-  assert.equal(D.SLING.intro.text.en.includes('five smooth stones'), true);
+  for (const k of ['data-sl-swap', 'data-sl-canvas', 'data-zm-danger', "'fall'", "'angry'", "'hit'", 'buzz(']) assert.ok(ui.includes(k), k);
+  assert.doesNotMatch(ui, /Giant Slayer/i);
 });
 
 test('Bible squishies and Manna Match live in the Bible games hub, not as separate Stories cards', () => {
@@ -205,8 +215,8 @@ test('Bible squishies and Manna Match live in the Bible games hub, not as separa
   assert.ok(i18n.includes('"← Bible games": "← Juegos bíblicos"'));
 });
 
-test('second polish pass: map stories, stamps, coach, level cards, scaled ark windows, clean sling restarts', () => {
-  const map = read('./kg-map.js'), ark = read('./kg-ark.js'), sling = read('./kg-sling.js'), kg = read('./kidgames.js'), css = read('./kidgames.css');
+test('second polish pass: map stories, stamps, coach, level cards, clean sling restarts', () => {
+  const map = read('./kg-map.js'), sling = read('./kg-sling.js'), kg = read('./kidgames.js'), css = read('./kidgames.css');
   /* every stop of both journeys has a story in EN and ES, a stamp and a weather */
   const block = map.slice(map.indexOf('const STORY'), map.indexOf('const storyOf'));
   for (const id of ['exodus', 'paul']) {
@@ -218,15 +228,12 @@ test('second polish pass: map stories, stamps, coach, level cards, scaled ark wi
   }
   assert.match(map, /STAMP_KEY = 'msb_kg_map_stamps'/, 'stamps are covered by Export/Restore');
   assert.match(kg, /COACH_KEY = 'msb_kg_coach'/, 'the tutorial memory is covered by Export/Restore');
-  for (const src of [map, ark, sling]) { assert.match(src, /coach\('/); assert.match(src, /levelCard\(/); assert.match(src, /starPings\(/); assert.match(src, /sound\('start'\)/); }
-  /* Ark: one window per pair (level 3 has 8) */
-  assert.match(ark, /Array\.from\(\{ length: pairs \}/);
-  assert.ok(Math.max(...D.ARK.levels.map(l => l.pairs.length)) <= 8);
+  for (const src of [map, sling]) { assert.match(src, /coach\('/); assert.match(src, /levelCard\(/); assert.match(src, /starPings\(/); assert.match(src, /sound\('start'\)/); }
   /* Sling: a new level or a replay stands Goliath back up and clears the effects */
-  for (const k of ['fall: 0', 'parts: []', 'shake: 0', 'trail: []']) assert.ok(sling.includes(k), k);
+  for (const k of ['parts: []', 'shake: 0', 'texts: []']) assert.ok(sling.includes(k), k);
   /* reduced motion is respected by the new effects */
   assert.match(css, /prefers-reduced-motion:reduce\)\{\.kg-coach/);
-  assert.match(css, /prefers-reduced-motion:reduce\)\{\.kg-ark-far/);
+  assert.match(css, /prefers-reduced-motion:reduce\)\{\.zm-danger/);
   assert.match(map, /if \(!tr \|\| reduced\(\)\) return;/);
-  assert.match(sling, /s\.freeze = reduced\(\) \? 0/);
+  assert.match(sling, /reduced\(\)/);
 });
