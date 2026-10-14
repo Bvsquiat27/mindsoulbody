@@ -67,11 +67,14 @@ test('the seven newer stories have painted art, both languages and a checked ver
 });
 
 test('repainted covers use one -v2 list everywhere and the old files are gone', () => {
-  for (const f of ['stories.js', 'bible-reader.js', 'sw.js', 'kg-order.js']) {
+  for (const f of ['stories.js', 'bible-reader.js', 'sw.js']) {
     const m = readFileSync(f, 'utf8').match(/const STORY_ART_V2 = (\[[^\]]+\])/);
     assert.ok(m, f);
     assert.deepEqual(JSON.parse(m[1].replace(/'/g, '"')), V2, f);
   }
+  const order = readFileSync('kg-order.js', 'utf8');
+  assert.doesNotMatch(order, /STORY_ART_V2/, 'kg-order uses the shared list');
+  assert.match(order, /MsbStories\.cover\(id\)/);
   for (const id of V2) {
     assert.ok(existsSync(`img/stories/${id}-v2.webp`) && existsSync(`img/stories/${id}-v2-512.webp`), id);
     assert.ok(!existsSync(`img/stories/${id}.webp`) && !existsSync(`img/stories/${id}-512.webp`), `${id} old art removed`);
