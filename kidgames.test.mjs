@@ -187,3 +187,20 @@ test('david\u2019s sling: five stones; every target can be hit with some aim; ro
   assert.match(ui, /data-sl-throw/, 'buttons can throw without dragging'); assert.match(ui, /type="range"/);
   assert.equal(D.SLING.intro.text.en.includes('five smooth stones'), true);
 });
+
+test('Bible squishies and Manna Match live in the Bible games hub, not as separate Stories cards', () => {
+  const stories = readFileSync(new URL('./stories.js', import.meta.url), 'utf8');
+  const kg = readFileSync(new URL('./kidgames.js', import.meta.url), 'utf8');
+  const i18n = readFileSync(new URL('./i18n.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(stories, /class="card squishy-entry" type="button" data-squishy-open/);
+  assert.doesNotMatch(stories, /data-match-open><span class="squishy-entry-art"/);
+  assert.match(kg, /class="card kg-tile kg-tile-art" data-squishy-open>/);
+  assert.match(kg, /class="card kg-tile kg-tile-art" data-match-open>/);
+  assert.match(kg, /<div class="kg-tiles">\$\{extra\}\$\{tiles\}<\/div>/);
+  /* the old openers still work, leave the hub, and their back buttons return to it */
+  assert.match(stories, /closest\('\[data-squishy-open\]'\)[\s\S]{0,120}squishyOn = true;\s*kidGamesOn = false;/);
+  assert.match(stories, /closest\('\[data-match-open\]'\)[\s\S]{0,120}matchOn = true;\s*kidGamesOn = false;/);
+  assert.equal((stories.match(/kidGamesOn = !!window\.MsbKidGames;/g) || []).length, 2);
+  for (const f of ['squishy.js', 'match3.js']) assert.match(readFileSync(new URL(`./${f}`, import.meta.url), 'utf8'), /L\('← Bible games'\)/, f);
+  assert.ok(i18n.includes('"← Bible games": "← Juegos bíblicos"'));
+});

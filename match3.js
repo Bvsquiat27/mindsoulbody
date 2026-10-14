@@ -160,7 +160,7 @@
     const H = y + 8;
     const done = pts.slice(0, Math.max(1, p.open));
     const path = list => list.map(([px, py], i) => `${i ? 'L' : 'M'}${px} ${py}`).join(' ');
-    return `${header(`<button class="text-button back" type="button" data-match-exit>${esc(L('← Stories'))}</button>`)}
+    return `${header(`<button class="text-button back" type="button" data-match-exit>${esc(L('← Bible games'))}</button>`)}
       <div class="m3-topbar"><span class="m3-chip" aria-label="${esc(L('Stars: {n} of {total}', { n: starsNow, total: total * 3 }))}">⭐ ${starsNow}/${total * 3}</span>${soundButton()}</div>
       <p class="m3-hint-text">${esc(L('Swap two pictures side by side to make a line of 3 or more. Every level has a Bible lesson!'))}</p>
       ${ui.msg ? `<p class="m3-msg" role="status">${esc(ui.msg)}</p>` : ''}
