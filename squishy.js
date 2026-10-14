@@ -328,6 +328,8 @@
       sound: () => { [0, 0.9, 1.7].forEach(d => noise({ filter: 'lowpass', f0: 700, f1: 60, dur: 0.9, peak: 0.08, delay: d })); [0.7, 1.1, 1.5, 1.9, 2.3].forEach(d => voice({ type: 'square', f0: 1800, f1: 900, dur: 0.06, peak: 0.015, delay: d })); }, buzz: [80, 120, 60, 200, 80] },
     bush: { text: 'I AM THAT I AM', story: 'The bush burned with fire but was not burnt up, and God said to Moses: I AM THAT I AM (Exodus 3).',
       sound: () => { SQUISH.crackle(1); [196, 262, 330, 392].forEach(f => voice({ type: 'triangle', f0: f, dur: 2.6, peak: 0.024, attack: 0.6, delay: 0.5 })); }, buzz: [15, 30, 15, 30, 15, 30, 60] },
+    shield: { text: 'The battle is the LORD’s', story: 'David put a stone in his sling and slung it; the stone struck Goliath in the forehead, and he fell upon his face to the earth (1 Samuel 17:49).',
+      sound: () => { noise({ filter: 'bandpass', f0: 500, f1: 1400, dur: 1.2, peak: 0.03, attack: 0.2 }); voice({ type: 'triangle', f0: 1200, f1: 400, dur: 0.5, peak: 0.03, delay: 1.8 }); noise({ filter: 'lowpass', f0: 300, f1: 60, dur: 1, peak: 0.09, delay: 3 }); setTimeout(() => notes([392, 523, 659, 784], { type: 'triangle', dur: 0.6, peak: 0.03, step: 0.2 }), 3300); }, buzz: [10, 20, 10, 20, 10, 300, 120] },
     lamp: { text: 'The light of the world', story: 'Jesus said: I am the light of the world; whoever follows me will not walk in darkness (John 8:12).',
       sound: () => { crunch(1, true); setTimeout(() => [523, 659, 784, 1047, 1568].forEach(f => voice({ type: 'sine', f0: f, dur: 2.2, peak: 0.02, attack: 0.4 })), 400); }, buzz: [10, 30, 10, 30, 40, 30, 80] },
   };

@@ -123,7 +123,7 @@
       ${rulesHtml()}
     </div>`;
   }
-  const rulesHtml = () => `<p class="small muted sr-rules">${esc(T('A legendary (burning bush, empty tomb, chariot, tablets) needs at least 5 squishies back. The lamp is never traded. Changing the board clears both ✓. A squishy you trade away can be won back by playing.', 'Un legendario (zarza ardiente, tumba vacía, carro, tablas) pide al menos 5 squishies a cambio. La lámpara nunca se cambia. Cambiar el tablero borra los dos ✓. Un squishy que cambias se puede volver a ganar jugando.'))}</p>`;
+  const rulesHtml = () => `<p class="small muted sr-rules">${esc(T('A legendary (burning bush, empty tomb, chariot, tablets, shield of faith) needs at least 5 squishies back. The lamp is never traded. Changing the board clears both ✓. A squishy you trade away can be won back by playing.', 'Un legendario (zarza ardiente, tumba vacía, carro, tablas, escudo de la fe) pide al menos 5 squishies a cambio. La lámpara nunca se cambia. Cambiar el tablero borra los dos ✓. Un squishy que cambias se puede volver a ganar jugando.'))}</p>`;
   const backBtn = () => (ui.opts && ui.opts.onBack ? `<button class="text-button back" type="button" data-sr-back>${esc(ui.opts.backLabel || T('← Friends', '← Amigos'))}</button>` : '');
 
   /* ---------- the lobby: the board right away, pick any friend, send ---------- */

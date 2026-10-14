@@ -1297,6 +1297,8 @@
     "play {n} more rounds of Story Order or Manna Match": "juega {n} rondas más de Ordena la historia o Combina el maná",
     "Trick": "Truco",
     "Up to heaven!": "¡Al cielo!",
+    "The battle is the LORD’s": "De Jehová es la guerra",
+    "David put a stone in his sling and slung it; the stone struck Goliath in the forehead, and he fell upon his face to the earth (1 Samuel 17:49).": "David puso una piedra en su honda y la tiró; la piedra hirió a Goliat en la frente, y cayó sobre su rostro en tierra (1 Samuel 17:49).",
     "Elijah went up by a whirlwind into heaven, with a chariot of fire and horses of fire (2 Kings 2:11).": "Elías subió al cielo en un torbellino, con un carro de fuego y caballos de fuego (2 Reyes 2:11).",
     "He is risen!": "¡Ha resucitado!",
     "The stone was rolled away. Jesus is not here; He is risen! (Matthew 28:6)": "La piedra fue removida. Jesús no está aquí; ¡ha resucitado! (Mateo 28:6)",

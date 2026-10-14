@@ -299,7 +299,8 @@
     { id: 'elephant', kind: 'kgDone', game: 'map', n: 1, tier: 'common' },
     { id: 'honeycomb', kind: 'kgDone', game: 'verse', n: 3, tier: 'rare' },
     { id: 'anchor', kind: 'kgDone', game: 'map', n: 2, tier: 'rare' },
-    { id: 'shield', kind: 'kgDone', game: 'sling', n: 4, tier: 'rare' },
+    /* legendary: beating David's Sling levels is hard */
+    { id: 'shield', kind: 'kgDone', game: 'sling', n: 4, tier: 'legendary' },
     { id: 'chariot', kind: 'kgAll', n: 6, tier: 'legendary' },
     { id: 'lamp', kind: 'final', n: 0, tier: 'legendary' }
   ];

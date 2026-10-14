@@ -169,6 +169,53 @@
       } }
   
   };
+  /* Squishy-style drawing for story tricks: the same plum ink outline, pastel
+     fills, glossy shine, shiny eyes and blush as squishy-art.js. */
+  const SQ_INK = '#5b4660', SQ_EYE = '#3d2c3e';
+  function sqShape(g, path, fill, lw) { g.save(); g.lineJoin = 'round'; g.beginPath(); path(); g.strokeStyle = SQ_INK; g.lineWidth = lw; g.stroke(); g.fillStyle = fill; g.fill(); g.restore(); }
+  function sqShine(g, x, y, rx, ry) { g.save(); g.globalAlpha *= 0.55; g.fillStyle = '#fff'; g.beginPath(); g.ellipse(x, y, rx, ry, -0.44, 0, Math.PI * 2); g.fill(); g.restore(); }
+  function sqFace(g, x, y, k, look) {
+    g.save(); g.translate(x, y); g.scale(k, k);
+    if (look === 'squint') { g.strokeStyle = SQ_EYE; g.lineWidth = 2.6; g.lineCap = 'round'; g.lineJoin = 'round'; g.beginPath(); g.moveTo(-18, -4); g.lineTo(-10, 0); g.lineTo(-18, 4); g.moveTo(18, -4); g.lineTo(10, 0); g.lineTo(18, 4); g.stroke(); }
+    else { g.fillStyle = SQ_EYE; for (const s of [-1, 1]) { g.beginPath(); g.ellipse(13 * s, 0, 5.6, 6.6, 0, 0, Math.PI * 2); g.fill(); }
+      g.fillStyle = '#fff'; for (const [a, b, r] of [[-11, -2.4, 2.2], [15, -2.4, 2.2], [-14.6, 2.4, 1.1], [11.4, 2.4, 1.1]]) { g.beginPath(); g.arc(a, b, r, 0, Math.PI * 2); g.fill(); }
+      if (look === 'grump') { g.strokeStyle = SQ_EYE; g.lineWidth = 2.4; g.lineCap = 'round'; g.beginPath(); g.moveTo(-19, -12); g.lineTo(-8, -9); g.moveTo(19, -12); g.lineTo(8, -9); g.stroke(); } }
+    g.fillStyle = 'rgba(255,157,181,0.7)'; for (const s of [-1, 1]) { g.beginPath(); g.ellipse(21 * s, 8, 5.5, 3.2, 0, 0, Math.PI * 2); g.fill(); }
+    if (look === 'wow') { g.fillStyle = SQ_EYE; g.beginPath(); g.ellipse(0, 9, 3.6, 4.6, 0, 0, Math.PI * 2); g.fill(); g.fillStyle = '#ff8fa3'; g.beginPath(); g.ellipse(0, 10.4, 2, 1.8, 0, 0, Math.PI * 2); g.fill(); }
+    else { g.strokeStyle = SQ_EYE; g.lineWidth = 2.4; g.lineCap = 'round'; g.beginPath(); if (look === 'grump') { g.moveTo(-4, 9); g.quadraticCurveTo(0, 6, 4, 9); } else { g.moveTo(-4.5, 6.5); g.quadraticCurveTo(0, 10.5, 4.5, 6.5); } g.stroke(); }
+    g.restore();
+  }
+  function sqStone(g, x, y, r) { sqShape(g, () => g.ellipse(x, y, r * 1.15, r, 0.3, 0, Math.PI * 2), '#c9c4d6', r * 0.45); sqShine(g, x - r * 0.35, y - r * 0.35, r * 0.35, r * 0.2); }
+  function sqSparkle(g, x, y, r, col, rot) { if (r <= 0) return; g.save(); g.translate(x, y); g.rotate(rot || 0); g.fillStyle = col; g.beginPath(); for (let i = 0; i < 4; i += 1) { const a = i * Math.PI / 2; g.lineTo(Math.cos(a) * r, Math.sin(a) * r); g.lineTo(Math.cos(a + Math.PI / 4) * r * 0.32, Math.sin(a + Math.PI / 4) * r * 0.32); } g.closePath(); g.fill(); g.restore(); }
+  function sqPuff(g, x, y, r) { sqShape(g, () => { g.arc(x - r * 0.6, y, r * 0.7, 0, Math.PI * 2); g.moveTo(x + r * 1.2, y); g.arc(x + r * 0.6, y, r * 0.7, 0, Math.PI * 2); g.moveTo(x + r, y - r * 0.4); g.arc(x, y - r * 0.4, r, 0, Math.PI * 2); }, '#f6ead8', r * 0.18); }
+  /* A round squishy Goliath (local origin: between his feet). */
+  function squishyGoliath(g, u, look) {
+    const lw = u * 0.022;
+    sqShape(g, () => { g.ellipse(-u * 0.13, -u * 0.05, u * 0.09, u * 0.07, 0, 0, Math.PI * 2); g.moveTo(u * 0.22, -u * 0.05); g.ellipse(u * 0.13, -u * 0.05, u * 0.09, u * 0.07, 0, 0, Math.PI * 2); }, '#b89a7a', lw);
+    sqShape(g, () => g.ellipse(0, -u * 0.36, u * 0.3, u * 0.3, 0, 0, Math.PI * 2), '#d9cfe6', lw);
+    sqShape(g, () => { g.moveTo(-u * 0.24, -u * 0.46); g.quadraticCurveTo(0, -u * 0.52, u * 0.24, -u * 0.46); g.lineTo(u * 0.2, -u * 0.22); g.quadraticCurveTo(0, -u * 0.14, -u * 0.2, -u * 0.22); g.closePath(); }, '#f2c873', lw * 0.8);
+    g.save(); g.strokeStyle = 'rgba(176,128,60,0.55)'; g.lineWidth = lw * 0.5; for (let i = 0; i < 3; i += 1) { g.beginPath(); g.arc(0, -u * (0.42 - i * 0.07), u * 0.06, 0.3, Math.PI - 0.3); g.stroke(); } g.restore();
+    sqShine(g, -u * 0.16, -u * 0.5, u * 0.06, u * 0.03);
+    sqShape(g, () => g.ellipse(0, -u * 0.8, u * 0.24, u * 0.22, 0, 0, Math.PI * 2), '#ffe0cc', lw);
+    sqShape(g, () => { g.moveTo(-u * 0.27, -u * 0.86); g.quadraticCurveTo(-u * 0.27, -u * 1.1, 0, -u * 1.11); g.quadraticCurveTo(u * 0.27, -u * 1.1, u * 0.27, -u * 0.86); g.quadraticCurveTo(0, -u * 0.9, -u * 0.27, -u * 0.86); g.closePath(); }, '#f2c873', lw);
+    sqShape(g, () => g.ellipse(0, -u * 1.16, u * 0.11, u * 0.06, 0, 0, Math.PI * 2), '#ff9db5', lw * 0.8);
+    sqShine(g, -u * 0.12, -u * 1.02, u * 0.06, u * 0.025);
+    sqFace(g, 0, -u * 0.76, u * 0.0062, look);
+  }
+  /* A small squishy David with a sling (origin: between his feet). */
+  function squishyDavid(g, x, base, u, look, armUp) {
+    const lw = u * 0.016;
+    g.save(); g.translate(x, base);
+    sqShape(g, () => { g.ellipse(-u * 0.06, -u * 0.03, u * 0.05, u * 0.035, 0, 0, Math.PI * 2); g.moveTo(u * 0.11, -u * 0.03); g.ellipse(u * 0.06, -u * 0.03, u * 0.05, u * 0.035, 0, 0, Math.PI * 2); }, '#b98a66', lw);
+    sqShape(g, () => g.ellipse(0, -u * 0.17, u * 0.15, u * 0.14, 0, 0, Math.PI * 2), '#bfe3b4', lw);
+    sqShape(g, () => { g.moveTo(-u * 0.13, -u * 0.22); g.lineTo(u * 0.13, -u * 0.12); g.lineTo(u * 0.12, -u * 0.09); g.lineTo(-u * 0.14, -u * 0.19); g.closePath(); }, '#c99a6a', lw * 0.7);
+    if (armUp) sqShape(g, () => g.ellipse(u * 0.13, -u * 0.36, u * 0.035, u * 0.1, 0.5, 0, Math.PI * 2), '#ffe0cc', lw);
+    sqShape(g, () => g.ellipse(0, -u * 0.39, u * 0.15, u * 0.14, 0, 0, Math.PI * 2), '#ffe0cc', lw);
+    sqShape(g, () => { g.moveTo(-u * 0.15, -u * 0.42); g.quadraticCurveTo(-u * 0.16, -u * 0.56, 0, -u * 0.55); g.quadraticCurveTo(u * 0.16, -u * 0.56, u * 0.15, -u * 0.42); g.quadraticCurveTo(u * 0.06, -u * 0.48, -u * 0.02, -u * 0.45); g.quadraticCurveTo(-u * 0.08, -u * 0.48, -u * 0.15, -u * 0.42); g.closePath(); }, '#8a5a3c', lw);
+    sqShine(g, -u * 0.07, -u * 0.5, u * 0.035, u * 0.015);
+    sqFace(g, 0, -u * 0.37, u * 0.0042, look);
+    g.restore();
+  }
   /* Story tricks for every legendary squishy: one button plays its Bible
      moment. Reduced motion shows one calm still frame (see drawAnim). */
   const rays = (g, G, n, len, a, col, spin) => { g.save(); g.globalCompositeOperation = 'lighter'; g.translate(G.cx, G.cy); g.rotate(spin || 0); for (let k = 0; k < n; k += 1) { g.rotate(Math.PI * 2 / n); const grd = g.createLinearGradient(0, 0, len, 0); grd.addColorStop(0, col.replace('A', (0.55 * a).toFixed(3))); grd.addColorStop(1, col.replace('A', '0')); g.fillStyle = grd; g.beginPath(); g.moveTo(0, -G.S * 0.03); g.lineTo(len, -G.S * 0.12); g.lineTo(len, G.S * 0.12); g.lineTo(0, G.S * 0.03); g.fill(); } g.restore(); };
@@ -210,6 +257,55 @@
     /* "I am the light of the world": rays reach every corner */
     lamp: { dur: 4000, pose: t => ({ sx: 1 + 0.05 * Math.sin(t * 8), sy: 1 + 0.05 * Math.sin(t * 8) }),
       over(g, t, G) { TRICKS['light-room'].over(g, t, G); rays(g, G, 16, G.S * 3 * ease(seg(t, 0.25, 0.7)), Math.sin(Math.PI * seg(t, 0.2, 1)), 'rgba(255,235,150,A)', t * 0.8); glowText(g, G.text, G.cx, G.S * 0.35, G.S * 0.15, ease(seg(t, 0.4, 0.6)) * (1 - seg(t, 0.94, 1))); } },
+    /* David's sling (1 Samuel 17:49), in squishy style: a little squishy David
+       whirls his sling from beside the shield, the stone streaks to the
+       helmet, a sparkle pops, and a round squishy Goliath wobbles and sits
+       down with a plop, dizzy stars and soft dust puffs. Everything stays inside the
+       canvas at 390px (Goliath is placed from the right edge). */
+    shield: { dur: 4600, pose: t => { const hop = Math.sin(Math.PI * seg(t, 0.74, 0.86)); return { dx: -0.16 * ease(seg(t, 0, 0.12)), dy: -0.12 * hop, sx: 1 + 0.04 * hop, sy: 1 - 0.03 * hop, mood: t > 0.5 && t < 0.62 ? 'wow' : 'happy' }; },
+      over(g, t, G) {
+        const u = G.S, base = G.ground;
+        const gx = Math.min(G.cx + u * 1.0, G.W - u * 0.4), dX = Math.max(u * 0.2, G.px - u * 0.46);
+        const show = ease(seg(t, 0.02, 0.14)) * (1 - seg(t, 0.95, 1));
+        /* Goliath: idle sway, wobble after the hit, then plop onto his back */
+        const hitT = 0.5, wob = seg(t, hitT, 0.62), plop = ease(seg(t, 0.62, 0.72)), bounce = Math.sin(Math.PI * seg(t, 0.72, 0.8)) * 0.12;
+        const rotG = t < hitT ? 0.04 * Math.sin(t * 18) : wob < 1 ? 0.22 * Math.sin(wob * Math.PI * 4) * (1 - wob * 0.6) : plop * 0.2 - bounce * 0.3;
+        const squash = 1 - 0.3 * plop + bounce * 0.3;
+        const gMood = t < hitT ? 'grump' : t < 0.62 ? 'wow' : 'squint';
+        g.save(); g.globalAlpha = show;
+        g.fillStyle = 'rgba(0,0,0,0.18)'; g.beginPath(); g.ellipse(gx, base, u * (0.3 + 0.12 * plop), u * 0.04, 0, 0, Math.PI * 2); g.fill();
+        g.translate(gx - plop * u * 0.04, base); g.rotate(rotG); g.scale(1 + 0.1 * plop, squash);
+        squishyGoliath(g, u, gMood);
+        g.restore();
+        /* the stone: whirl in the sling, then a streak to the helmet */
+        const hx = dX + u * 0.14, hy = base - u * 0.62;
+        const whirl = seg(t, 0.12, 0.38), fly = seg(t, 0.38, hitT);
+        const tx = gx - u * 0.1, ty = base - u * 0.86;
+        g.save(); g.globalAlpha = show;
+        if (t < 0.38) { const a = whirl * 26; const sx = hx + Math.cos(a) * u * 0.16, sy = hy - u * 0.06 + Math.sin(a) * u * 0.09;
+          g.strokeStyle = SQ_INK; g.lineWidth = u * 0.012; g.lineCap = 'round'; g.beginPath(); g.moveTo(hx, hy); g.lineTo(sx, sy); g.stroke();
+          if (whirl > 0) { g.globalAlpha = show * 0.35 * Math.min(1, whirl * 4); g.strokeStyle = '#fff3c4'; g.lineWidth = u * 0.02; g.beginPath(); g.ellipse(hx, hy - u * 0.06, u * 0.16, u * 0.09, 0, a - 1.6, a); g.stroke(); g.globalAlpha = show; }
+          sqStone(g, sx, sy, u * 0.035); }
+        if (fly > 0 && fly < 1) { const e = ease(fly), x = hx + (tx - hx) * e, y = hy + (ty - hy) * e - Math.sin(Math.PI * e) * u * 0.28;
+          const grd = g.createLinearGradient(hx + (tx - hx) * Math.max(0, e - 0.25), y + u * 0.05, x, y); grd.addColorStop(0, 'rgba(255,240,190,0)'); grd.addColorStop(1, 'rgba(255,240,190,0.9)');
+          g.save(); g.globalCompositeOperation = 'lighter'; g.strokeStyle = grd; g.lineWidth = u * 0.045; g.lineCap = 'round'; g.beginPath(); g.moveTo(hx + (tx - hx) * Math.max(0, e - 0.25), hy + (ty - hy) * Math.max(0, e - 0.25) - Math.sin(Math.PI * Math.max(0, e - 0.25)) * u * 0.28); g.lineTo(x, y); g.stroke(); g.restore();
+          sqStone(g, x, y, u * 0.035); }
+        g.restore();
+        /* the sparkle where the stone lands */
+        const sp = seg(t, hitT - 0.005, hitT + 0.12);
+        if (sp > 0 && sp < 1) { const k = Math.sin(Math.PI * sp);
+          g.save(); g.globalCompositeOperation = 'lighter'; const grd = g.createRadialGradient(tx, ty, 0, tx, ty, u * 0.35 * k); grd.addColorStop(0, `rgba(255,250,215,${(0.9 * k).toFixed(3)})`); grd.addColorStop(1, 'rgba(255,230,150,0)'); g.fillStyle = grd; g.fillRect(tx - u * 0.4, ty - u * 0.4, u * 0.8, u * 0.8); g.restore();
+          sqSparkle(g, tx, ty, u * 0.16 * k, '#fff6c8', sp * 1.2); for (let i = 0; i < 5; i += 1) { const ang = i * 1.256 + 0.4, r = u * (0.12 + 0.22 * ease(sp)); sqSparkle(g, tx + Math.cos(ang) * r, ty + Math.sin(ang) * r, u * 0.045 * (1 - sp * 0.7), i % 2 ? '#ffd36e' : '#ffffff', ang); } }
+        /* soft dust puffs when he lands */
+        const dust = seg(t, 0.66, 0.96);
+        if (dust > 0 && dust < 1) { g.save(); g.globalAlpha = 0.9 * (1 - dust) * show; for (let i = 0; i < 6; i += 1) { const side = i % 2 ? 1 : -1, d = ease(dust) * u * (0.22 + 0.09 * (i >> 1)); sqPuff(g, Math.min(G.W - u * 0.1, gx + side * (u * 0.18 + d)), base - u * (0.03 + 0.05 * (i >> 1)) - dust * u * 0.05, u * (0.05 + 0.03 * (i >> 1)) * (0.6 + dust * 0.6)); } g.restore(); }
+        /* dizzy stars circle his head after the plop */
+        const dz = seg(t, 0.72, 1);
+        if (dz > 0) { const a0 = t * 16, cxh = gx + u * 0.12, cyh = base - u * 0.98; g.save(); g.globalAlpha = Math.min(1, dz * 5) * show; for (let i = 0; i < 3; i += 1) { const ang = a0 + i * 2.094; sqSparkle(g, cxh + Math.cos(ang) * u * 0.17, cyh + Math.sin(ang) * u * 0.05, u * 0.04, '#ffd36e', ang); } g.restore(); }
+        /* squishy David in front of the shield, sling arm up */
+        g.save(); g.globalAlpha = show; squishyDavid(g, dX, base, u, t < 0.38 ? 'happy' : t < 0.62 ? 'wow' : 'squint', t < 0.5); g.restore();
+        glowText(g, G.text, G.cx, G.S * 0.35, Math.min(G.S * 0.15, G.W * 0.9 / Math.max(6, G.text.length) * 1.6), ease(seg(t, 0.64, 0.78)) * (1 - seg(t, 0.95, 1)));
+      } },
   };
   const api = { FX, TRICKS, STORIES, spawn, step, drawParticle, emo, glowText, ease, seg };
   if (typeof module === 'object' && module.exports) module.exports = api;
