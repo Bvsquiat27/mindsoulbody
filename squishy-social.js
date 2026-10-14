@@ -32,7 +32,7 @@
      trade id; returns every trade id the server can forget (ack). */
   function applyPending(storage, pending, squishies, core) {
     const known = new Set(squishies.map(x => x.id)), starters = new Set(squishies.filter(x => !x.locked).map(x => x.id));
-    const room = core.roomLedger(storage), done = [], newly = [];
+    const room = core.roomLedger(storage), done = [], newly = [], gave = [], cameIn = [];
     let open = readJson(storage, UNLOCKED_KEY, []);
     if (!Array.isArray(open)) open = [];
     for (const p of Array.isArray(pending) ? pending : []) {
@@ -42,6 +42,7 @@
       const give = (Array.isArray(p.give) ? p.give : []).filter(id => known.has(id) && !starters.has(id) && id !== 'lamp');
       const get = (Array.isArray(p.get) ? p.get : []).filter(id => known.has(id) && !starters.has(id) && id !== 'lamp');
       open = open.filter(id => !give.includes(id));
+      gave.push(...give); cameIn.push(...get);
       for (const id of get) if (!open.includes(id)) { open.push(id); newly.push(id); }
       room.away = [...new Set([...room.away.filter(id => !get.includes(id)), ...give])];
       room.got = [...new Set([...room.got.filter(id => !give.includes(id)), ...get])];
@@ -51,6 +52,9 @@
       storage.setItem(UNLOCKED_KEY, JSON.stringify(open));
       storage.setItem(ROOM_KEY, JSON.stringify(room));
     } catch { return { ack: [], got: [] }; }
+    /* given-away squishies can be won back by fresh play; ones that came back need nothing */
+    for (const id of cameIn) if (core.cameBack) core.cameBack(storage, id);
+    for (const id of gave) if (!cameIn.includes(id) && core.tradeAway) core.tradeAway(storage, squishies, id);
     return { ack: done, got: newly };
   }
 

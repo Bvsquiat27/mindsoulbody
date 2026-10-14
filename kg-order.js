@@ -3,7 +3,7 @@
 (() => {
   'use strict';
   const K = window.MsbKidGames; if (!K) return;
-  const { t, esc, name, sound, buzz, prog, award, render, verseHtml, gameHead, reduced } = K._helpers;
+  const { t, esc, name, sound, buzz, prog, award, render, verseHtml, gameHead, reduced, celebrate } = K._helpers;
   const D = () => window.MsbKidGamesData, C = () => window.MsbKidGamesCore;
   const sets = () => D().ORDER;
   const pic = id => `img/stories/${id}-512.webp`;
@@ -29,7 +29,7 @@
     const right = s.marks.filter(Boolean).length;
     if (C().isOrdered(s.cards, set.cards)) {
       s.won = true; s.msg = s.tries === 1 ? t('First try! Wonderful!', '¡A la primera! ¡Muy bien!') : t('All in order!', '¡Todo en orden!');
-      prog().finish('order', set.id); sound('win'); buzz([20, 40, 30]); render(); award();
+      prog().finish('order', set.id); sound('win'); celebrate(); buzz([20, 40, 30]); render(); award();
       const v = document.querySelector('.kg-verse'); if (v && v.scrollIntoView) v.scrollIntoView({ block: 'center', behavior: reduced() ? 'auto' : 'smooth' });
       return;
     }

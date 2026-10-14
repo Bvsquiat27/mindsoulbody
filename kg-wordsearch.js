@@ -4,7 +4,7 @@
 (() => {
   'use strict';
   const K = window.MsbKidGames; if (!K) return;
-  const { t, esc, lang, name, sound, buzz, prog, award, render, verseHtml, gameHead } = K._helpers;
+  const { t, esc, lang, name, sound, buzz, prog, award, render, verseHtml, gameHead, celebrate } = K._helpers;
   const D = () => window.MsbKidGamesData, C = () => window.MsbKidGamesCore;
   const SIZE = 10;
   const COLORS = 6;
@@ -49,7 +49,7 @@
       if (s.found.length === z.placed.length) {
         s.won = true; s.msg = '';
         prog().finish('wordsearch', list()[s.at].id);
-        setTimeout(() => sound('win'), 250); buzz([20, 40, 30]);
+        setTimeout(() => sound('win'), 250); celebrate(); buzz([20, 40, 30]);
       }
       s.anchor = -1; s.preview = [];
       render();
