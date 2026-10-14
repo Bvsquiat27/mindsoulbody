@@ -286,7 +286,7 @@ test('orphaned old Sling stars move to the new levels on their own; painted art 
   assert.deepEqual(pr.done('sling'), ['z1']);
   const sw = read('./sw.js'), sling = read('./kg-sling.js'), map = read('./kg-map.js');
   for (const n of ['goliath-idle', 'goliath-angry', 'goliath-hit', 'goliath-laugh', 'david', 'valley']) { assert.ok(sw.includes(`'${n}'`), n); assert.ok(existsSync(new URL(`./img/sling/${n}.webp`, import.meta.url)), n); }
-  for (const n of ['map-exodus', 'map-paul']) { assert.ok(map.includes(`img/map/${n}.webp`)); assert.ok(existsSync(new URL(`./img/map/${n}.webp`, import.meta.url)), n); }
+  for (const n of ['map-exodus', 'map-paul', 'map-abraham', 'map-jonah', 'map-ruth', 'map-magi']) { assert.ok(map.includes(`img/map/${n}.webp`)); assert.ok(existsSync(new URL(`./img/map/${n}.webp`, import.meta.url)), n); }
   assert.match(sling, /img\/sling\/\$\{name\}\.webp/);
   assert.match(sling, /goliath-\$\{pose === 'fall' \? 'hit' : pose\}/);
 });
@@ -320,4 +320,10 @@ test('David’s Sling shows only the painted art: no drawn fallback, field hidde
   assert.match(src, /if \(!artLoaded\(\)\) \{[\s\S]*?cv\.style\.visibility = 'hidden'/);
   assert.doesNotMatch(src, /\} else \{\n    g\.save\(\); g\.translate\(e\.x, e\.y \+ 6\)/);
   assert.doesNotMatch(src, /bezierCurveTo\(90, 270/);
+});
+
+test('every Map Journey trip has a painted traveler (no emoji walker)', () => {
+  const map = readFileSync(new URL('./kg-map.js', import.meta.url), 'utf8');
+  for (const id of ['exodus', 'paul', 'abraham', 'jonah', 'ruth', 'magi']) assert.match(map, new RegExp(`${id}: \\['img/map/map-${id}\\.webp', \\d+`), id);
+  assert.match(map, /class="mp-pick-art"[^>]*loading="lazy"/);
 });
