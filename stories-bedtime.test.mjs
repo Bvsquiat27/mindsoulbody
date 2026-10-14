@@ -51,3 +51,15 @@ test('bedtime steps through stories with position, next and previous, and keeps 
   const css = readFileSync('study-design.css', 'utf8');
   assert.match(css, /\.bedtime-read\{/);
 });
+
+test('the seven newer stories have painted art, both languages and a checked verse', () => {
+  const S = load();
+  const ids = S.stories().map((s) => s.id);
+  for (const id of ['ruth', 'elijah', 'esther', 'baptism', 'samaritan', 'zacchaeus', 'bartimaeus']) {
+    assert.ok(ids.includes(id), id);
+    assert.ok(S.verses[id], `${id} verse`);
+  }
+  assert.equal(ids.length, 24);
+  const br = readFileSync('bible-reader.js', 'utf8').split('\n').find((l) => l.includes('STORY_ART_FILES ='));
+  for (const id of ids) assert.match(br, new RegExp(`'${id}'`), `${id} saved for offline`);
+});

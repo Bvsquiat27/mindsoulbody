@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v139';
+const CACHE_VERSION = 'v142';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -25,7 +25,7 @@ const APP_CACHE_PREFIX = 'msb-';
 const STORIES_CACHE = 'msb-stories-1';
 const AUDIO_CACHE = 'msb-audio-1';
 const COLORING_IDS = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
-const STORY_IDS = ['creation', 'noah', 'stars', 'ladder', 'joseph', 'moses', 'redsea', 'samuel', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
+const STORY_IDS = ['creation', 'noah', 'stars', 'ladder', 'joseph', 'moses', 'redsea', 'samuel', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter', 'ruth', 'elijah', 'esther', 'baptism', 'samaritan', 'zacchaeus', 'bartimaeus'];
 
 const SHELL = [
   './',
@@ -105,7 +105,7 @@ const STORY_FILES = STORY_IDS.map((id) => `./img/stories/${id}-512.webp`)
   .concat(COLORING_IDS.map((id) => `./img/coloring/${id}-400.webp`))
   /* painted game art: David's Sling and Map Journey travelers */
   .concat(['goliath-idle', 'goliath-angry', 'goliath-hit', 'goliath-laugh', 'david', 'valley'].map((n) => `./img/sling/${n}.webp`))
-  .concat(['map-exodus', 'map-paul'].map((n) => `./img/map/${n}.webp`));
+  .concat(['map-exodus', 'map-paul', 'map-abraham', 'map-jonah', 'map-ruth', 'map-magi'].map((n) => `./img/map/${n}.webp`));
 
 function offlineResponse(url) {
   const json = /\.json$/.test(url.pathname);
