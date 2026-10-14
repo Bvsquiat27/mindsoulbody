@@ -1,3 +1,4 @@
+import { appHtml } from './app-scripts.test-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -84,7 +85,7 @@ test('a friend grid: names, rare and legendary tags, the lamp never traded', () 
 });
 
 test('wired into the app: script, offline cache, sync, friend profile and the setting', () => {
-  const html = read('./index.html'), sw = read('./sw.js'), aura = read('./aura.js');
+  const html = appHtml(), sw = read('./sw.js'), aura = read('./aura.js');
   assert.ok(html.indexOf('squishy-social.js"') > html.indexOf('squishy-core.js"') && html.indexOf('squishy-social.js"') < html.indexOf('aura.js"'));
   assert.ok(sw.includes("'./squishy-social.js'"));
   assert.match(aura, /body\.squishies=SQS\.payload\(localStorage,SQD\.SQUISHIES,SQC\)/);

@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v133';
+const CACHE_VERSION = 'v134';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -177,8 +177,13 @@ self.addEventListener('install', (event) => {
     await bible.addAll(['./bible/index.json']);
     const rvr = await caches.open(RVR_CACHE);
     await rvr.addAll(['./bible/rvr/index.json']);
+    /* painted art (~3 MB) is kept across updates: fetch only what is missing,
+       so a version bump does not download every picture again. Art files are
+       never edited in place; changed art gets a new file name. */
     const stories = await caches.open(STORIES_CACHE);
-    await stories.addAll(STORY_FILES);
+    const have = new Set((await stories.keys()).map((r) => new URL(r.url).pathname));
+    const missing = STORY_FILES.filter((f) => !have.has(new URL(f, self.registration.scope).pathname));
+    if (missing.length) await stories.addAll(missing);
     await self.skipWaiting();
   })());
 });

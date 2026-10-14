@@ -1,3 +1,4 @@
+import { appHtml } from './app-scripts.test-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -105,7 +106,7 @@ test('the Friendship badge needs a code actually redeemed, not just made; trades
 });
 
 test('Trade tab, gift ribbon, Share button and Spanish words are wired in', () => {
-  const ui = read('./squishy.js'), html = read('./index.html'), sw = read('./sw.js'), i18n = read('./i18n.js');
+  const ui = read('./squishy.js'), html = appHtml(), sw = read('./sw.js'), i18n = read('./i18n.js');
   assert.ok(html.includes('<script src="squishy-trade.js" defer>') && html.indexOf('squishy-trade.js') < html.indexOf('squishy.js"'));
   assert.ok(sw.includes("'./squishy-trade.js'"));
   assert.match(ui, /\['trade', '🎁 ' \+ L\('Trade'\)\]/);

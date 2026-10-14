@@ -1,3 +1,4 @@
+import { appHtml } from './app-scripts.test-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -106,7 +107,7 @@ test('drawings stay on the device: IndexedDB store, no network calls', () => {
 });
 
 test('the app loads and precaches the drawings scripts', () => {
-  const html = readFileSync(new URL('./index.html', import.meta.url), 'utf8');
+  const html = appHtml();
   const sw = readFileSync(new URL('./sw.js', import.meta.url), 'utf8');
   assert.ok(html.indexOf('drawings-store.js') < html.indexOf('drawings.js"') && html.indexOf('drawings.js"') < html.indexOf('coloring.js"'));
   assert.match(sw, /'\.\/drawings-store\.js'/);

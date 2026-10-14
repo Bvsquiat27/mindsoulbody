@@ -1,3 +1,4 @@
+import { appHtml } from './app-scripts.test-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -411,7 +412,7 @@ test('piece art: each kind is a small inline SVG with a face', () => {
 
 /* ---------- Wiring and words ---------- */
 test('the game is wired into Stories, precached, and its words have Spanish', () => {
-  const html = read('./index.html'), sw = read('./sw.js'), i18n = read('./i18n.js'), stories = read('./stories.js');
+  const html = appHtml(), sw = read('./sw.js'), i18n = read('./i18n.js'), stories = read('./stories.js');
   for (const f of ['match3-data.js', 'match3-core.js', 'match3-art.js', 'match3.js']) {
     assert.ok(html.includes(`<script src="${f}" defer>`), f);
     assert.ok(sw.includes(`'./${f}'`), f);

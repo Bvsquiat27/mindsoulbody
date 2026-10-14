@@ -9,7 +9,21 @@
   else root.MsbDevotional = api;
 })(typeof self !== 'undefined' ? self : this, function (root) {
   'use strict';
-  const DATA = () => root.MsbDevotionalData || (typeof require === 'function' ? require('./devotional-data.js') : { ordinary: [], feasts: [] });
+  /* devotional-data.js (~130 KB) is not loaded at startup: it is fetched after
+     the first screen, or when the devotional opens. */
+  const DATA = () => root.MsbDevotionalData || (typeof require === 'function' && typeof document === 'undefined' ? require('./devotional-data.js') : { ordinary: [], feasts: [] });
+  let dataLoad = null;
+  function ensureData() {
+    if (root.MsbDevotionalData) return Promise.resolve(root.MsbDevotionalData);
+    if (!dataLoad) dataLoad = new Promise((ok, fail) => {
+      const el = document.createElement('script'); el.src = 'devotional-data.js'; el.async = true;
+      el.onload = () => (root.MsbDevotionalData ? ok(root.MsbDevotionalData) : fail(Error('no data')));
+      el.onerror = () => { dataLoad = null; el.remove(); fail(Error('The devotional could not load. Check your connection.')); };
+      document.head.appendChild(el);
+    });
+    return dataLoad;
+  }
+  const ready = () => !!root.MsbDevotionalData;
   const PUSH_KEY = 'msb_devotional_push';
   const API = 'https://mindsoulbody-api.hearthandhope.workers.dev';
   const VAPID_PUBLIC = 'BGrEYSYxakeHZiJCFXktJNmtRZRsx0mvE-WGYf7X3CFuogYNuece5P-8a4uBfgS6SuanX7kaTgr0WO4tNtd1ADQ';
@@ -68,11 +82,21 @@
   function niceDate(dt) { return dt.toLocaleDateString(es() ? 'es' : 'en', { weekday: 'long', month: 'long', day: 'numeric' }); }
 
   function homeCard() {
+    if (!ready()) {
+      ensureData().then(() => { const el = document.getElementById('dev-home'); if (el && el.isConnected) el.outerHTML = homeCard(); }).catch(() => null);
+      return `<section class="card dev-home" id="dev-home" data-i18n-skip data-dev-pending><span class="eyebrow">${esc(tr('MORNING DEVOTIONAL', 'DEVOCIONAL DE LA MAÑANA'))}</span><h2>${esc(tr('Today’s devotional', 'El devocional de hoy'))}</h2><p class="muted">${esc(tr('Scripture, a reflection and a short prayer.', 'Escritura, una reflexión y una oración corta.'))}</p><button type="button" class="primary" data-dev-open="${keyOf(new Date())}">${esc(tr('Read today’s devotional', 'Leer el devocional de hoy'))}</button></section>`;
+    }
     const e = forKey(keyOf(new Date())), L = es() ? e.es : e.en;
-    return `<section class="card dev-home" data-i18n-skip><span class="eyebrow">${esc(tr('MORNING DEVOTIONAL', 'DEVOCIONAL DE LA MAÑANA'))}${L.feast ? ' · ' + esc(L.feast) : ''}</span><h2>${esc(L.title)}</h2><p class="dev-home-verse">“${esc(L.verses[0])}”</p><p class="muted">${esc(L.ref)}</p><button type="button" class="primary" data-dev-open="${keyOf(new Date())}">${esc(tr('Read today’s devotional', 'Leer el devocional de hoy'))}</button></section>`;
+    return `<section class="card dev-home" id="dev-home" data-i18n-skip><span class="eyebrow">${esc(tr('MORNING DEVOTIONAL', 'DEVOCIONAL DE LA MAÑANA'))}${L.feast ? ' · ' + esc(L.feast) : ''}</span><h2>${esc(L.title)}</h2><p class="dev-home-verse">“${esc(L.verses[0])}”</p><p class="muted">${esc(L.ref)}</p><button type="button" class="primary" data-dev-open="${keyOf(new Date())}">${esc(tr('Read today’s devotional', 'Leer el devocional de hoy'))}</button></section>`;
   }
   function show(key) {
     const el = screenEl(); if (!el) return;
+    if (!ready()) {
+      if (key) viewKey = key;
+      el.innerHTML = `<article class="dev-page" data-i18n-skip><button type="button" class="text-button back" data-nav="today">← ${esc(tr('Home', 'Inicio'))}</button><p class="muted" role="status">${esc(tr('Opening the devotional…', 'Abriendo el devocional…'))}</p></article>`;
+      ensureData().then(() => { if (document.querySelector('.dev-page')) show(viewKey); }).catch((err) => { const st = el.querySelector('[role=status]'); if (st) st.textContent = tr('The devotional could not load. Check your connection and try again.', 'No se pudo cargar el devocional. Revisa tu conexión e inténtalo otra vez.'); });
+      return;
+    }
     const dt = parseKey(key || viewKey) || new Date(); viewKey = keyOf(dt);
     const e = forDate(dt.getFullYear(), dt.getMonth() + 1, dt.getDate()), L = es() ? e.es : e.en, f = e.father;
     const verses = L.verses.map((v, i) => `<span class="dev-vn">${e.verse + i}</span>${esc(v)}`).join(' ');
@@ -134,11 +158,16 @@
     if (msg) { const st = document.querySelector('#dev-settings [data-dev-status]'); if (st) st.textContent = msg; }
   }
   let busy = false;
+  function flipSwitch(t, on) {
+    t.setAttribute('aria-checked', on ? 'true' : 'false'); t.setAttribute('aria-busy', 'true');
+    const label = t.querySelector('.tap-vibration-state'); if (label) label.textContent = on ? tr('On', 'Sí') : tr('Off', 'No');
+  }
+  function failed(msg) { repaintSettings(msg); toast(msg); }
   async function turnOn() {
     const s = readSettings();
-    if (supportNote()) { repaintSettings(supportNote()); return; }
+    if (supportNote()) { failed(supportNote()); return; }
     const perm = await Notification.requestPermission();
-    if (perm !== 'granted') { repaintSettings(tr('Notifications were not allowed, so the reminder stays off.', 'No se permitieron las notificaciones, así que el recordatorio sigue desactivado.')); return; }
+    if (perm !== 'granted') { failed(tr('Notifications were not allowed, so the reminder stays off.', 'No se permitieron las notificaciones, así que el recordatorio sigue desactivado.')); return; }
     const r = await register(s.time);
     saveSettings({ ...s, on: true, endpoint: r.endpoint, auth: r.auth, synced: keyOf(new Date()), reenable: false });
     repaintSettings(tr(`Reminder set for ${s.time} each morning.`, `Recordatorio listo para las ${s.time} cada mañana.`));
@@ -151,7 +180,7 @@
   }
   async function guarded(fn) {
     if (busy) return; busy = true;
-    try { await fn(); } catch (err) { repaintSettings(tr('Could not change the reminder: ', 'No se pudo cambiar el recordatorio: ') + (err && err.message || '')); } finally { busy = false; }
+    try { await fn(); } catch (err) { failed(tr('Could not change the reminder: ', 'No se pudo cambiar el recordatorio: ') + (err && err.message || '')); } finally { busy = false; }
   }
   /* keep the server copy current (time zone, language, a restored backup) once a day */
   async function resync() {
@@ -166,7 +195,14 @@
     if (!t) return;
     if (t.hasAttribute('data-dev-open')) { open(t.dataset.devOpen); return; }
     if (t.hasAttribute('data-dev-step')) { const dt = parseKey(viewKey) || new Date(); dt.setDate(dt.getDate() + Number(t.dataset.devStep)); viewKey = keyOf(dt); show(viewKey); root.scrollTo({ top: 0, behavior: 'auto' }); return; }
-    if (t.hasAttribute('data-dev-push-toggle')) { guarded(() => (readSettings().on ? turnOff() : turnOn())); return; }
+    if (t.hasAttribute('data-dev-push-toggle')) {
+      /* flip at once; ignore taps while subscribing; the saved state is repainted when done */
+      if (busy || t.getAttribute('aria-busy') === 'true') return;
+      const want = !readSettings().on;
+      flipSwitch(t, want);
+      guarded(() => (want ? turnOn() : turnOff()));
+      return;
+    }
     if (t.hasAttribute('data-dev-push-test')) { guarded(async () => { const s = readSettings(); await call('/push/test', { endpoint: s.endpoint, auth: s.auth }); repaintSettings(tr('Test sent. It should arrive in a few seconds.', 'Prueba enviada. Debería llegar en unos segundos.')); }); }
   });
   document.addEventListener('change', (ev) => {
@@ -188,5 +224,5 @@
   registerScreen();
   root.addEventListener('load', () => { registerScreen(); deepLink(); setTimeout(resync, 3000); });
 
-  return { reconcile, navFn, orthodoxPascha, forDate, forKey, keyOf, readSettings, saveSettings, homeCard, settingsHtml, show, open, PUSH_KEY, VAPID_PUBLIC };
+  return { ensureData, reconcile, navFn, orthodoxPascha, forDate, forKey, keyOf, readSettings, saveSettings, homeCard, settingsHtml, show, open, PUSH_KEY, VAPID_PUBLIC };
 });
