@@ -74,7 +74,7 @@
       case 'kgDone': return L(ch.game === 'map' && ch.n === 1 ? 'Finish 1 Map Journey' : KG_TEXT[ch.game] || '', { n: ch.n });
       case 'kgBest': return L('Get {n} in a row in Who Said It?', { n: ch.n });
       case 'kgAll': return L('Finish each of the 6 Bible games once');
-      case 'tabletsLegend': return L('Put every Story Order set in order and get 3 stars on {n} Manna Match levels', { n: ch.n });
+      case 'tabletsLegend': return L('Put {sets} Story Order sets in order and get 3 stars on {n} Manna Match levels', { sets: ch.sets, n: ch.n });
       case 'tricks': return ch.n === 1 ? L('Find a secret trick') : ch.n ? L('Find {n} secret tricks', { n: ch.n }) : L('Find every secret trick');
       default: return '';
     }
@@ -413,7 +413,7 @@
 
   /* Where a locked squishy's challenge is played: [label, button attributes] */
   const KG_NAME = { wordsearch: 'Bible Word Search', map: 'Map Journey', verse: 'Verse Builder', who: 'Who Said It?', order: 'Story Order', sling: 'David’s Sling' };
-  function goFor(ch) {
+  function goFor(ch, back) {
     if (!ch) return null;
     switch (ch.kind) {
       case 'memoryWins': case 'memoryFast': return [[L('Play Memory'), 'data-sq-go-view="memory"']];
@@ -424,6 +424,7 @@
         /* two parts: Story Order sets, then 3-star Manna Match wins */
         const c = ctx(), sets = (c.kid && c.kid.done && c.kid.done.order) || 0, three = Object.values(c.match || {}).filter(v => v === 3).length;
         const order = [L('Play {game}', { game: L(KG_NAME.order) }), 'data-sq-go-game="order"'], match = [L('Play Manna Match'), 'data-sq-go-match'];
+        if (back) return [order, match]; /* win-back: rounds of either game count */
         if (sets >= ch.sets) return [match];
         if (three >= ch.n) return [order];
         return [order, match];
@@ -435,7 +436,7 @@
     }
   }
   function goHtml() {
-    const g = ui.go && goFor(C().challengeFor(ui.go));
+    const ch = ui.go && C().challengeFor(ui.go), g = ch && goFor(ch, C().wonBackProgress(store2(), ch));
     return g ? `<p class="sq-go-row">${g.map((x, i) => `<button type="button" class="${i ? 'secondary' : 'primary'} sq-go" ${x[1]}>▶ ${esc(x[0])}</button>`).join(' ')}</p>` : '';
   }
 
