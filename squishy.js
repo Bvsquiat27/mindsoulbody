@@ -396,19 +396,21 @@
     const tr = ui.trade, open = prog().unlocked(), gifts = giftIds();
     const mine = D().SQUISHIES.filter(x => open.includes(x.id) && T.tradable(x.id));
     const picks = mine.map(x => `<button type="button" class="sq-tile sq-trade-pick${tr.pick === x.id ? ' active' : ''}" data-sq-trade-pick="${x.id}" aria-pressed="${tr.pick === x.id}"><span class="sq-art">${A().svg(x.id)}</span>${gifts.includes(x.id) ? '<span class="sq-gift" aria-hidden="true">🎀</span>' : ''}<span class="sq-name">${esc(nameOf(x))}</span></button>`).join('');
-    const codeBox = tr.code ? `<div class="sq-code-box" role="status"><span class="small">${esc(L('Your code for {name}', { name: nameOf(byId(tr.codeId)) }))}</span><strong class="sq-code" data-sq-code>${esc(T.pretty(tr.code))}</strong><span class="small muted">${esc(L('Your friend types it under Trade. You keep your squishy too!'))}</span><button type="button" class="primary" data-sq-trade-share>📤 ${esc(L('Share code'))}</button>${tr.note ? `<span class="small">${esc(tr.note)}</span>` : ''}</div>` : '';
+    const codeBox = tr.code ? `<div class="sq-code-box" role="status"><span class="small">${esc(L('Your code for {name}', { name: nameOf(byId(tr.codeId)) }))}</span><strong class="sq-code" data-sq-code>${esc(T.pretty(tr.code))}</strong><span class="small muted">${esc(L('Your friend types it under Trade. It left your shelf; win it back anytime by doing its goal again.'))}</span><button type="button" class="primary" data-sq-trade-share>📤 ${esc(L('Share code'))}</button>${tr.note ? `<span class="small">${esc(tr.note)}</span>` : ''}</div>` : '';
     const got = tr.got ? `<div class="sq-code-box sq-gift-box" role="status"><span class="sq-gift-art"><span class="sq-art">${A().svg(tr.got)}</span><span class="sq-gift big" aria-hidden="true">🎀</span></span><strong>${esc(L('You got {name} from a friend!', { name: nameOf(byId(tr.got)) }))}</strong><span class="small">🤝 ${esc(L('You both earn the Friendship badge.'))}</span><button type="button" class="secondary" data-sq-trade-back>🔁 ${esc(L('Send one back'))}</button></div>` : '';
-    return `<h2 class="sq-h2">🎁 ${esc(L('Give a friend a copy'))}</h2><p class="sq-hint">${esc(L('Pick one of your squishies and make a code. Legendary squishies stay on your shelf.'))}</p><p class="sq-hint small">${esc(L('Traded a squishy away? You can always win it back: do its goal again after the trade (fresh play, not old progress).'))}</p>
+    return `<h2 class="sq-h2">🎁 ${esc(L('Give a squishy to a friend'))}</h2><p class="sq-hint">${esc(L('Pick one of your squishies and make a code. It goes to your friend and leaves your shelf. Legendary squishies stay on your shelf.'))}</p><p class="sq-hint small">${esc(L('If a squishy ever leaves your shelf in a trade, you can win it back: do its goal again after the trade (fresh play, not old progress).'))}</p>
       <div class="sq-grid sq-trade-grid" data-sq-trade-grid>${picks}</div>
-      <p class="sq-trade-actions"><button type="button" class="primary" data-sq-trade-make${tr.pick ? '' : ' disabled'}>✨ ${esc(L('Make a trade code'))}</button></p>${codeBox}
+      <p class="sq-trade-actions"><button type="button" class="primary" data-sq-trade-make${tr.pick ? '' : ' disabled'}>✨ ${esc(L('Make a trade code'))}</button></p>${tr.confirm && tr.pick ? `<div class="sq-code-box sq-confirm" role="alertdialog" aria-labelledby="sq-give-q"><strong id="sq-give-q">${esc(L('Give {name} away?', { name: nameOf(byId(tr.pick)) }))}</strong><span class="small">${esc(L('It leaves your shelf when you make the code. You can win it back by doing its goal again.'))}</span><span class="sq-confirm-row"><button type="button" class="primary" data-sq-trade-yes>🎁 ${esc(L('Yes, give it'))}</button><button type="button" class="secondary" data-sq-trade-no>${esc(L('Keep it'))}</button></span></div>` : ''}${codeBox}
       <h2 class="sq-h2">📥 ${esc(L('Got a code from a friend?'))}</h2>
       <div class="sq-redeem"><label class="small" for="sq-trade-input">${esc(L('Type the code'))}</label><input id="sq-trade-input" class="sq-code-input" data-sq-trade-input maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-1234" value="${esc(tr.typed)}"><button type="button" class="primary" data-sq-trade-redeem>🎀 ${esc(L('Get my squishy'))}</button></div>
       ${tr.err ? `<p class="sq-msg" role="alert">${esc(tr.err)}</p>` : ''}${got}`;
   }
+  /* giving is for real: ask first, then the squishy leaves this shelf */
   function makeTrade() {
-    const tr = ui.trade, code = trades().create(tr.pick, prog().unlocked());
+    const tr = ui.trade, code = trades().create(tr.pick, prog().unlocked(), Math.random, new Date(), id => C().tradeAway(store2(), D().SQUISHIES, id));
+    tr.confirm = false;
     if (!code) return;
-    tr.code = code; tr.codeId = tr.pick; tr.note = ''; tr.err = '';
+    tr.code = code; tr.codeId = tr.pick; tr.pick = null; tr.note = ''; tr.err = '';
     play('twinkle'); vibrate(15); afterProgress(false); render();
     ui.root.querySelector('[data-sq-code]')?.scrollIntoView({ block: 'center' });
   }
@@ -426,7 +428,7 @@
     tr.typed = input ? input.value : ''; tr.got = null; tr.err = '';
     const r = trades().redeem(tr.typed);
     if (!r.ok) { tr.err = L(TRADE_ERR[r.reason] || TRADE_ERR.checksum); play('wrong'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); return; }
-    prog().unlock(r.id); tr.got = r.id; tr.typed = '';
+    prog().unlock(r.id); C().cameBack(store2(), r.id); tr.got = r.id; tr.typed = '';
     play(byId(r.id).sound); play('twinkle'); vibrate([20, 40, 20]); afterProgress(false); render();
     ui.root.querySelector('.sq-gift-box')?.scrollIntoView({ block: 'center' });
   }
@@ -455,9 +457,15 @@
 
   /* Something counted toward the challenges: open any squishy whose
      challenge is now met and celebrate it (rare ones get a special screen). */
+  /* one queue, one timer: a squishy is never celebrated twice */
+  function enqueue(ids, delay) {
+    for (const id of ids) if (id && !ui.queue.includes(id) && ui.showing !== id) ui.queue.push(id);
+    if (!ui.queue.length || ui.celebrateT || ui.root?.querySelector('[data-sq-celebrate]:not([hidden])')) return;
+    ui.celebrateT = setTimeout(() => { ui.celebrateT = null; const next = ui.queue.shift(); ui.showing = next; if (next) celebrate(next); }, delay);
+  }
   function afterProgress(win) {
     const opened = C().checkUnlocks(store2(), D().SQUISHIES);
-    if (opened.length) { ui.queue.push(...opened); if (!ui.root?.querySelector('[data-sq-celebrate]:not([hidden])')) setTimeout(() => celebrate(ui.queue.shift()), win ? 350 : 150); return true; }
+    if (opened.length) { enqueue(opened, win ? 350 : 150); return true; }
     if (win) setTimeout(() => celebrate(null), 350);
     return false;
   }
@@ -1098,7 +1106,9 @@
     if (!t || !ui.root || !t.closest('.squishy-screen')) return;
     const tp = t.closest('[data-sq-trade-pick]');
     if (tp) { ui.trade.pick = tp.dataset.sqTradePick; ui.trade.code = null; render(); ui.root.querySelector('[data-sq-trade-make]')?.scrollIntoView({ block: 'center' }); return; }
-    if (t.closest('[data-sq-trade-make]')) { makeTrade(); return; }
+    if (t.closest('[data-sq-trade-make]')) { if (ui.trade.pick) { ui.trade.confirm = true; render(); ui.root.querySelector('[data-sq-trade-yes]')?.focus(); } return; }
+    if (t.closest('[data-sq-trade-yes]')) { makeTrade(); return; }
+    if (t.closest('[data-sq-trade-no]')) { ui.trade.confirm = false; render(); return; }
     if (t.closest('[data-sq-trade-share]')) { shareTrade(); return; }
     if (t.closest('[data-sq-trade-redeem]')) { redeemTrade(); return; }
     if (t.closest('[data-sq-trade-back]')) { ui.trade.got = null; ui.trade.code = null; ui.trade.pick = null; render(); ui.root.querySelector('[data-sq-trade-grid]')?.scrollIntoView({ block: 'start' }); return; }
@@ -1125,7 +1135,7 @@
     if (t.closest('[data-sq-learn]') && pv && sheet) { sheet.innerHTML = cardHtml(pv.x); sheet.hidden = false; play('twinkle'); sheet.querySelector('button')?.focus(); return; }
     if (t.closest('[data-sq-sheet-close]') && sheet) { sheet.hidden = true; if (window.MsbSpeech) MsbSpeech.stop(); pv && pv.canvas.focus({ preventScroll: true }); return; }
     const lockedTile = t.closest('[data-sq-locked]');
-    if (lockedTile) { const ch = C().challengeFor(lockedTile.dataset.sqLocked); ui.msg = ch ? L('To unlock it: {task}', { task: challengeText(ch) }) : L('Locked'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); return; }
+    if (lockedTile) { const ch = C().challengeFor(lockedTile.dataset.sqLocked), back = ch ? C().wonBackProgress(store2(), ch) : null; ui.msg = back ? `${L('Win it back: {goal}', { goal: againText(ch, back.need) })} (${back.have} / ${back.need})` : ch ? L('To unlock it: {task}', { task: challengeText(ch) }) : L('Locked'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); return; }
     const star = t.closest('[data-sq-star]');
     if (star) {
       prog().addStar(star.dataset.sqStar); play('twinkle'); vibrate(15); afterProgress(false);
@@ -1152,7 +1162,8 @@
     const meet = t.closest('[data-sq-meet]');
     if (meet) {
       const box = ui.root.querySelector('[data-sq-celebrate]');
-      if (ui.queue.length) { celebrate(ui.queue.shift()); return; }
+      if (ui.queue.length) { ui.showing = ui.queue.shift(); celebrate(ui.showing); return; }
+      ui.showing = null;
       if (!meet.dataset.sqMeet) { if (box) box.hidden = true; if (ui.view === 'memory') { newMemory(); render(); } else if (ui.view === 'questions') { newRound(); render(); } else render(); return; }
       ui.view = 'shelf'; ui.memory = null; ui.round = null; ui.msg = '';
       ui.playing = meet.dataset.sqMeet || null;
@@ -1166,10 +1177,10 @@
       /* squishies won in a game or the coloring book get their full
          celebration (rare and legendary screens too) the next time this opens */
       const waiting = takeCelebrations();
-      if (waiting.length) { ui.queue.push(...waiting); afterProgress(false); if (!ui.root.querySelector('[data-sq-celebrate]:not([hidden])')) setTimeout(() => celebrate(ui.queue.shift()), 150); return; }
+      enqueue(waiting, 150);
       afterProgress(false);
     },
-    close() { closePlay(); ui.root = null; ui.trade = { pick: null, code: null, codeId: null, note: '', err: '', got: null, typed: '' }; ui.view = 'shelf'; ui.memory = null; ui.round = null; ui.guess = null; ui.msg = ''; if (window.MsbSpeech) MsbSpeech.stop(); },
+    close() { if (ui.celebrateT) clearTimeout(ui.celebrateT); ui.celebrateT = null; ui.showing = null; ui.queue = []; closePlay(); ui.root = null; ui.trade = { pick: null, code: null, codeId: null, note: '', err: '', got: null, typed: '' }; ui.view = 'shelf'; ui.memory = null; ui.round = null; ui.guess = null; ui.msg = ''; if (window.MsbSpeech) MsbSpeech.stop(); },
     _celebrate: celebrate,
     /* Progress made outside the squishy screen (coloring, the kids' Bible
        games): unlock any squishy whose challenge is now met. Returns the new
