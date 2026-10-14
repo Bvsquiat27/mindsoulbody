@@ -979,7 +979,7 @@ test('the win-back rule is explained in EN/ES and shown on the locked tile', () 
   assert.match(ui, /C\(\)\.wonBackProgress\(store2\(\), ch\)/);
   const keys = [...ui.matchAll(/L\('([^']+)'/g)].map(m => m[1]);
   for (const k of new Set(keys)) assert.ok(i18n.includes(`"${k}":`), `missing Spanish for: ${k}`);
-  assert.ok(i18n.includes('"Traded a squishy away? You can always win it back: do its goal again after the trade (fresh play, not old progress).":'));
+  assert.ok(i18n.includes('"If a squishy ever leaves your shelf in a trade, you can win it back: do its goal again after the trade (fresh play, not old progress).":'));
   for (const k of [C.KEYS.away, 'msb_squishy_celebrate']) assert.ok(k.startsWith('msb_'), k);
 });
 
@@ -992,4 +992,46 @@ test('squishies won in a game or coloring get the full celebration; badge icons 
   const icons = Object.values(Function(`return ${ui.match(/const BADGE_ICON = (\{[^\n]+\});/)[1]}`)());
   assert.equal(new Set(icons).size, icons.length);
   assert.ok(read('./i18n.js').includes('"Get {n} in a row in Who Said It?": "Acierta {n} seguidas en ¿Quién lo dijo?"'));
+});
+
+test('queued and new unlock celebrations share one queue and never double', () => {
+  const src = readFileSync(new URL('./squishy.js', import.meta.url), 'utf8');
+  assert.match(src, /function enqueue\(ids, delay\)/);
+  assert.match(src, /!ui\.queue\.includes\(id\) && ui\.showing !== id/);
+  assert.match(src, /if \(!ui\.queue\.length \|\| ui\.celebrateT/);
+  assert.ok(!/setTimeout\(\(\) => celebrate\(ui\.queue\.shift\(\)\)/.test(src), 'no second timer path');
+});
+
+/* ---------- Trade codes give the squishy away (real flow) ---------- */
+test('making a trade code gives the squishy away; the friend gets it; it is won back by fresh play', () => {
+  const T = require('./squishy-trade.js');
+  const giver = memoryStorage(), friend = memoryStorage(), st = C.stats(giver);
+  for (let i = 0; i < 10; i += 1) st.roundDone(4, 5);
+  C.checkUnlocks(giver, SQUISHIES);
+  const owned = () => C.progress(giver, SQUISHIES).unlocked();
+  assert.ok(owned().includes('key'));
+  /* the screen passes tradeAway as the give step (after the confirm dialog) */
+  const code = T.trades(giver).create('key', owned(), Math.random, new Date(), id => C.tradeAway(giver, SQUISHIES, id));
+  assert.ok(code);
+  assert.ok(!owned().includes('key'), 'it left the giver’s shelf');
+  assert.ok(C.awayList(giver).key, 'and can be won back');
+  assert.equal(T.trades(giver).redeem(code).reason, 'own', 'the giver cannot redeem their own code');
+  const r = T.trades(friend).redeem(code);
+  assert.equal(r.ok, true); assert.equal(r.id, 'key');
+  /* legendaries stay untradable by code */
+  assert.equal(T.trades(giver).create('bush', ['bush'], Math.random, new Date(), () => assert.fail('never given')), null);
+  /* fresh play brings it back with the normal unlock */
+  assert.deepEqual(C.checkUnlocks(giver, SQUISHIES), []);
+  for (let i = 0; i < 10; i += 1) st.roundDone(4, 5);
+  assert.deepEqual(C.checkUnlocks(giver, SQUISHIES), ['key']);
+});
+
+test('the trade screen asks before giving, says it is a gift, and the locked tile says how to win it back', () => {
+  const ui = read('./squishy.js'), i18n = read('./i18n.js');
+  assert.match(ui, /data-sq-trade-make[^]*ui\.trade\.confirm = true/);
+  assert.match(ui, /trades\(\)\.create\(tr\.pick, prog\(\)\.unlocked\(\), Math\.random, new Date\(\), id => C\(\)\.tradeAway\(/);
+  assert.match(ui, /C\(\)\.cameBack\(store2\(\), r\.id\)/);
+  assert.match(ui, /back \? `\$\{L\('Win it back: \{goal\}'/);
+  for (const k of ['Give a squishy to a friend', 'Give {name} away?', 'Yes, give it', 'Keep it', 'It leaves your shelf when you make the code. You can win it back by doing its goal again.']) assert.ok(i18n.includes(`"${k}":`), k);
+  assert.ok(!ui.includes('Give a friend a copy') && !ui.includes('You keep your squishy too'));
 });
