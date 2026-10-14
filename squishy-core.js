@@ -485,7 +485,10 @@
     for (let j = n - 2; j > 0; j -= 1) ring.push(j * n);
     /* Springy limits: up to about 1.5x when pulled, about 0.7x when pressed,
        pinch 0.6x-1.7x (gentler with reduced motion). */
-    const cfg = { kA: 150, kS: 760, kHold: 1400, damp: reduced ? 15 : 4.6, kP: 1300, max: size * (reduced ? 0.45 : 0.9), squash: reduced ? 0.16 : 0.42, sigma: size * 0.34, pinchLo: reduced ? 0.8 : 0.6, pinchHi: reduced ? 1.3 : 1.7 };
+    /* feel: soft > 1 squashes deeper, bounce > 1 springs back livelier
+       (reduced motion: never softer or bouncier than the default) */
+    const fe = o.feel || {}, soft = Math.max(0.5, Math.min(reduced ? 1 : 1.3, Number(fe.soft) || 1)), bounce = Math.max(0.55, Math.min(reduced ? 1 : 1.5, Number(fe.bounce) || 1));
+    const cfg = { kA: 150 * (0.55 + 0.45 * bounce), kS: 760, kHold: 1400, damp: reduced ? 15 : 4.6 / bounce, kP: 1300, max: size * (reduced ? 0.45 : 0.9) * Math.min(1, 0.6 + 0.4 * soft), squash: (reduced ? 0.16 : 0.42) * soft, sigma: size * 0.34, pinchLo: reduced ? 0.8 : 0.6, pinchHi: reduced ? 1.3 : 1.7, soft, bounce };
     function area() {
       let a = 0;
       for (let q = 0; q < ring.length; q += 1) { const p = ring[q], r = ring[(q + 1) % ring.length]; a += x[p] * y[r] - x[r] * y[p]; }
@@ -631,6 +634,80 @@
     return 'happy';
   }
   /* Vibration for squish/stretch strength 0..1: 6-30 ms. */
+  /* Each squishy's own feel: how soft it squashes (soft), how bouncy it
+     springs back (bounce), and its buzz style. The Vibration API only knows
+     on/off times, so "strength" is pulse length; light/medium/strong scale
+     the pulses, gaps stay the same. */
+  const BUZZ = {
+    soft: { press: 8, hold: 6, release: [10, 90, 8] },          // gentle and slow
+    heavy: { press: 32, hold: 18, release: [55, 35, 30] },      // a big stone
+    quick: { press: 6, hold: 5, release: [6, 22, 6, 22, 6, 22, 6] }, // little coin buzzes
+    flutter: { press: 5, hold: 4, release: [5, 14, 5, 14, 5, 14, 5] }, // wings
+    splash: { press: 10, hold: 8, release: [10, 30, 22] },
+    roar: { press: 18, hold: 12, release: [22, 20, 38] },
+    twinkle: { press: 6, hold: 5, release: [6, 45, 6, 45, 12] },
+    crumbly: { press: 8, hold: 7, release: [8, 18, 8, 18, 10] },
+    thump: { press: 16, hold: 10, release: [24, 45, 14] },
+    pop: { press: 7, hold: 6, release: [12] },
+    warm: { press: 12, hold: 9, release: [26, 60, 18] },
+    clink: { press: 9, hold: 6, release: [10, 28, 10] },
+    steps: { press: 8, hold: 6, release: [8, 30, 9, 30, 10, 30, 11] },
+    crunch: { press: 8, hold: 0, release: null }                 // the lamp: crackles
+  };
+  const FEEL = {
+    lamb: { soft: 1.3, bounce: 0.6, buzz: 'soft' }, dove: { soft: 1.2, bounce: 1.1, buzz: 'flutter' },
+    fish: { soft: 1.1, bounce: 1.3, buzz: 'splash' }, lion: { soft: 0.9, bounce: 1, buzz: 'roar' },
+    star: { soft: 1, bounce: 1.3, buzz: 'twinkle' }, rainbow: { soft: 1.15, bounce: 1.1, buzz: 'twinkle' },
+    stone: { soft: 0.55, bounce: 0.6, buzz: 'heavy' }, loaves: { soft: 1.2, bounce: 0.8, buzz: 'crumbly' },
+    seed: { soft: 0.9, bounce: 1.4, buzz: 'pop' }, bush: { soft: 1, bounce: 0.9, buzz: 'warm' },
+    basket: { soft: 0.85, bounce: 1, buzz: 'crumbly' }, tree: { soft: 0.8, bounce: 0.9, buzz: 'thump' },
+    ark: { soft: 0.75, bounce: 0.8, buzz: 'thump' }, coat: { soft: 1.25, bounce: 0.75, buzz: 'soft' },
+    ladder: { soft: 0.8, bounce: 1.2, buzz: 'steps' }, raven: { soft: 1, bounce: 1.2, buzz: 'flutter' },
+    wheat: { soft: 1.1, bounce: 1, buzz: 'crumbly' }, oil: { soft: 1.3, bounce: 0.7, buzz: 'warm' },
+    coin: { soft: 0.6, bounce: 1.5, buzz: 'quick' }, donkey: { soft: 1, bounce: 1.1, buzz: 'thump' },
+    jar: { soft: 0.7, bounce: 1, buzz: 'clink' }, crown: { soft: 0.7, bounce: 1.25, buzz: 'twinkle' },
+    boat: { soft: 1.05, bounce: 1.2, buzz: 'splash' }, tomb: { soft: 0.5, bounce: 0.55, buzz: 'heavy' },
+    lamp: { soft: 1, bounce: 1, buzz: 'crunch' }
+  };
+  const feelFor = id => FEEL[id] || { soft: 1, bounce: 1, buzz: 'pop' };
+  const VIBE_LEVELS = ['off', 'light', 'medium', 'strong'];
+  const VIBE_SCALE = { off: 0, light: 0.5, medium: 1, strong: 1.6 };
+  function vibePref(storage) {
+    const KEY = 'msb_squishy_vibe';
+    return {
+      KEY,
+      get() { try { const v = storage.getItem(KEY); return VIBE_LEVELS.includes(v) ? v : 'medium'; } catch { return 'medium'; } },
+      set(v) { const next = VIBE_LEVELS.includes(v) ? v : 'medium'; try { storage.setItem(KEY, next); } catch { /* ignore */ } return next; }
+    };
+  }
+  /* Scale any pattern by the strength: pulses (even slots) grow or shrink,
+     gaps stay; every pulse 4-80 ms, the whole thing under 300 ms. */
+  function scalePattern(pattern, level) {
+    const k = VIBE_SCALE[level] === undefined ? 1 : VIBE_SCALE[level];
+    if (!k) return 0;
+    const list = Array.isArray(pattern) ? pattern : [pattern];
+    let total = 0;
+    const out = [];
+    for (let i = 0; i < list.length; i += 1) {
+      const v = i % 2 ? list[i] : Math.max(4, Math.min(80, Math.round(list[i] * k)));
+      if (total + v > 300) break;
+      out.push(v); total += v;
+    }
+    if (out.length % 2 === 0) out.pop();
+    return out.length === 1 ? out[0] : out;
+  }
+  /* One squishy's buzz for a press, a squelchy hold step or the release.
+     Reduced motion keeps only the first pulse. */
+  function feelPattern(id, phase, intensity, level, reduced) {
+    const f = feelFor(id), b = BUZZ[f.buzz] || BUZZ.pop, i = Math.max(0, Math.min(1, Number(intensity) || 0));
+    let pat;
+    if (phase === 'press') pat = b.press;
+    else if (phase === 'hold') pat = f.buzz === 'crunch' ? crunchPattern(i) : Math.round(b.hold * (0.6 + 0.8 * i));
+    else pat = f.buzz === 'crunch' ? crunchPattern(Math.max(0.5, i)) : b.release.map((v, k) => (k % 2 ? v : v * (0.6 + 0.8 * i)));
+    if (!pat) return 0;
+    if (reduced && Array.isArray(pat)) pat = pat[0];
+    return scalePattern(pat, level);
+  }
   function pulseMs(intensity) { return Math.round(6 + 24 * Math.max(0, Math.min(1, intensity))); }
 
   /* Crunchy vibration for the glowing squishy: a few short ticks with gaps,
@@ -658,7 +735,7 @@
     return Math.min(1, base + 0.55 * i);
   }
 
-  const api = { KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
+  const api = { FEEL, BUZZ, feelFor, VIBE_LEVELS, VIBE_SCALE, vibePref, scalePattern, feelPattern, KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbSquishyCore = api;
 })(typeof self !== 'undefined' ? self : this);

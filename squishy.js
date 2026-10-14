@@ -236,10 +236,21 @@
   function kitRelease(a) { const k = pv && kit(pv.id); if (k && RELEASE[k.sound.release]) RELEASE[k.sound.release](a); }
 
   /* ---------- Vibration (Android; iPhones have no Vibration API) ---------- */
-  function vibrate(pattern) {
+  /* The app-wide vibration switch wins; then the squishy strength
+     (Off/Light/Medium/Strong) scales every pulse. */
+  const vibe = () => C().vibePref(store2());
+  function vibrate(pattern, raw) {
     try { if (localStorage.getItem('msb_tap_vibration') === 'off') return; } catch { /* on */ }
     if (typeof navigator === 'undefined' || typeof navigator.vibrate !== 'function') return;
-    try { navigator.vibrate(pattern); } catch { /* ignore */ }
+    const pat = raw ? pattern : C().scalePattern(pattern, vibe().get());
+    if (!pat) return;
+    try { navigator.vibrate(pat); } catch { /* ignore */ }
+  }
+  /* this squishy's own buzz */
+  function feelBuzz(phase, intensity) {
+    const p = pv; if (!p) return;
+    const pat = C().feelPattern(p.id, phase, intensity, vibe().get(), reduced());
+    if (pat) vibrate(pat, true);
   }
 
   /* ---------- Screen ---------- */
@@ -409,6 +420,12 @@
     return entry;
   }
 
+  /* own words ("Light"/"Off" mean other things elsewhere in the app) */
+  const VIBE_WORD = { en: { off: 'Off', light: 'Light', medium: 'Medium', strong: 'Strong' }, es: { off: 'Apagada', light: 'Suave', medium: 'Media', strong: 'Fuerte' } };
+  function vibeHtml() {
+    const now = vibe().get(), off = (() => { try { return localStorage.getItem('msb_tap_vibration') === 'off'; } catch { return false; } })();
+    return `<div class="sq-vibe" role="radiogroup" aria-label="${esc(L('Vibration strength'))}"><span class="sq-vibe-label">📳 ${esc(L('Vibration'))}</span>${C().VIBE_LEVELS.map(v => `<button type="button" role="radio" aria-checked="${v === now}" class="sq-vibe-btn${v === now ? ' on' : ''}" data-sq-vibe="${v}" data-i18n-skip>${esc(VIBE_WORD[lang() === 'es' ? 'es' : 'en'][v])}</button>`).join('')}${off ? `<p class="sq-vibe-note">${esc(L('Vibration is turned off in Settings.'))}</p>` : ''}</div>`;
+  }
   function playHtml(x) {
     const on = sounds().get();
     return `<div class="sq-play" data-sq-play role="dialog" aria-modal="true" aria-labelledby="sq-play-title">
@@ -418,6 +435,7 @@
         ${kit(x.id) && kit(x.id).trick ? `<button type="button" class="sq-trick" data-sq-trick aria-live="polite">${esc(trickChip(x.id))}</button>` : ''}
         <p class="sq-toast" data-sq-toast role="status" hidden></p></div>
       <p class="sq-play-hint">${esc(L('Press to squish · drag to stretch · two fingers to squeeze or spread'))}</p>
+      ${vibeHtml()}
       <div class="sq-sheet" data-sq-sheet hidden></div></div>`;
   }
 
@@ -442,7 +460,7 @@
     host.innerHTML = playHtml(x);
     document.documentElement.classList.add('sq-locked');
     const canvas = host.querySelector('[data-sq-canvas]'), area = host.querySelector('[data-sq-area]');
-    pv = { id, x, canvas, area, ctx: canvas.getContext('2d'), body: C().softBody({ reduced: reduced() }), pointers: new Map(), mode: null, anchor: null, start: 0, pinch0: null, frame: 0, last: 0, dirty: true, mood: 'happy', dpr: 1, scale: 1, ox: 0, oy: 0, buzzAt: 0, buzzLevel: 0, squelch: 0, gestured: false, held: false, tone: null, lastStretch: 0, giggleAt: 0, glow: !!x.glow, glowI: 0, glowNow: 0, sparks: [], sparkAcc: 0, crunchAt: 0, crunchLevel: 0, parts: [], partAcc: 0, partK: 0, finger: null, gest: C().gestures(), anim: null, pile: [] };
+    pv = { id, x, canvas, area, ctx: canvas.getContext('2d'), body: C().softBody({ reduced: reduced(), feel: C().feelFor(id) }), pointers: new Map(), mode: null, anchor: null, start: 0, pinch0: null, frame: 0, last: 0, dirty: true, mood: 'happy', dpr: 1, scale: 1, ox: 0, oy: 0, buzzAt: 0, buzzLevel: 0, squelch: 0, gestured: false, held: false, tone: null, lastStretch: 0, giggleAt: 0, glow: !!x.glow, glowI: 0, glowNow: 0, sparks: [], sparkAcc: 0, crunchAt: 0, crunchLevel: 0, parts: [], partAcc: 0, partK: 0, finger: null, gest: C().gestures(), anim: null, pile: [] };
     pv.face = A().faceAt(id);
     layout();
     kick();
@@ -665,7 +683,7 @@
     const p = pv; if (!p) return;
     if (now - p.buzzAt < (p.glow ? 160 : 110) || Math.abs(level - p.buzzLevel) < 0.06 || level < 0.05) return;
     p.buzzAt = now; p.buzzLevel = level;
-    vibrate(p.glow ? C().crunchPattern(level) : C().pulseMs(level));
+    feelBuzz('hold', level);
   }
 
   function tick(now) {
@@ -720,9 +738,9 @@
     const f = [...p.pointers.values()][0];
     const was = p.body.release(f ? f.vx / p.scale : 0, f ? f.vy / p.scale : 0);
     toneStop();
-    if (p.glow && was.mode) { crunch(Math.max(0.5, was.stretch, was.squish), true); vibrate(C().crunchPattern(Math.max(was.stretch, was.squish))); }
-    else if (was.mode === 'grab' || was.mode === 'pinch') { if (was.stretch > 0.15) boing(was.stretch); kitRelease(Math.max(was.stretch, was.squish)); vibrate(C().pulseMs(Math.max(was.stretch, was.squish))); }
-    else if (was.mode === 'press') { kitRelease(was.squish); vibrate(C().pulseMs(was.squish)); }
+    if (p.glow && was.mode) { crunch(Math.max(0.5, was.stretch, was.squish), true); feelBuzz('release', Math.max(was.stretch, was.squish)); }
+    else if (was.mode === 'grab' || was.mode === 'pinch') { if (was.stretch > 0.15) boing(was.stretch); kitRelease(Math.max(was.stretch, was.squish)); feelBuzz('release', Math.max(was.stretch, was.squish)); }
+    else if (was.mode === 'press') { kitRelease(was.squish); feelBuzz('release', was.squish); }
     p.mode = null; p.squelch = 0; p.gestured = false; p.buzzLevel = 0;
     /* the first squish brings up the Bible lesson card on its own; after
        that the Learn button opens it again */
@@ -800,7 +818,7 @@
     const at = toBody(p, e.clientX, e.clientY);
     p.anchor = p.body.nearest(at.x, at.y);
     p.mode = 'press'; p.start = now; p.squelch = 0;
-    beginGesture(p); vibrate(8); kick();
+    beginGesture(p); feelBuzz('press', 0); kick();
   });
   document.addEventListener('pointermove', e => {
     const p = pv;
@@ -1002,6 +1020,8 @@
       return;
     }
     const sheet = ui.root.querySelector('[data-sq-sheet]');
+    const vb = t.closest('[data-sq-vibe]');
+    if (vb) { const v = vibe().set(vb.dataset.sqVibe); vb.parentElement.querySelectorAll('[data-sq-vibe]').forEach(b => { const on = b.dataset.sqVibe === v; b.classList.toggle('on', on); b.setAttribute('aria-checked', String(on)); }); if (pv) feelBuzz('release', 0.7); return; }
     if (t.closest('[data-sq-learn]') && pv && sheet) { sheet.innerHTML = cardHtml(pv.x); sheet.hidden = false; play('twinkle'); sheet.querySelector('button')?.focus(); return; }
     if (t.closest('[data-sq-sheet-close]') && sheet) { sheet.hidden = true; if (window.MsbSpeech) MsbSpeech.stop(); pv && pv.canvas.focus({ preventScroll: true }); return; }
     const lockedTile = t.closest('[data-sq-locked]');
