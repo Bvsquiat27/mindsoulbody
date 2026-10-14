@@ -99,6 +99,28 @@
     return shuffle([answer, ...others], rand);
   }
 
+  /* ---------- Verse Builder ---------- */
+  /* The verse split into the words you tap, punctuation kept on each word. */
+  const verseWords = text => String(text).trim().split(/\s+/).filter(Boolean);
+  /* Words that fall: the one you need next is always there; the rest are
+     from later in the verse (so each one is useful soon). */
+  function nextFalling(words, have, showing, rand = Math.random) {
+    if (have >= words.length) return null;
+    const busy = new Set(showing);
+    if (!busy.has(have)) return have;
+    const later = [];
+    for (let i = have + 1; i < Math.min(words.length, have + 6); i += 1) if (!busy.has(i)) later.push(i);
+    return later.length ? later[Math.floor(rand() * later.length)] : null;
+  }
+  /* Same word can appear twice in a verse: any copy of the right text counts. */
+  const wordFits = (words, have, i) => i >= 0 && i < words.length && have < words.length && words[i] === words[have];
+  const stars = mistakes => (mistakes <= 0 ? 3 : mistakes <= 2 ? 2 : 1);
+
+  /* ---------- Ark Builder ---------- */
+  const arkDeck = (pairs, rand = Math.random) => scramble(pairs.flatMap(a => [a, a]), rand);
+  /* Stars by how much of the rain timer was left. */
+  const arkStars = (left, total) => (left >= total * 0.45 ? 3 : left >= total * 0.2 ? 2 : 1);
+
   /* ---------- Progress (one msb_ key) ---------- */
   const today = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   const blank = () => ({ done: {}, best: {}, plays: {}, badges: {} });
@@ -152,8 +174,12 @@
       { id: 'kg-order-1', game: 'order', icon: '🖼️', name: { en: 'Storyteller', es: 'Cuentacuentos' }, goal: { en: 'Put a story in order', es: 'Ordena una historia' }, test: v => count(v, 'order') >= 1 },
       { id: 'kg-order-all', game: 'order', icon: '📖', name: { en: 'Bible timeline', es: 'Línea del tiempo bíblica' }, goal: { en: 'Put every story set in order', es: 'Ordena todas las historias' }, test: all('order', 4) },
       { id: 'kg-who-5', game: 'who', icon: '💬', name: { en: 'Good listener', es: 'Buen oyente' }, goal: { en: 'Get 5 in a row in Who Said It?', es: 'Acierta 5 seguidas en ¿Quién lo dijo?' }, test: v => (Number(v.best.who) || 0) >= 5 },
+      { id: 'kg-verse-1', game: 'verse', icon: '🧩', name: { en: 'Verse builder', es: 'Constructor de versículos' }, goal: { en: 'Build a memory verse', es: 'Arma un versículo para memorizar' }, test: v => count(v, 'verse') >= 1 },
+      { id: 'kg-verse-all', game: 'verse', icon: '💛', name: { en: 'Hidden in my heart', es: 'Guardado en mi corazón' }, goal: { en: 'Build every memory verse', es: 'Arma todos los versículos' }, test: all('verse', 6) },
+      { id: 'kg-ark-1', game: 'ark', icon: '🛶', name: { en: 'Two by two', es: 'De dos en dos' }, goal: { en: 'Load the ark before the rain', es: 'Llena el arca antes de la lluvia' }, test: v => count(v, 'ark') >= 1 },
+      { id: 'kg-ark-all', game: 'ark', icon: '🌈', name: { en: 'Faithful like Noah', es: 'Fiel como Noé' }, goal: { en: 'Finish every Ark Builder level', es: 'Termina todos los niveles del arca' }, test: all('ark', 3) },
       { id: 'kg-who-10', game: 'who', icon: '🗣️', name: { en: 'Voice of the Bible', es: 'Voces de la Biblia' }, goal: { en: 'Get 10 in a row in Who Said It?', es: 'Acierta 10 seguidas en ¿Quién lo dijo?' }, test: v => (Number(v.best.who) || 0) >= 10 },
     ];
   }
-  return { KEYS, hash, rng, shuffle, scramble, gridWord, wordSearch, lineCells, findWord, orderMarks, isOrdered, moveItem, choices, progress, soundPref, badgeDefs, today };
+  return { KEYS, hash, rng, shuffle, scramble, gridWord, wordSearch, lineCells, findWord, orderMarks, isOrdered, moveItem, choices, verseWords, nextFalling, wordFits, stars, arkDeck, arkStars, progress, soundPref, badgeDefs, today };
 });

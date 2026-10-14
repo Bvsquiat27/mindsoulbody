@@ -9,6 +9,200 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
   return {
+ "ARK": {
+  "animals": {
+   "lion": "🦁",
+   "elephant": "🐘",
+   "giraffe": "🦒",
+   "sheep": "🐑",
+   "cow": "🐄",
+   "horse": "🐎",
+   "camel": "🐪",
+   "rabbit": "🐇",
+   "turtle": "🐢",
+   "fox": "🦊",
+   "bear": "🐻",
+   "monkey": "🐒",
+   "rooster": "🐓",
+   "owl": "🦉",
+   "zebra": "🦓",
+   "pig": "🐖"
+  },
+  "names": {
+   "lion": {
+    "en": "lions",
+    "es": "leones"
+   },
+   "elephant": {
+    "en": "elephants",
+    "es": "elefantes"
+   },
+   "giraffe": {
+    "en": "giraffes",
+    "es": "jirafas"
+   },
+   "sheep": {
+    "en": "sheep",
+    "es": "ovejas"
+   },
+   "cow": {
+    "en": "cows",
+    "es": "vacas"
+   },
+   "horse": {
+    "en": "horses",
+    "es": "caballos"
+   },
+   "camel": {
+    "en": "camels",
+    "es": "camellos"
+   },
+   "rabbit": {
+    "en": "rabbits",
+    "es": "conejos"
+   },
+   "turtle": {
+    "en": "turtles",
+    "es": "tortugas"
+   },
+   "fox": {
+    "en": "foxes",
+    "es": "zorros"
+   },
+   "bear": {
+    "en": "bears",
+    "es": "osos"
+   },
+   "monkey": {
+    "en": "monkeys",
+    "es": "monos"
+   },
+   "rooster": {
+    "en": "roosters",
+    "es": "gallos"
+   },
+   "owl": {
+    "en": "owls",
+    "es": "búhos"
+   },
+   "zebra": {
+    "en": "zebras",
+    "es": "cebras"
+   },
+   "pig": {
+    "en": "pigs",
+    "es": "cerdos"
+   }
+  },
+  "levels": [
+   {
+    "id": "ark1",
+    "pairs": [
+     "lion",
+     "elephant",
+     "giraffe",
+     "sheep"
+    ],
+    "seconds": 50,
+    "verse": {
+     "at": {
+      "en": [
+       1,
+       7,
+       9
+      ],
+      "es": [
+       1,
+       7,
+       9
+      ]
+     },
+     "text": {
+      "en": "there went in two and two unto Noah into the ark, the male and the female, as God had commanded Noah.",
+      "es": "De dos en dos entraron á Noé en el arca: macho y hembra, como mandó Dios á Noé."
+     },
+     "ref": {
+      "en": "Genesis 7:9",
+      "es": "Génesis 7:9"
+     }
+    }
+   },
+   {
+    "id": "ark2",
+    "pairs": [
+     "cow",
+     "horse",
+     "camel",
+     "rabbit",
+     "turtle",
+     "fox"
+    ],
+    "seconds": 60,
+    "verse": {
+     "at": {
+      "en": [
+       1,
+       6,
+       22
+      ],
+      "es": [
+       1,
+       6,
+       22
+      ]
+     },
+     "text": {
+      "en": "Thus did Noah; according to all that God commanded him, so did he.",
+      "es": "E hízolo así Noé; hizo conforme á todo lo que Dios le mandó."
+     },
+     "ref": {
+      "en": "Genesis 6:22",
+      "es": "Génesis 6:22"
+     }
+    }
+   },
+   {
+    "id": "ark3",
+    "pairs": [
+     "bear",
+     "monkey",
+     "rooster",
+     "owl",
+     "zebra",
+     "pig",
+     "horse",
+     "sheep"
+    ],
+    "seconds": 70,
+    "verse": {
+     "at": {
+      "en": [
+       1,
+       9,
+       13
+      ],
+      "es": [
+       1,
+       9,
+       13
+      ]
+     },
+     "text": {
+      "en": "I do set my bow in the cloud, and it shall be for a token of a covenant between me and the earth.",
+      "es": "Mi arco pondré en las nubes, el cual será por señal de convenio entre mí y la tierra."
+     },
+     "ref": {
+      "en": "Genesis 9:13",
+      "es": "Génesis 9:13"
+     }
+    }
+   }
+  ],
+  "lesson": {
+   "en": "God told Noah to build the ark and bring the animals in, two by two. Noah did not argue or wait. He obeyed, step by step, and God kept everyone in the ark safe. When we listen to God and do what He says, even when it is hard, we can trust Him to take care of us.",
+   "es": "Dios le dijo a Noé que construyera el arca y metiera a los animales de dos en dos. Noé no discutió ni esperó. Obedeció paso a paso, y Dios cuidó a todos los que estaban en el arca. Cuando escuchamos a Dios y hacemos lo que nos dice, aunque sea difícil, podemos confiar en que él nos cuida."
+  }
+ },
  "ORDER": [
   {
    "id": "beginnings",
@@ -694,6 +888,182 @@
     "ref": {
      "en": "Matthew 8:25",
      "es": "Mateo 8:25"
+    }
+   }
+  }
+ ],
+ "VERSES": [
+  {
+   "id": "trust",
+   "title": {
+    "en": "When I am afraid",
+    "es": "Cuando tengo miedo"
+   },
+   "verse": {
+    "at": {
+     "en": [
+      19,
+      56,
+      3
+     ],
+     "es": [
+      19,
+      56,
+      3
+     ]
+    },
+    "text": {
+     "en": "What time I am afraid, I will trust in thee.",
+     "es": "En el día que temo, yo en ti confío."
+    },
+    "ref": {
+     "en": "Psalms 56:3",
+     "es": "Salmos 56:3"
+    }
+   }
+  },
+  {
+   "id": "love",
+   "title": {
+    "en": "He loved us first",
+    "es": "Él nos amó primero"
+   },
+   "verse": {
+    "at": {
+     "en": [
+      62,
+      4,
+      19
+     ],
+     "es": [
+      62,
+      4,
+      19
+     ]
+    },
+    "text": {
+     "en": "We love him, because he first loved us.",
+     "es": "Nosotros le amamos á él, porque él nos amó primero."
+    },
+    "ref": {
+     "en": "1 John 4:19",
+     "es": "1 Juan 4:19"
+    }
+   }
+  },
+  {
+   "id": "strength",
+   "title": {
+    "en": "Strength in Christ",
+    "es": "Fuerza en Cristo"
+   },
+   "verse": {
+    "at": {
+     "en": [
+      50,
+      4,
+      13
+     ],
+     "es": [
+      50,
+      4,
+      13
+     ]
+    },
+    "text": {
+     "en": "I can do all things through Christ which strengtheneth me.",
+     "es": "Todo lo puedo en Cristo que me fortalece."
+    },
+    "ref": {
+     "en": "Philippians 4:13",
+     "es": "Filipenses 4:13"
+    }
+   }
+  },
+  {
+   "id": "lamp",
+   "title": {
+    "en": "A lamp for my feet",
+    "es": "Lámpara a mis pies"
+   },
+   "verse": {
+    "at": {
+     "en": [
+      19,
+      119,
+      105
+     ],
+     "es": [
+      19,
+      119,
+      105
+     ]
+    },
+    "text": {
+     "en": "Thy word is a lamp unto my feet, And a light unto my path.",
+     "es": "Lámpara es á mis pies tu palabra, y lumbrera á mi camino."
+    },
+    "ref": {
+     "en": "Psalms 119:105",
+     "es": "Salmos 119:105"
+    }
+   }
+  },
+  {
+   "id": "heart",
+   "title": {
+    "en": "Hidden in my heart",
+    "es": "Guardado en mi corazón"
+   },
+   "verse": {
+    "at": {
+     "en": [
+      19,
+      119,
+      11
+     ],
+     "es": [
+      19,
+      119,
+      11
+     ]
+    },
+    "text": {
+     "en": "Thy word have I hid in mine heart, That I might not sin against thee.",
+     "es": "En mi corazón he guardado tus dichos, para no pecar contra ti."
+    },
+    "ref": {
+     "en": "Psalms 119:11",
+     "es": "Salmos 119:11"
+    }
+   }
+  },
+  {
+   "id": "wholeheart",
+   "title": {
+    "en": "Trust with all your heart",
+    "es": "Confía de todo corazón"
+   },
+   "verse": {
+    "at": {
+     "en": [
+      20,
+      3,
+      5
+     ],
+     "es": [
+      20,
+      3,
+      5
+     ]
+    },
+    "text": {
+     "en": "Trust in the LORD with all thine heart; And lean not unto thine own understanding.",
+     "es": "Fíate de Jehová de todo tu corazón, y no estribes en tu prudencia."
+    },
+    "ref": {
+     "en": "Proverbs 3:5",
+     "es": "Proverbios 3:5"
     }
    }
   }
