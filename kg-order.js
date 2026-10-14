@@ -6,7 +6,7 @@
   const { t, esc, name, sound, buzz, prog, award, render, verseHtml, gameHead, reduced, celebrate } = K._helpers;
   const D = () => window.MsbKidGamesData, C = () => window.MsbKidGamesCore;
   const sets = () => D().ORDER;
-  const STORY_ART_V2 = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
+  const STORY_ART_V2 = ['creation', 'noah', 'stars', 'ladder', 'redsea', 'samuel', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
   const pic = id => `img/stories/${STORY_ART_V2.includes(id) ? id + '-v2' : id}-512.webp`;
 
   function start() { return { view: 'pick', at: 0, cards: [], marks: null, tries: 0, won: false, msg: '' }; }

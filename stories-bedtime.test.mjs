@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import vm from 'node:vm';
 
-const V2 = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
+const V2 = ['creation', 'noah', 'stars', 'ladder', 'redsea', 'samuel', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
 function load() {
   const listeners = [];
   const ctx = { window: {}, document: { addEventListener: (t, f, c) => listeners.push([t, f, c]), getElementById: () => null, querySelector: () => null }, navigator: {}, console, setTimeout, clearTimeout };

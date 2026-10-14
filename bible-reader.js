@@ -5,7 +5,7 @@
   const TRANSLATION_KEY = 'msb_bible_translation';
   const RVR_CACHE_NAME = 'msb-bible-rvr1909-4';
   const STORIES_CACHE_NAME = 'msb-stories-1';
-  const STORY_ART_V2 = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
+  const STORY_ART_V2 = ['creation', 'noah', 'stars', 'ladder', 'redsea', 'samuel', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
   const STORY_ART_FILES = ['creation', 'noah', 'stars', 'ladder', 'joseph', 'moses', 'redsea', 'samuel', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter', 'ruth', 'elijah', 'esther', 'baptism', 'samaritan', 'zacchaeus', 'bartimaeus'].map(id => (STORY_ART_V2.includes(id) ? `${id}-v2` : id)).flatMap(id => [`img/stories/${id}.webp`, `img/stories/${id}-512.webp`]);
   const fileName = id => `bible/${String(id).padStart(2, '0')}.json`;
   function activeTranslation(id) { return reader.translation === 'rvr' && id <= 66 ? 'rvr' : 'kjv'; }
@@ -340,6 +340,32 @@
     button.textContent = offlineButtonLabel();
     button.disabled = !!s.busy || books >= BIBLE_BOOK_TOTAL;
   }
+  /* A device that saved everything earlier only has the story pictures of
+     that time. Fetch any picture from the current list that is missing
+     (for example repainted art under a new name), quietly, in the background. */
+  let storyArtFilling = null;
+  function fillStoryArt(){
+    if (storyArtFilling || !('caches' in window)) return storyArtFilling;
+    storyArtFilling = (async () => {
+      let added = 0;
+      try {
+        const cache = await caches.open(STORIES_CACHE_NAME);
+        for (const file of STORY_ART_FILES) {
+          const url = new URL(file, location.href).href;
+          if (await cache.match(url)) continue;
+          try {
+            const response = await fetch(url);
+            if (!response.ok) continue;
+            await cache.put(url, new Response(await response.arrayBuffer(), { headers: { 'Content-Type': 'image/webp' } }));
+            added += 1;
+          } catch { /* offline now: try again next time */ }
+        }
+      } catch { /* no cache storage */ }
+      storyArtFilling = null;
+      return added;
+    })();
+    return storyArtFilling;
+  }
   async function refreshOffline(){
     if (reader.offlineBusy) return;
     reader.offline = Object.assign({books:0, bytes:0, scanning:true, busy:false, done:0}, reader.offline, {scanning:true});
@@ -362,6 +388,7 @@
         bytes += blob.size;
       }
       reader.offline = {books:books.length, bytes, scanning:false, busy:false, done:books.length};
+      if (books.length >= BIBLE_BOOK_TOTAL) fillStoryArt();
     } catch {
       reader.offline = {books:0, bytes:0, scanning:false, busy:false};
     }

@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v144';
+const CACHE_VERSION = 'v146';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -101,7 +101,7 @@ const DATA_FILES = [
 // Only the small covers are precached. The full-size pictures are cached
 // the first time a story is opened; offline, a missing one falls back to its
 // small cover.
-const STORY_ART_V2 = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
+const STORY_ART_V2 = ['creation', 'noah', 'stars', 'ladder', 'redsea', 'samuel', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
 const storyArt = (id) => (STORY_ART_V2.includes(id) ? `${id}-v2` : id);
 const STORY_FILES = STORY_IDS.map((id) => `./img/stories/${storyArt(id)}-512.webp`)
   .concat(COLORING_IDS.map((id) => `./img/coloring/${id}-400.webp`))
@@ -122,6 +122,8 @@ const isBibleBook = (url) => /\/bible\/(?:index|\d\d)\.json$/.test(url.pathname)
 const isRvrBook = (url) => /\/bible\/rvr\/(?:index|\d\d)\.json$/.test(url.pathname);
 const isFatherNotes = (url) => /\/bible\/fathers\/\d\d\.json$/.test(url.pathname);
 const isStoryArt = (url) => /\/img\/(?:stories\/[a-z0-9-]+\.webp|coloring\/[a-z0-9-]+\.(?:png|webp))$/.test(url.pathname);
+const CURRENT_STORY_ART = new Set(STORY_IDS.flatMap((id) => [`${storyArt(id)}.webp`, `${storyArt(id)}-512.webp`]));
+const isOldStoryArt = (url) => { const m = url.pathname.match(/\/img\/stories\/([a-z0-9-]+\.webp)$/); return !!m && !CURRENT_STORY_ART.has(m[1]); };
 const isWorshipAudio = (url) => /\/audio\/[a-z0-9-]+\.(?:ogg|mp3)$/.test(url.pathname);
 const isStudyNotes = (url) => url.pathname.endsWith('/study-notes.json');
 const isDataRequest = (url) => url.pathname.includes('/data/');
@@ -150,10 +152,16 @@ async function preserveStories(keys) {
     const cache = await caches.open(key);
     const requests = await cache.keys();
     for (const request of requests) {
-      if (!isStoryArt(new URL(request.url))) continue;
+      const url = new URL(request.url);
+      if (!isStoryArt(url) || isOldStoryArt(url)) continue;
       const hit = await cache.match(request);
       if (hit) await stories.put(request, hit.clone());
     }
+  }
+  /* Drop story pictures whose names are no longer used (art that was
+     repainted under a new name), so old files do not pile up on phones. */
+  for (const request of await stories.keys()) {
+    if (isOldStoryArt(new URL(request.url))) await stories.delete(request);
   }
 }
 

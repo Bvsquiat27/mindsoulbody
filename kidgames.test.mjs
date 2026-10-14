@@ -74,7 +74,7 @@ test('story order: picture sets are in Bible order, use the app story art, and n
     assert.ok(set.cards.length >= 5 && set.cards.length <= 6, set.id);
     const pos = set.cards.map(id => bibleOrder.indexOf(id));
     assert.ok(pos.every(p => p >= 0)); assert.deepEqual(pos, pos.slice().sort((a, b) => a - b), `${set.id} order`);
-    for (const id of set.cards) { assert.ok(existsSync(new URL(`./img/stories/${['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'].includes(id) ? id + '-v2' : id}-512.webp`, import.meta.url)), id); assert.ok(D.PICTURES[id].en && D.PICTURES[id].es); }
+    for (const id of set.cards) { assert.ok(existsSync(new URL(`./img/stories/${['creation', 'noah', 'stars', 'ladder', 'redsea', 'samuel', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'].includes(id) ? id + '-v2' : id}-512.webp`, import.meta.url)), id); assert.ok(D.PICTURES[id].en && D.PICTURES[id].es); }
     for (let k = 0; k < 30; k += 1) assert.ok(!C.isOrdered(C.scramble(set.cards, C.rng(k)), set.cards));
   }
   assert.deepEqual(C.moveItem(['a', 'b', 'c'], 0, 2), ['b', 'c', 'a']);
