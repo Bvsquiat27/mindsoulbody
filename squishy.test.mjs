@@ -1070,3 +1070,19 @@ test('the Ten Commandments tablets are legendary: every Story Order set plus 3 s
   const kept = memoryStorage(); kept.setItem('msb_squishy_unlocked', JSON.stringify(['tablets']));
   assert.ok(C.progress(kept, SQUISHIES).unlocked().includes('tablets'), 'already-won tablets stay');
 });
+
+test('every legendary squishy has a story Trick button with its own animation, sound and vibration', () => {
+  const ui = read('./squishy.js'), fx = require('./squishy-fx.js'), i18n = read('./i18n.js');
+  const legends = SQUISHIES.filter(x => C.tierOf(x.id) === 'legendary').map(x => x.id);
+  assert.deepEqual(legends.slice().sort(), ['bush', 'chariot', 'lamp', 'tablets', 'tomb']);
+  for (const id of legends) {
+    const def = fx.STORIES[id]; assert.ok(def && def.dur >= 3000 && typeof def.over === 'function' && typeof def.pose === 'function', id);
+    assert.ok(new RegExp(`\\n    ${id}: \\{ text: '([^']+)', story: '([^']+)'`).test(ui), id);
+    const [, text, story] = ui.match(new RegExp(`\\n    ${id}: \\{ text: '([^']+)', story: '([^']+)'`));
+    for (const k of [text, story]) assert.ok(i18n.includes(`"${k}":`), `${id} Spanish: ${k}`);
+  }
+  assert.match(ui, /isLegend\(x\.id\) && STORY\[x\.id\] \? `<button type="button" class="sq-story" data-sq-story>/);
+  assert.match(ui, /vibrate\(reduced\(\) \? \[20\] : st\.buzz\)/);
+  assert.doesNotMatch(ui.slice(ui.indexOf('function doStory'), ui.indexOf('function doStory') + 600), /trickFound/, 'story tricks do not change the secret-trick badges');
+  assert.equal(C.KITS ? C.KITS.bush.trick : 'i-am', 'i-am', 'the bush keeps its secret gesture');
+});
