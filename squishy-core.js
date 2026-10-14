@@ -4,7 +4,7 @@
 (function (root) {
   'use strict';
 
-  const KEYS = { sounds: 'msb_squishy_sounds', unlocked: 'msb_squishy_unlocked', stars: 'msb_squishy_stars', stats: 'msb_squishy_stats', match: 'msb_match_progress', trade: 'msb_squishy_trade', lessonSeen: 'msb_squishy_lesson_seen' };
+  const KEYS = { sounds: 'msb_squishy_sounds', unlocked: 'msb_squishy_unlocked', stars: 'msb_squishy_stars', stats: 'msb_squishy_stats', match: 'msb_match_progress', trade: 'msb_squishy_trade', lessonSeen: 'msb_squishy_lesson_seen', away: 'msb_squishy_away' };
 
   function readList(storage, key) {
     try { const v = JSON.parse(storage.getItem(key) || '[]'); return Array.isArray(v) ? v.filter(x => typeof x === 'string') : []; } catch { return []; }
@@ -330,7 +330,7 @@
 
   /* Play counts kept for the challenges (one small JSON object). */
   function stats(storage) {
-    const blank = () => ({ memoryWins: 0, memoryBest: 0, questionWins: 0, perfectRounds: 0, squishes: 0, days: [], bestStreak: 0, badges: {}, tricks: [], plays: {}, colored: [] });
+    const blank = () => ({ memoryWins: 0, memoryBest: 0, questionWins: 0, perfectRounds: 0, squishes: 0, days: [], bestStreak: 0, badges: {}, tricks: [], plays: {}, colored: [], playDays: 0, colorSaves: 0 });
     const nat = v => (Number.isFinite(v) && v > 0 ? Math.floor(v) : 0);
     function get() {
       let v;
@@ -342,6 +342,7 @@
       if (v.badges && typeof v.badges === 'object') for (const [k, d] of Object.entries(v.badges)) if (typeof d === 'string') out.badges[k] = d;
       out.tricks = Array.isArray(v.tricks) ? [...new Set(v.tricks.filter(k => typeof k === 'string' && KITS[k]))] : [];
       if (v.plays && typeof v.plays === 'object') for (const [k, n] of Object.entries(v.plays)) if (KITS[k]) out.plays[k] = nat(n);
+      out.playDays = nat(v.playDays); out.colorSaves = nat(v.colorSaves);
       out.colored = Array.isArray(v.colored) ? [...new Set(v.colored.filter(k => typeof k === 'string' && /^[\w:.-]{1,60}$/.test(k)))].slice(0, 60) : [];
       return out;
     }
@@ -355,12 +356,12 @@
       trickFound(id) { const v = get(); if (!KITS[id] || v.tricks.includes(id)) return false; v.tricks.push(id); save(v); return true; },
       played(date) {
         const v = get(), k = dayKey(date);
-        if (!v.days.includes(k)) v.days = [...v.days, k].sort().slice(-30);
+        if (!v.days.includes(k)) { v.days = [...v.days, k].sort().slice(-30); v.playDays += 1; }
         v.bestStreak = Math.max(v.bestStreak, longestStreak(v.days));
         return save(v);
       },
       /* a coloring page saved (counted once per page) */
-      colored(page) { const v = get(); if (typeof page === 'string' && /^[\w:.-]{1,60}$/.test(page) && !v.colored.includes(page)) { v.colored.push(page); save(v); } return v; },
+      colored(page) { const v = get(); if (typeof page === 'string' && /^[\w:.-]{1,60}$/.test(page)) { v.colorSaves += 1; if (!v.colored.includes(page)) v.colored.push(page); save(v); } return v; },
       earn(id, date) { const v = get(); if (!v.badges[id]) { v.badges[id] = dayKey(date); save(v); return true; } return false; }
     };
   }
@@ -379,6 +380,70 @@
       for (const g of KID_GAMES) { done[g] = Array.isArray(v.done && v.done[g]) ? new Set(v.done[g].filter(x => typeof x === 'string')).size : 0; best[g] = Math.max(0, Math.floor(Number(v.best && v.best[g]) || 0)); }
       return { done, best };
     } catch { return { done: {}, best: {} }; }
+  }
+
+  /* ---------- Winning a squishy back after trading it away ----------
+     Trading never blocks a squishy for good. When one leaves this phone, the
+     game counters are noted; it comes back (with its normal celebration) once
+     its goal is met again with fresh play after the trade:
+       a counting goal (win 10 rounds, color 3 pages…) needs the full count again;
+       a one-time goal (a best score, a whole chapter…) needs fresh rounds of
+       that same game (AGAIN below).
+     Old progress alone never brings it back instantly. */
+  const AGAIN = { memoryFast: 3, perfectLegend: 0, matchChapter: 5, kgBest: 1, kgAll: 7, lessons: 0, streak: 0, tricks: 0 };
+  function counters(storage) {
+    const st = stats(storage).get(), kid = (() => { try { const v = JSON.parse(storage.getItem('msb_kidgames') || '{}') || {}; return v.plays && typeof v.plays === 'object' ? v.plays : {}; } catch { return {}; } })();
+    let matchWins = 0, trades = 0;
+    try { matchWins = Math.max(0, Math.floor(Number((JSON.parse(storage.getItem(KEYS.match) || '{}') || {}).wins) || 0)); } catch { matchWins = 0; }
+    try { const t = JSON.parse(storage.getItem(KEYS.trade)) || {}; trades = Array.isArray(t.got) ? t.got.length : 0; } catch { trades = 0; }
+    const kg = {}; for (const g of KID_GAMES) kg[g] = Math.max(0, Math.floor(Number(kid[g]) || 0));
+    return { memoryWins: st.memoryWins, questionWins: st.questionWins, perfectRounds: st.perfectRounds, squishes: st.squishes, playDays: st.playDays, colorSaves: st.colorSaves, matchWins, trades, kg, stars: readList(storage, KEYS.stars).length };
+  }
+  /* fresh units of play for a goal, from two counter snapshots */
+  function freshUnits(ch, now, base) {
+    const d = k => Math.max(0, (now[k] || 0) - (base[k] || 0));
+    switch (ch.kind) {
+      case 'memoryWins': case 'memoryFast': return d('memoryWins');
+      case 'questionWins': return d('questionWins');
+      case 'perfectRound': case 'perfectLegend': return d('perfectRounds');
+      case 'squishes': return d('squishes');
+      case 'streak': return d('playDays');
+      case 'lessons': return d('questionWins');
+      case 'matchChapter': case 'matchThreeStars': return d('matchWins');
+      case 'colored': return d('colorSaves');
+      case 'trades': return d('trades');
+      case 'kgDone': case 'kgBest': return Math.max(0, (now.kg[ch.game] || 0) - ((base.kg || {})[ch.game] || 0));
+      case 'kgAll': return KID_GAMES.filter(g => (now.kg[g] || 0) > ((base.kg || {})[g] || 0)).length;
+      default: return 0;
+    }
+  }
+  const againNeed = ch => (AGAIN[ch.kind] ? AGAIN[ch.kind] : Math.max(1, ch.n || 1));
+  function awayList(storage) {
+    try { const v = JSON.parse(storage.getItem(KEYS.away) || '{}'); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; } catch { return {}; }
+  }
+  /* call when a squishy leaves this phone in a trade (the Trade Room) */
+  function tradeAway(storage, squishies, id) {
+    if (!KITS[id] || id === 'lamp' || !squishies.some(x => x.id === id && x.locked)) return false;
+    const list = readList(storage, KEYS.unlocked).filter(x => x !== id);
+    writeList(storage, KEYS.unlocked, list);
+    const away = awayList(storage);
+    away[id] = { base: counters(storage), ts: Date.now() };
+    try { storage.setItem(KEYS.away, JSON.stringify(away)); } catch { /* blocked */ }
+    return true;
+  }
+  /* call when one comes back by trade: nothing to win back any more */
+  function cameBack(storage, id) {
+    const away = awayList(storage);
+    if (!away[id]) return false;
+    delete away[id];
+    try { storage.setItem(KEYS.away, JSON.stringify(away)); } catch { /* blocked */ }
+    return true;
+  }
+  function wonBackProgress(storage, ch) {
+    const a = awayList(storage)[ch.id];
+    if (!a || !a.base) return null;
+    const need = againNeed(ch), have = Math.min(need, freshUnits(ch, counters(storage), a.base));
+    return { have, need, done: have >= need, again: true };
   }
 
   /* How far along a challenge is: { have, need, done }. */
@@ -434,7 +499,9 @@
       const ctx = challengeContext(storage, squishies);
       if (challengeProgress(ch, ctx).done) {
         st.earn(ch.id, date);
-        if (p.unlock(ch.id)) opened.push(ch.id);
+        const back = wonBackProgress(storage, ch);
+        if (back && !back.done) continue;
+        if (p.unlock(ch.id)) { opened.push(ch.id); if (back) cameBack(storage, ch.id); }
       }
     }
     const ctx = challengeContext(storage, squishies);
@@ -817,7 +884,7 @@
       }
     };
   }
-  const api = { KID_GAMES, kidGames, lessonSeen, FEEL, BUZZ, feelFor, VIBE_LEVELS, VIBE_SCALE, vibePref, scalePattern, feelPattern, KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
+  const api = { KID_GAMES, kidGames, AGAIN, counters, tradeAway, cameBack, wonBackProgress, awayList, lessonSeen, FEEL, BUZZ, feelFor, VIBE_LEVELS, VIBE_SCALE, vibePref, scalePattern, feelPattern, KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbSquishyCore = api;
 })(typeof self !== 'undefined' ? self : this);

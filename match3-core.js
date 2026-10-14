@@ -352,7 +352,9 @@
       /* the level after the highest win is always open, so a player who
          finished the old last level finds the new ones unlocked */
       const won = Object.keys(st).map(Number).reduce((a, b) => Math.max(a, b), 0);
-      return { open: Math.max(open, Math.min(total, won + 1)), stars: st, best };
+      /* wins counts every level won, replays too (squishies won back after a trade) */
+      const wins = Number.isInteger(v.wins) && v.wins > 0 ? v.wins : 0;
+      return { open: Math.max(open, Math.min(total, won + 1)), stars: st, best, wins };
     };
     return {
       get: clean,
@@ -362,6 +364,7 @@
         v.stars[n] = Math.max(v.stars[n] || 0, starCount);
         v.best[n] = Math.max(v.best[n] || 0, score);
         v.open = Math.max(v.open, Math.min(total, n + 1));
+        v.wins = (v.wins || 0) + 1;
         write(v);
         return v;
       },
