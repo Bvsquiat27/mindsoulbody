@@ -807,6 +807,9 @@
     show,
     stories: () => stories.map(item => ({ ...item })),
     verses: VERSES,
+    /* shared art names (repainted art ships as <id>-v2) */
+    artName,
+    cover: id => `img/stories/${artName(id)}-512.webp`,
     bedtimeOn: () => !!bedtime,
     /* Reopen a coloring page, optionally with a drawing from My drawings loaded. */
     openColoring(id, drawingId) {

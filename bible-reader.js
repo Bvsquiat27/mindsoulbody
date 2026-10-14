@@ -344,6 +344,28 @@
      that time. Fetch any picture from the current list that is missing
      (for example repainted art under a new name), quietly, in the background. */
   let storyArtFilling = null;
+  /* Refill requests carry this header so the service worker answers 503 when
+     offline instead of its small-cover fallback. */
+  const REFILL_HEADER = 'X-MSB-Refill';
+  /* Store only the real file: a 200 whose final URL is the name asked for. */
+  function refillOk(response, url){
+    if (!response || !response.ok || response.status !== 200) return false;
+    if (response.url && new URL(response.url).pathname !== new URL(url).pathname) return false;
+    const type = response.headers && response.headers.get('Content-Type');
+    return !type || /^image\//.test(type);
+  }
+  /* Older builds could store the 512 cover under the full-size name while
+     offline. A full-size entry with the same bytes as its cover is such a copy. */
+  async function isCoverCopy(cache, file, hit){
+    if (/-512\.webp$/.test(file)) return false;
+    const cover = await cache.match(new URL(file.replace(/\.webp$/, '-512.webp'), location.href).href);
+    if (!cover) return false;
+    const [a, b] = await Promise.all([hit.clone().arrayBuffer(), cover.clone().arrayBuffer()]);
+    if (a.byteLength !== b.byteLength) return false;
+    const x = new Uint8Array(a), y = new Uint8Array(b);
+    for (let i = 0; i < x.length; i += 1) if (x[i] !== y[i]) return false;
+    return true;
+  }
   function fillStoryArt(){
     if (storyArtFilling || !('caches' in window)) return storyArtFilling;
     storyArtFilling = (async () => {
@@ -352,10 +374,12 @@
         const cache = await caches.open(STORIES_CACHE_NAME);
         for (const file of STORY_ART_FILES) {
           const url = new URL(file, location.href).href;
-          if (await cache.match(url)) continue;
+          const hit = await cache.match(url);
+          if (hit && !(await isCoverCopy(cache, file, hit))) continue;
+          if (hit) await cache.delete(url);
           try {
-            const response = await fetch(url);
-            if (!response.ok) continue;
+            const response = await fetch(url, { headers: { [REFILL_HEADER]: '1' }, cache: 'no-store' });
+            if (!refillOk(response, url)) continue;
             await cache.put(url, new Response(await response.arrayBuffer(), { headers: { 'Content-Type': 'image/webp' } }));
             added += 1;
           } catch { /* offline now: try again next time */ }

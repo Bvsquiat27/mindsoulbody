@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v147';
+const CACHE_VERSION = 'v149';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -124,6 +124,7 @@ const isFatherNotes = (url) => /\/bible\/fathers\/\d\d\.json$/.test(url.pathname
 const isStoryArt = (url) => /\/img\/(?:stories\/[a-z0-9-]+\.webp|coloring\/[a-z0-9-]+\.(?:png|webp))$/.test(url.pathname);
 const CURRENT_STORY_ART = new Set(STORY_IDS.flatMap((id) => [`${storyArt(id)}.webp`, `${storyArt(id)}-512.webp`]));
 const isOldStoryArt = (url) => { const m = url.pathname.match(/\/img\/stories\/([a-z0-9-]+\.webp)$/); return !!m && !CURRENT_STORY_ART.has(m[1]); };
+const REFILL_HEADER = 'X-MSB-Refill';
 const isWorshipAudio = (url) => /\/audio\/[a-z0-9-]+\.(?:ogg|mp3)$/.test(url.pathname);
 const isStudyNotes = (url) => url.pathname.endsWith('/study-notes.json');
 const isDataRequest = (url) => url.pathname.includes('/data/');
@@ -311,6 +312,9 @@ self.addEventListener('fetch', (event) => {
         if (res.ok) cache.put(request, res.clone());
         return res;
       }).catch(() => {
+        /* A refill from "save offline" wants the real file or nothing: never
+           hand it the small cover under the full-size name. */
+        if (request.headers.get(REFILL_HEADER)) return new Response('', { status: 503, statusText: 'Offline' });
         const small = url.pathname.replace(/(\/img\/stories\/[a-z]+(?:-v\d+)?)\.webp$/, '$1-512.webp').replace(/(\/img\/coloring\/[a-z]+)\.png$/, '$1-400.webp');
         return (small !== url.pathname ? cache.match(new URL(small, url.origin).href) : Promise.resolve(null))
           .then((hit) => hit || offlineResponse(url));
