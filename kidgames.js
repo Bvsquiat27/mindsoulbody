@@ -229,6 +229,8 @@
 
   const api = {
     open(root) { ui.root = root; render(); },
+    /* open one game straight away (a locked squishy's Go button) */
+    openGame(id) { const g = GAMES.find(x => x.id === id); if (!ui.root || !g) return false; ui.game = g.id; ui.state = g.start ? g.start() : {}; prog().played(g.id); render(); window.scrollTo({ top: 0, behavior: 'auto' }); return true; },
     close() { const g = GAMES.find(x => x.id === ui.game); if (g && g.leave) g.leave(ui); ui.root = null; ui.game = null; ui.state = null; },
     /* Badges for the Profile "Kids' badges" card */
     kidBadges() {

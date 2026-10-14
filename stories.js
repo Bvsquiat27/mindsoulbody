@@ -358,6 +358,22 @@
       window.scrollTo({ top: 0, behavior: 'auto' });
       return;
     }
+    /* a locked squishy's Go button: straight to the game that unlocks it */
+    const go = event.target.closest('[data-sq-go-match], [data-sq-go-game], [data-sq-go-color]');
+    if (go) {
+      squishyOn = false;
+      if (window.MsbSquishy) MsbSquishy.close();
+      bedtime = null;
+      if (window.MsbSpeech) MsbSpeech.stop();
+      matchOn = go.hasAttribute('data-sq-go-match') && !!window.MsbMatch;
+      kidGamesOn = go.hasAttribute('data-sq-go-game') && !!window.MsbKidGames;
+      refresh();
+      const game = go.dataset.sqGoGame;
+      if (kidGamesOn && game && game !== 'hub') MsbKidGames.openGame(game);
+      else if (go.hasAttribute('data-sq-go-color')) { const book = document.querySelector('.coloring-book'); if (book) { book.scrollIntoView({ block: 'start' }); return; } }
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
     if (event.target.closest('[data-squishy-open]') && window.MsbSquishy) {
       squishyOn = true;
       kidGamesOn = false;
@@ -371,6 +387,7 @@
     if (event.target.closest('[data-match-open]') && window.MsbMatch) {
       matchOn = true;
       kidGamesOn = false;
+      squishyOn = false;
       if (window.MsbKidGames) MsbKidGames.close();
       bedtime = null;
       if (window.MsbSpeech) MsbSpeech.stop();

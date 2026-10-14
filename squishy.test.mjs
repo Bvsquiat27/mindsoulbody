@@ -1086,3 +1086,14 @@ test('every legendary squishy has a story Trick button with its own animation, s
   assert.doesNotMatch(ui.slice(ui.indexOf('function doStory'), ui.indexOf('function doStory') + 600), /trickFound/, 'story tricks do not change the secret-trick badges');
   assert.equal(C.KITS ? C.KITS.bush.trick : 'i-am', 'i-am', 'the bush keeps its secret gesture');
 });
+
+test('a locked squishy shows its challenge with a Go button to the game that unlocks it (EN/ES)', () => {
+  const sq = readFileSync(new URL('./squishy.js', import.meta.url), 'utf8'), st = readFileSync(new URL('./stories.js', import.meta.url), 'utf8'), i18n = readFileSync(new URL('./i18n.js', import.meta.url), 'utf8');
+  const C2 = require('./squishy-core.js');
+  const kinds = [...new Set(C2.CHALLENGES.filter(c => c.id && require('./squishy-data.js').SQUISHIES.some(s => s.id === c.id)).map(c => c.kind))];
+  for (const k of kinds) if (k !== 'final') assert.match(sq, new RegExp(`case '${k}'`), `${k} has a Go destination`);
+  for (const a of ['data-sq-go-view', 'data-sq-go-play', 'data-sq-go-match', 'data-sq-go-game', 'data-sq-go-color']) assert.ok(sq.includes(a), a);
+  for (const a of ['data-sq-go-match', 'data-sq-go-game', 'data-sq-go-color']) assert.ok(st.includes(a), `stories handles ${a}`);
+  assert.match(readFileSync(new URL('./kidgames.js', import.meta.url), 'utf8'), /openGame\(id\)/);
+  for (const k of ['Play Memory', 'Play Questions', 'Play with a squishy', 'Play Manna Match', 'Play {game}', 'Open the Bible games', 'Open the coloring book']) assert.ok(i18n.includes(`"${k}": "`), k);
+});

@@ -406,9 +406,29 @@
       return `<button type="button" class="sq-tile${s.glow ? ' glow' : ''}${tierCls}" data-sq-pick="${s.id}" aria-label="${esc(L('Play with {name}', { name: nameOf(s) }) + (TIER_LABEL[tier] ? ' (' + L(TIER_LABEL[tier]) + ')' : '') + (stars.includes(s.id) ? ' ⭐' : ''))}">${tag}${s.glow ? '<span class="sq-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' : ''}<span class="sq-art">${A().svg(s.id)}</span>${stars.includes(s.id) ? '<span class="sq-star" aria-hidden="true">⭐</span>' : ''}${tricksFound.includes(s.id) ? '<span class="sq-trick-dot" aria-hidden="true">✨</span>' : ''}${gifts.includes(s.id) ? `<span class="sq-gift" title="${esc(L('A gift from a friend'))}">🎀</span>` : ''}<span class="sq-name">${esc(nameOf(s))}</span></button>`;
     }).join('');
     return `<p class="sq-hint">${esc(L('Tap a squishy to play with it: squish it, stretch it, and learn its Bible story.'))}</p>
-      ${ui.msg ? `<p class="sq-msg" role="status">${esc(ui.msg)}</p>` : ''}
+      ${ui.msg ? `<p class="sq-msg" role="status">${esc(ui.msg)}</p>${goHtml()}` : ''}
       <h2 class="sq-h2">${esc(L('Squishy shelf'))}</h2><div class="sq-grid">${tiles}</div>
       ${p.nextLocked() ? `<p class="small muted sq-unlock-note">${esc(L('Each locked squishy has its own challenge. Rare ones are harder!'))}</p>` : ''}`;
+  }
+
+  /* Where a locked squishy's challenge is played: [label, button attributes] */
+  const KG_NAME = { wordsearch: 'Bible Word Search', map: 'Map Journey', verse: 'Verse Builder', who: 'Who Said It?', order: 'Story Order', sling: 'David’s Sling' };
+  function goFor(ch) {
+    if (!ch) return null;
+    switch (ch.kind) {
+      case 'memoryWins': case 'memoryFast': return [L('Play Memory'), 'data-sq-go-view="memory"'];
+      case 'lessons': case 'questionWins': case 'perfectRound': case 'perfectLegend': return [L('Play Questions'), 'data-sq-go-view="questions"'];
+      case 'squishes': case 'streak': return [L('Play with a squishy'), 'data-sq-go-play'];
+      case 'matchChapter': case 'matchThreeStars': return [L('Play Manna Match'), 'data-sq-go-match'];
+      case 'kgDone': case 'kgBest': case 'tabletsLegend': return [L('Play {game}', { game: L(KG_NAME[ch.game] || 'Bible games') }), `data-sq-go-game="${ch.game}"`];
+      case 'kgAll': return [L('Open the Bible games'), 'data-sq-go-game="hub"'];
+      case 'colored': return [L('Open the coloring book'), 'data-sq-go-color'];
+      default: return null;
+    }
+  }
+  function goHtml() {
+    const g = ui.go && goFor(C().challengeFor(ui.go));
+    return g ? `<p class="sq-go-row"><button type="button" class="primary sq-go" ${g[1]}>▶ ${esc(g[0])}</button></p>` : '';
   }
 
   /* Achievements: every badge, earned or not, with progress. */
@@ -1159,7 +1179,7 @@
     if (t.closest('[data-sq-trade-redeem]')) { redeemTrade(); return; }
     if (t.closest('[data-sq-trade-back]')) { ui.trade.got = null; ui.trade.code = null; ui.trade.pick = null; render(); ui.root.querySelector('[data-sq-trade-grid]')?.scrollIntoView({ block: 'start' }); return; }
     const view = t.closest('[data-sq-view]');
-    if (view) { ui.view = view.dataset.sqView; ui.msg = ''; if (ui.view === 'guess') newGuess(); render(); return; }
+    if (view) { ui.view = view.dataset.sqView; ui.msg = ''; ui.go = null; if (ui.view === 'guess') newGuess(); render(); return; }
     const snd = t.closest('[data-sq-sound]');
     if (snd) {
       const on = sounds().set(!sounds().get());
@@ -1168,7 +1188,7 @@
       return;
     }
     const pick = t.closest('[data-sq-pick]');
-    if (pick) { ui.msg = ''; openPlay(pick.dataset.sqPick); return; }
+    if (pick) { ui.msg = ''; ui.go = null; openPlay(pick.dataset.sqPick); return; }
     if (t.closest('[data-sq-play-back]')) { closePlay(); if (window.MsbSpeech) MsbSpeech.stop(); render(); ui.root.querySelector('.sq-grid')?.scrollIntoView({ block: 'center' }); return; }
     if (t.closest('[data-sq-story]') && pv) { doStory(); return; }
     if (t.closest('[data-sq-trick]') && pv) {
@@ -1181,8 +1201,11 @@
     if (vb) { const v = vibe().set(vb.dataset.sqVibe); vb.parentElement.querySelectorAll('[data-sq-vibe]').forEach(b => { const on = b.dataset.sqVibe === v; b.classList.toggle('on', on); b.setAttribute('aria-checked', String(on)); }); if (pv) feelBuzz('release', 0.7); return; }
     if (t.closest('[data-sq-learn]') && pv && sheet) { sheet.innerHTML = cardHtml(pv.x); sheet.hidden = false; play('twinkle'); sheet.querySelector('button')?.focus(); return; }
     if (t.closest('[data-sq-sheet-close]') && sheet) { sheet.hidden = true; if (window.MsbSpeech) MsbSpeech.stop(); pv && pv.canvas.focus({ preventScroll: true }); return; }
+    const goView = t.closest('[data-sq-go-view]');
+    if (goView) { ui.view = goView.dataset.sqGoView; ui.msg = ''; ui.go = null; if (ui.view === 'memory') newMemory(); else newRound(); render(); window.scrollTo({ top: 0, behavior: 'auto' }); return; }
+    if (t.closest('[data-sq-go-play]')) { ui.msg = ''; ui.go = null; const first = prog().unlocked()[0] || 'lamb'; render(); openPlay(first); return; }
     const lockedTile = t.closest('[data-sq-locked]');
-    if (lockedTile) { const ch = C().challengeFor(lockedTile.dataset.sqLocked), back = ch ? C().wonBackProgress(store2(), ch) : null; ui.msg = back ? `${L('Win it back: {goal}', { goal: againText(ch, back.need) })} (${back.have} / ${back.need})` : ch ? L('To unlock it: {task}', { task: challengeText(ch) }) : L('Locked'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); return; }
+    if (lockedTile) { ui.go = lockedTile.dataset.sqLocked; const ch = C().challengeFor(lockedTile.dataset.sqLocked), back = ch ? C().wonBackProgress(store2(), ch) : null; ui.msg = back ? `${L('Win it back: {goal}', { goal: againText(ch, back.need) })} (${back.have} / ${back.need})` : ch ? L('To unlock it: {task}', { task: challengeText(ch) }) : L('Locked'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); return; }
     const star = t.closest('[data-sq-star]');
     if (star) {
       prog().addStar(star.dataset.sqStar); play('twinkle'); vibrate(15); afterProgress(false);
