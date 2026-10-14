@@ -1,3 +1,4 @@
+import { appHtml } from './app-scripts.test-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -99,7 +100,7 @@ test('progress lives in one msb_ key that Export/Restore covers; badges get a da
 });
 
 test('games are wired in, precached, in Spanish, and follow sound, vibration and reduced-motion settings', () => {
-  const html = read('./index.html'), sw = read('./sw.js'), stories = read('./stories.js'), ui = read('./kidgames.js');
+  const html = appHtml(), sw = read('./sw.js'), stories = read('./stories.js'), ui = read('./kidgames.js');
   const files = ['kidgames-data.js', 'kidgames-core.js', 'kidgames.js', 'kg-wordsearch.js', 'kg-order.js', 'kg-who.js', 'kg-verse.js', 'kg-map.js', 'kg-sling.js'];
   for (const f of files) { assert.ok(html.includes(`<script src="${f}" defer></script>`), f); assert.ok(sw.includes(`'./${f}'`), f); }
   assert.ok(html.indexOf('kg-sling.js') < html.indexOf('stories.js'));

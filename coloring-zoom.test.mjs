@@ -1,3 +1,4 @@
+import { appHtml } from './app-scripts.test-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -107,7 +108,7 @@ test('effects, sounds and vibration stay out of the saved picture and work offli
   const fx = readFileSync(new URL('./coloring-fx.js', import.meta.url), 'utf8');
   const col = readFileSync(new URL('./coloring.js', import.meta.url), 'utf8');
   const sw = readFileSync(new URL('./sw.js', import.meta.url), 'utf8');
-  const html = readFileSync(new URL('./index.html', import.meta.url), 'utf8');
+  const html = appHtml();
   assert.doesNotMatch(fx, /fetch\(|new Audio\(|\.mp3|\.ogg|\.wav|https?:/, 'no sound files to download');
   assert.match(fx, /typeof navigator\.vibrate === 'function'/, 'no vibrate call where the API is missing (iPhone)');
   assert.match(col, /class="coloring-fx"[^>]*aria-hidden="true"/);

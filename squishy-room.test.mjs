@@ -1,3 +1,4 @@
+import { appHtml } from './app-scripts.test-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -51,7 +52,7 @@ test('the board polls only while it is open and visible, and is wired into the a
   assert.match(src, /!ui\.root\.isConnected\) \{ close\(\); return; \}/);
   assert.match(src, /Sala de intercambio/);
   assert.match(src, /La lámpara nunca se cambia/);
-  assert.ok(read('./index.html').includes('<script src="squishy-room.js" defer></script>'));
+  assert.ok(appHtml().includes('<script src="squishy-room.js" defer></script>'));
   assert.ok(read('./sw.js').includes("'./squishy-room.js'"));
   assert.match(aura, /data-action="trade-open"/);
   assert.match(aura, /kind==='trade-resume'/);

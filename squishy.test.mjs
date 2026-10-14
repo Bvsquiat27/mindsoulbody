@@ -1,3 +1,4 @@
+import { appHtml } from './app-scripts.test-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -285,7 +286,7 @@ test('memory deck pairs each squishy picture with its name; rounds pick 5 questi
 });
 
 test('the game is wired in, precached, and its words have Spanish', () => {
-  const html = read('./index.html'), sw = read('./sw.js'), i18n = read('./i18n.js'), stories = read('./stories.js');
+  const html = appHtml(), sw = read('./sw.js'), i18n = read('./i18n.js'), stories = read('./stories.js');
   for (const f of ['squishy-data.js', 'squishy-core.js', 'squishy-art.js', 'squishy.js']) {
     assert.ok(html.includes(`<script src="${f}" defer>`), f);
     assert.ok(sw.includes(`'./${f}'`), f);
@@ -685,7 +686,7 @@ test('found tricks are remembered, hints show after some play, Trick master need
 });
 
 test('tricks UI: hint chip, T key, toast, effects module wired in, Spanish for every trick word', () => {
-  const ui = read('./squishy.js'), i18n = read('./i18n.js'), html = read('./index.html'), sw = read('./sw.js');
+  const ui = read('./squishy.js'), i18n = read('./i18n.js'), html = appHtml(), sw = read('./sw.js');
   assert.ok(html.includes('<script src="squishy-fx.js" defer>') && html.indexOf('squishy-fx.js') < html.indexOf('squishy.js"'));
   assert.ok(sw.includes("'./squishy-fx.js'"));
   assert.match(ui, /data-sq-trick/); assert.match(ui, /e\.key === 't' \|\| e\.key === 'T'/); assert.match(ui, /data-sq-toast/);

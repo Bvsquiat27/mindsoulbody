@@ -56,7 +56,7 @@ test('reminder is off by default at 07:00 and stored under an msb_ key', () => {
 });
 test('wired in: script tags, home card, profile setting, SW precache and push handlers', () => {
   const html = readFileSync(new URL('./index.html', import.meta.url), 'utf8'), aura = readFileSync(new URL('./aura.js', import.meta.url), 'utf8'), sw = readFileSync(new URL('./sw.js', import.meta.url), 'utf8');
-  assert.match(html, /devotional-data\.js[\s\S]*devotional\.js/);
+  assert.match(html, /<script src="devotional\.js" defer>/); assert.doesNotMatch(html, /devotional-data\.js/, 'devotional data loads on demand');
   assert.match(aura, /MsbDevotional\.homeCard\(\)/); assert.match(aura, /MsbDevotional\.settingsHtml\(\)/);
   assert.match(sw, /'\.\/devotional\.js'/); assert.match(sw, /addEventListener\('push'/); assert.match(sw, /addEventListener\('notificationclick'/);
   const toml = readFileSync(new URL('./worker/wrangler.friends.toml', import.meta.url), 'utf8');
@@ -79,4 +79,25 @@ test('the notification deep link uses window.msbNav from aura.js', () => {
   assert.match(aura, /window\.msbNav=nav/);
   assert.match(src, /root\.msbNav/);
   assert.doesNotMatch(src, /typeof root\.nav === 'function' &&/);
+});
+
+test('startup stays light: devotional data, games and the challenge bank load after the first screen', () => {
+  const html = readFileSync(new URL('./index.html', import.meta.url), 'utf8'), aura = readFileSync(new URL('./aura.js', import.meta.url), 'utf8'), dev = readFileSync(new URL('./devotional.js', import.meta.url), 'utf8'), sw = readFileSync(new URL('./sw.js', import.meta.url), 'utf8');
+  for (const f of ['games.js', 'trivia-game.js', 'squishy.js', 'squishy-data.js', 'kidgames-data.js', 'match3-data.js', 'kg-sling.js', 'stories.js', 'devotional-data.js']) {
+    assert.doesNotMatch(html, new RegExp(`<script src="${f.replace('.', '\\.')}"`), f);
+    assert.ok(sw.includes(`'./${f}'`), `${f} is still precached for offline use`);
+  }
+  assert.match(aura, /render\(\);setTimeout\(msbLoadDeferred,0\)/);
+  assert.doesNotMatch(aura, /api\('\/auth\/session'\),api\('\/study\/challenges'\)\]/, 'the first screen does not wait for the challenge bank');
+  assert.match(aura, /MSB_DEFERRED_SCREENS\.includes\(state\.screen\)/);
+  assert.match(dev, /function ensureData\(\)/);
+  assert.match(dev, /setTimeout\(resync, 3000\)/, 'the push resync never blocks the first screen');
+});
+test('switches flip at once, ignore double taps, and match their saved state', () => {
+  const css = readFileSync(new URL('./study-design.css', import.meta.url), 'utf8'), dev = readFileSync(new URL('./devotional.js', import.meta.url), 'utf8'), aura = readFileSync(new URL('./aura.js', import.meta.url), 'utf8');
+  assert.match(css, /\.tap-vibration-toggle\[aria-checked="true"\] \.tap-vibration-knob::after/, 'the knob follows aria-checked');
+  assert.match(dev, /if \(busy \|\| t\.getAttribute\('aria-busy'\) === 'true'\) return;/);
+  assert.match(dev, /flipSwitch\(t, want\)/);
+  assert.match(dev, /function failed\(msg\) \{ repaintSettings\(msg\); toast\(msg\); \}/);
+  assert.match(aura, /MsbI18n\.t\(on\?'On':'Off'\)/);
 });

@@ -143,7 +143,7 @@ test('study together notebook names verses and keeps the worker payload', () => 
 
 test('service worker refreshes Bible caches and only deletes this app', () => {
   const sw = read('sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v133'/);
+  assert.match(sw, /const CACHE_VERSION = 'v134'/);
   assert.match(sw, /const BIBLE_DATA_VERSION = 'kjv-3'/);
   assert.match(sw, /const RVR_DATA_VERSION = 'rvr1909-4'/);
   assert.match(sw, /function freshOrCached/);
@@ -166,7 +166,7 @@ test('service worker refreshes Bible caches and only deletes this app', () => {
   ]) assert.match(data, new RegExp(file.replace(/[./]/g, '\\$&')));
   assert.match(sw, /await bible\.addAll\(\['\.\/bible\/index\.json'\]\)/);
   assert.match(sw, /await rvr\.addAll\(\['\.\/bible\/rvr\/index\.json'\]\)/);
-  assert.match(sw, /await stories\.addAll\(STORY_FILES\)/);
+  assert.match(sw, /await stories\.addAll\(missing\)/); assert.match(sw, /STORY_FILES\.filter/);
   const reader = read('bible-reader.js');
   assert.match(reader, /msb-bible-rvr1909-4/);
   assert.match(reader, /msb-bible-rvr1909-3/);
