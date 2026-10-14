@@ -33,10 +33,13 @@
       gpose: 'idle', gT: 0, dpose: 'idle', dT: 0, final: false, falling: 0, won: false, lost: false, record: false, beat: 0, msg: '' });
   }
   const starRow = n => `<span class="kg-stars" aria-label="${esc(t('{n} of 3 stars', '{n} de 3 estrellas', { n }))}">${[1, 2, 3].map(k => `<i class="${k <= n ? 'on' : ''}" aria-hidden="true">★</i>`).join('')}</span>`;
+  let moved = false;
   function pickHtml() {
+    if (prog().migrateSling()) moved = true;
+    const note = moved ? `<p class="kg-msg kg-new-sling" role="status">${esc(t('New Sling! Your cleared levels are open in the new game.', '¡Nueva Honda! Tus niveles superados están abiertos en el juego nuevo.'))}</p>` : '';
     const v = prog().get(), l = lang(), intro = S().intro;
     const lv = S().levels.map((x, i) => { const st = Number(v.best[`sling:${x.id}`]) || 0; const open = i === 0 || (v.done.sling || []).includes(S().levels[i - 1].id); return `<li><button type="button" class="card kg-pick zm-pick${st ? ' done' : ''}" ${open ? `data-sl-pick="${i}"` : 'disabled'}><span class="kg-pick-icon" aria-hidden="true">${open ? ['🏞️', '🌊', '🌀', '⛰️', '⛺'][i] || '🪨' : '🔒'}</span><span><strong>${esc(t('Level {n}', 'Nivel {n}', { n: i + 1 }))} · ${esc(x.title[l])}</strong><small>${esc(open ? t('{n} stones in the chain', '{n} piedras en la cadena', { n: x.count }) : t('Finish level {n} first', 'Termina primero el nivel {n}', { n: i }))}</small>${st ? starRow(st) : ''}</span></button></li>`; }).join('');
-    return `<blockquote class="kg-quote kg-sl-intro">“${esc(intro.text[l])}” <span class="kg-verse-ref">${esc(intro.ref[l])}</span></blockquote><p class="kg-lead">${esc(t('Stop the stones before they reach Goliath! Match 3 of a color to pop them.', '¡Detén las piedras antes de que lleguen a Goliat! Junta 3 del mismo color para reventarlas.'))}</p><ul class="kg-picks">${lv}</ul>`;
+    return `${note}<blockquote class="kg-quote kg-sl-intro">“${esc(intro.text[l])}” <span class="kg-verse-ref">${esc(intro.ref[l])}</span></blockquote><p class="kg-lead">${esc(t('Stop the stones before they reach Goliath! Match 3 of a color to pop them.', '¡Detén las piedras antes de que lleguen a Goliat! Junta 3 del mismo color para reventarlas.'))}</p><ul class="kg-picks">${lv}</ul>`;
   }
   const stoneName = c => (lang() === 'es' ? STONES[c].es : STONES[c].en);
   function stoneDot(st, big) { const c = STONES[st.c]; return `<span class="zm-dot${big ? ' big' : ''}" style="--c:${c.fill};--d:${c.dark}" aria-hidden="true"><i class="m-${c.mark}"></i></span>`; }
