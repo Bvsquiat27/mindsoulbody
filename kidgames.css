@@ -137,3 +137,13 @@
 .kg-sl-controls button{grid-column:1/-1}
 .kg-sl-intro{font-size:17px}
 .kg-tile-art .kg-tile-icon svg{width:50px;height:50px}
+/* a friend's squishy collection */
+.friend-squishies .fsq-grid{list-style:none;margin:10px 0 6px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.fsq-tile{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px 10px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);min-width:0;text-align:center}
+.fsq-tile.fsq-rare{border-color:rgba(167,139,250,.55)}
+.fsq-tile.fsq-legendary{border-color:rgba(250,204,21,.7);box-shadow:0 0 12px rgba(250,204,21,.18)}
+.fsq-art svg{width:58px;height:58px;display:block}
+.fsq-name{font-size:12px;line-height:1.2;overflow-wrap:anywhere}
+.fsq-tag{font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;background:rgba(167,139,250,.25)}
+.fsq-tag.legend{background:rgba(250,204,21,.25)}
+.fsq-tag.never{background:rgba(255,255,255,.12)}
