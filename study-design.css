@@ -853,3 +853,13 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .story-verse{margin:14px 0 0;padding:8px 12px;border-left:3px solid var(--teal);font-style:italic}
 .story-verse p{margin:0 0 4px}
 .story-verse cite{font-style:normal;font-size:.85rem;opacity:.8}
+/* My notes */
+.dev-notes textarea{width:100%;box-sizing:border-box;min-height:96px;resize:vertical}
+.dev-notes-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px}
+.dev-share-menu{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.my-notes-share{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 12px}
+.my-notes-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.my-note{padding:10px 12px;border-radius:14px;background:color-mix(in srgb,var(--teal) 7%,transparent);overflow-wrap:anywhere}
+.my-note p{margin:6px 0 0;white-space:pre-wrap}
+.my-note-verse{margin:6px 0 0;font-style:italic}
+.my-note-verse cite{display:block;font-style:normal;font-size:.85rem;opacity:.8}

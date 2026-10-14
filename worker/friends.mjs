@@ -36,6 +36,7 @@
    Public /scores never includes friend codes. */
 
 import { handlePush, runPushCron } from './push.mjs';
+import { handleMyNotes } from './mynotes.mjs';
 
 const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const SHOWS = ['jeopardy', 'millionaire', 'feud', 'sound', 'babel', 'defend', 'doctrine'];
@@ -1496,6 +1497,11 @@ export async function handleFriends(request, env) {
       note.updatedAt = now;
       await env.FRIENDS.put(note.id, JSON.stringify(note));
       return reply(note);
+    }
+
+    if (url.pathname.startsWith('/mynotes/')) {
+      const [data, code = 200] = await handleMyNotes(url.pathname, body, env, { authed, friendsBothWays, takeRate });
+      return reply(data, code);
     }
 
     if (url.pathname.startsWith('/trade/')) {
