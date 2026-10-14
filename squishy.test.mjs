@@ -92,8 +92,8 @@ test('each locked squishy has its own challenge, ramping up, with rare and legen
   assert.deepEqual(C.CHALLENGES.map(c => c.id), locked, 'one challenge per locked squishy, in shelf order');
   assert.equal(new Set(C.CHALLENGES.map(c => `${c.kind}:${c.game || ''}:${c.n}`)).size, C.CHALLENGES.length, 'all different goals');
   for (const c of C.CHALLENGES) { const same = C.CHALLENGES.filter(d => d.kind === c.kind && d.game === c.game && d.kind !== 'final'); assert.ok(same.every((d, i) => i === 0 || d.n > same[i - 1].n), `${c.kind} ramps up`); }
-  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'rare').map(c => c.id), ['basket', 'ark', 'coat', 'jar', 'crown', 'boat', 'pearl', 'honeycomb', 'anchor', 'shield']);
-  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'legendary').map(c => c.id), ['bush', 'tomb', 'tablets', 'chariot', 'lamp']);
+  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'rare').map(c => c.id), ['basket', 'ark', 'coat', 'jar', 'crown', 'boat', 'pearl', 'honeycomb', 'anchor']);
+  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'legendary').map(c => c.id), ['bush', 'tomb', 'tablets', 'shield', 'chariot', 'lamp']);
   assert.equal(C.CHALLENGES[0].kind, 'memoryWins', 'the first one is easy');
   assert.equal(C.CHALLENGES.at(-1).kind, 'final');
   assert.equal(C.tierOf('lamb'), 'common');
@@ -1075,7 +1075,7 @@ test('the Ten Commandments tablets are legendary: every Story Order set plus 3 s
 test('every legendary squishy has a story Trick button with its own animation, sound and vibration', () => {
   const ui = read('./squishy.js'), fx = require('./squishy-fx.js'), i18n = read('./i18n.js');
   const legends = SQUISHIES.filter(x => C.tierOf(x.id) === 'legendary').map(x => x.id);
-  assert.deepEqual(legends.slice().sort(), ['bush', 'chariot', 'lamp', 'tablets', 'tomb']);
+  assert.deepEqual(legends.slice().sort(), ['bush', 'chariot', 'lamp', 'shield', 'tablets', 'tomb']);
   for (const id of legends) {
     const def = fx.STORIES[id]; assert.ok(def && def.dur >= 3000 && typeof def.over === 'function' && typeof def.pose === 'function', id);
     assert.ok(new RegExp(`\\n    ${id}: \\{ text: '([^']+)', story: '([^']+)'`).test(ui), id);
