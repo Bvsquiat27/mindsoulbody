@@ -28,6 +28,7 @@
      rate:verse-read:<code> → { start, n }  200 reads per hour
      rate:study:<code> → { start, n }  40 writes per hour
      rate:study-delete:<code> → { start, n }  200 deletes per hour
+     squishy collection and trade keys: see the "Bible squishies" section
 
    The account secret is a random 32-hex string returned once at register.
    Only its SHA-256 hex digest is stored. Compare it in constant time.
@@ -416,6 +417,8 @@ function friendView(me, friend) {
     }
   }
   if (Object.keys(profile).length) view.profile = profile;
+  const squishies = publicSquishies(friend);
+  if (squishies) view.squishies = squishies;
   return view;
 }
 
@@ -554,6 +557,323 @@ function cleanStudyVerses(input) {
   return { verses };
 }
 
+/* ---------- Bible squishies: public collection and the Trade Room ----------
+   user.squishies → { ids: [known ids], public: bool, pending: [{ trade, give, get, ts }] }
+     ids is what the phone last synced (checked against SQUISHY_IDS, capped).
+     pending holds finished swaps the phone has not applied yet; a sync that
+     still lists a squishy given away (or misses one received) is corrected.
+   trade:<16 hex> → { id, from, to, names, status, offers, need, rev, checks,
+                      note, createdAt, updatedAt, expiresAt, result }  TTL 2 h
+     status: requested → open → done, or declined / cancelled / expired.
+   trades:<code> → [trade ids], newest first, max TRADE_INDEX_MAX
+   rate:trade:<code> → 30 trade requests per hour
+   rate:trade-move:<code> → 600 board changes per hour
+   rate:trade-read:<code> → 3600 state reads per hour (the board polls only while open)
+   The board is live from the first tap: the asker can fill their side while
+   the request waits, and the friend's first move on the board opens it. */
+export const SQUISHY_IDS = ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow', 'stone', 'loaves', 'seed', 'bush', 'basket', 'tree', 'ark', 'coat',
+  'ladder', 'raven', 'wheat', 'oil', 'coin', 'donkey', 'jar', 'crown', 'boat', 'tomb',
+  'lily', 'key', 'pearl', 'manna', 'scroll', 'shofar', 'tablets', 'elephant', 'honeycomb', 'anchor', 'shield', 'chariot', 'lamp'];
+/* everyone starts with these, so they are not traded; the lamp never is */
+export const SQUISHY_STARTERS = ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow'];
+export const SQUISHY_LEGENDARY = ['bush', 'tomb', 'chariot', 'tablets', 'lamp'];
+export const TRADE_RULES = {
+  LEGEND_MIN: 5, NEED_MAX: 12, OFFER_MAX: 12, ACTIVE_MAX: 5, INDEX_MAX: 20,
+  REQUEST_TTL_MS: 30 * 60 * 1000, OPEN_TTL_MS: 30 * 60 * 1000, MAX_LIFE_MS: 2 * 60 * 60 * 1000,
+  RATE_REQUEST: 30, RATE_MOVE: 600, RATE_READ: 3600, PENDING_MAX: 20,
+};
+const TRADE_KV_TTL = 2 * 60 * 60;
+const TRADE_ID = /^[a-f0-9]{16}$/;
+const FINAL_STATES = ['done', 'declined', 'cancelled', 'expired'];
+export const tradableSquishy = (id) => SQUISHY_IDS.includes(id) && id !== 'lamp' && !SQUISHY_STARTERS.includes(id);
+
+/* known ids only, no repeats, at most one of each */
+export function cleanSquishyIds(input) {
+  if (!Array.isArray(input)) return [];
+  const out = [];
+  for (const raw of input.slice(0, SQUISHY_IDS.length * 2)) {
+    const id = typeof raw === 'string' ? raw.trim().toLowerCase() : '';
+    if (SQUISHY_IDS.includes(id) && !out.includes(id)) out.push(id);
+  }
+  return out;
+}
+
+function squishyRecord(user) {
+  const s = user.squishies && typeof user.squishies === 'object' && !Array.isArray(user.squishies) ? user.squishies : {};
+  return {
+    ids: cleanSquishyIds(s.ids),
+    public: s.public !== false,
+    pending: Array.isArray(s.pending) ? s.pending.filter((p) => p && TRADE_ID.test(p.trade)).slice(-TRADE_RULES.PENDING_MAX) : [],
+    updatedAt: Number(s.updatedAt) || 0,
+  };
+}
+
+/* a phone's list, corrected for finished swaps it has not applied yet */
+function withPending(ids, pending) {
+  let out = ids.slice();
+  for (const p of pending) {
+    out = out.filter((id) => !cleanSquishyIds(p.give).includes(id));
+    for (const id of cleanSquishyIds(p.get)) if (!out.includes(id)) out.push(id);
+  }
+  return out;
+}
+
+/* sync: { squishies: { ids: [...], public: true|false } } */
+export function applySquishies(user, input) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) return;
+  const rec = squishyRecord(user);
+  if (Array.isArray(input.ids)) rec.ids = withPending(cleanSquishyIds(input.ids), rec.pending);
+  if (typeof input.public === 'boolean') rec.public = input.public;
+  rec.updatedAt = Date.now();
+  user.squishies = rec;
+}
+
+export function publicSquishies(user) {
+  const rec = squishyRecord(user);
+  return rec.public && rec.updatedAt ? rec.ids : null;
+}
+
+/* a side of the board: known, tradable, owned, not promised in another trade */
+async function checkOffer(env, me, raw, tradeId) {
+  if (!Array.isArray(raw) || raw.length > TRADE_RULES.OFFER_MAX) return { error: 'That offer is not valid', status: 400 };
+  const offer = cleanSquishyIds(raw);
+  if (offer.length !== raw.length) return { error: 'That offer is not valid', status: 400 };
+  if (offer.includes('lamp')) return { error: 'The lamp can never be traded', reason: 'lamp', status: 400 };
+  if (offer.some((id) => !tradableSquishy(id))) return { error: 'Starter squishies are not traded', reason: 'starter', status: 400 };
+  const owned = squishyRecord(me).ids;
+  if (offer.some((id) => !owned.includes(id))) return { error: 'You can only offer squishies you have', reason: 'owned', status: 400 };
+  const locked = await lockedElsewhere(env, me.code, tradeId);
+  if (offer.some((id) => locked.has(id))) return { error: 'That squishy is already in another trade', reason: 'locked', status: 409 };
+  return { offer };
+}
+
+async function loadTrade(env, id) {
+  if (!TRADE_ID.test(String(id || ''))) return null;
+  try { const raw = await env.FRIENDS.get(`trade:${id}`); return raw ? JSON.parse(raw) : null; } catch { return null; }
+}
+async function saveTrade(env, t) {
+  t.updatedAt = Date.now();
+  await env.FRIENDS.put(`trade:${t.id}`, JSON.stringify(t), { expirationTtl: TRADE_KV_TTL });
+}
+async function loadTradeIndex(env, code) {
+  try { const v = JSON.parse(await env.FRIENDS.get(`trades:${code}`) || '[]'); return Array.isArray(v) ? v.filter((x) => TRADE_ID.test(x)) : []; } catch { return []; }
+}
+async function addTradeIndex(env, code, id) {
+  const list = [id, ...(await loadTradeIndex(env, code)).filter((x) => x !== id)].slice(0, TRADE_RULES.INDEX_MAX);
+  await env.FRIENDS.put(`trades:${code}`, JSON.stringify(list), { expirationTtl: TRADE_KV_TTL });
+}
+function expireIfOld(t, now = Date.now()) {
+  if (t && !FINAL_STATES.includes(t.status) && now > t.expiresAt) { t.status = 'expired'; return true; }
+  return false;
+}
+const otherSide = (t, code) => (t.from === code ? t.to : t.from);
+const isParty = (t, code) => !!t && (t.from === code || t.to === code);
+
+/* what each side needs from the other: 5 or more for each side that offers a
+   legendary (the owner may ask for more); 1 otherwise */
+export function tradeCheck(t) {
+  const [a, b] = [t.from, t.to];
+  const offerA = t.offers[a] || [], offerB = t.offers[b] || [];
+  const needFrom = (owner, offer) => (offer.some((id) => SQUISHY_LEGENDARY.includes(id)) ? Math.max(TRADE_RULES.LEGEND_MIN, Number(t.need[owner]) || 0) : Math.max(1, Number(t.need[owner]) || 0));
+  const wantB = needFrom(a, offerA), wantA = needFrom(b, offerB);
+  const problems = [];
+  if (!offerA.length || !offerB.length) problems.push('empty');
+  if (offerA.length && offerB.length < wantB) problems.push(`need:${b}:${wantB}`);
+  if (offerB.length && offerA.length < wantA) problems.push(`need:${a}:${wantA}`);
+  return { ok: !problems.length, problems, want: { [b]: wantB, [a]: wantA } };
+}
+
+function tradeView(t, code) {
+  const check = tradeCheck(t);
+  return {
+    id: t.id, status: t.status, from: t.from, to: t.to, names: t.names, me: code, other: otherSide(t, code),
+    offers: t.offers, need: t.need, rev: t.rev, checks: t.checks, note: t.note || null,
+    want: check.want, ready: check.ok, problems: check.problems,
+    createdAt: t.createdAt, updatedAt: t.updatedAt, expiresAt: t.expiresAt, result: t.result || null,
+  };
+}
+
+/* ids this user has promised in another open trade */
+async function lockedElsewhere(env, code, exceptId) {
+  const out = new Set();
+  for (const id of await loadTradeIndex(env, code)) {
+    if (id === exceptId) continue;
+    const t = await loadTrade(env, id);
+    if (!t || expireIfOld(t) || FINAL_STATES.includes(t.status)) continue;
+    for (const s of t.offers[code] || []) out.add(s);
+  }
+  return out;
+}
+async function activeTrades(env, code) {
+  const out = [];
+  for (const id of await loadTradeIndex(env, code)) {
+    const t = await loadTrade(env, id);
+    if (t && !expireIfOld(t) && !FINAL_STATES.includes(t.status)) out.push(t);
+  }
+  return out;
+}
+
+export async function handleTrade(path, body, env, authedUser) {
+  const a = await authedUser(env, body);
+  if (a.error) return [{ error: a.error }, a.status];
+  const me = a.user, now = Date.now();
+
+  if (path === '/trade/list') {
+    if (!(await takeRate(env, `rate:trade-read:${me.code}`, TRADE_RULES.RATE_READ))) return [{ error: 'Too many trade checks this hour' }, 429];
+    const list = [];
+    for (const id of await loadTradeIndex(env, me.code)) {
+      const t = await loadTrade(env, id);
+      if (!t) continue;
+      if (expireIfOld(t, now)) await saveTrade(env, t);
+      list.push(tradeView(t, me.code));
+    }
+    return [{ trades: list, pending: squishyRecord(me).pending }];
+  }
+
+  if (path === '/trade/request') {
+    if (!(await takeRate(env, `rate:trade:${me.code}`, TRADE_RULES.RATE_REQUEST))) return [{ error: 'Too many trade requests this hour' }, 429];
+    const friend = await friendsBothWays(env, me, body?.with);
+    if (!friend) return [{ error: 'You are not friends' }, 403];
+    const mine = await activeTrades(env, me.code), theirs = await activeTrades(env, friend.code);
+    const same = mine.find((t) => isParty(t, friend.code));
+    if (same) return [{ ok: true, trade: tradeView(same, me.code), existing: true }];
+    if (mine.length >= TRADE_RULES.ACTIVE_MAX) return [{ error: 'You have too many open trades' }, 429];
+    if (theirs.length >= TRADE_RULES.ACTIVE_MAX) return [{ error: 'Your friend has too many open trades' }, 429];
+    let first = [];
+    if (body && Object.prototype.hasOwnProperty.call(body, 'offer')) {
+      const c = await checkOffer(env, me, body.offer, null);
+      if (c.error) return [{ error: c.error, ...(c.reason ? { reason: c.reason } : {}) }, c.status];
+      first = c.offer;
+    }
+    const t = {
+      id: randomHex(8), from: me.code, to: friend.code, names: { [me.code]: me.name || 'Friend', [friend.code]: friend.name || 'Friend' },
+      status: 'requested', offers: { [me.code]: first, [friend.code]: [] }, need: { [me.code]: first.some((id) => SQUISHY_LEGENDARY.includes(id)) ? TRADE_RULES.LEGEND_MIN : 0, [friend.code]: 0 },
+      rev: 1, checks: { [me.code]: 0, [friend.code]: 0 }, note: null, createdAt: now, updatedAt: now, expiresAt: now + TRADE_RULES.REQUEST_TTL_MS,
+    };
+    await saveTrade(env, t);
+    await addTradeIndex(env, me.code, t.id);
+    await addTradeIndex(env, friend.code, t.id);
+    return [{ ok: true, trade: tradeView(t, me.code) }];
+  }
+
+  const t = await loadTrade(env, body?.trade);
+  if (!t || !isParty(t, me.code)) return [{ error: 'Trade not found' }, 404];
+  if (expireIfOld(t, now)) { await saveTrade(env, t); return [{ error: 'This trade has expired', trade: tradeView(t, me.code) }, 410]; }
+
+  if (path === '/trade/state') {
+    if (!(await takeRate(env, `rate:trade-read:${me.code}`, TRADE_RULES.RATE_READ))) return [{ error: 'Too many trade checks this hour' }, 429];
+    return [{ trade: tradeView(t, me.code) }];
+  }
+
+  if (path === '/trade/ack') {
+    const rec = squishyRecord(me);
+    rec.pending = rec.pending.filter((p) => p.trade !== t.id);
+    me.squishies = rec;
+    await saveUser(env, me);
+    return [{ ok: true }];
+  }
+
+  if (FINAL_STATES.includes(t.status)) return [{ error: 'This trade is over', trade: tradeView(t, me.code) }, 409];
+  if (!(await takeRate(env, `rate:trade-move:${me.code}`, TRADE_RULES.RATE_MOVE))) return [{ error: 'Too many trade moves this hour' }, 429];
+
+  if (path === '/trade/cancel') {
+    t.status = t.status === 'requested' && t.to === me.code ? 'declined' : 'cancelled';
+    t.note = { by: me.code, kind: t.status, ts: now };
+    await saveTrade(env, t);
+    return [{ ok: true, trade: tradeView(t, me.code) }];
+  }
+
+  if (path === '/trade/accept') {
+    if (t.to !== me.code || t.status !== 'requested') return [{ error: 'Only your friend can open this trade' }, 409];
+    t.status = 'open';
+    t.expiresAt = Math.min(t.createdAt + TRADE_RULES.MAX_LIFE_MS, now + TRADE_RULES.OPEN_TTL_MS);
+    t.rev += 1;
+    await saveTrade(env, t);
+    return [{ ok: true, trade: tradeView(t, me.code) }];
+  }
+
+  /* a live board from the first tap: while the request waits, the asker may
+     change their side, and the friend's first move on the board opens it */
+  let opened = false;
+  if (path === '/trade/update' && t.status === 'requested') {
+    if (t.to === me.code) {
+      opened = true;
+      t.status = 'open';
+      t.expiresAt = Math.min(t.createdAt + TRADE_RULES.MAX_LIFE_MS, now + TRADE_RULES.OPEN_TTL_MS);
+      t.rev += 1;
+    } else if (body?.ask === 'more') return [{ error: 'The trade room is not open yet' }, 409];
+  }
+  if (t.status !== 'open' && !(path === '/trade/update' && t.status === 'requested')) return [{ error: 'The trade room is not open yet' }, 409];
+  const touch = () => { t.expiresAt = Math.min(t.createdAt + TRADE_RULES.MAX_LIFE_MS, now + TRADE_RULES.OPEN_TTL_MS); };
+
+  if (path === '/trade/update') {
+    /* your own offer, how many you want back, or "more please" */
+    let changed = false;
+    if (body && Object.prototype.hasOwnProperty.call(body, 'offer')) {
+      const c = await checkOffer(env, me, body.offer, t.id);
+      if (c.error) return [{ error: c.error, ...(c.reason ? { reason: c.reason } : {}) }, c.status];
+      const offer = c.offer;
+      if (offer.join() !== (t.offers[me.code] || []).join()) { t.offers[me.code] = offer; changed = true; }
+    }
+    if (body && Object.prototype.hasOwnProperty.call(body, 'need')) {
+      const n = Number(body.need);
+      if (!Number.isInteger(n) || n < 0 || n > TRADE_RULES.NEED_MAX) return [{ error: 'That number is not valid' }, 400];
+      if (n !== t.need[me.code]) { t.need[me.code] = n; changed = true; }
+    }
+    if (body?.ask === 'more') { t.note = { by: me.code, kind: 'more', ts: now }; changed = true; }
+    if (changed) {
+      t.rev += 1;
+      t.checks = { [t.from]: 0, [t.to]: 0 };
+      if (body?.ask !== 'more') t.note = null;
+      touch();
+      await saveTrade(env, t);
+    } else if (opened) await saveTrade(env, t);
+    return [{ ok: true, trade: tradeView(t, me.code) }];
+  }
+
+  if (path === '/trade/confirm') {
+    if (Number(body?.rev) !== t.rev) return [{ error: 'The board changed. Look again before you press ✓.', reason: 'changed', trade: tradeView(t, me.code) }, 409];
+    const check = tradeCheck(t);
+    if (!check.ok) return [{ error: 'This trade is not fair yet', reason: check.problems[0], trade: tradeView(t, me.code) }, 400];
+    t.checks[me.code] = t.rev;
+    touch();
+    const other = otherSide(t, me.code);
+    if (t.checks[other] !== t.rev) { await saveTrade(env, t); return [{ ok: true, trade: tradeView(t, me.code) }]; }
+
+    /* both pressed ✓ on this exact board: check ownership again, then swap */
+    const friend = await friendsBothWays(env, me, other);
+    if (!friend) return [{ error: 'You are not friends' }, 403];
+    const users = { [me.code]: me, [friend.code]: friend };
+    for (const code of [t.from, t.to]) {
+      const owner = squishyRecord(users[code]), receiver = squishyRecord(users[otherSide(t, code)]);
+      const locked = await lockedElsewhere(env, code, t.id);
+      const give = t.offers[code];
+      const bad = give.some((id) => !owner.ids.includes(id) || locked.has(id)) ? 'owned' : give.some((id) => receiver.ids.includes(id)) ? 'already' : '';
+      if (bad) {
+        t.checks = { [t.from]: 0, [t.to]: 0 };
+        t.rev += 1;
+        await saveTrade(env, t);
+        return [{ error: bad === 'owned' ? 'A squishy on the board is not available any more' : 'Your friend already has one of those squishies', reason: bad, trade: tradeView(t, me.code) }, 409];
+      }
+    }
+    /* mark it done first so a second confirm cannot swap twice */
+    t.status = 'done';
+    t.result = { [t.from]: { give: t.offers[t.from], get: t.offers[t.to] }, [t.to]: { give: t.offers[t.to], get: t.offers[t.from] }, ts: now };
+    await saveTrade(env, t);
+    for (const code of [t.from, t.to]) {
+      const u = users[code], rec = squishyRecord(u), r = t.result[code];
+      rec.ids = withPending(rec.ids, [{ give: r.give, get: r.get }]);
+      rec.pending = [...rec.pending, { trade: t.id, give: r.give, get: r.get, ts: now }].slice(-TRADE_RULES.PENDING_MAX);
+      rec.updatedAt = now;
+      u.squishies = rec;
+      await saveUser(env, u);
+    }
+    return [{ ok: true, trade: tradeView(t, me.code) }];
+  }
+
+  return [{ error: 'Not found' }, 404];
+}
+
 export async function handleFriends(request, env) {
   const origin = allowedOrigin(request);
   const reply = (data, status = 200) => json(data, status, origin);
@@ -611,11 +931,13 @@ export async function handleFriends(request, env) {
       if (body?.name !== undefined) a.user.name = cleanName(body.name) || a.user.name;
       if (body && Object.prototype.hasOwnProperty.call(body, 'stats')) a.user.stats = cleanStats(body.stats);
       const warnings = applyProfile(a.user, body || {});
+      if (body && Object.prototype.hasOwnProperty.call(body, 'squishies')) applySquishies(a.user, body.squishies);
       const publicId = await ensurePublicId(env, a.user);
       if (a.user.publicId !== publicId) a.user.publicId = publicId;
       await saveUser(env, a.user);
       await stampBoardId(env, a.user.code, publicId);
-      return reply({ ok: true, publicId, ...(warnings.length ? { warning: warnings.join(' ') } : {}) });
+      const squishyPending = squishyRecord(a.user).pending;
+      return reply({ ok: true, publicId, ...(squishyPending.length ? { squishyPending } : {}), ...(warnings.length ? { warning: warnings.join(' ') } : {}) });
     }
 
     if (url.pathname === '/friends') {
@@ -1165,6 +1487,11 @@ export async function handleFriends(request, env) {
       note.updatedAt = now;
       await env.FRIENDS.put(note.id, JSON.stringify(note));
       return reply(note);
+    }
+
+    if (url.pathname.startsWith('/trade/')) {
+      const [data, code = 200] = await handleTrade(url.pathname, body, env, authed);
+      return reply(data, code);
     }
 
     return reply({ error: 'Not found' }, 404);
