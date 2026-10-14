@@ -1105,3 +1105,13 @@ test('the tablets Go button follows both parts of the goal, and the coloring Go 
   assert.match(st, /function scrollToColoring\(tries = 40\)[\s\S]{0,400}setTimeout\(\(\) => scrollToColoring\(tries - 1\), 75\)/);
   assert.match(st, /data-sq-go-color'\)\) \{ scrollToColoring\(\); return; \}/);
 });
+
+test('tablets win-back Go offers both games; challenge text names the 4 sets', () => {
+  const ui = readFileSync(new URL('./squishy.js', import.meta.url), 'utf8');
+  assert.match(ui, /if \(back\) return \[order, match\]/);
+  assert.match(ui, /goFor\(ch, C\(\)\.wonBackProgress\(store2\(\), ch\)\)/);
+  assert.match(ui, /Put \{sets\} Story Order sets in order/);
+  const i18n = readFileSync(new URL('./i18n.js', import.meta.url), 'utf8');
+  assert.match(i18n, /"Ordena \{sets\} grupos de Ordena la historia/);
+  assert.doesNotMatch(i18n, /todos los grupos/);
+});
