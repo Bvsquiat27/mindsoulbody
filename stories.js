@@ -31,6 +31,15 @@
       bodyEs: 'Abraham y Sara ya eran mayores, y no tenían hijos. Dios le dijo a Abraham que mirara el cielo de noche. “Cuenta las estrellas, si puedes”, dijo Dios. “Tu familia va a ser así.” Abraham no podía contarlas todas. Aun así, confió en Dios. Después, Dios les dio un niño llamado Isaac. Dios cumple sus promesas, aunque tengamos que esperar.'
     },
     {
+      id: 'ladder',
+      title: "Jacob's dream",
+      titleEs: "El sueño de Jacob",
+      alt: "A boy asleep under the stars with a shining stairway to heaven",
+      altEs: "Un joven dormido bajo las estrellas con una escalera brillante hacia el cielo",
+      body: "Jacob had to leave home and walk a long way. When night came, he lay down on the ground and used a stone for a pillow. He was all alone. Then he dreamed. He saw a stairway that reached all the way up to heaven, and God’s angels were going up and down on it. God spoke to him: “I am with you. I will keep you safe wherever you go. I will not leave you.” Jacob woke up and said, “God is in this place, and I did not know it.” Even when we feel alone, God is near.",
+      bodyEs: "Jacob tuvo que irse de su casa y caminar muy lejos. Cuando llegó la noche, se acostó en el suelo y usó una piedra como almohada. Estaba solo. Entonces soñó. Vio una escalera que llegaba hasta el cielo, y los ángeles de Dios subían y bajaban por ella. Dios le habló: “Yo estoy contigo. Te voy a cuidar por dondequiera que vayas. No te voy a dejar.” Jacob despertó y dijo: “Dios está en este lugar, y yo no lo sabía.” Aunque te sientas solo, Dios está cerca de ti."
+    },
+    {
       id: 'joseph',
       title: 'Joseph and his brothers',
       titleEs: 'José y sus hermanos',
@@ -47,6 +56,24 @@
       altEs: 'Un bebé descansando en una canasta entre las plantas del río',
       body: 'A cruel king was afraid of the baby boys. Moses’ mother hid her baby as long as she could. Then she made a little basket and set it in the river grass. His sister Miriam watched nearby. A princess found the basket and loved the baby. Miriam was brave. She said, “I know someone who can help you care for him.” So Moses’ own mother got to hold him again. God sees the small ones. He had a plan for that baby.',
       bodyEs: 'Un rey cruel tenía miedo de los bebés varones. La mamá de Moisés escondió a su bebé todo lo que pudo. Después hizo una canasta y la puso entre las plantas del río. Su hermana miraba desde cerca. Una princesa encontró la canasta y se encariñó con el bebé. Miriam fue valiente. Dijo: “Yo conozco a alguien que puede ayudarte a cuidarlo.” Así la mamá de Moisés pudo cargarlo otra vez. Dios ve a los pequeños. Tenía un plan para ese bebé.'
+    },
+    {
+      id: 'redsea',
+      title: "A path through the sea",
+      titleEs: "Un camino en el mar",
+      alt: "Families walking on a dry path between tall walls of water",
+      altEs: "Familias caminando por un camino seco entre altas paredes de agua",
+      body: "God’s people had left Egypt at last. But then they came to the edge of a big sea, and the king’s chariots were coming behind them. The people were scared. Moses said, “Do not be afraid. The Lord will fight for you. You only need to be still.” Moses held out his hand over the sea. All night a strong wind blew, and the water opened up like two tall walls. The people walked across on dry ground, mothers and fathers, children and grandparents, sheep and goats. God made a way where there was no way.",
+      bodyEs: "Por fin, el pueblo de Dios había salido de Egipto. Pero llegaron a la orilla de un mar muy grande, y los carros del rey venían detrás. La gente tenía miedo. Moisés dijo: “No tengan miedo. El Señor va a pelear por ustedes. Solo quédense tranquilos.” Moisés extendió la mano sobre el mar. Toda la noche sopló un viento fuerte, y el agua se abrió como dos paredes altas. El pueblo cruzó por tierra seca: mamás y papás, niños y abuelos, ovejas y cabras. Dios abrió un camino donde no había camino."
+    },
+    {
+      id: 'samuel',
+      title: "Samuel hears God",
+      titleEs: "Samuel escucha a Dios",
+      alt: "A boy sitting up on his mat at night beside a small lamp",
+      altEs: "Un niño sentado en su cama de noche junto a una lamparita",
+      body: "Samuel was a boy who helped the old priest Eli in God’s house. One night, while the little lamp was still burning, Samuel heard a voice: “Samuel!” He ran to Eli. “Here I am.” “I did not call you,” said Eli. “Go back to bed.” It happened again, and again. Then Eli understood. “It is God who is calling you. Say, ‘Speak, Lord, for your servant is listening.’” The voice came once more: “Samuel, Samuel!” And Samuel said, “Speak, for I am listening.” God loves to talk with children, and you can listen too.",
+      bodyEs: "Samuel era un niño que ayudaba al viejo sacerdote Elí en la casa de Dios. Una noche, cuando la lamparita todavía estaba encendida, Samuel oyó una voz: “¡Samuel!” Corrió a donde estaba Elí. “Aquí estoy.” “Yo no te llamé”, dijo Elí. “Vuelve a acostarte.” Pasó otra vez, y otra vez. Entonces Elí entendió. “Es Dios quien te llama. Dile: ‘Habla, Señor, que tu siervo escucha.’” La voz vino una vez más: “¡Samuel, Samuel!” Y Samuel dijo: “Habla, que estoy escuchando.” A Dios le gusta hablar con los niños, y tú también puedes escuchar."
     },
     {
       id: 'david',
@@ -130,6 +157,197 @@
       bodyEs: 'Jesús murió en una cruz porque nos ama. Sus amigos estaban muy tristes. Pusieron su cuerpo en un sepulcro y pusieron una gran piedra en la entrada. Muy temprano el domingo, unas mujeres que lo amaban fueron al sepulcro. La piedra ya no estaba en su lugar. El sepulcro estaba vacío. Un ángel dijo: “No está aquí. Ha resucitado.” Jesús está vivo. La muerte no ganó. Por eso podemos cantar en la mañana de la Resurrección: Jesús está vivo, y está con nosotros.'
     }
   ];
+  /* One verse per story, word for word from bible/NN.json (KJV) and
+     bible/rvr/NN.json (Reina-Valera 1909). A test checks them. */
+  const VERSES = {
+  "creation": {
+  "ref": [
+  1,
+  1,
+  31
+  ],
+  "en": "And God saw every thing that he had made, and, behold, it was very good. And the evening and the morning were the sixth day.",
+  "es": "Y vió Dios todo lo que había hecho, y he aquí que era bueno en gran manera. Y fué la tarde y la mañana el día sexto.",
+  "refEn": "Genesis 1:31",
+  "refEs": "Génesis 1:31"
+  },
+  "noah": {
+  "ref": [
+  1,
+  9,
+  13
+  ],
+  "en": "I do set my bow in the cloud, and it shall be for a token of a covenant between me and the earth.",
+  "es": "Mi arco pondré en las nubes, el cual será por señal de convenio entre mí y la tierra.",
+  "refEn": "Genesis 9:13",
+  "refEs": "Génesis 9:13"
+  },
+  "stars": {
+  "ref": [
+  1,
+  15,
+  5
+  ],
+  "en": "And he brought him forth abroad, and said, Look now toward heaven, and tell the stars, if thou be able to number them: and he said unto him, So shall thy seed be.",
+  "es": "Y sacóle fuera, y dijo: Mira ahora á los cielos, y cuenta las estrellas, si las puedes contar. Y le dijo: Así será tu simiente.",
+  "refEn": "Genesis 15:5",
+  "refEs": "Génesis 15:5"
+  },
+  "joseph": {
+  "ref": [
+  1,
+  50,
+  20
+  ],
+  "en": "But as for you, ye thought evil against me; but God meant it unto good, to bring to pass, as it is this day, to save much people alive.",
+  "es": "Vosotros pensasteis mal sobre mí, mas Dios lo encaminó á bien, para hacer lo que vemos hoy, para mantener en vida á mucho pueblo.",
+  "refEn": "Genesis 50:20",
+  "refEs": "Génesis 50:20"
+  },
+  "ladder": {
+  "ref": [
+  1,
+  28,
+  15
+  ],
+  "en": "And, behold, I am with thee, and will keep thee in all places whither thou goest, and will bring thee again into this land; for I will not leave thee, until I have done that which I have spoken to thee of.",
+  "es": "Y he aquí, yo soy contigo, y te guardaré por donde quiera que fueres, y te volveré á esta tierra; porque no te dejaré hasta tanto que haya hecho lo que te he dicho.",
+  "refEn": "Genesis 28:15",
+  "refEs": "Génesis 28:15"
+  },
+  "moses": {
+  "ref": [
+  2,
+  2,
+  10
+  ],
+  "en": "And the child grew, and she brought him unto Pharaoh's daughter, and he became her son. And she called his name Moses: and she said, Because I drew him out of the water.",
+  "es": "Y como creció el niño, ella lo trajo á la hija de Faraón, la cual lo prohijó, y púsole por nombre Moisés, diciendo: Porque de las aguas lo saqué.",
+  "refEn": "Exodus 2:10",
+  "refEs": "Éxodo 2:10"
+  },
+  "redsea": {
+  "ref": [
+  2,
+  14,
+  14
+  ],
+  "en": "The LORD shall fight for you, and ye shall hold your peace.",
+  "es": "Jehová peleará por vosotros, y vosotros estaréis quedos.",
+  "refEn": "Exodus 14:14",
+  "refEs": "Éxodo 14:14"
+  },
+  "samuel": {
+  "ref": [
+  9,
+  3,
+  10
+  ],
+  "en": "And the LORD came, and stood, and called as at other times, Samuel, Samuel. Then Samuel answered, Speak; for thy servant heareth.",
+  "es": "Y vino Jehová, y paróse, y llamó como las otras veces: ¡Samuel, Samuel! Entonces Samuel dijo: Habla, que tu siervo oye.",
+  "refEn": "1 Samuel 3:10",
+  "refEs": "1 Samuel 3:10"
+  },
+  "david": {
+  "ref": [
+  9,
+  17,
+  37
+  ],
+  "en": "David said moreover, The LORD that delivered me out of the paw of the lion, and out of the paw of the bear, he will deliver me out of the hand of this Philistine. And Saul said unto David, Go, and the LORD be with thee.",
+  "es": "Y añadió David: Jehová que me ha librado de las garras del león y de las garras del oso, él también me librará de la mano de este Filisteo. Y dijo Saúl á David: Ve, y Jehová sea contigo.",
+  "refEn": "1 Samuel 17:37",
+  "refEs": "1 Samuel 17:37"
+  },
+  "daniel": {
+  "ref": [
+  27,
+  6,
+  22
+  ],
+  "en": "My God hath sent his angel, and hath shut the lions' mouths, that they have not hurt me: forasmuch as before him innocency was found in me; and also before thee, O king, have I done no hurt.",
+  "es": "El Dios mío envió su ángel, el cual cerró la boca de los leones, para que no me hiciesen mal: porque delante de él se halló en mí justicia: y aun delante de ti, oh rey, yo no he hecho lo que no debiese.",
+  "refEn": "Daniel 6:22",
+  "refEs": "Daniel 6:22"
+  },
+  "jonah": {
+  "ref": [
+  32,
+  3,
+  10
+  ],
+  "en": "And God saw their works, that they turned from their evil way; and God repented of the evil, that he had said that he would do unto them; and he did it not.",
+  "es": "Y vió Dios lo que hicieron, que se convirtieron de su mal camino: y arrepintióse del mal que había dicho les había de hacer, y no lo hizo.",
+  "refEn": "Jonah 3:10",
+  "refEs": "Jonás 3:10"
+  },
+  "nativity": {
+  "ref": [
+  42,
+  2,
+  11
+  ],
+  "en": "For unto you is born this day in the city of David a Saviour, which is Christ the Lord.",
+  "es": "Que os ha nacido hoy, en la ciudad de David, un Salvador, que es CRISTO el Señor.",
+  "refEn": "Luke 2:11",
+  "refEs": "Lucas 2:11"
+  },
+  "storm": {
+  "ref": [
+  41,
+  4,
+  39
+  ],
+  "en": "And he arose, and rebuked the wind, and said unto the sea, Peace, be still. And the wind ceased, and there was a great calm.",
+  "es": "Y levantándose, increpó al viento, y dijo á la mar: Calla, enmudece. Y cesó el viento, y fué hecha grande bonanza.",
+  "refEn": "Mark 4:39",
+  "refEs": "Marcos 4:39"
+  },
+  "children": {
+  "ref": [
+  41,
+  10,
+  14
+  ],
+  "en": "But when Jesus saw it, he was much displeased, and said unto them, Suffer the little children to come unto me, and forbid them not: for of such is the kingdom of God.",
+  "es": "Y viéndolo Jesús, se enojó, y les dijo: Dejad los niños venir, y no se lo estorbéis; porque de los tales es el reino de Dios.",
+  "refEn": "Mark 10:14",
+  "refEs": "Marcos 10:14"
+  },
+  "feeding": {
+  "ref": [
+  43,
+  6,
+  35
+  ],
+  "en": "And Jesus said unto them, I am the bread of life: he that cometh to me shall never hunger; and he that believeth on me shall never thirst.",
+  "es": "Y Jesús les dijo: Yo soy el pan de vida: el que á mí viene, nunca tendrá hambre; y el que en mí cree, no tendrá sed jamás.",
+  "refEn": "John 6:35",
+  "refEs": "Juan 6:35"
+  },
+  "sheep": {
+  "ref": [
+  42,
+  15,
+  6
+  ],
+  "en": "And when he cometh home, he calleth together his friends and neighbours, saying unto them, Rejoice with me; for I have found my sheep which was lost.",
+  "es": "Y viniendo á casa, junta á los amigos y á los vecinos, diciéndoles: Dadme el parabién, porque he hallado mi oveja que se había perdido.",
+  "refEn": "Luke 15:6",
+  "refEs": "Lucas 15:6"
+  },
+  "easter": {
+  "ref": [
+  40,
+  28,
+  6
+  ],
+  "en": "He is not here: for he is risen, as he said. Come, see the place where the Lord lay.",
+  "es": "No está aquí; porque ha resucitado, como dijo. Venid, ved el lugar donde fué puesto el Señor.",
+  "refEn": "Matthew 28:6",
+  "refEs": "Mateo 28:6"
+  }
+  };
 
   let openId = null;
 
@@ -171,10 +389,14 @@
     root.innerHTML = `<span class="eyebrow">LITTLE ONES</span><h1>Stories for little ones</h1><p class="lead">Bible stories told simply, for a child close by.</p><button class="card bedtime-entry" type="button" data-bedtime><span class="eyebrow">LITTLE ONES</span><strong>Bedtime</strong><span>A story, a prayer, and a quiet night sky</span></button>${window.MsbKidGames ? '<button class="card squishy-entry kg-entry" type="button" data-kg-enter data-i18n-skip><span class="kg-entry-art" aria-hidden="true">🔎🖼️💬</span><span><span class="eyebrow">' + (es() ? 'JUEGOS' : 'GAMES') + '</span><strong>' + (es() ? 'Juegos bíblicos' : 'Bible games') + '</strong><span>' + (es() ? 'Squishies de la Biblia, Combina el maná, sopa de letras y más' : 'Bible squishies, Manna Match, word search and more') + '</span></span></button>' : ''}<div class="story-grid">${cards}</div>${coloring() ? coloring().gridHtml(storyTitle) : ''}`;
   }
 
+  function verseHtml(item) {
+    const v = VERSES[item.id]; if (!v) return '';
+    return `<blockquote class="story-verse"><p>“${esc(es() ? v.es : v.en)}”</p><cite>${esc(es() ? v.refEs : v.refEn)} · ${es() ? 'RV 1909' : 'KJV'}</cite></blockquote>`;
+  }
   function showOne(root, item) {
     const title = pick(item, 'title');
     const body = pick(item, 'body');
-    root.innerHTML = `<button class="text-button back" data-story-back type="button">← Back</button><article class="story-read" data-read-block data-i18n-skip><span class="eyebrow">${es()?'Una historia para leer juntos':'A story to read together'}</span>${picture(item, 'hero')}<h1 class="story-title">${esc(title)}</h1><p class="story-body">${esc(body)}</p></article>${speechRow()}<p><button class="secondary" type="button" data-bedtime data-bedtime-story="${esc(item.id)}">Bedtime</button>${coloring() && coloring().has(item.id) ? ` <button class="secondary" type="button" data-coloring-open="${esc(item.id)}" data-i18n-skip>🖍️ ${es() ? 'Colorear' : 'Color it'}</button>` : ''}</p>`;
+    root.innerHTML = `<button class="text-button back" data-story-back type="button">← Back</button><article class="story-read" data-read-block data-i18n-skip><span class="eyebrow">${es()?'Una historia para leer juntos':'A story to read together'}</span>${picture(item, 'hero')}<h1 class="story-title">${esc(title)}</h1><p class="story-body">${esc(body)}</p>${verseHtml(item)}</article>${speechRow()}<p><button class="secondary" type="button" data-bedtime data-bedtime-story="${esc(item.id)}">Bedtime</button>${coloring() && coloring().has(item.id) ? ` <button class="secondary" type="button" data-coloring-open="${esc(item.id)}" data-i18n-skip>🖍️ ${es() ? 'Colorear' : 'Color it'}</button>` : ''}</p>`;
   }
 
   function bedtimeStory() {
@@ -204,7 +426,10 @@
       root.innerHTML = `<section class="bedtime-sky" data-i18n-skip><div class="bedtime-stars" aria-hidden="true">${stars()}</div><div class="bedtime-copy"><span class="eyebrow">${es() ? 'HORA DE DORMIR' : 'BEDTIME'}</span><h1>${es() ? 'El cielo está quieto' : 'The sky is quiet'}</h1><p>${es() ? 'La cajita de música suena bajito. La pantalla se queda así hasta que termine el tiempo.' : 'The music box plays softly. The screen stays like this until the time is done.'}</p><div class="bedtime-timers" role="group" aria-label="${es() ? 'Tiempo para dormir' : 'Sleep timer'}">${[10, 20, 30].map(n => `<button type="button" class="secondary${minutes === n ? ' active' : ''}" aria-pressed="${minutes === n}" data-bedtime-minutes="${n}">${n} min</button>`).join('')}</div><button class="text-button" type="button" data-bedtime-back>${es() ? 'Volver a la oración' : 'Back to the prayer'}</button></div></section>`;
       return;
     }
-    root.innerHTML = `<button class="text-button back" data-bedtime-back type="button">← Stories</button><article class="story-read" data-read-block data-i18n-skip><span class="eyebrow">${es() ? 'HORA DE DORMIR' : 'BEDTIME'}</span>${picture(item, 'hero')}<h1 class="story-title">${esc(pick(item, 'title'))}</h1><p class="story-body">${esc(pick(item, 'body'))}</p></article>${speechRow()}<p><button class="primary" type="button" data-bedtime-next="prayer">A small prayer</button></p>`;
+    const at = stories.indexOf(item), total = stories.length;
+    const prev = stories[(at - 1 + total) % total], nxt = stories[(at + 1) % total];
+    root.innerHTML = `<section class="bedtime-read"><button class="text-button back" data-bedtime-back type="button" data-i18n-skip>← ${es() ? 'Historias' : 'Stories'}</button><article class="story-read" data-read-block data-i18n-skip><span class="eyebrow">${es() ? 'HORA DE DORMIR' : 'BEDTIME'}</span>${picture(item, 'hero')}<h1 class="story-title">${esc(pick(item, 'title'))}</h1><p class="story-body">${esc(pick(item, 'body'))}</p>${verseHtml(item)}</article><nav class="bedtime-steps" aria-label="${es() ? 'Historias' : 'Stories'}"><button class="secondary" type="button" data-bedtime-step="-1" aria-label="${esc((es() ? 'Anterior: ' : 'Previous: ') + pick(prev, 'title'))}">← ${es() ? 'Anterior' : 'Previous'}</button><span class="bedtime-pos" aria-live="polite">${es() ? `${at + 1} de ${total}` : `${at + 1} of ${total}`}</span><button class="secondary" type="button" data-bedtime-step="1" aria-label="${esc((es() ? 'Siguiente: ' : 'Next: ') + pick(nxt, 'title'))}">${es() ? 'Siguiente' : 'Next'} →</button></nav>${speechRow()}<p><button class="primary" type="button" data-bedtime-next="prayer">${es() ? 'Una oración corta' : 'A small prayer'}</button></p></section>`;
+    if (bedtime.reading) setTimeout(() => { if (bedtime && bedtime.step === 'story' && bedtime.reading) speakFrom(root); }, 0);
   }
 
   /* the coloring book may render a moment after Stories: wait for it, then scroll */
@@ -233,10 +458,23 @@
     const block = root.querySelector('[data-read-block]');
     if (!block || !window.MsbSpeech) return;
     const nodes = [...block.querySelectorAll('h1, p')].filter(el => el.textContent.trim());
+    let token = null;
+    if (bedtime && bedtime.step === 'story') { bedtime.reading = true; token = bedtime.readToken = { last: false, stopped: false }; }
     MsbSpeech.speak({
       lang: es() ? 'es' : 'en',
       chunks: nodes.map(el => ({ text: el.textContent.trim(), el })),
-      onChunk: chunk => { if (chunk.el) chunk.el.scrollIntoView({ block: 'nearest' }); }
+      onChunk: (chunk, index) => { if (chunk.el) chunk.el.scrollIntoView({ block: 'nearest' }); if (token) token.last = index === nodes.length - 1; },
+      onDone: () => {
+        /* bedtime read-aloud carries on to the next story when one finishes on its own */
+        if (!token || !bedtime || bedtime.readToken !== token || !token.last || token.stopped) return;
+        token.stopped = true;
+        bedtime.advance = setTimeout(() => {
+          if (!bedtime || bedtime.readToken !== token || bedtime.step !== 'story') return;
+          const at = stories.indexOf(bedtimeStory());
+          if (at >= stories.length - 1) { bedtime.reading = false; return; }
+          bedtime.story = stories[at + 1].id; refresh(); window.scrollTo({ top: 0, behavior: 'auto' });
+        }, 1500);
+      }
     });
   }
 
@@ -318,6 +556,22 @@
     schedule();
   }
 
+  function stepStory(dir) {
+    const at = stories.indexOf(bedtimeStory());
+    const reading = !!bedtime.reading;
+    clearTimeout(bedtime.advance);
+    bedtime.readToken = null;
+    if (window.MsbSpeech) MsbSpeech.stop();
+    bedtime.reading = reading;
+    bedtime.story = stories[(at + dir + stories.length) % stories.length].id;
+    refresh();
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    const nav = document.querySelector(`[data-bedtime-step="${dir}"]`); if (nav) nav.focus({ preventScroll: true });
+  }
+  /* Stop and Pause end the bedtime read-aloud chain (capture runs before speech.js) */
+  document.addEventListener('click', event => {
+    if (bedtime && event.target.closest && event.target.closest('#screen [data-speech-stop]')) { bedtime.reading = false; clearTimeout(bedtime.advance); if (bedtime.readToken) bedtime.readToken.stopped = true; }
+  }, true);
   function refresh() {
     const root = document.getElementById('screen');
     if (root) show(root);
@@ -334,8 +588,11 @@
       refresh();
       return;
     }
+    const step = event.target.closest('[data-bedtime-step]');
+    if (step && bedtime) { stepStory(Number(step.dataset.bedtimeStep) || 1); return; }
     if (event.target.closest('[data-bedtime-back]')) {
       if (!bedtime) return;
+      bedtime.reading = false; clearTimeout(bedtime.advance);
       if (bedtime.step === 'sky') { stopMusic(); bedtime.step = 'prayer'; }
       else if (bedtime.step === 'prayer') bedtime.step = 'story';
       else { stopMusic(); bedtime = null; }
@@ -345,6 +602,7 @@
     }
     const next = event.target.closest('[data-bedtime-next]');
     if (next && bedtime) {
+      bedtime.reading = false; clearTimeout(bedtime.advance);
       bedtime.step = next.dataset.bedtimeNext;
       if (bedtime.step === 'sky') startMusic(bedtime.minutes || 20);
       if (window.MsbSpeech) MsbSpeech.stop();
@@ -461,6 +719,8 @@
 
   window.MsbStories = {
     show,
+    stories: () => stories.map(item => ({ ...item })),
+    verses: VERSES,
     bedtimeOn: () => !!bedtime,
     /* Reopen a coloring page, optionally with a drawing from My drawings loaded. */
     openColoring(id, drawingId) {

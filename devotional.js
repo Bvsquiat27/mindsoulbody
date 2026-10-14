@@ -81,9 +81,19 @@
   function toast(msg) { const el = document.getElementById('toast'); if (!el) return; el.textContent = msg; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 4500); }
   function niceDate(dt) { return dt.toLocaleDateString(es() ? 'es' : 'en', { weekday: 'long', month: 'long', day: 'numeric' }); }
 
+  /* Lamentations 3:23, KJV and Reina-Valera 1909, as in bible/25.json and bible/rvr/25.json */
+  function fallbackVerse() {
+    return `<p class="dev-home-verse">“${esc(tr('They are new every morning: Great is thy faithfulness.', 'Nuevas son cada mañana; grande es tu fidelidad.'))}”</p><p class="muted">${esc(tr('Lamentations 3:23', 'Lamentaciones 3:23'))}</p>`;
+  }
   function homeCard() {
     if (!ready()) {
-      ensureData().then(() => { const el = document.getElementById('dev-home'); if (el && el.isConnected) el.outerHTML = homeCard(); }).catch(() => null);
+      const fill = () => { const el = document.getElementById('dev-home'); if (el && el.isConnected) el.outerHTML = homeCard(); };
+      /* one quiet retry, then a fixed verse so the card never sits on its placeholder */
+      ensureData().then(fill).catch(() => new Promise((r) => setTimeout(r, 4000)).then(ensureData).then(fill).catch(() => {
+        const el = document.getElementById('dev-home'); if (!el || !el.isConnected) return;
+        el.removeAttribute('data-dev-pending'); el.setAttribute('data-dev-fallback', '');
+        const p = el.querySelector('p.muted'); if (p) p.outerHTML = fallbackVerse();
+      }));
       return `<section class="card dev-home" id="dev-home" data-i18n-skip data-dev-pending><span class="eyebrow">${esc(tr('MORNING DEVOTIONAL', 'DEVOCIONAL DE LA MAÑANA'))}</span><h2>${esc(tr('Today’s devotional', 'El devocional de hoy'))}</h2><p class="muted">${esc(tr('Scripture, a reflection and a short prayer.', 'Escritura, una reflexión y una oración corta.'))}</p><button type="button" class="primary" data-dev-open="${keyOf(new Date())}">${esc(tr('Read today’s devotional', 'Leer el devocional de hoy'))}</button></section>`;
     }
     const e = forKey(keyOf(new Date())), L = es() ? e.es : e.en;
@@ -224,5 +234,5 @@
   registerScreen();
   root.addEventListener('load', () => { registerScreen(); deepLink(); setTimeout(resync, 3000); });
 
-  return { ensureData, reconcile, navFn, orthodoxPascha, forDate, forKey, keyOf, readSettings, saveSettings, homeCard, settingsHtml, show, open, PUSH_KEY, VAPID_PUBLIC };
+  return { fallbackVerse, ensureData, reconcile, navFn, orthodoxPascha, forDate, forKey, keyOf, readSettings, saveSettings, homeCard, settingsHtml, show, open, PUSH_KEY, VAPID_PUBLIC };
 });
