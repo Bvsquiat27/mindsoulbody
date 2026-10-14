@@ -286,3 +286,4 @@ button.sr-sym{cursor:pointer}
 @keyframes srGlow{50%{box-shadow:0 0 0 6px #ffd35a,0 10px 26px rgba(0,0,0,.35),inset 0 0 0 4px #f29fbe}}
 @keyframes srUp{from{transform:translateY(100%)}}
 @media (prefers-reduced-motion:reduce){.sr-board,.sr-dove,.sr-sym,.sr-tile,.sr-picker{animation:none !important}}
+.kg-sl-intro{font-size:17px}

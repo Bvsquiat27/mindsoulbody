@@ -294,7 +294,8 @@
     { id: 'manna', kind: 'matchThreeStars', n: 10, tier: 'common' },
     { id: 'scroll', kind: 'kgDone', game: 'wordsearch', n: 3, tier: 'common' },
     { id: 'shofar', kind: 'kgBest', game: 'who', n: 8, tier: 'common' },
-    { id: 'tablets', kind: 'kgDone', game: 'order', n: 4, tier: 'rare' },
+    /* legendary: every Story Order set, plus 3 stars on 8 Manna Match levels */
+    { id: 'tablets', kind: 'tabletsLegend', game: 'order', sets: 4, n: 8, tier: 'legendary' },
     { id: 'elephant', kind: 'kgDone', game: 'map', n: 1, tier: 'common' },
     { id: 'honeycomb', kind: 'kgDone', game: 'verse', n: 3, tier: 'rare' },
     { id: 'anchor', kind: 'kgDone', game: 'map', n: 2, tier: 'rare' },
@@ -377,7 +378,7 @@
     try {
       const v = JSON.parse(storage.getItem('msb_kidgames') || '{}') || {};
       const done = {}, best = {};
-      for (const g of KID_GAMES) { done[g] = Array.isArray(v.done && v.done[g]) ? new Set(v.done[g].filter(x => typeof x === 'string')).size : 0; best[g] = Math.max(0, Math.floor(Number(v.best && v.best[g]) || 0)); }
+      for (const g of KID_GAMES) { done[g] = Array.isArray(v.done && v.done[g]) ? new Set(v.done[g].filter(x => typeof x === 'string' && (g !== 'sling' || /^z\d+$/.test(x)))).size : 0; best[g] = Math.max(0, Math.floor(Number(v.best && v.best[g]) || 0)); }
       return { done, best };
     } catch { return { done: {}, best: {} }; }
   }
@@ -390,7 +391,7 @@
        a one-time goal (a best score, a whole chapter…) needs fresh rounds of
        that same game (AGAIN below).
      Old progress alone never brings it back instantly. */
-  const AGAIN = { memoryFast: 3, perfectLegend: 0, matchChapter: 5, kgBest: 1, kgAll: 6, lessons: 0, streak: 0, tricks: 0 };
+  const AGAIN = { tabletsLegend: 4, memoryFast: 3, perfectLegend: 0, matchChapter: 5, kgBest: 1, kgAll: 6, lessons: 0, streak: 0, tricks: 0 };
   function counters(storage) {
     const st = stats(storage).get(), kid = (() => { try { const v = JSON.parse(storage.getItem('msb_kidgames') || '{}') || {}; return v.plays && typeof v.plays === 'object' ? v.plays : {}; } catch { return {}; } })();
     let matchWins = 0, trades = 0;
@@ -414,6 +415,7 @@
       case 'trades': return d('trades');
       case 'kgDone': case 'kgBest': return Math.max(0, (now.kg[ch.game] || 0) - ((base.kg || {})[ch.game] || 0));
       case 'kgAll': return KID_GAMES.filter(g => (now.kg[g] || 0) > ((base.kg || {})[g] || 0)).length;
+      case 'tabletsLegend': return d('matchWins') + Math.max(0, (now.kg.order || 0) - ((base.kg || {}).order || 0));
       default: return 0;
     }
   }
@@ -465,6 +467,7 @@
       case 'kgDone': return cap((ctx.kid && ctx.kid.done[ch.game]) || 0, ch.n);
       case 'kgBest': return cap((ctx.kid && ctx.kid.best[ch.game]) || 0, ch.n);
       case 'kgAll': return cap(KID_GAMES.filter(g => ctx.kid && ctx.kid.done[g] > 0).length, ch.n);
+      case 'tabletsLegend': { const sets = Math.min(ch.sets, (ctx.kid && ctx.kid.done.order) || 0), three = Math.min(ch.n, Object.values(ctx.match).filter(s => s === 3).length); return cap(sets + three, ch.sets + ch.n); }
       case 'final': {
         /* every other squishy open, and 3 stars on any Manna Match level */
         const others = ctx.squishies.filter(x => x.id !== ch.id && x.locked);
