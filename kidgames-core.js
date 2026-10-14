@@ -131,6 +131,17 @@
     spiral: { david: [180, 272], spiral: { cx: 180, cy: 262, r0: 196, r1: 92, a0: Math.PI / 2, turns: 1.5 } },
     hills: { david: [180, 262], wave: 9, pts: [[400, 436], [36, 436], [36, 88], [300, 88]] },
     camp: { david: [196, 258], wave: 6, pts: [[400, 456], [26, 456], [26, 48], [334, 48], [334, 376], [104, 376], [104, 146], [258, 146]] },
+    /* levels 6-15: S-curves, spirals, twin lanes and long mazes */
+    zig: { david: [180, 246], pts: [[400, 452], [36, 452], [36, 372], [322, 372], [322, 122], [60, 122]] },
+    whirl: { david: [180, 256], spiral: { cx: 180, cy: 250, r0: 196, r1: 98, a0: 0, turns: 1.6 } },
+    ribbon: { david: [180, 250], wave: 12, pts: [[-30, 440], [324, 440], [324, 70], [60, 70], [60, 200]] },
+    twin: { david: [214, 250], pts: [[400, 456], [26, 456], [26, 40], [100, 40], [100, 400], [334, 400], [334, 110], [190, 110]] },
+    coil: { david: [180, 262], spiral: { cx: 180, cy: 262, r0: 205, r1: 120, a0: Math.PI, turns: 1.25 } },
+    ridge: { david: [180, 262], wave: 14, pts: [[400, 448], [30, 448], [30, 84], [330, 84], [330, 330]] },
+    serpent: { david: [180, 262], wave: 8, pts: [[400, 456], [26, 456], [26, 380], [334, 380], [334, 150], [26, 150], [26, 46], [334, 46], [334, 124]] },
+    maze: { david: [196, 258], pts: [[400, 458], [24, 458], [24, 44], [336, 44], [336, 380], [100, 380], [100, 140], [264, 140], [264, 300]] },
+    storm: { david: [180, 262], wave: 7, spiral: { cx: 180, cy: 262, r0: 210, r1: 96, a0: Math.PI / 2, turns: 2.25 } },
+    giant: { david: [196, 258], wave: 9, pts: [[400, 458], [22, 458], [22, 40], [338, 40], [338, 384], [96, 384], [96, 134], [270, 134], [270, 312]] },
   };
   /* a smooth path: straight runs with rounded corners (Chaikin), optional gentle waves */
   function zumaPath(name) {
@@ -219,6 +230,7 @@
       z.head -= gone.length * ZUMA.D;
       if (powers.includes('slow')) z.slowT = 5;
       if (powers.includes('reverse')) z.revT = 2.4;
+      if (powers.includes('zap')) { let n = 0; for (let i = z.balls.length - 1; i >= 0 && n < 8; i -= 1) if (z.balls[i].c === c) { z.balls.splice(i, 1); n += 1; if (i < a) a -= 1; gone.push({ c }); } z.head -= n * ZUMA.D; }
       events.push({ count: gone.length, combo, color: c, from: a, powers, balls: gone });
       /* the gap closes: does the stone in front match the one behind? */
       if (a <= 0 || a >= z.balls.length || z.balls[a - 1].c !== z.balls[a].c) break;

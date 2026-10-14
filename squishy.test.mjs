@@ -91,8 +91,8 @@ test('each locked squishy has its own challenge, ramping up, with rare and legen
   assert.deepEqual(C.CHALLENGES.map(c => c.id), locked, 'one challenge per locked squishy, in shelf order');
   assert.equal(new Set(C.CHALLENGES.map(c => `${c.kind}:${c.game || ''}:${c.n}`)).size, C.CHALLENGES.length, 'all different goals');
   for (const c of C.CHALLENGES) { const same = C.CHALLENGES.filter(d => d.kind === c.kind && d.game === c.game && d.kind !== 'final'); assert.ok(same.every((d, i) => i === 0 || d.n > same[i - 1].n), `${c.kind} ramps up`); }
-  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'rare').map(c => c.id), ['basket', 'ark', 'coat', 'jar', 'crown', 'boat', 'pearl', 'tablets', 'honeycomb', 'anchor', 'shield']);
-  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'legendary').map(c => c.id), ['bush', 'tomb', 'chariot', 'lamp']);
+  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'rare').map(c => c.id), ['basket', 'ark', 'coat', 'jar', 'crown', 'boat', 'pearl', 'honeycomb', 'anchor', 'shield']);
+  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'legendary').map(c => c.id), ['bush', 'tomb', 'tablets', 'chariot', 'lamp']);
   assert.equal(C.CHALLENGES[0].kind, 'memoryWins', 'the first one is easy');
   assert.equal(C.CHALLENGES.at(-1).kind, 'final');
   assert.equal(C.tierOf('lamb'), 'common');
@@ -161,7 +161,7 @@ test('play streaks use local calendar days', () => {
   assert.equal(st.get().bestStreak, 3, 'the best streak is remembered');
 });
 
-const KG_ALL = { done: { wordsearch: ['w1', 'w2', 'w3'], order: ['o1', 'o2', 'o3', 'o4'], who: ['round'], verse: ['v1', 'v2', 'v3'], map: ['m1', 'm2'], sling: ['s1', 's2', 's3', 's4'] }, best: { who: 9 }, plays: {}, badges: {} };
+const KG_ALL = { done: { wordsearch: ['w1', 'w2', 'w3'], order: ['o1', 'o2', 'o3', 'o4'], who: ['round'], verse: ['v1', 'v2', 'v3'], map: ['m1', 'm2'], sling: ['z1', 'z2', 'z3', 'z4'] }, best: { who: 9 }, plays: {}, badges: {} };
 
 test('the lamp opens last even when everything is done at once', () => {
   const s = memoryStorage(), st = C.stats(s), p = C.progress(s, SQUISHIES);
@@ -918,7 +918,8 @@ test('game squishies unlock from coloring, Questions, Memory, Manna Match and ea
   assert.deepEqual([pr('chariot').have, pr('chariot').need, pr('chariot').done], [5, 6, false], 'the chariot needs all six games');
   s.setItem('msb_kidgames', JSON.stringify(KG_ALL));
   const opened = C.checkUnlocks(s, SQUISHIES);
-  for (const id of ['lily', 'scroll', 'shofar', 'tablets', 'elephant', 'honeycomb', 'anchor', 'shield', 'chariot']) assert.ok(opened.includes(id), id);
+  assert.ok(!opened.includes('tablets'), 'the legendary tablets also need Manna Match stars');
+  for (const id of ['lily', 'scroll', 'shofar', 'elephant', 'honeycomb', 'anchor', 'shield', 'chariot']) assert.ok(opened.includes(id), id);
   assert.ok(!opened.includes('lamp'), 'the lamp still waits for the rest');
   assert.equal(C.stats(s).get().colored.length, 3, 'colored pages are kept in the stats (backed up with msb_)');
 });
@@ -1056,4 +1057,32 @@ test('trade audit: sent codes can be shown again, starters are not offered, one 
   assert.ok(!/the giver keeps their squishy/.test(tr));
   /* changing the pick closes the give-away question */
   assert.match(ui, /ui\.trade\.pick = tp\.dataset\.sqTradePick; ui\.trade\.confirm = false;/);
+});
+
+test('the Ten Commandments tablets are legendary: every Story Order set plus 3 stars on 8 Manna Match levels', () => {
+  const s = memoryStorage(), pr = () => C.challengeProgress(C.challengeFor('tablets'), C.challengeContext(s, SQUISHIES));
+  assert.equal(C.tierOf('tablets'), 'legendary');
+  s.setItem('msb_kidgames', JSON.stringify({ done: { order: ['o1', 'o2', 'o3', 'o4'] } }));
+  assert.deepEqual([pr().have, pr().need, pr().done], [4, 12, false]);
+  assert.ok(!C.checkUnlocks(s, SQUISHIES).includes('tablets'));
+  const T = require('./squishy-trade.js');
+  assert.equal(T.tradable('tablets'), false, 'no trading the tablets by code');
+  const kept = memoryStorage(); kept.setItem('msb_squishy_unlocked', JSON.stringify(['tablets']));
+  assert.ok(C.progress(kept, SQUISHIES).unlocked().includes('tablets'), 'already-won tablets stay');
+});
+
+test('every legendary squishy has a story Trick button with its own animation, sound and vibration', () => {
+  const ui = read('./squishy.js'), fx = require('./squishy-fx.js'), i18n = read('./i18n.js');
+  const legends = SQUISHIES.filter(x => C.tierOf(x.id) === 'legendary').map(x => x.id);
+  assert.deepEqual(legends.slice().sort(), ['bush', 'chariot', 'lamp', 'tablets', 'tomb']);
+  for (const id of legends) {
+    const def = fx.STORIES[id]; assert.ok(def && def.dur >= 3000 && typeof def.over === 'function' && typeof def.pose === 'function', id);
+    assert.ok(new RegExp(`\\n    ${id}: \\{ text: '([^']+)', story: '([^']+)'`).test(ui), id);
+    const [, text, story] = ui.match(new RegExp(`\\n    ${id}: \\{ text: '([^']+)', story: '([^']+)'`));
+    for (const k of [text, story]) assert.ok(i18n.includes(`"${k}":`), `${id} Spanish: ${k}`);
+  }
+  assert.match(ui, /isLegend\(x\.id\) && STORY\[x\.id\] \? `<button type="button" class="sq-story" data-sq-story>/);
+  assert.match(ui, /vibrate\(reduced\(\) \? \[20\] : st\.buzz\)/);
+  assert.doesNotMatch(ui.slice(ui.indexOf('function doStory'), ui.indexOf('function doStory') + 600), /trickFound/, 'story tricks do not change the secret-trick badges');
+  assert.equal(C.KITS ? C.KITS.bush.trick : 'i-am', 'i-am', 'the bush keeps its secret gesture');
 });

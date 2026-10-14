@@ -51,6 +51,7 @@
       case 'trades': return L('trade {n} more times with a friend', { n: need });
       case 'kgDone': case 'kgBest': return L('finish {n} more rounds of that Bible game', { n: need });
       case 'kgAll': return L('play each of the 6 Bible games again');
+      case 'tabletsLegend': return L('play {n} more rounds of Story Order or Manna Match', { n: need });
       default: return challengeText(ch);
     }
   }
@@ -73,6 +74,7 @@
       case 'kgDone': return L(ch.game === 'map' && ch.n === 1 ? 'Finish 1 Map Journey' : KG_TEXT[ch.game] || '', { n: ch.n });
       case 'kgBest': return L('Get {n} in a row in Who Said It?', { n: ch.n });
       case 'kgAll': return L('Finish each of the 6 Bible games once');
+      case 'tabletsLegend': return L('Put every Story Order set in order and get 3 stars on {n} Manna Match levels', { n: ch.n });
       case 'tricks': return ch.n === 1 ? L('Find a secret trick') : ch.n ? L('Find {n} secret tricks', { n: ch.n }) : L('Find every secret trick');
       default: return '';
     }
@@ -314,6 +316,29 @@
     'light-room': () => { crunch(1, true); setTimeout(() => [523, 784, 1047, 1568].forEach(f => voice({ type: 'sine', f0: f, dur: 2, peak: 0.02, attack: 0.4 })), 500); }
   };
   const TRICK_BUZZ = { 'light-room': [10, 30, 10, 30, 40] };
+  /* Story tricks: every legendary squishy has a Trick button that plays its
+     Bible moment. These are not "secret" tricks, so they do not count toward
+     the Secret trick badges (those stay earned as they were). */
+  const STORY = {
+    chariot: { text: 'Up to heaven!', story: 'Elijah went up by a whirlwind into heaven, with a chariot of fire and horses of fire (2 Kings 2:11).',
+      sound: () => { noise({ filter: 'bandpass', f0: 300, f1: 2400, dur: 3, peak: 0.05, attack: 0.6 }); notes([392, 523, 659, 784, 1047], { type: 'triangle', dur: 0.5, peak: 0.03, step: 0.35, delay: 1.2 }); }, buzz: [20, 40, 20, 40, 60, 40, 90] },
+    tomb: { text: 'He is risen!', story: 'The stone was rolled away. Jesus is not here; He is risen! (Matthew 28:6)',
+      sound: () => { noise({ filter: 'lowpass', f0: 400, f1: 120, dur: 1.4, peak: 0.07 }); setTimeout(() => notes([523, 659, 784, 1047, 1319], { type: 'sine', dur: 1.4, peak: 0.03, step: 0.12, attack: 0.2 }), 1300); }, buzz: [60, 30, 60, 30, 60, 200, 15] },
+    tablets: { text: 'The Ten Commandments', story: 'On Mount Sinai there was thunder and lightning, and God wrote His commandments on two tablets of stone (Exodus 19-20).',
+      sound: () => { [0, 0.9, 1.7].forEach(d => noise({ filter: 'lowpass', f0: 700, f1: 60, dur: 0.9, peak: 0.08, delay: d })); [0.7, 1.1, 1.5, 1.9, 2.3].forEach(d => voice({ type: 'square', f0: 1800, f1: 900, dur: 0.06, peak: 0.015, delay: d })); }, buzz: [80, 120, 60, 200, 80] },
+    bush: { text: 'I AM THAT I AM', story: 'The bush burned with fire but was not burnt up, and God said to Moses: I AM THAT I AM (Exodus 3).',
+      sound: () => { SQUISH.crackle(1); [196, 262, 330, 392].forEach(f => voice({ type: 'triangle', f0: f, dur: 2.6, peak: 0.024, attack: 0.6, delay: 0.5 })); }, buzz: [15, 30, 15, 30, 15, 30, 60] },
+    lamp: { text: 'The light of the world', story: 'Jesus said: I am the light of the world; whoever follows me will not walk in darkness (John 8:12).',
+      sound: () => { crunch(1, true); setTimeout(() => [523, 659, 784, 1047, 1568].forEach(f => voice({ type: 'sine', f0: f, dur: 2.2, peak: 0.02, attack: 0.4 })), 400); }, buzz: [10, 30, 10, 30, 40, 30, 80] },
+  };
+  const isLegend = id => C().tierOf(id) === 'legendary';
+  function doStory() {
+    const p = pv, F = FXM(), st = p && STORY[p.id]; if (!p || !F || !st || !F.STORIES[p.id] || p.anim) return;
+    if (p.mode && p.mode !== 'wait') { p.body.release(0, 0); toneStop(); p.mode = p.pointers.size ? 'wait' : null; p.gestured = false; }
+    startAnim(F.STORIES[p.id], { text: L(st.text) });
+    st.sound(); vibrate(reduced() ? [20] : st.buzz);
+    toast(`✨ ${L(st.story)}`, 4600);
+  }
   function kitSquish(d) { const k = pv && kit(pv.id); if (k && SQUISH[k.sound.squish]) SQUISH[k.sound.squish](d); }
   function kitRelease(a) { const k = pv && kit(pv.id); if (k && RELEASE[k.sound.release]) RELEASE[k.sound.release](a); }
 
@@ -411,7 +436,7 @@
     const list = trades().get().sent.slice(-12).reverse();
     if (!list.length) return '';
     const rows = list.map(x => `<li><span class="sq-art sq-sent-art">${A().svg(x.id)}</span><span><strong>${esc(nameOf(byId(x.id)))}</strong><small class="sq-code-small">${esc(TR().pretty(x.c))}</small></span><button type="button" class="secondary" data-sq-sent="${esc(x.c)}"${tr.code === x.c ? ' aria-pressed="true"' : ''}>${esc(L('Show again'))}</button></li>`).join('');
-    return `<details class="sq-sent"${tr.code ? '' : ''}><summary>📮 ${esc(L('My sent codes'))} (${list.length})</summary><p class="small muted">${esc(L('If your friend has not typed a code yet, show it again here.'))}</p><ul>${rows}</ul></details>`;
+    return `<details class="sq-sent"${ui.trade.sentOpen ? ' open' : ''}><summary>📮 ${esc(L('My sent codes'))} (${list.length})</summary><p class="small muted">${esc(L('If your friend has not typed a code yet, show it again here.'))}</p><ul>${rows}</ul></details>`;
   }
   function makeTrade() {
     const tr = ui.trade, code = trades().create(tr.pick, prog().unlocked(), Math.random, new Date(), id => C().tradeAway(store2(), D().SQUISHIES, id));
@@ -542,6 +567,7 @@
       <div class="sq-play-top"><button type="button" class="sq-play-back" data-sq-play-back>${esc(L('← Shelf'))}</button><strong id="sq-play-title">${esc(nameOf(x))}</strong><button type="button" class="sq-sound" role="switch" aria-checked="${on}" data-sq-sound aria-label="${esc(L('Sounds'))}">${on ? '🔊' : '🔈'}</button></div>
       <div class="sq-play-area" data-sq-area><canvas class="sq-canvas" data-sq-canvas tabindex="0" role="img" aria-label="${esc(kit(x.id) && kit(x.id).trick ? L('{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch, T does its secret trick.', { name: nameOf(x) }) : L('{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch.', { name: nameOf(x) }))}"></canvas>
         <button type="button" class="sq-learn" data-sq-learn hidden>📖 ${esc(L('Learn'))}</button>
+        ${isLegend(x.id) && STORY[x.id] ? `<button type="button" class="sq-story" data-sq-story>✨ ${esc(L('Trick'))}</button>` : ''}
         ${kit(x.id) && kit(x.id).trick ? `<button type="button" class="sq-trick" data-sq-trick aria-live="polite">${esc(trickChip(x.id))}</button>` : ''}
         <p class="sq-toast" data-sq-toast role="status" hidden></p></div>
       <p class="sq-play-hint">${esc(L('Press to squish · drag to stretch · two fingers to squeeze or spread'))}</p>
@@ -1116,7 +1142,7 @@
     if (t.closest('[data-sq-trade-make]')) { if (ui.trade.pick) { ui.trade.confirm = true; render(); ui.root.querySelector('[data-sq-trade-yes]')?.focus(); } return; }
     if (t.closest('[data-sq-trade-yes]')) { makeTrade(); return; }
     const sent = t.closest('[data-sq-sent]');
-    if (sent) { const x = trades().get().sent.find(v => v.c === sent.dataset.sqSent); if (x) { ui.trade.code = x.c; ui.trade.codeId = x.id; ui.trade.confirm = false; render(); ui.root.querySelector('[data-sq-code]')?.scrollIntoView({ block: 'center' }); } return; }
+    if (sent) { const x = trades().get().sent.find(v => v.c === sent.dataset.sqSent); if (x) { ui.trade.sentOpen = true; ui.trade.code = x.c; ui.trade.codeId = x.id; ui.trade.confirm = false; render(); ui.root.querySelector('[data-sq-code]')?.scrollIntoView({ block: 'center' }); } return; }
     if (t.closest('[data-sq-trade-no]')) { ui.trade.confirm = false; render(); return; }
     if (t.closest('[data-sq-trade-share]')) { shareTrade(); return; }
     if (t.closest('[data-sq-trade-redeem]')) { redeemTrade(); return; }
@@ -1133,6 +1159,7 @@
     const pick = t.closest('[data-sq-pick]');
     if (pick) { ui.msg = ''; openPlay(pick.dataset.sqPick); return; }
     if (t.closest('[data-sq-play-back]')) { closePlay(); if (window.MsbSpeech) MsbSpeech.stop(); render(); ui.root.querySelector('.sq-grid')?.scrollIntoView({ block: 'center' }); return; }
+    if (t.closest('[data-sq-story]') && pv) { doStory(); return; }
     if (t.closest('[data-sq-trick]') && pv) {
       if (C().trickRevealed(pv.id, stats().get())) doTrick(null);
       else toast(L('Keep playing with it to discover its secret trick!'), 2600);

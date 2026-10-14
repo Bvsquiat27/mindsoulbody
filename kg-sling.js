@@ -21,7 +21,7 @@
     { fill: '#2fbf71', dark: '#16794a', mark: 'diamond', en: 'green', es: 'verde' },
     { fill: '#9b5de5', dark: '#5d2b9e', mark: 'star', en: 'purple', es: 'morada' },
   ];
-  const POWER = { slow: { icon: '🐢', en: 'Slow!', es: '¡Lento!' }, reverse: { icon: '↩', en: 'Back up!', es: '¡Atrás!' }, bomb: { icon: '💥', en: 'Boom!', es: '¡Bum!' } };
+  const POWER = { slow: { icon: '🐢', en: 'Slow!', es: '¡Lento!' }, reverse: { icon: '↩', en: 'Back up!', es: '¡Atrás!' }, bomb: { icon: '💥', en: 'Boom!', es: '¡Bum!' }, zap: { icon: '⚡', en: 'Zap! Same color gone!', es: '¡Zas! ¡Fuera ese color!' } };
   let raf = 0;
   const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
 
@@ -39,7 +39,7 @@
     if (prog().migrateSling()) moved = true;
     const note = moved ? `<p class="kg-msg kg-new-sling" role="status">${esc(t('New Sling! Your cleared levels are open in the new game.', '¡Nueva Honda! Tus niveles superados están abiertos en el juego nuevo.'))}</p>` : '';
     const v = prog().get(), l = lang(), intro = S().intro;
-    const lv = S().levels.map((x, i) => { const st = Number(v.best[`sling:${x.id}`]) || 0; const open = i === 0 || (v.done.sling || []).includes(S().levels[i - 1].id); return `<li><button type="button" class="card kg-pick zm-pick${st ? ' done' : ''}" ${open ? `data-sl-pick="${i}"` : 'disabled'}><span class="kg-pick-icon" aria-hidden="true">${open ? ['🏞️', '🌊', '🌀', '⛰️', '⛺'][i] || '🪨' : '🔒'}</span><span><strong>${esc(t('Level {n}', 'Nivel {n}', { n: i + 1 }))} · ${esc(x.title[l])}</strong><small>${esc(open ? t('{n} stones in the chain', '{n} piedras en la cadena', { n: x.count }) : t('Finish level {n} first', 'Termina primero el nivel {n}', { n: i }))}</small>${st ? starRow(st) : ''}</span></button></li>`; }).join('');
+    const lv = S().levels.map((x, i) => { const st = Number(v.best[`sling:${x.id}`]) || 0; const open = i === 0 || (v.done.sling || []).includes(S().levels[i - 1].id); return `<li><button type="button" class="card kg-pick zm-pick${st ? ' done' : ''}" ${open ? `data-sl-pick="${i}"` : 'disabled'}><span class="kg-pick-icon" aria-hidden="true">${open ? ['🏞️', '🌊', '🌀', '⛰️', '⛺', '〰️', '🎀', '🏔️', '🐚', '🌪️', '🐍', '👣', '🧩', '🦶', '⛈️'][i] || '🪨' : '🔒'}</span><span><strong>${esc(t('Level {n}', 'Nivel {n}', { n: i + 1 }))} · ${esc(x.title[l])}</strong><small>${esc(open ? t('{n} stones in the chain', '{n} piedras en la cadena', { n: x.count }) : t('Finish level {n} first', 'Termina primero el nivel {n}', { n: i }))}</small>${st ? starRow(st) : ''}</span></button></li>`; }).join('');
     return `${note}<blockquote class="kg-quote kg-sl-intro">“${esc(intro.text[l])}” <span class="kg-verse-ref">${esc(intro.ref[l])}</span></blockquote><p class="kg-lead">${esc(t('Stop the stones before they reach Goliath! Match 3 of a color to pop them.', '¡Detén las piedras antes de que lleguen a Goliat! Junta 3 del mismo color para reventarlas.'))}</p><ul class="kg-picks">${lv}</ul>`;
   }
   const stoneName = c => (lang() === 'es' ? STONES[c].es : STONES[c].en);
@@ -322,6 +322,7 @@
   const POW_SOUND = {
     slow: () => tone(660, { f1: 220, dur: 0.6, peak: 0.05, type: 'triangle' }),
     reverse: () => { tone(300, { f1: 900, dur: 0.25, peak: 0.04, type: 'sawtooth' }); tone(900, { f1: 300, dur: 0.25, peak: 0.03, type: 'sawtooth', delay: 0.22 }); },
+    zap: () => { tone(1200, { f1: 300, dur: 0.35, peak: 0.05, type: 'sawtooth' }); noise({ filter: 'highpass', f0: 2500, dur: 0.3, peak: 0.03 }); },
     bomb: () => { sound('thud'); noise({ filter: 'lowpass', f0: 900, f1: 120, dur: 0.6, peak: 0.08 }); },
   };
   function say(s, text, x, y, c = '#fff', size = 18) { s.texts.push({ text, x, y, c, size, age: 0, life: 1.1 }); }
@@ -400,7 +401,7 @@
             const sp = s.shot, steps = 3;
             for (let i = 0; i < steps && s.shot; i += 1) {
               sp.x += sp.vx * dt / steps; sp.y += sp.vy * dt / steps;
-              if (s.final) { const e = s.path.goliath; if (Math.hypot(sp.x - e.x, sp.y - gChest(e)) < 36) { s.shot = null; s.gpose = 'hit'; s.gT = 0.6; s.freeze = reduced() ? 0 : 0.18; s.shake = 0.6; sound('bong'); sound('crack'); buzz([40, 30, 60]); burstAt(s, e.x, e.y - 82, '#ffd35a', 22); say(s, t('Down he goes!', '¡Al suelo!'), 180, 120, '#ffd35a', 24); s.falling = 0.001; sound('giantfall'); } }
+              if (s.final) { const e = s.path.goliath; if (Math.hypot(sp.x - e.x, sp.y - gChest(e)) < 36) { s.shot = null; s.gpose = 'hit'; s.gT = 0.6; s.freeze = reduced() ? 0 : 0.18; s.shake = 0.6; sound('bong'); sound('crack'); buzz([40, 30, 60]); burstAt(s, e.x, gChest(e), '#ffd35a', 22); say(s, t('Down he goes!', '¡Al suelo!'), 180, 120, '#ffd35a', 24); s.falling = 0.001; sound('giantfall'); } }
               else { const hit = C().zumaHit(s.z, s.path, sp.x, sp.y); if (hit >= 0) { landShot(ui, s, hit, sp.x, sp.y); refreshBar(s); } }
               if (s.shot && (sp.x < -20 || sp.x > 380 || sp.y < -20 || sp.y > 500)) { s.shot = null; s.cur = s.next; s.next = C().zumaNext(s.z); refreshBar(s); }
             }
