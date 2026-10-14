@@ -14,7 +14,8 @@ function kv() {
     async getWithMetadata(k) { return m.has(k) ? { value: m.get(k).v, metadata: m.get(k).meta ?? null } : { value: null, metadata: null }; },
     async put(k, v, o) { m.set(k, { v: String(v), meta: o?.metadata }); },
     async delete(k) { m.delete(k); },
-    async list({ prefix }) { return { keys: [...m.keys()].filter((k) => k.startsWith(prefix)).map((name) => ({ name, metadata: m.get(name).meta })), list_complete: true }; },
+    async list() { throw Error('cron must not list the shared namespace'); },
+    async list_unused({ prefix }) { return { keys: [...m.keys()].filter((k) => k.startsWith(prefix)).map((name) => ({ name, metadata: m.get(name).meta })), list_complete: true }; },
   };
 }
 function vapidEnv(store) {
@@ -99,8 +100,8 @@ test('subscribe without an account, test push, unsubscribe needs the auth secret
   let [st, r] = await post(env, '/push/subscribe', { subscription: b.sub, tz: 'America/New_York', time: '07:00', lang: 'es' });
   assert.equal(st, 200); assert.ok(r.ok);
   const key = [...store.m.keys()].find((k) => /^push:[a-f0-9]{32}$/.test(k));
-  assert.equal(store.m.get(key).meta.t, '07:00'); assert.equal(store.m.get(key).meta.l, 'es');
-  assert.equal(await store.get('push:total'), '1');
+  let idx = JSON.parse(await store.get('push:index'));
+  assert.equal(idx[key.slice(5)].t, '07:00'); assert.equal(idx[key.slice(5)].l, 'es');
   [st] = await post(env, '/push/subscribe', { subscription: b.sub, tz: 'Mars/Base', time: '07:00' }); assert.equal(st, 400);
   [st] = await post(env, '/push/subscribe', { subscription: b.sub, tz: 'UTC', time: '7am' }); assert.equal(st, 400);
   const sent = [];
@@ -117,7 +118,7 @@ test('subscribe without an account, test push, unsubscribe needs the auth secret
   [st] = await post(env, '/push/unsubscribe', { endpoint: b.sub.endpoint, auth: 'nope' }); assert.equal(st, 200);
   assert.ok(store.m.has(key));
   [st] = await post(env, '/push/unsubscribe', { endpoint: b.sub.endpoint, auth: b.sub.keys.auth }); assert.equal(st, 200);
-  assert.ok(!store.m.has(key)); assert.equal(await store.get('push:total'), '0');
+  assert.ok(!store.m.has(key)); assert.deepEqual(JSON.parse(await store.get('push:index')), {});
 });
 test('subscribe rate limit per IP', async () => {
   const env = vapidEnv(kv()), b = fakeBrowser();
@@ -128,12 +129,51 @@ test('cron sends once when due, drops gone subscriptions, and is wired as schedu
   const store = kv(), env = vapidEnv(store), a = fakeBrowser('https://fcm.googleapis.com/fcm/send/a'), g = fakeBrowser('https://updates.push.services.mozilla.com/wpush/v2/gone');
   const sub = (s) => post(env, '/push/subscribe', { subscription: s, tz: 'UTC', time: '23:59', lang: 'en' });
   await sub(a.sub); await sub(g.sub);
-  for (const [k, v] of store.m) if (/^push:[a-f0-9]{32}$/.test(k)) v.meta = { ...v.meta, t: '07:00', d: '' };
+  const idx = JSON.parse(await store.get('push:index')); for (const id in idx) idx[id] = { ...idx[id], t: '07:00', d: '' }; await store.put('push:index', JSON.stringify(idx));
   const calls = [];
   const fetcher = async (url, init) => { calls.push(url); return new Response('', { status: url.includes('gone') ? 410 : 201 }); };
   const now = new Date('2026-10-14T07:10:00Z');
   let r = await runPushCron(env, now, fetcher);
-  assert.equal(r.sent, 2); assert.equal(r.removed, 1); assert.equal(calls.length, 2);
+  assert.equal(r.sent, 1); assert.equal(r.removed, 1); assert.equal(calls.length, 2);
   r = await runPushCron(env, now, fetcher); assert.equal(r.sent, 0);
   assert.equal(typeof worker.scheduled, 'function');
+});
+
+async function twoDue(store, env, failUrl) {
+  const a = fakeBrowser('https://fcm.googleapis.com/fcm/send/ok'), b = fakeBrowser(failUrl);
+  for (const s of [a.sub, b.sub]) await post(env, '/push/subscribe', { subscription: s, tz: 'UTC', time: '23:59' });
+  const idx = JSON.parse(await store.get('push:index')); for (const id in idx) idx[id] = { ...idx[id], t: '07:00', d: '' }; await store.put('push:index', JSON.stringify(idx));
+}
+test('failed sends are recorded with backoff, then the day is given up after 3 tries', async () => {
+  const store = kv(), env = vapidEnv(store);
+  await twoDue(store, env, 'https://fcm.googleapis.com/fcm/send/down');
+  const calls = []; const fetcher = async (url) => { calls.push(url); return new Response('', { status: url.endsWith('down') ? 503 : 201 }); };
+  const t0 = Date.parse('2026-10-14T07:05:00Z'), at = (min) => new Date(t0 + min * 60000);
+  let r = await runPushCron(env, at(0), fetcher); assert.deepEqual([r.sent, r.failed], [1, 1]);
+  r = await runPushCron(env, at(5), fetcher); assert.equal(calls.length, 2, 'no retry inside the 15 minute backoff');
+  r = await runPushCron(env, at(15), fetcher); assert.equal(r.failed, 1);
+  r = await runPushCron(env, at(40), fetcher); assert.equal(calls.length, 3, 'second backoff is 30 minutes');
+  r = await runPushCron(env, at(46), fetcher); assert.equal(r.failed, 1);
+  const idx = JSON.parse(await store.get('push:index')), down = Object.values(idx).find((e) => e.f === 1);
+  assert.equal(down.d, '2026-10-14'); assert.equal(down.a, 3);
+  r = await runPushCron(env, at(150), fetcher); assert.equal(calls.length, 4, 'given up for today');
+});
+test('a network error counts as a failed attempt too', async () => {
+  const store = kv(), env = vapidEnv(store);
+  await twoDue(store, env, 'https://fcm.googleapis.com/fcm/send/net');
+  const fetcher = async (url) => { if (url.endsWith('net')) throw Error('offline'); return new Response('', { status: 201 }); };
+  const r = await runPushCron(env, new Date('2026-10-14T07:05:00Z'), fetcher);
+  assert.equal(r.failed, 1);
+  assert.ok(Object.values(JSON.parse(await store.get('push:index'))).some((e) => e.a === 1 && e.n > 0));
+});
+test('cron skips the whole run when the VAPID private key is missing', async () => {
+  const store = kv(), env = vapidEnv(store);
+  await twoDue(store, env, 'https://fcm.googleapis.com/fcm/send/x');
+  let called = 0; const r = await runPushCron({ ...env, VAPID_PRIVATE_KEY: '' }, new Date('2026-10-14T07:05:00Z'), async () => { called++; return new Response('', { status: 201 }); });
+  assert.equal(r.skipped, 'no VAPID key'); assert.equal(called, 0);
+});
+test('GET /push/key answers', async () => {
+  const env = vapidEnv(kv());
+  const res = await handleFriends(new Request('https://w.test/push/key', { headers: { origin: 'https://bvsquiat27.github.io' } }), env);
+  assert.equal(res.status, 200); assert.equal((await res.json()).key, env.VAPID_PUBLIC_KEY);
 });

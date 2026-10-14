@@ -903,6 +903,7 @@ export async function handleFriends(request, env) {
       for (const s of SHOWS) all[s] = await presentScoreList(env, board[s], 10);
       return reply({ scores: all });
     }
+    if (url.pathname === '/push/key' && request.method === 'GET') return reply({ key: env.VAPID_PUBLIC_KEY || null });
     if (request.method !== 'POST') return reply({ error: 'Not found' }, 404);
 
     const { body, error, status } = await readBody(request);

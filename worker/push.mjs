@@ -1,8 +1,10 @@
 /* Morning devotional push (Web Push with VAPID, RFC 8291 aes128gcm + RFC 8292).
    KV binding FRIENDS (the same namespace as friends.mjs):
-     push:<32 hex of sha256(endpoint)> → value { endpoint, keys:{p256dh,auth}, tz, time, lang, created }
-                                        metadata { t:"HH:MM", z:tz, l:"en"|"es", d:"YYYY-MM-DD" last sent, f:fails }
-     push:total → approximate number of stored subscriptions (cap PUSH_LIMITS.total)
+     push:<32 hex of sha256(endpoint)> → { endpoint, keys:{p256dh,auth}, tz, time, lang, created }
+     push:index → { <id>: { t:"HH:MM", z:tz, l:"en"|"es", d:"YYYY-MM-DD" done for that day,
+                            a: attempts today, n: no retry before this ms, f: failed days in a row } }
+   The cron reads only push:index (one KV get per run, no KV list), so the
+   friends and trade keys in this shared namespace are never scanned.
      rate:push-sub:<ip>, rate:push-test:<id>, rate:push-test-ip:<ip>, rate:push-del:<ip> → { start, n } hourly
    No account is needed: a subscription is its own identity. Unsubscribe and
    test need the subscription's auth secret, which only that browser has.
@@ -10,7 +12,7 @@
    secret. VAPID_PUBLIC_KEY and VAPID_SUBJECT are plain vars. */
 import { PUSH_TEXT, PUSH_ORDER } from './devotional-push-data.mjs';
 
-export const PUSH_LIMITS = { subPerHourIp: 20, testPerHour: 3, testPerHourIp: 10, delPerHourIp: 30, total: 5000, sendPerRun: 40, windowMin: 180, maxFails: 5 };
+export const PUSH_LIMITS = { subPerHourIp: 20, testPerHour: 3, testPerHourIp: 10, delPerHourIp: 30, total: 5000, sendPerRun: 40, windowMin: 180, maxFails: 5, triesPerDay: 3, backoffMin: 15 };
 const PUSH_HOSTS = /^(fcm\.googleapis\.com|android\.googleapis\.com|updates\.push\.services\.mozilla\.com|push\.services\.mozilla\.com|web\.push\.apple\.com|[a-z0-9-]+\.notify\.windows\.com)$/;
 const HOUR_MS = 3600000;
 const enc = new TextEncoder();
@@ -53,6 +55,7 @@ const minutesOf = (hhmm) => Number(hhmm.slice(0, 2)) * 60 + Number(hhmm.slice(3,
 /* due when local time is at or after the chosen time (within the window) and nothing was sent today */
 export function isDue(meta, now = new Date()) {
   if (!meta || !meta.z || !meta.t) return null;
+  if (meta.n && now.getTime() < meta.n) return null;
   let l; try { l = localNow(meta.z, now); } catch { return null; }
   const late = l.min - minutesOf(meta.t);
   return late >= 0 && late < PUSH_LIMITS.windowMin && meta.d !== l.date ? l.date : null;
@@ -135,17 +138,20 @@ async function takeRate(env, key, limit) {
   b.n += 1; await env.FRIENDS.put(key, JSON.stringify(b), { expirationTtl: 7200 });
   return true;
 }
-async function total(env, delta) {
-  const n = Math.max(0, (Number(await env.FRIENDS.get('push:total')) || 0) + delta);
-  if (delta) await env.FRIENDS.put('push:total', String(n));
-  return n;
+const INDEX = 'push:index';
+export async function readIndex(env) {
+  try { const v = JSON.parse(await env.FRIENDS.get(INDEX) || '{}'); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; } catch { return {}; }
 }
+/* read-modify-write right before the put keeps the window for a lost update small */
+async function editIndex(env, fn) { const idx = await readIndex(env); if (fn(idx) !== false) await env.FRIENDS.put(INDEX, JSON.stringify(idx)); return idx; }
 async function loadSub(env, id) {
-  const r = await env.FRIENDS.getWithMetadata(`push:${id}`);
-  if (!r || !r.value) return null;
-  try { return { rec: JSON.parse(r.value), meta: r.metadata || {} }; } catch { return null; }
+  const v = await env.FRIENDS.get(`push:${id}`);
+  if (!v) return null;
+  try { return { rec: JSON.parse(v) }; } catch { return null; }
 }
 const ctEqual = (a, b) => { a = String(a); b = String(b); let x = a.length === b.length ? 0 : 1; for (let i = 0; i < Math.max(a.length, b.length); i++) x |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0); return x === 0; };
+
+async function dropSub(env, id) { await env.FRIENDS.delete(`push:${id}`); await editIndex(env, (x) => { if (!(id in x)) return false; delete x[id]; }); }
 
 /* ---------- routes: /push/key, /push/subscribe, /push/unsubscribe, /push/test ---------- */
 export async function handlePush(path, body, env, ip, fetcher = fetch) {
@@ -157,14 +163,15 @@ export async function handlePush(path, body, env, ip, fetcher = fetch) {
     const tz = String(body?.tz || ''); if (!validTimeZone(tz)) return [{ error: 'Unknown time zone' }, 400];
     const time = String(body?.time || ''); if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) return [{ error: 'Choose a time like 07:00' }, 400];
     const lang = body?.lang === 'es' ? 'es' : 'en';
-    const id = await subId(sub.endpoint), old = await loadSub(env, id);
-    if (!old && (await total(env, 0)) >= PUSH_LIMITS.total) return [{ error: 'Reminders are full right now. Please try again later.' }, 503];
+    const id = await subId(sub.endpoint), old = await loadSub(env, id), idx = await readIndex(env);
+    if (!old && Object.keys(idx).length >= PUSH_LIMITS.total) return [{ error: 'Reminders are full right now. Please try again later.' }, 503];
     const l = localNow(tz);
     /* turning it on after today's time: start tomorrow, never a surprise push right away */
-    const d = old && old.meta.d === l.date ? l.date : (l.min >= minutesOf(time) ? l.date : '');
+    const prev = idx[id] || {};
+    const d = prev.d === l.date ? l.date : (l.min >= minutesOf(time) ? l.date : '');
     const rec = { ...sub, tz, time, lang, created: old?.rec?.created || Date.now() };
-    await env.FRIENDS.put(`push:${id}`, JSON.stringify(rec), { metadata: { t: time, z: tz, l: lang, d, f: 0 } });
-    if (!old) await total(env, 1);
+    await env.FRIENDS.put(`push:${id}`, JSON.stringify(rec));
+    await editIndex(env, (x) => { x[id] = { t: time, z: tz, l: lang, d, a: 0, n: 0, f: 0 }; });
     return [{ ok: true, id, time, tz, lang, next: d === l.date ? 'tomorrow' : 'today' }];
   }
   if (path === '/push/unsubscribe' || path === '/push/test') {
@@ -173,38 +180,47 @@ export async function handlePush(path, body, env, ip, fetcher = fetch) {
     const endpoint = String(body?.endpoint || ''); if (!endpoint || endpoint.length > 1000) return [{ error: 'Missing subscription' }, 400];
     const id = await subId(endpoint), found = await loadSub(env, id);
     if (!found || !ctEqual(found.rec.keys.auth, String(body?.auth || ''))) return del ? [{ ok: true }] : [{ error: 'Reminder not found. Turn it off and on again.' }, 404];
-    if (del) { await env.FRIENDS.delete(`push:${id}`); await total(env, -1); return [{ ok: true }]; }
+    if (del) { await dropSub(env, id); return [{ ok: true }]; }
     if (!(await takeRate(env, `rate:push-test-ip:${ip}`, PUSH_LIMITS.testPerHourIp)) || !(await takeRate(env, `rate:push-test:${id}`, PUSH_LIMITS.testPerHour))) return [{ error: 'Only 3 test reminders an hour' }, 429];
     const msg = messageFor(localNow(found.rec.tz).date, found.rec.lang);
     let status = 0; try { status = await sendPush(env, found.rec, msg, fetcher); } catch { status = 0; }
-    if (status === 404 || status === 410) { await env.FRIENDS.delete(`push:${id}`); await total(env, -1); return [{ error: 'This phone’s subscription expired. Turn reminders off and on again.' }, 410]; }
+    if (status === 404 || status === 410) { await dropSub(env, id); return [{ error: 'This phone’s subscription expired. Turn reminders off and on again.' }, 410]; }
     return status >= 200 && status < 300 ? [{ ok: true, sent: true, status }] : [{ error: 'The push service did not accept the test', status }, 502];
   }
   return [{ error: 'Not found' }, 404];
 }
 
-/* ---------- cron: send what is due ---------- */
+/* ---------- cron: send what is due ----------
+   Every attempt is recorded. A failure (5xx, 429, network, other 4xx) waits
+   15, 30 then 60 minutes; after 3 tries the day is given up. 404/410 removes
+   the subscription, and 5 failed days in a row remove it too. */
 export async function runPushCron(env, now = new Date(), fetcher = fetch) {
-  let cursor, sent = 0, removed = 0, checked = 0;
-  do {
-    const page = await env.FRIENDS.list({ prefix: 'push:', cursor, limit: 1000 });
-    for (const k of page.keys) {
-      if (k.name === 'push:total') continue;
-      checked++;
-      const date = isDue(k.metadata, now);
-      if (!date) continue;
-      if (sent >= PUSH_LIMITS.sendPerRun) return { sent, removed, checked, more: true };
-      const found = await loadSub(env, k.name.slice(5));
-      if (!found) continue;
-      let status = 0; try { status = await sendPush(env, found.rec, messageFor(date, found.meta.l || found.rec.lang), fetcher); } catch { status = 0; }
-      sent++;
-      if (status === 404 || status === 410 || (status >= 400 && status < 500 && status !== 429 && (found.meta.f || 0) + 1 >= PUSH_LIMITS.maxFails)) {
-        await env.FRIENDS.delete(k.name); await total(env, -1); removed++; continue;
-      }
-      const ok = status >= 200 && status < 300, client = status >= 400 && status < 500 && status !== 429;
-      if (ok || client) await env.FRIENDS.put(k.name, JSON.stringify(found.rec), { metadata: { ...found.meta, d: date, f: ok ? 0 : (found.meta.f || 0) + 1 } });
-    }
-    cursor = page.list_complete ? undefined : page.cursor;
-  } while (cursor);
-  return { sent, removed, checked, more: false };
+  if (!env.VAPID_PRIVATE_KEY || !env.VAPID_PUBLIC_KEY) return { skipped: 'no VAPID key', sent: 0, failed: 0, removed: 0, checked: 0 };
+  const idx = await readIndex(env), ids = Object.keys(idx), changes = {}, gone = [];
+  let sent = 0, failed = 0, attempts = 0, more = false;
+  for (const id of ids) {
+    const date = isDue(idx[id], now);
+    if (!date) continue;
+    if (attempts >= PUSH_LIMITS.sendPerRun) { more = true; break; }
+    attempts++;
+    const e = { ...idx[id] }; if (e.day !== date) { e.a = 0; e.day = date; }
+    const found = await loadSub(env, id);
+    if (!found) { gone.push(id); continue; }
+    let status = 0; try { status = await sendPush(env, found.rec, messageFor(date, e.l || found.rec.lang), fetcher); } catch { status = 0; }
+    if (status === 404 || status === 410) { gone.push(id); continue; }
+    if (status >= 200 && status < 300) { sent++; changes[id] = { ...e, d: date, a: 0, n: 0, f: 0 }; continue; }
+    failed++; e.a = (e.a || 0) + 1;
+    if (e.a >= PUSH_LIMITS.triesPerDay) { e.d = date; e.n = 0; e.f = (e.f || 0) + 1; if (e.f >= PUSH_LIMITS.maxFails) { gone.push(id); continue; } }
+    else e.n = now.getTime() + PUSH_LIMITS.backoffMin * 60000 * 2 ** (e.a - 1);
+    changes[id] = e;
+  }
+  for (const id of gone) await env.FRIENDS.delete(`push:${id}`);
+  if (gone.length || Object.keys(changes).length) {
+    await editIndex(env, (x) => {
+      for (const id of gone) delete x[id];
+      /* apply only to reminders that still exist with the same time and zone */
+      for (const [id, e] of Object.entries(changes)) if (x[id] && x[id].t === e.t && x[id].z === e.z) x[id] = { ...x[id], d: e.d, a: e.a, n: e.n, f: e.f, day: e.day };
+    });
+  }
+  return { sent, failed, removed: gone.length, checked: ids.length, more };
 }
