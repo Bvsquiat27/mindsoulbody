@@ -75,3 +75,12 @@ test('app scripts parse (a syntax error would break the whole app)', async () =>
     execFileSync(process.execPath, ['--check', new URL(f, import.meta.url).pathname]);
   }
 });
+
+test('deuterocanonical books share too, up to the app\'s highest book number', () => {
+  const rows = read('./study-tools.js').match(/BOOK_ROWS = '([^']+)'/)[1].split(';').map(r => +r.split('|')[0]);
+  const max = Math.max(...rows);
+  assert.deepEqual(RS.clean({ book: 67, chapter: 3 }), { book: 67, chapter: 3 });
+  assert.deepEqual(RS.clean({ book: max, chapter: 1 }), { book: max, chapter: 1 });
+  assert.equal(RS.clean({ book: max + 1, chapter: 1 }), null);
+  assert.match(read('./reading-share.js'), new RegExp(`book <= ${max} &&`));
+});
