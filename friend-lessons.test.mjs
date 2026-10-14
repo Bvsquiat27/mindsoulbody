@@ -61,3 +61,13 @@ test('the David’s Sling squishy (shield) is legendary everywhere, with a story
   assert.match(readFileSync('squishy.js', 'utf8'), /shield: \{ text: 'The battle is the LORD’s'/);
   assert.match(readFileSync('i18n.js', 'utf8'), /"The battle is the LORD’s": "De Jehová es la guerra"/);
 });
+
+test('the shield trick is drawn in squishy style and stays on screen', () => {
+  const fx = readFileSync('squishy-fx.js', 'utf8');
+  const block = fx.slice(fx.indexOf('    shield: {'), fx.indexOf('  const api'));
+  assert.match(block, /squishyGoliath\(/);
+  assert.match(block, /squishyDavid\(/);
+  assert.match(block, /G\.W - u \* 0\.4/);
+  assert.match(fx, /const SQ_INK = '#5b4660'/);
+  assert.doesNotMatch(block, /rgba\(52,44,58/);
+});
