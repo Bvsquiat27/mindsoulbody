@@ -92,7 +92,7 @@ test('each locked squishy has its own challenge, ramping up, with rare and legen
   assert.equal(new Set(C.CHALLENGES.map(c => `${c.kind}:${c.n}`)).size, C.CHALLENGES.length, 'all different goals');
   for (const c of C.CHALLENGES) { const same = C.CHALLENGES.filter(d => d.kind === c.kind && d.kind !== 'final'); assert.ok(same.every((d, i) => i === 0 || d.n > same[i - 1].n), `${c.kind} ramps up`); }
   assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'rare').map(c => c.id), ['basket', 'ark', 'coat', 'jar', 'crown', 'boat']);
-  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'legendary').map(c => c.id), ['tomb', 'lamp']);
+  assert.deepEqual(C.CHALLENGES.filter(c => c.tier === 'legendary').map(c => c.id), ['bush', 'tomb', 'lamp']);
   assert.equal(C.CHALLENGES[0].kind, 'memoryWins', 'the first one is easy');
   assert.equal(C.CHALLENGES.at(-1).kind, 'final');
   assert.equal(C.tierOf('lamb'), 'common');
@@ -116,10 +116,8 @@ test('challenges unlock their own squishy (and only that one), remembered', () =
   assert.deepEqual(check(), []);
   st.squished();
   assert.deepEqual(check(), ['seed'], 'squish 50 times');
-  st.roundDone(3, 5); st.roundDone(4, 5); st.roundDone(4, 5);
-  assert.deepEqual(check(), [], 'a lost round does not count');
-  st.roundDone(4, 5);
-  assert.deepEqual(check(), ['bush'], 'win 3 rounds of Questions');
+  st.roundDone(3, 5); st.roundDone(4, 5); st.roundDone(4, 5); st.roundDone(4, 5);
+  assert.deepEqual(check(), [], 'the legendary bush is not opened by 3 ordinary wins any more');
   s.setItem('msb_match_progress', JSON.stringify({ open: 4, stars: { 1: 3, 2: 1, 3: 2 }, best: {} }));
   assert.deepEqual(check(), []);
   s.setItem('msb_match_progress', JSON.stringify({ open: 5, stars: { 1: 2, 2: 1, 3: 2, 4: 1 }, best: {} }));
@@ -139,6 +137,8 @@ test('challenges unlock their own squishy (and only that one), remembered', () =
   assert.deepEqual(check(), ['coat'], '3 days in a row, across a month end, by local date');
   assert.deepEqual(check(), [], 'the lamp still needs the newer squishies');
   for (const x of SQUISHIES.slice(14, -1)) C.progress(s, SQUISHIES).unlock(x.id);
+  for (let i = 0; i < 10; i += 1) st.roundDone(5, 5);
+  assert.ok(C.checkUnlocks(s, SQUISHIES, new Date(2026, 9, 11)).includes('bush'), 'the legendary bush after 10 perfect rounds');
   assert.deepEqual(check(), [], 'the lamp still needs 3 stars in Manna Match');
   s.setItem('msb_match_progress', JSON.stringify({ open: 6, stars: { 1: 2, 2: 1, 3: 2, 4: 1, 5: 3 }, best: {} }));
   assert.deepEqual(check(), ['lamp']);
@@ -164,7 +164,7 @@ test('play streaks use local calendar days', () => {
 test('the lamp opens last even when everything is done at once', () => {
   const s = memoryStorage(), st = C.stats(s), p = C.progress(s, SQUISHIES);
   for (let i = 0; i < 4; i += 1) st.memoryWon(8);
-  for (let i = 0; i < 6; i += 1) st.roundDone(5, 5);
+  for (let i = 0; i < 10; i += 1) st.roundDone(5, 5);
   for (let i = 0; i < 300; i += 1) st.squished();
   SQUISHIES.slice(0, 12).forEach(x => p.addStar(x.id));
   for (const d of [1, 2, 3, 4, 5]) st.played(new Date(2026, 4, d));
@@ -507,8 +507,8 @@ test('crunchy sounds and vibration grow with the squish, stay soft and capped', 
   assert.ok(C.crunchPattern(1).length > C.crunchPattern(0.1).length);
   const ui = read('./squishy.js');
   assert.match(ui, /\n    crunch: \(\) => crunch\(/);
-  assert.match(ui, /function crunch\(intensity, tail\)/);
-  assert.match(ui, /const a = audio\(\); if \(!a\) return;\n    try \{\n      if \(!noiseBuf\)/, 'crunch goes through audio(): sound switch and bedtime still apply');
+  assert.match(ui, /function crunch\(intensity, tail, again\)/);
+  assert.match(ui, /function crunch\(intensity, tail, again\) \{\n    const a = audio\(\); if \(!a\) return;/, 'crunch goes through audio(): sound switch and bedtime still apply');
   assert.match(ui, /feelBuzz\('hold', level\)/);
   assert.equal(C.feelPattern('lamp', 'hold', 0.8, 'medium', false).length, C.crunchPattern(0.8).length, 'the lamp still crackles');
   assert.match(ui, /msb_tap_vibration/);
@@ -760,7 +760,8 @@ test('only trick squishies mention a secret trick; the first squish shows the le
   assert.match(ui, /kit\(x\.id\) && kit\(x\.id\)\.trick \? L\('\{name\}\. Press to squish[^']*T does its secret trick\.'/);
   assert.ok(i18n.includes('"{name}. Press to squish, drag to stretch, two fingers to squeeze or spread. Keys: Enter or Space squishes, arrows stretch.":'));
   assert.match(ui, /<article class="card sq-card" aria-live="polite">/);
-  assert.match(ui, /if \(learn && learn\.hidden\) \{\s*learn\.hidden = false;[\s\S]{0,200}sheet\.innerHTML = cardHtml\(p\.x\); sheet\.hidden = false;/);
+  assert.match(ui, /if \(learn && learn\.hidden\) \{\s*learn\.hidden = false;[\s\S]{0,400}sheet\.innerHTML = cardHtml\(p\.x\); sheet\.hidden = false;/);
+  assert.match(ui, /sheet\.hidden && C\(\)\.lessonSeen\(store2\(\)\)\.first\(p\.id\)\) setTimeout/, 'only the first squish of each squishy');
   assert.ok(i18n.includes('"Verified": "Verificado"'));
   for (const k of ['Gold', 'Teal', 'Black', 'Read Scripture with the Orthodox Church. A profile on this device keeps your notes and progress in this browser.']) assert.ok(new RegExp(`['"]${k.replace(/[.]/g, '\\.')}['"]:`).test(i18n), k);
 });
@@ -812,4 +813,59 @@ test('vibration strength Off/Light/Medium/Strong scales every pulse; reduced mot
   assert.match(ui, /es: \{ off: 'Apagada', light: 'Suave', medium: 'Media', strong: 'Fuerte' \}/);
   assert.match(ui, /role="radiogroup"/);
   assert.ok(i18n.includes('"Vibration strength": "Fuerza de la vibración"'));
+});
+
+test('first squish sound is quick: warm audio on open, resume on touch and return, fast attacks', () => {
+  const ui = read('./squishy.js');
+  assert.match(ui, /new Ctor\(\{ latencyHint: 'interactive' \}\)/);
+  assert.match(ui, /function warmAudio\(\)[\s\S]{0,400}makeNoise\(a\)[\s\S]{0,300}g\.gain\.value = 0;[^\n]*src\.start\(0\)/, 'noise built and a silent blip for iOS');
+  assert.match(ui, /if \(!host \|\| !x\) return;\n    warmAudio\(\);/, 'warmed when the play view opens');
+  assert.match(ui, /addEventListener\('pointerdown', \(\) => \{ if \(pv && ac && ac\.state !== 'running'\) audio\(\); \}, true\)/);
+  assert.match(ui, /visibilitychange', \(\) => \{ if \(!document\.hidden && pv/);
+  assert.match(ui, /a\.resume\(\)\.then\(again/, 'sounds wait for resume() when the device is waking');
+  for (const name of ['bleat', 'coo', 'purr']) {
+    const m = ui.match(new RegExp(`\\n    ${name}: d => voice\\(\\{[^\\n]*attack: ([0-9.]+)`));
+    assert.ok(m && Number(m[1]) <= 0.01, `${name} attack ${m && m[1]}`);
+  }
+  assert.match(ui, /exponentialRampToValueAtTime\(o\.peak \|\| 0\.04, t \+ \(o\.attack \|\| 0\.006\)\)/, 'noise fades in within 6 ms');
+  assert.match(ui, /delay: k === 0 \? 0 : rr\(\) \* 0\.25/, 'the bush crackle starts at once');
+  assert.match(ui, /swish: d => \{[^\n]*voice\(\{ type: 'triangle', f0: 784, dur: 0\.4, peak: 0\.02 \}\)/, 'coat tone with no offset');
+  assert.match(ui, /alleluia: a => \[523, 659, 784\][^\n]*attack: 0\.15/, 'soft choir kept');
+  assert.match(ui, /p\.pointers\.delete\(e\.pointerId\); kitSquish\(0\.3\); return;/, 'a tap during a trick still squishes');
+});
+
+test('the burning bush is legendary: 10 perfect rounds, keeps I AM, cannot be traded, stays open if you had it', () => {
+  const T = require('./squishy-trade.js');
+  const ch = C.challengeFor('bush');
+  assert.deepEqual([ch.kind, ch.n, ch.tier], ['perfectLegend', 10, 'legendary']);
+  assert.equal(C.tierOf('bush'), 'legendary');
+  assert.ok(C.hasTrick('bush') && C.isTrick('bush', { type: 'tripleTap' }), 'still says I AM');
+  assert.equal(T.tradable('bush'), false);
+  const s = memoryStorage(), st = C.stats(s);
+  for (let i = 0; i < 9; i += 1) st.roundDone(5, 5);
+  assert.ok(!C.checkUnlocks(s, SQUISHIES).includes('bush'), '9 is not enough');
+  st.roundDone(5, 5);
+  assert.ok(C.checkUnlocks(s, SQUISHIES).includes('bush'), '10 perfect rounds');
+  const old = memoryStorage();
+  old.setItem('msb_squishy_unlocked', JSON.stringify(['bush']));
+  C.checkUnlocks(old, SQUISHIES);
+  assert.ok(C.progress(old, SQUISHIES).unlocked().includes('bush'), 'an already opened bush stays open');
+  const ui = read('./squishy.js');
+  assert.match(ui, /case 'perfectLegend': return L\('Get 5 of 5 right in Questions \{n\} times', \{ n: ch\.n \}\);/);
+});
+
+test('the lesson card pops up by itself only the first time each squishy is squished', () => {
+  const s = memoryStorage(), seen = C.lessonSeen(s);
+  assert.equal(seen.first('lamb'), true, 'first squish of the lamb');
+  assert.equal(seen.first('lamb'), false, 'not again');
+  assert.equal(C.lessonSeen(s).first('lamb'), false, 'remembered after closing and reopening');
+  assert.equal(seen.first('dove'), true, 'each squishy has its own first time');
+  assert.ok(C.KEYS.lessonSeen.startsWith('msb_'), 'covered by Export/Restore (msb_ keys)');
+  const aura = read('./aura.js');
+  assert.match(aura, /MSB_BACKUP_PREFIXES=\['msb_'/);
+  /* a squishy whose lesson star was already collected counts as seen */
+  C.progress(s, SQUISHIES).addStar('lion');
+  assert.equal(C.lessonSeen(s).first('lion'), false);
+  s.setItem(C.KEYS.lessonSeen, '{bad');
+  assert.equal(C.lessonSeen(s).first('fish'), true, 'junk is ignored');
 });

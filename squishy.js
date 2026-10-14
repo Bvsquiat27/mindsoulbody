@@ -46,6 +46,7 @@
       case 'questionWins': return L('Win {n} rounds of Questions', { n: ch.n });
       case 'matchChapter': return ch.n === 4 ? L('Finish the Noah chapter in Manna Match') : ch.n >= 20 ? L('Finish Manna Match all the way to Easter') : L('Win Manna Match levels 1 to {n}', { n: ch.n });
       case 'memoryFast': return L('Win Memory in {n} moves or fewer', { n: ch.n });
+      case 'perfectLegend': return L('Get 5 of 5 right in Questions {n} times', { n: ch.n });
       case 'perfectRound': return ch.n > 1 ? L('Get 5 of 5 right in Questions {n} times', { n: ch.n }) : L('Get 5 of 5 right in Questions');
       case 'streak': return L('Play {n} days in a row', { n: ch.n });
       case 'matchThreeStars': return ch.n > 1 ? L('Get 3 stars on {n} Manna Match levels', { n: ch.n }) : L('Get 3 stars on a Manna Match level');
@@ -71,20 +72,43 @@
   const ui = { queue: [], root: null, view: 'shelf', playing: null, memory: null, round: null, guess: null, msg: '', trade: { pick: null, code: null, codeId: null, note: '', err: '', got: null, typed: '' } };
 
   /* ---------- Sound (made on the device with Web Audio) ---------- */
-  let ac = null, master = null;
+  let ac = null, master = null, noiseBuf = null;
   function audio() {
     if (!sounds().get()) return null;
     if (window.MsbStories && MsbStories.bedtimeOn && MsbStories.bedtimeOn()) return null;
     if (!ac) {
       const Ctor = window.AudioContext || window.webkitAudioContext;
       if (!Ctor) return null;
-      try { ac = new Ctor(); master = ac.createGain(); master.gain.value = 0.6; master.connect(ac.destination); } catch { ac = null; return null; }
+      try { try { ac = new Ctor({ latencyHint: 'interactive' }); } catch { ac = new Ctor(); } master = ac.createGain(); master.gain.value = 0.6; master.connect(ac.destination); } catch { ac = null; return null; }
     }
-    if (ac.state === 'suspended') ac.resume().catch(() => {});
+    if (ac.state !== 'running' && ac.state !== 'closed') ac.resume().catch(() => {});
     return ac;
+  }
+  /* If the device is still waking up, play once resume() is done (so the
+     sound is not stuck behind a frozen clock); the second try plays anyway. */
+  function later(a, again) {
+    if (a.state === 'running') return false;
+    a.resume().then(again, () => {});
+    return true;
+  }
+  function makeNoise(a) {
+    if (!noiseBuf) { noiseBuf = a.createBuffer(1, a.sampleRate, a.sampleRate); const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i += 1) d[i] = Math.random() * 2 - 1; }
+    return noiseBuf;
+  }
+  /* Warm up when the play view opens (that tap counts as a user gesture):
+     create and resume the context, build the noise once, and play a silent
+     blip so iOS unlocks the audio output before the first squish. */
+  function warmAudio() {
+    const a = audio(); if (!a) return;
+    try {
+      makeNoise(a);
+      const b = a.createBuffer(1, 1, a.sampleRate), src = a.createBufferSource(), g = a.createGain();
+      g.gain.value = 0; src.buffer = b; src.connect(g); g.connect(master); src.start(0);
+    } catch { /* ignore */ }
   }
   function voice(o) {
     const a = audio(); if (!a) return;
+    if (!o._w && later(a, () => voice({ ...o, _w: 1 }))) return;
     try {
       const t = a.currentTime + (o.delay || 0), dur = o.dur || 0.2;
       const osc = a.createOscillator(), gain = a.createGain();
@@ -102,26 +126,27 @@
       osc.start(t); osc.stop(t + dur + 0.05);
     } catch { /* ignore */ }
   }
-  let noiseBuf = null;
   function noise(o) {
     const a = audio(); if (!a) return;
+    if (!o._w && later(a, () => noise({ ...o, _w: 1 }))) return;
     try {
-      if (!noiseBuf) { noiseBuf = a.createBuffer(1, a.sampleRate, a.sampleRate); const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i += 1) d[i] = Math.random() * 2 - 1; }
+      makeNoise(a);
       const t = a.currentTime + (o.delay || 0), dur = o.dur || 0.2;
       const src = a.createBufferSource(), f = a.createBiquadFilter(), gain = a.createGain();
       src.buffer = noiseBuf; f.type = o.filter || 'bandpass'; f.Q.value = o.q || 0.9;
       f.frequency.setValueAtTime(o.f0 || 1000, t); if (o.f1) f.frequency.exponentialRampToValueAtTime(o.f1, t + dur);
-      gain.gain.setValueAtTime(0.0001, t); gain.gain.exponentialRampToValueAtTime(o.peak || 0.04, t + 0.03); gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      gain.gain.setValueAtTime(0.0001, t); gain.gain.exponentialRampToValueAtTime(o.peak || 0.04, t + (o.attack || 0.006)); gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
       src.connect(f); f.connect(gain); gain.connect(master); src.start(t); src.stop(t + dur + 0.05);
     } catch { /* ignore */ }
   }
   /* Crunchy slime / ASMR crackle: many tiny filtered noise clicks at random
      moments. More and louder clicks the harder you squish or stretch; the
      release "tail" is longer and thins out at the end. */
-  function crunch(intensity, tail) {
+  function crunch(intensity, tail, again) {
     const a = audio(); if (!a) return;
+    if (!again && later(a, () => crunch(intensity, tail, true))) return;
     try {
-      if (!noiseBuf) { noiseBuf = a.createBuffer(1, a.sampleRate, a.sampleRate); const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i += 1) d[i] = Math.random() * 2 - 1; }
+      makeNoise(a);
       const sh = C().crunchShape(intensity), t0 = a.currentTime + 0.005, span = sh.spanMs / 1000 * (tail ? 2 : 1), count = Math.round(sh.clicks * (tail ? 1.6 : 1));
       for (let k = 0; k < count; k += 1) {
         const u = Math.random(), at = t0 + (tail ? Math.pow(u, 1.7) : u) * span, d = 0.004 + Math.random() * 0.012;
@@ -173,20 +198,20 @@
      (d / a = how hard, 0..1). Each is built differently, not just pitched. */
   const rr = () => Math.random();
   const SQUISH = {
-    bleat: d => voice({ type: 'sawtooth', f0: 380 + d * 80, f1: 320, dur: 0.32, peak: 0.035 + d * 0.02, vib: [7, 16], filter: ['bandpass', 1150, 1.4], attack: 0.04 }),
-    coo: d => voice({ f0: 470, f1: 390, dur: 0.2, peak: 0.04 + d * 0.02, attack: 0.03, trem: 11 }),
+    bleat: d => voice({ type: 'sawtooth', f0: 380 + d * 80, f1: 320, dur: 0.32, peak: 0.035 + d * 0.02, vib: [7, 16], filter: ['bandpass', 1150, 1.4], attack: 0.008 }),
+    coo: d => voice({ f0: 470, f1: 390, dur: 0.2, peak: 0.04 + d * 0.02, attack: 0.006, trem: 11 }),
     bubbles: d => [0, 0.06, 0.12].slice(0, 1 + Math.round(d * 2)).forEach(t => voice({ f0: 300 + rr() * 120, f1: 900 + rr() * 400, dur: 0.06, peak: 0.04, delay: t })),
-    purr: d => voice({ type: 'sawtooth', f0: 110, f1: 95, dur: 0.35 + d * 0.2, peak: 0.04 + d * 0.02, filter: ['lowpass', 480], trem: 26, attack: 0.05 }),
+    purr: d => voice({ type: 'sawtooth', f0: 110, f1: 95, dur: 0.35 + d * 0.2, peak: 0.04 + d * 0.02, filter: ['lowpass', 480], trem: 26, attack: 0.01 }),
     bell: d => { voice({ type: 'triangle', f0: 1318, dur: 0.6, peak: 0.03 + d * 0.015 }); voice({ f0: 2637, dur: 0.35, peak: 0.012 }); voice({ f0: 3951, dur: 0.2, peak: 0.006 }); },
     chord: d => [392, 494, 587].forEach(f => voice({ type: 'triangle', f0: f * (1 + d * 0.12), dur: 0.35, peak: 0.018 })),
     thud: d => { voice({ f0: 120, f1: 55, dur: 0.18, peak: 0.07 + d * 0.03 }); noise({ filter: 'lowpass', f0: 600, dur: 0.05, peak: 0.03 }); },
     dough: d => { noise({ filter: 'lowpass', f0: 500, f1: 160, dur: 0.3, peak: 0.04 + d * 0.02, q: 2 }); voice({ f0: 160, f1: 120, dur: 0.25, peak: 0.02, filter: ['lowpass', 400] }); },
     pluck: d => { voice({ type: 'triangle', f0: 880 + d * 220, dur: 0.12, peak: 0.05, attack: 0.003 }); noise({ filter: 'highpass', f0: 4000, dur: 0.02, peak: 0.02 }); },
-    crackle: d => { for (let k = 0; k < 4 + d * 6; k += 1) noise({ filter: 'bandpass', f0: 1500 + rr() * 3000, q: 6, dur: 0.02, peak: 0.03, delay: rr() * 0.25 }); },
+    crackle: d => { for (let k = 0; k < 4 + d * 6; k += 1) noise({ filter: 'bandpass', f0: 1500 + rr() * 3000, q: 6, dur: 0.02, peak: 0.03, delay: k === 0 ? 0 : rr() * 0.25 }); },
     slosh: d => noise({ filter: 'bandpass', f0: 1200, f1: 350, q: 3, dur: 0.4, peak: 0.04 + d * 0.02 }),
     rustle: d => { noise({ filter: 'highpass', f0: 3200, dur: 0.1, peak: 0.025 + d * 0.01 }); noise({ filter: 'highpass', f0: 2800, dur: 0.1, peak: 0.02, delay: 0.09 }); },
     creak: d => voice({ type: 'sawtooth', f0: 170 + d * 40, f1: 140, dur: 0.38, peak: 0.03, filter: ['lowpass', 650], vib: [11, 22] }),
-    swish: d => { noise({ f0: 1800, f1: 4400, dur: 0.22, peak: 0.03 + d * 0.015 }); voice({ type: 'triangle', f0: 784, dur: 0.4, peak: 0.02, delay: 0.05 }); },
+    swish: d => { noise({ f0: 1800, f1: 4400, dur: 0.22, peak: 0.03 + d * 0.015 }); voice({ type: 'triangle', f0: 784, dur: 0.4, peak: 0.02 }); },
     crunch: d => crunch(0.3 + d * 0.5),
     step: d => [0, 0.09].forEach((t, i) => voice({ type: 'triangle', f0: 440 * (1 + i * 0.5) * (1 + d * 0.2), dur: 0.09, peak: 0.04, filter: ['bandpass', 1200, 2], delay: t })),
     caw: d => voice({ type: 'sawtooth', f0: 640 + d * 100, f1: 480, dur: 0.14, peak: 0.035, filter: ['bandpass', 1300, 3] }),
@@ -305,7 +330,7 @@
     return `<h2 class="sq-h2">${esc(L('Achievements'))}</h2><p class="sq-hint">${esc(L('Badges earned: {n} of {total}', { n: got, total: list.length }))}</p><ul class="sq-badges">${rows}</ul>${tricksHtml()}`;
   }
   /* Trade: give a friend a copy with a short code, or type a friend's code. */
-  const TRADE_ERR = { format: 'A code has 8 letters and numbers, like ABCD-1234.', checksum: 'That code doesn’t look right. Check each letter and try again.', own: 'That’s your own code! Share it with a friend instead.', used: 'This code was already used on this phone.' };
+  const TRADE_ERR = { format: 'A code has 8 letters and numbers, like ABCD-1234.', checksum: 'That code doesn’t look right. Check each letter and try again.', own: 'That’s your own code! Share it with a friend instead.', used: 'This code was already used on this phone.', legendary: 'Legendary squishies can’t be traded. Earn this one with its own challenge!' };
   function tradeHtml() {
     const T = TR();
     if (!T) return `<p class="sq-hint">${esc(L('Trading is not available right now.'))}</p>`;
@@ -455,6 +480,7 @@
     const host = ui.root && ui.root.querySelector('[data-sq-play-host]');
     const x = byId(id);
     if (!host || !x) return;
+    warmAudio();
     closePlay(true);
     ui.playing = id;
     host.innerHTML = playHtml(x);
@@ -742,13 +768,13 @@
     else if (was.mode === 'grab' || was.mode === 'pinch') { if (was.stretch > 0.15) boing(was.stretch); kitRelease(Math.max(was.stretch, was.squish)); feelBuzz('release', Math.max(was.stretch, was.squish)); }
     else if (was.mode === 'press') { kitRelease(was.squish); feelBuzz('release', was.squish); }
     p.mode = null; p.squelch = 0; p.gestured = false; p.buzzLevel = 0;
-    /* the first squish brings up the Bible lesson card on its own; after
-       that the Learn button opens it again */
+    /* the very first squish of each squishy (ever, on this device) brings up
+       the Bible lesson card on its own; after that the Learn button opens it */
     const learn = p.area.querySelector('[data-sq-learn]');
     if (learn && learn.hidden) {
       learn.hidden = false;
       const sheet = ui.root && ui.root.querySelector('[data-sq-sheet]');
-      if (sheet && sheet.hidden) setTimeout(() => { if (pv === p && sheet.isConnected && sheet.hidden) { sheet.innerHTML = cardHtml(p.x); sheet.hidden = false; } }, 450);
+      if (sheet && sheet.hidden && C().lessonSeen(store2()).first(p.id)) setTimeout(() => { if (pv === p && sheet.isConnected && sheet.hidden) { sheet.innerHTML = cardHtml(p.x); sheet.hidden = false; } }, 450);
     }
     refreshChip();
     kick();
@@ -797,6 +823,10 @@
     refreshChip();
   }
 
+  /* wake the sound before the squishy handler runs, and again when the app
+     comes back from the background */
+  document.addEventListener('pointerdown', () => { if (pv && ac && ac.state !== 'running') audio(); }, true);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && pv && ac && ac.state !== 'running') audio(); });
   document.addEventListener('pointerdown', e => {
     const p = pv;
     if (!p || e.target !== p.canvas) return;
@@ -805,7 +835,7 @@
     try { p.canvas.setPointerCapture(e.pointerId); } catch { /* ignore */ }
     const now = performance.now();
     p.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY, t: now, vx: 0, vy: 0 });
-    if (p.anim && p.anim.def !== HOP) { p.pointers.delete(e.pointerId); return; }
+    if (p.anim && p.anim.def !== HOP) { p.pointers.delete(e.pointerId); kitSquish(0.3); return; }
     if (p.pointers.size === 1) feed('down', e.clientX, e.clientY); else p.gest = C().gestures();
     if (p.pointers.size === 2) {
       const [a, b] = [...p.pointers.values()];

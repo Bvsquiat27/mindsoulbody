@@ -14,13 +14,14 @@
   /* Fixed order, so codes keep working when squishies are added. Legendary
      squishies are not in the list: they cannot be traded. */
   const IDS = ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow', 'stone', 'loaves', 'seed', 'bush', 'basket', 'tree', 'ark', 'coat', 'ladder', 'raven', 'wheat', 'oil', 'coin', 'donkey', 'jar', 'crown', 'boat'];
-  const LEGENDARY = ['lamp', 'tomb'];
+  const LEGENDARY = ['lamp', 'tomb', 'bush'];
   const KEY = 'msb_squishy_trade';
   const MASK = (1 << 30) - 1, MUL = 0x2545F4B, ADD = 0x1B873593 & MASK, SALT = 613;
   const W = [3, 7, 11, 17, 23, 29], P = 1021;
   /* inverse of MUL modulo 2^30 (Newton steps) */
   let INV = MUL; for (let i = 0; i < 5; i += 1) INV = Math.imul(INV, 2 - Math.imul(MUL, INV)); INV &= MASK;
-  const tradable = id => IDS.includes(id);
+  /* the bush stays in IDS (fixed code order) but became legendary */
+  const tradable = id => IDS.includes(id) && !LEGENDARY.includes(id);
   const sum = d => d.reduce((s, v, i) => (s + W[i] * (v + 1)) % P, SALT);
 
   function makeCode(id, rand = Math.random) {
@@ -46,13 +47,18 @@
     let v = 0; for (let i = 0; i < 6; i += 1) v = v * 32 + d[i];
     const raw = Math.imul((v - ADD) & MASK, INV) & MASK, idx = raw & 31;
     if (idx >= IDS.length) return { ok: false, reason: 'checksum' };
+    /* a real code for a squishy that became legendary (the bush): readable,
+       but it cannot be redeemed any more */
+    if (!tradable(IDS[idx])) return { ok: false, reason: 'legendary', id: IDS[idx], code: s };
     return { ok: true, id: IDS[idx], nonce: raw >>> 5, code: s };
   }
   const pretty = code => (code ? `${code.slice(0, 4)}-${code.slice(4)}` : '');
 
   function trades(storage) {
     const blank = () => ({ sent: [], got: [] });
-    const list = v => (Array.isArray(v) ? v.filter(x => x && typeof x.c === 'string' && /^[0-9A-Z]{8}$/.test(x.c) && tradable(x.id)) : []);
+    /* history keeps every known squishy (old bush trades included); only new
+       bush trades are blocked */
+    const list = v => (Array.isArray(v) ? v.filter(x => x && typeof x.c === 'string' && /^[0-9A-Z]{8}$/.test(x.c) && IDS.includes(x.id)) : []);
     function get() {
       let v = null;
       try { v = JSON.parse(storage.getItem(KEY)); } catch { v = null; }
@@ -74,6 +80,7 @@
       redeem(text, date = new Date()) {
         const r = readCode(text);
         if (!r.ok) return r;
+        if (!tradable(r.id)) return { ok: false, reason: 'legendary', id: r.id };
         const v = get();
         if (v.sent.some(x => x.c === r.code)) return { ok: false, reason: 'own', id: r.id };
         if (v.got.some(x => x.c === r.code)) return { ok: false, reason: 'used', id: r.id };

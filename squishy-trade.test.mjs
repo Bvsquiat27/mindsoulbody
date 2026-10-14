@@ -15,7 +15,8 @@ test('codes are 8 easy characters with a checksum and decode back to the squishy
     const c = T.makeCode(id, () => r);
     assert.match(c, /^[0-9A-HJKMNP-TV-Z]{8}$/);
     const back = T.readCode(c);
-    assert.equal(back.ok, true); assert.equal(back.id, id);
+    assert.equal(back.id, id);
+    assert.equal(back.ok, T.tradable(id), id === 'bush' ? 'the bush decodes but is legendary now' : id);
   }
   assert.equal(T.pretty('ABCD1234'), 'ABCD-1234');
   const c = T.makeCode('ark', () => 0.42);
@@ -124,4 +125,34 @@ test('gifted squishies do not count toward the lamp until their own challenge is
   assert.equal(pr.have, pr.need - 1);
   const st = JSON.parse(s.getItem('msb_squishy_stats') || '{}'); st.badges = { ...(st.badges || {}), [gift]: '2026-10-13' }; s.setItem('msb_squishy_stats', JSON.stringify(st));
   assert.equal(C.challengeProgress(lamp, C.challengeContext(s, SQUISHIES)).done, true, 'once its challenge is earned it counts');
+});
+
+test('an old burning bush code no longer opens it, kindly; old bush trades stay in the history', () => {
+  const oldCode = T.makeCode('bush', () => 0.4);
+  assert.deepEqual([T.readCode(oldCode).ok, T.readCode(oldCode).reason, T.readCode(oldCode).id], [false, 'legendary', 'bush']);
+  const s = mem(), tr = T.trades(s);
+  const r = tr.redeem(T.pretty(oldCode));
+  assert.deepEqual([r.ok, r.reason], [false, 'legendary']);
+  assert.deepEqual(tr.get().got, [], 'nothing is saved');
+  assert.equal(tr.create('bush', ['bush']), null, 'no new bush codes');
+  /* a bush received before it became legendary stays in the history */
+  const prior = { c: oldCode, id: 'bush', at: 1 };
+  s.setItem(T.KEY, JSON.stringify({ sent: [], got: [prior] }));
+  assert.deepEqual(T.trades(s).get().got, [prior]);
+  assert.equal(T.trades(s).count(), 1);
+  C.checkUnlocks(s, SQUISHIES, new Date(2026, 9, 13));
+  assert.equal(C.badges(s, SQUISHIES).find(x => x.id === 'friendship').earned, '2026-10-13', 'it still counts for Friendship');
+  /* but a gifted bush does not count toward the lamp until its challenge is earned */
+  const p = C.progress(s, SQUISHIES);
+  for (const x of SQUISHIES.filter(x => x.locked && x.id !== 'lamp')) p.unlock(x.id);
+  s.setItem('msb_match_progress', JSON.stringify({ open: 2, stars: { 1: 3 }, best: {} }));
+  const lamp = C.CHALLENGES.find(c => c.id === 'lamp');
+  assert.equal(C.challengeProgress(lamp, C.challengeContext(s, SQUISHIES)).done, false);
+  const st = C.stats(s);
+  for (let i = 0; i < 10; i += 1) st.roundDone(5, 5);
+  C.checkUnlocks(s, SQUISHIES, new Date(2026, 9, 14));
+  assert.equal(C.challengeProgress(lamp, C.challengeContext(s, SQUISHIES)).done, true, 'after 10 perfect rounds it counts');
+  const ui = read('./squishy.js'), i18n = read('./i18n.js');
+  assert.match(ui, /legendary: 'Legendary squishies can’t be traded\. Earn this one with its own challenge!'/);
+  assert.ok(i18n.includes('"Legendary squishies can’t be traded. Earn this one with its own challenge!": "Los squishies legendarios'));
 });
