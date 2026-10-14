@@ -136,3 +136,4 @@
 .kg-sl-controls input{width:100%;accent-color:var(--teal);min-height:32px}
 .kg-sl-controls button{grid-column:1/-1}
 .kg-sl-intro{font-size:17px}
+.kg-tile-art .kg-tile-icon svg{width:50px;height:50px}

@@ -332,7 +332,7 @@
     const root = ui.root;
     if (!root || !root.isConnected) return;
     const body = ui.view === 'trade' ? tradeHtml() : ui.view === 'badges' ? badgesHtml() : ui.view === 'memory' ? memoryHtml() : ui.view === 'questions' ? questionsHtml() : ui.view === 'guess' ? guessHtml() : shelfHtml();
-    root.innerHTML = `<div class="squishy-screen" data-i18n-skip><button class="text-button back" type="button" data-squishy-exit>${esc(L('← Stories'))}</button><span class="eyebrow">${esc(L('BIBLE SQUISHIES'))}</span><h1>${esc(L('Bible squishies'))}</h1>${topBar()}${tabs()}<div class="sq-body" data-sq-body>${body}</div><div class="sq-play-host" data-sq-play-host></div><div class="sq-celebrate" data-sq-celebrate hidden></div></div>`;
+    root.innerHTML = `<div class="squishy-screen" data-i18n-skip><button class="text-button back" type="button" data-squishy-exit>${esc(L('← Bible games'))}</button><span class="eyebrow">${esc(L('BIBLE SQUISHIES'))}</span><h1>${esc(L('Bible squishies'))}</h1>${topBar()}${tabs()}<div class="sq-body" data-sq-body>${body}</div><div class="sq-play-host" data-sq-play-host></div><div class="sq-celebrate" data-sq-celebrate hidden></div></div>`;
     if (ui.playing) openPlay(ui.playing);
   }
 

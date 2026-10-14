@@ -926,6 +926,7 @@
     "Hear the words of this lesson": "Escucha las palabras de esta lección",
     "READ FIRST": "PRIMERO LEE",
     "← Stories": "← Historias",
+    "← Bible games": "← Juegos bíblicos",
     "BEDTIME": "HORA DE DORMIR",
     "The passages shown here are selected readings, not a complete Bible. Psalm numbering follows both the Septuagint and common English editions where they differ.": "Los pasajes que se muestran aquí son lecturas escogidas, no una Biblia completa. Cuando la numeración de los Salmos cambia, se muestran tanto la de la Septuaginta como la de las ediciones comunes."
   });
