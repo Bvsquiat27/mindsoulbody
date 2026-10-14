@@ -4,7 +4,7 @@
 (function (root) {
   'use strict';
 
-  const KEYS = { sounds: 'msb_squishy_sounds', unlocked: 'msb_squishy_unlocked', stars: 'msb_squishy_stars', stats: 'msb_squishy_stats', match: 'msb_match_progress', trade: 'msb_squishy_trade', lessonSeen: 'msb_squishy_lesson_seen', away: 'msb_squishy_away' };
+  const KEYS = { sounds: 'msb_squishy_sounds', unlocked: 'msb_squishy_unlocked', stars: 'msb_squishy_stars', stats: 'msb_squishy_stats', match: 'msb_match_progress', trade: 'msb_squishy_trade', lessonSeen: 'msb_squishy_lesson_seen', away: 'msb_squishy_away', room: 'msb_squishy_room' };
 
   function readList(storage, key) {
     try { const v = JSON.parse(storage.getItem(key) || '[]'); return Array.isArray(v) ? v.filter(x => typeof x === 'string') : []; } catch { return []; }
@@ -473,7 +473,9 @@
         const others = ctx.squishies.filter(x => x.id !== ch.id && x.locked);
         /* a gifted squishy counts only once its own challenge is met */
         const earned = (ctx.stats && ctx.stats.badges) || {}, gifts = ctx.gifts || [];
-        const open = others.filter(x => ctx.unlocked.includes(x.id) && (!gifts.includes(x.id) || earned[x.id])).length;
+        /* one given away in the Trade Room still counts if it was earned */
+        const away = ctx.away || [];
+        const open = others.filter(x => (ctx.unlocked.includes(x.id) && (!gifts.includes(x.id) || earned[x.id])) || (away.includes(x.id) && earned[x.id])).length;
         const three = Object.values(ctx.match).some(s => s === 3) ? 1 : 0;
         return cap(open + three, others.length + 1);
       }
@@ -490,12 +492,23 @@
        count toward the lamp. */
     let trades = 0, gifts = [];
     try { const t = JSON.parse(storage.getItem(KEYS.trade)) || {}; const got = Array.isArray(t.got) ? t.got.filter(x => x && typeof x.id === 'string') : []; trades = got.length; gifts = [...new Set(got.map(x => x.id))]; } catch { trades = 0; gifts = []; }
-    return { stats: stats(storage).get(), lessons: p.stars().length, match: matchStars(storage), unlocked: p.unlocked(), squishies, trades, gifts, kid: kidGames(storage) };
+    const room = roomLedger(storage);
+    return { stats: stats(storage).get(), lessons: p.stars().length, match: matchStars(storage), unlocked: p.unlocked(), squishies, trades: trades + room.applied.length, gifts: [...new Set([...gifts, ...room.got])], away: [...new Set([...room.away, ...Object.keys(awayList(storage))])], kid: kidGames(storage) };
   }
   function challengeFor(id) { return CHALLENGES.find(c => c.id === id) || null; }
 
   /* Open every locked squishy whose challenge is met, and record new badges.
      Returns the newly opened squishy ids (the lamp last). */
+  /* Trade Room swaps on this phone: squishies given away (they can be won
+     back by fresh play, see tradeAway) and ones received (gifts for the lamp) */
+  function roomLedger(storage) {
+    try {
+      const v = JSON.parse(storage.getItem(KEYS.room) || '{}') || {};
+      const ids = l => (Array.isArray(l) ? [...new Set(l.filter(x => typeof x === 'string' && KITS[x]))] : []);
+      return { away: ids(v.away), got: ids(v.got), applied: Array.isArray(v.applied) ? v.applied.filter(x => typeof x === 'string' && /^[a-f0-9]{16}$/.test(x)).slice(-50) : [] };
+    } catch { return { away: [], got: [], applied: [] }; }
+  }
+
   function checkUnlocks(storage, squishies, date) {
     const p = progress(storage, squishies), st = stats(storage), opened = [];
     for (const ch of CHALLENGES) {
@@ -887,7 +900,7 @@
       }
     };
   }
-  const api = { KID_GAMES, kidGames, AGAIN, counters, tradeAway, cameBack, wonBackProgress, awayList, lessonSeen, FEEL, BUZZ, feelFor, VIBE_LEVELS, VIBE_SCALE, vibePref, scalePattern, feelPattern, KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
+  const api = { KID_GAMES, kidGames, AGAIN, counters, tradeAway, cameBack, wonBackProgress, awayList, roomLedger, lessonSeen, FEEL, BUZZ, feelFor, VIBE_LEVELS, VIBE_SCALE, vibePref, scalePattern, feelPattern, KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbSquishyCore = api;
 })(typeof self !== 'undefined' ? self : this);
