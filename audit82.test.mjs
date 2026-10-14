@@ -10,8 +10,8 @@ test('a failed deferred script is a failure with a retry, not success', () => {
   assert.match(aura, /function msbLoadFailedHtml\(\)[^\n]*location\.reload\(\)/);
 });
 test('games screen shows loading or Try again instead of "No lessons"', () => {
-  assert.match(aura, /lessons\.join\(''\)\|\|bankWait\|\|/);
-  assert.match(aura, /data-action="challenges-retry">Try again/);
+  assert.match(aura, /lessons\.join\(''\)\|\|\(bankWait\?\(games\.length\?bankWait:''\):/);
+  assert.match(aura, /data-action="challenges-retry">\$\{es\?/);
   assert.match(aura, /kind==='challenges-retry'/);
 });
 test('trade, achievements and trivia wait for the deferred scripts', () => {

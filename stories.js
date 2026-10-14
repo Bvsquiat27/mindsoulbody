@@ -570,7 +570,7 @@
   }
   /* Stop and Pause end the bedtime read-aloud chain (capture runs before speech.js) */
   document.addEventListener('click', event => {
-    if (bedtime && event.target.closest && event.target.closest('#screen [data-speech-stop]')) { bedtime.reading = false; clearTimeout(bedtime.advance); if (bedtime.readToken) bedtime.readToken.stopped = true; }
+    if (bedtime && event.target.closest && event.target.closest('#screen [data-speech-stop], #screen [data-speech-pause]')) { bedtime.reading = false; clearTimeout(bedtime.advance); if (bedtime.readToken) bedtime.readToken.stopped = true; }
   }, true);
   function refresh() {
     const root = document.getElementById('screen');

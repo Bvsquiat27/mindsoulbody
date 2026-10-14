@@ -40,13 +40,13 @@ test('friends can read synced notes; strangers cannot', async () => {
   assert.ok(!JSON.stringify(read.data).includes(m.secret));
 });
 
-test('the hide switch hides notes from friends and keeps them stored', async () => {
+test('the hide switch hides notes from friends and stores none', async () => {
   const kv = memoryKv(); const { a, m } = await people(kv);
   await call(kv, '/mynotes/sync', { code: m.code, secret: m.secret, notes: [NOTE] });
   await call(kv, '/mynotes/sync', { code: m.code, secret: m.secret, hidden: true });
   const read = await call(kv, '/mynotes/friend', { code: a.code, secret: a.secret, friend: m.code });
   assert.deepEqual(read.data, { hidden: true, notes: [] });
-  await call(kv, '/mynotes/sync', { code: m.code, secret: m.secret, hidden: false });
+  await call(kv, '/mynotes/sync', { code: m.code, secret: m.secret, hidden: false, notes: [NOTE] });
   assert.equal((await call(kv, '/mynotes/friend', { code: a.code, secret: a.secret, friend: m.code })).data.notes.length, 1);
 });
 
@@ -59,4 +59,13 @@ test('size, count and rate caps', async () => {
   let last;
   for (let i = 0; i <= MYNOTES_LIMITS.SYNC_RATE; i++) last = await call(kv, '/mynotes/sync', { code: m.code, secret: m.secret, notes: [NOTE] });
   assert.equal(last.status, 429);
+});
+
+test('hiding has its own rate bucket, so it works after the sync limit is used up', async () => {
+  const kv = memoryKv(); const { a, m } = await people(kv);
+  for (let i = 0; i < MYNOTES_LIMITS.SYNC_RATE; i++) await call(kv, '/mynotes/sync', { code: m.code, secret: m.secret, notes: [NOTE] });
+  assert.equal((await call(kv, '/mynotes/sync', { code: m.code, secret: m.secret, notes: [NOTE] })).status, 429);
+  const hide = await call(kv, '/mynotes/sync', { code: m.code, secret: m.secret, hidden: true, notes: [NOTE] });
+  assert.equal(hide.status, 200); assert.equal(hide.data.count, 0);
+  assert.deepEqual((await call(kv, '/mynotes/friend', { code: a.code, secret: a.secret, friend: m.code })).data, { hidden: true, notes: [] });
 });

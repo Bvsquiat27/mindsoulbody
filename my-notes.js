@@ -98,7 +98,7 @@
     const n = get(key);
     return `<section class="card dev-notes" id="dev-notes" data-notes-key="${esc(key)}" data-i18n-skip><span class="eyebrow">${esc(tr('MY NOTE', 'MI NOTA'))}</span><label for="dev-note-text" class="small muted">${esc(tr('What stayed with you today?', '¿Qué se quedó contigo hoy?'))}</label><textarea id="dev-note-text" class="text-input" rows="4" maxlength="${MAX}" data-dev-note>${esc(n ? n.text : '')}</textarea><div class="dev-notes-row"><span class="small muted" data-dev-note-status role="status">${n ? esc(tr('Saved', 'Guardada')) : ''}</span><button type="button" class="secondary" data-dev-note-share ${n ? '' : 'disabled'}>${esc(tr('Share', 'Compartir'))}</button></div><p class="small muted">${esc(shared() ? tr('Friends can see this note. Change it in Profile.', 'Tus amigos pueden ver esta nota. Cámbialo en Perfil.') : tr('Only you can see this note.', 'Solo tú puedes ver esta nota.'))}</p></section>`;
   }
-  function shareText(n) { return `${n.title ? n.title + '\n' : ''}“${n.verse}” (${n.ref})\n\n${n.text}`; }
+  function shareText(n) { return `${n.title ? n.title + '\n' : ''}${n.verse ? `“${n.verse}”${n.ref ? ` (${n.ref})` : ''}\n\n` : ''}${n.text}`; }
   function shareChoices(key) {
     const n = get(key); if (!n) return;
     const host = document.querySelector('#dev-notes .dev-notes-row'); if (!host) return;
@@ -139,8 +139,15 @@
       }
       const box = t.closest('#dev-notes'); const key = box ? box.dataset.notesKey : (document.getElementById('dev-notes') || {}).dataset?.notesKey;
       if (t.closest('[data-dev-note-share]')) { shareChoices(key); return; }
-      const n = key && get(key);
+      let n = key && get(key);
+      /* a note saved before the devotional data arrived has no verse yet: fill it in first */
+      if (n && !n.verse && (t.closest('[data-dev-share-friend]') || t.closest('[data-dev-share-system]'))) {
+        try { await (ctx.ensure ? ctx.ensure() : null); } catch { /* share without the verse */ }
+        const meta = ctx.meta(key) || {};
+        if (meta.verse) n = save(key, n.text, { ...n, ...meta });
+      }
       if (t.closest('[data-dev-share-friend]') && n) {
+        if (!n.verse || !n.book) { ctx.toast(tr('The verse for this day is not loaded yet. Check your connection and try again.', 'El versículo de este día todavía no se cargó. Revisa tu conexión e inténtalo otra vez.')); return; }
         if (!root.msbOpenVerseSend) { ctx.toast(tr('Sending is not ready yet.', 'Enviar todavía no está listo.')); return; }
         root.msbOpenVerseSend({ book: n.book, chapter: n.chapter, verse: n.v, reference: n.ref, text: n.verse, note: n.text.slice(0, 280), translation: n.lang === 'es' ? 'rvr' : 'kjv' });
         return;
