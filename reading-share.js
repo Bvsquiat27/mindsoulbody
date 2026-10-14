@@ -27,7 +27,7 @@
     if (!input || typeof input !== 'object' || Array.isArray(input)) return null;
     const out = {};
     const book = int(input.book), chapter = int(input.chapter);
-    if (book >= 1 && book <= 66 && chapter >= 1 && chapter <= 150) { out.book = book; out.chapter = chapter; }
+    if (book >= 1 && book <= 78 && chapter >= 1 && chapter <= 150) { out.book = book; out.chapter = chapter; }
     const study = String(input.study ?? '').trim().toLowerCase();
     if (/^[a-z0-9-]{1,60}$/.test(study)) { out.study = study; const t = text(input.studyTitle, 120); if (t) out.studyTitle = t; }
     const total = int(input.total), done = int(input.done);
