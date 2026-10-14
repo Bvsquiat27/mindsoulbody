@@ -614,12 +614,14 @@ async function msbCelebrate(){try{const r=await api('/bible/achievements/check',
 /* Kids' badges from Bible squishies and Manna Match. Kept on this phone
    only (friends do not see them). */
 function msbKidBadgesHtml(es){
-  const k=window.MsbSquishy&&MsbSquishy.kidBadges?MsbSquishy.kidBadges():null;
-  if(!k)return'';
+  const k0=window.MsbSquishy&&MsbSquishy.kidBadges?MsbSquishy.kidBadges():null;
+  const g=window.MsbKidGames&&MsbKidGames.kidBadges?(MsbKidGames.kidBadges()||[]):[];
+  if(!k0&&!g.length)return'';
+  const k=k0?{...k0,badges:[...k0.badges,...g],earned:k0.earned+g.filter(b=>b.earned).length}:{badges:g,earned:g.filter(b=>b.earned).length,match:{stars:0,max:0},tricks:{found:0,total:0},gifts:0};
   const when=d=>{const t=new Date(d+'T12:00:00');return isNaN(t)?'':t.toLocaleDateString(es?'es':undefined)};
   const tiles=k.badges.map(b=>`<li class="kid-badge${b.earned?' earned':''}${b.tier!=='common'?' '+esc(b.tier):''}" data-kid-badge="${esc(b.id)}"><span class="kid-badge-icon" aria-hidden="true">${b.earned?esc(b.icon):'🔒'}</span><strong>${esc(b.name)}</strong><small>${b.earned?(es?'Ganada el ':'Earned ')+esc(when(b.earned)):(es?'Por ganar':'Not yet')}</small></li>`).join('');
   const chip=(icon,label,n,max)=>`<span class="kid-chip"><span aria-hidden="true">${icon}</span> ${label} <b>${n}/${max}</b></span>`;
-  return `<section class="card kid-badges" data-kid-badges><h2>🧸 ${es?'Insignias de niños':'Kids\u2019 badges'}</h2><p class="small muted">${es?'De Squishies bíblicos y Combina el maná. Se guardan solo en este teléfono.':'From Bible squishies and Manna Match. Kept on this phone only.'}</p><div class="kid-chips">${chip('🏅',es?'Insignias':'Badges',k.earned,k.badges.length)}${chip('⭐',es?'Estrellas de Combina el maná':'Manna Match stars',k.match.stars,k.match.max)}${chip('✨',es?'Trucos secretos':'Secret tricks',k.tricks.found,k.tricks.total)}${k.gifts?chip('🎀',es?'Regalos de amigos':'Gifts from friends',k.gifts,k.gifts):''}</div><ul class="kid-badge-grid">${tiles}</ul></section>`;
+  return `<section class="card kid-badges" data-kid-badges><h2>🧸 ${es?'Insignias de niños':'Kids\u2019 badges'}</h2><p class="small muted">${es?'De Squishies bíblicos, Combina el maná y los Juegos bíblicos. Se guardan solo en este teléfono.':'From Bible squishies, Manna Match and Bible games. Kept on this phone only.'}</p><div class="kid-chips">${chip('🏅',es?'Insignias':'Badges',k.earned,k.badges.length)}${chip('⭐',es?'Estrellas de Combina el maná':'Manna Match stars',k.match.stars,k.match.max)}${chip('✨',es?'Trucos secretos':'Secret tricks',k.tricks.found,k.tricks.total)}${k.gifts?chip('🎀',es?'Regalos de amigos':'Gifts from friends',k.gifts,k.gifts):''}</div><ul class="kid-badge-grid">${tiles}</ul></section>`;
 }
 async function achievementsScreen(){
   state.screen='achievements';

@@ -157,6 +157,7 @@
   let coloringDrawing = null;
   let squishyOn = false;
   let matchOn = false;
+  let kidGamesOn = false;
   const coloring = () => window.MsbColoring;
   const storyTitle = id => { const item = stories.find(entry => entry.id === id); return item ? pick(item, 'title') : id; };
 
@@ -167,7 +168,7 @@
 
   function showList(root) {
     const cards = stories.map(item => `<button class="card story-card" data-story="${esc(item.id)}">${picture(item, 'card')}<h2>${esc(pick(item, 'title'))}</h2><span>Open</span></button>`).join('');
-    root.innerHTML = `<span class="eyebrow">LITTLE ONES</span><h1>Stories for little ones</h1><p class="lead">Bible stories told simply, for a child close by.</p><button class="card bedtime-entry" type="button" data-bedtime><span class="eyebrow">LITTLE ONES</span><strong>Bedtime</strong><span>A story, a prayer, and a quiet night sky</span></button>${window.MsbSquishy ? '<button class="card squishy-entry" type="button" data-squishy-open><span class="squishy-entry-art" aria-hidden="true">' + (window.MsbSquishyArt ? MsbSquishyArt.svg('lamb') + MsbSquishyArt.svg('star') : '') + '</span><span><span class="eyebrow">LITTLE ONES</span><strong>Bible squishies</strong><span>Squish a soft friend and learn its Bible story</span></span></button>' : ''}${window.MsbMatch ? '<button class="card squishy-entry match-entry" type="button" data-match-open><span class="squishy-entry-art" aria-hidden="true">' + (window.MsbMatchArt ? MsbMatchArt.svg('loaf') + MsbMatchArt.svg('fish') : '') + '</span><span><span class="eyebrow">LITTLE ONES</span><strong>Manna Match</strong><span>Match Bible pictures and learn a lesson in every level</span></span></button>' : ''}<div class="story-grid">${cards}</div>${coloring() ? coloring().gridHtml(storyTitle) : ''}`;
+    root.innerHTML = `<span class="eyebrow">LITTLE ONES</span><h1>Stories for little ones</h1><p class="lead">Bible stories told simply, for a child close by.</p><button class="card bedtime-entry" type="button" data-bedtime><span class="eyebrow">LITTLE ONES</span><strong>Bedtime</strong><span>A story, a prayer, and a quiet night sky</span></button>${window.MsbSquishy ? '<button class="card squishy-entry" type="button" data-squishy-open><span class="squishy-entry-art" aria-hidden="true">' + (window.MsbSquishyArt ? MsbSquishyArt.svg('lamb') + MsbSquishyArt.svg('star') : '') + '</span><span><span class="eyebrow">LITTLE ONES</span><strong>Bible squishies</strong><span>Squish a soft friend and learn its Bible story</span></span></button>' : ''}${window.MsbMatch ? '<button class="card squishy-entry match-entry" type="button" data-match-open><span class="squishy-entry-art" aria-hidden="true">' + (window.MsbMatchArt ? MsbMatchArt.svg('loaf') + MsbMatchArt.svg('fish') : '') + '</span><span><span class="eyebrow">LITTLE ONES</span><strong>Manna Match</strong><span>Match Bible pictures and learn a lesson in every level</span></span></button>' : ''}${window.MsbKidGames ? '<button class="card squishy-entry kg-entry" type="button" data-kg-enter data-i18n-skip><span class="kg-entry-art" aria-hidden="true">🔎🖼️💬</span><span><span class="eyebrow">' + (es() ? '9+ AÑOS' : 'AGES 9+') + '</span><strong>' + (es() ? 'Juegos bíblicos' : 'Bible games') + '</strong><span>' + (es() ? 'Sopa de letras, ordena la historia, ¿quién lo dijo? y más' : 'Word search, story order, who said it and more') + '</span></span></button>' : ''}<div class="story-grid">${cards}</div>${coloring() ? coloring().gridHtml(storyTitle) : ''}`;
   }
 
   function showOne(root, item) {
@@ -209,6 +210,7 @@
   function show(root) {
     if (squishyOn && window.MsbSquishy) { MsbSquishy.open(root); return; }
     if (matchOn && window.MsbMatch) { MsbMatch.open(root); return; }
+    if (kidGamesOn && window.MsbKidGames) { MsbKidGames.open(root); return; }
     if (coloringId && coloring()) { const drawingId = coloringDrawing; coloringDrawing = null; coloring().open(root, coloringId, storyTitle(coloringId), { drawingId }); return; }
     if (bedtime) showBedtime(root);
     else {
@@ -372,6 +374,21 @@
       window.scrollTo({ top: 0, behavior: 'auto' });
       return;
     }
+    if (event.target.closest('[data-kg-enter]') && window.MsbKidGames) {
+      kidGamesOn = true;
+      bedtime = null;
+      if (window.MsbSpeech) MsbSpeech.stop();
+      refresh();
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+    if (event.target.closest('[data-kg-exit]')) {
+      kidGamesOn = false;
+      if (window.MsbKidGames) MsbKidGames.close();
+      refresh();
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
     if (event.target.closest('[data-match-exit]')) {
       matchOn = false;
       if (window.MsbMatch) MsbMatch.close();
@@ -427,6 +444,8 @@
       if (window.MsbSquishy) MsbSquishy.close();
       matchOn = false;
       if (window.MsbMatch) MsbMatch.close();
+      kidGamesOn = false;
+      if (window.MsbKidGames) MsbKidGames.close();
       if (window.MsbColoring) MsbColoring.close();
       bedtime = null;
       stopMusic();
