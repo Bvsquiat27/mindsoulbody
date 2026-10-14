@@ -97,9 +97,9 @@ test('progress lives in one msb_ key that Export/Restore covers; badges get a da
 
 test('games are wired in, precached, in Spanish, and follow sound, vibration and reduced-motion settings', () => {
   const html = read('./index.html'), sw = read('./sw.js'), stories = read('./stories.js'), ui = read('./kidgames.js');
-  const files = ['kidgames-data.js', 'kidgames-core.js', 'kidgames.js', 'kg-wordsearch.js', 'kg-order.js', 'kg-who.js', 'kg-verse.js', 'kg-ark.js'];
+  const files = ['kidgames-data.js', 'kidgames-core.js', 'kidgames.js', 'kg-wordsearch.js', 'kg-order.js', 'kg-who.js', 'kg-verse.js', 'kg-ark.js', 'kg-map.js', 'kg-sling.js'];
   for (const f of files) { assert.ok(html.includes(`<script src="${f}" defer></script>`), f); assert.ok(sw.includes(`'./${f}'`), f); }
-  assert.ok(html.indexOf('kg-ark.js') < html.indexOf('stories.js'));
+  assert.ok(html.indexOf('kg-sling.js') < html.indexOf('stories.js'));
   assert.match(stories, /data-kg-enter/); assert.match(stories, /data-kg-exit/); assert.match(stories, /MsbKidGames\.close\(\)/);
   assert.match(ui, /msb_tap_vibration/); assert.match(ui, /prefers-reduced-motion/); assert.match(ui, /data-i18n-skip/);
   assert.match(ui, /aria-live="polite"/);
@@ -108,7 +108,7 @@ test('games are wired in, precached, in Spanish, and follow sound, vibration and
   assert.match(html, /<link rel="stylesheet" href="kidgames.css">/); assert.ok(sw.includes("'./kidgames.css'"));
   assert.match(css, /prefers-reduced-motion:reduce\)\{\.kg-screen/);
   assert.match(css, /\.kg-ws-grid\{[^}]*touch-action:none/);
-  for (const f of ['kg-wordsearch.js', 'kg-order.js', 'kg-who.js', 'kg-verse.js', 'kg-ark.js']) {
+  for (const f of ['kg-wordsearch.js', 'kg-order.js', 'kg-who.js', 'kg-verse.js', 'kg-ark.js', 'kg-map.js', 'kg-sling.js']) {
     const src = read(`./${f}`);
     const pairs = [...src.matchAll(/t\('((?:[^'\\]|\\.)*)', '((?:[^'\\]|\\.)*)'/g)];
     assert.ok(pairs.length > 8, f);
@@ -151,4 +151,39 @@ test('ark builder: each level is pairs of known animals with EN/ES names, a time
   assert.deepEqual([C.arkStars(30, 60), C.arkStars(15, 60), C.arkStars(5, 60)], [3, 2, 1]);
   const ark = read('./kg-ark.js');
   assert.match(ark, /document\.hidden/, 'timer pauses when hidden'); assert.match(ark, /role="timer"/);
+});
+
+test('map journey: two routes, each stop on the map with an EN/ES question, 3 choices and a verse', () => {
+  assert.deepEqual(D.MAPS.map(m => m.id), ['exodus', 'paul']);
+  for (const m of D.MAPS) {
+    assert.ok(m.stops.length >= 6);
+    for (const st of m.stops) {
+      assert.ok(st.x >= 0 && st.x <= 400 && st.y >= 0 && st.y <= 280, `${m.id} ${st.name.en}`);
+      for (const l of ['en', 'es']) { assert.ok(st.name[l] && st.q[l]); assert.equal(st.choices[l].length, 3); assert.equal(new Set(st.choices[l]).size, 3); }
+      const c = C.stopChoices(st, 'es', C.rng(3));
+      assert.equal(c.filter(x => x.right).length, 1); assert.equal(c.find(x => x.right).text, st.choices.es[0]);
+    }
+  }
+  assert.match(read('./kg-map.js'), /reduced\(\)/);
+});
+
+test('david\u2019s sling: five stones; every target can be hit with some aim; rocks block; stars by stones left', () => {
+  for (const lv of D.SLING.levels) {
+    for (const tg of lv.targets) {
+      let hit = false;
+      for (let a = -10; a <= 80 && !hit; a += 2) for (let p = 0.2; p <= 1 && !hit; p += 0.04) {
+        const st = C.slingAim(a, p), T = lv.targets.map(x => ({ ...x }));
+        for (let i = 0; i < 900 && st.alive; i += 1) C.slingStep(st, 1 / 120, T, lv.rocks);
+        hit = T.find(x => x.x === tg.x && x.y === tg.y).down;
+      }
+      assert.ok(hit, `${lv.id} target at ${tg.x},${tg.y} is reachable`);
+    }
+  }
+  const st = C.slingShot(-40, 0); C.slingStep(st, 0.5, [], [{ x: 70, y: 0, w: 20, h: 300 }]);
+  assert.equal(st.alive, false, 'a rock stops the stone');
+  const flat = C.slingShot(-1000, 0); assert.ok(Math.abs(flat.vx - C.SLING.maxPull * C.SLING.power) < 1e-9, 'pull is capped');
+  assert.deepEqual([C.slingStars(3), C.slingStars(1), C.slingStars(0)], [3, 2, 1]);
+  const ui = read('./kg-sling.js');
+  assert.match(ui, /data-sl-throw/, 'buttons can throw without dragging'); assert.match(ui, /type="range"/);
+  assert.equal(D.SLING.intro.text.en.includes('five smooth stones'), true);
 });
