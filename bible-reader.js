@@ -5,7 +5,8 @@
   const TRANSLATION_KEY = 'msb_bible_translation';
   const RVR_CACHE_NAME = 'msb-bible-rvr1909-4';
   const STORIES_CACHE_NAME = 'msb-stories-1';
-  const STORY_ART_FILES = ['creation', 'noah', 'stars', 'ladder', 'joseph', 'moses', 'redsea', 'samuel', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter', 'ruth', 'elijah', 'esther', 'baptism', 'samaritan', 'zacchaeus', 'bartimaeus'].flatMap(id => [`img/stories/${id}.webp`, `img/stories/${id}-512.webp`]);
+  const STORY_ART_V2 = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
+  const STORY_ART_FILES = ['creation', 'noah', 'stars', 'ladder', 'joseph', 'moses', 'redsea', 'samuel', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter', 'ruth', 'elijah', 'esther', 'baptism', 'samaritan', 'zacchaeus', 'bartimaeus'].map(id => (STORY_ART_V2.includes(id) ? `${id}-v2` : id)).flatMap(id => [`img/stories/${id}.webp`, `img/stories/${id}-512.webp`]);
   const fileName = id => `bible/${String(id).padStart(2, '0')}.json`;
   function activeTranslation(id) { return reader.translation === 'rvr' && id <= 66 ? 'rvr' : 'kjv'; }
   function dataKey(id) { return activeTranslation(id) + ':' + id; }

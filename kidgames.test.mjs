@@ -74,7 +74,7 @@ test('story order: picture sets are in Bible order, use the app story art, and n
     assert.ok(set.cards.length >= 5 && set.cards.length <= 6, set.id);
     const pos = set.cards.map(id => bibleOrder.indexOf(id));
     assert.ok(pos.every(p => p >= 0)); assert.deepEqual(pos, pos.slice().sort((a, b) => a - b), `${set.id} order`);
-    for (const id of set.cards) { assert.ok(existsSync(new URL(`./img/stories/${id}-512.webp`, import.meta.url)), id); assert.ok(D.PICTURES[id].en && D.PICTURES[id].es); }
+    for (const id of set.cards) { assert.ok(existsSync(new URL(`./img/stories/${['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'].includes(id) ? id + '-v2' : id}-512.webp`, import.meta.url)), id); assert.ok(D.PICTURES[id].en && D.PICTURES[id].es); }
     for (let k = 0; k < 30; k += 1) assert.ok(!C.isOrdered(C.scramble(set.cards, C.rng(k)), set.cards));
   }
   assert.deepEqual(C.moveItem(['a', 'b', 'c'], 0, 2), ['b', 'c', 'a']);
@@ -310,7 +310,7 @@ test('sling levels 6-15: new paths, the zap stone, new courage verses; shield co
   const sq = read('./squishy.js');
   assert.match(sq, /<details class="sq-sent"\$\{ui\.trade\.sentOpen \? ' open' : ''\}>/);
   assert.match(sq, /ui\.trade\.sentOpen = true;/);
-  assert.equal((read('./kg-map.js').match(/onerror=/g) || []).length, 1, 'map travelers fall back if the art is missing'); assert.match(read('./kg-map.js'), /mp-trav-fb" y="-6" text-anchor="middle" font-size="24">\$\{travEmoji\(m\)\}/, 'journeys without painted art use an emoji traveler');
+  assert.equal((read('./kg-map.js').match(/ data-mp-fb/g) || []).length, 3, 'map travelers (map, trip list, how-to-play) fall back if the art is missing'); assert.doesNotMatch(read('./kg-map.js'), /onerror=/, 'the CSP blocks inline handlers'); assert.match(read('./kg-map.js'), /mp-trav-fb" y="-6" text-anchor="middle" font-size="24">\$\{travEmoji\(m\)\}/, 'journeys without painted art use an emoji traveler');
   assert.match(read('./kg-sling.js'), /burstAt\(s, e\.x, gChest\(e\)/);
 });
 
