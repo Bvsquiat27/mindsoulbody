@@ -266,12 +266,14 @@
       /* the old Sling levels (s1-s4) became the new z1-z4: carry them over once; true when it happened */
       migrateSling() {
         const v = read(), list = v.done.sling || [];
-        if (!list.some(id => /^s\d+$/.test(id))) return false;
+        const orphans = Object.keys(v.best).some(k => /^sling:s\d+$/.test(k));
+        const oldDone = list.some(id => /^s\d+$/.test(id));
+        if (!oldDone && !orphans) return false;
         const out = [];
         for (const id of list) { const n = /^s(\d+)$/.exec(id); const z = n ? `z${n[1]}` : id; if (!out.includes(z)) out.push(z); }
         v.done.sling = out;
         for (const k of Object.keys(v.best)) { const m = /^sling:s(\d+)$/.exec(k); if (!m) continue; const nk = `sling:z${m[1]}`; v.best[nk] = Math.max(Number(v.best[nk]) || 0, Number(v.best[k]) || 0); delete v.best[k]; }
-        write(v); return true;
+        write(v); return oldDone; /* the note shows only when levels moved */
       },
       /* stamp newly earned badges with today's date; returns the new ones */
       award(defs) {
