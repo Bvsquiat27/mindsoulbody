@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v120';
+const CACHE_VERSION = 'v122';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -97,7 +97,10 @@ const DATA_FILES = [
 // the first time a story is opened; offline, a missing one falls back to its
 // small cover.
 const STORY_FILES = STORY_IDS.map((id) => `./img/stories/${id}-512.webp`)
-  .concat(STORY_IDS.map((id) => `./img/coloring/${id}-400.webp`));
+  .concat(STORY_IDS.map((id) => `./img/coloring/${id}-400.webp`))
+  /* painted game art: David's Sling and Map Journey travelers */
+  .concat(['goliath-idle', 'goliath-angry', 'goliath-hit', 'goliath-laugh', 'david', 'valley'].map((n) => `./img/sling/${n}.webp`))
+  .concat(['map-exodus', 'map-paul'].map((n) => `./img/map/${n}.webp`));
 
 function offlineResponse(url) {
   const json = /\.json$/.test(url.pathname);
