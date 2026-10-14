@@ -23,7 +23,7 @@ test('Pause ends the bedtime read-aloud chain', () => {
 });
 test('no wording says notes stay private, in EN or ES', () => {
   for (const src of [aura, i18n]) {
-    assert.doesNotMatch(src, /notes stay private|journal itself stays private|private notes|notas siguen|diario se queda privado|No se sincronizan con otros/);
+    assert.doesNotMatch(src, /notes stay private|journal itself stays private|private notes|notas siguen|diario se queda privado|No se sincronizan con otros|PRIVATE JOURNAL|not uploaded|DIARIO PRIVADO|No se suben/);
   }
 });
 test('study notes sync when saved', () => {
@@ -37,4 +37,10 @@ test('shared text never contains an empty verse', () => {
   const src = readFileSync('my-notes.js', 'utf8');
   assert.match(src, /ctx\.ensure \? ctx\.ensure\(\)/);
   assert.match(src, /if \(!n\.verse \|\| !n\.book\)/);
+});
+
+test('study journal box follows the share switch', () => {
+  assert.match(aura, /localStorage\.getItem\('msb_notes_share'\)==='0'\?'Only you can see these notes/);
+  assert.match(i18n, /Tus amigos pueden ver estas notas/);
+  assert.match(i18n, /Solo tú puedes ver estas notas/);
 });
