@@ -79,20 +79,25 @@
     const l = lang();
     return `<div class="kg-verse" role="status" aria-live="polite"><span class="eyebrow">${esc(heading)}</span><blockquote class="kg-verse-text">${esc(v.text[l])}</blockquote><p class="kg-verse-ref">${esc(v.ref[l])} · ${l === 'es' ? 'RV1909' : 'KJV'}</p>${actions ? `<div class="kg-actions">${actions}</div>` : ''}</div>`;
   }
-  function badgeToast(ids) {
-    if (!ids.length || !ui.root) return;
+  function badgeToast(ids, squishies = []) {
+    if ((!ids.length && !squishies.length) || !ui.root) return;
     const defs = badgeDefs();
     const list = ids.map(id => defs.find(b => b.id === id)).filter(Boolean);
-    if (!list.length) return;
+    if (!list.length && !squishies.length) return;
     sound('badge'); buzz([20, 50, 30]);
     const box = ui.root.querySelector('[data-kg-badge-pop]');
     if (!box) return;
-    box.innerHTML = list.map(b => `<span class="kg-badge-pop"><span aria-hidden="true">${b.icon}</span> ${esc(t('New badge: {name}', '¡Nueva insignia: {name}!', { name: name(b.name) }))}</span>`).join('');
+    box.innerHTML = list.map(b => `<span class="kg-badge-pop"><span aria-hidden="true">${b.icon}</span> ${esc(t('New badge: {name}', '¡Nueva insignia: {name}!', { name: name(b.name) }))}</span>`).join('')
+      + squishies.map(x => `<span class="kg-badge-pop kg-squishy-pop"><span aria-hidden="true">🧸</span> ${esc(t('New squishy: {name}!', '¡Nuevo squishy: {name}!', { name: x.name }))}</span>`).join('');
     box.hidden = false;
     clearTimeout(badgeToast.timer);
     badgeToast.timer = setTimeout(() => { if (box.isConnected) box.hidden = true; }, 4200);
   }
-  const award = () => badgeToast(prog().award(badgeDefs()));
+  const award = () => {
+    const ids = prog().award(badgeDefs());
+    const sq = window.MsbSquishy && MsbSquishy.gameProgress ? MsbSquishy.gameProgress() : [];
+    badgeToast(ids, sq);
+  };
 
   function hubHtml() {
     const v = prog().get();

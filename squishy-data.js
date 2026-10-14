@@ -896,6 +896,450 @@
       }
     },
     {
+      "id": "lily",
+      "sound": "lily",
+      "locked": true,
+      "name": {
+        "en": "Lily of the Field",
+        "es": "El lirio del campo"
+      },
+      "lesson": {
+        "en": "Jesus pointed to the lilies of the field. They do not work or worry, yet God dresses them in beauty. If God cares for flowers, He will surely care for you.",
+        "es": "Jesús mostró los lirios del campo. No trabajan ni se preocupan, y aun así Dios los viste de belleza. Si Dios cuida de las flores, con más razón cuida de ti."
+      },
+      "quiz": {
+        "en": "Jesus said, “Consider the lilies.” Which squishy is a flower of the field?",
+        "es": "Jesús dijo: «Reparad los lirios». ¿Cuál squishy es una flor del campo?"
+      },
+      "at": {
+        "en": [
+          40,
+          6,
+          28
+        ],
+        "es": [
+          40,
+          6,
+          28
+        ]
+      },
+      "ref": {
+        "en": "Matthew 6:28",
+        "es": "Mateo 6:28"
+      },
+      "verse": {
+        "en": "And why take ye thought for raiment? Consider the lilies of the field, how they grow; they toil not, neither do they spin:",
+        "es": "Y por el vestido ¿por qué os congojáis? Reparad los lirios del campo, cómo crecen; no trabajan ni hilan;"
+      }
+    },
+    {
+      "id": "key",
+      "sound": "keyturn",
+      "locked": true,
+      "name": {
+        "en": "Ask-Seek-Knock Key",
+        "es": "La llave de pedir y llamar"
+      },
+      "lesson": {
+        "en": "Jesus taught us to keep asking, seeking and knocking in prayer. God loves to hear our questions and to open the door for us.",
+        "es": "Jesús nos enseñó a seguir pidiendo, buscando y llamando en oración. A Dios le encanta escuchar nuestras preguntas y abrirnos la puerta."
+      },
+      "quiz": {
+        "en": "“Knock, and it shall be opened.” Which squishy opens a door?",
+        "es": "«Llamad, y se os abrirá». ¿Cuál squishy abre una puerta?"
+      },
+      "at": {
+        "en": [
+          40,
+          7,
+          7
+        ],
+        "es": [
+          40,
+          7,
+          7
+        ]
+      },
+      "ref": {
+        "en": "Matthew 7:7",
+        "es": "Mateo 7:7"
+      },
+      "verse": {
+        "en": "Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you:",
+        "es": "Pedid, y se os dará; buscad, y hallaréis; llamad, y se os abrirá."
+      }
+    },
+    {
+      "id": "pearl",
+      "sound": "pearl",
+      "locked": true,
+      "name": {
+        "en": "Pearl of Great Price",
+        "es": "La perla preciosa"
+      },
+      "lesson": {
+        "en": "In Jesus’ story, a merchant found one wonderful pearl and gave everything to have it. God’s kingdom is the greatest treasure of all.",
+        "es": "En la historia de Jesús, un comerciante halló una perla preciosa y dio todo lo que tenía por ella. El reino de Dios es el tesoro más grande de todos."
+      },
+      "quiz": {
+        "en": "A merchant sold everything to buy one treasure. Which squishy is it?",
+        "es": "Un comerciante vendió todo para comprar un tesoro. ¿Cuál squishy es?"
+      },
+      "at": {
+        "en": [
+          40,
+          13,
+          46
+        ],
+        "es": [
+          40,
+          13,
+          46
+        ]
+      },
+      "ref": {
+        "en": "Matthew 13:46",
+        "es": "Mateo 13:46"
+      },
+      "verse": {
+        "en": "who, when he had found one pearl of great price, went and sold all that he had, and bought it.",
+        "es": "Que hallando una preciosa perla, fué y vendió todo lo que tenía, y la compró."
+      }
+    },
+    {
+      "id": "manna",
+      "sound": "manna",
+      "locked": true,
+      "name": {
+        "en": "Manna from Heaven",
+        "es": "El maná del cielo"
+      },
+      "lesson": {
+        "en": "In the desert, God sent bread from heaven every morning. His people gathered just enough for each day, and learned to trust Him day by day.",
+        "es": "En el desierto, Dios mandó pan del cielo cada mañana. Su pueblo recogía lo justo para cada día y aprendió a confiar en él día tras día."
+      },
+      "quiz": {
+        "en": "God rained bread from heaven in the desert. Which squishy is it?",
+        "es": "Dios hizo llover pan del cielo en el desierto. ¿Cuál squishy es?"
+      },
+      "at": {
+        "en": [
+          2,
+          16,
+          4
+        ],
+        "es": [
+          2,
+          16,
+          4
+        ]
+      },
+      "ref": {
+        "en": "Exodus 16:4",
+        "es": "Éxodo 16:4"
+      },
+      "verse": {
+        "en": "Then said the LORD unto Moses, Behold, I will rain bread from heaven for you; and the people shall go out and gather a certain rate every day, that I may prove them, whether they will walk in my law, or no.",
+        "es": "Y Jehová dijo á Moisés: He aquí yo os haré llover pan del cielo; y el pueblo saldrá, y cogerá para cada un día, para que yo le pruebe si anda en mi ley, ó no."
+      }
+    },
+    {
+      "id": "scroll",
+      "sound": "scroll",
+      "locked": true,
+      "name": {
+        "en": "Scripture Scroll",
+        "es": "El rollo de la Escritura"
+      },
+      "lesson": {
+        "en": "Long ago, God’s Word was written on scrolls. Jesus opened the scroll of Isaiah and read it to the people. God’s Word is still for us today.",
+        "es": "Hace mucho tiempo, la Palabra de Dios se escribía en rollos. Jesús abrió el libro de Isaías y lo leyó al pueblo. La Palabra de Dios sigue siendo para nosotros hoy."
+      },
+      "quiz": {
+        "en": "Jesus opened the book of Isaiah and read. Which squishy holds God’s Word?",
+        "es": "Jesús abrió el libro de Isaías y leyó. ¿Cuál squishy guarda la Palabra de Dios?"
+      },
+      "at": {
+        "en": [
+          42,
+          4,
+          17
+        ],
+        "es": [
+          42,
+          4,
+          17
+        ]
+      },
+      "ref": {
+        "en": "Luke 4:17",
+        "es": "Lucas 4:17"
+      },
+      "verse": {
+        "en": "And there was delivered unto him the book of the prophet Esaias. And when he had opened the book, he found the place where it was written,",
+        "es": "Y fuéle dado el libro del profeta Isaías; y como abrió el libro, halló el lugar donde estaba escrito:"
+      }
+    },
+    {
+      "id": "shofar",
+      "sound": "shofar",
+      "locked": true,
+      "name": {
+        "en": "Praise Shofar",
+        "es": "El shofar de alabanza"
+      },
+      "lesson": {
+        "en": "God’s people blew the ram’s horn to call everyone together and to praise God. We can praise Him with music and with our voices too!",
+        "es": "El pueblo de Dios tocaba el cuerno de carnero para reunir a todos y alabar a Dios. ¡Nosotros también podemos alabarle con música y con nuestra voz!"
+      },
+      "quiz": {
+        "en": "“Praise him with the sound of the trumpet.” Which squishy is a horn?",
+        "es": "«Alabadle á son de bocina». ¿Cuál squishy es un cuerno?"
+      },
+      "at": {
+        "en": [
+          19,
+          150,
+          3
+        ],
+        "es": [
+          19,
+          150,
+          3
+        ]
+      },
+      "ref": {
+        "en": "Psalms 150:3",
+        "es": "Salmos 150:3"
+      },
+      "verse": {
+        "en": "Praise him with the sound of the trumpet: Praise him with the psaltery and harp.",
+        "es": "Alabadle á son de bocina: alabadle con salterio y arpa."
+      }
+    },
+    {
+      "id": "tablets",
+      "sound": "tablets",
+      "locked": true,
+      "name": {
+        "en": "Tablets of Stone",
+        "es": "Las tablas de piedra"
+      },
+      "lesson": {
+        "en": "On Mount Sinai, God gave Moses two tablets of stone with His commandments. God’s law shows us how to love Him and love each other.",
+        "es": "En el monte Sinaí, Dios le dio a Moisés dos tablas de piedra con sus mandamientos. La ley de Dios nos enseña a amarle a él y a amarnos unos a otros."
+      },
+      "quiz": {
+        "en": "God wrote on them with His finger on Mount Sinai. Which squishy are they?",
+        "es": "Dios escribió en ellas con su dedo en el monte Sinaí. ¿Cuál squishy son?"
+      },
+      "at": {
+        "en": [
+          2,
+          31,
+          18
+        ],
+        "es": [
+          2,
+          31,
+          18
+        ]
+      },
+      "ref": {
+        "en": "Exodus 31:18",
+        "es": "Éxodo 31:18"
+      },
+      "verse": {
+        "en": "And he gave unto Moses, when he had made an end of communing with him upon mount Sinai, two tables of testimony, tables of stone, written with the finger of God.",
+        "es": "Y dió á Moisés, como acabó de hablar con él en el monte de Sinaí, dos tablas del testimonio, tablas de piedra escritas con el dedo de Dios."
+      }
+    },
+    {
+      "id": "elephant",
+      "sound": "elephant",
+      "locked": true,
+      "name": {
+        "en": "Ark Elephant",
+        "es": "El elefante del arca"
+      },
+      "lesson": {
+        "en": "Big animals and little animals went into the ark two by two, just as God said. Noah obeyed, and God kept every one of them safe.",
+        "es": "Animales grandes y pequeños entraron al arca de dos en dos, como Dios dijo. Noé obedeció, y Dios cuidó a cada uno de ellos."
+      },
+      "quiz": {
+        "en": "Animals went into the ark two by two. Which squishy is a big one?",
+        "es": "Los animales entraron al arca de dos en dos. ¿Cuál squishy es uno grande?"
+      },
+      "at": {
+        "en": [
+          1,
+          7,
+          9
+        ],
+        "es": [
+          1,
+          7,
+          9
+        ]
+      },
+      "ref": {
+        "en": "Genesis 7:9",
+        "es": "Génesis 7:9"
+      },
+      "verse": {
+        "en": "there went in two and two unto Noah into the ark, the male and the female, as God had commanded Noah.",
+        "es": "De dos en dos entraron á Noé en el arca: macho y hembra, como mandó Dios á Noé."
+      }
+    },
+    {
+      "id": "honeycomb",
+      "sound": "honey",
+      "locked": true,
+      "name": {
+        "en": "Sweet Honeycomb",
+        "es": "El panal dulce"
+      },
+      "lesson": {
+        "en": "The psalm says God’s words are sweeter than honey. When we learn a verse by heart, we keep something sweet with us all day.",
+        "es": "El salmo dice que las palabras de Dios son más dulces que la miel. Cuando aprendemos un versículo de memoria, llevamos algo dulce con nosotros todo el día."
+      },
+      "quiz": {
+        "en": "God’s words are sweeter than this. Which squishy is it?",
+        "es": "Las palabras de Dios son más dulces que esto. ¿Cuál squishy es?"
+      },
+      "at": {
+        "en": [
+          19,
+          119,
+          103
+        ],
+        "es": [
+          19,
+          119,
+          103
+        ]
+      },
+      "ref": {
+        "en": "Psalms 119:103",
+        "es": "Salmos 119:103"
+      },
+      "verse": {
+        "en": "How sweet are thy words unto my taste! Yea, sweeter than honey to my mouth!",
+        "es": "¡Cuán dulces son á mi paladar tus palabras! más que la miel á mi boca."
+      }
+    },
+    {
+      "id": "anchor",
+      "sound": "anchor",
+      "locked": true,
+      "name": {
+        "en": "Anchor of Hope",
+        "es": "El ancla de la esperanza"
+      },
+      "lesson": {
+        "en": "An anchor holds a ship steady in a storm. Our hope in God is like an anchor for our soul: sure and steady, even when life feels stormy.",
+        "es": "Un ancla mantiene firme al barco en la tormenta. Nuestra esperanza en Dios es como un ancla para el alma: segura y firme, aun cuando la vida parece una tormenta."
+      },
+      "quiz": {
+        "en": "Our hope is an anchor of the soul. Which squishy is it?",
+        "es": "Nuestra esperanza es el ancla del alma. ¿Cuál squishy es?"
+      },
+      "at": {
+        "en": [
+          58,
+          6,
+          19
+        ],
+        "es": [
+          58,
+          6,
+          19
+        ]
+      },
+      "ref": {
+        "en": "Hebrews 6:19",
+        "es": "Hebreos 6:19"
+      },
+      "verse": {
+        "en": "which hope we have as an anchor of the soul, both sure and stedfast, and which entereth into that within the veil;",
+        "es": "La cual tenemos como segura y firme ancla del alma, y que entra hasta dentro del velo;"
+      }
+    },
+    {
+      "id": "shield",
+      "sound": "shield",
+      "locked": true,
+      "name": {
+        "en": "Shield of Faith",
+        "es": "El escudo de la fe"
+      },
+      "lesson": {
+        "en": "David knew that God was his strength and his shield. When we are scared, we can trust God to protect us and help us be brave.",
+        "es": "David sabía que Dios era su fortaleza y su escudo. Cuando tenemos miedo, podemos confiar en que Dios nos protege y nos ayuda a ser valientes."
+      },
+      "quiz": {
+        "en": "“The LORD is my strength and my ___.” Which squishy is it?",
+        "es": "«Jehová es mi fortaleza y mi ___». ¿Cuál squishy es?"
+      },
+      "at": {
+        "en": [
+          19,
+          28,
+          7
+        ],
+        "es": [
+          19,
+          28,
+          7
+        ]
+      },
+      "ref": {
+        "en": "Psalms 28:7",
+        "es": "Salmos 28:7"
+      },
+      "verse": {
+        "en": "The LORD is my strength and my shield; my heart trusted in him, and I am helped: Therefore my heart greatly rejoiceth; and with my song will I praise him.",
+        "es": "Jehová es mi fortaleza y mi escudo: en él esperó mi corazón, y fuí ayudado; por lo que se gozó mi corazón, y con mi canción le alabaré."
+      }
+    },
+    {
+      "id": "chariot",
+      "sound": "chariot",
+      "locked": true,
+      "name": {
+        "en": "Chariot of Fire",
+        "es": "El carro de fuego"
+      },
+      "lesson": {
+        "en": "Elijah walked with God all his life. At the end, a chariot of fire came and Elijah went up to heaven in a whirlwind. God is with His faithful friends always.",
+        "es": "Elías anduvo con Dios toda su vida. Al final, vino un carro de fuego y Elías subió al cielo en un torbellino. Dios está siempre con sus amigos fieles."
+      },
+      "quiz": {
+        "en": "Elijah went up to heaven when this appeared. Which squishy is it?",
+        "es": "Elías subió al cielo cuando apareció esto. ¿Cuál squishy es?"
+      },
+      "at": {
+        "en": [
+          12,
+          2,
+          11
+        ],
+        "es": [
+          12,
+          2,
+          11
+        ]
+      },
+      "ref": {
+        "en": "2 Kings 2:11",
+        "es": "2 Reyes 2:11"
+      },
+      "verse": {
+        "en": "And it came to pass, as they still went on, and talked, that, behold, there appeared a chariot of fire, and horses of fire, and parted them both asunder; and Elijah went up by a whirlwind into heaven.",
+        "es": "Y aconteció que, yendo ellos hablando, he aquí, un carro de fuego con caballos de fuego apartó á los dos: y Elías subió al cielo en un torbellino."
+      }
+    },
+    {
       "id": "lamp",
       "sound": "crunch",
       "locked": true,

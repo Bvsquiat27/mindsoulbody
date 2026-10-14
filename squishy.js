@@ -37,6 +37,7 @@
   const TRICK_STORY = { 'i-am': 'God spoke to Moses from the bush: I AM.', 'light-room': 'Jesus is the light of the world.' };
   const GESTURE_TEXT = { hold: 'Press and hold it', tripleTap: 'Tap it 3 times' };
   const TRICK_TEXT = { 'i-am': 'I AM' };
+  const KG_TEXT = { wordsearch: 'Finish {n} Word Search puzzles', order: 'Put {n} stories in order', ark: 'Load the ark in Ark Builder', verse: 'Build {n} verses in Verse Builder', map: 'Finish {n} Map Journeys', sling: 'Finish {n} levels of David’s Sling' };
   /* What a challenge asks, in words. */
   function challengeText(ch) {
     switch (ch.kind) {
@@ -52,12 +53,16 @@
       case 'matchThreeStars': return ch.n > 1 ? L('Get 3 stars on {n} Manna Match levels', { n: ch.n }) : L('Get 3 stars on a Manna Match level');
       case 'final': return L('Unlock every squishy and get 3 stars on a Manna Match level');
       case 'trades': return L('Trade a squishy with a friend');
+      case 'colored': return L('Color {n} different pages', { n: ch.n });
+      case 'kgDone': return L(KG_TEXT[ch.game] || '', { n: ch.n });
+      case 'kgBest': return L('Score {n} or more in Who Said It?', { n: ch.n });
+      case 'kgAll': return L('Finish each of the 7 Bible games once');
       case 'tricks': return ch.n === 1 ? L('Find a secret trick') : ch.n ? L('Find {n} secret tricks', { n: ch.n }) : L('Find every secret trick');
       default: return '';
     }
   }
-  const BADGE_NAME = { stone: 'Good memory', loaves: 'Little learner', seed: 'Super squisher', bush: 'Question pro', basket: 'Noah’s helper', tree: 'Quick memory', ark: 'Perfect score', coat: 'Three days in a row', lamp: 'Light of the world', 'first-squish': 'First squish', 'squish-200': 'Squish galore', 'all-lessons': 'Every lesson learned', 'match-3star': 'Three-star match', 'first-trick': 'First trick', 'trick-master': 'Trick master', friendship: 'Friendship', ladder: 'Memory champion', raven: 'Eager learner', wheat: 'Squish harvest', oil: 'Question star', coin: 'Halfway hero', donkey: 'Good neighbor', jar: 'Five-day streak', crown: 'Star collector', boat: 'Triple perfect', tomb: 'Easter morning' };
-  const BADGE_ICON = { stone: '🃏', loaves: '📖', seed: '🤲', bush: '❓', basket: '🌈', tree: '⚡', ark: '💯', coat: '📅', lamp: '💡', 'first-squish': '👆', 'squish-200': '🎉', 'all-lessons': '🎓', 'match-3star': '⭐', 'first-trick': '✨', 'trick-master': '🎩', friendship: '🤝', ladder: '🧠', raven: '📚', wheat: '🌾', oil: '🌟', coin: '🗺️', donkey: '💛', jar: '🔥', crown: '👑', boat: '🎯', tomb: '🌅' };
+  const BADGE_NAME = { stone: 'Good memory', loaves: 'Little learner', seed: 'Super squisher', bush: 'Question pro', basket: 'Noah’s helper', tree: 'Quick memory', ark: 'Perfect score', coat: 'Three days in a row', lamp: 'Light of the world', 'first-squish': 'First squish', 'squish-200': 'Squish galore', 'all-lessons': 'Every lesson learned', 'match-3star': 'Three-star match', 'first-trick': 'First trick', 'trick-master': 'Trick master', friendship: 'Friendship', ladder: 'Memory champion', raven: 'Eager learner', wheat: 'Squish harvest', oil: 'Question star', coin: 'Halfway hero', donkey: 'Good neighbor', jar: 'Five-day streak', crown: 'Star collector', boat: 'Triple perfect', tomb: 'Easter morning', lily: 'Little artist', key: 'Keep on asking', pearl: 'Memory treasure', manna: 'Daily bread', scroll: 'Scroll seeker', shofar: 'Sharp ears', tablets: 'Story keeper', elephant: 'Gentle giant', honeycomb: 'Sweet words', anchor: 'Steady traveler', shield: 'Brave aim', chariot: 'Bible games champion' };
+  const BADGE_ICON = { stone: '🃏', loaves: '📖', seed: '🤲', bush: '❓', basket: '🌈', tree: '⚡', ark: '💯', coat: '📅', lamp: '💡', 'first-squish': '👆', 'squish-200': '🎉', 'all-lessons': '🎓', 'match-3star': '⭐', 'first-trick': '✨', 'trick-master': '🎩', friendship: '🤝', ladder: '🧠', raven: '📚', wheat: '🌾', oil: '🌟', coin: '🗺️', donkey: '💛', jar: '🔥', crown: '👑', boat: '🎯', tomb: '🌅', lily: '🖍️', key: '🔑', pearl: '🦪', manna: '🍞', scroll: '🔎', shofar: '📯', tablets: '📜', elephant: '🐘', honeycomb: '🍯', anchor: '🧭', shield: '🎯', chariot: '🏆' };
   /* "2026-10-11" -> "11 oct 2026" / "Oct 11, 2026" in the app language */
   function niceDate(key) {
     const [y, m, d] = String(key).split('-').map(Number);
@@ -187,6 +192,18 @@
     royal: () => notes([523, 659, 784, 1047], { type: 'triangle', dur: 0.3, peak: 0.045, step: 0.15 }),
     alleluia: () => [523, 659, 784, 1047].forEach((f, i) => voice({ type: 'triangle', f0: f, dur: 1.2, peak: 0.025, attack: 0.25, delay: i * 0.08 })),
     /* rare unlock: fanfare, then a sparkly climb; legendary adds a big bell */
+    lily: () => notes([659, 784, 988, 1175], { type: 'sine', dur: 0.3, peak: 0.035, step: 0.1, vib: [5, 6] }),
+    keyturn: () => { [0, 0.08, 0.16].forEach(t => noise({ filter: 'bandpass', f0: 2600, q: 8, dur: 0.03, peak: 0.04, delay: t })); voice({ f0: 1568, dur: 0.4, peak: 0.03, delay: 0.25 }); },
+    pearl: () => notes([2093, 1760, 2349, 2637], { dur: 0.3, peak: 0.025, step: 0.08 }),
+    manna: () => { for (let k = 0; k < 10; k += 1) voice({ f0: 2400 + rr() * 1400, dur: 0.08, peak: 0.015, delay: k * 0.05 }); },
+    scroll: () => { noise({ filter: 'bandpass', f0: 1800, f1: 900, q: 2, dur: 0.5, peak: 0.035 }); voice({ type: 'triangle', f0: 523, dur: 0.4, peak: 0.025, delay: 0.45 }); },
+    shofar: () => notes([233, 349, 349], { type: 'sawtooth', dur: 0.45, peak: 0.035, step: 0.4, filter: ['lowpass', 1400], vib: [5, 6] }),
+    tablets: () => { [0, 0.2].forEach(t => voice({ f0: 110, f1: 70, dur: 0.25, peak: 0.07, delay: t })); noise({ filter: 'lowpass', f0: 800, dur: 0.2, peak: 0.03 }); },
+    elephant: () => voice({ type: 'sawtooth', f0: 330, f1: 660, dur: 0.6, peak: 0.04, filter: ['bandpass', 1100, 2], vib: [8, 30] }),
+    honey: () => { voice({ type: 'sawtooth', f0: 220, dur: 0.5, peak: 0.02, filter: ['lowpass', 900], trem: 30 }); notes([523, 659, 784], { dur: 0.25, peak: 0.03, step: 0.12, delay: 0.4 }); },
+    anchor: () => { [0, 0.07, 0.14, 0.21].forEach(t => noise({ filter: 'bandpass', f0: 1600, q: 6, dur: 0.03, peak: 0.04, delay: t })); noise({ filter: 'lowpass', f0: 1200, f1: 300, dur: 0.5, peak: 0.05, delay: 0.3 }); },
+    shield: () => { voice({ f0: 880, dur: 0.6, peak: 0.04 }); voice({ f0: 1320, dur: 0.5, peak: 0.02 }); voice({ type: 'triangle', f0: 523, dur: 0.6, peak: 0.03, delay: 0.25 }); },
+    chariot: () => { [0, 0.14, 0.28, 0.42].forEach(t => noise({ filter: 'bandpass', f0: 800, q: 6, dur: 0.05, peak: 0.05, delay: t })); noise({ f0: 400, f1: 2600, dur: 0.8, peak: 0.04, delay: 0.5 }); notes([523, 784, 1047, 1568], { type: 'triangle', dur: 0.4, peak: 0.03, step: 0.1, delay: 0.9 }); },
     rare: () => { SOUNDS.fanfare(); setTimeout(() => notes([1047, 1319, 1568, 2093, 2637], { type: 'sine', dur: 0.28, peak: 0.04, step: 0.07 }), 700); },
     legendary: () => { SOUNDS.fanfare(); setTimeout(() => notes([784, 1047, 1319, 1568, 2093, 2637, 3136], { type: 'triangle', dur: 0.35, peak: 0.045, step: 0.08 }), 650); setTimeout(() => voice({ type: 'sine', f0: 523, dur: 1.6, peak: 0.06, vib: [5, 4] }), 1300); },
     fanfare: () => { notes([523, 659, 784], { type: 'triangle', dur: 0.25, peak: 0.06, step: 0.12 }); voice({ type: 'triangle', f0: 1047, dur: 0.7, peak: 0.06, delay: 0.36 }); notes([1568, 2093, 2637], { dur: 0.3, peak: 0.03, step: 0.07 }); }
@@ -222,7 +239,19 @@
     shatter: d => { noise({ filter: 'highpass', f0: 3000, dur: 0.12, peak: 0.04 + d * 0.02 }); [0.02, 0.06, 0.1].forEach(t => voice({ f0: 2800 + rr() * 1500, dur: 0.05, peak: 0.02, delay: t })); },
     jewel: d => { voice({ f0: 1760, dur: 0.35, peak: 0.025 + d * 0.01 }); voice({ f0: 2217, dur: 0.3, peak: 0.02, delay: 0.06 }); },
     oar: d => { noise({ filter: 'lowpass', f0: 900, f1: 300, dur: 0.35, peak: 0.035 + d * 0.015 }); voice({ type: 'sawtooth', f0: 120, f1: 100, dur: 0.25, peak: 0.015, filter: ['lowpass', 400] }); },
-    rumble: d => { voice({ f0: 60, f1: 45, dur: 0.45, peak: 0.07 + d * 0.02 }); noise({ filter: 'lowpass', f0: 250, dur: 0.45, peak: 0.04 }); }
+    rumble: d => { voice({ f0: 60, f1: 45, dur: 0.45, peak: 0.07 + d * 0.02 }); noise({ filter: 'lowpass', f0: 250, dur: 0.45, peak: 0.04 }); },
+    petal: d => voice({ f0: 990 + d * 200, f1: 1320, dur: 0.14, peak: 0.03, attack: 0.02 }),
+    turn: d => [0, 0.07].forEach(t => noise({ filter: 'bandpass', f0: 2400 + d * 400, q: 9, dur: 0.03, peak: 0.045, delay: t })),
+    shimmerpop: d => { voice({ f0: 1400 + d * 300, f1: 2100, dur: 0.07, peak: 0.04 }); voice({ f0: 3100, dur: 0.15, peak: 0.012, delay: 0.05 }); },
+    flake: d => { for (let k = 0; k < 3 + d * 4; k += 1) voice({ f0: 2600 + rr() * 1200, dur: 0.04, peak: 0.015, delay: rr() * 0.15 }); },
+    unroll: d => noise({ filter: 'bandpass', f0: 1400, f1: 2200, q: 2.5, dur: 0.3 + d * 0.1, peak: 0.03 }),
+    blast: d => voice({ type: 'sawtooth', f0: 233, f1: 349, dur: 0.4 + d * 0.2, peak: 0.03 + d * 0.015, filter: ['lowpass', 1300], vib: [5, 5] }),
+    chisel: d => { noise({ filter: 'highpass', f0: 2000, dur: 0.04, peak: 0.05 + d * 0.02 }); voice({ f0: 1900, dur: 0.06, peak: 0.02 }); },
+    stomp: d => { voice({ f0: 90, f1: 40, dur: 0.25, peak: 0.08 + d * 0.03 }); noise({ filter: 'lowpass', f0: 300, dur: 0.12, peak: 0.04 }); },
+    buzz: d => voice({ type: 'sawtooth', f0: 210 + d * 40, f1: 230, dur: 0.3, peak: 0.02 + d * 0.01, filter: ['lowpass', 900], trem: 35 }),
+    chain: d => [0, 0.05, 0.1, 0.15].slice(0, 2 + Math.round(d * 2)).forEach(t => voice({ f0: 1800 + rr() * 600, dur: 0.05, peak: 0.025, delay: t })),
+    clang: d => { voice({ type: 'square', f0: 660 + d * 120, dur: 0.3, peak: 0.02, filter: ['bandpass', 1500, 4] }); voice({ f0: 1990, dur: 0.25, peak: 0.015 }); },
+    gallop: d => [0, 0.09, 0.22, 0.31].forEach((t, i) => noise({ filter: 'bandpass', f0: i % 2 ? 650 : 850, q: 7, dur: 0.04, peak: 0.045 + d * 0.015, delay: t }))
   };
   const RELEASE = {
     mee: () => voice({ type: 'sawtooth', f0: 520, f1: 440, dur: 0.22, peak: 0.03, vib: [9, 20], filter: ['bandpass', 1400, 1.3] }),
@@ -249,7 +278,19 @@
     trumpet: a => notes([392, 523, 659].slice(0, 2 + Math.round(a)), { type: 'sawtooth', dur: 0.22, peak: 0.028, step: 0.13, filter: ['lowpass', 2000] }),
     royal: () => notes([784, 988, 1175], { type: 'triangle', dur: 0.25, peak: 0.03, step: 0.1 }),
     haul: () => [0, 0.08, 0.16, 0.24, 0.32].forEach((t, i) => voice({ f0: 900 - i * 120, f1: 500, dur: 0.06, peak: 0.03, delay: t })),
-    alleluia: a => [523, 659, 784].forEach((f, i) => voice({ type: 'triangle', f0: f * (1 + a * 0.06), dur: 0.7, peak: 0.02, attack: 0.15, delay: i * 0.05 }))
+    alleluia: a => [523, 659, 784].forEach((f, i) => voice({ type: 'triangle', f0: f * (1 + a * 0.06), dur: 0.7, peak: 0.02, attack: 0.15, delay: i * 0.05 })),
+    bloom: a => notes([784, 988, 1175].slice(0, 2 + Math.round(a)), { type: 'sine', dur: 0.25, peak: 0.025, step: 0.07 }),
+    unlock: () => { noise({ filter: 'bandpass', f0: 1200, q: 5, dur: 0.05, peak: 0.05 }); voice({ f0: 1760, dur: 0.3, peak: 0.025, delay: 0.06 }); },
+    pearlroll: a => notes([2637, 2349, 2093, 1760].slice(0, 2 + Math.round(a * 2)), { dur: 0.12, peak: 0.02, step: 0.05 }),
+    sprinkle: () => { for (let k = 0; k < 8; k += 1) voice({ f0: 3000 + rr() * 1500, dur: 0.03, peak: 0.012, delay: rr() * 0.4 }); },
+    rollup: () => noise({ filter: 'bandpass', f0: 2200, f1: 1200, q: 2.5, dur: 0.25, peak: 0.03 }),
+    echo: a => [0, 0.25, 0.5].forEach((t, i) => voice({ type: 'sawtooth', f0: 349, dur: 0.2, peak: (0.025 + a * 0.01) / (i + 1), filter: ['lowpass', 1200], delay: t })),
+    settle: () => voice({ f0: 75, f1: 55, dur: 0.3, peak: 0.07 }),
+    toot: a => voice({ type: 'sawtooth', f0: 400, f1: 700 + a * 300, dur: 0.35, peak: 0.035, filter: ['bandpass', 1100, 2] }),
+    drizzle: () => [0, 0.18, 0.4].forEach((t, i) => voice({ f0: 500 - i * 60, f1: 300, dur: 0.12, peak: 0.03, delay: t })),
+    splashdown: a => noise({ filter: 'lowpass', f0: 1500, f1: 250, dur: 0.5 + a * 0.2, peak: 0.05 }),
+    'ring-out': a => voice({ f0: 1320, dur: 0.6 + a * 0.4, peak: 0.025, vib: [6, 4] }),
+    whirl: a => noise({ f0: 300, f1: 3000 + a * 1500, dur: 0.6, peak: 0.04 })
   };
   /* The sound of each secret trick */
   const TRICK_SOUND = {
@@ -1094,6 +1135,16 @@
     open(root) { ui.root = root; stats().played(); render(); afterProgress(false); },
     close() { closePlay(); ui.root = null; ui.trade = { pick: null, code: null, codeId: null, note: '', err: '', got: null, typed: '' }; ui.view = 'shelf'; ui.memory = null; ui.round = null; ui.guess = null; ui.msg = ''; if (window.MsbSpeech) MsbSpeech.stop(); },
     _celebrate: celebrate,
+    /* Progress made outside the squishy screen (coloring, the kids' Bible
+       games): unlock any squishy whose challenge is now met. Returns the new
+       ones as { id, name, icon } so the game can show a small note. */
+    gameProgress(colorPage) {
+      if (!C() || !D()) return [];
+      try {
+        if (colorPage) stats().colored(String(colorPage));
+        return C().checkUnlocks(store2(), D().SQUISHIES).map(x => (typeof x === 'string' ? D().SQUISHIES.find(y => y.id === x) : x)).filter(Boolean).map(x => ({ id: x.id, name: nameOf(x), icon: BADGE_ICON[x.id] || '🧸' }));
+      } catch { return []; }
+    },
     /* Kid badges for the Profile achievements screen (this phone only) */
     kidBadges() {
       if (!C() || !D()) return null;

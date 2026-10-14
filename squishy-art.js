@@ -203,6 +203,103 @@
         <g fill="#ff9db5" stroke="${INK}" stroke-width="1.4"><circle cx="20" cy="108" r="4"/><circle cx="28" cy="111" r="3.5"/><circle cx="110" cy="108" r="4"/></g>
         ${shine(60, 62, 8, 4)}${face(74, 84, 0.66)}`;
     },
+    /* A lily of the field (from coloring) */
+    lily() {
+      return `<path d="M60 112 Q58 96 60 80" fill="none" stroke="#5aa35a" stroke-width="5" stroke-linecap="round"/>
+        ${blob('<ellipse cx="40" cy="104" rx="16" ry="6" transform="rotate(-25 40 104)"/><ellipse cx="80" cy="104" rx="16" ry="6" transform="rotate(25 80 104)"/>', '#7cc47a')}
+        ${blob('<path d="M60 14 Q74 34 70 56 Q66 70 60 72 Q54 70 50 56 Q46 34 60 14 Z"/><path d="M24 34 Q46 38 56 60 Q58 72 52 76 Q40 74 32 62 Q22 48 24 34 Z"/><path d="M96 34 Q74 38 64 60 Q62 72 68 76 Q80 74 88 62 Q98 48 96 34 Z"/>', '#ffd6e6')}
+        <g fill="#ffb3cf"><path d="M60 26 Q66 42 62 60 L58 60 Q54 42 60 26 Z"/></g>
+        <g fill="#f2c14e" stroke="${INK}" stroke-width="1.4"><circle cx="54" cy="70" r="3"/><circle cx="60" cy="72" r="3"/><circle cx="66" cy="70" r="3"/></g>
+        ${shine(48, 40, 5, 3)}${face(60, 56, 0.55)}`;
+    },
+    /* "Knock, and it shall be opened": a golden key (from Questions) */
+    key() {
+      return `${blob('<circle cx="42" cy="50" r="30"/><rect x="62" y="42" width="48" height="16" rx="8"/><rect x="88" y="54" width="10" height="20" rx="4"/><rect x="100" y="54" width="9" height="14" rx="4"/>', '#ffd35a')}
+        <circle cx="42" cy="50" r="10" fill="#fff6c4" stroke="${INK}" stroke-width="2.4"/>
+        <path d="M20 32 Q30 24 40 24" fill="none" stroke="#fff6c4" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+        <g fill="#fff6c4"><path d="M100 18 L102 24 L108 26 L102 28 L100 34 L98 28 L92 26 L98 24 Z"/></g>
+        ${face(42, 78, 0.6)}`;
+    },
+    /* The pearl of great price, in its shell (from Memory) */
+    pearl() {
+      return `${blob('<path d="M10 76 Q60 116 110 76 Q100 104 60 108 Q20 104 10 76 Z"/>', '#f6c7b4')}
+        <g fill="none" stroke="#e7a58f" stroke-width="2" stroke-linecap="round"><path d="M30 86 L22 98 M48 92 L44 104 M72 92 L76 104 M90 86 L98 98"/></g>
+        ${blob('<circle cx="60" cy="56" r="34"/>', '#f7f3ff')}
+        <circle cx="60" cy="56" r="34" fill="none" stroke="#d9cdf2" stroke-width="3" opacity=".7"/>
+        <ellipse cx="72" cy="70" rx="12" ry="6" fill="#ffe3f0" opacity=".7"/>
+        ${shine(46, 38, 10, 5)}${face(60, 60, 0.7)}`;
+    },
+    /* Bread from heaven: a soft manna flake (from Manna Match) */
+    manna() {
+      return `${blob('<path d="M60 14 Q72 26 86 20 Q90 36 104 42 Q94 56 104 72 Q88 76 84 94 Q70 88 60 104 Q50 88 36 94 Q32 76 16 72 Q26 56 16 42 Q30 36 34 20 Q48 26 60 14 Z"/>', '#fffaf0')}
+        <g fill="#f0e2c0"><circle cx="40" cy="44" r="3"/><circle cx="82" cy="50" r="2.5"/><circle cx="70" cy="86" r="3"/><circle cx="44" cy="80" r="2.5"/></g>
+        <g fill="#cfe8ff"><path d="M14 18 L16 22 L20 24 L16 26 L14 30 L12 26 L8 24 L12 22 Z"/><path d="M106 96 L107.5 100 L112 101.5 L107.5 103 L106 107 L104.5 103 L100 101.5 L104.5 100 Z"/></g>
+        ${shine(42, 34, 8, 4)}${face(60, 62, 0.72)}`;
+    },
+    /* A scroll of Scripture (from Word Search) */
+    scroll() {
+      return `${blob('<rect x="24" y="22" width="72" height="80" rx="6"/>', '#f5e6c4')}
+        ${blob('<rect x="14" y="12" width="92" height="16" rx="8"/><rect x="14" y="96" width="92" height="16" rx="8"/>', '#c98f5e')}
+        <g fill="#8a5a35"><circle cx="14" cy="20" r="5"/><circle cx="106" cy="20" r="5"/><circle cx="14" cy="104" r="5"/><circle cx="106" cy="104" r="5"/></g>
+        <g stroke="#c9b48a" stroke-width="2.4" stroke-linecap="round"><path d="M36 38 H84 M36 46 H76"/></g>
+        ${shine(36, 34, 6, 3)}${face(60, 70, 0.66)}`;
+    },
+    /* A ram's-horn shofar (from Who Said It?) */
+    shofar() {
+      return `${blob('<path d="M14 96 Q8 70 26 54 Q50 36 80 40 Q100 42 108 24 Q116 30 112 46 Q104 66 80 66 Q56 66 40 80 Q30 90 30 104 Q20 106 14 96 Z"/>', '#e8c79a')}
+        <g fill="none" stroke="#c9a06a" stroke-width="2.4" stroke-linecap="round"><path d="M40 52 Q44 62 38 70 M58 44 Q62 54 58 64 M76 42 Q80 50 78 60"/></g>
+        <ellipse cx="22" cy="100" rx="10" ry="7" fill="#5b4660"/>
+        <g stroke="#ffd166" stroke-width="3" stroke-linecap="round" fill="none"><path d="M6 76 Q2 84 6 92"/><path d="M0 70 Q-6 84 0 98" opacity=".6"/></g>
+        ${shine(70, 50, 7, 3)}${face(66, 56, 0.58)}`;
+    },
+    /* The two tablets of stone (from Story Order) */
+    tablets() {
+      return `${blob('<path d="M12 104 L12 40 Q12 18 34 18 Q56 18 56 40 L56 104 Z"/><path d="M64 104 L64 40 Q64 18 86 18 Q108 18 108 40 L108 104 Z"/>', '#cfcac2')}
+        <g fill="#a8a29a"><rect x="22" y="40" width="24" height="4" rx="2"/><rect x="22" y="50" width="20" height="4" rx="2"/><rect x="74" y="40" width="24" height="4" rx="2"/><rect x="74" y="50" width="20" height="4" rx="2"/><rect x="74" y="60" width="22" height="4" rx="2"/></g>
+        <g font-family="Georgia,serif" font-size="11" fill="#8f897f"><text x="28" y="36">I</text><text x="82" y="36">VI</text></g>
+        ${shine(22, 30, 5, 3)}${face(60, 84, 0.66)}`;
+    },
+    /* Two by two: a little elephant (from Ark Builder) */
+    elephant() {
+      return `${blob('<ellipse cx="22" cy="54" rx="18" ry="24"/><ellipse cx="98" cy="54" rx="18" ry="24"/>', '#b9c3d6')}
+        <g fill="#ffc6d4"><ellipse cx="22" cy="56" rx="10" ry="15"/><ellipse cx="98" cy="56" rx="10" ry="15"/></g>
+        ${blob('<ellipse cx="60" cy="58" rx="36" ry="34"/><path d="M52 80 Q50 104 40 110 Q36 114 42 116 Q60 112 66 86 Z"/>', '#c7d0e2')}
+        <g fill="#fffaf2" stroke="${INK}" stroke-width="1.6"><path d="M44 84 Q40 92 36 92 Q40 86 42 82 Z"/><path d="M76 84 Q80 92 84 92 Q80 86 78 82 Z"/></g>
+        ${shine(44, 38, 8, 4)}${face(60, 58, 0.72)}`;
+    },
+    /* Sweeter than honey: a honeycomb (from Verse Builder) */
+    honeycomb() {
+      const hex = (x, y) => `<path d="M${x - 14} ${y} L${x - 7} ${y - 12} L${x + 7} ${y - 12} L${x + 14} ${y} L${x + 7} ${y + 12} L${x - 7} ${y + 12} Z"/>`;
+      return `${blob(hex(60, 40) + hex(39, 52) + hex(81, 52) + hex(39, 76) + hex(81, 76) + hex(60, 64) + hex(60, 88), '#ffc94d')}
+        <g fill="none" stroke="#e0a22c" stroke-width="2">${hex(39, 52)}${hex(81, 52)}${hex(39, 76)}${hex(81, 76)}${hex(60, 40)}${hex(60, 88)}</g>
+        ${blob('<path d="M76 98 Q80 108 76 114 Q72 108 76 98 Z"/>', '#f5a524')}
+        ${shine(52, 32, 5, 3)}${face(60, 64, 0.66)}`;
+    },
+    /* Hope, the anchor of the soul (from Map Journey) */
+    anchor() {
+      return `${blob('<circle cx="60" cy="20" r="11"/><rect x="52" y="28" width="16" height="70" rx="8"/><rect x="34" y="40" width="52" height="12" rx="6"/><path d="M14 72 Q20 108 60 110 Q100 108 106 72 L94 70 Q90 96 60 98 Q30 96 26 70 Z"/>', '#9db8d6')}
+        <circle cx="60" cy="20" r="5" fill="#eaf3ff" stroke="${INK}" stroke-width="2"/>
+        <g fill="#9db8d6" stroke="${INK}" stroke-width="2" stroke-linejoin="round"><path d="M8 74 L20 62 L28 76 Z"/><path d="M112 74 L100 62 L92 76 Z"/></g>
+        <path d="M70 6 Q86 0 94 12" fill="none" stroke="#c98f5e" stroke-width="3" stroke-linecap="round"/>
+        ${shine(56, 40, 3, 6, 0)}${face(60, 72, 0.6)}`;
+    },
+    /* "The LORD is my shield" (from David's Sling) */
+    shield() {
+      return `${blob('<path d="M60 8 Q86 18 108 18 Q108 76 60 114 Q12 76 12 18 Q34 18 60 8 Z"/>', '#7fb0e8')}
+        <path d="M60 18 Q82 26 98 26 Q98 72 60 102 Q22 72 22 26 Q38 26 60 18 Z" fill="#a9cdf5" stroke="#5f8fc8" stroke-width="2"/>
+        <g fill="#ffd35a" stroke="${INK}" stroke-width="1.6"><rect x="55" y="26" width="10" height="44" rx="3"/><rect x="40" y="38" width="40" height="10" rx="3"/></g>
+        ${shine(34, 32, 7, 4)}${face(60, 82, 0.6)}`;
+    },
+    /* Elijah's chariot of fire (legendary; finish every Bible game) */
+    chariot() {
+      return `<g fill="#ffb347" opacity=".85"><path d="M4 70 Q14 40 30 52 Q26 30 44 36 Q48 18 62 28 Q72 12 82 30 Q100 22 98 44 Q116 44 110 66 Z"/></g>
+        <g fill="#ffe08a" opacity=".9"><path d="M20 66 Q28 50 38 58 Q40 42 54 46 Q62 34 70 46 Q84 40 84 56 Q98 56 96 68 Z"/></g>
+        ${blob('<path d="M18 62 L102 62 Q100 88 76 92 L36 92 Q20 88 18 62 Z"/>', '#e56b4a')}
+        <path d="M24 70 L96 70" stroke="#ffd35a" stroke-width="4" stroke-linecap="round"/>
+        ${blob('<circle cx="40" cy="98" r="15"/><circle cx="84" cy="98" r="15"/>', '#ffd35a')}
+        <g stroke="${INK}" stroke-width="2" stroke-linecap="round"><path d="M40 86 V110 M28 98 H52 M84 86 V110 M72 98 H96"/></g>
+        ${shine(34, 68, 6, 3, 0)}${face(62, 78, 0.56)}`;
+    },
     /* The final squishy: a little clay oil lamp with a glowing flame. */
     lamp() {
       const g = `sq-glow-${uid += 1}`, f = `sq-flame-${uid}`;
