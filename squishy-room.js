@@ -339,5 +339,7 @@
     return `<section class="card sr-list" data-i18n-skip><span class="eyebrow">${esc(tt('SQUISHY TRADES', 'INTERCAMBIOS DE SQUISHIES'))}</span>${rows ? `<ul>${rows}</ul>` : `<p class="muted">${esc(tt('No trades right now. Open a friend and press “Trade squishies”.', 'No hay intercambios ahora. Abre un amigo y pulsa «Cambiar squishies».'))}</p>`}</section>`;
   }
 
-  return { POLL_MS, LIST_MS, LEGEND_MIN, LEGENDARY, model, tradableMine, listHtml, open, attach, close, isOpen: () => !!ui.opts, _ui: ui };
+  /* the app redrew the whole screen (an EN/ES switch): same session, new element, current language */
+  function redraw(rootEl, lang) { if (!ui.opts) return false; if (lang) ui.opts.lang = lang; attach(rootEl); if (ui.trade && !ui.timer && !model(ui.trade, D().SQUISHIES).over) startPoll(); if (!ui.listTimer) startList(); return true; }
+  return { POLL_MS, redraw, LIST_MS, LEGEND_MIN, LEGENDARY, model, tradableMine, listHtml, open, attach, close, isOpen: () => !!ui.opts, _ui: ui };
 });
