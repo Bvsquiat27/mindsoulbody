@@ -427,9 +427,12 @@
   function es() { return window.MsbI18n && MsbI18n.lang() === 'es'; }
   function pick(item, field) { return es() ? item[field + 'Es'] : item[field]; }
 
+  /* Repainted covers ship under new names (art is never edited in place). */
+  const STORY_ART_V2 = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
+  const artName = id => (STORY_ART_V2.includes(id) ? `${id}-v2` : id);
   function picture(item, size) {
-    const full = `img/stories/${item.id}.webp`;
-    const card = `img/stories/${item.id}-512.webp`;
+    const full = `img/stories/${artName(item.id)}.webp`;
+    const card = `img/stories/${artName(item.id)}-512.webp`;
     const alt = esc(pick(item, 'alt'));
     const src = size === 'card' ? card : full;
     return `<img class="${size === 'card' ? 'story-cover' : 'story-hero'}" src="${src}" srcset="${card} 512w, ${full} 1024w" sizes="${size === 'card' ? '(min-width: 720px) 46vw, 100vw' : '100vw'}" width="1024" height="576" alt="${alt}" loading="lazy" decoding="async">`;

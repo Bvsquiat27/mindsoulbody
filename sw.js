@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v142';
+const CACHE_VERSION = 'v144';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -101,7 +101,9 @@ const DATA_FILES = [
 // Only the small covers are precached. The full-size pictures are cached
 // the first time a story is opened; offline, a missing one falls back to its
 // small cover.
-const STORY_FILES = STORY_IDS.map((id) => `./img/stories/${id}-512.webp`)
+const STORY_ART_V2 = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
+const storyArt = (id) => (STORY_ART_V2.includes(id) ? `${id}-v2` : id);
+const STORY_FILES = STORY_IDS.map((id) => `./img/stories/${storyArt(id)}-512.webp`)
   .concat(COLORING_IDS.map((id) => `./img/coloring/${id}-400.webp`))
   /* painted game art: David's Sling and Map Journey travelers */
   .concat(['goliath-idle', 'goliath-angry', 'goliath-hit', 'goliath-laugh', 'david', 'valley'].map((n) => `./img/sling/${n}.webp`))
@@ -301,7 +303,7 @@ self.addEventListener('fetch', (event) => {
         if (res.ok) cache.put(request, res.clone());
         return res;
       }).catch(() => {
-        const small = url.pathname.replace(/(\/img\/stories\/[a-z]+)\.webp$/, '$1-512.webp').replace(/(\/img\/coloring\/[a-z]+)\.png$/, '$1-400.webp');
+        const small = url.pathname.replace(/(\/img\/stories\/[a-z]+(?:-v\d+)?)\.webp$/, '$1-512.webp').replace(/(\/img\/coloring\/[a-z]+)\.png$/, '$1-400.webp');
         return (small !== url.pathname ? cache.match(new URL(small, url.origin).href) : Promise.resolve(null))
           .then((hit) => hit || offlineResponse(url));
       })))
