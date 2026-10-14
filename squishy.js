@@ -416,19 +416,27 @@
   function goFor(ch) {
     if (!ch) return null;
     switch (ch.kind) {
-      case 'memoryWins': case 'memoryFast': return [L('Play Memory'), 'data-sq-go-view="memory"'];
-      case 'lessons': case 'questionWins': case 'perfectRound': case 'perfectLegend': return [L('Play Questions'), 'data-sq-go-view="questions"'];
-      case 'squishes': case 'streak': return [L('Play with a squishy'), 'data-sq-go-play'];
-      case 'matchChapter': case 'matchThreeStars': return [L('Play Manna Match'), 'data-sq-go-match'];
-      case 'kgDone': case 'kgBest': case 'tabletsLegend': return [L('Play {game}', { game: L(KG_NAME[ch.game] || 'Bible games') }), `data-sq-go-game="${ch.game}"`];
-      case 'kgAll': return [L('Open the Bible games'), 'data-sq-go-game="hub"'];
-      case 'colored': return [L('Open the coloring book'), 'data-sq-go-color'];
+      case 'memoryWins': case 'memoryFast': return [[L('Play Memory'), 'data-sq-go-view="memory"']];
+      case 'lessons': case 'questionWins': case 'perfectRound': case 'perfectLegend': return [[L('Play Questions'), 'data-sq-go-view="questions"']];
+      case 'squishes': case 'streak': return [[L('Play with a squishy'), 'data-sq-go-play']];
+      case 'matchChapter': case 'matchThreeStars': return [[L('Play Manna Match'), 'data-sq-go-match']];
+      case 'tabletsLegend': {
+        /* two parts: Story Order sets, then 3-star Manna Match wins */
+        const c = ctx(), sets = (c.kid && c.kid.done && c.kid.done.order) || 0, three = Object.values(c.match || {}).filter(v => v === 3).length;
+        const order = [L('Play {game}', { game: L(KG_NAME.order) }), 'data-sq-go-game="order"'], match = [L('Play Manna Match'), 'data-sq-go-match'];
+        if (sets >= ch.sets) return [match];
+        if (three >= ch.n) return [order];
+        return [order, match];
+      }
+      case 'kgDone': case 'kgBest': return [[L('Play {game}', { game: L(KG_NAME[ch.game] || 'Bible games') }), `data-sq-go-game="${ch.game}"`]];
+      case 'kgAll': return [[L('Open the Bible games'), 'data-sq-go-game="hub"']];
+      case 'colored': return [[L('Open the coloring book'), 'data-sq-go-color']];
       default: return null;
     }
   }
   function goHtml() {
     const g = ui.go && goFor(C().challengeFor(ui.go));
-    return g ? `<p class="sq-go-row"><button type="button" class="primary sq-go" ${g[1]}>▶ ${esc(g[0])}</button></p>` : '';
+    return g ? `<p class="sq-go-row">${g.map((x, i) => `<button type="button" class="${i ? 'secondary' : 'primary'} sq-go" ${x[1]}>▶ ${esc(x[0])}</button>`).join(' ')}</p>` : '';
   }
 
   /* Achievements: every badge, earned or not, with progress. */

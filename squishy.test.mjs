@@ -1097,3 +1097,11 @@ test('a locked squishy shows its challenge with a Go button to the game that unl
   assert.match(readFileSync(new URL('./kidgames.js', import.meta.url), 'utf8'), /openGame\(id\)/);
   for (const k of ['Play Memory', 'Play Questions', 'Play with a squishy', 'Play Manna Match', 'Play {game}', 'Open the Bible games', 'Open the coloring book']) assert.ok(i18n.includes(`"${k}": "`), k);
 });
+
+test('the tablets Go button follows both parts of the goal, and the coloring Go waits for the book to render', () => {
+  const sq = read('./squishy.js'), st = read('./stories.js');
+  assert.match(sq, /case 'tabletsLegend': \{[\s\S]{0,600}if \(sets >= ch\.sets\) return \[match\];\s*if \(three >= ch\.n\) return \[order\];\s*return \[order, match\];/);
+  assert.match(sq, /g\.map\(\(x, i\) =>/, 'more than one Go button when both parts are open');
+  assert.match(st, /function scrollToColoring\(tries = 40\)[\s\S]{0,400}setTimeout\(\(\) => scrollToColoring\(tries - 1\), 75\)/);
+  assert.match(st, /data-sq-go-color'\)\) \{ scrollToColoring\(\); return; \}/);
+});
