@@ -210,6 +210,33 @@
     /* "I am the light of the world": rays reach every corner */
     lamp: { dur: 4000, pose: t => ({ sx: 1 + 0.05 * Math.sin(t * 8), sy: 1 + 0.05 * Math.sin(t * 8) }),
       over(g, t, G) { TRICKS['light-room'].over(g, t, G); rays(g, G, 16, G.S * 3 * ease(seg(t, 0.25, 0.7)), Math.sin(Math.PI * seg(t, 0.2, 1)), 'rgba(255,235,150,A)', t * 0.8); glowText(g, G.text, G.cx, G.S * 0.35, G.S * 0.15, ease(seg(t, 0.4, 0.6)) * (1 - seg(t, 0.94, 1))); } },
+    /* David's sling: the stone whirls, flies, and the giant falls (1 Samuel 17:49) */
+    shield: { dur: 4400, pose: t => { const hit = seg(t, 0.62, 0.7); return { dx: -0.35 * ease(seg(t, 0, 0.15)) * (1 - ease(seg(t, 0.85, 1))), sx: 1 + 0.06 * hit, sy: 1 - 0.04 * hit, mood: t > 0.7 ? 'happy' : undefined }; },
+      over(g, t, G) {
+        const S = G.S, gx = Math.min(G.cx + S * 1.15, G.W - S * 0.5), base = G.ground; /* keep the giant on screen at 390px */
+        /* the giant: a tall dark silhouette with helmet and spear, toppling backwards */
+        const fall = ease(seg(t, 0.68, 0.9)), show = ease(seg(t, 0.05, 0.2)) * (1 - seg(t, 0.94, 1));
+        g.save(); g.globalAlpha = 0.9 * show; g.translate(gx, base); g.rotate(fall * 1.35);
+        g.fillStyle = 'rgba(52,44,58,1)';
+        g.beginPath(); g.ellipse(0, -S * 1.05, S * 0.32, S * 0.62, 0, 0, Math.PI * 2); g.fill();
+        g.beginPath(); g.arc(0, -S * 1.85, S * 0.2, 0, Math.PI * 2); g.fill();
+        g.fillStyle = 'rgba(176,150,90,1)'; g.beginPath(); g.arc(0, -S * 1.9, S * 0.21, Math.PI, 0); g.fill();
+        g.strokeStyle = 'rgba(120,100,80,1)'; g.lineWidth = S * 0.05; g.beginPath(); g.moveTo(S * 0.38, -S * 0.2); g.lineTo(S * 0.38, -S * 2.2); g.stroke();
+        g.fillStyle = 'rgba(52,44,58,1)'; g.fillRect(-S * 0.24, -S * 0.5, S * 0.16, S * 0.5); g.fillRect(S * 0.08, -S * 0.5, S * 0.16, S * 0.5);
+        g.restore();
+        /* the sling whirls, then the stone flies in an arc to the giant's forehead */
+        const whirl = seg(t, 0.12, 0.42), fly = seg(t, 0.42, 0.66);
+        const hx = G.cx - S * 0.2, hy = G.cy - S * 0.55;
+        if (whirl > 0 && whirl < 1) { const a = whirl * 22; g.save(); g.strokeStyle = 'rgba(140,100,60,0.9)'; g.lineWidth = S * 0.02; g.beginPath(); g.moveTo(hx, hy); const sx = hx + Math.cos(a) * S * 0.32, sy = hy + Math.sin(a) * S * 0.18; g.lineTo(sx, sy); g.stroke(); g.fillStyle = 'rgba(150,150,160,1)'; g.beginPath(); g.arc(sx, sy, S * 0.05, 0, Math.PI * 2); g.fill(); g.restore(); }
+        if (fly > 0 && fly < 1) { const tx = gx, ty = base - S * 1.9, x = hx + (tx - hx) * fly, y = hy + (ty - hy) * fly - Math.sin(Math.PI * fly) * S * 0.5;
+          g.save(); g.fillStyle = 'rgba(150,150,160,1)'; g.beginPath(); g.arc(x, y, S * 0.05, 0, Math.PI * 2); g.fill();
+          g.globalCompositeOperation = 'lighter'; g.strokeStyle = 'rgba(255,230,150,0.5)'; g.lineWidth = S * 0.025; g.beginPath(); g.moveTo(x, y); g.lineTo(x - (tx - hx) * 0.08, y + S * 0.05); g.stroke(); g.restore(); }
+        const flash = Math.max(0, 1 - Math.abs(t - 0.67) * 18);
+        if (flash > 0) { g.save(); g.globalCompositeOperation = 'lighter'; g.fillStyle = `rgba(255,240,180,${(0.7 * flash).toFixed(3)})`; g.beginPath(); g.arc(gx, base - S * 1.9, S * 0.35 * flash + S * 0.05, 0, Math.PI * 2); g.fill(); g.restore(); }
+        /* dust when he lands */
+        const dust = seg(t, 0.88, 1); if (dust > 0) { g.save(); g.fillStyle = `rgba(200,180,140,${(0.45 * (1 - dust)).toFixed(3)})`; for (let k = 0; k < 7; k += 1) { g.beginPath(); g.arc(gx + S * (0.4 + k * 0.25) * Math.cos(k), base - S * 0.1, S * (0.1 + dust * 0.2), 0, Math.PI * 2); g.fill(); } g.restore(); }
+        glowText(g, G.text, G.cx, G.S * 0.35, Math.min(G.S * 0.15, G.W * 0.9 / Math.max(6, G.text.length) * 1.6), ease(seg(t, 0.7, 0.85)) * (1 - seg(t, 0.95, 1)));
+      } },
   };
   const api = { FX, TRICKS, STORIES, spawn, step, drawParticle, emo, glowText, ease, seg };
   if (typeof module === 'object' && module.exports) module.exports = api;

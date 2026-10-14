@@ -39,3 +39,25 @@ test('aura wires the tappable studies chip, the screen and lesson syncs (lazy)',
   assert.match(aura, /Study completed\.'\);msbLessonsSyncSoon\(\)/);
   assert.doesNotMatch(readFileSync('index.html', 'utf8'), /my-notes\.js/);
 });
+
+test('guest banner follows the share switch in EN and ES', () => {
+  const aura = readFileSync('aura.js', 'utf8'), i18n = readFileSync('i18n.js', 'utf8');
+  assert.match(aura, /msbNotesShared\(\)\?'Your guest space is temporary\. Create an account to keep your notes\. With a friend code/);
+  assert.match(aura, /'Your guest space is temporary\. Create an account to keep your notes\. Sharing is off, so only you can see them\.'/);
+  assert.match(i18n, /Compartir está desactivado, así que solo tú puedes verlas\./);
+});
+
+test('the David’s Sling squishy (shield) is legendary everywhere, with a story trick', async () => {
+  const C = require('./squishy-core.js');
+  assert.equal(C.CHALLENGES.find((c) => c.id === 'shield').tier, 'legendary');
+  assert.deepEqual(C.CHALLENGES.find((c) => c.id === 'shield').game, 'sling');
+  const T = require('./squishy-trade.js');
+  assert.ok(T.LEGENDARY.includes('shield'));
+  const W = await import('./worker/friends.mjs');
+  assert.ok(W.SQUISHY_LEGENDARY.includes('shield'));
+  assert.equal(W.TRADE_RULES.LEGEND_MIN, 5);
+  const F = require('./squishy-fx.js');
+  assert.equal(typeof F.STORIES.shield.over, 'function');
+  assert.match(readFileSync('squishy.js', 'utf8'), /shield: \{ text: 'The battle is the LORD’s'/);
+  assert.match(readFileSync('i18n.js', 'utf8'), /"The battle is the LORD’s": "De Jehová es la guerra"/);
+});

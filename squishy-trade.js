@@ -19,7 +19,7 @@
     /* won in the games (added after the first 23; index 31 and up use the
        extended slot below, so older codes read exactly as before) */
     'lily', 'key', 'pearl', 'manna', 'scroll', 'shofar', 'tablets', 'elephant', 'honeycomb', 'anchor', 'shield'];
-  const LEGENDARY = ['lamp', 'tomb', 'bush', 'chariot', 'tablets'];
+  const LEGENDARY = ['lamp', 'tomb', 'bush', 'chariot', 'tablets', 'shield'];
   /* 5 bits hold indexes 0-30 directly; 31 means "31 + the next 5 bits" */
   const EXT = 31;
   const KEY = 'msb_squishy_trade';

@@ -580,7 +580,7 @@ export const SQUISHY_IDS = ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow', '
   'lily', 'key', 'pearl', 'manna', 'scroll', 'shofar', 'tablets', 'elephant', 'honeycomb', 'anchor', 'shield', 'chariot', 'lamp'];
 /* everyone starts with these, so they are not traded; the lamp never is */
 export const SQUISHY_STARTERS = ['lamb', 'dove', 'fish', 'lion', 'star', 'rainbow'];
-export const SQUISHY_LEGENDARY = ['bush', 'tomb', 'chariot', 'tablets', 'lamp'];
+export const SQUISHY_LEGENDARY = ['bush', 'tomb', 'chariot', 'tablets', 'lamp', 'shield'];
 export const TRADE_RULES = {
   LEGEND_MIN: 5, NEED_MAX: 12, OFFER_MAX: 12, ACTIVE_MAX: 5, INDEX_MAX: 20,
   REQUEST_TTL_MS: 30 * 60 * 1000, OPEN_TTL_MS: 30 * 60 * 1000, MAX_LIFE_MS: 2 * 60 * 60 * 1000,
