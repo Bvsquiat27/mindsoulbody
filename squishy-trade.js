@@ -74,13 +74,16 @@
     function save(v) { try { storage.setItem(KEY, JSON.stringify(v)); } catch { /* full or blocked */ } return v; }
     return {
       get,
-      /* the giver keeps their squishy; the code is remembered so it cannot
-         be redeemed on this same phone */
-      create(id, owned, rand = Math.random, date = new Date()) {
+      /* trading GIVES the squishy away: give(id) takes it off this phone's
+         shelf (MsbSquishyCore.tradeAway), and it can be won back later by
+         playing its goal again. The code is remembered so it cannot be
+         redeemed on this same phone. */
+      create(id, owned, rand = Math.random, date = new Date(), give = null) {
         if (!tradable(id) || !(owned || []).includes(id)) return null;
         const c = makeCode(id, rand), v = get();
         v.sent.push({ c, id, at: date.getTime() });
         save(v);
+        if (typeof give === 'function') give(id);
         return c;
       },
       redeem(text, date = new Date()) {

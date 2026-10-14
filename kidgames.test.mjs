@@ -204,3 +204,29 @@ test('Bible squishies and Manna Match live in the Bible games hub, not as separa
   for (const f of ['squishy.js', 'match3.js']) assert.match(readFileSync(new URL(`./${f}`, import.meta.url), 'utf8'), /L\('← Bible games'\)/, f);
   assert.ok(i18n.includes('"← Bible games": "← Juegos bíblicos"'));
 });
+
+test('second polish pass: map stories, stamps, coach, level cards, scaled ark windows, clean sling restarts', () => {
+  const map = read('./kg-map.js'), ark = read('./kg-ark.js'), sling = read('./kg-sling.js'), kg = read('./kidgames.js'), css = read('./kidgames.css');
+  /* every stop of both journeys has a story in EN and ES, a stamp and a weather */
+  const block = map.slice(map.indexOf('const STORY'), map.indexOf('const storyOf'));
+  for (const id of ['exodus', 'paul']) {
+    const part = block.slice(block.indexOf(id + ':'));
+    const n = D.MAPS.find(m => m.id === id).stops.length;
+    const rows = part.split('\n').filter(l => /\{ w: '/.test(l)).slice(0, n);
+    assert.equal(rows.length, n, `${id} has a story for each stop`);
+    for (const r of rows) { assert.match(r, /en: '.{20,}'/); assert.match(r, /es: '.{20,}'/); assert.match(r, /stamp: '/); }
+  }
+  assert.match(map, /STAMP_KEY = 'msb_kg_map_stamps'/, 'stamps are covered by Export/Restore');
+  assert.match(kg, /COACH_KEY = 'msb_kg_coach'/, 'the tutorial memory is covered by Export/Restore');
+  for (const src of [map, ark, sling]) { assert.match(src, /coach\('/); assert.match(src, /levelCard\(/); assert.match(src, /starPings\(/); assert.match(src, /sound\('start'\)/); }
+  /* Ark: one window per pair (level 3 has 8) */
+  assert.match(ark, /Array\.from\(\{ length: pairs \}/);
+  assert.ok(Math.max(...D.ARK.levels.map(l => l.pairs.length)) <= 8);
+  /* Sling: a new level or a replay stands Goliath back up and clears the effects */
+  for (const k of ['fall: 0', 'parts: []', 'shake: 0', 'trail: []']) assert.ok(sling.includes(k), k);
+  /* reduced motion is respected by the new effects */
+  assert.match(css, /prefers-reduced-motion:reduce\)\{\.kg-coach/);
+  assert.match(css, /prefers-reduced-motion:reduce\)\{\.kg-ark-far/);
+  assert.match(map, /if \(!tr \|\| reduced\(\)\) return;/);
+  assert.match(sling, /s\.freeze = reduced\(\) \? 0/);
+});
