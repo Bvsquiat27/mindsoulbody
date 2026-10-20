@@ -584,6 +584,10 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .sq-h2{margin:18px 0 8px}
 .sq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .sq-tile{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;padding:8px 6px;border-radius:18px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:inherit;font:inherit}
+/* No blue tap flash: the default mobile tap highlight paints over the play
+   screen that opens on top of the tapped tile. Feedback comes from :active. */
+.squishy-screen,.squishy-screen *,.kg-tile{-webkit-tap-highlight-color:transparent}
+.sq-tile:active,.kg-tile:active{transform:scale(.97)}
 .sq-tile.active{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal)}
 .sq-tile .sq-art{width:78px;max-width:100%}
 .sq-name{font-size:.82rem;font-weight:700;line-height:1.15;text-align:center;overflow-wrap:anywhere}
