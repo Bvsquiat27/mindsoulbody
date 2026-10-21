@@ -183,7 +183,7 @@ test('Luz is wired into Home, the router, and the offline shell', () => {
   assert.ok(aura.includes("if(state.screen==='luz'&&name!=='luz'&&window.MsbLuz)MsbLuz.hide();"));
   assert.equal((aura.match(/MsbLuz\.homeCard\(\)/g) || []).length, 2, 'card on both Home screens');
   const sw = read('./sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v162'/);
+  assert.match(sw, /const CACHE_VERSION = 'v163'/);
   for (const f of ['./luz-data.js', './luz.js', './luz.css', './img/luz/luz-video-thumb.jpg']) assert.ok(sw.includes(`'${f}'`), f);
   assert.match(sw, /if \(url\.origin !== self\.location\.origin\) return;/, 'cross-origin (YouTube frame) requests are never cached');
   assert.equal(sw.includes('youtube'), false);
@@ -362,6 +362,20 @@ test('St. Luke lesson: right after icons, linked both ways, and honest about Scr
   assert.match(en, /Church’s Tradition/); assert.match(en, /The Bible does not tell this story/);
   for (const re of [/Hodegetria/, /Teodoro el Lector/, /siglo VI\b/, /Eudocia/, /Pulqueria/, /San Andrés de Creta/, /siglo VIII/, /Paráclesis/, /18 de octubre/, /Salus Populi Romani/, /proegraphē/, /con colores lo que la predicación hace con palabras/, /Hechos 2/, /Pentecostés/, /“nosotros”/]) assert.match(es, re, `es ${re}`);
   for (const re of [/Hodegetria/, /Theodore the Lector/, /6th century/, /Eudocia/, /Pulcheria/, /St\. Andrew of Crete/, /8th century/, /Paraklesis/, /October 18/, /Salus Populi Romani/, /proegraphē/, /with color what preaching does with words/, /Acts 2/, /Pentecost/, /“we”/]) assert.match(en, re, `en ${re}`);
+  // Bible first, then the Church's history: the short answer and body lead with Scripture.
+  assert.match(luke.short.es, /^El libro de los Hechos/); assert.match(luke.short.en, /^The book of Acts/);
+  assert.ok(luke.short.es.indexOf('Hechos') < luke.short.es.indexOf('Tradición de la Iglesia'));
+  assert.ok(luke.short.en.indexOf('Acts') < luke.short.en.indexOf('Church’s Tradition'));
+  for (const [lang, bible, history] of [['es', /^Empecemos con la Biblia\. En Hechos 16/, /^Y la historia de la Iglesia nos cuenta el resto\./], ['en', /^Let us begin with the Bible\. In Acts 16/, /^And the Church’s history tells us the rest\./]]) {
+    const b = luke.body[lang];
+    assert.match(b[0], bible, `${lang} opens with Acts 16`);
+    assert.match(b[1], lang === 'es' ? /flaqueza de carne/ : /infirmity of the flesh/);
+    assert.match(b[2], /proegraphē/);
+    assert.match(b[3], history, `${lang} transition into the history`);
+    const firstHistory = b.findIndex((p) => /Teodoro el Lector|Theodore the Lector|Paráclesis|Paraklesis|Salus Populi Romani/.test(p));
+    assert.ok(firstHistory > 3, `${lang} history comes after the Scripture paragraphs`);
+    assert.match(b.at(-1), lang === 'es' ? /Hechos 2/ : /Acts 2/, `${lang} closes with Pentecost`);
+  }
   // Angel asked for the case to be presented confidently: the skeptical caveats are gone.
   for (const re of [/copias más tardías/, /se añadió después/, /historiadores/, /discuten/, /no están de acuerdo/, /No es una prueba/, /atribuido a/i, /estudiosos/]) assert.doesNotMatch(es, re, `es still has ${re}`);
   for (const re of [/later copies/, /added afterward/, /historians (think|debate)/, /\bdebate/, /disagree/, /not proof/, /credited to St\. Andrew/, /[Ss]cholars/]) assert.doesNotMatch(en, re, `en still has ${re}`);
