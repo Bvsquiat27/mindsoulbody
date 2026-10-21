@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v153';
+const CACHE_VERSION = 'v155';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -84,6 +84,10 @@ const SHELL = [
   './bridge.js',
   './speech.js',
   './love.js',
+  './luz-data.js',
+  './luz.js',
+  './luz.css',
+  './img/luz/luz-video-thumb.jpg',
   './memory-schedule.js',
   './memory.js',
 ];
@@ -281,6 +285,8 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
+  /* Cross-origin requests (fonts, the API, the Lessons for Luz video
+     frame) are never cached here. */
   if (url.origin !== self.location.origin) return;
 
   if (isStudyNotes(url) || isDataRequest(url)) {
