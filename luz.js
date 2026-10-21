@@ -35,29 +35,31 @@
   ];
   const T = {
     es: {
-      home: '← Inicio', all: '← Todas las preguntas', eyebrow: 'LECCIONES PARA LUZ', title: 'Lecciones para Luz',
+      home: '← Inicio', eyebrow: 'LECCIONES PARA LUZ', title: 'Lecciones para Luz',
       lead: 'Preguntas y respuestas sobre la fe ortodoxa, escritas con cariño para ti. Toca una pregunta para leer la respuesta.',
       lang: 'Idioma', size: 'Tamaño de letra', smaller: 'Letra más pequeña', bigger: 'Letra más grande',
       sizes: ['Normal', 'Grande', 'Más grande', 'Muy grande'],
       questions: 'Preguntas', of: (n, t) => `PREGUNTA ${n} DE ${t}`, short: 'RESPUESTA CORTA', bible: 'La Biblia dice', father: 'Un Padre de la Iglesia',
       sources: 'De la página de tu iglesia, Nueva Vida', pentecostal: 'Una declaración pentecostal común', listen: 'Escuchar', pause: 'Pausa', stop: 'Parar',
-      prev: '← Anterior', next: 'Siguiente →', video: 'VIDEO', play: 'Ver el video', open: 'Abrir en YouTube',
+      prev: '← Anterior', next: 'Siguiente →', back: 'Volver a mis lecciones', pager: 'Moverse entre lecciones', prevOf: 'Lección anterior', nextOf: 'Lección siguiente', video: 'VIDEO', play: 'Ver el video', open: 'Abrir en YouTube',
       offline: 'Este video necesita internet. Cuando tengas conexión, tócalo otra vez. Las lecciones sí funcionan sin internet.',
       version: 'RV1909', by: 'Canal'
     },
     en: {
-      home: '← Home', all: '← All questions', eyebrow: 'LESSONS FOR LUZ', title: 'Lessons for Luz',
+      home: '← Home', eyebrow: 'LESSONS FOR LUZ', title: 'Lessons for Luz',
       lead: 'Questions and answers about the Orthodox faith, written with love for you. Tap a question to read the answer.',
       lang: 'Language', size: 'Text size', smaller: 'Smaller text', bigger: 'Bigger text',
       sizes: ['Normal', 'Large', 'Larger', 'Largest'],
       questions: 'Questions', of: (n, t) => `QUESTION ${n} OF ${t}`, short: 'SHORT ANSWER', bible: 'The Bible says', father: 'A Father of the Church',
       sources: 'From your church’s website, Nueva Vida', pentecostal: 'A common Pentecostal statement', listen: 'Read aloud', pause: 'Pause', stop: 'Stop',
-      prev: '← Previous', next: 'Next →', video: 'VIDEO', play: 'Play the video', open: 'Open in YouTube',
+      prev: '← Previous', next: 'Next →', back: 'Back to my lessons', pager: 'Move between lessons', prevOf: 'Previous lesson', nextOf: 'Next lesson', video: 'VIDEO', play: 'Play the video', open: 'Open in YouTube',
       offline: 'This video needs the internet. When you are connected, tap it again. The lessons work without internet.',
       version: 'KJV', by: 'Channel'
     }
   };
-  const view = { lesson: null, root: null };
+  const view = { lesson: null, root: null, active: false, last: null };
+  const HISTORY_KIND = 'msb-luz-lesson';
+  const inLessonEntry = () => { try { return !!(history.state && history.state.msbLuz === HISTORY_KIND); } catch { return false; } };
 
   const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
   const lessons = () => (window.MsbLuzData && window.MsbLuzData.lessons) || [];
@@ -106,7 +108,7 @@
   }
 
   function listHtml(t, l) {
-    const items = lessons().map((lesson, i) => `<li><button type="button" class="luz-q-btn" data-luz-open="${esc(lesson.id)}"><span class="luz-num" aria-hidden="true">${i + 1}</span><span class="luz-q-text">${esc(lesson.q[l])}</span></button></li>`).join('');
+    const items = lessons().map((lesson, i) => `<li><button type="button" class="luz-q-btn${lesson.id === view.last ? ' luz-q-last' : ''}" data-luz-open="${esc(lesson.id)}" data-luz-from="board"><span class="luz-num" aria-hidden="true">${i + 1}</span><span class="luz-q-text">${esc(lesson.q[l])}</span></button></li>`).join('');
     return `<button type="button" class="luz-btn luz-back" data-nav="today">${esc(t.home)}</button>
       <span class="eyebrow">${esc(t.eyebrow)}</span><h1>${esc(t.title)}</h1><p class="luz-lead">${esc(t.lead)}</p>
       ${tools(t, l)}${videoCard(t)}
@@ -123,7 +125,10 @@
     const kinds = lesson.sources || [];
     const sources = (kinds.includes('nvny') ? `<h2>${esc(t.sources)}</h2>${links(SOURCES)}` : '')
       + (kinds.includes('ag') ? `<h2>${esc(t.pentecostal)}</h2>${links(PENTECOSTAL_SOURCES)}` : '');
-    return `<button type="button" class="luz-btn luz-back" data-luz-list>${esc(t.all)}</button>
+    const backBtn = where => `<button type="button" class="luz-btn luz-board-btn" data-luz-list data-luz-back="${where}"><span aria-hidden="true">←</span> ${esc(t.back)}</button>`;
+    const prevBtn = prev ? `<button type="button" class="luz-btn luz-prev" data-luz-open="${esc(prev.id)}" data-luz-step="prev" aria-label="${esc(t.prevOf)}: ${esc(prev.q[l])}">${esc(t.prev)}</button>` : '';
+    const nextBtn = next ? `<button type="button" class="luz-btn luz-next" data-luz-open="${esc(next.id)}" data-luz-step="next" aria-label="${esc(t.nextOf)}: ${esc(next.q[l])}">${esc(t.next)}</button>` : '';
+    return `${backBtn('top')}
       ${tools(t, l)}
       <article class="luz-lesson" data-luz-lesson="${esc(lesson.id)}">
         <span class="eyebrow">${esc(t.of(i + 1, all.length))}</span>
@@ -133,7 +138,8 @@
         <div class="luz-body">${lesson.body[l].map(p => `<p data-luz-say>${esc(p)}</p>`).join('')}</div>
         <h2>${esc(t.bible)}</h2>${verses}${father}${sources}
       </article>
-      <nav class="luz-pager">${prev ? `<button type="button" class="luz-btn" data-luz-open="${esc(prev.id)}">${esc(t.prev)}</button>` : '<span></span>'}${next ? `<button type="button" class="luz-btn luz-next" data-luz-open="${esc(next.id)}">${esc(t.next)}</button>` : `<button type="button" class="luz-btn" data-luz-list>${esc(t.all)}</button>`}</nav>`;
+      <nav class="luz-pager" aria-label="${esc(t.pager)}">${prevBtn}${nextBtn}</nav>
+      ${backBtn('bottom')}`;
   }
 
   function paint() {
@@ -147,6 +153,7 @@
 
   function show(root, opts) {
     view.root = root;
+    view.active = true;
     if (opts && 'lesson' in opts) view.lesson = opts.lesson;
     paint();
   }
@@ -156,6 +163,49 @@
     const frame = document.querySelector('.luz-video-frame iframe');
     if (frame) frame.remove();
     view.lesson = null;
+    view.last = null;
+    view.active = false;
+    // Leaving the section from inside a lesson: drop the lesson's history entry
+    // so the next Back press is not a dead step.
+    if (inLessonEntry()) { try { history.back(); } catch { /* no history */ } }
+  }
+
+  function openLesson(id, how) {
+    if (window.MsbSpeech) MsbSpeech.stop();
+    view.lesson = id;
+    view.last = id;
+    // From the board a lesson gets its own history entry, so the Android or
+    // browser Back button returns to the board. Previous / Next replace that
+    // entry, so Back always means "back to my lessons".
+    try {
+      history.scrollRestoration = 'manual';
+      const entry = { msbLuz: HISTORY_KIND, id };
+      if (how === 'push' && !inLessonEntry()) history.pushState(entry, '');
+      else if (inLessonEntry()) history.replaceState(entry, '');
+    } catch { /* history unavailable */ }
+    paint();
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    const h = view.root.querySelector('.luz-question');
+    if (h) h.focus({ preventScroll: true });
+  }
+
+  function showBoard() {
+    if (window.MsbSpeech) MsbSpeech.stop();
+    const was = view.lesson || view.last;
+    view.lesson = null;
+    paint();
+    const btn = was && view.root.querySelector(`[data-luz-open="${CSS.escape(was)}"]`);
+    if (btn) { btn.scrollIntoView({ block: 'center', behavior: 'instant' }); btn.focus({ preventScroll: true }); } else window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function onPopState(event) {
+    if (!view.active || !view.root || !view.root.isConnected) return;
+    const state = event && event.state;
+    if (state && state.msbLuz === HISTORY_KIND && lessons().some(x => x.id === state.id)) {
+      if (view.lesson !== state.id) openLesson(state.id, 'none');
+      return;
+    }
+    if (view.lesson) showBoard();
   }
 
   function loadVideo(frameHost) {
@@ -186,22 +236,10 @@
     const target = event.target;
     if (!(target instanceof Element) || !target.closest('.luz')) return;
     const open = target.closest('[data-luz-open]');
-    if (open) {
-      if (window.MsbSpeech) MsbSpeech.stop();
-      view.lesson = open.dataset.luzOpen;
-      paint();
-      window.scrollTo({ top: 0, behavior: 'instant' });
-      const h = view.root.querySelector('.luz-question');
-      if (h) h.focus({ preventScroll: true });
-      return;
-    }
+    if (open) { openLesson(open.dataset.luzOpen, open.dataset.luzFrom === 'board' ? 'push' : 'replace'); return; }
     if (target.closest('[data-luz-list]')) {
-      if (window.MsbSpeech) MsbSpeech.stop();
-      const was = view.lesson;
-      view.lesson = null;
-      paint();
-      const btn = was && view.root.querySelector(`[data-luz-open="${CSS.escape(was)}"]`);
-      if (btn) { btn.scrollIntoView({ block: 'center' }); btn.focus({ preventScroll: true }); } else window.scrollTo({ top: 0, behavior: 'instant' });
+      // Use the real history step when there is one, so Back and this button agree.
+      if (inLessonEntry()) history.back(); else showBoard();
       return;
     }
     const langBtn = target.closest('[data-luz-lang]');
@@ -228,6 +266,7 @@
   };
   window.addEventListener('online', syncOnline);
   window.addEventListener('offline', syncOnline);
+  window.addEventListener('popstate', onPopState);
 
-  window.MsbLuz = { show, hide, homeCard, VIDEO, SIZES, DEFAULT_SIZE };
+  window.MsbLuz = { show, hide, homeCard, VIDEO, SIZES, DEFAULT_SIZE, _onPopState: onPopState };
 })();

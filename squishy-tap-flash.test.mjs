@@ -46,5 +46,5 @@ test('the play view is never painted blue before its first frame', () => {
 });
 
 test('service worker cache is bumped for the fix', () => {
-  assert.match(readFileSync('sw.js', 'utf8'), /const CACHE_VERSION = 'v156'/);
+  assert.match(readFileSync('sw.js', 'utf8'), /const CACHE_VERSION = 'v157'/);
 });

@@ -182,7 +182,7 @@ test('Luz is wired into Home, the router, and the offline shell', () => {
   assert.ok(aura.includes("if(state.screen==='luz'&&name!=='luz'&&window.MsbLuz)MsbLuz.hide();"));
   assert.equal((aura.match(/MsbLuz\.homeCard\(\)/g) || []).length, 2, 'card on both Home screens');
   const sw = read('./sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v156'/);
+  assert.match(sw, /const CACHE_VERSION = 'v157'/);
   for (const f of ['./luz-data.js', './luz.js', './luz.css', './img/luz/luz-video-thumb.jpg']) assert.ok(sw.includes(`'${f}'`), f);
   assert.match(sw, /if \(url\.origin !== self\.location\.origin\) return;/, 'cross-origin (YouTube frame) requests are never cached');
   assert.equal(sw.includes('youtube'), false);
@@ -191,4 +191,148 @@ test('Luz is wired into Home, the router, and the offline shell', () => {
 test('Luz files carry no emoji', () => {
   const emoji = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u;
   for (const f of ['./luz.js', './luz-data.js', './luz.css']) assert.equal(emoji.test(read(f)), false, f);
+});
+
+function navHarness() {
+  const docListeners = {};
+  const winListeners = {};
+  const entries = [{ state: null }];
+  let index = 0;
+  const history = {
+    scrollRestoration: 'auto',
+    get state() { return entries[index].state; },
+    pushState(state) { entries.splice(index + 1); entries.push({ state }); index += 1; },
+    replaceState(state) { entries[index] = { state }; },
+    back() { if (index > 0) { index -= 1; winListeners.popstate({ state: entries[index].state }); } },
+    forward() { if (index < entries.length - 1) { index += 1; winListeners.popstate({ state: entries[index].state }); } },
+    get length() { return entries.length; },
+  };
+  const scrolled = [];
+  const focused = [];
+  const root = {
+    innerHTML: '',
+    isConnected: true,
+    querySelector(sel) {
+      if (sel.startsWith('[data-luz-open="')) {
+        const id = sel.slice(16, -2);
+        if (!root.innerHTML.includes(`data-luz-open="${id}" data-luz-from="board"`)) return null;
+        return { scrollIntoView: () => scrolled.push(id), focus: () => focused.push(id) };
+      }
+      if (sel === '.luz-question') return { focus: () => focused.push('question') };
+      return null;
+    },
+  };
+  const ctx = {
+    window: {
+      MsbLuzData: loadData(),
+      addEventListener: (type, fn) => { winListeners[type] = fn; },
+      scrollTo() {},
+      history,
+    },
+    document: { addEventListener: (type, fn) => { docListeners[type] = fn; }, querySelector: () => null },
+    localStorage: { getItem: () => null, setItem() {} },
+    navigator: { onLine: true },
+    Element: class {},
+    CSS: { escape: (s) => s },
+  };
+  ctx.window.window = ctx.window;
+  vm.runInNewContext(`with (window) { ${read('./luz.js')} }`, ctx);
+  const luz = ctx.window.MsbLuz;
+  const click = (attrs) => {
+    const target = Object.assign(new ctx.Element(), {
+      closest(sel) {
+        if (sel === '.luz') return {};
+        if (sel === '[data-luz-open]' && attrs.open) return { dataset: { luzOpen: attrs.open, luzFrom: attrs.from } };
+        if (sel === '[data-luz-list]' && attrs.list) return {};
+        return null;
+      },
+    });
+    docListeners.click({ target });
+  };
+  const current = () => (root.innerHTML.match(/data-luz-lesson="([^"]+)"/) || [])[1] || 'board';
+  return { luz, root, click, history, current, scrolled, focused, entries: () => entries.length, setLang: (l) => { ctx.localStorage.getItem = (k) => (k === 'msb_luz_lang' ? l : null); } };
+}
+
+test('every lesson has big Previous / Next buttons, hidden at the ends, in Spanish first', () => {
+  const { lessons } = loadData();
+  const h = navHarness();
+  h.luz.show(h.root, { lesson: null });
+  lessons.forEach((lesson, i) => {
+    h.luz.show(h.root, { lesson: lesson.id });
+    const html = h.root.innerHTML;
+    const prev = lessons[i - 1], next = lessons[i + 1];
+    if (prev) assert.ok(html.includes(`data-luz-open="${prev.id}" data-luz-step="prev"`), `${lesson.id} previous`);
+    else assert.doesNotMatch(html, /data-luz-step="prev"/, 'no Previous on the first lesson');
+    if (next) assert.ok(html.includes(`data-luz-open="${next.id}" data-luz-step="next"`), `${lesson.id} next`);
+    else assert.doesNotMatch(html, /data-luz-step="next"/, 'no Next on the last lesson');
+    assert.equal((html.match(/class="luz-btn luz-board-btn" data-luz-list/g) || []).length, 2, `${lesson.id} back button top and bottom`);
+    assert.ok(html.indexOf('data-luz-back="top"') < html.indexOf('<article'), 'back button above the lesson');
+    assert.ok(html.indexOf('data-luz-back="bottom"') > html.indexOf('</article>'), 'back button below the lesson');
+  });
+  h.luz.show(h.root, { lesson: 'tongues' });
+  assert.match(h.root.innerHTML, /← Anterior/);
+  assert.match(h.root.innerHTML, /Siguiente →/);
+  assert.match(h.root.innerHTML, /Volver a mis lecciones/);
+  h.setLang('en');
+  h.luz.show(h.root, { lesson: 'tongues' });
+  assert.match(h.root.innerHTML, /← Previous/);
+  assert.match(h.root.innerHTML, /Next →/);
+  assert.match(h.root.innerHTML, /Back to my lessons/);
+  assert.doesNotMatch(h.root.innerHTML, /Volver a mis lecciones|Siguiente/);
+});
+
+test('Next and Previous move through the lessons in order', () => {
+  const { lessons } = loadData();
+  const ids = lessons.map((l) => l.id);
+  const h = navHarness();
+  h.luz.show(h.root, { lesson: null });
+  h.click({ open: ids[0], from: 'board' });
+  assert.equal(h.current(), ids[0]);
+  for (let i = 1; i < ids.length; i += 1) { h.click({ open: ids[i] }); assert.equal(h.current(), ids[i]); }
+  assert.doesNotMatch(h.root.innerHTML, /data-luz-step="next"/);
+  for (let i = ids.length - 2; i >= 0; i -= 1) { h.click({ open: ids[i] }); assert.equal(h.current(), ids[i]); }
+  assert.doesNotMatch(h.root.innerHTML, /data-luz-step="prev"/);
+  assert.equal(h.entries(), 2, 'Previous / Next do not pile up history entries');
+});
+
+test('Back to my lessons and the device Back button return to the board, scrolled to the lesson just read', () => {
+  const h = navHarness();
+  h.luz.show(h.root, { lesson: null });
+  h.click({ open: 'healing', from: 'board' });
+  assert.equal(h.history.state.msbLuz, 'msb-luz-lesson');
+  h.click({ open: 'worship' });
+  h.click({ list: true });
+  assert.equal(h.current(), 'board');
+  assert.equal(h.history.state, null, 'the button uses the real history step');
+  assert.deepEqual([...h.scrolled], ['worship']);
+  assert.ok(h.focused.includes('worship'));
+  assert.match(h.root.innerHTML, /luz-q-btn luz-q-last" data-luz-open="worship"/);
+
+  h.click({ open: 'icons', from: 'board' });
+  assert.equal(h.current(), 'icons');
+  h.history.back();
+  assert.equal(h.current(), 'board', 'device Back returns to the board instead of leaving the section');
+  assert.equal(h.scrolled.at(-1), 'icons');
+  h.history.forward();
+  assert.equal(h.current(), 'icons', 'Forward reopens the lesson');
+
+  h.luz.hide();
+  assert.equal(h.history.state, null, 'leaving the section drops the lesson entry');
+  assert.equal(h.current(), 'icons', 'a stale history step after leaving does not repaint the section');
+
+  // Opened without a history entry: the button still goes to the board.
+  const h2 = navHarness();
+  h2.luz.show(h2.root, { lesson: 'cross' });
+  h2.click({ list: true });
+  assert.equal(h2.current(), 'board');
+  assert.deepEqual([...h2.scrolled], ['cross']);
+});
+
+test('navigation buttons are big, high-contrast, and keep a visible focus ring', () => {
+  const css = read('./luz.css');
+  assert.match(css, /\.luz-btn\{[^}]*min-height:56px/);
+  assert.match(css, /\.luz-pager \.luz-btn\{[^}]*min-height:64px/);
+  assert.match(css, /\.luz-board-btn\{[^}]*min-height:64px[^}]*background:var\(--text\);color:var\(--bg\)/);
+  assert.match(css, /\.luz-next\{[^}]*background:var\(--text\);color:var\(--bg\)/);
+  assert.match(css, /\.luz button:focus-visible[^{]*\{outline:4px solid var\(--text\)/);
 });
