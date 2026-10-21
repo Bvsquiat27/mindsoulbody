@@ -183,7 +183,7 @@ test('Luz is wired into Home, the router, and the offline shell', () => {
   assert.ok(aura.includes("if(state.screen==='luz'&&name!=='luz'&&window.MsbLuz)MsbLuz.hide();"));
   assert.equal((aura.match(/MsbLuz\.homeCard\(\)/g) || []).length, 2, 'card on both Home screens');
   const sw = read('./sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v158'/);
+  assert.match(sw, /const CACHE_VERSION = 'v160'/);
   for (const f of ['./luz-data.js', './luz.js', './luz.css', './img/luz/luz-video-thumb.jpg']) assert.ok(sw.includes(`'${f}'`), f);
   assert.match(sw, /if \(url\.origin !== self\.location\.origin\) return;/, 'cross-origin (YouTube frame) requests are never cached');
   assert.equal(sw.includes('youtube'), false);
@@ -357,14 +357,25 @@ test('St. Luke lesson: right after icons, linked both ways, and honest about Scr
   assert.match(luke.verses[3].text.en, /evidently set forth/);
   const text = (lang) => [luke.short[lang], ...luke.body[lang]].join(' ');
   const es = text('es'), en = text('en');
-  for (const re of [/la Biblia no dice que San Lucas pintó/, /Tradición/, /Hodegetria/, /Teodoro el Lector/, /siglo VI/, /se añadió después/, /San Andrés de Creta/, /No es una prueba/, /proegraphē/, /con colores lo que la predicación hace con palabras/, /Hechos 2/, /Pentecostés/, /nosotros/]) assert.match(es, re, `es ${re}`);
-  for (const re of [/the Bible does not say that St\. Luke painted/, /Tradition/, /Hodegetria/, /Theodore the Lector/, /6th-century/, /added afterward/, /St\. Andrew of Crete/, /not proof/, /proegraphē/, /with color what preaching does with words/, /Acts 2/, /Pentecost/, /“we”/]) assert.match(en, re, `en ${re}`);
-  // Every Bible quotation inside the lesson text is word for word from its own verses.
+  // Luke as iconographer is framed as the Church's Tradition, not as something the Bible states.
+  assert.match(es, /Tradición de la Iglesia/); assert.match(es, /Esto no lo cuenta la Biblia/);
+  assert.match(en, /Church’s Tradition/); assert.match(en, /The Bible does not tell this story/);
+  for (const re of [/Hodegetria/, /Teodoro el Lector/, /siglo VI\b/, /Eudocia/, /Pulqueria/, /San Andrés de Creta/, /siglo VIII/, /Paráclesis/, /18 de octubre/, /Salus Populi Romani/, /proegraphē/, /con colores lo que la predicación hace con palabras/, /Hechos 2/, /Pentecostés/, /“nosotros”/]) assert.match(es, re, `es ${re}`);
+  for (const re of [/Hodegetria/, /Theodore the Lector/, /6th century/, /Eudocia/, /Pulcheria/, /St\. Andrew of Crete/, /8th century/, /Paraklesis/, /October 18/, /Salus Populi Romani/, /proegraphē/, /with color what preaching does with words/, /Acts 2/, /Pentecost/, /“we”/]) assert.match(en, re, `en ${re}`);
+  // Angel asked for the case to be presented confidently: the skeptical caveats are gone.
+  for (const re of [/copias más tardías/, /se añadió después/, /historiadores/, /discuten/, /no están de acuerdo/, /No es una prueba/, /atribuido a/i, /estudiosos/]) assert.doesNotMatch(es, re, `es still has ${re}`);
+  for (const re of [/later copies/, /added afterward/, /historians (think|debate)/, /\bdebate/, /disagree/, /not proof/, /credited to St\. Andrew/, /[Ss]cholars/]) assert.doesNotMatch(en, re, `en still has ${re}`);
+  assert.equal(luke.father.who.es, 'San Andrés de Creta (siglo VIII)');
+  assert.equal(luke.father.who.en, 'St. Andrew of Crete (8th century)');
+  assert.ok(luke.father.note.es.length < 20 && luke.father.note.en.length < 20, 'short translation tag only');
+  // Every Bible quotation in the lesson text is word for word from its own verses.
+  const quotes = {
+    es: ['luego procuramos partir á Macedonia', 'por flaqueza de carne', 'el médico amado', 'fué ya descrito como crucificado'],
+    en: ['immediately we endeavoured to go into Macedonia', 'through infirmity of the flesh', 'Luke, the beloved physician', 'Jesus Christ hath been evidently set forth, crucified among you'],
+  };
   for (const lang of ['es', 'en']) {
     const hay = luke.verses.map((v) => v.text[lang]).join(' ');
-    const bible = [...text(lang).matchAll(/“([^”]+)”/g)].map((m) => m[1].replace(/[.,]$/, '')).filter((q) => q.length > 12 && !/muestra el camino|shows the way/.test(q));
-    assert.ok(bible.length >= 3, `${lang} quotes Scripture`);
-    for (const q of bible) assert.ok(hay.includes(q), `${lang}: ${q}`);
+    for (const q of quotes[lang]) { assert.ok(text(lang).includes(`“${q}`), `${lang} quotes ${q}`); assert.ok(hay.includes(q), `${lang}: ${q}`); }
   }
 });
 
