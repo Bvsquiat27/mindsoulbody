@@ -7,7 +7,8 @@
 .luz .eyebrow{display:block;font-size:.7em;letter-spacing:.12em;font-weight:800;color:var(--gold);margin:0 0 .4em}
 .luz-lead{font-size:1em;color:var(--text)}
 .luz a{color:var(--gold);font-weight:700;text-decoration:underline;text-underline-offset:3px}
-.luz button:focus-visible,.luz a:focus-visible,.luz-home-card:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+/* Focus ring in the text color: the highest contrast in every theme (Light, Sepia, Dark). */
+.luz button:focus-visible,.luz a:focus-visible,.luz-home-card:focus-visible{outline:4px solid var(--text);outline-offset:3px;box-shadow:0 0 0 3px var(--bg)}
 .luz-btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:56px;min-width:56px;padding:.4em 1em;border-radius:14px;border:2px solid var(--text);background:var(--surface);color:var(--text);font:inherit;font-size:.9em;font-weight:700;cursor:pointer;text-decoration:none}
 .luz a.luz-btn{color:var(--text);text-decoration:none}
 .luz-btn:disabled{opacity:.4;cursor:default}
@@ -34,7 +35,7 @@
 .luz-list-title{margin-top:1em}
 .luz-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6em}
 .luz-q-btn{display:flex;align-items:center;gap:.7em;width:100%;min-height:64px;padding:.7em .9em;text-align:left;border:2px solid var(--line);border-radius:16px;background:var(--surface);color:var(--text);font:inherit;font-size:1em;font-weight:600;line-height:1.35;cursor:pointer}
-.luz-q-btn:hover{border-color:var(--text)}
+@media (hover:hover){.luz-q-btn:hover{border-color:var(--text)}}
 .luz-num{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:2em;height:2em;border-radius:50%;background:var(--text);color:var(--bg);font-weight:800;font-size:.85em}
 .luz-question{outline:none}
 .luz-short{border-left:6px solid var(--gold);background:var(--surface);border-radius:12px;padding:.8em 1em;margin:0 0 1em}
@@ -48,12 +49,17 @@
 .luz .luz-note{font-size:.8em;font-family:inherit;margin:.5em 0 0}
 .luz-sources{padding-left:1.1em;margin:0 0 1em}
 .luz-sources li{margin:.5em 0}
-.luz-pager{display:flex;justify-content:space-between;gap:.6em;margin:1.6em 0 1em}
-.luz-next{margin-left:auto}
+.luz-pager{display:flex;justify-content:space-between;gap:.6em;margin:1.6em 0 .8em}
+.luz-pager .luz-btn{min-height:64px;font-size:1em;padding:.4em 1.1em}
+.luz-next{margin-left:auto;background:var(--text);color:var(--bg);border-color:var(--text)}
+/* "Back to my lessons": full width, filled, at the top and bottom of every lesson. */
+.luz-board-btn{display:flex;width:100%;min-height:64px;font-size:1em;background:var(--text);color:var(--bg);border-color:var(--text);margin:0 0 .9em}
+.luz-board-btn[data-luz-back="bottom"]{margin:.4em 0 1.2em}
+.luz-q-btn.luz-q-last{border:3px solid var(--text)}
 .luz .speech-current{outline:3px solid var(--gold);outline-offset:4px;border-radius:6px}
 .luz-home-card{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;margin:0 0 18px;padding:20px 22px;min-height:96px;border-radius:22px;border:2px solid var(--gold);background:var(--surface);color:var(--text);font:inherit;cursor:pointer}
 .luz-home-card .eyebrow{margin:0;font-size:12px}
 .luz-home-card strong{font-size:24px;line-height:1.2}
 .luz-home-card span:last-child{font-size:16px}
-@media (max-width:480px){.luz h1,.luz h1.luz-question{font-size:1.55em}.luz-tools{padding:.6em}.luz-pager .luz-btn{flex:1}}
+@media (max-width:480px){.luz h1,.luz h1.luz-question{font-size:1.55em}.luz-tools{padding:.6em}.luz-pager .luz-btn{flex:1 1 0;padding:.4em .6em}}
 @media (prefers-reduced-motion:reduce){.luz-btn:active{transform:none}}
