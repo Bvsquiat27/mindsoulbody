@@ -1,7 +1,8 @@
 /* Lessons for Luz / Lecciones para Luz — generated content.
    Spanish first. Scripture: RV1909 (es) and KJV (en), copied from this app's
    own bible/ files (luz.test.mjs checks every verse word for word).
-   Church statements quoted from https://nvny.org/ (see SOURCES). */
+   Church statements quoted from https://nvny.org/; common Pentecostal belief
+   summarized from the Assemblies of God Statement of Fundamental Truths. */
 (function (root) {
   'use strict';
   const data = {
@@ -9,34 +10,34 @@
   {
    "id": "same",
    "q": {
-    "es": "¿En qué son iguales tu fe y la nuestra?",
-    "en": "Where are your faith and ours the same?"
+    "es": "¿En qué son iguales tu fe pentecostal y la fe ortodoxa?",
+    "en": "Where are your Pentecostal faith and the Orthodox faith the same?"
    },
    "short": {
-    "es": "En lo más importante: un solo Dios en tres Personas, Jesús nuestro Salvador, la Biblia como Palabra de Dios y el poder del Espíritu Santo hoy.",
-    "en": "In the most important things: one God in three Persons, Jesus our Savior, the Bible as God’s Word, and the power of the Holy Spirit today."
+    "es": "En lo más importante: un solo Dios en tres Personas, Jesús Dios y hombre, la Biblia como Palabra de Dios, y el Espíritu Santo que obra con poder hoy.",
+    "en": "In the most important things: one God in three Persons, Jesus both God and man, the Bible as God’s Word, and the Holy Spirit working with power today."
    },
    "body": {
     "es": [
      "Querida Luz, antes de hablar de diferencias, queremos empezar por lo que compartimos. Es mucho.",
-     "Tu iglesia, Nueva Vida, escribe: “En la unidad de la Deidad hay tres Personas eternamente co-existentes y co-iguales: Padre, Hijo y Espíritu Santo.” La Iglesia Ortodoxa cree exactamente eso. Lo cantamos en cada Liturgia con el Credo de Nicea.",
-     "Creemos que Jesús es Dios verdadero y hombre verdadero. Murió por nosotros, resucitó al tercer día y volverá. Tu iglesia dice que Jesucristo “ha de venir de nuevo a la tierra, personal y visiblemente”. Nosotros también lo esperamos.",
-     "Tu iglesia llama a la Biblia “Palabra de Dios”, “inspirada por Dios”. Nosotros también. En cada Liturgia se lee la Escritura en voz alta y la gente se pone de pie para escuchar el Evangelio.",
-     "Tu iglesia cree en el “ministerio presente del Espíritu Santo”, en sus dones y en señales que acompañan la Palabra. La Iglesia Ortodoxa también cree que el Espíritu Santo obra hoy, sana y hace milagros. Nuestra vida entera es pedirle: “Ven y habita en nosotros.”",
-     "Tu iglesia dice: “La sanidad divina es parte integrante del evangelio”, y cita Santiago 5:14. La Iglesia Ortodoxa tiene un sacramento basado en ese mismo versículo: la Santa Unción, donde los presbíteros oran por los enfermos y los ungen con aceite.",
-     "Tu iglesia enseña santidad: “sin la cual nadie verá al Señor”. También enseña que hay que “permanecer fiel hasta la muerte”. La Ortodoxia dice lo mismo: la salvación es un camino que se vive cada día con Cristo.",
-     "Valoran la oración: tienen culto de oración los martes. Nosotros también oramos mucho, y además ayunamos varios días al año, como Jesús enseñó (Mateo 6:16).",
+     "Tú eres pentecostal trinitaria. Eso quiere decir que crees en un solo Dios: Padre, Hijo y Espíritu Santo. La Iglesia Ortodoxa cree exactamente eso. Lo cantamos en cada Liturgia con el Credo de Nicea.",
+     "Los pentecostales confiesan que Jesús es Dios verdadero y hombre verdadero, nacido de la virgen María, que murió por nuestros pecados, resucitó en su cuerpo y volverá. Los ortodoxos creemos lo mismo, palabra por palabra.",
+     "Los pentecostales aman la Biblia como Palabra inspirada de Dios. Nosotros también. En cada Liturgia se lee la Escritura en voz alta, y todos se ponen de pie para escuchar el Evangelio.",
+     "Lo que más distingue a los pentecostales es su amor por el Espíritu Santo: que obra hoy con poder, da dones y profecía, sana a los enfermos y echa fuera demonios. La Iglesia Ortodoxa también cree en todo eso. Nuestra historia está llena de santos con esos dones.",
+     "Los pentecostales buscan la santidad, oran con fervor y muchas veces ayunan. Los ortodoxos también: tenemos días de ayuno cada semana y temporadas de ayuno durante el año, como Jesús enseñó (Mateo 6:16).",
+     "Los pentecostales esperan la segunda venida visible de Cristo, la resurrección de los muertos y los cielos nuevos y la tierra nueva. Nosotros también lo esperamos y lo decimos en el Credo.",
+     "Tu iglesia actual, Nueva Vida, lo escribe así en su página: “En la unidad de la Deidad hay tres Personas eternamente co-existentes y co-iguales: Padre, Hijo y Espíritu Santo.” También dice: “La sanidad divina es parte integrante del evangelio”, enseña una vida de santidad “sin la cual nadie verá al Señor”, y que hay que “permanecer fiel hasta la muerte”. Todo eso lo firmaría un ortodoxo.",
      "Así que no venimos como extraños. Venimos como familia que ama al mismo Señor."
     ],
     "en": [
      "Dear Luz, before we talk about differences, we want to start with what we share. It is a lot.",
-     "Your church, Nueva Vida, writes: “In the unity of the Godhead there are three Persons, eternally co-existent and co-equal: Father, Son and Holy Spirit.” The Orthodox Church believes exactly that. We sing it at every Liturgy in the Nicene Creed.",
-     "We believe Jesus is truly God and truly man. He died for us, rose on the third day, and will come again. Your church says Jesus Christ “will come again to the earth, personally and visibly.” We wait for Him too.",
-     "Your church calls the Bible “the Word of God,” “inspired by God.” So do we. At every Liturgy Scripture is read aloud, and people stand to hear the Gospel.",
-     "Your church believes in the “present ministry of the Holy Spirit,” in His gifts, and in signs that follow the Word. The Orthodox Church also believes the Holy Spirit works today, heals, and does miracles. Our whole life is asking Him: “Come and abide in us.”",
-     "Your church says: “Divine healing is an integral part of the gospel,” and cites James 5:14. The Orthodox Church has a sacrament built on that same verse: Holy Unction, where the elders pray over the sick and anoint them with oil.",
-     "Your church teaches holiness, “without which no man shall see the Lord.” It also teaches that we must “remain faithful unto death.” Orthodoxy says the same: salvation is a road we walk with Christ every day.",
-     "You value prayer: your church has a prayer service on Tuesdays. We pray a lot too, and we also fast on many days of the year, as Jesus taught (Matthew 6:16).",
+     "You are a Trinitarian Pentecostal. That means you believe in one God: Father, Son and Holy Spirit. The Orthodox Church believes exactly that. We sing it at every Liturgy in the Nicene Creed.",
+     "Pentecostals confess that Jesus is truly God and truly man, born of the virgin Mary, who died for our sins, rose bodily, and will come again. We Orthodox believe the same, word for word.",
+     "Pentecostals love the Bible as the inspired Word of God. So do we. At every Liturgy Scripture is read aloud, and everyone stands to hear the Gospel.",
+     "What sets Pentecostals apart most is their love for the Holy Spirit: that He works with power today, gives gifts and prophecy, heals the sick and casts out demons. The Orthodox Church believes all of that too. Our history is full of saints with those gifts.",
+     "Pentecostals seek holiness, pray fervently, and often fast. So do the Orthodox: we have fast days every week and fasting seasons during the year, as Jesus taught (Matthew 6:16).",
+     "Pentecostals look for Christ’s visible Second Coming, the resurrection of the dead, and the new heavens and new earth. We look for them too, and say so in the Creed.",
+     "Your current church, Nueva Vida, writes it this way on its website: “In the unity of the Godhead there are three Persons, eternally co-existent and co-equal: Father, Son and Holy Spirit.” It also says: “Divine healing is an integral part of the gospel,” teaches a life of holiness “without which no man shall see the Lord,” and says we must “remain faithful unto death.” An Orthodox Christian would sign all of that.",
      "So we do not come as strangers. We come as family who love the same Lord."
     ]
    },
@@ -57,18 +58,18 @@
      }
     },
     {
-     "book": 59,
-     "chapter": 5,
+     "book": 43,
+     "chapter": 14,
      "verses": [
-      14
+      12
      ],
      "ref": {
-      "es": "Santiago 5:14",
-      "en": "James 5:14"
+      "es": "Juan 14:12",
+      "en": "John 14:12"
      },
      "text": {
-      "es": "¿Está alguno enfermo entre vosotros? llame á los ancianos de la iglesia, y oren por él, ungiéndole con aceite en el nombre del Señor.",
-      "en": "Is any sick among you? let him call for the elders of the church; and let them pray over him, anointing him with oil in the name of the Lord:"
+      "es": "De cierto, de cierto os digo: El que en mí cree, las obras que yo hago también él las hará; y mayores que éstas hará; porque yo voy al Padre.",
+      "en": "Verily, verily, I say unto you, He that believeth on me, the works that I do shall he do also; and greater works than these shall he do; because I go unto my Father."
      }
     },
     {
@@ -99,7 +100,9 @@
      "en": "Ante-Nicene Fathers translation."
     }
    },
-   "sources": true
+   "sources": [
+    "nvny"
+   ]
   },
   {
    "id": "pentecost",
@@ -114,7 +117,7 @@
    "body": {
     "es": [
      "En Hechos 2, el Espíritu Santo bajó sobre los apóstoles como lenguas de fuego. Ese día nació la Iglesia. Por eso decimos que Pentecostés es el cumpleaños de la Iglesia.",
-     "Tu iglesia lleva en el corazón ese mismo día. Nosotros también. Para nosotros, Pentecostés no es solo un recuerdo: es la vida de la Iglesia. El Espíritu que bajó ese día nunca se fue.",
+     "Los pentecostales llevan ese día en el corazón; hasta su nombre viene de allí. Nosotros también lo amamos. Para nosotros, Pentecostés no es solo un recuerdo: es la vida de la Iglesia. El Espíritu que bajó ese día nunca se fue.",
      "Los apóstoles fueron a muchas tierras. En cada ciudad dejaron líderes, llamados obispos y presbíteros, con la imposición de manos. Esos obispos ordenaron a otros, y así hasta hoy. A esto se le llama sucesión apostólica: una línea sin romper desde los apóstoles.",
      "Las iglesias de Jerusalén, Antioquía, Alejandría y Constantinopla siguen existiendo. Hoy hay iglesias ortodoxas griegas, rusas, antioquenas, rumanas y muchas más, pero es una sola Iglesia con la misma fe.",
      "Hechos 2:42 dice que los primeros cristianos “perseveraban en la doctrina de los apóstoles, y en la comunión, y en el partimiento del pan, y en las oraciones”. La Liturgia ortodoxa todavía tiene esas cuatro cosas cada domingo.",
@@ -122,7 +125,7 @@
     ],
     "en": [
      "In Acts 2, the Holy Spirit came down on the apostles as tongues of fire. That day the Church was born. That is why we call Pentecost the Church’s birthday.",
-     "Your church holds that same day close to its heart. So do we. For us, Pentecost is not just a memory: it is the life of the Church. The Spirit who came that day never left.",
+     "Pentecostals hold that day close to their hearts; even their name comes from it. We love it too. For us, Pentecost is not just a memory: it is the life of the Church. The Spirit who came that day never left.",
      "The apostles went to many lands. In each city they left leaders, called bishops and presbyters (elders), by the laying on of hands. Those bishops ordained others, and so on until today. This is called apostolic succession: an unbroken line from the apostles.",
      "The churches of Jerusalem, Antioch, Alexandria and Constantinople still exist. Today there are Greek, Russian, Antiochian, Romanian and many other Orthodox churches, but it is one Church with the same faith.",
      "Acts 2:42 says the first Christians “continued stedfastly in the apostles' doctrine and fellowship, and in breaking of bread, and in prayers.” The Orthodox Liturgy still has those four things every Sunday.",
@@ -190,77 +193,82 @@
    }
   },
   {
-   "id": "spirit",
+   "id": "tongues",
    "q": {
-    "es": "¿Creen los ortodoxos en el Espíritu Santo y en sus dones?",
-    "en": "Do Orthodox Christians believe in the Holy Spirit and His gifts?"
+    "es": "¿Cómo ve la Ortodoxia el bautismo en el Espíritu y el hablar en lenguas?",
+    "en": "How does Orthodoxy see the baptism in the Spirit and speaking in tongues?"
    },
    "short": {
-    "es": "Sí, con todo el corazón: el Espíritu Santo da vida a la Iglesia, y sus dones y milagros nunca han cesado.",
-    "en": "Yes, with all our heart: the Holy Spirit gives life to the Church, and His gifts and miracles have never stopped."
+    "es": "Creemos que el Espíritu Santo se recibe en la crismación, el Pentecostés personal de cada cristiano, y que las lenguas son un don verdadero, pero no la señal que todos deben tener.",
+    "en": "We believe the Holy Spirit is received in chrismation, each Christian’s personal Pentecost, and that tongues are a true gift, but not a sign everyone must have."
    },
    "body": {
     "es": [
-     "Casi todas las oraciones ortodoxas empiezan llamando al Espíritu Santo: “Rey celestial, Consolador, Espíritu de verdad... ven y habita en nosotros.”",
-     "Un santo ruso, San Serafín de Sarov, dijo que la meta de la vida cristiana es adquirir el Espíritu Santo. Eso suena muy parecido a lo que tu iglesia enseña: que cada creyente sea lleno del Espíritu.",
-     "En la Iglesia Ortodoxa, el Espíritu se recibe en la crismación, justo después del bautismo. El sacerdote unge a la persona y dice: “Sello del don del Espíritu Santo.” Es como en Hechos 8, cuando los apóstoles impusieron las manos y los creyentes recibieron el Espíritu.",
-     "Creemos en sanidades, en milagros y en profecía. Nuestra historia está llena de santos que sanaban a los enfermos y echaban fuera demonios en el nombre de Jesús. Hasta hoy, la gente va a los monasterios a pedir oración.",
-     "Hay una diferencia de estilo. La Iglesia Ortodoxa es prudente con las experiencias fuertes. Los santos enseñan a buscar primero la humildad y el arrepentimiento, y a probar los espíritus (1 Juan 4:1). El fruto del Espíritu —amor, gozo, paz— es la señal más segura.",
-     "Así que no tienes que dejar al Espíritu Santo para ser ortodoxa. Al contrario: la Iglesia entera vive de Él."
+     "Muchas iglesias pentecostales enseñan que, después de nacer de nuevo, el creyente debe buscar una segunda experiencia: el bautismo en el Espíritu Santo. Y que su primera señal es hablar en otras lenguas. Así lo dicen, por ejemplo, las Asambleas de Dios en sus “Verdades fundamentales”. (La página de Nueva Vida no menciona estos dos puntos, así que aquí hablamos de la creencia pentecostal en general.)",
+     "Los ortodoxos tomamos muy en serio los mismos pasajes. En Hechos 8, los samaritanos ya estaban bautizados, pero el Espíritu aún no había descendido sobre ellos. Pedro y Juan oraron, les impusieron las manos, y recibieron el Espíritu Santo. En Hechos 19, Pablo impuso las manos a unos discípulos en Éfeso, y hablaron en lenguas y profetizaron.",
+     "Tienes razón en algo muy importante: en la Biblia, recibir el Espíritu viene después del bautismo en agua, por la imposición de manos de los apóstoles. La Iglesia nunca dejó de hacerlo. Hoy se llama crismación.",
+     "Justo después del bautismo, el sacerdote unge al nuevo cristiano con el santo crisma, un aceite bendecido por los obispos, sucesores de los apóstoles. Toca la frente, los ojos, los oídos, la boca, el pecho, las manos y los pies, y dice: “Sello del don del Espíritu Santo.” Es el Pentecostés personal de cada cristiano.",
+     "¿Y las lenguas? Son un don verdadero. San Ireneo, en el siglo II, conocía hermanos que hablaban en lenguas por el Espíritu. Pero San Pablo pregunta: “¿hablan todos lenguas?” La respuesta esperada es no. El Espíritu reparte sus dones como Él quiere. Por eso la Iglesia Ortodoxa no enseña que una persona sin lenguas no ha recibido el Espíritu.",
+     "La señal más segura de que el Espíritu vive en alguien es su fruto: amor, gozo, paz, paciencia, humildad (Gálatas 5:22). Los santos ortodoxos que tenían grandes dones eran también los más humildes.",
+     "La Iglesia es prudente con las experiencias fuertes, porque la Biblia manda probar los espíritus (1 Juan 4:1) y hacer todo “decentemente y con orden” (1 Corintios 14:40). Pero no apaga el Espíritu. Pide cada día: “Rey celestial, Consolador... ven y habita en nosotros.”"
     ],
     "en": [
-     "Almost every Orthodox prayer begins by calling on the Holy Spirit: “O Heavenly King, the Comforter, the Spirit of Truth... come and abide in us.”",
-     "A Russian saint, St. Seraphim of Sarov, said the goal of the Christian life is to acquire the Holy Spirit. That sounds very much like what your church teaches: that every believer be filled with the Spirit.",
-     "In the Orthodox Church, the Spirit is received in chrismation, right after baptism. The priest anoints the person and says: “The seal of the gift of the Holy Spirit.” It is like Acts 8, when the apostles laid hands on the believers and they received the Spirit.",
-     "We believe in healings, miracles and prophecy. Our history is full of saints who healed the sick and cast out demons in the name of Jesus. Even today, people go to monasteries to ask for prayer.",
-     "There is a difference in style. The Orthodox Church is careful with strong experiences. The saints teach us to seek humility and repentance first, and to test the spirits (1 John 4:1). The fruit of the Spirit — love, joy, peace — is the surest sign.",
-     "So you do not have to leave the Holy Spirit to be Orthodox. Just the opposite: the whole Church lives from Him."
+     "Many Pentecostal churches teach that, after being born again, the believer should seek a second experience: the baptism in the Holy Spirit. And that its first sign is speaking in other tongues. The Assemblies of God, for example, say this in their “Fundamental Truths.” (Nueva Vida’s website does not mention these two points, so here we are speaking of Pentecostal belief in general.)",
+     "We Orthodox take the same passages very seriously. In Acts 8, the Samaritans were already baptized, but the Spirit had not yet fallen on them. Peter and John prayed, laid their hands on them, and they received the Holy Ghost. In Acts 19, Paul laid his hands on some disciples in Ephesus, and they spoke with tongues and prophesied.",
+     "You are right about something very important: in the Bible, receiving the Spirit comes after water baptism, through the laying on of the apostles’ hands. The Church never stopped doing this. Today it is called chrismation.",
+     "Right after baptism, the priest anoints the new Christian with holy chrism, an oil blessed by the bishops, the successors of the apostles. He touches the forehead, eyes, ears, mouth, chest, hands and feet, and says: “The seal of the gift of the Holy Spirit.” It is each Christian’s personal Pentecost.",
+     "And tongues? They are a true gift. St. Irenaeus, in the 2nd century, knew brethren who spoke in tongues through the Spirit. But St. Paul asks: “do all speak with tongues?” The expected answer is no. The Spirit gives His gifts as He wills. So the Orthodox Church does not teach that a person without tongues has not received the Spirit.",
+     "The surest sign that the Spirit lives in someone is His fruit: love, joy, peace, patience, humility (Galatians 5:22). The Orthodox saints who had great gifts were also the most humble.",
+     "The Church is careful with strong experiences, because the Bible tells us to test the spirits (1 John 4:1) and to do all things “decently and in order” (1 Corinthians 14:40). But it does not quench the Spirit. It prays every day: “O Heavenly King, the Comforter... come and abide in us.”"
     ]
    },
    "verses": [
     {
-     "book": 46,
-     "chapter": 12,
+     "book": 44,
+     "chapter": 8,
      "verses": [
-      7
+      14,
+      15,
+      16,
+      17
      ],
      "ref": {
-      "es": "1 Corintios 12:7",
-      "en": "1 Corinthians 12:7"
+      "es": "Hechos 8:14–17",
+      "en": "Acts 8:14–17"
      },
      "text": {
-      "es": "Empero á cada uno le es dada manifestación del Espíritu para provecho.",
-      "en": "But the manifestation of the Spirit is given to every man to profit withal."
+      "es": "Y los apóstoles que estaban en Jerusalem, habiendo oído que Samaria había recibido la palabra de Dios, les enviaron á Pedro y á Juan: Los cuales venidos, oraron por ellos, para que recibiesen el Espíritu Santo; (Porque aun no había descendido sobre ninguno de ellos, mas solamente eran bautizados en el nombre de Jesús.) Entonces les impusieron las manos, y recibieron el Espíritu Santo.",
+      "en": "Now when the apostles which were at Jerusalem heard that Samaria had received the word of God, they sent unto them Peter and John: who, when they were come down, prayed for them, that they might receive the Holy Ghost: (for as yet he was fallen upon none of them: only they were baptized in the name of the Lord Jesus.) Then laid they their hands on them, and they received the Holy Ghost."
      }
     },
     {
      "book": 44,
-     "chapter": 8,
+     "chapter": 19,
      "verses": [
-      17
+      6
      ],
      "ref": {
-      "es": "Hechos 8:17",
-      "en": "Acts 8:17"
+      "es": "Hechos 19:6",
+      "en": "Acts 19:6"
      },
      "text": {
-      "es": "Entonces les impusieron las manos, y recibieron el Espíritu Santo.",
-      "en": "Then laid they their hands on them, and they received the Holy Ghost."
+      "es": "Y habiéndoles impuesto Pablo las manos, vino sobre ellos el Espíritu Santo; y hablaban en lenguas, y profetizaban.",
+      "en": "And when Paul had laid his hands upon them, the Holy Ghost came on them; and they spake with tongues, and prophesied."
      }
     },
     {
-     "book": 48,
-     "chapter": 5,
+     "book": 46,
+     "chapter": 12,
      "verses": [
-      22
+      30
      ],
      "ref": {
-      "es": "Gálatas 5:22",
-      "en": "Galatians 5:22"
+      "es": "1 Corintios 12:30",
+      "en": "1 Corinthians 12:30"
      },
      "text": {
-      "es": "Mas el fruto del Espíritu es: caridad, gozo, paz, tolerancia, benignidad, bondad, fe,",
-      "en": "But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith,"
+      "es": "¿Tienen todos dones de sanidad? ¿hablan todos lenguas? ¿interpretan todos?",
+      "en": "Have all the gifts of healing? do all speak with tongues? do all interpret?"
      }
     }
    ],
@@ -275,7 +283,166 @@
      "es": "Traducción libre al español de la versión inglesa clásica (Ante-Nicene Fathers).",
      "en": "Ante-Nicene Fathers translation."
     }
-   }
+   },
+   "sources": [
+    "ag"
+   ]
+  },
+  {
+   "id": "healing",
+   "q": {
+    "es": "¿Creen los ortodoxos en los milagros y en la sanidad hoy?",
+    "en": "Do the Orthodox believe in miracles and healing today?"
+   },
+   "short": {
+    "es": "Sí: la Iglesia ora por los enfermos con la Santa Unción, como manda Santiago 5:14, y Dios sigue haciendo milagros, también por medio de sus santos.",
+    "en": "Yes: the Church prays for the sick with Holy Unction, as James 5:14 commands, and God keeps working miracles, also through His saints."
+   },
+   "body": {
+    "es": [
+     "Los pentecostales creen que la sanidad divina es para hoy, y oran por los enfermos con fe. ¡Los ortodoxos también!",
+     "Santiago escribe: “¿Está alguno enfermo entre vosotros? llame á los ancianos de la iglesia, y oren por él, ungiéndole con aceite en el nombre del Señor.” La Iglesia Ortodoxa obedece este versículo con un sacramento: la Santa Unción.",
+     "En la Santa Unción, los presbíteros (si se puede, siete) leen siete pasajes de las epístolas y siete de los Evangelios, oran por el enfermo y lo ungen con aceite bendecido. Se pide sanidad para el cuerpo y para el alma, y el perdón de los pecados, como dice Santiago 5:15. En muchas parroquias, toda la congregación recibe la unción el Miércoles Santo.",
+     "Dios también hace milagros por medio de sus santos. En la Biblia, un muerto tocó los huesos de Eliseo y revivió. Y los pañuelos de Pablo sanaban a los enfermos. Dios honra a sus amigos.",
+     "La Iglesia Ortodoxa guarda testimonio de muchísimos milagros: San Panteleimón, médico mártir; San Nectario de Egina, que murió en 1920; San Juan de Shanghái y San Francisco, que murió en 1966. Hasta hoy, la gente cuenta sanidades después de orar con ellos.",
+     "Los ortodoxos no prometemos que Dios siempre sanará el cuerpo en esta vida. A veces la sanidad es la paciencia, la paz o una buena muerte en Cristo. Pero siempre pedimos con fe, y muchas veces Dios sana."
+    ],
+    "en": [
+     "Pentecostals believe divine healing is for today, and they pray for the sick with faith. So do the Orthodox!",
+     "James writes: “Is any sick among you? let him call for the elders of the church; and let them pray over him, anointing him with oil in the name of the Lord.” The Orthodox Church obeys this verse with a sacrament: Holy Unction.",
+     "In Holy Unction, the presbyters (seven, when possible) read seven passages from the epistles and seven from the Gospels, pray for the sick person, and anoint them with blessed oil. They ask for healing of body and soul, and for the forgiveness of sins, as James 5:15 says. In many parishes, the whole congregation is anointed on Holy Wednesday.",
+     "God also works miracles through His saints. In the Bible, a dead man touched the bones of Elisha and came back to life. And Paul’s handkerchiefs healed the sick. God honors His friends.",
+     "The Orthodox Church keeps the testimony of a great many miracles: St. Panteleimon, a physician and martyr; St. Nectarios of Aegina, who died in 1920; St. John of Shanghai and San Francisco, who died in 1966. To this day, people tell of healings after praying with them.",
+     "We Orthodox do not promise that God will always heal the body in this life. Sometimes the healing is patience, peace, or a good death in Christ. But we always ask in faith, and many times God heals."
+    ]
+   },
+   "verses": [
+    {
+     "book": 59,
+     "chapter": 5,
+     "verses": [
+      14,
+      15
+     ],
+     "ref": {
+      "es": "Santiago 5:14–15",
+      "en": "James 5:14–15"
+     },
+     "text": {
+      "es": "¿Está alguno enfermo entre vosotros? llame á los ancianos de la iglesia, y oren por él, ungiéndole con aceite en el nombre del Señor. Y la oración de fe salvará al enfermo, y el Señor lo levantará; y si estuviere en pecados, le serán perdonados.",
+      "en": "Is any sick among you? let him call for the elders of the church; and let them pray over him, anointing him with oil in the name of the Lord: and the prayer of faith shall save the sick, and the Lord shall raise him up; and if he have committed sins, they shall be forgiven him."
+     }
+    },
+    {
+     "book": 44,
+     "chapter": 19,
+     "verses": [
+      11,
+      12
+     ],
+     "ref": {
+      "es": "Hechos 19:11–12",
+      "en": "Acts 19:11–12"
+     },
+     "text": {
+      "es": "Y hacía Dios singulares maravillas por manos de Pablo: De tal manera que aun se llevaban sobre los enfermos los sudarios y los pañuelos de su cuerpo, y las enfermedades se iban de ellos, y los malos espíritus salían de ellos.",
+      "en": "And God wrought special miracles by the hands of Paul: so that from his body were brought unto the sick handkerchiefs or aprons, and the diseases departed from them, and the evil spirits went out of them."
+     }
+    },
+    {
+     "book": 12,
+     "chapter": 13,
+     "verses": [
+      21
+     ],
+     "ref": {
+      "es": "2 Reyes 13:21",
+      "en": "2 Kings 13:21"
+     },
+     "text": {
+      "es": "Y aconteció que al sepultar unos un hombre, súbitamente vieron una partida, y arrojaron al hombre en el sepulcro de Eliseo: y cuando llegó á tocar el muerto los huesos de Eliseo, revivió, y levantóse sobre sus pies.",
+      "en": "And it came to pass, as they were burying a man, that, behold, they spied a band of men; and they cast the man into the sepulchre of Elisha: and when the man was let down, and touched the bones of Elisha, he revived, and stood up on his feet."
+     }
+    }
+   ]
+  },
+  {
+   "id": "worship",
+   "q": {
+    "es": "¿Dónde están el gozo y el Espíritu en la adoración ortodoxa?",
+    "en": "Where are the joy and the Spirit in Orthodox worship?"
+   },
+   "short": {
+    "es": "Están en toda la Liturgia: todo se canta, el cuerpo entero adora, y el Espíritu Santo es invocado una y otra vez; el estilo es más quieto, pero el gozo es profundo.",
+    "en": "They are in the whole Liturgy: everything is sung, the whole body worships, and the Holy Spirit is called on again and again; the style is quieter, but the joy is deep."
+   },
+   "body": {
+    "es": [
+     "En un culto pentecostal hay música viva, manos levantadas, “¡Aleluya!” y “¡Gloria a Dios!”. Hay mucho gozo. Al entrar a una iglesia ortodoxa, puede parecer más quieta. Pero el gozo está allí, de otra manera.",
+     "En la Liturgia ortodoxa casi todo se canta, de principio a fin. Normalmente sin instrumentos: la voz humana es el instrumento. Cantamos “Aleluya” muchas veces, y los Salmos, como enseña Pablo: “con salmos é himnos y canciones espirituales”.",
+     "El cuerpo entero adora: nos hacemos la señal de la cruz, nos inclinamos, nos postramos, encendemos velas y besamos los íconos. El incienso sube como en el Salmo 141 y en Apocalipsis 8, “con las oraciones de los santos”.",
+     "El Espíritu Santo está en el centro. El sacerdote le pide al Padre que envíe su Espíritu Santo “sobre nosotros y sobre estos dones” en la Comunión. Esa oración se llama epíclesis, que quiere decir “invocación”.",
+     "Y si quieres ver gozo, ven en la Pascua, la Resurrección. A medianoche, con velas encendidas, toda la iglesia grita una y otra vez: “¡Cristo ha resucitado!” y responde: “¡En verdad ha resucitado!” Se canta, se abraza, se celebra hasta la madrugada.",
+     "Hace más de mil años, unos enviados del príncipe Vladimir de Kiev visitaron la gran iglesia de Constantinopla. Según la antigua Crónica de Néstor, volvieron diciendo: “No sabíamos si estábamos en el cielo o en la tierra.” Ese es el gozo ortodoxo: sentir que el cielo baja a la tierra.",
+     "También hay un gozo quieto, como el de María que guardaba todo en su corazón. La Iglesia busca las dos cosas: alegría y reverencia, todo “decentemente y con orden”."
+    ],
+    "en": [
+     "At a Pentecostal service there is lively music, raised hands, “Hallelujah!” and “Glory to God!” There is a lot of joy. Walking into an Orthodox church, it may seem quieter. But the joy is there, in a different way.",
+     "In the Orthodox Liturgy almost everything is sung, from beginning to end. Usually without instruments: the human voice is the instrument. We sing “Alleluia” many times, and the Psalms, as Paul teaches: “in psalms and hymns and spiritual songs.”",
+     "The whole body worships: we make the sign of the cross, bow, prostrate, light candles and kiss the icons. Incense rises as in Psalm 141 and Revelation 8, “with the prayers of the saints.”",
+     "The Holy Spirit is at the center. The priest asks the Father to send His Holy Spirit “upon us and upon these gifts” for Communion. That prayer is called the epiclesis, which means “calling down.”",
+     "And if you want to see joy, come at Pascha, the Resurrection. At midnight, with candles lit, the whole church shouts again and again: “Christ is risen!” and answers: “Truly He is risen!” People sing, embrace, and celebrate until dawn.",
+     "More than a thousand years ago, envoys of Prince Vladimir of Kiev visited the great church of Constantinople. According to the old Russian Primary Chronicle, they came back saying: “We knew not whether we were in heaven or on earth.” That is Orthodox joy: feeling heaven come down to earth.",
+     "There is also a quiet joy, like Mary’s, who kept all these things in her heart. The Church seeks both: gladness and reverence, all things “decently and in order.”"
+    ]
+   },
+   "verses": [
+    {
+     "book": 51,
+     "chapter": 3,
+     "verses": [
+      16
+     ],
+     "ref": {
+      "es": "Colosenses 3:16",
+      "en": "Colossians 3:16"
+     },
+     "text": {
+      "es": "La palabra de Cristo habite en vosotros en abundancia en toda sabiduría, enseñándoos y exhortándoos los unos á los otros con salmos é himnos y canciones espirituales, con gracia cantando en vuestros corazones al Señor.",
+      "en": "Let the word of Christ dwell in you richly in all wisdom; teaching and admonishing one another in psalms and hymns and spiritual songs, singing with grace in your hearts to the Lord."
+     }
+    },
+    {
+     "book": 19,
+     "chapter": 141,
+     "verses": [
+      2
+     ],
+     "ref": {
+      "es": "Salmo 141:2",
+      "en": "Psalm 141:2"
+     },
+     "text": {
+      "es": "Sea enderezada mi oración delante de ti como un perfume, el don de mis manos como la ofrenda de la tarde.",
+      "en": "Let my prayer be set forth before thee as incense; And the lifting up of my hands as the evening sacrifice."
+     }
+    },
+    {
+     "book": 66,
+     "chapter": 8,
+     "verses": [
+      4
+     ],
+     "ref": {
+      "es": "Apocalipsis 8:4",
+      "en": "Revelation 8:4"
+     },
+     "text": {
+      "es": "Y el humo del incienso subió de la mano del ángel delante de Dios, con las oraciones de los santos.",
+      "en": "And the smoke of the incense, which came with the prayers of the saints, ascended up before God out of the angel's hand."
+     }
+    }
+   ]
   },
   {
    "id": "relationship",
@@ -369,7 +536,7 @@
      "Durante unos 20 años después de la resurrección, no había ni un libro del Nuevo Testamento escrito. La Iglesia ya existía, predicaba y bautizaba. La fe pasaba de boca en boca, de los apóstoles a los creyentes.",
      "Los apóstoles escribieron cartas y evangelios. Pero también enseñaban en persona. San Pablo dice: “retened la doctrina que habéis aprendido, sea por palabra, ó por carta nuestra.” En griego dice “tradiciones”. Las dos cosas vienen de los apóstoles.",
      "Muchos libros circulaban en aquel tiempo. Los obispos de la Iglesia, guiados por el Espíritu Santo, reconocieron cuáles eran inspirados. La primera lista que coincide exactamente con nuestros 27 libros del Nuevo Testamento es de San Atanasio, obispo ortodoxo, en el año 367.",
-     "Tu iglesia dice que su Junta Directiva es “la autoridad interpretativa final” de la Biblia. Eso muestra algo verdadero: toda iglesia necesita a alguien que ayude a interpretar. Los ortodoxos confiamos esa tarea a lo que la Iglesia entera ha creído siempre, desde los apóstoles.",
+     "Los pentecostales dicen “solo la Biblia”, pero cada iglesia necesita interpretarla. Tu iglesia actual, Nueva Vida, dice que su Junta Directiva es “la autoridad interpretativa final” de la Biblia. Eso muestra algo verdadero: toda iglesia necesita a alguien que ayude a interpretar. Los ortodoxos confiamos esa tarea a lo que la Iglesia entera ha creído siempre, desde los apóstoles.",
      "La Tradición no es “otra Biblia”. Es la Biblia leída dentro de la familia que la escribió."
     ],
     "en": [
@@ -377,7 +544,7 @@
      "For about 20 years after the resurrection, not one book of the New Testament had been written. The Church already existed, preached, and baptized. The faith passed by word of mouth, from the apostles to the believers.",
      "The apostles wrote letters and Gospels. But they also taught in person. St. Paul says: “hold the traditions which ye have been taught, whether by word, or our epistle.” Both come from the apostles.",
      "Many books were going around in those days. The bishops of the Church, guided by the Holy Spirit, recognized which ones were inspired. The first list that matches our 27 New Testament books exactly comes from St. Athanasius, an Orthodox bishop, in the year 367.",
-     "Your church says its Board is “the final interpretive authority” for the Bible. That shows something true: every church needs someone to help interpret. We Orthodox entrust that task to what the whole Church has always believed, since the apostles.",
+     "Pentecostals say “the Bible alone,” but every church has to interpret it. Your current church, Nueva Vida, says its Board is “the final interpretive authority” for the Bible. That shows something true: every church needs someone to help interpret. We Orthodox entrust that task to what the whole Church has always believed, since the apostles.",
      "Tradition is not “another Bible.” It is the Bible read inside the family that wrote it."
     ]
    },
@@ -891,22 +1058,22 @@
    },
    "body": {
     "es": [
-     "Tu iglesia ve el bautismo como un mandamiento y una declaración del creyente. Los ortodoxos estamos de acuerdo en que es un mandamiento. Pero creemos que en el bautismo Dios hace algo: nos une a la muerte y la resurrección de Cristo, perdona y da vida nueva.",
+     "Las iglesias pentecostales, y también Nueva Vida, ven el bautismo como un mandamiento y una declaración del creyente. Los ortodoxos estamos de acuerdo en que es un mandamiento. Pero creemos que en el bautismo Dios hace algo: nos une a la muerte y la resurrección de Cristo, perdona y da vida nueva.",
      "En Pentecostés, Pedro dijo: “Arrepentíos, y bautícese cada uno de vosotros... y recibiréis el don del Espíritu Santo. Porque para vosotros es la promesa, y para vuestros hijos.” La promesa incluye a los hijos.",
      "En Hechos, familias enteras fueron bautizadas: Lidia “y su familia”, el carcelero “y todos los suyos”. Y Jesús dijo: “Dejad los niños venir, y no se lo estorbéis.”",
      "Un bebé no entiende el bautismo. Pero tampoco entiende el amor de su madre, y lo recibe igual. La fe de los padres y de la Iglesia lo carga, como los amigos que bajaron al paralítico por el techo y Jesús vio “la fe de ellos”. Cuando el niño crece, debe hacer suya esa fe.",
-     "Fíjate en algo bonito: tu iglesia enseña que los bebés nacen sin culpa personal. La Iglesia Ortodoxa también lo cree. No bautizamos a los bebés para quitarles una culpa heredada, sino para darles la vida de Cristo desde el principio.",
+     "Fíjate en algo bonito: Nueva Vida enseña que los bebés nacen sin culpa personal. La Iglesia Ortodoxa también lo cree. No bautizamos a los bebés para quitarles una culpa heredada, sino para darles la vida de Cristo desde el principio.",
      "Justo después del bautismo viene la crismación. El sacerdote unge con aceite santo la frente, los ojos, los oídos, la boca, el pecho, las manos y los pies, diciendo: “Sello del don del Espíritu Santo.” Es el Pentecostés personal de cada cristiano.",
-     "Bautizamos por triple inmersión, en el nombre del Padre, del Hijo y del Espíritu Santo, cuando es posible. En eso estamos muy cerca de tu iglesia, que también bautiza por inmersión."
+     "Bautizamos por triple inmersión, en el nombre del Padre, del Hijo y del Espíritu Santo, cuando es posible. En eso estamos muy cerca de los pentecostales, que también bautizan por inmersión."
     ],
     "en": [
-     "Your church sees baptism as a commandment and a declaration by the believer. We Orthodox agree it is a commandment. But we believe that in baptism God does something: He unites us to Christ’s death and resurrection, forgives, and gives new life.",
+     "Pentecostal churches, and Nueva Vida too, see baptism as a commandment and a declaration by the believer. We Orthodox agree it is a commandment. But we believe that in baptism God does something: He unites us to Christ’s death and resurrection, forgives, and gives new life.",
      "At Pentecost, Peter said: “Repent, and be baptized every one of you... and ye shall receive the gift of the Holy Ghost. For the promise is unto you, and to your children.” The promise includes the children.",
      "In Acts, whole households were baptized: Lydia “and her household,” the jailer “and all his.” And Jesus said: “Suffer the little children to come unto me, and forbid them not.”",
      "A baby does not understand baptism. But a baby does not understand a mother’s love either, and receives it all the same. The faith of the parents and the Church carries the child, like the friends who lowered the paralyzed man through the roof, and Jesus saw “their faith.” When the child grows up, he or she must make that faith their own.",
-     "Notice something beautiful: your church teaches that babies are born without personal guilt. The Orthodox Church believes that too. We do not baptize babies to remove an inherited guilt, but to give them the life of Christ from the start.",
+     "Notice something beautiful: Nueva Vida teaches that babies are born without personal guilt. The Orthodox Church believes that too. We do not baptize babies to remove an inherited guilt, but to give them the life of Christ from the start.",
      "Right after baptism comes chrismation. The priest anoints with holy oil the forehead, eyes, ears, mouth, chest, hands and feet, saying: “The seal of the gift of the Holy Spirit.” It is each Christian’s personal Pentecost.",
-     "We baptize by triple immersion, in the name of the Father, the Son and the Holy Spirit, whenever possible. In that we are very close to your church, which also baptizes by immersion."
+     "We baptize by triple immersion, in the name of the Father, the Son and the Holy Spirit, whenever possible. In that we are very close to Pentecostals, who also baptize by immersion."
     ]
    },
    "verses": [
@@ -981,18 +1148,18 @@
    },
    "body": {
     "es": [
-     "Tu iglesia llama a la Santa Cena un memorial de la muerte de Cristo y una profecía de su venida. Es hermoso, y es verdad. Los ortodoxos creemos eso, y algo más.",
+     "Muchas iglesias pentecostales, y también Nueva Vida, llaman a la Santa Cena un memorial de la muerte de Cristo y una profecía de su venida. Es hermoso, y es verdad. Los ortodoxos creemos eso, y algo más.",
      "Jesús dijo: “De cierto, de cierto os digo: Si no comiereis la carne del Hijo del hombre, y bebiereis su sangre, no tendréis vida en vosotros.” Muchos discípulos se fueron porque les pareció muy duro. Jesús no les dijo: “Es solo un símbolo.” Los dejó ir.",
      "San Pablo pregunta: “La copa de bendición que bendecimos, ¿no es la comunión de la sangre de Cristo?” Y advierte que quien come indignamente “será culpado del cuerpo y de la sangre del Señor”.",
-     "Tu iglesia cita 2 Pedro 1:4 al hablar de la Santa Cena: la esperanza de “participar de la naturaleza divina”. ¡Eso es justo lo que los ortodoxos vemos en la Comunión! Cristo se da a nosotros para hacernos semejantes a Él.",
+     "Nueva Vida, como las Asambleas de Dios, cita 2 Pedro 1:4 al hablar de la Santa Cena: la esperanza de “participar de la naturaleza divina”. ¡Eso es justo lo que los ortodoxos vemos en la Comunión! Cristo se da a nosotros para hacernos semejantes a Él.",
      "No explicamos el “cómo”. Es un misterio, igual que la encarnación. Solo decimos lo que Jesús dijo: “Esto es mi cuerpo.”",
      "Por eso nos preparamos con oración, ayuno y confesión, y recibimos la Comunión con temor de Dios, fe y amor. Es el centro de la vida ortodoxa cada domingo."
     ],
     "en": [
-     "Your church calls the Lord’s Supper a memorial of Christ’s death and a prophecy of His coming. That is beautiful, and true. We Orthodox believe that, and something more.",
+     "Many Pentecostal churches, and Nueva Vida too, call the Lord’s Supper a memorial of Christ’s death and a prophecy of His coming. That is beautiful, and true. We Orthodox believe that, and something more.",
      "Jesus said: “Verily, verily, I say unto you, Except ye eat the flesh of the Son of man, and drink his blood, ye have no life in you.” Many disciples left because it seemed too hard. Jesus did not tell them, “It is only a symbol.” He let them go.",
      "St. Paul asks: “The cup of blessing which we bless, is it not the communion of the blood of Christ?” And he warns that whoever eats unworthily “shall be guilty of the body and blood of the Lord.”",
-     "Your church quotes 2 Peter 1:4 when it speaks of the Lord’s Supper: the hope to be “partakers of the divine nature.” That is exactly what we Orthodox see in Communion! Christ gives Himself to us to make us like Him.",
+     "Nueva Vida, like the Assemblies of God, quotes 2 Peter 1:4 when it speaks of the Lord’s Supper: the hope to be “partakers of the divine nature.” That is exactly what we Orthodox see in Communion! Christ gives Himself to us to make us like Him.",
      "We do not explain the “how.” It is a mystery, like the incarnation. We only say what Jesus said: “This is my body.”",
      "So we prepare with prayer, fasting and confession, and we receive Communion with the fear of God, faith and love. It is the center of Orthodox life every Sunday."
     ]
@@ -1232,17 +1399,17 @@
    "body": {
     "es": [
      "Los ortodoxos decimos: “Fui salvada, estoy siendo salvada, y espero ser salvada.” Fui salvada cuando Cristo murió y resucitó, y en mi bautismo. Estoy siendo salvada cada día. Y espero la salvación final en el día de Cristo.",
-     "Tu iglesia no enseña “una vez salvo, siempre salvo”. Enseña que el creyente debe “ocuparse de su salvación con temor y temblor” y “permanecer fiel hasta la muerte”. ¡La Iglesia Ortodoxa cree lo mismo!",
+     "La mayoría de los pentecostales no enseñan “una vez salvo, siempre salvo”. Nueva Vida escribe que el creyente debe “ocuparse de su salvación con temor y temblor” y “permanecer fiel hasta la muerte”. ¡La Iglesia Ortodoxa cree lo mismo!",
      "La salvación no es solo que Dios borre una deuda. Es sanar. El pecado es como una enfermedad del alma, y Cristo es el Médico. La Iglesia es como un hospital donde Él nos cura poco a poco.",
-     "La meta es la theosis, una palabra griega que quiere decir unión con Dios. San Pedro dice que somos llamados a ser “participantes de la naturaleza divina”. Tu iglesia cita ese mismo versículo. No nos volvemos dioses por naturaleza. Por gracia, nos llenamos de la vida de Dios como el hierro en el fuego se llena de calor y de luz.",
+     "La meta es la theosis, una palabra griega que quiere decir unión con Dios. San Pedro dice que somos llamados a ser “participantes de la naturaleza divina”. Nueva Vida cita ese mismo versículo. No nos volvemos dioses por naturaleza. Por gracia, nos llenamos de la vida de Dios como el hierro en el fuego se llena de calor y de luz.",
      "Todo es gracia. No ganamos la salvación con obras. Pero respondemos a la gracia con fe, oración, arrepentimiento y amor. Dios no nos salva sin nosotros.",
      "Por eso un ortodoxo no dice con orgullo “ya estoy salvo”. Dice con esperanza humilde: “Señor, ten piedad”, confiando en su gran misericordia."
     ],
     "en": [
      "We Orthodox say: “I was saved, I am being saved, and I hope to be saved.” I was saved when Christ died and rose, and in my baptism. I am being saved every day. And I hope for final salvation on the day of Christ.",
-     "Your church does not teach “once saved, always saved.” It teaches that the believer must “work out their salvation with fear and trembling” and “remain faithful unto death.” The Orthodox Church believes the same!",
+     "Most Pentecostals do not teach “once saved, always saved.” Nueva Vida writes that the believer must “work out their salvation with fear and trembling” and “remain faithful unto death.” The Orthodox Church believes the same!",
      "Salvation is not only God erasing a debt. It is healing. Sin is like a sickness of the soul, and Christ is the Physician. The Church is like a hospital where He heals us little by little.",
-     "The goal is theosis, a Greek word that means union with God. St. Peter says we are called to be “partakers of the divine nature.” Your church quotes that same verse. We do not become gods by nature. By grace, we are filled with God’s life, the way iron in the fire is filled with heat and light.",
+     "The goal is theosis, a Greek word that means union with God. St. Peter says we are called to be “partakers of the divine nature.” Nueva Vida quotes that same verse. We do not become gods by nature. By grace, we are filled with God’s life, the way iron in the fire is filled with heat and light.",
      "It is all grace. We do not earn salvation by works. But we answer grace with faith, prayer, repentance and love. God does not save us without us.",
      "So an Orthodox Christian does not proudly say, “I am already saved.” With humble hope we say, “Lord, have mercy,” trusting His great mercy."
     ]
@@ -1472,28 +1639,34 @@
     "en": "The gap: where are we different?"
    },
    "short": {
-    "es": "Amamos al mismo Jesús, pero entendemos de manera distinta la Iglesia, los sacramentos, la Tradición y los últimos tiempos.",
-    "en": "We love the same Jesus, but we understand the Church, the sacraments, Tradition and the end times differently."
+    "es": "Amamos al mismo Jesús y al mismo Espíritu, pero entendemos de manera distinta la Iglesia, los sacramentos, la Tradición, los dones y los últimos tiempos.",
+    "en": "We love the same Jesus and the same Spirit, but we understand the Church, the sacraments, Tradition, the gifts and the end times differently."
    },
    "body": {
     "es": [
-     "Ya vimos cuánto compartimos. Ahora, con cariño, las diferencias. Las ponemos al lado de lo que tu iglesia escribe, para ser justos.",
-     "La Biblia y la autoridad. Tu iglesia: “la Biblia, solo la Biblia y toda la Biblia, en sus 66 libros”, y la Junta Directiva como “autoridad interpretativa final”. Los ortodoxos: la Biblia es el tesoro más alto de la Tradición, leída como la ha leído la Iglesia desde los apóstoles. Nuestro Antiguo Testamento incluye además libros como Tobías, Sabiduría y Macabeos, que usaban los primeros cristianos.",
-     "La Iglesia. Tu iglesia: “La iglesia no es una institución o denominación religiosa”, sino todos los verdaderos creyentes. Los ortodoxos: la Iglesia es el Cuerpo de Cristo, visible, con obispos, sacramentos y una fe, desde Pentecostés.",
-     "Bautismo y Santa Cena. Tu iglesia: dos “ordenanzas”; el bautismo como declaración del creyente, no para bebés; la Santa Cena como “símbolo”. Los ortodoxos: son misterios (sacramentos) donde Dios de verdad actúa; bautizamos también a los niños, y en la Comunión recibimos el Cuerpo y la Sangre de Cristo.",
-     "El Espíritu Santo. Tu iglesia dice que el Espíritu “vino del Padre y el Hijo”. Si eso habla de que el Hijo envía al Espíritu, estamos de acuerdo. Pero sobre su origen eterno, los ortodoxos decimos con Jesús que el Espíritu “procede del Padre” (Juan 15:26).",
-     "Los últimos tiempos. Tu iglesia enseña un rapto antes de la gran tribulación y, siete años después, un reino de mil años en la tierra. Los ortodoxos creemos con todo el corazón en la segunda venida visible de Cristo, la resurrección, el juicio y los cielos nuevos y la tierra nueva. Pero no enseñamos un rapto secreto ni un reino terrenal de mil años. Leemos Apocalipsis 20 como el reinado de Cristo con sus santos ahora, y el Credo dice de Él: “y su reino no tendrá fin.”",
-     "Los santos, María y los íconos. Tu iglesia no habla de ellos. Para nosotros, son parte de la familia de Dios, como vimos en otras lecciones.",
+     "Ya vimos cuánto compartimos. Ahora, con cariño, las diferencias. Hablamos de lo que creen comúnmente los pentecostales, y decimos cuándo algo lo escribe también tu iglesia actual, Nueva Vida.",
+     "La Biblia como única autoridad. Los pentecostales creen que la Biblia sola es la autoridad final. Nueva Vida lo dice así: “la Biblia, solo la Biblia y toda la Biblia, en sus 66 libros”, y nombra a su Junta Directiva como “autoridad interpretativa final”. Los ortodoxos: la Biblia es el tesoro más alto de la Tradición, leída como la ha leído la Iglesia desde los apóstoles. Nuestro Antiguo Testamento incluye además libros como Tobías, Sabiduría y Macabeos.",
+     "El bautismo en el Espíritu y las lenguas. Muchos pentecostales enseñan una segunda experiencia después de la salvación, con las lenguas como primera señal. Los ortodoxos: el Espíritu se recibe en la crismación, después del bautismo, y las lenguas son un don, no una señal obligatoria.",
+     "El bautismo en agua. Los pentecostales bautizan por inmersión, solo a los que ya creen. Nueva Vida escribe que no se debe bautizar “a los recién nacidos”. Los ortodoxos también bautizamos por inmersión, ¡tres veces!, pero bautizamos también a los niños, porque el bautismo es un regalo de Dios.",
+     "La Santa Cena. Para muchos pentecostales, y para Nueva Vida, es una “ordenanza” y un “símbolo”. Para los ortodoxos es un misterio donde recibimos de verdad el Cuerpo y la Sangre de Cristo.",
+     "Los últimos tiempos. Muchos pentecostales enseñan un rapto antes de la gran tribulación y un reino de mil años en la tierra. Nueva Vida también lo escribe. Los ortodoxos creemos con todo el corazón en la segunda venida visible de Cristo, la resurrección, el juicio y los cielos nuevos y la tierra nueva. Pero no enseñamos un rapto antes de la tribulación ni un reino terrenal de mil años. Leemos Apocalipsis 20 como el reinado de Cristo con sus santos ahora, y el Credo dice de Él: “y su reino no tendrá fin.”",
+     "La Iglesia. Muchos pentecostales ven la Iglesia como todos los creyentes verdaderos, en cualquier congregación. Nueva Vida escribe: “La iglesia no es una institución o denominación religiosa.” Los ortodoxos: la Iglesia es el Cuerpo de Cristo, visible, con obispos, sacramentos y una fe, desde Pentecostés.",
+     "La adoración. El culto pentecostal es espontáneo y lleno de música moderna. El ortodoxo es cantado, antiguo y ordenado. Los dos buscan adorar a Dios “en espíritu y en verdad”.",
+     "El Espíritu Santo. Nueva Vida dice que el Espíritu “vino del Padre y el Hijo”. Si eso habla de que el Hijo envía al Espíritu, estamos de acuerdo. Pero sobre su origen eterno, los ortodoxos decimos con Jesús que el Espíritu “procede del Padre” (Juan 15:26).",
+     "María, los santos y los íconos. Los pentecostales casi no hablan de ellos. Para nosotros son parte de la familia de Dios, como vimos en otras lecciones.",
      "Estas diferencias son reales. Pero se pueden hablar en familia, con la Biblia abierta y con amor."
     ],
     "en": [
-     "We have seen how much we share. Now, with love, the differences. We place them next to what your church writes, to be fair.",
-     "The Bible and authority. Your church: “the Bible, only the Bible and all the Bible, in its 66 books,” and the Board as “the final interpretive authority.” The Orthodox: the Bible is the highest treasure of Tradition, read the way the Church has read it since the apostles. Our Old Testament also includes books like Tobit, Wisdom and Maccabees, which the first Christians used.",
-     "The Church. Your church: “The church is not an institution or a religious denomination,” but all true believers. The Orthodox: the Church is the Body of Christ, visible, with bishops, sacraments and one faith, since Pentecost.",
-     "Baptism and the Lord’s Supper. Your church: two “ordinances”; baptism as the believer’s declaration, not for babies; the Lord’s Supper as a “symbol.” The Orthodox: they are mysteries (sacraments) where God truly acts; we baptize children too, and in Communion we receive the Body and Blood of Christ.",
-     "The Holy Spirit. Your church says the Spirit “came from the Father and the Son.” If that means the Son sends the Spirit, we agree. But about His eternal origin, we Orthodox say with Jesus that the Spirit “proceedeth from the Father” (John 15:26).",
-     "The end times. Your church teaches a rapture before the great tribulation and, seven years later, a thousand-year kingdom on earth. We Orthodox believe with all our heart in Christ’s visible Second Coming, the resurrection, the judgment, and the new heavens and new earth. But we do not teach a secret rapture or an earthly thousand-year kingdom. We read Revelation 20 as Christ reigning with His saints now, and the Creed says of Him: “whose kingdom shall have no end.”",
-     "The saints, Mary and icons. Your church does not speak of them. For us, they are part of God’s family, as we saw in other lessons.",
+     "We have seen how much we share. Now, with love, the differences. We speak of what Pentecostals commonly believe, and we say when something is also written by your current church, Nueva Vida.",
+     "The Bible as the only authority. Pentecostals believe the Bible alone is the final authority. Nueva Vida puts it this way: “the Bible, only the Bible and all the Bible, in its 66 books,” and names its Board as “the final interpretive authority.” The Orthodox: the Bible is the highest treasure of Tradition, read the way the Church has read it since the apostles. Our Old Testament also includes books like Tobit, Wisdom and Maccabees.",
+     "The baptism in the Spirit and tongues. Many Pentecostals teach a second experience after salvation, with tongues as its first sign. The Orthodox: the Spirit is received in chrismation, after baptism, and tongues are a gift, not a required sign.",
+     "Water baptism. Pentecostals baptize by immersion, only those who already believe. Nueva Vida writes that “newborns” should not be baptized. We Orthodox also baptize by immersion, three times!, but we baptize children too, because baptism is God’s gift.",
+     "The Lord’s Supper. For many Pentecostals, and for Nueva Vida, it is an “ordinance” and a “symbol.” For the Orthodox it is a mystery where we truly receive the Body and Blood of Christ.",
+     "The end times. Many Pentecostals teach a rapture before the great tribulation and a thousand-year kingdom on earth. Nueva Vida writes this too. We Orthodox believe with all our heart in Christ’s visible Second Coming, the resurrection, the judgment, and the new heavens and new earth. But we do not teach a pre-tribulation rapture or an earthly thousand-year kingdom. We read Revelation 20 as Christ reigning with His saints now, and the Creed says of Him: “whose kingdom shall have no end.”",
+     "The Church. Many Pentecostals see the Church as all true believers, in any congregation. Nueva Vida writes: “The church is not an institution or a religious denomination.” The Orthodox: the Church is the Body of Christ, visible, with bishops, sacraments and one faith, since Pentecost.",
+     "Worship. Pentecostal worship is spontaneous and full of modern music. Orthodox worship is sung, ancient and ordered. Both seek to worship God “in spirit and in truth.”",
+     "The Holy Spirit. Nueva Vida says the Spirit “came from the Father and the Son.” If that means the Son sends the Spirit, we agree. But about His eternal origin, we Orthodox say with Jesus that the Spirit “proceedeth from the Father” (John 15:26).",
+     "Mary, the saints and icons. Pentecostals rarely speak of them. For us they are part of God’s family, as we saw in other lessons.",
      "These differences are real. But they can be talked about as family, with the Bible open and with love."
     ]
    },
@@ -1514,6 +1687,21 @@
      }
     },
     {
+     "book": 43,
+     "chapter": 4,
+     "verses": [
+      24
+     ],
+     "ref": {
+      "es": "Juan 4:24",
+      "en": "John 4:24"
+     },
+     "text": {
+      "es": "Dios es Espíritu; y los que le adoran, en espíritu y en verdad es necesario que adoren.",
+      "en": "God is a Spirit: and they that worship him must worship him in spirit and in truth."
+     }
+    },
+    {
      "book": 46,
      "chapter": 13,
      "verses": [
@@ -1527,24 +1715,12 @@
       "es": "Ahora vemos por espejo, en obscuridad; mas entonces veremos cara á cara: ahora conozco en parte; mas entonces conoceré como soy conocido.",
       "en": "For now we see through a glass, darkly; but then face to face: now I know in part; but then shall I know even as also I am known."
      }
-    },
-    {
-     "book": 61,
-     "chapter": 3,
-     "verses": [
-      13
-     ],
-     "ref": {
-      "es": "2 Pedro 3:13",
-      "en": "2 Peter 3:13"
-     },
-     "text": {
-      "es": "Bien que esperamos cielos nuevos y tierra nueva, según sus promesas, en los cuales mora la justicia.",
-      "en": "Nevertheless we, according to his promise, look for new heavens and a new earth, wherein dwelleth righteousness."
-     }
     }
    ],
-   "sources": true
+   "sources": [
+    "nvny",
+    "ag"
+   ]
   },
   {
    "id": "leave",
