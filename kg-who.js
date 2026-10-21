@@ -31,7 +31,7 @@
     return `${meter(s)}<p class="kg-sub">${esc(t('Quote {n} of {total}', 'Cita {n} de {total}', { n: s.k + 1, total: s.order.length }))}</p><blockquote class="kg-quote">“${esc(q.quote[l])}”</blockquote><p class="kg-lead">${esc(t('Who said it?', '¿Quién lo dijo?'))}</p><div class="mini-choices">${opts}</div>${fb}`;
   }
   K._helpers.register({
-    id: 'who', icon: '💬',
+    id: 'who', icon: '💬', art: 'tile-who',
     name: { en: 'Who Said It?', es: '¿Quién lo dijo?' },
     blurb: { en: 'Match each Bible quote to its speaker', es: 'Une cada cita bíblica con quien la dijo' },
     status: v => t('Best streak: {n}', 'Mejor racha: {n}', { n: Number(v.best.who) || 0 }),

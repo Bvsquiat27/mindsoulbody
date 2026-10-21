@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v161';
+const CACHE_VERSION = 'v162';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -76,6 +76,7 @@ const SHELL = [
   './match3.js',
   './kidgames-data.js',
   './kidgames-core.js',
+  './kids-art.js',
   './kidgames.js',
   './kg-wordsearch.js',
   './kg-order.js',
@@ -112,6 +113,7 @@ const DATA_FILES = [
 // Only the small covers are precached. The full-size pictures are cached
 // the first time a story is opened; offline, a missing one falls back to its
 // small cover.
+const KIDS_ART = ['badge-medal', 'color-crayons', 'gbadge-ark-1', 'gbadge-ark-all', 'gbadge-map-1', 'gbadge-map-all', 'gbadge-order-1', 'gbadge-order-all', 'gbadge-sling-all', 'gbadge-verse-1', 'gbadge-verse-all', 'gbadge-who-10', 'gbadge-who-5', 'gbadge-word-1', 'gbadge-word-all', 'howto-map-read', 'howto-map-stamp', 'howto-sling-aim', 'howto-sling-match', 'howto-sling-swap', 'howto-sling-win', 'm3-bomb', 'm3-fish', 'm3-grapes', 'm3-heart', 'm3-leaf', 'm3-loaf', 'm3-lost-sprout', 'm3-sp-burst', 'm3-sp-col', 'm3-sp-row', 'm3-star', 'm3ch-birth', 'm3ch-carmel', 'm3ch-creation', 'm3ch-daniel', 'm3ch-david', 'm3ch-easter', 'm3ch-esther', 'm3ch-gate', 'm3ch-heaven', 'm3ch-jericho', 'm3ch-jonah', 'm3ch-loaves', 'm3ch-lost', 'm3ch-noah', 'm3ch-pentecost', 'm3ch-prison', 'm3ch-road', 'm3ch-ruth', 'm3ch-sea', 'm3ch-tree', 'pile-loaves-fish', 'sling-lost', 'sling-pow-bomb', 'sling-pow-reverse', 'sling-pow-slow', 'sling-pow-zap', 'sling-stone', 'sling-z1', 'sling-z10', 'sling-z11', 'sling-z12', 'sling-z13', 'sling-z14', 'sling-z15', 'sling-z2', 'sling-z3', 'sling-z4', 'sling-z5', 'sling-z6', 'sling-z7', 'sling-z8', 'sling-z9', 'sqbadge-all-lessons', 'sqbadge-anchor', 'sqbadge-ark', 'sqbadge-basket', 'sqbadge-boat', 'sqbadge-bush', 'sqbadge-chariot', 'sqbadge-coat', 'sqbadge-coin', 'sqbadge-crown', 'sqbadge-donkey', 'sqbadge-elephant', 'sqbadge-first-squish', 'sqbadge-first-trick', 'sqbadge-friendship', 'sqbadge-honeycomb', 'sqbadge-jar', 'sqbadge-key', 'sqbadge-ladder', 'sqbadge-lamp', 'sqbadge-lily', 'sqbadge-loaves', 'sqbadge-manna', 'sqbadge-match-3star', 'sqbadge-oil', 'sqbadge-pearl', 'sqbadge-raven', 'sqbadge-scroll', 'sqbadge-seed', 'sqbadge-shield', 'sqbadge-shofar', 'sqbadge-squish-200', 'sqbadge-stone', 'sqbadge-tablets', 'sqbadge-tomb', 'sqbadge-tree', 'sqbadge-trick-master', 'sqbadge-wheat', 'stamp-abraham-0', 'stamp-abraham-1', 'stamp-abraham-2', 'stamp-abraham-3', 'stamp-abraham-4', 'stamp-abraham-5', 'stamp-exodus-0', 'stamp-exodus-1', 'stamp-exodus-2', 'stamp-exodus-3', 'stamp-exodus-4', 'stamp-exodus-5', 'stamp-fallback', 'stamp-jonah-0', 'stamp-jonah-1', 'stamp-jonah-2', 'stamp-jonah-3', 'stamp-jonah-4', 'stamp-jonah-5', 'stamp-magi-0', 'stamp-magi-1', 'stamp-magi-2', 'stamp-magi-3', 'stamp-magi-4', 'stamp-magi-5', 'stamp-paul-0', 'stamp-paul-1', 'stamp-paul-2', 'stamp-paul-3', 'stamp-paul-4', 'stamp-paul-5', 'stamp-ruth-0', 'stamp-ruth-1', 'stamp-ruth-2', 'stamp-ruth-3', 'stamp-ruth-4', 'stamp-ruth-5', 'tier-common', 'tier-legendary', 'tier-rare', 'tile-map', 'tile-order', 'tile-sling', 'tile-verse', 'tile-who', 'tile-wordsearch', 'ws-armor', 'ws-fruit', 'ws-joseph', 'ws-prayer', 'wx-clear', 'wx-dawn', 'wx-heat', 'wx-rain', 'wx-storm', 'wx-wind'];
 const STORY_ART_V2 = ['creation', 'noah', 'stars', 'ladder', 'redsea', 'samuel', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
 const storyArt = (id) => (STORY_ART_V2.includes(id) ? `${id}-v2` : id);
 const STORY_FILES = STORY_IDS.map((id) => `./img/stories/${storyArt(id)}-512.webp`)
@@ -120,7 +122,11 @@ const STORY_FILES = STORY_IDS.map((id) => `./img/stories/${storyArt(id)}-512.web
   .concat(['goliath-idle', 'goliath-angry', 'goliath-hit', 'goliath-laugh', 'david', 'valley'].map((n) => `./img/sling/${n}.webp`))
   .concat(['map-exodus', 'map-paul', 'map-abraham', 'map-jonah', 'map-ruth', 'map-magi'].map((n) => `./img/map/${n}.webp`))
   /* Abby's Room: painted header and icon */
-  .concat(['abbys-room-icon-96', 'abbys-room-icon-192', 'abbys-room-icon-384', 'abbys-room-banner-640', 'abbys-room-banner-1280'].map((n) => `./img/room/${n}.webp`));
+  .concat(['abbys-room-icon-96', 'abbys-room-icon-192', 'abbys-room-icon-384', 'abbys-room-banner-640', 'abbys-room-banner-1280'].map((n) => `./img/room/${n}.webp`))
+  /* Abby's Room painted icons (kids-art.js NAMES): the 128 px files are
+     precached (~1.4 MB); the 256 px files are cached the first time they
+     are shown, and offline a missing 256 is answered with its 128. */
+  .concat(KIDS_ART.map((n) => `./img/kids/${n}-128.webp`));
 
 function offlineResponse(url) {
   const json = /\.json$/.test(url.pathname);
@@ -134,7 +140,7 @@ function offlineResponse(url) {
 const isBibleBook = (url) => /\/bible\/(?:index|\d\d)\.json$/.test(url.pathname);
 const isRvrBook = (url) => /\/bible\/rvr\/(?:index|\d\d)\.json$/.test(url.pathname);
 const isFatherNotes = (url) => /\/bible\/fathers\/\d\d\.json$/.test(url.pathname);
-const isStoryArt = (url) => /\/img\/(?:stories\/[a-z0-9-]+\.webp|room\/[a-z0-9-]+\.webp|coloring\/[a-z0-9-]+\.(?:png|webp))$/.test(url.pathname);
+const isStoryArt = (url) => /\/img\/(?:stories\/[a-z0-9-]+\.webp|room\/[a-z0-9-]+\.webp|kids\/[a-z0-9-]+-(?:128|256)\.webp|coloring\/[a-z0-9-]+\.(?:png|webp))$/.test(url.pathname);
 const CURRENT_STORY_ART = new Set(STORY_IDS.flatMap((id) => [`${storyArt(id)}.webp`, `${storyArt(id)}-512.webp`]));
 const isOldStoryArt = (url) => { const m = url.pathname.match(/\/img\/stories\/([a-z0-9-]+\.webp)$/); return !!m && !CURRENT_STORY_ART.has(m[1]); };
 const REFILL_HEADER = 'X-MSB-Refill';
@@ -203,7 +209,7 @@ self.addEventListener('install', (event) => {
     await bible.addAll(['./bible/index.json']);
     const rvr = await caches.open(RVR_CACHE);
     await rvr.addAll(['./bible/rvr/index.json']);
-    /* painted art (~3 MB) is kept across updates: fetch only what is missing,
+    /* painted art (~4.5 MB) is kept across updates: fetch only what is missing,
        so a version bump does not download every picture again. Art files are
        never edited in place; changed art gets a new file name. */
     const stories = await caches.open(STORIES_CACHE);
@@ -349,7 +355,7 @@ self.addEventListener('fetch', (event) => {
         /* A refill from "save offline" wants the real file or nothing: never
            hand it the small cover under the full-size name. */
         if (request.headers.get(REFILL_HEADER)) return new Response('', { status: 503, statusText: 'Offline' });
-        const small = url.pathname.replace(/(\/img\/stories\/[a-z]+(?:-v\d+)?)\.webp$/, '$1-512.webp').replace(/(\/img\/coloring\/[a-z]+)\.png$/, '$1-400.webp');
+        const small = url.pathname.replace(/(\/img\/stories\/[a-z]+(?:-v\d+)?)\.webp$/, '$1-512.webp').replace(/(\/img\/coloring\/[a-z]+)\.png$/, '$1-400.webp').replace(/(\/img\/kids\/[a-z0-9-]+)-256\.webp$/, '$1-128.webp');
         return (small !== url.pathname ? cache.match(new URL(small, url.origin).href) : Promise.resolve(null))
           .then((hit) => hit || offlineResponse(url));
       })))

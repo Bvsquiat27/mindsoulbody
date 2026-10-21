@@ -2,7 +2,7 @@ import { appHtml } from './app-scripts.test-helper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 const require = createRequire(import.meta.url);
 const { PIECES, CHAPTERS, LEVELS } = require('./match3-data.js');
 const C = require('./match3-core.js');
@@ -400,14 +400,16 @@ test('the game respects tap vibration, bedtime and reduced motion', () => {
   assert.match(css, /prefers-reduced-motion:reduce\)\{\.m3-piece/);
 });
 
-test('piece art: each kind is a small inline SVG with a face', () => {
-  for (const k of [...Art.KEYS, 'bomb']) for (const sp of [0, 1, 2, 3]) {
-    const s = Art.svg(k, sp);
-    assert.match(s, /^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" viewBox="0 0 100 100"/);
-    assert.ok(Art.uri(k, sp).startsWith('data:image/svg+xml'));
+test('piece art: each kind is a painted picture, specials add a painted badge', () => {
+  for (const k of [...Art.KEYS, 'bomb']) {
+    const f = Art.src(k);
+    assert.match(f, /^img\/kids\/m3-[a-z]+-128\.webp$/);
+    assert.ok(existsSync(f) && existsSync(Art.src(k, 256)), f);
   }
+  for (const sp of [1, 2, 3]) assert.ok(existsSync(Art.badge(sp)), `badge ${sp}`);
+  assert.equal(Art.badge(0), '');
   assert.equal(Art.KEYS.length, 6);
-  assert.notEqual(Art.svg('star', 1), Art.svg('star', 0));
+  assert.notEqual(Art.badge(1), Art.badge(2));
 });
 
 /* ---------- Wiring and words ---------- */

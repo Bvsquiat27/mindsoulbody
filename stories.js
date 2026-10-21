@@ -469,7 +469,7 @@
   function showOne(root, item) {
     const title = pick(item, 'title');
     const body = pick(item, 'body');
-    root.innerHTML = `<button class="text-button back" data-story-back type="button">← Back</button><article class="story-read" data-read-block data-i18n-skip><span class="eyebrow">${es()?'Una historia para leer juntos':'A story to read together'}</span>${picture(item, 'hero')}<h1 class="story-title">${esc(title)}</h1><p class="story-body">${esc(body)}</p>${verseHtml(item)}</article>${speechRow()}<p><button class="secondary" type="button" data-bedtime data-bedtime-story="${esc(item.id)}">Bedtime</button>${coloring() && coloring().has(item.id) ? ` <button class="secondary" type="button" data-coloring-open="${esc(item.id)}" data-i18n-skip>🖍️ ${es() ? 'Colorear' : 'Color it'}</button>` : ''}</p>`;
+    root.innerHTML = `<button class="text-button back" data-story-back type="button">← Back</button><article class="story-read" data-read-block data-i18n-skip><span class="eyebrow">${es()?'Una historia para leer juntos':'A story to read together'}</span>${picture(item, 'hero')}<h1 class="story-title">${esc(title)}</h1><p class="story-body">${esc(body)}</p>${verseHtml(item)}</article>${speechRow()}<p><button class="secondary" type="button" data-bedtime data-bedtime-story="${esc(item.id)}">Bedtime</button>${coloring() && coloring().has(item.id) ? ` <button class="secondary" type="button" data-coloring-open="${esc(item.id)}" data-i18n-skip>${window.MsbKidsArt ? MsbKidsArt.img('color-crayons', { px: 22, cls: 'kg-btn-art' }) : ''} ${es() ? 'Colorear' : 'Color it'}</button>` : ''}</p>`;
   }
 
   function bedtimeStory() {

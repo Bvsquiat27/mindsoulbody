@@ -109,7 +109,7 @@
     const m = document.querySelector('[data-kg-msg]'); if (m) m.textContent = t('Not yet! Look for the next word.', '¡Todavía no! Busca la siguiente palabra.');
   }
   K._helpers.register({
-    id: 'verse', icon: '🧩',
+    id: 'verse', icon: '🧩', art: 'tile-verse',
     name: { en: 'Verse Builder', es: 'Arma el versículo' },
     blurb: { en: 'Catch the falling words in order', es: 'Atrapa las palabras que caen, en orden' },
     total: () => list().length,
