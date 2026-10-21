@@ -1,4 +1,4 @@
-/* Kids' Bible games (ages 9+), opened from the Stories (little ones) page.
+/* Kids' Bible games (ages 9+), opened from Abby’s Room (the kids' section, screen id 'stories').
    Each game ends on a verse from the app's own KJV / RV1909 text. Progress
    and badges stay on this device in msb_kidgames (Export/Restore keeps it).
    Sounds follow the in-game switch; vibration follows the app's tap
@@ -199,7 +199,7 @@
       + (window.MsbMatch ? `<button type="button" class="card kg-tile kg-tile-art" data-match-open><span class="kg-tile-icon" aria-hidden="true">${window.MsbMatchArt ? MsbMatchArt.svg('loaf') : '🍞'}</span><span class="kg-tile-body"><strong>${esc(t('Manna Match', 'Combina el maná'))}</strong><span>${esc(t('Match Bible pictures and learn a lesson in every level', 'Combina dibujos de la Biblia y aprende una lección en cada nivel'))}</span></span></button>` : '');
     const defs = badgeDefs();
     const badges = defs.map(b => { const got = v.badges[b.id]; return `<li class="kg-badge${got ? ' earned' : ''}"><span aria-hidden="true">${got ? b.icon : '🔒'}</span><strong>${esc(name(b.name))}</strong><small>${esc(got ? t('Earned', 'Ganada') : name(b.goal))}</small></li>`; }).join('');
-    return `<button class="text-button back" type="button" data-kg-exit>${esc(t('← Stories', '← Historias'))}</button><span class="eyebrow">${esc(t('BIBLE GAMES', 'JUEGOS BÍBLICOS'))}</span><h1>${esc(t('Bible games', 'Juegos bíblicos'))}</h1><p class="lead">${esc(t('Play, think, and finish each game with a verse to keep.', 'Juega, piensa y termina cada juego con un versículo para guardar.'))}</p><div class="kg-topbar">${soundButton()}</div><div class="kg-tiles">${extra}${tiles}</div><h2 class="kg-h2">${esc(t('Game badges', 'Insignias de juegos'))}</h2><p class="small muted">${esc(t('Earned {n} of {total}. They also show in your Kids\u2019 badges.', 'Ganadas {n} de {total}. También salen en tus Insignias de niños.', { n: defs.filter(b => v.badges[b.id]).length, total: defs.length }))}</p><ul class="kg-badges">${badges}</ul>`;
+    return `<button class="text-button back" type="button" data-kg-exit>${esc(t('← Abby’s Room', '← El cuarto de Abby'))}</button><span class="eyebrow">${esc(t('BIBLE GAMES', 'JUEGOS BÍBLICOS'))}</span><h1>${esc(t('Bible games', 'Juegos bíblicos'))}</h1><p class="lead">${esc(t('Play, think, and finish each game with a verse to keep.', 'Juega, piensa y termina cada juego con un versículo para guardar.'))}</p><div class="kg-topbar">${soundButton()}</div><div class="kg-tiles">${extra}${tiles}</div><h2 class="kg-h2">${esc(t('Game badges', 'Insignias de juegos'))}</h2><p class="small muted">${esc(t('Earned {n} of {total}. They also show in your Kids\u2019 badges.', 'Ganadas {n} de {total}. También salen en tus Insignias de niños.', { n: defs.filter(b => v.badges[b.id]).length, total: defs.length }))}</p><ul class="kg-badges">${badges}</ul>`;
   }
 
   function render() {

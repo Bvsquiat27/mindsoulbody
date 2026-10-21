@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v152';
+const CACHE_VERSION = 'v154';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -107,7 +107,9 @@ const STORY_FILES = STORY_IDS.map((id) => `./img/stories/${storyArt(id)}-512.web
   .concat(COLORING_IDS.map((id) => `./img/coloring/${id}-400.webp`))
   /* painted game art: David's Sling and Map Journey travelers */
   .concat(['goliath-idle', 'goliath-angry', 'goliath-hit', 'goliath-laugh', 'david', 'valley'].map((n) => `./img/sling/${n}.webp`))
-  .concat(['map-exodus', 'map-paul', 'map-abraham', 'map-jonah', 'map-ruth', 'map-magi'].map((n) => `./img/map/${n}.webp`));
+  .concat(['map-exodus', 'map-paul', 'map-abraham', 'map-jonah', 'map-ruth', 'map-magi'].map((n) => `./img/map/${n}.webp`))
+  /* Abby's Room: painted header and icon */
+  .concat(['abbys-room-icon-96', 'abbys-room-icon-192', 'abbys-room-icon-384', 'abbys-room-banner-640', 'abbys-room-banner-1280'].map((n) => `./img/room/${n}.webp`));
 
 function offlineResponse(url) {
   const json = /\.json$/.test(url.pathname);
@@ -121,7 +123,7 @@ function offlineResponse(url) {
 const isBibleBook = (url) => /\/bible\/(?:index|\d\d)\.json$/.test(url.pathname);
 const isRvrBook = (url) => /\/bible\/rvr\/(?:index|\d\d)\.json$/.test(url.pathname);
 const isFatherNotes = (url) => /\/bible\/fathers\/\d\d\.json$/.test(url.pathname);
-const isStoryArt = (url) => /\/img\/(?:stories\/[a-z0-9-]+\.webp|coloring\/[a-z0-9-]+\.(?:png|webp))$/.test(url.pathname);
+const isStoryArt = (url) => /\/img\/(?:stories\/[a-z0-9-]+\.webp|room\/[a-z0-9-]+\.webp|coloring\/[a-z0-9-]+\.(?:png|webp))$/.test(url.pathname);
 const CURRENT_STORY_ART = new Set(STORY_IDS.flatMap((id) => [`${storyArt(id)}.webp`, `${storyArt(id)}-512.webp`]));
 const isOldStoryArt = (url) => { const m = url.pathname.match(/\/img\/stories\/([a-z0-9-]+\.webp)$/); return !!m && !CURRENT_STORY_ART.has(m[1]); };
 const REFILL_HEADER = 'X-MSB-Refill';

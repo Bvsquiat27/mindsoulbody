@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
    so changed art must ship under a new file name. */
 test('art files are never edited in place', () => {
   const known = JSON.parse(readFileSync('img/art-hashes.json', 'utf8'));
-  for (const dir of ['stories', 'coloring', 'sling', 'map']) {
+  for (const dir of ['stories', 'coloring', 'sling', 'map', 'room']) {
     for (const name of readdirSync(`img/${dir}`)) {
       if (name.endsWith('.md')) continue;
       const path = `img/${dir}/${name}`;
