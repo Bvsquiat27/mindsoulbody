@@ -77,6 +77,12 @@
      The page CSP blocks inline onerror handlers, so one capturing listener
      does it for every [data-mp-fb] image (map, trip list, how-to-play). */
   if (typeof document !== 'undefined' && document.addEventListener) document.addEventListener('error', e => { const el = e.target; if (!el || !el.hasAttribute || !el.hasAttribute('data-mp-fb')) return; el.style.display = 'none'; if (el.nextElementSibling) el.nextElementSibling.style.display = ''; }, true);
+  /* painted passport stamps and weather (img/kids, see kids-art.js) */
+  const KA = () => window.MsbKidsArt;
+  const stampArt = (m, i) => KA().spot(`map-stamp|${m.id}:${i}`) || 'stamp-fallback';
+  const stampImg = (m, i, px) => KA().img(stampArt(m, i), { px, cls: 'mp-stamp-art' });
+  /* the traveler, small, inside a button label ("Walk on", "Sail on") */
+  const travInline = m => { const a = TRAV[m.id]; return a ? `<img class="mp-trav-inline" src="${a[0]}" alt="" width="${Math.round(a[1] / 2)}" height="20" decoding="async" data-mp-fb><span class="mp-pick-fb" style="display:none" aria-hidden="true">${travEmoji(m)}</span>` : ''; };
   const storyOf = (m, i) => (STORY[m.id] && STORY[m.id][i]) || { w: 'clear', stamp: '⭐', en: '', es: '' };
 
   /* passport stamps on this phone (msb_ key: covered by Export/Restore) */
@@ -174,7 +180,7 @@
     const pts = st.map(p => `${p.x},${p.y}`).join(' ');
     const done = st.slice(0, s.stop + 1).map(p => `${p.x},${p.y}`).join(' ');
     const got = stamps().list(m.id);
-    const dots = st.map((p, i) => { const on = got.includes(i) && (i < s.stop || s.answered || whole); return `<g class="mp-stop${on ? ' done' : ''}${i === s.stop && !whole ? ' here' : ''}" transform="translate(${p.x} ${p.y})"><circle r="${i === s.stop ? 8.5 : 6.5}"/>${on ? `<text class="mp-seal" y="3.4" text-anchor="middle">${storyOf(m, i).stamp}</text>` : `<text class="mp-num" y="3" text-anchor="middle">${i + 1}</text>`}<text x="${p.x > 300 ? -11 : 11}" y="-10" text-anchor="${p.x > 300 ? 'end' : 'start'}" class="mp-name">${esc(name(p.name))}</text></g>`; }).join('');
+    const dots = st.map((p, i) => { const on = got.includes(i) && (i < s.stop || s.answered || whole); return `<g class="mp-stop${on ? ' done' : ''}${i === s.stop && !whole ? ' here' : ''}" transform="translate(${p.x} ${p.y})"><circle r="${i === s.stop ? 8.5 : 6.5}"/>${on ? `<image class="mp-seal-art" href="${KA().src(stampArt(m, i))}" x="-6.5" y="-6.5" width="13" height="13"/>` : `<text class="mp-num" y="3" text-anchor="middle">${i + 1}</text>`}<text x="${p.x > 300 ? -11 : 11}" y="-10" text-anchor="${p.x > 300 ? 'end' : 'start'}" class="mp-name">${esc(name(p.name))}</text></g>`; }).join('');
     const c = whole ? { tx: 0, ty: 0, z: 1 } : cam(here.x, here.y);
     const at = s.from != null && !reduced() ? st[s.from] : here;
     const wx = whole ? 'clear' : storyOf(m, s.stop).w;
@@ -195,7 +201,7 @@
   }
   function passport(m, fresh) {
     const got = stamps().list(m.id);
-    return `<div class="mp-passport" aria-label="${esc(t('Passport: {n} of {total} stamps', 'Pasaporte: {n} de {total} sellos', { n: got.length, total: m.stops.length }))}">${m.stops.map((p, i) => `<span class="mp-slot${got.includes(i) ? ' on' : ''}${fresh === i ? ' fresh' : ''}" title="${esc(name(p.name))}"><span aria-hidden="true">${got.includes(i) ? storyOf(m, i).stamp : '·'}</span></span>`).join('')}</div>`;
+    return `<div class="mp-passport" aria-label="${esc(t('Passport: {n} of {total} stamps', 'Pasaporte: {n} de {total} sellos', { n: got.length, total: m.stops.length }))}">${m.stops.map((p, i) => `<span class="mp-slot${got.includes(i) ? ' on' : ''}${fresh === i ? ' fresh' : ''}" title="${esc(name(p.name))}"><span aria-hidden="true">${got.includes(i) ? stampImg(m, i, 30) : '·'}</span></span>`).join('')}</div>`;
   }
 
   function start() { return { view: 'pick', at: 0 }; }
@@ -203,28 +209,28 @@
   const starRow = n => `<span class="kg-stars" aria-label="${esc(t('{n} of 3 stars', '{n} de 3 estrellas', { n }))}">${[1, 2, 3].map(k => `<i class="${k <= n ? 'on' : ''}" aria-hidden="true">★</i>`).join('')}</span>`;
   function pickHtml() {
     const v = prog().get();
-    return `<p class="kg-lead">${esc(t('Travel with God\u2019s people. Answer at every stop to move on and collect its stamp.', 'Viaja con el pueblo de Dios. Responde en cada parada para seguir y ganar su sello.'))}</p><ul class="kg-picks mp-picks">${maps().map((m, i) => { const st = Number(v.best[`map:${m.id}`]) || 0; return `<li><button type="button" class="card kg-pick mp-pick${st ? ' done' : ''}" data-mp-pick="${i}"><span class="kg-pick-icon" aria-hidden="true">${TRAV[m.id] ? `<img class="mp-pick-art" src="${TRAV[m.id][0]}" alt="" loading="lazy" decoding="async" width="${TRAV[m.id][1]}" height="40" data-mp-fb><span class="mp-pick-fb" style="display:none">${m.icon}</span>` : m.icon}</span><span><strong>${esc(name(m.title))}</strong><small>${esc(t('{n} stops', '{n} paradas', { n: m.stops.length }))}</small>${st ? starRow(st) : ''}${passport(m)}</span></button></li>`; }).join('')}</ul>`;
+    return `<p class="kg-lead">${esc(t('Travel with God\u2019s people. Answer at every stop to move on and collect its stamp.', 'Viaja con el pueblo de Dios. Responde en cada parada para seguir y ganar su sello.'))}</p><ul class="kg-picks mp-picks">${maps().map((m, i) => { const st = Number(v.best[`map:${m.id}`]) || 0; return `<li><button type="button" class="card kg-pick mp-pick${st ? ' done' : ''}" data-mp-pick="${i}"><span class="kg-pick-icon" aria-hidden="true">${TRAV[m.id] ? `<img class="mp-pick-art" src="${TRAV[m.id][0]}" alt="" loading="lazy" decoding="async" width="${TRAV[m.id][1]}" height="40" data-mp-fb><span class="mp-pick-fb" style="display:none">${KA().img(KA().data('MAPS', m.id) || 'stamp-fallback', { px: 40 })}</span>` : KA().img(KA().data('MAPS', m.id) || 'stamp-fallback', { px: 40 })}</span><span><strong>${esc(name(m.title))}</strong><small>${esc(t('{n} stops', '{n} paradas', { n: m.stops.length }))}</small>${st ? starRow(st) : ''}${passport(m)}</span></button></li>`; }).join('')}</ul>`;
   }
   const weatherName = w => ({ storm: t('Storm', 'Tormenta'), rain: t('Rain', 'Lluvia'), wind: t('Windy', 'Viento'), heat: t('Hot sun', 'Sol fuerte'), dawn: t('Morning', 'Mañana'), clear: t('Clear sky', 'Cielo claro') })[w] || '';
-  const weatherIcon = w => ({ storm: '⛈️', rain: '🌧️', wind: '💨', heat: '☀️', dawn: '🌅', clear: '🌤️' })[w] || '';
+  const weatherIcon = w => (['storm', 'rain', 'wind', 'heat', 'dawn', 'clear'].includes(w) ? KA().img(`wx-${w}`, { px: 18, cls: 'mp-wx-art' }) : '');
   function playHtml(s) {
     const m = maps()[s.at], l = lang();
     const kui = K._ui;
     const tut = coach('map', t('Map Journey', 'Viaje en el mapa'), [
       { icon: TRAV[m.id] ? `<img class="mp-pick-art" src="${TRAV[m.id][0]}" alt="" decoding="async" data-mp-fb><span class="mp-pick-fb" style="display:none">${travEmoji(m)}</span>` : travEmoji(m), text: t('Travel stop by stop along the red route.', 'Viaja parada por parada por la ruta roja.') },
-      { icon: '📜', text: t('Read what happened there, then answer the question.', 'Lee lo que pasó allí y responde la pregunta.') },
-      { icon: '🔖', text: t('A right answer stamps your passport. Fewer mistakes, more stars!', 'Una respuesta correcta sella tu pasaporte. ¡Menos errores, más estrellas!') },
+      { icon: KA().img('howto-map-read', { px: 34 }), text: t('Read what happened there, then answer the question.', 'Lee lo que pasó allí y responde la pregunta.') },
+      { icon: KA().img('howto-map-stamp', { px: 34 }), text: t('A right answer stamps your passport. Fewer mistakes, more stars!', 'Una respuesta correcta sella tu pasaporte. ¡Menos errores, más estrellas!') },
     ], kui.coachForce === 'map');
     if (s.done) {
       const n = C().stars(s.mistakes), all = stamps().list(m.id).length === m.stops.length;
       const msg = END[m.id] ? t(...END[m.id]) : t('God led His people every step of the way, with water, bread and His good law.', 'Dios guió a su pueblo en cada paso, con agua, pan y su buena ley.');
       const other = maps().findIndex((x, i) => i !== s.at);
-      return `${mapSvg(s)}${levelCard({ eyebrow: t('JOURNEY COMPLETE!', '¡VIAJE COMPLETO!'), title: name(m.title), stars: n, record: s.record, text: msg, reward: all ? t('Passport complete: all {n} stamps!', 'Pasaporte completo: ¡los {n} sellos!', { n: m.stops.length }) : '', extra: passport(m), actions: `${other >= 0 ? `<button type="button" class="primary" data-mp-pick="${other}">${esc(name(maps()[other].title))} ${maps()[other].icon}</button>` : ''}<button type="button" class="secondary" data-mp-pick="${s.at}">${esc(t('Travel again', 'Viajar otra vez'))}</button><button type="button" class="secondary" data-mp-list>${esc(t('Pick a journey', 'Escoger un viaje'))}</button>` })}`;
+      return `${mapSvg(s)}${levelCard({ eyebrow: t('JOURNEY COMPLETE!', '¡VIAJE COMPLETO!'), title: name(m.title), stars: n, record: s.record, text: msg, reward: all ? t('Passport complete: all {n} stamps!', 'Pasaporte completo: ¡los {n} sellos!', { n: m.stops.length }) : '', extra: passport(m), actions: `${other >= 0 ? `<button type="button" class="primary" data-mp-pick="${other}">${esc(name(maps()[other].title))} ${KA().img(KA().data('MAPS', maps()[other].id) || 'stamp-fallback', { px: 22, cls: 'kg-btn-art' })}</button>` : ''}<button type="button" class="secondary" data-mp-pick="${s.at}">${esc(t('Travel again', 'Viajar otra vez'))}</button><button type="button" class="secondary" data-mp-list>${esc(t('Pick a journey', 'Escoger un viaje'))}</button>` })}`;
     }
     const stop = m.stops[s.stop], ev = storyOf(m, s.stop);
     const opts = s.opts.map((o, i) => `<button type="button" class="mini-choice${s.answered && o.right ? ' correct' : ''}${s.wrong.includes(i) ? ' incorrect' : ''}" data-mp-opt="${i}" ${s.answered || s.wrong.includes(i) ? 'disabled' : ''}>${esc(o.text)}</button>`).join('');
-    const after = s.answered ? verseHtml(stop.verse, t('RIGHT!', '¡CORRECTO!'), `<button type="button" class="primary" data-mp-go>${esc(s.stop + 1 < m.stops.length ? (isSea(m) ? t('Sail on', 'Seguir navegando') : t('Walk on', 'Seguir caminando')) + ' ' + travEmoji(m) : t('Finish the journey', 'Terminar el viaje'))}</button>`) : `<p class="kg-msg" role="status" aria-live="polite" data-kg-msg>${esc(s.wrong.length ? t('Not quite. Read the story again and try another answer!', 'Casi. ¡Lee la historia otra vez y prueba otra respuesta!') : '')}</p>`;
-    const event = `<article class="mp-event${s.answered ? ' stamped' : ''}" data-mp-event><div class="mp-event-head"><span class="mp-step">${esc(t('Stop {n} of {total}', 'Parada {n} de {total}', { n: s.stop + 1, total: m.stops.length }))}</span><span class="mp-wxchip"><span aria-hidden="true">${weatherIcon(ev.w)}</span> ${esc(weatherName(ev.w))}</span></div><h2 class="mp-place">${esc(name(stop.name))}</h2><p class="mp-story">${esc(ev[l] || '')}</p><span class="mp-stampslot" aria-hidden="true">${s.answered ? `<span class="mp-stampmark">${ev.stamp}</span>` : ''}</span></article>`;
+    const after = s.answered ? verseHtml(stop.verse, t('RIGHT!', '¡CORRECTO!'), `<button type="button" class="primary" data-mp-go>${esc(s.stop + 1 < m.stops.length ? (isSea(m) ? t('Sail on', 'Seguir navegando') : t('Walk on', 'Seguir caminando')) : t('Finish the journey', 'Terminar el viaje'))}${s.stop + 1 < m.stops.length ? ' ' + travInline(m) : ''}</button>`) : `<p class="kg-msg" role="status" aria-live="polite" data-kg-msg>${esc(s.wrong.length ? t('Not quite. Read the story again and try another answer!', 'Casi. ¡Lee la historia otra vez y prueba otra respuesta!') : '')}</p>`;
+    const event = `<article class="mp-event${s.answered ? ' stamped' : ''}" data-mp-event><div class="mp-event-head"><span class="mp-step">${esc(t('Stop {n} of {total}', 'Parada {n} de {total}', { n: s.stop + 1, total: m.stops.length }))}</span><span class="mp-wxchip"><span aria-hidden="true">${weatherIcon(ev.w)}</span> ${esc(weatherName(ev.w))}</span></div><h2 class="mp-place">${esc(name(stop.name))}</h2><p class="mp-story">${esc(ev[l] || '')}</p><span class="mp-stampslot" aria-hidden="true">${s.answered ? `<span class="mp-stampmark">${stampImg(m, s.stop, 48)}</span>` : ''}</span></article>`;
     return `${tut}<p class="kg-sub">${esc(name(m.title))}</p>${mapSvg(s)}${passport(m, s.fresh)}<div class="mp-q-area" data-mp-q>${event}<p class="kg-lead mp-q">${esc(stop.q[l])}</p><div class="mini-choices">${opts}</div>${after}</div>`;
   }
 
@@ -253,7 +259,7 @@
   }
 
   K._helpers.register({
-    id: 'map', icon: '🗺️',
+    id: 'map', icon: '🗺️', art: 'tile-map',
     name: { en: 'Map Journey', es: 'Viaje en el mapa' },
     blurb: { en: 'Follow the Exodus and Paul\u2019s voyage', es: 'Sigue el Éxodo y el viaje de Pablo' },
     total: () => maps().length,

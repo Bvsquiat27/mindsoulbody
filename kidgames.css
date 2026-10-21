@@ -327,3 +327,29 @@ button.sr-sym{cursor:pointer}
 .hub-card.hub-card-abby:hover{border-color:var(--abby-accent)}
 .abby-room .bedtime-entry{width:100%}
 .kg-entry img.abby-entry-icon{display:block;width:64px;height:64px;font-size:0;letter-spacing:0;border-radius:16px;clip-path:inset(1.5% round 16px);object-fit:cover}
+/* Painted art in Abby's Room (img/kids, see kids-art.js): pictures, never emoji */
+.kart{display:block;max-width:none;object-fit:contain;-webkit-user-drag:none;user-select:none}
+.kg-tile-icon.kg-tile-pic{background:none;border-radius:14px;overflow:hidden}
+.kg-tile-pic .kart{width:56px;height:56px;border-radius:14px}
+.kg-tile-art .kg-tile-icon .kart{width:50px;height:50px}
+.kg-pick-icon .kart{width:44px;height:44px}
+.kg-sub .kart,.kg-btn-art,.kg-pop-art,.mp-wx-art{display:inline-block;vertical-align:middle}
+.kg-sub .kart{width:28px;height:28px;margin-right:2px}
+.kg-btn-art{width:22px;height:22px;margin:-3px 0}
+.kg-pop-art{width:28px;height:28px;margin:-4px 2px -4px 0}
+.mp-wx-art{width:18px;height:18px;margin:-2px 0}
+.kg-badge>span .kart{width:40px;height:40px}
+.kg-coach-ico{overflow:hidden}
+.kg-coach-ico .kart{width:34px;height:34px}
+.kg-lc-art .kart{width:72px;height:72px;margin:0 auto}
+.mp-slot .kart{width:100%;height:100%}
+.mp-slot.on{padding:1px}
+.mp-stampmark .kart{width:44px;height:44px;border-radius:50%}
+.mp-trav-inline{display:inline-block;height:20px;width:auto;vertical-align:middle;margin:-4px 0}
+.m3-ch-icon .kart{width:30px;height:30px}
+.m3-intro-icon .kart{width:72px;height:72px;margin:0 auto}
+.m3-piece img.m3-sp-badge{position:absolute;left:0;top:0;filter:drop-shadow(0 0 3px rgba(255,240,180,.9))}
+.sq-badge-art.pic .kart{width:44px;height:44px}
+.sq-medal .kart{width:36px;height:36px}
+.sq-ach-badge .kart{display:inline-block;width:28px;height:28px;vertical-align:middle;margin:-4px 2px 0 0}
+.sq-trophy-medal .kart{width:80px;height:80px;border-radius:50%}

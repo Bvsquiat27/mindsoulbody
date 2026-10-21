@@ -103,7 +103,10 @@
 
   /* ---------- Shared bits ---------- */
   const starRow = (n, cls = '') => `<span class="m3-stars ${cls}" aria-label="${esc(L('{n} of 3 stars', { n }))}">${[1, 2, 3].map(k => `<i class="${k <= n ? 'on' : ''}" aria-hidden="true">★</i>`).join('')}</span>`;
-  const pieceImg = (name, sp, cls = '') => `<img class="${cls}" src="${A().uri(name, sp)}" alt="" draggable="false">`;
+  /* painted piece, plus the painted special badge on top (row, column, burst) */
+  const pieceImg = (name, sp, cls = '') => `<img class="${cls}" src="${A().src(name)}" alt="" draggable="false" decoding="async">${A().badge(sp) ? `<img class="m3-sp-badge" src="${A().badge(sp)}" alt="" draggable="false" decoding="async">` : ''}`;
+  const KA = () => window.MsbKidsArt;
+  const chArt = (ch, px, cls) => KA().img(KA().spot(`match3-chapter|${ch.id}`) || 'm3-star', { px, cls });
   function goalText(goal) {
     if (goal.kind === 'score') return L('Reach {n} points', { n: goal.n });
     if (goal.kind === 'collect') return L('Collect {n} {piece}', { n: goal.n, piece: L(PIECE_NAME[goal.piece]) });
@@ -143,7 +146,7 @@
     for (const ch of D().CHAPTERS) {
       const lvls = D().LEVELS.filter(lv => lv.chapter === ch.id);
       const open = lvls[0].n <= p.open;
-      html += `<li class="m3-chapter${open ? '' : ' locked'}" style="top:${y}px"><span class="m3-ch-icon" aria-hidden="true">${ch.icon}</span><span>${esc(ch.name[lang()])}</span></li>`;
+      html += `<li class="m3-chapter${open ? '' : ' locked'}" style="top:${y}px"><span class="m3-ch-icon" aria-hidden="true">${chArt(ch, 30)}</span><span>${esc(ch.name[lang()])}</span></li>`;
       y += HEAD;
       for (const lv of lvls) {
         const pos = [0, 1, 2, 3, 2, 1][k % 6]; k += 1;
@@ -174,7 +177,7 @@
     const first = D().LEVELS.find(x => x.chapter === lv.chapter).n === lv.n;
     const canSpeak = !!(window.MsbSpeech && MsbSpeech.supported && MsbSpeech.supported());
     return `${header(`<button class="text-button back" type="button" data-m3-map>${esc(L('← Map'))}</button>`)}
-      <article class="card m3-intro" aria-labelledby="m3-intro-title"><span class="m3-intro-icon" aria-hidden="true">${ch.icon}</span><span class="eyebrow">${esc(first ? L('NEW STORY') : L('THE STORY CONTINUES'))}</span><h2 id="m3-intro-title">${esc(ch.name[l])}</h2><p>${esc(ch.intro[l])}</p>
+      <article class="card m3-intro" aria-labelledby="m3-intro-title"><span class="m3-intro-icon" aria-hidden="true">${chArt(ch, 72)}</span><span class="eyebrow">${esc(first ? L('NEW STORY') : L('THE STORY CONTINUES'))}</span><h2 id="m3-intro-title">${esc(ch.name[l])}</h2><p>${esc(ch.intro[l])}</p>
       <div class="m3-intro-level"><strong>${esc(L('Level {n}: {title}', { n: lv.n, title: lv.title[l] }))}</strong><span>🎯 ${esc(goalsText(lv))}</span><span>👣 ${esc(L('{n} moves', { n: lv.moves }))}</span></div>
       <div class="m3-actions"><button type="button" class="primary" data-m3-start>${esc(L('Play'))}</button>${canSpeak ? `<button type="button" class="secondary" data-m3-speak-intro>🔊 ${esc(L('Read aloud'))}</button>` : ''}</div></article>`;
   }
@@ -514,7 +517,7 @@
     } else {
       ui.result = { won: false };
       sound('soft');
-      box.innerHTML = `<article class="card m3-lesson m3-lost" role="dialog" aria-modal="true" aria-labelledby="m3-lost-title"><span class="m3-intro-icon" aria-hidden="true">🌱</span><h2 id="m3-lost-title">${esc(L('So close!'))}</h2><p>${esc(L('You ran out of moves this time. Every try helps you get better. Want to try again?'))}</p>
+      box.innerHTML = `<article class="card m3-lesson m3-lost" role="dialog" aria-modal="true" aria-labelledby="m3-lost-title"><span class="m3-intro-icon" aria-hidden="true">${KA().img('m3-lost-sprout', { px: 72 })}</span><h2 id="m3-lost-title">${esc(L('So close!'))}</h2><p>${esc(L('You ran out of moves this time. Every try helps you get better. Want to try again?'))}</p>
         <div class="m3-actions"><button type="button" class="primary" data-m3-retry>${esc(L('Try again'))}</button><button type="button" class="secondary" data-m3-map>${esc(L('Map'))}</button></div></article>`;
     }
     box.hidden = false;

@@ -302,3 +302,4 @@ button.dm-verse:hover{border-color:rgb(232,205,150)}
 
 /* dialog-focus.js moves focus to the dialog box itself on touch screens */
 [role="dialog"][tabindex="-1"]:focus{outline:none}
+.kid-badge-art{display:inline-block;width:32px;height:32px;vertical-align:middle}
