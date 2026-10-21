@@ -72,7 +72,7 @@
     if (!host.isConnected) return;
     releaseUrls();
     if (!rows.length) {
-      grid.innerHTML = `<p class="muted">${esc(L('No drawings yet. In Stories, open the coloring book, color a page, and tap Save to My drawings.'))}</p><button type="button" class="secondary" data-nav="stories">${esc(L('Open the coloring book'))}</button>`;
+      grid.innerHTML = `<p class="muted">${esc(L('No drawings yet. In Abby’s Room, open the coloring book, color a page, and tap Save to My drawings.'))}</p><button type="button" class="secondary" data-nav="stories">${esc(L('Open the coloring book'))}</button>`;
       return;
     }
     grid.innerHTML = rows.map(row => `<button type="button" class="drawing-thumb" data-drawing-open="${esc(row.id)}" aria-label="${esc(row.title + ', ' + dateLabel(row.updated))}"><img src="${objectUrl(row.thumb || row.image)}" alt="" width="360" height="203" loading="lazy" decoding="async"><span class="drawing-name">${esc(row.title)}</span><span class="drawing-date">${esc(dateLabel(row.updated))}</span></button>`).join('');
