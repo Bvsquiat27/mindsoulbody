@@ -434,12 +434,32 @@
       case 'kgDone': case 'kgBest': return [[L('Play {game}', { game: L(KG_NAME[ch.game] || 'Bible games') }), `data-sq-go-game="${ch.game}"`]];
       case 'kgAll': return [[L('Open the Bible games'), 'data-sq-go-game="hub"']];
       case 'colored': return [[L('Open the coloring book'), 'data-sq-go-color']];
+      case 'final': {
+        /* the lamp: go to the next squishy still locked, and to Manna Match
+           while no level has 3 stars yet */
+        const left = C().finalLeft(ch, ctx()), out = [];
+        if (left.locked.length) { const next = byId(left.locked[0]); out.push([L('Next: {name}', { name: next ? nameOf(next) : L('Locked') }), `data-sq-go-locked="${esc(left.locked[0])}"`]); }
+        if (!left.three) out.push([L('Play Manna Match'), 'data-sq-go-match']);
+        return out.length ? out : null;
+      }
       default: return null;
     }
   }
+  /* Tapping a locked tile (or the lamp's Next button): say what opens it */
+  function showLocked(id) { ui.go = id; const ch = C().challengeFor(id), back = ch ? C().wonBackProgress(store2(), ch) : null; ui.msg = back ? `${L('Win it back: {goal}', { goal: againText(ch, back.need) })} (${back.have} / ${back.need})` : ch ? L('To unlock it: {task}', { task: challengeText(ch) }) : L('Locked'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); }
+  /* For the lamp: what is still left, in words */
+  function finalLeftHtml(ch) {
+    const left = C().finalLeft(ch, ctx());
+    const names = left.locked.map(id => byId(id)).filter(Boolean).map(nameOf);
+    const shown = names.slice(0, 6).join(', ') + (names.length > 6 ? ', …' : '');
+    const squishLine = names.length ? (names.length === 1 ? L('Still locked: {names}', { names: shown }) : L('Still locked ({n}): {names}', { n: names.length, names: shown })) : L('Every other squishy is open ✓');
+    const starLine = left.three ? L('3 stars on a Manna Match level ✓') : L('Still to do: 3 stars on a Manna Match level');
+    return `<ul class="sq-final-left"><li>${esc(squishLine)}</li><li>${esc(starLine)}</li></ul>`;
+  }
   function goHtml() {
     const ch = ui.go && C().challengeFor(ui.go), g = ch && goFor(ch, C().wonBackProgress(store2(), ch));
-    return g ? `<p class="sq-go-row">${g.map((x, i) => `<button type="button" class="${i ? 'secondary' : 'primary'} sq-go" ${x[1]}>▶ ${esc(x[0])}</button>`).join(' ')}</p>` : '';
+    const left = ch && ch.kind === 'final' && !C().wonBackProgress(store2(), ch) ? finalLeftHtml(ch) : '';
+    return left + (g ? `<p class="sq-go-row">${g.map((x, i) => `<button type="button" class="${i ? 'secondary' : 'primary'} sq-go" ${x[1]}>▶ ${esc(x[0])}</button>`).join(' ')}</p>` : '');
   }
 
   /* Achievements: every badge, earned or not, with progress. */
@@ -1216,7 +1236,9 @@
     if (goView) { ui.view = goView.dataset.sqGoView; ui.msg = ''; ui.go = null; if (ui.view === 'memory') newMemory(); else newRound(); render(); window.scrollTo({ top: 0, behavior: 'auto' }); return; }
     if (t.closest('[data-sq-go-play]')) { ui.msg = ''; ui.go = null; const first = prog().unlocked()[0] || 'lamb'; render(); openPlay(first); return; }
     const lockedTile = t.closest('[data-sq-locked]');
-    if (lockedTile) { ui.go = lockedTile.dataset.sqLocked; const ch = C().challengeFor(lockedTile.dataset.sqLocked), back = ch ? C().wonBackProgress(store2(), ch) : null; ui.msg = back ? `${L('Win it back: {goal}', { goal: againText(ch, back.need) })} (${back.have} / ${back.need})` : ch ? L('To unlock it: {task}', { task: challengeText(ch) }) : L('Locked'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); return; }
+    const goLocked = t.closest('[data-sq-go-locked]');
+    if (goLocked && byId(goLocked.dataset.sqGoLocked)) { showLocked(goLocked.dataset.sqGoLocked); return; }
+    if (lockedTile) { showLocked(lockedTile.dataset.sqLocked); return; }
     const star = t.closest('[data-sq-star]');
     if (star) {
       prog().addStar(star.dataset.sqStar); play('twinkle'); vibrate(15); afterProgress(false);

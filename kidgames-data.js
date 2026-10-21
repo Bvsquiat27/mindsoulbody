@@ -346,7 +346,7 @@
       },
       "text": {
        "en": "And when it was determined that we should sail into Italy, they delivered Paul and certain other prisoners unto one named Julius, a centurion of Augustus' band.",
-       "es": "MAS como fué determinado que habíamos de navegar para Italia, entregaron á Pablo y á algunos otros presos á un centurión, llamado Julio, de la compañía Augusta."
+       "es": "Mas como fué determinado que habíamos de navegar para Italia, entregaron á Pablo y á algunos otros presos á un centurión, llamado Julio, de la compañía Augusta."
       },
       "ref": {
        "en": "Acts 27:1",
@@ -634,7 +634,7 @@
       },
       "text": {
        "en": "Now the LORD had said unto Abram, Get thee out of thy country, and from thy kindred, and from thy father's house, unto a land that I will shew thee:",
-       "es": "EMPERO Jehová había dicho á Abram: Vete de tu tierra y de tu parentela, y de la casa de tu padre, á la tierra que te mostraré;"
+       "es": "Empero Jehová había dicho á Abram: Vete de tu tierra y de tu parentela, y de la casa de tu padre, á la tierra que te mostraré;"
       },
       "ref": {
        "en": "Genesis 12:1",
@@ -1014,7 +1014,7 @@
       },
       "text": {
        "en": "Now the LORD had prepared a great fish to swallow up Jonah. And Jonah was in the belly of the fish three days and three nights.",
-       "es": "MAS Jehová había prevenido un gran pez que tragase á Jonás: y estuvo Jonás en el vientre del pez tres días y tres noches."
+       "es": "Mas Jehová había prevenido un gran pez que tragase á Jonás: y estuvo Jonás en el vientre del pez tres días y tres noches."
       },
       "ref": {
        "en": "Jonah 1:17",
@@ -1544,7 +1544,7 @@
       },
       "text": {
        "en": "Now when Jesus was born in Bethlehem of Judæa in the days of Herod the king, behold, there came wise men from the east to Jerusalem,",
-       "es": "Y COMO fué nacido Jesús en Bethlehem de Judea en días del rey Herodes, he aquí unos magos vinieron del oriente á Jerusalem,"
+       "es": "Y como fué nacido Jesús en Bethlehem de Judea en días del rey Herodes, he aquí unos magos vinieron del oriente á Jerusalem,"
       },
       "ref": {
        "en": "Matthew 2:1",
@@ -1768,7 +1768,7 @@
     },
     "text": {
      "en": "In the beginning God created the heaven and the earth.",
-     "es": "EN el principio crió Dios los cielos y la tierra."
+     "es": "En el principio crió Dios los cielos y la tierra."
     },
     "ref": {
      "en": "Genesis 1:1",
@@ -2432,7 +2432,7 @@
    "who": "david",
    "quote": {
     "en": "The LORD is my shepherd; I shall not want.",
-    "es": "JEHOVÁ es mi pastor; nada me faltará."
+    "es": "Jehová es mi pastor; nada me faltará."
    },
    "verse": {
     "at": {
@@ -2449,7 +2449,7 @@
     },
     "text": {
      "en": "The LORD is my shepherd; I shall not want.",
-     "es": "JEHOVÁ es mi pastor; nada me faltará."
+     "es": "Jehová es mi pastor; nada me faltará."
     },
     "ref": {
      "en": "Psalms 23:1",
@@ -2594,7 +2594,7 @@
     },
     "text": {
      "en": "And afterward Moses and Aaron went in, and told Pharaoh, Thus saith the LORD God of Israel, Let my people go, that they may hold a feast unto me in the wilderness.",
-     "es": "DESPUÉS entraron Moisés y Aarón á Faraón, y le dijeron: Jehová, el Dios de Israel, dice así: Deja ir á mi pueblo á celebrarme fiesta en el desierto."
+     "es": "Después entraron Moisés y Aarón á Faraón, y le dijeron: Jehová, el Dios de Israel, dice así: Deja ir á mi pueblo á celebrarme fiesta en el desierto."
     },
     "ref": {
      "en": "Exodus 5:1",
@@ -3392,7 +3392,7 @@
      },
      "text": {
       "en": "The LORD is my light and my salvation; whom shall I fear? The LORD is the strength of my life; of whom shall I be afraid?",
-      "es": "JEHOVÁ es mi luz y mi salvación: ¿de quién temeré? Jehová es la fortaleza de mi vida: ¿de quién he de atemorizarme?"
+      "es": "Jehová es mi luz y mi salvación: ¿de quién temeré? Jehová es la fortaleza de mi vida: ¿de quién he de atemorizarme?"
      },
      "ref": {
       "en": "Psalms 27:1",
@@ -3618,7 +3618,7 @@
      },
      "text": {
       "en": "God is our refuge and strength, A very present help in trouble.",
-      "es": "DIOS es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones."
+      "es": "Dios es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones."
      },
      "ref": {
       "en": "Psalms 46:1",
@@ -4352,7 +4352,7 @@
     },
     "text": {
      "en": "In the beginning God created the heaven and the earth.",
-     "es": "EN el principio crió Dios los cielos y la tierra."
+     "es": "En el principio crió Dios los cielos y la tierra."
     },
     "ref": {
      "en": "Genesis 1:1",
@@ -4448,7 +4448,7 @@
     },
     "text": {
      "en": "The LORD is my shepherd; I shall not want.",
-     "es": "JEHOVÁ es mi pastor; nada me faltará."
+     "es": "Jehová es mi pastor; nada me faltará."
     },
     "ref": {
      "en": "Psalms 23:1",

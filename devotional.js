@@ -9,6 +9,9 @@
   else root.MsbDevotional = api;
 })(typeof self !== 'undefined' ? self : this, function (root) {
   'use strict';
+  // worker/devotional-push-data.mjs keeps the printed RV1909 drop caps for the
+  // reminder text, so the screen writes a chapter start in sentence case here.
+  function rvCase(v) { return root.MsbRvCase ? root.MsbRvCase.fixStart(String(v)) : v; }
   /* devotional-data.js (~130 KB) is not loaded at startup: it is fetched after
      the first screen, or when the devotional opens. */
   const DATA = () => root.MsbDevotionalData || (typeof require === 'function' && typeof document === 'undefined' ? require('./devotional-data.js') : { ordinary: [], feasts: [] });
@@ -97,7 +100,7 @@
       return `<section class="card dev-home" id="dev-home" data-i18n-skip data-dev-pending><span class="eyebrow">${esc(tr('MORNING DEVOTIONAL', 'DEVOCIONAL DE LA MAÑANA'))}</span><h2>${esc(tr('Today’s devotional', 'El devocional de hoy'))}</h2><p class="muted">${esc(tr('Scripture, a reflection and a short prayer.', 'Escritura, una reflexión y una oración corta.'))}</p><button type="button" class="primary" data-dev-open="${keyOf(new Date())}">${esc(tr('Read today’s devotional', 'Leer el devocional de hoy'))}</button></section>`;
     }
     const e = forKey(keyOf(new Date())), L = es() ? e.es : e.en;
-    return `<section class="card dev-home" id="dev-home" data-i18n-skip><span class="eyebrow">${esc(tr('MORNING DEVOTIONAL', 'DEVOCIONAL DE LA MAÑANA'))}${L.feast ? ' · ' + esc(L.feast) : ''}</span><h2>${esc(L.title)}</h2><p class="dev-home-verse">“${esc(L.verses[0])}”</p><p class="muted">${esc(L.ref)}</p><button type="button" class="primary" data-dev-open="${keyOf(new Date())}">${esc(tr('Read today’s devotional', 'Leer el devocional de hoy'))}</button></section>`;
+    return `<section class="card dev-home" id="dev-home" data-i18n-skip><span class="eyebrow">${esc(tr('MORNING DEVOTIONAL', 'DEVOCIONAL DE LA MAÑANA'))}${L.feast ? ' · ' + esc(L.feast) : ''}</span><h2>${esc(L.title)}</h2><p class="dev-home-verse">“${esc(rvCase(L.verses[0]))}”</p><p class="muted">${esc(L.ref)}</p><button type="button" class="primary" data-dev-open="${keyOf(new Date())}">${esc(tr('Read today’s devotional', 'Leer el devocional de hoy'))}</button></section>`;
   }
   function show(key) {
     const el = screenEl(); if (!el) return;
@@ -109,7 +112,7 @@
     }
     const dt = parseKey(key || viewKey) || new Date(); viewKey = keyOf(dt);
     const e = forDate(dt.getFullYear(), dt.getMonth() + 1, dt.getDate()), L = es() ? e.es : e.en, f = e.father;
-    const verses = L.verses.map((v, i) => `<span class="dev-vn">${e.verse + i}</span>${esc(v)}`).join(' ');
+    const verses = L.verses.map((v, i) => `<span class="dev-vn">${e.verse + i}</span>${esc(rvCase(v))}`).join(' ');
     const today = viewKey === keyOf(new Date());
     el.innerHTML = `<article class="dev-page" data-i18n-skip lang="${es() ? 'es' : 'en'}">
       <button type="button" class="text-button back" data-nav="today">← ${esc(tr('Home', 'Inicio'))}</button>

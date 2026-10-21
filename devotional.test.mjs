@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const D = require('./devotional-data.js');
+const RvCase = require('./rv-case.js');
 const M = require('./devotional.js');
 import { PUSH_TEXT, PUSH_ORDER } from './worker/devotional-push-data.mjs';
 import { pickId } from './worker/push.mjs';
@@ -21,7 +22,8 @@ test('verses are the exact KJV and RV1909 text from the app Bible', () => {
   for (const e of [...D.ordinary, ...D.feasts]) {
     const k = bible(e.book).chapters[e.chapter - 1], r = bible(e.book, true).chapters[e.chapter - 1];
     assert.deepEqual(e.en.verses, k.slice(e.verse - 1, e.verseEnd), e.id);
-    assert.deepEqual(e.es.verses, r.slice(e.verse - 1, e.verseEnd), e.id);
+    // The worker push table keeps a few printed drop caps; the screen writes them in sentence case.
+    assert.deepEqual(e.es.verses.map(RvCase.fixStart), r.slice(e.verse - 1, e.verseEnd), e.id);
   }
 });
 test('Orthodox framing: no Protestant-only formulas, Spanish uses tú', () => {

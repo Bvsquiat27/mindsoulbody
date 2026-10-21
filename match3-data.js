@@ -298,7 +298,7 @@
       },
       "verse": {
         "en": "In the beginning God created the heaven and the earth.",
-        "es": "EN el principio crió Dios los cielos y la tierra."
+        "es": "En el principio crió Dios los cielos y la tierra."
       },
       "stars": [
         2400,
@@ -794,7 +794,7 @@
       },
       "verse": {
         "en": "The LORD is my shepherd; I shall not want.",
-        "es": "JEHOVÁ es mi pastor; nada me faltará."
+        "es": "Jehová es mi pastor; nada me faltará."
       },
       "stars": [
         3850,
@@ -906,7 +906,7 @@
       },
       "verse": {
         "en": "God is our refuge and strength, A very present help in trouble.",
-        "es": "DIOS es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones."
+        "es": "Dios es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones."
       },
       "stars": [
         5000,

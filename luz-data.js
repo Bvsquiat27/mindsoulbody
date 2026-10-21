@@ -678,7 +678,7 @@
       "en": "Hebrews 12:1"
      },
      "text": {
-      "es": "POR tanto nosotros también, teniendo en derredor nuestro una tan grande nube de testigos, dejando todo el peso del pecado que nos rodea, corramos con paciencia la carrera que nos es propuesta,",
+      "es": "Por tanto nosotros también, teniendo en derredor nuestro una tan grande nube de testigos, dejando todo el peso del pecado que nos rodea, corramos con paciencia la carrera que nos es propuesta,",
       "en": "Wherefore seeing we also are compassed about with so great a cloud of witnesses, let us lay aside every weight, and the sin which doth so easily beset us, and let us run with patience the race that is set before us,"
      }
     },
@@ -1132,7 +1132,7 @@
       "en": "Acts 3:1"
      },
      "text": {
-      "es": "PEDRO y Juan subían juntos al templo á la hora de oración, la de nona.",
+      "es": "Pedro y Juan subían juntos al templo á la hora de oración, la de nona.",
       "en": "Now Peter and John went up together into the temple at the hour of prayer, being the ninth hour."
      }
     },
@@ -1652,7 +1652,7 @@
       "en": "1 Peter 5:1"
      },
      "text": {
-      "es": "RUEGO á los ancianos que están entre vosotros, yo anciano también con ellos, y testigo de las aflicciones de Cristo, que soy también participante de la gloria que ha de ser revelada:",
+      "es": "Ruego á los ancianos que están entre vosotros, yo anciano también con ellos, y testigo de las aflicciones de Cristo, que soy también participante de la gloria que ha de ser revelada:",
       "en": "The elders which are among you I exhort, who am also an elder, and a witness of the sufferings of Christ, and also a partaker of the glory that shall be revealed:"
      }
     },
