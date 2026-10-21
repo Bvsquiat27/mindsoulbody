@@ -885,7 +885,124 @@
      "es": "Traducción libre al español de traducciones inglesas comunes.",
      "en": "Common English rendering."
     }
-   }
+   },
+   "see": [
+    "luke"
+   ]
+  },
+  {
+   "id": "luke",
+   "q": {
+    "es": "¿Quién pintó el primer ícono? San Lucas, Pablo y los gálatas",
+    "en": "Who painted the first icon? St. Luke, Paul and the Galatians"
+   },
+   "short": {
+    "es": "La Tradición de la Iglesia dice que fue San Lucas, el médico que escribió el Evangelio y los Hechos; la Biblia no lo cuenta, pero Hechos sí muestra que su autor se unió a Pablo justo después de que Pablo pasó por Galacia.",
+    "en": "The Church’s Tradition says it was St. Luke, the physician who wrote the Gospel and Acts; the Bible does not record it, but Acts does show its author joining Paul right after Paul passed through Galatia."
+   },
+   "body": {
+    "es": [
+     "Primero, con toda honestidad: la Biblia no dice que San Lucas pintó íconos. Eso lo sabemos por la Tradición de la Iglesia. Desde hace muchos siglos, los cristianos de Oriente y de Occidente recuerdan a San Lucas como el primero que pintó a la Virgen María con el Niño Jesús en brazos. El ícono más famoso de este tipo se llama Hodegetria, que quiere decir “la que muestra el camino”: María señala con su mano a Jesús.",
+     "El escrito más antiguo que lo menciona se suele atribuir a Teodoro el Lector, un historiador de Constantinopla del siglo VI. Cuenta que la emperatriz Eudocia envió desde Jerusalén a Pulqueria un ícono de la Madre de Dios pintado por el apóstol Lucas. Pero esa línea solo se conserva en copias más tardías, y algunos historiadores piensan que se añadió después. En el siglo VIII, un escrito atribuido a San Andrés de Creta ya lo dice con toda claridad. Hay íconos antiguos que se le atribuyen, en Roma y en otros lugares, aunque los que vemos hoy son pinturas o copias de siglos posteriores.",
+     "Ahora, lo que sí dice la Biblia. En Hechos 16, San Pablo pasa por Frigia y la provincia de Galacia. El Espíritu Santo no lo deja predicar en Asia, y llega a Troas. Allí, en el versículo 10, el relato cambia de repente de “ellos” a “nosotros”: “luego procuramos partir á Macedonia”. El que escribe se une a Pablo justo en ese momento. Desde el siglo II, la Iglesia enseña que ese autor es Lucas, el mismo que escribió el Evangelio.",
+     "En su carta a los Gálatas, Pablo les recuerda que les anunció el evangelio “por flaqueza de carne”, es decir, estando enfermo. Y les dice que lo amaban tanto que se habrían sacado los ojos para dárselos. En otra carta, Colosenses 4:14, Pablo llama a Lucas “el médico amado”.",
+     "Muchos han notado algo hermoso: Pablo sale de Galacia enfermo, y justo después aparece a su lado Lucas, el médico. No es una prueba, y la Biblia no lo explica. Además, los estudiosos no están de acuerdo en cuál de las visitas de Pablo a Galacia es la de Gálatas 4:13. Pero es una conexión bonita: quizás el Señor le dio a Pablo, en su debilidad, un médico y un amigo.",
+     "Hay algo más. En Gálatas 3:1, Pablo dice que ante los ojos de los gálatas Jesucristo “fué ya descrito como crucificado”. La palabra griega es proegraphē: pintado o puesto a la vista de todos, como un cartel público. Pablo habla primero de su predicación, tan viva que era como ver a Cristo crucificado. La Iglesia ve lo mismo en los íconos: el ícono hace con colores lo que la predicación hace con palabras. Pone a Cristo delante de nuestros ojos.",
+     "Y algo que nos une: ese mismo Lucas escribió Hechos 2, el día de Pentecostés, cuando todos fueron llenos del Espíritu Santo y hablaron en otras lenguas. Tú amas ese capítulo. El Lucas que nos contó el Pentecostés es el mismo que la Iglesia recuerda como el primer pintor de íconos. El Espíritu que llenó a los apóstoles es el que mueve a la Iglesia a mostrar a Cristo con palabras y con colores."
+    ],
+    "en": [
+     "First, in all honesty: the Bible does not say that St. Luke painted icons. We know that from the Church’s Tradition. For many centuries, Christians in both East and West have remembered St. Luke as the first to paint the Virgin Mary holding the Child Jesus. The most famous icon of this kind is called the Hodegetria, which means “she who shows the way”: Mary points with her hand to Jesus.",
+     "The oldest writing that mentions it is usually credited to Theodore the Lector, a 6th-century historian in Constantinople. He tells how the Empress Eudocia sent from Jerusalem to Pulcheria an icon of the Mother of God painted by the apostle Luke. But that line survives only in later copies, and some historians think it was added afterward. In the 8th century, a work credited to St. Andrew of Crete states it plainly. Old icons in Rome and elsewhere are credited to him, though the ones we see today are paintings or copies from later centuries.",
+     "Now, what the Bible does say. In Acts 16, St. Paul goes through Phrygia and the region of Galatia. The Holy Spirit does not let him preach in Asia, and he comes to Troas. There, in verse 10, the story suddenly changes from “they” to “we”: “immediately we endeavoured to go into Macedonia.” The writer joins Paul right at that moment. Since the 2nd century, the Church has taught that this writer is Luke, the same man who wrote the Gospel.",
+     "In his letter to the Galatians, Paul reminds them that he preached the gospel to them “through infirmity of the flesh,” that is, while he was sick. And he tells them they loved him so much they would have plucked out their own eyes and given them to him. In another letter, Colossians 4:14, Paul calls him “Luke, the beloved physician.”",
+     "Many have noticed something beautiful: Paul leaves Galatia sick, and right afterward Luke, the physician, appears at his side. It is not proof, and the Bible does not explain it. Scholars also disagree about which of Paul’s visits to Galatia is the one in Galatians 4:13. But it is a lovely connection: perhaps the Lord gave Paul, in his weakness, a physician and a friend.",
+     "There is more. In Galatians 3:1, Paul says that before the Galatians’ eyes “Jesus Christ hath been evidently set forth, crucified among you.” The Greek word is proegraphē: portrayed or placarded for everyone to see, like a public poster. Paul means first of all his preaching, so vivid that it was like seeing Christ crucified. The Church sees the same in icons: an icon does with color what preaching does with words. It sets Christ before our eyes.",
+     "And something we share: this same Luke wrote Acts 2, the day of Pentecost, when they were all filled with the Holy Ghost and spoke with other tongues. You love that chapter. The Luke who told us about Pentecost is the same one the Church remembers as the first iconographer. The Spirit who filled the apostles is the one who moves the Church to show Christ in words and in color."
+    ]
+   },
+   "verses": [
+    {
+     "book": 44,
+     "chapter": 16,
+     "verses": [
+      6,
+      7,
+      8,
+      9,
+      10
+     ],
+     "ref": {
+      "es": "Hechos 16:6–10",
+      "en": "Acts 16:6–10"
+     },
+     "text": {
+      "es": "Y pasando á Phrygia y la provincia de Galacia, les fué prohibido por el Espíritu Santo hablar la palabra en Asia. Y como vinieron á Misia, tentaron de ir á Bithynia; mas el Espíritu no les dejó. Y pasando á Misia, descendieron á Troas. Y fué mostrada á Pablo de noche una visión: Un varón Macedonio se puso delante, rogándole, y diciendo: Pasa á Macedonia, y ayúdanos. Y como vió la visión, luego procuramos partir á Macedonia, dando por cierto que Dios nos llamaba para que les anunciásemos el evangelio.",
+      "en": "Now when they had gone throughout Phrygia and the region of Galatia, and were forbidden of the Holy Ghost to preach the word in Asia, after they were come to Mysia, they assayed to go into Bithynia: but the Spirit suffered them not. And they passing by Mysia came down to Troas. And a vision appeared to Paul in the night; There stood a man of Macedonia, and prayed him, saying, Come over into Macedonia, and help us. And after he had seen the vision, immediately we endeavoured to go into Macedonia, assuredly gathering that the Lord had called us for to preach the gospel unto them."
+     }
+    },
+    {
+     "book": 48,
+     "chapter": 4,
+     "verses": [
+      13,
+      14,
+      15
+     ],
+     "ref": {
+      "es": "Gálatas 4:13–15",
+      "en": "Galatians 4:13–15"
+     },
+     "text": {
+      "es": "Que vosotros sabéis que por flaqueza de carne os anuncié el evangelio al principio: Y no desechasteis ni menospreciasteis mi tentación que estaba en mi carne: antes me recibisteis como á un ángel de Dios, como á Cristo Jesús. ¿Dónde está pues vuestra bienaventuranza? porque yo os doy testimonio que si se pudiera hacer, os hubierais sacado vuestros ojos para dármelos.",
+      "en": "Ye know how through infirmity of the flesh I preached the gospel unto you at the first. And my temptation which was in my flesh ye despised not, nor rejected; but received me as an angel of God, even as Christ Jesus. Where is then the blessedness ye spake of? for I bear you record, that, if it had been possible, ye would have plucked out your own eyes, and have given them to me."
+     }
+    },
+    {
+     "book": 51,
+     "chapter": 4,
+     "verses": [
+      14
+     ],
+     "ref": {
+      "es": "Colosenses 4:14",
+      "en": "Colossians 4:14"
+     },
+     "text": {
+      "es": "Os saluda Lucas, el médico amado, y Demas.",
+      "en": "Luke, the beloved physician, and Demas, greet you."
+     }
+    },
+    {
+     "book": 48,
+     "chapter": 3,
+     "verses": [
+      1
+     ],
+     "ref": {
+      "es": "Gálatas 3:1",
+      "en": "Galatians 3:1"
+     },
+     "text": {
+      "es": "¡OH Gálatas insensatos! ¿quién os fascinó, para no obedecer á la verdad, ante cuyos ojos Jesucristo fué ya descrito como crucificado entre vosotros?",
+      "en": "O foolish Galatians, who hath bewitched you, that ye should not obey the truth, before whose eyes Jesus Christ hath been evidently set forth, crucified among you?"
+     }
+    }
+   ],
+   "father": {
+    "who": {
+     "es": "Atribuido a San Andrés de Creta, Sobre la veneración de las santas imágenes (siglo VIII)",
+     "en": "Credited to St. Andrew of Crete, On the Veneration of the Holy Images (8th century)"
+    },
+    "es": "“[Lucas] pintó con su propia mano a Cristo encarnado y a su inmaculada Madre.”",
+    "en": "“[Luke] with his own hand depicted both the incarnate Christ and His immaculate Mother.”",
+    "note": {
+     "es": "Traducción libre al español de una traducción inglesa moderna. Los historiadores discuten si la obra es de San Andrés, pero es el testimonio claro más antiguo que se conserva.",
+     "en": "Modern English translation. Historians debate whether the work is St. Andrew’s own, but it is the oldest clear witness that survives."
+    }
+   },
+   "see": [
+    "icons"
+   ]
   },
   {
    "id": "cross",

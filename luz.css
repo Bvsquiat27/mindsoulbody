@@ -49,6 +49,7 @@
 .luz .luz-note{font-size:.8em;font-family:inherit;margin:.5em 0 0}
 .luz-sources{padding-left:1.1em;margin:0 0 1em}
 .luz-sources li{margin:.5em 0}
+.luz-see{list-style:none;margin:0 0 1em;padding:0}
 .luz-pager{display:flex;justify-content:space-between;gap:.6em;margin:1.6em 0 .8em}
 .luz-pager .luz-btn{min-height:64px;font-size:1em;padding:.4em 1.1em}
 .luz-next{margin-left:auto;background:var(--text);color:var(--bg);border-color:var(--text)}
