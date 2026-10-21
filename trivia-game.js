@@ -3,6 +3,10 @@
 window.TriviaGame=(()=>{
   let root,ctx,library=null,mode=null,open=null,notice=null;
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  /* Spanish: each card in data/trivia.json carries promptEs, choicesEs,
+     categoryEs, answerFormEs and referenceEs (RV1909 names, tú form). */
+  const es=()=>!!(window.MsbI18n&&MsbI18n.lang()==='es');
+  const pick=(q,key)=>{const v=es()&&q?q[key+'Es']:undefined;return v!==undefined&&v!==null&&v!==''?v:(q?q[key]:undefined)};
   function hide(){root=null;open=null;notice=null;mode=null}
   async function load(){if(!library)library=await ctx.api('/study/trivia')}
   function unscoredNote(){return `<p class="lead">This board cannot be scored. There is no answer key, so a choice is not marked right or wrong.</p>`}
@@ -16,16 +20,17 @@ window.TriviaGame=(()=>{
   }
   function jeopardyBoard(){
     const items=library.jeopardy||[],cats=[...new Set(items.map(q=>q.category))];
-    return `<div class="jeopardy-board">${cats.map(cat=>`<div class="jeopardy-column"><h3>${esc(cat)}</h3>${items.filter(q=>q.category===cat).map(q=>`<button data-trivia="open" data-id="${esc(q.id)}">${esc(q.points)}</button>`).join('')}</div>`).join('')}</div>${open?clue(items.find(q=>q.id===open)):''}`;
+    return `<div class="jeopardy-board" data-i18n-skip>${cats.map(cat=>`<div class="jeopardy-column"><h3>${esc(pick(items.find(q=>q.category===cat),'category'))}</h3>${items.filter(q=>q.category===cat).map(q=>`<button data-trivia="open" data-id="${esc(q.id)}">${esc(q.points)}</button>`).join('')}</div>`).join('')}</div>${open?clue(items.find(q=>q.id===open)):''}`;
   }
   function answerBoard(){
     const items=library.answerBoard||[];
-    return `<div class="feud-list">${items.map(q=>`<button class="card feud-round" data-trivia="open" data-id="${esc(q.id)}"><strong>${esc(q.prompt)}</strong><span>${(q.choices||[]).length} choices</span></button>`).join('')}</div>${open?clue(items.find(q=>q.id===open)):''}`;
+    return `<div class="feud-list" data-i18n-skip>${items.map(q=>{const n=(pick(q,'choices')||[]).length;return `<button class="card feud-round" data-trivia="open" data-id="${esc(q.id)}"><strong>${esc(pick(q,'prompt'))}</strong><span>${es()?`${n} ${n===1?'opción':'opciones'}`:`${n} ${n===1?'choice':'choices'}`}</span></button>`}).join('')}</div>${open?clue(items.find(q=>q.id===open)):''}`;
   }
   function clue(q){
     if(!q)return '';
-    const choices=(q.choices||[]).map((choice,i)=>`<button data-trivia="answer" data-id="${esc(q.id)}" data-choice="${i}">${mode==='jeopardy'?`${esc(q.answerForm||'')} ${esc(choice)}?`:esc(choice)}</button>`).join('');
-    return `<section class="card trivia-clue" id="active-clue"><span class="eyebrow">${mode==='jeopardy'?`${esc(q.category)} · ${esc(q.points)} POINTS`:'SCRIPTURE CHOICES'}</span><h2>${esc(q.prompt)}</h2><div class="trivia-choices">${choices}</div><p class="small">${q.reference?`Passage on this card: ${esc(q.reference)}. `:''}Choosing one does not score the board.</p></section>`;
+    const S=es(),ref=pick(q,'reference');
+    const choices=(pick(q,'choices')||[]).map((choice,i)=>`<button data-trivia="answer" data-id="${esc(q.id)}" data-choice="${i}">${mode==='jeopardy'?`${esc(pick(q,'answerForm')||'')} ${esc(choice)}?`:esc(choice)}</button>`).join('');
+    return `<section class="card trivia-clue" id="active-clue" data-i18n-skip><span class="eyebrow">${mode==='jeopardy'?`${esc(String(pick(q,'category')||'').toUpperCase())} · ${esc(q.points)} ${S?'PUNTOS':'POINTS'}`:(S?'OPCIONES DE LA ESCRITURA':'SCRIPTURE CHOICES')}</span><h2>${esc(pick(q,'prompt'))}</h2><div class="trivia-choices">${choices}</div><p class="small">${ref?(S?`Pasaje de esta tarjeta: ${esc(ref)}. `:`Passage on this card: ${esc(ref)}. `):''}${S?'Elegir una no califica el tablero.':'Choosing one does not score the board.'}</p></section>`;
   }
   function click(e){
     if(!root||!root.contains(e.target))return;
@@ -39,7 +44,7 @@ window.TriviaGame=(()=>{
     if(action==='answer'){
       const items=mode==='jeopardy'?(library.jeopardy||[]):(library.answerBoard||[]);
       const q=items.find(item=>item.id===button.dataset.id);
-      {const t=text=>window.MsbI18n?MsbI18n.t(text):text;notice=t('This board cannot be scored. There is no answer key, so this choice is not marked right or wrong.')+(q&&q.reference?' '+t('The card names {ref}.').split('{ref}').join(q.reference):'');}
+      {const t=text=>window.MsbI18n?MsbI18n.t(text):text;notice=t('This board cannot be scored. There is no answer key, so this choice is not marked right or wrong.')+(q&&q.reference?' '+t('The card names {ref}.').split('{ref}').join(pick(q,'reference')):'');}
       render();
       root.querySelector('.trivia-feedback')?.scrollIntoView({block:'nearest',behavior:'smooth'});
     }

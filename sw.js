@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v160';
+const CACHE_VERSION = 'v161';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -24,6 +24,10 @@ const RVR_CACHE = `msb-bible-${RVR_DATA_VERSION}`;
 const APP_CACHE_PREFIX = 'msb-';
 const STORIES_CACHE = 'msb-stories-1';
 const AUDIO_CACHE = 'msb-audio-1';
+/* Google Fonts (the stylesheet and the font files) are kept across updates
+   and served stale-while-revalidate, so the app keeps its type offline. */
+const FONTS_CACHE = 'msb-fonts-1';
+const FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 const COLORING_IDS = ['creation', 'noah', 'stars', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
 const STORY_IDS = ['creation', 'noah', 'stars', 'ladder', 'joseph', 'moses', 'redsea', 'samuel', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter', 'ruth', 'elijah', 'esther', 'baptism', 'samaritan', 'zacchaeus', 'bartimaeus'];
 
@@ -39,6 +43,8 @@ const SHELL = [
   './study-design.css',
   './kidgames.css',
   './aura.js',
+  './dialog-focus.js',
+  './rv-case.js',
   './bible-reader.js',
   './trivia-game.js',
   './games.js',
@@ -95,6 +101,7 @@ const SHELL = [
 const DATA_FILES = [
   './data/study-challenges.json',
   './data/study-library.json',
+  './data/study-index.json',
   './data/holy-spirit.json',
   './data/game-bank.json',
   './data/trivia.json',
@@ -214,7 +221,7 @@ self.addEventListener('activate', (event) => {
         await preserveBibleBooks(keys);
         await preserveRvrBooks(keys);
         await preserveStories(keys);
-        const kept = new Set([SHELL_CACHE, DATA_CACHE, BIBLE_CACHE, RVR_CACHE, STORIES_CACHE, AUDIO_CACHE]);
+        const kept = new Set([SHELL_CACHE, DATA_CACHE, BIBLE_CACHE, RVR_CACHE, FONTS_CACHE, STORIES_CACHE, AUDIO_CACHE]);
         await Promise.all(
           keys.filter((k) => k.startsWith(APP_CACHE_PREFIX) && !kept.has(k))
             .map((k) => caches.delete(k))
@@ -281,12 +288,31 @@ async function worshipAudio(request, url) {
   return rangeResponse(full, request.headers.get('Range'));
 }
 
+// Google Fonts: answer from the cache at once when there is a copy, and
+// refresh that copy in the background. The stylesheet link has no
+// crossorigin attribute, so its response is opaque; it is still cached.
+async function googleFont(event, request) {
+  const cache = await caches.open(FONTS_CACHE);
+  const hit = await cache.match(request);
+  const refresh = fetch(request).then((res) => {
+    if (res && (res.ok || res.type === 'opaque')) return cache.put(request, res.clone()).then(() => res);
+    return res;
+  }).catch(() => null);
+  if (hit) { event.waitUntil(refresh); return hit; }
+  const res = await refresh;
+  return res || new Response('', { status: 503, statusText: 'Offline' });
+}
+
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
-  /* Cross-origin requests (fonts, the API, the Lessons for Luz video
-     frame) are never cached here. */
+  if (FONT_HOSTS.includes(url.hostname) && url.protocol === 'https:') {
+    event.respondWith(googleFont(event, request));
+    return;
+  }
+  /* Other cross-origin requests (the API, the Lessons for Luz video frame)
+     are never cached here. */
   if (url.origin !== self.location.origin) return;
 
   if (isStudyNotes(url) || isDataRequest(url)) {

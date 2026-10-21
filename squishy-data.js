@@ -115,7 +115,7 @@
       },
       "verse": {
         "en": "Now the LORD had prepared a great fish to swallow up Jonah. And Jonah was in the belly of the fish three days and three nights.",
-        "es": "MAS Jehová había prevenido un gran pez que tragase á Jonás: y estuvo Jonás en el vientre del pez tres días y tres noches."
+        "es": "Mas Jehová había prevenido un gran pez que tragase á Jonás: y estuvo Jonás en el vientre del pez tres días y tres noches."
       }
     },
     {
@@ -1347,7 +1347,7 @@
       "final": true,
       "name": {
         "en": "Light of the World Lamp",
-        "es": "Lámpara de la luz"
+        "es": "La lámpara de la Luz del mundo"
       },
       "lesson": {
         "en": "Jesus said, “I am the light of the world.” When you follow Jesus, you do not have to walk in the dark, because His light shows you the way. And His love can shine through you too!",

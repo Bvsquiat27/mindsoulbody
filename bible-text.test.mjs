@@ -85,14 +85,14 @@ test('RV1909 word fixes stay inside the listed words', () => {
 test('Spanish psalm titles are headings, and blank verses stay empty slots', () => {
   const psalms = rvr(19);
   assert.equal(psalms.headings['3:1'].startsWith('Salmo de David'), true);
-  assert.match(psalms.chapters[2][0], /^¡OH /);
+  assert.match(psalms.chapters[2][0], /^¡Oh Jehová/);
   assert.equal(psalms.headings['119:1'], 'ALEPH.');
   assert.equal(psalms.headings['119:9'], 'BETH');
-  assert.match(psalms.chapters[118][0], /^BIENAVENTURADOS/);
+  assert.match(psalms.chapters[118][0], /^Bienaventurados los perfectos/);
   assert.equal(Object.keys(psalms.headings).filter((key) => !key.startsWith('119:')).length, 125);
   const proverbs = rvr(20);
   assert.equal(proverbs.headings['10:1'], 'Las sentencias de Salomón.');
-  assert.match(proverbs.chapters[9][0], /^EL hijo/);
+  assert.match(proverbs.chapters[9][0], /^El hijo sabio/);
   const blanks = [[4, 12, 16], [4, 29, 40], [9, 23, 29], [10, 20, 26], [14, 33, 25], [18, 35, 16], [18, 38, 39], [18, 38, 40], [18, 38, 41], [18, 40, 20], [18, 40, 21], [18, 40, 22], [18, 40, 23], [18, 40, 24], [28, 11, 12], [32, 1, 17], [44, 19, 41], [47, 13, 14]];
   assert.equal(blanks.length, 18);
   for (const [id, chapter, verse] of blanks) assert.equal(at(id, chapter, verse), '');
@@ -143,7 +143,7 @@ test('study together notebook names verses and keeps the worker payload', () => 
 
 test('service worker refreshes Bible caches and only deletes this app', () => {
   const sw = read('sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v160'/);
+  assert.match(sw, /const CACHE_VERSION = 'v161'/);
   assert.match(sw, /const BIBLE_DATA_VERSION = 'kjv-3'/);
   assert.match(sw, /const RVR_DATA_VERSION = 'rvr1909-4'/);
   assert.match(sw, /function freshOrCached/);

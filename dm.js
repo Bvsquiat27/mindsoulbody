@@ -185,9 +185,10 @@
   }
 
   function verseCard(it) {
-    const can = it.book && it.chapter;
+    const book = Math.floor(Number(it.book)) || 0, chapter = Math.floor(Number(it.chapter)) || 0, verse = Math.floor(Number(it.verse)) || 0;
+    const can = book > 0 && chapter > 0;
     const inner = `<span class="dm-verse-ref">📖 ${esc(it.reference || T('A verse'))}<small>${it.translation === 'rvr' ? 'RV1909' : 'KJV'}</small></span><span class="dm-verse-text">“${esc(it.text)}”</span>${it.note ? `<span class="dm-verse-note">${esc(it.note)}</span>` : ''}${can ? `<span class="dm-verse-open">${esc(T('Open in the Bible'))} →</span>` : ''}`;
-    return can ? `<button type="button" class="dm-verse" data-dm-verse="${it.book}:${it.chapter}:${it.verse || ''}" data-i18n-skip>${inner}</button>` : `<div class="dm-verse" data-i18n-skip>${inner}</div>`;
+    return can ? `<button type="button" class="dm-verse" data-dm-verse="${esc(book)}:${esc(chapter)}:${verse > 0 ? esc(verse) : ''}" data-i18n-skip>${inner}</button>` : `<div class="dm-verse" data-i18n-skip>${inner}</div>`;
   }
   function threadRows(items) {
     const l = lang();

@@ -209,7 +209,7 @@
   function safeAvatar(src) {
     const raw = String(src || '').trim();
     if (/^data:image\/(?:jpeg|png|webp);base64,[a-z0-9+/]+={0,2}$/i.test(raw)) return raw;
-    if (/^https:\/\/[^\s"'<>]+$/i.test(raw)) return raw;
+    /* remote https: pictures are refused, as in safeImageSrc */
     return '';
   }
   function avatarMarkup(src, name) {

@@ -449,6 +449,19 @@
     return { have, need, done: have >= need, again: true };
   }
 
+  /* What the lamp (the final squishy) still needs: the squishies not yet
+     opened (in shelf order) and whether a Manna Match level has 3 stars. */
+  function finalLeft(ch, ctx) {
+    /* every other squishy open, and 3 stars on any Manna Match level */
+    const others = ctx.squishies.filter(x => x.id !== ch.id && x.locked);
+    /* a gifted squishy counts only once its own challenge is met */
+    const earned = (ctx.stats && ctx.stats.badges) || {}, gifts = ctx.gifts || [];
+    /* one given away in the Trade Room still counts if it was earned */
+    const away = ctx.away || [];
+    const isOpen = x => (ctx.unlocked.includes(x.id) && (!gifts.includes(x.id) || earned[x.id])) || (away.includes(x.id) && earned[x.id]);
+    return { others: others.length, locked: others.filter(x => !isOpen(x)).map(x => x.id), three: Object.values(ctx.match).some(s => s === 3) };
+  }
+
   /* How far along a challenge is: { have, need, done }. */
   function challengeProgress(ch, ctx) {
     const st = ctx.stats, cap = (have, need) => ({ have: Math.min(have, need), need, done: have >= need });
@@ -470,15 +483,8 @@
       case 'kgAll': return cap(KID_GAMES.filter(g => ctx.kid && ctx.kid.done[g] > 0).length, ch.n);
       case 'tabletsLegend': { const sets = Math.min(ch.sets, (ctx.kid && ctx.kid.done.order) || 0), three = Math.min(ch.n, Object.values(ctx.match).filter(s => s === 3).length); return cap(sets + three, ch.sets + ch.n); }
       case 'final': {
-        /* every other squishy open, and 3 stars on any Manna Match level */
-        const others = ctx.squishies.filter(x => x.id !== ch.id && x.locked);
-        /* a gifted squishy counts only once its own challenge is met */
-        const earned = (ctx.stats && ctx.stats.badges) || {}, gifts = ctx.gifts || [];
-        /* one given away in the Trade Room still counts if it was earned */
-        const away = ctx.away || [];
-        const open = others.filter(x => (ctx.unlocked.includes(x.id) && (!gifts.includes(x.id) || earned[x.id])) || (away.includes(x.id) && earned[x.id])).length;
-        const three = Object.values(ctx.match).some(s => s === 3) ? 1 : 0;
-        return cap(open + three, others.length + 1);
+        const left = finalLeft(ch, ctx);
+        return cap(left.others - left.locked.length + (left.three ? 1 : 0), left.others + 1);
       }
       default: return { have: 0, need: 1, done: false };
     }
@@ -901,7 +907,7 @@
       }
     };
   }
-  const api = { KID_GAMES, kidGames, AGAIN, counters, tradeAway, cameBack, wonBackProgress, awayList, roomLedger, lessonSeen, FEEL, BUZZ, feelFor, VIBE_LEVELS, VIBE_SCALE, vibePref, scalePattern, feelPattern, KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
+  const api = { KID_GAMES, kidGames, AGAIN, counters, tradeAway, cameBack, wonBackProgress, awayList, roomLedger, lessonSeen, FEEL, BUZZ, feelFor, VIBE_LEVELS, VIBE_SCALE, vibePref, scalePattern, feelPattern, KITS, TONES, GESTURES, kitFor, gestures, hasTrick, isTrick, HINT_AFTER, trickRevealed, CHALLENGES, EXTRA_BADGES, tierOf, dayKey, longestStreak, stats, challengeProgress, finalLeft, challengeContext, challengeFor, checkUnlocks, badges, crunchPattern, crunchShape, glowLevel, softBody, mood, pulseMs, KEYS, soundPref, progress, pressDepth, springStep, atRest, pokeOffset, vibeMs, rng, shuffle, memoryDeck, isMatch, questionRound, roundWon, PASS };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MsbSquishyCore = api;
 })(typeof self !== 'undefined' ? self : this);
