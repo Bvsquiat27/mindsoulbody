@@ -74,7 +74,11 @@
   function save(key, value) { try { localStorage.setItem(key, String(value)); } catch { /* private mode */ } }
 
   function homeCard() {
-    return `<button type="button" class="luz-home-card" data-nav="luz" data-i18n-skip lang="es"><span class="eyebrow">PARA LUZ · FOR LUZ</span><strong>Lecciones para Luz</strong><span>Lessons for Luz · ${lessons().length ? `${lessons().length} ` : ''}preguntas sobre la fe ortodoxa</span></button>`;
+    // Follows the app language (Spanish when the app language is unknown).
+    const n = lessons().length;
+    const en = !!(window.MsbI18n && MsbI18n.lang && MsbI18n.lang() === 'en');
+    const sub = en ? `${n ? `${n} ` : ''}questions about the Orthodox faith` : `${n ? `${n} ` : ''}preguntas sobre la fe ortodoxa`;
+    return `<button type="button" class="luz-home-card" data-nav="luz" data-i18n-skip lang="${en ? 'en' : 'es'}"><span class="eyebrow">${en ? 'FOR LUZ' : 'PARA LUZ'}</span><strong>${en ? 'Lessons for Luz' : 'Lecciones para Luz'}</strong><span>${sub}</span></button>`;
   }
 
   function tools(t, l) {
