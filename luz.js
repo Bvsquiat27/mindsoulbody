@@ -41,7 +41,7 @@
       sizes: ['Normal', 'Grande', 'Más grande', 'Muy grande'],
       questions: 'Preguntas', of: (n, t) => `PREGUNTA ${n} DE ${t}`, short: 'RESPUESTA CORTA', bible: 'La Biblia dice', father: 'Un Padre de la Iglesia',
       sources: 'De la página de tu iglesia, Nueva Vida', pentecostal: 'Una declaración pentecostal común', listen: 'Escuchar', pause: 'Pausa', stop: 'Parar',
-      prev: '← Anterior', next: 'Siguiente →', back: 'Volver a mis lecciones', pager: 'Moverse entre lecciones', prevOf: 'Lección anterior', nextOf: 'Lección siguiente', video: 'VIDEO', play: 'Ver el video', open: 'Abrir en YouTube',
+      prev: '← Anterior', next: 'Siguiente →', back: 'Volver a mis lecciones', seeAlso: 'Ver también', pager: 'Moverse entre lecciones', prevOf: 'Lección anterior', nextOf: 'Lección siguiente', video: 'VIDEO', play: 'Ver el video', open: 'Abrir en YouTube',
       offline: 'Este video necesita internet. Cuando tengas conexión, tócalo otra vez. Las lecciones sí funcionan sin internet.',
       version: 'RV1909', by: 'Canal'
     },
@@ -52,7 +52,7 @@
       sizes: ['Normal', 'Large', 'Larger', 'Largest'],
       questions: 'Questions', of: (n, t) => `QUESTION ${n} OF ${t}`, short: 'SHORT ANSWER', bible: 'The Bible says', father: 'A Father of the Church',
       sources: 'From your church’s website, Nueva Vida', pentecostal: 'A common Pentecostal statement', listen: 'Read aloud', pause: 'Pause', stop: 'Stop',
-      prev: '← Previous', next: 'Next →', back: 'Back to my lessons', pager: 'Move between lessons', prevOf: 'Previous lesson', nextOf: 'Next lesson', video: 'VIDEO', play: 'Play the video', open: 'Open in YouTube',
+      prev: '← Previous', next: 'Next →', back: 'Back to my lessons', seeAlso: 'See also', pager: 'Move between lessons', prevOf: 'Previous lesson', nextOf: 'Next lesson', video: 'VIDEO', play: 'Play the video', open: 'Open in YouTube',
       offline: 'This video needs the internet. When you are connected, tap it again. The lessons work without internet.',
       version: 'KJV', by: 'Channel'
     }
@@ -74,7 +74,7 @@
   function save(key, value) { try { localStorage.setItem(key, String(value)); } catch { /* private mode */ } }
 
   function homeCard() {
-    return `<button type="button" class="luz-home-card" data-nav="luz" data-i18n-skip lang="es"><span class="eyebrow">PARA LUZ · FOR LUZ</span><strong>Lecciones para Luz</strong><span>Lessons for Luz · ${lessons().length || 22} preguntas sobre la fe ortodoxa</span></button>`;
+    return `<button type="button" class="luz-home-card" data-nav="luz" data-i18n-skip lang="es"><span class="eyebrow">PARA LUZ · FOR LUZ</span><strong>Lecciones para Luz</strong><span>Lessons for Luz · ${lessons().length ? `${lessons().length} ` : ''}preguntas sobre la fe ortodoxa</span></button>`;
   }
 
   function tools(t, l) {
@@ -125,6 +125,8 @@
     const kinds = lesson.sources || [];
     const sources = (kinds.includes('nvny') ? `<h2>${esc(t.sources)}</h2>${links(SOURCES)}` : '')
       + (kinds.includes('ag') ? `<h2>${esc(t.pentecostal)}</h2>${links(PENTECOSTAL_SOURCES)}` : '');
+    const related = (lesson.see || []).map(id => all.find(x => x.id === id)).filter(Boolean);
+    const seeAlso = related.length ? `<h2>${esc(t.seeAlso)}</h2><ul class="luz-see">${related.map(r => `<li><button type="button" class="luz-q-btn" data-luz-open="${esc(r.id)}" data-luz-see><span class="luz-num" aria-hidden="true">${all.indexOf(r) + 1}</span><span class="luz-q-text">${esc(r.q[l])}</span></button></li>`).join('')}</ul>` : '';
     const backBtn = where => `<button type="button" class="luz-btn luz-board-btn" data-luz-list data-luz-back="${where}"><span aria-hidden="true">←</span> ${esc(t.back)}</button>`;
     const prevBtn = prev ? `<button type="button" class="luz-btn luz-prev" data-luz-open="${esc(prev.id)}" data-luz-step="prev" aria-label="${esc(t.prevOf)}: ${esc(prev.q[l])}">${esc(t.prev)}</button>` : '';
     const nextBtn = next ? `<button type="button" class="luz-btn luz-next" data-luz-open="${esc(next.id)}" data-luz-step="next" aria-label="${esc(t.nextOf)}: ${esc(next.q[l])}">${esc(t.next)}</button>` : '';
@@ -136,7 +138,7 @@
         <section class="luz-short"><span class="eyebrow">${esc(t.short)}</span><p data-luz-say>${esc(lesson.short[l])}</p></section>
         <div class="speech-row luz-speech"><button type="button" class="luz-btn luz-listen" data-luz-read>${esc(t.listen)}</button><button type="button" class="luz-btn" data-speech-pause>${esc(t.pause)}</button><button type="button" class="luz-btn" data-speech-stop>${esc(t.stop)}</button>${window.MsbSpeech ? MsbSpeech.rateHtml() : ''}</div>
         <div class="luz-body">${lesson.body[l].map(p => `<p data-luz-say>${esc(p)}</p>`).join('')}</div>
-        <h2>${esc(t.bible)}</h2>${verses}${father}${sources}
+        <h2>${esc(t.bible)}</h2>${verses}${father}${sources}${seeAlso}
       </article>
       <nav class="luz-pager" aria-label="${esc(t.pager)}">${prevBtn}${nextBtn}</nav>
       ${backBtn('bottom')}`;

@@ -28,11 +28,11 @@ function loadUi(store = {}) {
   return ctx.window.MsbLuz;
 }
 
-const REQUIRED = ['same', 'pentecost', 'tongues', 'healing', 'worship', 'relationship', 'tradition', 'saints', 'theotokos', 'icons', 'cross', 'prayer', 'baptism', 'eucharist', 'confession', 'father', 'salvation', 'catholic', 'denominations', 'gap', 'leave', 'kept'];
+const REQUIRED = ['same', 'pentecost', 'tongues', 'healing', 'worship', 'relationship', 'tradition', 'saints', 'theotokos', 'icons', 'luke', 'cross', 'prayer', 'baptism', 'eucharist', 'confession', 'father', 'salvation', 'catholic', 'denominations', 'gap', 'leave', 'kept'];
 
-test('Lessons for Luz has its 22 lessons, each complete in Spanish and English', () => {
+test('Lessons for Luz has its 23 lessons, each complete in Spanish and English', () => {
   const { lessons } = loadData();
-  assert.equal(lessons.length, 22);
+  assert.equal(lessons.length, 23);
   assert.equal(JSON.stringify(lessons.map((l) => l.id)), JSON.stringify(REQUIRED));
   assert.equal(lessons.at(-1).id, 'kept', 'ends with why Orthodoxy kept the apostolic faith');
   for (const l of lessons) {
@@ -131,7 +131,8 @@ test('the section opens in Spanish by default, with large text and an English sw
   assert.match(root.innerHTML, /data-i18n-skip lang="es"/);
   assert.match(root.innerHTML, /Lecciones para Luz/);
   assert.match(root.innerHTML, /--luz-size:21px/);
-  assert.equal((root.innerHTML.match(/data-luz-open=/g) || []).length, 22);
+  assert.equal((root.innerHTML.match(/data-luz-open=/g) || []).length, 23);
+  assert.match(luz.homeCard(), /23 preguntas/);
   assert.match(root.innerHTML, /data-luz-size="1"/);
   luz.show(root, { lesson: 'saints' });
   assert.match(root.innerHTML, /RESPUESTA CORTA/);
@@ -182,7 +183,7 @@ test('Luz is wired into Home, the router, and the offline shell', () => {
   assert.ok(aura.includes("if(state.screen==='luz'&&name!=='luz'&&window.MsbLuz)MsbLuz.hide();"));
   assert.equal((aura.match(/MsbLuz\.homeCard\(\)/g) || []).length, 2, 'card on both Home screens');
   const sw = read('./sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v157'/);
+  assert.match(sw, /const CACHE_VERSION = 'v158'/);
   for (const f of ['./luz-data.js', './luz.js', './luz.css', './img/luz/luz-video-thumb.jpg']) assert.ok(sw.includes(`'${f}'`), f);
   assert.match(sw, /if \(url\.origin !== self\.location\.origin\) return;/, 'cross-origin (YouTube frame) requests are never cached');
   assert.equal(sw.includes('youtube'), false);
@@ -335,4 +336,51 @@ test('navigation buttons are big, high-contrast, and keep a visible focus ring',
   assert.match(css, /\.luz-board-btn\{[^}]*min-height:64px[^}]*background:var\(--text\);color:var\(--bg\)/);
   assert.match(css, /\.luz-next\{[^}]*background:var\(--text\);color:var\(--bg\)/);
   assert.match(css, /\.luz button:focus-visible[^{]*\{outline:4px solid var\(--text\)/);
+});
+
+test('St. Luke lesson: right after icons, linked both ways, and honest about Scripture vs Tradition', () => {
+  const { lessons } = loadData();
+  const ids = lessons.map((l) => l.id);
+  assert.equal(ids.indexOf('luke'), ids.indexOf('icons') + 1, 'placed right after the icons lesson');
+  const luke = lessons.find((l) => l.id === 'luke');
+  const icons = lessons.find((l) => l.id === 'icons');
+  assert.equal(luke.q.es, '¿Quién pintó el primer ícono? San Lucas, Pablo y los gálatas');
+  assert.equal(luke.q.en, 'Who painted the first icon? St. Luke, Paul and the Galatians');
+  assert.equal(JSON.stringify(icons.see), JSON.stringify(['luke']));
+  assert.equal(JSON.stringify(luke.see), JSON.stringify(['icons']));
+  assert.equal(JSON.stringify(luke.verses.map((v) => v.ref.en)), JSON.stringify(['Acts 16:6–10', 'Galatians 4:13–15', 'Colossians 4:14', 'Galatians 3:1']));
+  assert.equal(JSON.stringify(luke.verses[0].verses), JSON.stringify([6, 7, 8, 9, 10]));
+  assert.match(luke.verses[0].text.en, /immediately we endeavoured to go into Macedonia/);
+  assert.match(luke.verses[0].text.es, /luego procuramos partir á Macedonia/);
+  assert.match(luke.verses[1].text.en, /through infirmity of the flesh/);
+  assert.match(luke.verses[2].text.en, /Luke, the beloved physician/);
+  assert.match(luke.verses[3].text.en, /evidently set forth/);
+  const text = (lang) => [luke.short[lang], ...luke.body[lang]].join(' ');
+  const es = text('es'), en = text('en');
+  for (const re of [/la Biblia no dice que San Lucas pintó/, /Tradición/, /Hodegetria/, /Teodoro el Lector/, /siglo VI/, /se añadió después/, /San Andrés de Creta/, /No es una prueba/, /proegraphē/, /con colores lo que la predicación hace con palabras/, /Hechos 2/, /Pentecostés/, /nosotros/]) assert.match(es, re, `es ${re}`);
+  for (const re of [/the Bible does not say that St\. Luke painted/, /Tradition/, /Hodegetria/, /Theodore the Lector/, /6th-century/, /added afterward/, /St\. Andrew of Crete/, /not proof/, /proegraphē/, /with color what preaching does with words/, /Acts 2/, /Pentecost/, /“we”/]) assert.match(en, re, `en ${re}`);
+  // Every Bible quotation inside the lesson text is word for word from its own verses.
+  for (const lang of ['es', 'en']) {
+    const hay = luke.verses.map((v) => v.text[lang]).join(' ');
+    const bible = [...text(lang).matchAll(/“([^”]+)”/g)].map((m) => m[1].replace(/[.,]$/, '')).filter((q) => q.length > 12 && !/muestra el camino|shows the way/.test(q));
+    assert.ok(bible.length >= 3, `${lang} quotes Scripture`);
+    for (const q of bible) assert.ok(hay.includes(q), `${lang}: ${q}`);
+  }
+});
+
+test('the icons lesson shows a "see also" button that opens the St. Luke lesson', () => {
+  const h = navHarness();
+  h.luz.show(h.root, { lesson: null });
+  h.click({ open: 'icons', from: 'board' });
+  assert.match(h.root.innerHTML, /<h2>Ver también<\/h2><ul class="luz-see"><li><button type="button" class="luz-q-btn" data-luz-open="luke" data-luz-see>/);
+  assert.match(h.root.innerHTML, /data-luz-open="luke" data-luz-step="next"/, 'Next from icons is St. Luke');
+  h.click({ open: 'luke' });
+  assert.equal(h.current(), 'luke');
+  assert.match(h.root.innerHTML, /PREGUNTA 11 DE 23/);
+  assert.match(h.root.innerHTML, /data-luz-open="icons" data-luz-step="prev"/);
+  assert.match(h.root.innerHTML, /data-luz-open="cross" data-luz-step="next"/);
+  assert.equal(h.entries(), 2, 'see also does not add a history step');
+  h.click({ list: true });
+  assert.equal(h.current(), 'board');
+  assert.equal(h.scrolled.at(-1), 'luke');
 });
