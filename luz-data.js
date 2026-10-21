@@ -985,7 +985,7 @@
       "en": "Galatians 3:1"
      },
      "text": {
-      "es": "¡OH Gálatas insensatos! ¿quién os fascinó, para no obedecer á la verdad, ante cuyos ojos Jesucristo fué ya descrito como crucificado entre vosotros?",
+      "es": "¡Oh Gálatas insensatos! ¿quién os fascinó, para no obedecer á la verdad, ante cuyos ojos Jesucristo fué ya descrito como crucificado entre vosotros?",
       "en": "O foolish Galatians, who hath bewitched you, that ye should not obey the truth, before whose eyes Jesus Christ hath been evidently set forth, crucified among you?"
      }
     }
