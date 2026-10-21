@@ -28,11 +28,11 @@ function loadUi(store = {}) {
   return ctx.window.MsbLuz;
 }
 
-const REQUIRED = ['same', 'pentecost', 'spirit', 'relationship', 'tradition', 'saints', 'theotokos', 'icons', 'cross', 'prayer', 'baptism', 'eucharist', 'confession', 'father', 'salvation', 'catholic', 'denominations', 'gap', 'leave', 'kept'];
+const REQUIRED = ['same', 'pentecost', 'tongues', 'healing', 'worship', 'relationship', 'tradition', 'saints', 'theotokos', 'icons', 'cross', 'prayer', 'baptism', 'eucharist', 'confession', 'father', 'salvation', 'catholic', 'denominations', 'gap', 'leave', 'kept'];
 
-test('Lessons for Luz has 15-20 lessons, each complete in Spanish and English', () => {
+test('Lessons for Luz has its 22 lessons, each complete in Spanish and English', () => {
   const { lessons } = loadData();
-  assert.ok(lessons.length >= 15 && lessons.length <= 20, `count ${lessons.length}`);
+  assert.equal(lessons.length, 22);
   assert.equal(JSON.stringify(lessons.map((l) => l.id)), JSON.stringify(REQUIRED));
   assert.equal(lessons.at(-1).id, 'kept', 'ends with why Orthodoxy kept the apostolic faith');
   for (const l of lessons) {
@@ -92,6 +92,35 @@ test('the same/gap lessons quote Nueva Vida’s own published statements', () =>
   assert.ok(gap.includes('La iglesia no es una institución o denominación religiosa'));
   const ui = read('./luz.js');
   assert.match(ui, /https:\/\/nvny\.org\/creemos-en-un-solo-dios\//);
+  assert.match(ui, /https:\/\/ag\.org\/Beliefs\/Statement-of-Fundamental-Truths/);
+});
+
+test('Pentecostal beliefs are addressed as common Pentecostal teaching, not as Nueva Vida doctrine', () => {
+  const { lessons } = loadData();
+  const get = (id) => lessons.find((x) => x.id === id);
+  const all = (id, lang) => { const l = get(id); return [l.q[lang], l.short[lang], ...l.body[lang]].join(' '); };
+  for (const lang of ['es', 'en']) {
+    const gap = all('gap', lang);
+    for (const re of lang === 'es'
+      ? [/segunda experiencia/, /lenguas/, /inmersión/, /rapto/, /única autoridad/, /espontáneo/, /pentecostales/]
+      : [/second experience/, /tongues/, /immersion/, /rapture/, /only authority/, /spontaneous/, /Pentecostals/]) assert.match(gap, re, `gap ${lang} ${re}`);
+    const same = all('same', lang);
+    for (const re of lang === 'es' ? [/pentecostal trinitaria/, /profecía/, /santidad/, /Nueva Vida/] : [/Trinitarian Pentecostal/, /prophecy/, /holiness/, /Nueva Vida/]) assert.match(same, re, `same ${lang} ${re}`);
+    assert.match(all('tongues', lang), lang === 'es' ? /crismación/ : /chrismation/);
+    assert.match(all('tongues', lang), lang === 'es' ? /Pentecostés personal/ : /personal Pentecost/);
+    assert.match(all('healing', lang), lang === 'es' ? /Santa Unción/ : /Holy Unction/);
+    assert.match(all('worship', lang), lang === 'es' ? /gozo/ : /joy/);
+    // Nueva Vida's site never mentions tongues or Spirit baptism: never attribute them to it.
+    for (const l of lessons) for (const p of l.body[lang]) {
+      if (/Nueva Vida/.test(p) && (lang === 'es' ? /lenguas|bautismo en el Espíritu/ : /tongues|baptism in the (Holy )?Spirit/).test(p)) {
+        assert.match(p, lang === 'es' ? /no menciona/ : /does not mention/, `${l.id}: ${p.slice(0, 80)}`);
+      }
+    }
+  }
+  const refs = (id) => get(id).verses.map((v) => v.ref.en);
+  assert.ok(refs('tongues').includes('Acts 8:14–17') && refs('tongues').includes('Acts 19:6'));
+  assert.equal(JSON.stringify(get('tongues').verses[0].verses), JSON.stringify([14, 15, 16, 17]));
+  assert.ok(refs('healing').some((r) => r.startsWith('James 5:14')));
 });
 
 test('the section opens in Spanish by default, with large text and an English switch', () => {
@@ -102,7 +131,7 @@ test('the section opens in Spanish by default, with large text and an English sw
   assert.match(root.innerHTML, /data-i18n-skip lang="es"/);
   assert.match(root.innerHTML, /Lecciones para Luz/);
   assert.match(root.innerHTML, /--luz-size:21px/);
-  assert.equal((root.innerHTML.match(/data-luz-open=/g) || []).length, 20);
+  assert.equal((root.innerHTML.match(/data-luz-open=/g) || []).length, 22);
   assert.match(root.innerHTML, /data-luz-size="1"/);
   luz.show(root, { lesson: 'saints' });
   assert.match(root.innerHTML, /RESPUESTA CORTA/);
@@ -153,7 +182,7 @@ test('Luz is wired into Home, the router, and the offline shell', () => {
   assert.ok(aura.includes("if(state.screen==='luz'&&name!=='luz'&&window.MsbLuz)MsbLuz.hide();"));
   assert.equal((aura.match(/MsbLuz\.homeCard\(\)/g) || []).length, 2, 'card on both Home screens');
   const sw = read('./sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v155'/);
+  assert.match(sw, /const CACHE_VERSION = 'v156'/);
   for (const f of ['./luz-data.js', './luz.js', './luz.css', './img/luz/luz-video-thumb.jpg']) assert.ok(sw.includes(`'${f}'`), f);
   assert.match(sw, /if \(url\.origin !== self\.location\.origin\) return;/, 'cross-origin (YouTube frame) requests are never cached');
   assert.equal(sw.includes('youtube'), false);

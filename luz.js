@@ -30,6 +30,9 @@
     { url: 'https://nvny.org/creacion-de-la-iglesia/', es: 'Creación de la Iglesia', en: 'The Church' },
     { url: 'https://nvny.org/la-segunda-venida-de-cristo-y-reinado-milenial/', es: 'La segunda venida de Cristo', en: 'The Second Coming of Christ' }
   ];
+  const PENTECOSTAL_SOURCES = [
+    { url: 'https://ag.org/Beliefs/Statement-of-Fundamental-Truths', es: 'Asambleas de Dios: Declaración de Verdades Fundamentales (en inglés)', en: 'Assemblies of God: Statement of Fundamental Truths' }
+  ];
   const T = {
     es: {
       home: '← Inicio', all: '← Todas las preguntas', eyebrow: 'LECCIONES PARA LUZ', title: 'Lecciones para Luz',
@@ -37,7 +40,7 @@
       lang: 'Idioma', size: 'Tamaño de letra', smaller: 'Letra más pequeña', bigger: 'Letra más grande',
       sizes: ['Normal', 'Grande', 'Más grande', 'Muy grande'],
       questions: 'Preguntas', of: (n, t) => `PREGUNTA ${n} DE ${t}`, short: 'RESPUESTA CORTA', bible: 'La Biblia dice', father: 'Un Padre de la Iglesia',
-      sources: 'De la página de tu iglesia, Nueva Vida', listen: 'Escuchar', pause: 'Pausa', stop: 'Parar',
+      sources: 'De la página de tu iglesia, Nueva Vida', pentecostal: 'Una declaración pentecostal común', listen: 'Escuchar', pause: 'Pausa', stop: 'Parar',
       prev: '← Anterior', next: 'Siguiente →', video: 'VIDEO', play: 'Ver el video', open: 'Abrir en YouTube',
       offline: 'Este video necesita internet. Cuando tengas conexión, tócalo otra vez. Las lecciones sí funcionan sin internet.',
       version: 'RV1909', by: 'Canal'
@@ -48,7 +51,7 @@
       lang: 'Language', size: 'Text size', smaller: 'Smaller text', bigger: 'Bigger text',
       sizes: ['Normal', 'Large', 'Larger', 'Largest'],
       questions: 'Questions', of: (n, t) => `QUESTION ${n} OF ${t}`, short: 'SHORT ANSWER', bible: 'The Bible says', father: 'A Father of the Church',
-      sources: 'From your church’s website, Nueva Vida', listen: 'Read aloud', pause: 'Pause', stop: 'Stop',
+      sources: 'From your church’s website, Nueva Vida', pentecostal: 'A common Pentecostal statement', listen: 'Read aloud', pause: 'Pause', stop: 'Stop',
       prev: '← Previous', next: 'Next →', video: 'VIDEO', play: 'Play the video', open: 'Open in YouTube',
       offline: 'This video needs the internet. When you are connected, tap it again. The lessons work without internet.',
       version: 'KJV', by: 'Channel'
@@ -69,7 +72,7 @@
   function save(key, value) { try { localStorage.setItem(key, String(value)); } catch { /* private mode */ } }
 
   function homeCard() {
-    return `<button type="button" class="luz-home-card" data-nav="luz" data-i18n-skip lang="es"><span class="eyebrow">PARA LUZ · FOR LUZ</span><strong>Lecciones para Luz</strong><span>Lessons for Luz · ${lessons().length || 20} preguntas sobre la fe ortodoxa</span></button>`;
+    return `<button type="button" class="luz-home-card" data-nav="luz" data-i18n-skip lang="es"><span class="eyebrow">PARA LUZ · FOR LUZ</span><strong>Lecciones para Luz</strong><span>Lessons for Luz · ${lessons().length || 22} preguntas sobre la fe ortodoxa</span></button>`;
   }
 
   function tools(t, l) {
@@ -116,7 +119,10 @@
     const prev = all[i - 1], next = all[i + 1];
     const verses = lesson.verses.map(v => `<blockquote class="luz-verse"><p data-luz-say>${esc(v.text[l])}</p><cite data-luz-say>${esc(v.ref[l])} (${esc(t.version)})</cite></blockquote>`).join('');
     const father = lesson.father ? `<h2>${esc(t.father)}</h2><blockquote class="luz-father"><p data-luz-say>${esc(lesson.father[l])}</p><cite data-luz-say>${esc(lesson.father.who[l])}</cite>${lesson.father.note ? `<p class="luz-note">${esc(lesson.father.note[l])}</p>` : ''}</blockquote>` : '';
-    const sources = lesson.sources ? `<h2>${esc(t.sources)}</h2><ul class="luz-sources">${SOURCES.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s[l])} ↗</a></li>`).join('')}</ul>` : '';
+    const links = list => `<ul class="luz-sources">${list.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s[l])} ↗</a></li>`).join('')}</ul>`;
+    const kinds = lesson.sources || [];
+    const sources = (kinds.includes('nvny') ? `<h2>${esc(t.sources)}</h2>${links(SOURCES)}` : '')
+      + (kinds.includes('ag') ? `<h2>${esc(t.pentecostal)}</h2>${links(PENTECOSTAL_SOURCES)}` : '');
     return `<button type="button" class="luz-btn luz-back" data-luz-list>${esc(t.all)}</button>
       ${tools(t, l)}
       <article class="luz-lesson" data-luz-lesson="${esc(lesson.id)}">
