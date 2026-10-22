@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v166';
+const CACHE_VERSION = 'v167';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -117,8 +117,13 @@ const KIDS_ART = ['badge-medal', 'color-crayons', 'gbadge-ark-1', 'gbadge-ark-al
 const STORY_ART_V2 = ['creation', 'noah', 'stars', 'ladder', 'redsea', 'samuel', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
 const storyArt = (id) => (STORY_ART_V2.includes(id) ? `${id}-v2` : id);
 /* Painted achievement badges (img/ach/<id>-128.webp); the same ids as
-   MSB_ACH_ART in aura.js. Empty until the art is painted. */
-const ACH_ART = [];
+   MSB_ACH_ART in aura.js. */
+const ACH_ART = [
+  'first-chapter', 'chapters-10', 'chapters-50', 'chapters-100', 'chapters-250', 'psalms-25',
+  'psalms-all', 'gospels-all', 'nt-all', 'bible-all', 'studies-1', 'studies-all',
+  'streak-7', 'notes-1', 'verse-notes-1', 'highlights-1', 'friend-1', 'multitask',
+  'strong-woman', 'cold-brew', 'cold-brew-venti'
+];
 const STORY_FILES = STORY_IDS.map((id) => `./img/stories/${storyArt(id)}-512.webp`)
   .concat(COLORING_IDS.map((id) => `./img/coloring/${id}-400.webp`))
   /* painted game art: David's Sling and Map Journey travelers */

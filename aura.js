@@ -636,7 +636,7 @@ const MSB_ACHIEVEMENTS=[
    large screens). List an id in MSB_ACH_ART when its files land (and add both
    files to img/art-hashes.json); sw.js precaches the same list (ACH_ART).
    Until then the emoji stays as the fallback. */
-const MSB_ACH_ART=new Set([]);
+const MSB_ACH_ART=new Set(['first-chapter','chapters-10','chapters-50','chapters-100','chapters-250','psalms-25','psalms-all','gospels-all','nt-all','bible-all','studies-1','studies-all','streak-7','notes-1','verse-notes-1','highlights-1','friend-1','multitask','strong-woman','cold-brew','cold-brew-venti']);
 function msbAchArt(id){return `<img class="ach-art" src="img/ach/${esc(id)}-128.webp" srcset="img/ach/${esc(id)}-128.webp 1x, img/ach/${esc(id)}-256.webp 3x" alt="" width="40" height="40" decoding="async">`}
 function msbAchIcon(a){if(a&&MSB_ACH_ART.has(a.id))return msbAchArt(a.id);const i=(a&&a.icon)||'🏆';if(i.startsWith('svg:')&&window.MsbStudySession)return MsbStudySession.icon(i==='svg:cold-brew-venti');return esc(i.startsWith('svg:')?'☕':i)}
 function msbAchText(item,field){const es=window.MsbI18n&&MsbI18n.lang()==='es';const alt=es?item[field+'Es']:null;return alt||item[field]||''}
