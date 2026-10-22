@@ -305,7 +305,11 @@ async function loadUser(env, code) {
   if (!code) return null;
   const raw = await env.FRIENDS.get(`user:${code}`);
   if (!raw) return null;
-  try { return JSON.parse(raw); } catch { return null; }
+  let user; try { user = JSON.parse(raw); } catch { return null; }
+  /* what was stored when this request read it, so a save can tell which
+     friends and requests this request added or took away */
+  if (user && typeof user === 'object') Object.defineProperty(user, BASE, { value: raw, enumerable: false, writable: true });
+  return user;
 }
 
 /* KV has no transactions, and one user record is changed by many requests
@@ -316,7 +320,20 @@ async function loadUser(env, code) {
 const PROFILE = 'profile';
 const REL_FIELDS = ['friends', 'requestsIn', 'requestsOut', 'inbox', 'outbox', 'threads', 'shared', 'squishies'];
 const LINKS = ['friends', 'requestsIn', 'requestsOut'];
+const LIST_FIELDS = ['friends', 'requestsIn', 'requestsOut', 'shared'];
 const BOX_OP = /^(inbox|outbox)([+*-])(.+)$/;
+const BASE = Symbol('stored');
+const itemKey = (x) => (typeof x === 'string' ? x : x && (x.code || x.id)) || '';
+/* a list this request changed, as what it added and what it took away */
+function listChange(user, f) {
+  let base = null; try { base = user[BASE] ? JSON.parse(user[BASE]) : null; } catch { base = null; }
+  if (!base || !Array.isArray(base[f]) || !Array.isArray(user[f])) return null;
+  const was = new Set(base[f].map(itemKey)), now = new Set(user[f].map(itemKey));
+  return { add: user[f].filter((x) => !was.has(itemKey(x))), drop: [...was].filter((k) => !now.has(k)) };
+}
+/* how long a save waits before it checks that its write was not overwritten */
+const SETTLE_MS = 90;
+const settle = (env) => { const ms = env.SAVE_SETTLE_MS ?? SETTLE_MS; return ms > 0 ? new Promise((r) => setTimeout(r, ms / 2 + Math.random() * ms)) : Promise.resolve(); };
 /* union of two message lists by id; a message marked read in either stays read */
 function unionById(mine, theirs) {
   const map = new Map();
@@ -339,7 +356,15 @@ async function saveUser(env, user, own, stamp = true) {
   const want = [];
   for (const f of own) {
     if (f.startsWith('threads.')) { const k = f.slice(8); for (const m of (user.threads && user.threads[k]) || []) if (m && m.id) want.push((r) => ((r.threads && r.threads[k]) || []).some((x) => x && x.id === m.id)); }
-    else {
+    else if (f === PROFILE) {
+      for (const k of Object.keys(user)) if (!REL_FIELDS.includes(k) && k !== 'updatedAt') { const v = JSON.stringify(user[k]); want.push((r) => JSON.stringify(r[k]) === v); }
+    } else if (!BOX_OP.test(f) && LIST_FIELDS.includes(f)) {
+      const c = listChange(user, f);
+      if (c) { for (const x of c.add) want.push((r) => (r[f] || []).some((y) => itemKey(y) === itemKey(x))); for (const k of c.drop) want.push((r) => !(r[f] || []).some((y) => itemKey(y) === k)); }
+      else { const v = JSON.stringify(user[f]); want.push((r) => JSON.stringify(r[f]) === v); }
+    } else if (!BOX_OP.test(f)) {
+      const v = JSON.stringify(user[f]); want.push((r) => JSON.stringify(r[f]) === v);
+    } else {
       const m = BOX_OP.exec(f);
       if (m) {
         const [, k, op, id] = m, has = (r) => (r[k] || []).find((x) => x && x.id === id);
@@ -352,6 +377,9 @@ async function saveUser(env, user, own, stamp = true) {
     const out = mergeUser(user, fresh, own, stamp);
     await env.FRIENDS.put(`user:${user.code}`, JSON.stringify(out));
     if (!want.length) return;
+    /* another request that read the record before this put may write after
+       it: wait a moment, look again, and merge again if this change is gone */
+    await settle(env);
     fresh = await loadUser(env, user.code);
     if (!fresh || want.every((ok) => ok(fresh))) return;
   }
@@ -377,6 +405,11 @@ function mergeUser(user, fresh, own, stamp) {
       if (op === '+' && mine) list.push(mine);
       if (op === '*' && theirs) list.push({ ...theirs, read: true });
       out[k] = list.sort((x, y) => (Number(y.ts) || 0) - (Number(x.ts) || 0)).slice(0, NOTE_BOX_MAX);
+    } else if (LIST_FIELDS.includes(f) && listChange(user, f)) {
+      const c = listChange(user, f), drop = new Set([...c.drop, ...c.add.map(itemKey)]);
+      const kept = (Array.isArray(fresh[f]) ? fresh[f] : []).filter((x) => !drop.has(itemKey(x)));
+      /* friends keep the order they were added; requests and shared notes are newest first */
+      out[f] = f === 'friends' ? [...kept, ...c.add] : [...c.add, ...kept];
     } else if (f in user) out[f] = user[f];
   }
   out.updatedAt = stamp ? user.updatedAt : fresh.updatedAt;

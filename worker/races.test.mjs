@@ -6,9 +6,10 @@ import test from 'node:test';
 import { RATE_LIMITS, handleFriends } from './friends.mjs';
 
 /* memory KV that yields between steps, so Promise.all interleaves requests */
-function memoryKv() {
+function memoryKv(latency = 0) {
   const d = new Map();
-  const tick = () => new Promise((r) => setImmediate(r));
+  /* latency: each read or write takes 0..latency ms, like KV over the network */
+  const tick = () => new Promise((r) => (latency ? setTimeout(r, Math.random() * latency) : setImmediate(r)));
   return {
     async get(k, type) { await tick(); if (!d.has(k)) return null; const v = d.get(k); return type === 'json' ? JSON.parse(v) : v; },
     async put(k, v) { await tick(); d.set(k, String(v)); },
@@ -99,6 +100,21 @@ test('messages and notes sent at the same moment are all kept', async () => {
     call(kv, '/note/send', as(c, { to: b.code, body: 'note C2' })),
   ]);
   assert.deepEqual(user(kv, b).inbox.map((n) => n.body).sort(), ['note C', 'note C2']);
+});
+
+test('with KV latency, a sync during an accept, two notes and two messages at once all survive', async () => {
+  for (let round = 0; round < 4; round++) {
+    const kv = memoryKv(25); const a = await reg(kv, 'Ana'), b = await reg(kv, 'Ben'), c = await reg(kv, 'Cy');
+    await call(kv, '/friend/add', as(a, { friendCode: b.code }));
+    await Promise.all([call(kv, '/friend/accept', as(b, { friendCode: a.code })), call(kv, '/sync', as(b, { name: 'Ben R', stats: { studies: 2 } }))]);
+    assert.ok(user(kv, b).friends.includes(a.code), `round ${round}: accept kept`);
+    assert.equal(user(kv, b).name, 'Ben R', `round ${round}: name kept`);
+    await friends(kv, c, b);
+    await Promise.all([call(kv, '/note/send', as(a, { to: b.code, body: 'note A' })), call(kv, '/note/send', as(c, { to: b.code, body: 'note C' }))]);
+    assert.deepEqual(user(kv, b).inbox.map((n) => n.body).sort(), ['note A', 'note C'], `round ${round}: notes`);
+    await Promise.all([call(kv, '/msg/send', as(a, { to: b.code, body: 'm1' })), call(kv, '/msg/send', as(b, { to: a.code, body: 'm2' }))]);
+    for (const [u, other] of [[a, b], [b, a]]) assert.deepEqual(user(kv, u).threads[other.code].map((m) => m.body).sort(), ['m1', 'm2'], `round ${round}: thread`);
+  }
 });
 
 test('saving a friend\u2019s record for a message keeps their last-active time', async () => {
