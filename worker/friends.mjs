@@ -305,12 +305,157 @@ async function loadUser(env, code) {
   if (!code) return null;
   const raw = await env.FRIENDS.get(`user:${code}`);
   if (!raw) return null;
-  try { return JSON.parse(raw); } catch { return null; }
+  let user; try { user = JSON.parse(raw); } catch { return null; }
+  /* what was stored when this request read it, so a save can tell which
+     friends and requests this request added or took away */
+  if (user && typeof user === 'object') Object.defineProperty(user, BASE, { value: raw, enumerable: false, writable: true });
+  return user;
 }
 
-async function saveUser(env, user) {
-  user.updatedAt = Date.now();
-  await env.FRIENDS.put(`user:${user.code}`, JSON.stringify(user));
+/* KV has no transactions, and one user record is changed by many requests
+   (a profile sync, a friend accepting, a message landing). A save re-reads the
+   stored record and writes back only the fields this request changed (`own`),
+   so different changes no longer undo each other; the window left is one
+   get+put. Friendship itself is also kept in per-pair keys (see healLinks). */
+const PROFILE = 'profile';
+const REL_FIELDS = ['friends', 'requestsIn', 'requestsOut', 'inbox', 'outbox', 'threads', 'shared', 'squishies'];
+const LINKS = ['friends', 'requestsIn', 'requestsOut'];
+const LIST_FIELDS = ['friends', 'requestsIn', 'requestsOut', 'shared'];
+const BOX_OP = /^(inbox|outbox)([+*-])(.+)$/;
+const BASE = Symbol('stored');
+const itemKey = (x) => (typeof x === 'string' ? x : x && (x.code || x.id)) || '';
+/* a list this request changed, as what it added and what it took away */
+function listChange(user, f) {
+  let base = null; try { base = user[BASE] ? JSON.parse(user[BASE]) : null; } catch { base = null; }
+  if (!base || !Array.isArray(base[f]) || !Array.isArray(user[f])) return null;
+  const was = new Set(base[f].map(itemKey)), now = new Set(user[f].map(itemKey));
+  return { add: user[f].filter((x) => !was.has(itemKey(x))), drop: [...was].filter((k) => !now.has(k)) };
+}
+/* how long a save waits before it checks that its write was not overwritten */
+const SETTLE_MS = 90;
+const settle = (env) => { const ms = env.SAVE_SETTLE_MS ?? SETTLE_MS; return ms > 0 ? new Promise((r) => setTimeout(r, ms / 2 + Math.random() * ms)) : Promise.resolve(); };
+/* union of two message lists by id; a message marked read in either stays read */
+function unionById(mine, theirs) {
+  const map = new Map();
+  for (const m of [...(Array.isArray(theirs) ? theirs : []), ...(Array.isArray(mine) ? mine : [])]) {
+    if (!m || typeof m !== 'object' || !m.id) continue;
+    const had = map.get(m.id);
+    map.set(m.id, had ? { ...had, ...m, read: !!(had.read || m.read) } : m);
+  }
+  return [...map.values()];
+}
+/* own: fields this request changed. 'inbox+<id>' / 'inbox*<id>' /
+   'inbox-<id>' add, mark read or remove one note; 'threads.<code>' is one
+   conversation (union by id). Saving
+   someone else's record (stamp=false) keeps their last-active time. */
+async function saveUser(env, user, own, stamp = true) {
+  if (stamp) user.updatedAt = Date.now();
+  if (!Array.isArray(own)) { await env.FRIENDS.put(`user:${user.code}`, JSON.stringify(user)); return; }
+  /* list fields this request added to: check after the write that its items
+     landed, and merge again if another request wrote over them meanwhile */
+  const want = [];
+  for (const f of own) {
+    if (f.startsWith('threads.')) { const k = f.slice(8); for (const m of (user.threads && user.threads[k]) || []) if (m && m.id) want.push((r) => ((r.threads && r.threads[k]) || []).some((x) => x && x.id === m.id)); }
+    else if (f === PROFILE) {
+      for (const k of Object.keys(user)) if (!REL_FIELDS.includes(k) && k !== 'updatedAt') { const v = JSON.stringify(user[k]); want.push((r) => JSON.stringify(r[k]) === v); }
+    } else if (!BOX_OP.test(f) && LIST_FIELDS.includes(f)) {
+      const c = listChange(user, f);
+      if (c) { for (const x of c.add) want.push((r) => (r[f] || []).some((y) => itemKey(y) === itemKey(x))); for (const k of c.drop) want.push((r) => !(r[f] || []).some((y) => itemKey(y) === k)); }
+      else { const v = JSON.stringify(user[f]); want.push((r) => JSON.stringify(r[f]) === v); }
+    } else if (!BOX_OP.test(f)) {
+      const v = JSON.stringify(user[f]); want.push((r) => JSON.stringify(r[f]) === v);
+    } else {
+      const m = BOX_OP.exec(f);
+      if (m) {
+        const [, k, op, id] = m, has = (r) => (r[k] || []).find((x) => x && x.id === id);
+        want.push(op === '+' ? (r) => !!has(r) : op === '*' ? (r) => !!(has(r) || {}).read : (r) => !has(r));
+      }
+    }
+  }
+  let fresh = await loadUser(env, user.code);
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const out = mergeUser(user, fresh, own, stamp);
+    await env.FRIENDS.put(`user:${user.code}`, JSON.stringify(out));
+    if (!want.length) return;
+    /* another request that read the record before this put may write after
+       it: wait a moment, look again, and merge again if this change is gone */
+    await settle(env);
+    fresh = await loadUser(env, user.code);
+    if (!fresh || want.every((ok) => ok(fresh))) return;
+  }
+}
+function mergeUser(user, fresh, own, stamp) {
+  if (!fresh || typeof fresh !== 'object' || Array.isArray(fresh)) return user;
+  const out = { ...fresh };
+  for (const f of own) {
+    if (f === PROFILE) {
+      for (const k of Object.keys(out)) if (!REL_FIELDS.includes(k) && !(k in user)) delete out[k];
+      for (const k of Object.keys(user)) if (!REL_FIELDS.includes(k)) out[k] = user[k];
+    } else if (f.startsWith('threads.')) {
+      const k = f.slice(8);
+      if (out.threads === fresh.threads) out.threads = { ...(fresh.threads && typeof fresh.threads === 'object' && !Array.isArray(fresh.threads) ? fresh.threads : {}) };
+      const merged = unionById(user.threads && user.threads[k], out.threads[k]).sort((x, y) => (Number(x.ts) || 0) - (Number(y.ts) || 0)).slice(-100);
+      if (merged.length) out.threads[k] = merged; else delete out.threads[k];
+    } else if (BOX_OP.test(f)) {
+      /* inbox+<id> adds that note, inbox*<id> marks it read, inbox-<id> removes it */
+      const [, k, op, id] = BOX_OP.exec(f);
+      const list = (Array.isArray(fresh[k]) ? fresh[k] : []).filter((n) => n && n.id !== id);
+      const mine = (user[k] || []).find((n) => n && n.id === id);
+      const theirs = (Array.isArray(fresh[k]) ? fresh[k] : []).find((n) => n && n.id === id);
+      if (op === '+' && mine) list.push(mine);
+      if (op === '*' && theirs) list.push({ ...theirs, read: true });
+      out[k] = list.sort((x, y) => (Number(y.ts) || 0) - (Number(x.ts) || 0)).slice(0, NOTE_BOX_MAX);
+    } else if (LIST_FIELDS.includes(f) && listChange(user, f)) {
+      const c = listChange(user, f), drop = new Set([...c.drop, ...c.add.map(itemKey)]);
+      const kept = (Array.isArray(fresh[f]) ? fresh[f] : []).filter((x) => !drop.has(itemKey(x)));
+      /* friends keep the order they were added; requests and shared notes are newest first */
+      out[f] = f === 'friends' ? [...kept, ...c.add] : [...c.add, ...kept];
+    } else if (f in user) out[f] = user[f];
+  }
+  out.updatedAt = stamp ? user.updatedAt : fresh.updatedAt;
+  return out;
+}
+
+/* Per-pair friendship keys. `fr:<a>:<b>` (codes sorted) is 'friends' or
+   'removed'; `rq:<from>:<to>` marks a request only its sender writes. When two
+   people add each other at the same moment, or a save loses a link, these
+   keys let the next read put both records right. */
+const pairKey = (a, b) => `fr:${[a, b].sort().join(':')}`;
+const reqKey = (from, to) => `rq:${from}:${to}`;
+const REQ_TTL_SECONDS = 60 * 60 * 24 * 60;
+async function markFriends(env, a, b) {
+  await env.FRIENDS.put(pairKey(a.code, b.code), 'friends');
+  await env.FRIENDS.delete(reqKey(a.code, b.code));
+  await env.FRIENDS.delete(reqKey(b.code, a.code));
+}
+async function befriend(env, me, friend) {
+  linkFriends(me, friend);
+  clearRequestPair(me, friend);
+  await saveUser(env, me, LINKS);
+  await saveUser(env, friend, LINKS);
+  await markFriends(env, me, friend);
+}
+/* Repair `user` from the pair keys; returns true if it changed (and saved). */
+async function healLinks(env, user) {
+  let changed = false;
+  const dropReq = (code) => { user.requestsIn = withoutCode(user.requestsIn, code); user.requestsOut = withoutCode(user.requestsOut, code); };
+  for (const { code } of cleanRequests(user.requestsOut)) {
+    if (user.friends.includes(code)) { dropReq(code); changed = true; continue; }
+    const pair = await env.FRIENDS.get(pairKey(user.code, code));
+    if (pair === 'friends') { user.friends = [...new Set([...user.friends, code])]; dropReq(code); changed = true; continue; }
+    if (await env.FRIENDS.get(reqKey(code, user.code))) {
+      /* both sent a request at the same moment: that is a yes from both */
+      const friend = hydrate(await loadUser(env, code));
+      if (friend) { await befriend(env, user, friend); return true; }
+    }
+  }
+  for (const { code } of cleanRequests(user.requestsIn)) {
+    if (user.friends.includes(code) || (await env.FRIENDS.get(pairKey(user.code, code))) === 'friends') {
+      user.friends = [...new Set([...user.friends, code])]; dropReq(code); changed = true;
+    }
+  }
+  if (changed) await saveUser(env, user, LINKS);
+  return changed;
 }
 
 async function ensurePublicId(env, user) {
@@ -320,7 +465,7 @@ async function ensurePublicId(env, user) {
     return existing;
   }
   user.publicId = randomHex(8);
-  await saveUser(env, user);
+  await saveUser(env, user, [PROFILE]);
   return user.publicId;
 }
 
@@ -413,6 +558,8 @@ function friendView(me, friend) {
     updatedAt: friend.updatedAt || 0,
     unread,
   };
+  /* set only by an admin directly on the record; clients cannot set it */
+  if (friend.verified === true) view.verified = true;
   const profile = {};
   for (const key of ['handle', 'city', 'bio', 'denomination', 'avatar_data', 'cover_data']) {
     if (typeof friend[key] === 'string' && friend[key]) {
@@ -462,6 +609,10 @@ export const RATE_LIMITS = {
   friendAdd: 40,
   shared: 20,
   scores: 60,
+  friendChange: 120,
+  noteChange: 600,
+  sharedEdit: 300,
+  room: 60,
 };
 
 function verseNumber(value, min, max) {
@@ -773,7 +924,7 @@ export async function handleTrade(path, body, env, authedUser) {
     const rec = squishyRecord(me);
     rec.pending = rec.pending.filter((p) => p.trade !== t.id);
     me.squishies = rec;
-    await saveUser(env, me);
+    await saveUser(env, me, ['squishies']);
     return [{ ok: true }];
   }
 
@@ -870,7 +1021,7 @@ export async function handleTrade(path, body, env, authedUser) {
       rec.pending = [...rec.pending, { trade: t.id, give: r.give, get: r.get, ts: now }].slice(-TRADE_RULES.PENDING_MAX);
       rec.updatedAt = now;
       u.squishies = rec;
-      await saveUser(env, u);
+      await saveUser(env, u, ['squishies']);
     }
     return [{ ok: true, trade: tradeView(t, me.code) }];
   }
@@ -944,20 +1095,30 @@ export async function handleFriends(request, env) {
       if (body && Object.prototype.hasOwnProperty.call(body, 'squishies')) applySquishies(a.user, body.squishies);
       const publicId = await ensurePublicId(env, a.user);
       if (a.user.publicId !== publicId) a.user.publicId = publicId;
-      await saveUser(env, a.user);
+      await saveUser(env, a.user, body && Object.prototype.hasOwnProperty.call(body, 'squishies') ? [PROFILE, 'squishies'] : [PROFILE]);
       await stampBoardId(env, a.user.code, publicId);
       const squishyPending = squishyRecord(a.user).pending;
-      return reply({ ok: true, publicId, ...(squishyPending.length ? { squishyPending } : {}), ...(warnings.length ? { warning: warnings.join(' ') } : {}) });
+      return reply({ ok: true, publicId, ...(a.user.verified === true ? { verified: true } : {}), ...(squishyPending.length ? { squishyPending } : {}), ...(warnings.length ? { warning: warnings.join(' ') } : {}) });
     }
 
     if (url.pathname === '/friends') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      await healLinks(env, a.user);
       const out = [];
-      for (const code of a.user.friends || []) {
+      let dropped = false;
+      for (const code of [...(a.user.friends || [])]) {
         const friend = hydrate(await loadUser(env, code));
-        if (friend) out.push(friendView(a.user, friend));
+        if (!friend) continue;
+        if (!friend.friends.includes(a.user.code)) {
+          /* half a link: the pair key says which half is right (old pairs have none) */
+          const pair = await env.FRIENDS.get(pairKey(a.user.code, code));
+          if (pair === 'removed') { a.user.friends = a.user.friends.filter((c) => c !== code); dropped = true; continue; }
+          if (pair === 'friends') { friend.friends = [...new Set([...friend.friends, a.user.code])]; await saveUser(env, friend, LINKS); }
+        }
+        out.push(friendView(a.user, friend));
       }
+      if (dropped) await saveUser(env, a.user, LINKS);
       return reply(out);
     }
 
@@ -971,66 +1132,78 @@ export async function handleFriends(request, env) {
       const friend = hydrate(await loadUser(env, friendCode));
       if (!friend) return reply({ error: 'No user with that friend code' }, 404);
       if ((a.user.friends || []).includes(friendCode)) return reply({ ok: true, status: 'friends' });
-      const theyAsked = hasRequest(a.user.requestsIn, friendCode) || hasRequest(friend.requestsOut, a.user.code);
+      /* my side of the request goes in a key only I write, before anything else,
+         so two people adding each other at once both see it */
+      if (friend.friends.includes(a.user.code) && (await env.FRIENDS.get(pairKey(a.user.code, friendCode))) === 'friends') {
+        await befriend(env, a.user, friend);
+        return reply({ ok: true, status: 'friends' });
+      }
+      await env.FRIENDS.put(reqKey(a.user.code, friendCode), String(Date.now()), { expirationTtl: REQ_TTL_SECONDS });
+      const theyAsked = hasRequest(a.user.requestsIn, friendCode) || hasRequest(friend.requestsOut, a.user.code) || !!(await env.FRIENDS.get(reqKey(friendCode, a.user.code)));
       if (theyAsked) {
-        linkFriends(a.user, friend);
-        clearRequestPair(a.user, friend);
-        await saveUser(env, a.user);
-        await saveUser(env, friend);
+        await befriend(env, a.user, friend);
         return reply({ ok: true, status: 'friends' });
       }
       if (hasRequest(a.user.requestsOut, friendCode)) {
         if (!hasRequest(friend.requestsIn, a.user.code)) {
           const existing = cleanRequests(a.user.requestsOut).find((item) => item.code === friendCode);
           friend.requestsIn = [{ code: a.user.code, name: a.user.name || 'Friend', ts: existing?.ts || Date.now() }, ...withoutCode(friend.requestsIn, a.user.code)];
-          await saveUser(env, friend);
+          await saveUser(env, friend, LINKS);
         }
         return reply({ ok: true, status: 'pending' });
       }
-      if (cleanRequests(friend.requestsIn).length >= REQUEST_MAX) return reply({ error: INBOX_FULL }, 409);
-      if (cleanRequests(a.user.requestsOut).length >= REQUEST_MAX) return reply({ error: OUTBOX_FULL }, 409);
+      if (cleanRequests(friend.requestsIn).length >= REQUEST_MAX) { await env.FRIENDS.delete(reqKey(a.user.code, friendCode)); return reply({ error: INBOX_FULL }, 409); }
+      if (cleanRequests(a.user.requestsOut).length >= REQUEST_MAX) { await env.FRIENDS.delete(reqKey(a.user.code, friendCode)); return reply({ error: OUTBOX_FULL }, 409); }
       const ts = Date.now();
       a.user.requestsOut = [{ code: friend.code, name: friend.name || 'Friend', ts }, ...withoutCode(a.user.requestsOut, friend.code)];
       friend.requestsIn = [{ code: a.user.code, name: a.user.name || 'Friend', ts }, ...withoutCode(friend.requestsIn, a.user.code)];
-      await saveUser(env, a.user);
-      await saveUser(env, friend);
+      await saveUser(env, a.user, LINKS);
+      await saveUser(env, friend, LINKS);
+      /* the other side may have asked while this request was being written */
+      if (await env.FRIENDS.get(reqKey(friendCode, a.user.code))) {
+        const fresh = hydrate(await loadUser(env, friendCode)) || friend;
+        await befriend(env, a.user, fresh);
+        return reply({ ok: true, status: 'friends' });
+      }
       return reply({ ok: true, status: 'pending' });
     }
 
     if (url.pathname === '/friend/requests') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      await healLinks(env, a.user);
       return reply({ incoming: cleanRequests(a.user.requestsIn), outgoing: cleanRequests(a.user.requestsOut) });
     }
 
     if (url.pathname === '/friend/accept') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:friend-change:${a.user.code}`, RATE_LIMITS.friendChange))) return reply({ error: 'Too many friend changes this hour' }, 429);
       const friendCode = String(body?.friendCode || '').trim().toUpperCase();
       if (!friendCode) return reply({ error: 'Missing friendCode' }, 400);
       if ((a.user.friends || []).includes(friendCode)) return reply({ ok: true, status: 'friends' });
-      if (!hasRequest(a.user.requestsIn, friendCode)) return reply({ error: 'Request not found' }, 404);
+      /* the request may be missing from my record if a save raced; their key still counts */
+      if (!hasRequest(a.user.requestsIn, friendCode) && !(await env.FRIENDS.get(reqKey(friendCode, a.user.code)))) return reply({ error: 'Request not found' }, 404);
       const friend = hydrate(await loadUser(env, friendCode));
       if (!friend) return reply({ error: 'No user with that friend code' }, 404);
-      linkFriends(a.user, friend);
-      clearRequestPair(a.user, friend);
-      await saveUser(env, a.user);
-      await saveUser(env, friend);
+      await befriend(env, a.user, friend);
       return reply({ ok: true, status: 'friends' });
     }
 
     if (url.pathname === '/friend/decline') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:friend-change:${a.user.code}`, RATE_LIMITS.friendChange))) return reply({ error: 'Too many friend changes this hour' }, 429);
       const friendCode = String(body?.friendCode || '').trim().toUpperCase();
       if (!friendCode) return reply({ error: 'Missing friendCode' }, 400);
       if (!hasRequest(a.user.requestsIn, friendCode)) return reply({ error: 'Request not found' }, 404);
       a.user.requestsIn = withoutCode(a.user.requestsIn, friendCode);
-      await saveUser(env, a.user);
+      await saveUser(env, a.user, LINKS);
+      await env.FRIENDS.delete(reqKey(friendCode, a.user.code));
       const friend = hydrate(await loadUser(env, friendCode));
       if (friend) {
         friend.requestsOut = withoutCode(friend.requestsOut, a.user.code);
-        await saveUser(env, friend);
+        await saveUser(env, friend, LINKS);
       }
       return reply({ ok: true });
     }
@@ -1038,15 +1211,17 @@ export async function handleFriends(request, env) {
     if (url.pathname === '/friend/cancel') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:friend-change:${a.user.code}`, RATE_LIMITS.friendChange))) return reply({ error: 'Too many friend changes this hour' }, 429);
       const friendCode = String(body?.friendCode || '').trim().toUpperCase();
       if (!friendCode) return reply({ error: 'Missing friendCode' }, 400);
       if (!hasRequest(a.user.requestsOut, friendCode)) return reply({ error: 'Request not found' }, 404);
       a.user.requestsOut = withoutCode(a.user.requestsOut, friendCode);
-      await saveUser(env, a.user);
+      await saveUser(env, a.user, LINKS);
+      await env.FRIENDS.delete(reqKey(a.user.code, friendCode));
       const friend = hydrate(await loadUser(env, friendCode));
       if (friend) {
         friend.requestsIn = withoutCode(friend.requestsIn, a.user.code);
-        await saveUser(env, friend);
+        await saveUser(env, friend, LINKS);
       }
       return reply({ ok: true });
     }
@@ -1054,18 +1229,22 @@ export async function handleFriends(request, env) {
     if (url.pathname === '/friend/remove') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:friend-change:${a.user.code}`, RATE_LIMITS.friendChange))) return reply({ error: 'Too many friend changes this hour' }, 429);
       const friendCode = String(body?.friendCode || '').trim().toUpperCase();
       if (!friendCode) return reply({ error: 'Missing friendCode' }, 400);
       a.user.friends = (a.user.friends || []).filter((c) => c !== friendCode);
       a.user.requestsIn = withoutCode(a.user.requestsIn, friendCode);
       a.user.requestsOut = withoutCode(a.user.requestsOut, friendCode);
-      await saveUser(env, a.user);
+      await saveUser(env, a.user, LINKS);
+      await env.FRIENDS.put(pairKey(a.user.code, friendCode), 'removed');
+      await env.FRIENDS.delete(reqKey(a.user.code, friendCode));
+      await env.FRIENDS.delete(reqKey(friendCode, a.user.code));
       const friend = hydrate(await loadUser(env, friendCode));
       if (friend) {
         friend.friends = (friend.friends || []).filter((c) => c !== a.user.code);
         friend.requestsIn = withoutCode(friend.requestsIn, a.user.code);
         friend.requestsOut = withoutCode(friend.requestsOut, a.user.code);
-        await saveUser(env, friend);
+        await saveUser(env, friend, LINKS);
       }
       return reply({ ok: true });
     }
@@ -1095,8 +1274,8 @@ export async function handleFriends(request, env) {
       };
       friend.inbox = [note, ...(friend.inbox || [])].slice(0, NOTE_BOX_MAX);
       a.user.outbox = [note, ...(a.user.outbox || [])].slice(0, NOTE_BOX_MAX);
-      await env.FRIENDS.put(`user:${friend.code}`, JSON.stringify(friend));
-      await saveUser(env, a.user);
+      await saveUser(env, friend, [`inbox+${note.id}`], false);
+      await saveUser(env, a.user, [`outbox+${note.id}`]);
       return reply({ ok: true, id: note.id });
     }
 
@@ -1113,8 +1292,9 @@ export async function handleFriends(request, env) {
       const note = (a.user.inbox || []).find((n) => n.id === id);
       if (!note) return reply({ error: 'Note not found' }, 404);
       if (!note.read) {
+        if (!(await takeRate(env, `rate:note-change:${a.user.code}`, RATE_LIMITS.noteChange))) return reply({ error: 'Too many requests this hour' }, 429);
         note.read = true;
-        await saveUser(env, a.user);
+        await saveUser(env, a.user, [`inbox*${id}`], false);
       }
       return reply({ ok: true });
     }
@@ -1127,7 +1307,8 @@ export async function handleFriends(request, env) {
       const before = (a.user[box] || []).length;
       a.user[box] = (a.user[box] || []).filter((n) => n.id !== id);
       if (a.user[box].length === before) return reply({ error: 'Note not found' }, 404);
-      await saveUser(env, a.user);
+      if (!(await takeRate(env, `rate:note-change:${a.user.code}`, RATE_LIMITS.noteChange))) return reply({ error: 'Too many requests this hour' }, 429);
+      await saveUser(env, a.user, [`${box}-${id}`], false);
       return reply({ ok: true });
     }
 
@@ -1162,6 +1343,7 @@ export async function handleFriends(request, env) {
     if (url.pathname === '/room/create') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:room:${a.user.code}`, RATE_LIMITS.room))) return reply({ error: 'Too many game rooms this hour' }, 429);
       const show = String(body?.show || '').toLowerCase();
       if (!SHOWS.includes(show)) return reply({ error: 'Unknown game' }, 400);
       const level = Math.min(5, Math.max(1, Math.floor(num(body?.level)) || 1));
@@ -1183,6 +1365,7 @@ export async function handleFriends(request, env) {
     if (url.pathname === '/room/join') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:room:${a.user.code}`, RATE_LIMITS.room))) return reply({ error: 'Too many game rooms this hour' }, 429);
       const roomCode = String(body?.room || '').trim().toUpperCase();
       const room = await loadRoom(env, roomCode);
       if (!room) return reply({ error: 'No room with that code' }, 404);
@@ -1200,6 +1383,7 @@ export async function handleFriends(request, env) {
     if (url.pathname === '/room/start') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:room:${a.user.code}`, RATE_LIMITS.room))) return reply({ error: 'Too many game rooms this hour' }, 429);
       const room = await loadRoom(env, String(body?.room || '').trim().toUpperCase());
       if (!room) return reply({ error: 'No room with that code' }, 404);
       if (room.host !== a.user.code) return reply({ error: 'Only the host can start the room' }, 403);
@@ -1267,8 +1451,8 @@ export async function handleFriends(request, env) {
       friend.threads = friend.threads || {};
       a.user.threads[to] = [...(a.user.threads[to] || []), msg].slice(-100);
       friend.threads[a.user.code] = [...(friend.threads[a.user.code] || []), msg].slice(-100);
-      await env.FRIENDS.put(`user:${friend.code}`, JSON.stringify(friend));
-      await saveUser(env, a.user);
+      await saveUser(env, friend, [`threads.${a.user.code}`], false);
+      await saveUser(env, a.user, [`threads.${to}`]);
       return reply({ ok: true, id: msg.id });
     }
 
@@ -1284,11 +1468,11 @@ export async function handleFriends(request, env) {
         if (m.from === withCode && !m.read) { m.read = true; changed = true; }
       }
       if (changed) {
-        await saveUser(env, a.user);
+        await saveUser(env, a.user, [`threads.${withCode}`]);
         const friend = hydrate(await loadUser(env, withCode));
         if (friend && friend.threads && friend.threads[a.user.code]) {
           for (const m of friend.threads[a.user.code]) if (m.from === withCode) m.read = true;
-          await env.FRIENDS.put(`user:${friend.code}`, JSON.stringify(friend));
+          await saveUser(env, friend, [`threads.${a.user.code}`], false);
         }
       }
       return reply({ with: withCode, messages: thread.slice(-60) });
@@ -1316,8 +1500,8 @@ export async function handleFriends(request, env) {
       await env.FRIENDS.put(`shared:${id}`, JSON.stringify(note));
       a.user.shared = [id, ...(a.user.shared || [])].slice(0, 30);
       friend.shared = [id, ...(friend.shared || [])].slice(0, 30);
-      await env.FRIENDS.put(`user:${friend.code}`, JSON.stringify(friend));
-      await saveUser(env, a.user);
+      await saveUser(env, friend, ['shared'], false);
+      await saveUser(env, a.user, ['shared']);
       return reply(note);
     }
 
@@ -1352,6 +1536,7 @@ export async function handleFriends(request, env) {
     if (url.pathname === '/shared/update') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:shared-edit:${a.user.code}`, RATE_LIMITS.sharedEdit))) return reply({ error: 'Too many edits this hour' }, 429);
       const id = String(body?.id || '');
       const raw = await env.FRIENDS.get(`shared:${id}`);
       if (!raw) return reply({ error: 'Shared note not found' }, 404);
@@ -1371,6 +1556,7 @@ export async function handleFriends(request, env) {
     if (url.pathname === '/shared/delete') {
       const a = await authed(env, body);
       if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:shared-edit:${a.user.code}`, RATE_LIMITS.sharedEdit))) return reply({ error: 'Too many edits this hour' }, 429);
       const id = String(body?.id || '');
       const raw = await env.FRIENDS.get(`shared:${id}`);
       if (!raw) return reply({ error: 'Shared note not found' }, 404);

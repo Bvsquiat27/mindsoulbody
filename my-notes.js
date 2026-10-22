@@ -224,7 +224,7 @@
       }).filter(Boolean);
       body = `<h2>${esc(tr('On now', 'En curso'))}</h2>${cur ? `<ul class="friend-lessons">${cur}</ul>` : `<p class="muted">${esc(tr('No lesson open right now.', 'Ninguna lección abierta ahora.'))}</p>`}<h2>${esc(tr('Finished', 'Terminadas'))} · ${done.length}</h2>${done.length ? `<ul class="friend-lessons">${done.join('')}</ul>` : `<p class="muted">${esc(tr('No finished lessons shared yet.', 'Todavía no hay lecciones terminadas.'))}</p>`}${notes && notes.hidden ? `<p class="small muted">${esc(tr('Their notes are private.', 'Sus notas son privadas.'))}</p>` : ''}`;
     }
-    return `<button class="text-button back" data-action="friend-open" data-code="${esc(lessons.code || '')}">← ${esc(name)}</button><span class="eyebrow">${esc(tr('LESSONS', 'LECCIONES'))}</span><h1>${esc(tr(`${name}’s lessons`, `Las lecciones de ${name}`))}</h1><p class="lead">${esc(tr('Tap a lesson to open it for yourself.', 'Toca una lección para abrirla tú.'))}</p>${body}`;
+    return `<button class="text-button back" data-action="friend-open" data-code="${esc(lessons.code || '')}">← ${esc(name)}</button><span class="eyebrow">${esc(tr('LESSONS', 'LECCIONES'))}</span><h1>${esc(tr(`${name}’s lessons`, `Las lecciones de ${name}`))}</h1>${lessons.hidden ? '' : `<p class="lead">${esc(tr('Tap a lesson to open it for yourself.', 'Toca una lección para abrirla tú.'))}</p>`}${body}`;
   }
   async function fillFriendLessons(el, code, name, look) {
     const me = ids();

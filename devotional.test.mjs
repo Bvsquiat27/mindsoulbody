@@ -22,8 +22,8 @@ test('verses are the exact KJV and RV1909 text from the app Bible', () => {
   for (const e of [...D.ordinary, ...D.feasts]) {
     const k = bible(e.book).chapters[e.chapter - 1], r = bible(e.book, true).chapters[e.chapter - 1];
     assert.deepEqual(e.en.verses, k.slice(e.verse - 1, e.verseEnd), e.id);
-    // The worker push table keeps a few printed drop caps; the screen writes them in sentence case.
-    assert.deepEqual(e.es.verses.map(RvCase.fixStart), r.slice(e.verse - 1, e.verseEnd), e.id);
+    // Sentence case, like the app Bible: no printed drop caps here or in the worker push table.
+    assert.deepEqual(e.es.verses, r.slice(e.verse - 1, e.verseEnd), e.id);
   }
 });
 test('Orthodox framing: no Protestant-only formulas, Spanish uses tú', () => {
@@ -106,4 +106,14 @@ test('switches flip at once, ignore double taps, and match their saved state', (
   assert.match(dev, /flipSwitch\(t, want\)/);
   assert.match(dev, /function failed\(msg\) \{ repaintSettings\(msg\); toast\(msg\); \}/);
   assert.match(aura, /MsbI18n\.t\(on\?'On':'Off'\)/);
+});
+
+test('push reminders: no RV1909 drop caps in the Spanish lines, EN keeps the KJV text', () => {
+  for (const [id, t] of Object.entries(PUSH_TEXT)) {
+    for (const line of t.es) assert.equal(RvCase.fixStart(line), line, `${id} es`);
+    assert.doesNotMatch(t.es[1], /^[¿¡(«“]*(?:[A-ZÁÉÍÓÚÑ] )*[A-ZÁÉÍÓÚÑ]{2,}\b/, id);
+    assert.doesNotMatch(t.en[1], /^[("“]*[A-Z]{2,}\b/, `${id} en`);
+  }
+  assert.equal(PUSH_TEXT.shepherd.es[1], 'Jehová es mi pastor; nada me faltará.');
+  assert.equal(PUSH_TEXT.transfiguration.es[1].slice(0, 18), 'Y después de seis ');
 });

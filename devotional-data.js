@@ -31,7 +31,7 @@
 "title": "El Señor es mi pastor",
 "ref": "Salmos 23:1–3",
 "verses": [
-"JEHOVÁ es mi pastor; nada me faltará.",
+"Jehová es mi pastor; nada me faltará.",
 "En lugares de delicados pastos me hará yacer: junto á aguas de reposo me pastoreará.",
 "Confortará mi alma; guiaráme por sendas de justicia por amor de su nombre."
 ],
@@ -858,7 +858,7 @@
 "title": "Bajo sus alas",
 "ref": "Salmos 91:1–2",
 "verses": [
-"EL que habita al abrigo del Altísimo, morará bajo la sombra del Omnipotente.",
+"El que habita al abrigo del Altísimo, morará bajo la sombra del Omnipotente.",
 "Diré yo á Jehová: Esperanza mía, y castillo mío; mi Dios, en él confiaré."
 ],
 "reflection": "El Salmo 91 se reza en la Hora Sexta de la Iglesia, al mediodía, cuando el calor y el trabajo pesan más. El abrigo del Altísimo no es una fortaleza lejana; es la presencia de Dios, abierta para ti dondequiera que estés. Traiga lo que traiga este día, puedes morar en Él y decir: esperanza mía, castillo mío, mi Dios, en Él confiaré.",
@@ -947,7 +947,7 @@
 "title": "Los cielos cuentan",
 "ref": "Salmos 19:1–2",
 "verses": [
-"LOS cielos cuentan la gloria de Dios, y la expansión denuncia la obra de sus manos.",
+"Los cielos cuentan la gloria de Dios, y la expansión denuncia la obra de sus manos.",
 "El un día emite palabra al otro día, y la una noche á la otra noche declara sabiduría."
 ],
 "reflection": "La creación es el primer libro de Dios. El cielo de esta mañana, sea del color que sea, habla de su Hacedor sin palabras. La Iglesia Ortodoxa bendice el agua, los campos, las casas y los alimentos, porque todo el mundo debe ser ofrecido de vuelta a Dios con gratitud. Mira hacia arriba hoy, y deja que los cielos te enseñen a alabar.",
@@ -1019,7 +1019,7 @@
 "title": "Una grande nube de testigos",
 "ref": "Hebreos 12:1–2",
 "verses": [
-"POR tanto nosotros también, teniendo en derredor nuestro una tan grande nube de testigos, dejando todo el peso del pecado que nos rodea, corramos con paciencia la carrera que nos es propuesta,",
+"Por tanto nosotros también, teniendo en derredor nuestro una tan grande nube de testigos, dejando todo el peso del pecado que nos rodea, corramos con paciencia la carrera que nos es propuesta,",
 "Puestos los ojos en el autor y consumador de la fe, en Jesús; el cual, habiéndole sido propuesto gozo, sufrió la cruz, menospreciando la vergüenza, y sentóse á la diestra del trono de Dios."
 ],
 "reflection": "No corres solo. Los santos, la Theotokos, los mártires y tus seres queridos que duermen en Cristo te rodean en oración. Por eso la Iglesia está llena de íconos: te recuerdan que el cielo está cerca. Pon los ojos en Jesús, el autor y consumador de la fe, y corre hoy tu pequeña parte de la carrera.",
@@ -1074,7 +1074,7 @@
 "title": "Vuestra vida está escondida con Cristo",
 "ref": "Colosenses 3:1–3",
 "verses": [
-"SI habéis pues resucitado con Cristo, buscad las cosas de arriba, donde está Cristo sentado á la diestra de Dios.",
+"Si habéis pues resucitado con Cristo, buscad las cosas de arriba, donde está Cristo sentado á la diestra de Dios.",
 "Poned la mira en las cosas de arriba, no en las de la tierra.",
 "Porque muertos sois, y vuestra vida está escondida con Cristo en Dios."
 ],
@@ -1873,7 +1873,7 @@
 "title": "Su rostro resplandeció como el sol",
 "ref": "Mateo 17:1–2",
 "verses": [
-"Y DESPUÉS de seis días, Jesús toma á Pedro, y á Jacobo, y á Juan su hermano, y los lleva aparte á un monte alto:",
+"Y después de seis días, Jesús toma á Pedro, y á Jacobo, y á Juan su hermano, y los lleva aparte á un monte alto:",
 "Y se transfiguró delante de ellos; y resplandeció su rostro como el sol, y sus vestidos fueron blancos como la luz."
 ],
 "reflection": "En el monte Tabor los discípulos vieron a Cristo resplandecer con luz divina. La Iglesia Ortodoxa enseña que era la luz increada de Dios, que los santos han vislumbrado en la oración. Muestra hacia dónde vas: tu humanidad también está llamada a llenarse de esa luz. Hoy se bendicen uvas y frutas, señal de que toda la creación será transfigurada.",
@@ -1934,7 +1934,7 @@
 "title": "La sabiduría edificó su casa",
 "ref": "Proverbios 9:1",
 "verses": [
-"LA sabiduría edificó su casa, labró sus siete columnas;"
+"La sabiduría edificó su casa, labró sus siete columnas;"
 ],
 "reflection": "El año eclesiástico comienza en septiembre, y su primera gran fiesta es el nacimiento de la Virgen María, hija de Joaquín y Ana, que oraron mucho tiempo por un hijo. Su nacimiento es el amanecer antes de la salida del sol, que es Cristo. Dios prepara el camino con paciencia, por medio de familias comunes y oraciones fieles. Tus oraciones también son parte de su preparación.",
 "prayer": "Señor, por las oraciones de tu Madre y de Joaquín y Ana, haz de mi hogar un lugar de oración. Amén.",
