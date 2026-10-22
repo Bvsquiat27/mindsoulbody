@@ -663,7 +663,7 @@
     'A DAILY RHYTHM': 'UN RITMO DIARIO',
     'THE JESUS PRAYER': 'LA ORACIÓN DE JESÚS',
     'Prayer rope': 'Cordón de oración',
-    'Choose the knots, then tap once for each. A short pulse marks a knot. A stronger pulse marks a finished rope. Today’s count stays on this device.': 'Elige los nudos y toca una vez por cada uno. Un pulso corto marca un nudo. Un pulso más fuerte marca un cordón terminado. La cuenta de hoy se queda en este dispositivo.',
+    'Choose the knots, then tap once for each. A short pulse marks a knot. A double pulse marks a finished rope. Today’s count stays on this device.': 'Elige los nudos y toca una vez por cada uno. Un pulso corto marca un nudo. Un pulso doble marca un cordón terminado. La cuenta de hoy se queda en este dispositivo.',
     'Knots on the rope': 'Nudos del cordón',
     'Custom': 'Personal',
     'Custom knots': 'Nudos personalizados',

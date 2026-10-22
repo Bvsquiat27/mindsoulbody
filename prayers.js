@@ -370,7 +370,7 @@
     const total = ropeTotal(rope);
     const sizes = [33, 50, 100];
     const wake = practiceOpen && typeof navigator !== 'undefined' && navigator.wakeLock ? '<p class="rope-wake">The screen stays awake while this page is open.</p>' : '';
-    return `<section class="card prayer-rope" id="prayer-rope"><span class="eyebrow">THE JESUS PRAYER</span><h2>Prayer rope</h2><p class="muted">Choose the knots, then tap once for each. A short pulse marks a knot. A stronger pulse marks a finished rope. Today’s count stays on this device.</p><div class="rope-sizes" role="group" aria-label="Knots on the rope">${sizes.map(size => `<button type="button" class="rope-size ${rope.preset===size?'active':''}" data-rope-size="${size}" aria-pressed="${rope.preset===size}">${size}</button>`).join('')}<button type="button" class="rope-size ${rope.preset==='custom'?'active':''}" data-rope-size="custom" aria-pressed="${rope.preset==='custom'}">Custom</button></div>${rope.preset==='custom'?`<label class="rope-custom">Custom knots<input id="rope-custom" type="number" min="1" max="500" inputmode="numeric" value="${esc(rope.custom)}" aria-label="Custom knot count"></label>`:''}<button type="button" class="rope-tap ${rope.complete?'rope-complete':''}" data-rope-tap aria-label="Advance one knot. ${esc(knotLabel(rope))} ${esc(ropePrayer())}"><span class="rope-prayer">${esc(ropePrayer())}</span><strong class="rope-count">${rope.complete?total:rope.count}<small> / ${total}</small></strong><span class="rope-hint">${rope.complete?'Rope complete. Tap to begin the next.':'Tap for the next knot'}</span></button><div class="rope-stats"><div><strong>${rope.ropes}</strong><small>${rope.ropes===1?'rope':'ropes'} completed</small></div><div><strong>${rope.today}</strong><small>knots today</small></div></div><p id="rope-live" class="visually-hidden" aria-live="polite"></p>${wake}</section>`;
+    return `<section class="card prayer-rope" id="prayer-rope"><span class="eyebrow">THE JESUS PRAYER</span><h2>Prayer rope</h2><p class="muted">Choose the knots, then tap once for each. A short pulse marks a knot. A double pulse marks a finished rope. Today’s count stays on this device.</p><div class="rope-sizes" role="group" aria-label="Knots on the rope">${sizes.map(size => `<button type="button" class="rope-size ${rope.preset===size?'active':''}" data-rope-size="${size}" aria-pressed="${rope.preset===size}">${size}</button>`).join('')}<button type="button" class="rope-size ${rope.preset==='custom'?'active':''}" data-rope-size="custom" aria-pressed="${rope.preset==='custom'}">Custom</button></div>${rope.preset==='custom'?`<label class="rope-custom">Custom knots<input id="rope-custom" type="number" min="1" max="500" inputmode="numeric" value="${esc(rope.custom)}" aria-label="Custom knot count"></label>`:''}<button type="button" class="rope-tap ${rope.complete?'rope-complete':''}" data-rope-tap aria-label="Advance one knot. ${esc(knotLabel(rope))} ${esc(ropePrayer())}"><span class="rope-prayer">${esc(ropePrayer())}</span><strong class="rope-count">${rope.complete?total:rope.count}<small> / ${total}</small></strong><span class="rope-hint">${rope.complete?'Rope complete. Tap to begin the next.':'Tap for the next knot'}</span></button><div class="rope-stats"><div><strong>${rope.ropes}</strong><small>${rope.ropes===1?'rope':'ropes'} completed</small></div><div><strong>${rope.today}</strong><small>knots today</small></div></div><p id="rope-live" class="visually-hidden" aria-live="polite"></p>${wake}</section>`;
   }
   function prayerBody(item){
     return item.blocks.map(([kind, text]) => kind==='rubric' ? `<p class="prayer-rubric">${esc(text)}</p>` : `<p>${esc(text)}</p>`).join('');
@@ -437,6 +437,15 @@
     const live = document.getElementById('rope-live');
     if (live) live.textContent = message;
   }
+  /* One pulse per knot, a double tap at the end of a round. Uses the app's
+     tap vibration setting; does nothing where vibration is not supported. */
+  function knotPulse(kind){
+    try {
+      if (typeof window.hapticKnot === 'function') window.hapticKnot(kind);
+      else if (kind === 'round' && typeof window.hapticStrong === 'function') window.hapticStrong();
+      else if (typeof window.haptic === 'function') window.haptic();
+    } catch { /* no vibration here */ }
+  }
   function advance(){
     const rope = loadRope();
     const total = ropeTotal(rope);
@@ -444,7 +453,6 @@
       rope.complete = false;
       rope.count = 1;
       rope.today += 1;
-      if (window.haptic) window.haptic();
     } else {
       rope.count += 1;
       rope.today += 1;
@@ -452,10 +460,9 @@
         rope.count = total;
         rope.complete = true;
         rope.ropes += 1;
-        if (window.hapticStrong) window.hapticStrong();
-        else if (window.haptic) window.haptic();
-      } else if (window.haptic) window.haptic();
+      }
     }
+    knotPulse(rope.complete ? 'round' : 'knot');
     rope.day = todayKey();
     writeJson(ROPE_KEY, rope);
     paint();
