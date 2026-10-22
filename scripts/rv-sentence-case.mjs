@@ -8,10 +8,8 @@ const require = createRequire(import.meta.url);
 const R = require('../rv-case.js');
 const root = new URL('../', import.meta.url);
 /* The push reminder text in worker/devotional-push-data.mjs is generated from
-   devotional-data.js and must match it, and the worker is not changed here, so
-   strings it carries are left as printed; devotional.js fixes them on screen. */
-const { PUSH_TEXT } = await import(new URL('worker/devotional-push-data.mjs', root));
-const PUSHED = new Set(Object.values(PUSH_TEXT).flatMap((t) => [...t.en, ...t.es]));
+   devotional-data.js and must match it; it is sentence-cased the same way
+   (the worker copy is fixed by the same rule, see devotional.test.mjs). */
 const check = process.argv.includes('--check');
 let changed = 0; const touched = [];
 const write = (file, before, after) => { if (before === after) return; touched.push(file); if (!check) writeFileSync(new URL(file, root), after); };
@@ -39,13 +37,13 @@ const JS = ['kidgames-data.js', 'devotional-data.js', 'luz-data.js', 'match3-dat
 const lit = /((?:"(?:es|rvr|[A-Za-z]*Es)"|\b(?:es|rvr|[A-Za-z]*Es))\s*:\s*)"((?:[^"\\\n]|\\.)*)"/g;
 for (const file of JS) {
   let raw; try { raw = readFileSync(new URL(file, root), 'utf8'); } catch { continue; }
-  const out = raw.replace(lit, (all, head, body) => { if (PUSHED.has(body)) return all; const n = R.fixText(body); if (n !== body) changed += 1; return `${head}"${n}"`; });
+  const out = raw.replace(lit, (all, head, body) => { const n = R.fixText(body); if (n !== body) changed += 1; return `${head}"${n}"`; });
   write(file, raw, out);
 }
 /* devotional-data.js keeps RV1909 verses in "verses": [...] arrays under Spanish entries */
 {
   const file = 'devotional-data.js', raw = readFileSync(new URL(file, root), 'utf8');
-  const out = raw.replace(/^"((?:[^"\\\n]|\\.)*)"(,?)$/gm, (all, body, comma) => { if (PUSHED.has(body)) return all; if (!/[áéíóúñ¿¡]|\bá\b|Jehová|Dios/.test(body)) return all; const n = R.fixText(body); if (n !== body) changed += 1; return `"${n}"${comma}`; });
+  const out = raw.replace(/^"((?:[^"\\\n]|\\.)*)"(,?)$/gm, (all, body, comma) => { if (!/[áéíóúñ¿¡]|\bá\b|Jehová|Dios/.test(body)) return all; const n = R.fixText(body); if (n !== body) changed += 1; return `"${n}"${comma}`; });
   write(file, raw, out);
 }
 console.log(`${check ? 'would change' : 'changed'} ${changed} strings in ${touched.length} files`);

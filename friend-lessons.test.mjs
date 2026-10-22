@@ -28,6 +28,9 @@ test('friend lessons view: current, finished with progress, their notes (unless 
   const hiddenNotes = N.friendLessonsHtml('Mary', { current: null, done: [{ id: 'grace' }] }, { hidden: true, notes: [] }, look);
   assert.doesNotMatch(hiddenNotes, /THEIR NOTE/); assert.match(hiddenNotes, /Their notes are private/);
   assert.match(N.friendLessonsHtml('Mary', { hidden: true }, null, look), /keeps their lessons private/);
+  const hiddenView = N.friendLessonsHtml('Mary', { hidden: true }, null, look);
+  assert.doesNotMatch(hiddenView, /Tap a lesson to open it for yourself/, 'no tap hint above the private message');
+  assert.match(N.friendLessonsHtml('Mary', { current: null, done: [{ id: 'grace' }] }, null, look), /Tap a lesson to open it for yourself/);
 });
 
 test('aura wires the tappable studies chip, the screen and lesson syncs (lazy)', () => {
