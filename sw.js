@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v164';
+const CACHE_VERSION = 'v165';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -116,6 +116,9 @@ const DATA_FILES = [
 const KIDS_ART = ['badge-medal', 'color-crayons', 'gbadge-ark-1', 'gbadge-ark-all', 'gbadge-map-1', 'gbadge-map-all', 'gbadge-order-1', 'gbadge-order-all', 'gbadge-sling-all', 'gbadge-verse-1', 'gbadge-verse-all', 'gbadge-who-10', 'gbadge-who-5', 'gbadge-word-1', 'gbadge-word-all', 'howto-map-read', 'howto-map-stamp', 'howto-sling-aim', 'howto-sling-match', 'howto-sling-swap', 'howto-sling-win', 'm3-bomb', 'm3-fish', 'm3-grapes', 'm3-heart', 'm3-leaf', 'm3-loaf', 'm3-lost-sprout', 'm3-sp-burst', 'm3-sp-col', 'm3-sp-row', 'm3-star', 'm3ch-birth', 'm3ch-carmel', 'm3ch-creation', 'm3ch-daniel', 'm3ch-david', 'm3ch-easter', 'm3ch-esther', 'm3ch-gate', 'm3ch-heaven', 'm3ch-jericho', 'm3ch-jonah', 'm3ch-loaves', 'm3ch-lost', 'm3ch-noah', 'm3ch-pentecost', 'm3ch-prison', 'm3ch-road', 'm3ch-ruth', 'm3ch-sea', 'm3ch-tree', 'pile-loaves-fish', 'sling-lost', 'sling-pow-bomb', 'sling-pow-reverse', 'sling-pow-slow', 'sling-pow-zap', 'sling-stone', 'sling-z1', 'sling-z10', 'sling-z11', 'sling-z12', 'sling-z13', 'sling-z14', 'sling-z15', 'sling-z2', 'sling-z3', 'sling-z4', 'sling-z5', 'sling-z6', 'sling-z7', 'sling-z8', 'sling-z9', 'sqbadge-all-lessons', 'sqbadge-anchor', 'sqbadge-ark', 'sqbadge-basket', 'sqbadge-boat', 'sqbadge-bush', 'sqbadge-chariot', 'sqbadge-coat', 'sqbadge-coin', 'sqbadge-crown', 'sqbadge-donkey', 'sqbadge-elephant', 'sqbadge-first-squish', 'sqbadge-first-trick', 'sqbadge-friendship', 'sqbadge-honeycomb', 'sqbadge-jar', 'sqbadge-key', 'sqbadge-ladder', 'sqbadge-lamp', 'sqbadge-lily', 'sqbadge-loaves', 'sqbadge-manna', 'sqbadge-match-3star', 'sqbadge-oil', 'sqbadge-pearl', 'sqbadge-raven', 'sqbadge-scroll', 'sqbadge-seed', 'sqbadge-shield', 'sqbadge-shofar', 'sqbadge-squish-200', 'sqbadge-stone', 'sqbadge-tablets', 'sqbadge-tomb', 'sqbadge-tree', 'sqbadge-trick-master', 'sqbadge-wheat', 'stamp-abraham-0', 'stamp-abraham-1', 'stamp-abraham-2', 'stamp-abraham-3', 'stamp-abraham-4', 'stamp-abraham-5', 'stamp-exodus-0', 'stamp-exodus-1', 'stamp-exodus-2', 'stamp-exodus-3', 'stamp-exodus-4', 'stamp-exodus-5', 'stamp-fallback', 'stamp-jonah-0', 'stamp-jonah-1', 'stamp-jonah-2', 'stamp-jonah-3', 'stamp-jonah-4', 'stamp-jonah-5', 'stamp-magi-0', 'stamp-magi-1', 'stamp-magi-2', 'stamp-magi-3', 'stamp-magi-4', 'stamp-magi-5', 'stamp-paul-0', 'stamp-paul-1', 'stamp-paul-2', 'stamp-paul-3', 'stamp-paul-4', 'stamp-paul-5', 'stamp-ruth-0', 'stamp-ruth-1', 'stamp-ruth-2', 'stamp-ruth-3', 'stamp-ruth-4', 'stamp-ruth-5', 'tier-common', 'tier-legendary', 'tier-rare', 'tile-map', 'tile-order', 'tile-sling', 'tile-verse', 'tile-who', 'tile-wordsearch', 'ws-armor', 'ws-fruit', 'ws-joseph', 'ws-prayer', 'wx-clear', 'wx-dawn', 'wx-heat', 'wx-rain', 'wx-storm', 'wx-wind'];
 const STORY_ART_V2 = ['creation', 'noah', 'stars', 'ladder', 'redsea', 'samuel', 'joseph', 'moses', 'david', 'daniel', 'jonah', 'nativity', 'storm', 'children', 'feeding', 'sheep', 'easter'];
 const storyArt = (id) => (STORY_ART_V2.includes(id) ? `${id}-v2` : id);
+/* Painted achievement badges (img/ach/<id>-128.webp); the same ids as
+   MSB_ACH_ART in aura.js. Empty until the art is painted. */
+const ACH_ART = [];
 const STORY_FILES = STORY_IDS.map((id) => `./img/stories/${storyArt(id)}-512.webp`)
   .concat(COLORING_IDS.map((id) => `./img/coloring/${id}-400.webp`))
   /* painted game art: David's Sling and Map Journey travelers */
@@ -126,7 +129,8 @@ const STORY_FILES = STORY_IDS.map((id) => `./img/stories/${storyArt(id)}-512.web
   /* Abby's Room painted icons (kids-art.js NAMES): the 128 px files are
      precached (~1.4 MB); the 256 px files are cached the first time they
      are shown, and offline a missing 256 is answered with its 128. */
-  .concat(KIDS_ART.map((n) => `./img/kids/${n}-128.webp`));
+  .concat(KIDS_ART.map((n) => `./img/kids/${n}-128.webp`))
+  .concat(ACH_ART.map((id) => `./img/ach/${id}-128.webp`));
 
 function offlineResponse(url) {
   const json = /\.json$/.test(url.pathname);
@@ -140,13 +144,32 @@ function offlineResponse(url) {
 const isBibleBook = (url) => /\/bible\/(?:index|\d\d)\.json$/.test(url.pathname);
 const isRvrBook = (url) => /\/bible\/rvr\/(?:index|\d\d)\.json$/.test(url.pathname);
 const isFatherNotes = (url) => /\/bible\/fathers\/\d\d\.json$/.test(url.pathname);
-const isStoryArt = (url) => /\/img\/(?:stories\/[a-z0-9-]+\.webp|room\/[a-z0-9-]+\.webp|kids\/[a-z0-9-]+-(?:128|256)\.webp|coloring\/[a-z0-9-]+\.(?:png|webp))$/.test(url.pathname);
+const isStoryArt = (url) => /\/img\/(?:stories\/[a-z0-9-]+\.webp|room\/[a-z0-9-]+\.webp|kids\/[a-z0-9-]+-(?:128|256)\.webp|ach\/[a-z0-9-]+-(?:128|256)\.webp|coloring\/[a-z0-9-]+\.(?:png|webp))$/.test(url.pathname);
 const CURRENT_STORY_ART = new Set(STORY_IDS.flatMap((id) => [`${storyArt(id)}.webp`, `${storyArt(id)}-512.webp`]));
 const isOldStoryArt = (url) => { const m = url.pathname.match(/\/img\/stories\/([a-z0-9-]+\.webp)$/); return !!m && !CURRENT_STORY_ART.has(m[1]); };
 const REFILL_HEADER = 'X-MSB-Refill';
 const isWorshipAudio = (url) => /\/audio\/[a-z0-9-]+\.(?:ogg|mp3)$/.test(url.pathname);
 const isStudyNotes = (url) => url.pathname.endsWith('/study-notes.json');
 const isDataRequest = (url) => url.pathname.includes('/data/');
+/* The two big game packs (about 1 MB together) change only with a release, so
+   they are served cache-first from this version's DATA_CACHE, which install
+   fills. A new CACHE_VERSION brings the new copies; other data stays
+   network-first. */
+const VERSIONED_DATA = ['/data/study-challenges.json', '/data/holy-spirit.json'];
+const isVersionedData = (url) => VERSIONED_DATA.some((p) => url.pathname.endsWith(p));
+async function versionedData(request) {
+  const cache = await caches.open(DATA_CACHE);
+  const key = new URL(request.url); key.search = '';
+  const hit = await cache.match(key.href);
+  if (hit) return hit;
+  try {
+    const res = await fetch(key.href);
+    if (res.ok) await cache.put(key.href, res.clone());
+    return res;
+  } catch {
+    return (await caches.match(key.href)) || offlineResponse(new URL(request.url));
+  }
+}
 
 async function preserveBibleBooks(keys) {
   const bible = await caches.open(BIBLE_CACHE);
@@ -204,7 +227,9 @@ self.addEventListener('install', (event) => {
     const shell = await caches.open(SHELL_CACHE);
     await shell.addAll(SHELL);
     const data = await caches.open(DATA_CACHE);
-    await data.addAll(DATA_FILES);
+    /* reload: skip the browser's HTTP cache so a new version never stores an
+       older copy of the cache-first game packs. */
+    await data.addAll(DATA_FILES.map((f) => new Request(f, { cache: 'reload' })));
     const bible = await caches.open(BIBLE_CACHE);
     await bible.addAll(['./bible/index.json']);
     const rvr = await caches.open(RVR_CACHE);
@@ -321,6 +346,11 @@ self.addEventListener('fetch', (event) => {
      are never cached here. */
   if (url.origin !== self.location.origin) return;
 
+  if (isVersionedData(url)) {
+    event.respondWith(versionedData(request));
+    return;
+  }
+
   if (isStudyNotes(url) || isDataRequest(url)) {
     event.respondWith(
       fetch(request)
@@ -355,7 +385,7 @@ self.addEventListener('fetch', (event) => {
         /* A refill from "save offline" wants the real file or nothing: never
            hand it the small cover under the full-size name. */
         if (request.headers.get(REFILL_HEADER)) return new Response('', { status: 503, statusText: 'Offline' });
-        const small = url.pathname.replace(/(\/img\/stories\/[a-z]+(?:-v\d+)?)\.webp$/, '$1-512.webp').replace(/(\/img\/coloring\/[a-z]+)\.png$/, '$1-400.webp').replace(/(\/img\/kids\/[a-z0-9-]+)-256\.webp$/, '$1-128.webp');
+        const small = url.pathname.replace(/(\/img\/stories\/[a-z]+(?:-v\d+)?)\.webp$/, '$1-512.webp').replace(/(\/img\/coloring\/[a-z]+)\.png$/, '$1-400.webp').replace(/(\/img\/(?:kids|ach)\/[a-z0-9-]+)-256\.webp$/, '$1-128.webp');
         return (small !== url.pathname ? cache.match(new URL(small, url.origin).href) : Promise.resolve(null))
           .then((hit) => hit || offlineResponse(url));
       })))

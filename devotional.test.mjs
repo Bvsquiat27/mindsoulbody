@@ -36,7 +36,11 @@ test('Father quotes carry a public source', () => {
   for (const e of [...D.ordinary, ...D.feasts]) if (e.father) { assert.match(e.father.source, /^https:\/\//); assert.ok(e.father.author && e.father.bodyEs); }
 });
 test('no personal names in the devotional code or content', () => {
-  for (const f of ['devotional.js', 'devotional-data.js', 'worker/push.mjs']) assert.doesNotMatch(readFileSync(new URL(`./${f}`, import.meta.url), 'utf8'), /Karen|Angel\b/);
+  /* The names are decoded at run time so they never appear in the code either. */
+  const names = ['S2FyZW4=', 'QW5nZWw='].map((x) => Buffer.from(x, 'base64').toString('utf8'));
+  const guard = new RegExp(names.map((n) => `\\b${n}\\b`).join('|'));
+  assert.equal(guard.test('a b'), false); assert.equal(guard.test(`x ${names[0]} y`), true);
+  for (const f of ['devotional.js', 'devotional-data.js', 'worker/push.mjs']) assert.doesNotMatch(readFileSync(new URL(`./${f}`, import.meta.url), 'utf8'), guard);
 });
 test('client calendar matches the push worker for two years', () => {
   for (let i = 0; i < 730; i++) {

@@ -621,19 +621,19 @@
    "body": {
     "es": [
      "Seguro que alguna vez le has dicho a una hermana de tu iglesia: “Ora por mí.” Eso no es adorarla. Es pedirle ayuda en oración. La Biblia lo manda: “rogad los unos por los otros.”",
-     "La Iglesia tiene dos palabras griegas muy claras. Latreía es adoración: solo se le da a Dios, Padre, Hijo y Espíritu Santo. Dulía es honra o veneración: es el respeto y cariño que damos a los santos, como honras a tu madre o a un pastor fiel.",
-     "Así lo enseñó el Séptimo Concilio de la Iglesia, en el año 787: la adoración verdadera pertenece solo a Dios. Si un ortodoxo adorara a un santo como a Dios, la Iglesia misma diría que es pecado.",
      "“Pero los santos están muertos”, dirías. Jesús responde: “Dios no es Dios de muertos, mas de vivos: porque todos viven á él.” Los que murieron en Cristo están vivos con Él. No son menos parte de la familia por haber llegado al cielo.",
      "Hebreos 12:1 dice que estamos rodeados de “una tan grande nube de testigos”. Y en Apocalipsis 5:8, en el cielo, los ancianos presentan “las oraciones de los santos” delante del Cordero. El cielo no está desconectado de nosotros: allí se ora.",
-     "Santiago dice que “la oración del justo, obrando eficazmente, puede mucho”. ¿Quién es más justo que alguien que ya está con Cristo? Por eso decimos: “Santa María, santo Pedro, oren a Dios por nosotros.” Siempre a Dios. Siempre por medio de Cristo."
+     "Santiago dice que “la oración del justo, obrando eficazmente, puede mucho”. ¿Quién es más justo que alguien que ya está con Cristo? Por eso decimos: “Santa María, santo Pedro, oren a Dios por nosotros.” Siempre a Dios. Siempre por medio de Cristo.",
+     "La Iglesia tiene dos palabras griegas muy claras. Latreía es adoración: solo se le da a Dios, Padre, Hijo y Espíritu Santo. Dulía es honra o veneración: es el respeto y cariño que damos a los santos, como honras a tu madre o a un pastor fiel.",
+     "Así lo enseñó el Séptimo Concilio de la Iglesia, en el año 787: la adoración verdadera pertenece solo a Dios, y a los santos les damos honra y cariño, como a la familia de Dios que son."
     ],
     "en": [
      "Surely you have said to a sister at your church: “Pray for me.” That is not worshiping her. It is asking her for help in prayer. The Bible commands it: “pray one for another.”",
-     "The Church has two very clear Greek words. Latreia is worship: it is given only to God, Father, Son and Holy Spirit. Dulia is honor or veneration: the respect and love we give the saints, the way you honor your mother or a faithful pastor.",
-     "The Seventh Council of the Church taught this in the year 787: true worship belongs to God alone. If an Orthodox Christian worshiped a saint as God, the Church herself would call it a sin.",
      "“But the saints are dead,” you might say. Jesus answers: “For he is not a God of the dead, but of the living: for all live unto him.” Those who died in Christ are alive with Him. They are no less part of the family for having reached heaven.",
      "Hebrews 12:1 says we are surrounded by “so great a cloud of witnesses.” And in Revelation 5:8, in heaven, the elders hold up “the prayers of saints” before the Lamb. Heaven is not cut off from us: there, people pray.",
-     "James says that “the effectual fervent prayer of a righteous man availeth much.” Who is more righteous than someone already with Christ? So we say: “Holy Mary, holy Peter, pray to God for us.” Always to God. Always through Christ."
+     "James says that “the effectual fervent prayer of a righteous man availeth much.” Who is more righteous than someone already with Christ? So we say: “Holy Mary, holy Peter, pray to God for us.” Always to God. Always through Christ.",
+     "The Church has two very clear Greek words. Latreia is worship: it is given only to God, Father, Son and Holy Spirit. Dulia is honor or veneration: the respect and love we give the saints, the way you honor your mother or a faithful pastor.",
+     "The Seventh Council of the Church taught this in the year 787: true worship belongs to God alone, and to the saints we give honor and love, as the family of God they are."
     ]
    },
    "verses": [
@@ -724,17 +724,17 @@
    "body": {
     "es": [
      "Llamamos a María Theotokos, una palabra griega que quiere decir “la que dio a luz a Dios”, o Madre de Dios.",
-     "Este nombre no es para exaltar a María por encima de Dios. Es para proteger la verdad sobre Jesús. El niño que ella llevó en su vientre no era solo un hombre. Era Dios hecho hombre. En el año 431 la Iglesia defendió este nombre contra quienes querían separar a Jesús en dos.",
-     "La Biblia ya lo dice. Isabel, llena del Espíritu Santo, la llamó “la madre de mi Señor”. Y María misma profetizó: “desde ahora me dirán bienaventurada todas las generaciones.” Cuando la honramos, cumplimos esa profecía.",
+     "La Biblia lo dice primero. Isabel, llena del Espíritu Santo, la llamó “la madre de mi Señor”. Y María misma profetizó: “desde ahora me dirán bienaventurada todas las generaciones.” Cuando la honramos, cumplimos esa profecía.",
      "Desde la cruz, Jesús le dio a Juan su madre: “He ahí tu madre.” La Iglesia ve en Juan a todos los discípulos. María es madre de la familia de Jesús.",
+     "Por eso la Iglesia guarda este nombre con tanto amor. No es para exaltar a María por encima de Dios, sino para proteger la verdad sobre Jesús. El niño que ella llevó en su vientre no era solo un hombre. Era Dios hecho hombre. En el año 431 la Iglesia defendió este nombre contra quienes querían separar a Jesús en dos.",
      "No la adoramos. Ella es criatura, no Dios. La honramos más que a los otros santos, y le pedimos que ore por nosotros. Todo lo que ella hace es lo que hizo en Caná: señalar a su Hijo y decir “Haced todo lo que os dijere.”",
      "Los ortodoxos no tenemos el dogma católico de la Inmaculada Concepción. Creemos que María fue concebida como todos, y que por la gracia de Dios vivió una vida pura y santa."
     ],
     "en": [
      "We call Mary Theotokos, a Greek word that means “the one who gave birth to God,” or Mother of God.",
-     "This name is not to lift Mary above God. It is to protect the truth about Jesus. The child she carried in her womb was not only a man. He was God made man. In the year 431 the Church defended this name against those who wanted to split Jesus in two.",
-     "The Bible already says it. Elizabeth, filled with the Holy Spirit, called her “the mother of my Lord.” And Mary herself prophesied: “from henceforth all generations shall call me blessed.” When we honor her, we fulfill that prophecy.",
+     "The Bible says it first. Elizabeth, filled with the Holy Spirit, called her “the mother of my Lord.” And Mary herself prophesied: “from henceforth all generations shall call me blessed.” When we honor her, we fulfill that prophecy.",
      "From the cross, Jesus gave His mother to John: “Behold thy mother!” The Church sees in John all the disciples. Mary is mother of the family of Jesus.",
+     "That is why the Church holds this name so dear. It does not lift Mary above God; it protects the truth about Jesus. The child she carried in her womb was not only a man. He was God made man. In the year 431 the Church defended this name against those who wanted to split Jesus in two.",
      "We do not worship her. She is a creature, not God. We honor her more than the other saints, and we ask her to pray for us. Everything she does is what she did at Cana: point to her Son and say, “Whatsoever he saith unto you, do it.”",
      "We Orthodox do not hold the Catholic dogma of the Immaculate Conception. We believe Mary was conceived like everyone else, and by the grace of God lived a pure and holy life."
     ]

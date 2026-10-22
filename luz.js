@@ -35,6 +35,7 @@
   ];
   const T = {
     es: {
+      loading: 'Abriendo las lecciones…', loadFailed: 'Las lecciones no se pudieron abrir. Revisa tu conexión y vuelve a intentarlo.', retry: 'Intentar otra vez',
       home: '← Inicio', eyebrow: 'LECCIONES PARA LUZ', title: 'Lecciones para Luz',
       lead: 'Preguntas y respuestas sobre la fe ortodoxa, escritas con cariño para ti. Toca una pregunta para leer la respuesta.',
       lang: 'Idioma', size: 'Tamaño de letra', smaller: 'Letra más pequeña', bigger: 'Letra más grande',
@@ -46,6 +47,7 @@
       version: 'RV1909', by: 'Canal'
     },
     en: {
+      loading: 'Opening the lessons…', loadFailed: 'The lessons could not open. Check your connection and try again.', retry: 'Try again',
       home: '← Home', eyebrow: 'LESSONS FOR LUZ', title: 'Lessons for Luz',
       lead: 'Questions and answers about the Orthodox faith, written with love for you. Tap a question to read the answer.',
       lang: 'Language', size: 'Text size', smaller: 'Smaller text', bigger: 'Bigger text',
@@ -63,6 +65,22 @@
 
   const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
   const lessons = () => (window.MsbLuzData && window.MsbLuzData.lessons) || [];
+  /* luz-data.js (~125 KB) is not loaded at startup: it is fetched when the
+     section opens. sw.js precaches it with the shell, so it opens offline too.
+     The Home card shows LESSON_COUNT until then (luz.test.mjs keeps it equal
+     to the number of lessons). */
+  const LESSON_COUNT = 23;
+  let dataLoad = null;
+  function ensureData() {
+    if (window.MsbLuzData) return Promise.resolve(window.MsbLuzData);
+    if (!dataLoad) dataLoad = new Promise((ok, fail) => {
+      const el = document.createElement('script'); el.src = 'luz-data.js'; el.async = true;
+      el.onload = () => (window.MsbLuzData ? ok(window.MsbLuzData) : fail(Error('no data')));
+      el.onerror = () => { dataLoad = null; el.remove(); fail(Error('no data')); };
+      document.head.appendChild(el);
+    });
+    return dataLoad;
+  }
   function lang() {
     try { return localStorage.getItem(LANG_KEY) === 'en' ? 'en' : 'es'; } catch { return 'es'; }
   }
@@ -75,7 +93,7 @@
 
   function homeCard() {
     // Follows the app language (Spanish when the app language is unknown).
-    const n = lessons().length;
+    const n = lessons().length || LESSON_COUNT;
     const en = !!(window.MsbI18n && MsbI18n.lang && MsbI18n.lang() === 'en');
     const sub = en ? `${n ? `${n} ` : ''}questions about the Orthodox faith` : `${n ? `${n} ` : ''}preguntas sobre la fe ortodoxa`;
     return `<button type="button" class="luz-home-card" data-nav="luz" data-i18n-skip lang="${en ? 'en' : 'es'}"><span class="eyebrow">${en ? 'FOR LUZ' : 'PARA LUZ'}</span><strong>${en ? 'Lessons for Luz' : 'Lecciones para Luz'}</strong><span>${sub}</span></button>`;
@@ -153,6 +171,13 @@
     if (!root) return;
     const l = lang();
     const t = T[l];
+    if (!window.MsbLuzData) {
+      root.innerHTML = `<div class="luz" data-i18n-skip lang="${l}"><p class="luz-lead" role="status">${esc(t.loading)}</p></div>`;
+      ensureData().then(() => { if (view.active && view.root === root) paint(); }, () => {
+        if (view.active && view.root === root) root.innerHTML = `<div class="luz" data-i18n-skip lang="${l}"><p class="luz-lead" role="alert">${esc(t.loadFailed)}</p><button type="button" class="luz-btn" data-luz-retry>${esc(t.retry)}</button></div>`;
+      });
+      return;
+    }
     const lesson = view.lesson && lessons().find(x => x.id === view.lesson);
     root.innerHTML = `<div class="luz" data-i18n-skip lang="${l}" style="--luz-size:${SIZES[sizeIndex()]}px">${lesson ? lessonHtml(t, l, lesson) : listHtml(t, l)}</div>`;
   }
@@ -241,6 +266,7 @@
     if (!view.root || !view.root.isConnected) return;
     const target = event.target;
     if (!(target instanceof Element) || !target.closest('.luz')) return;
+    if (target.closest('[data-luz-retry]')) { paint(); return; }
     const open = target.closest('[data-luz-open]');
     if (open) { openLesson(open.dataset.luzOpen, open.dataset.luzFrom === 'board' ? 'push' : 'replace'); return; }
     if (target.closest('[data-luz-list]')) {
@@ -274,5 +300,5 @@
   window.addEventListener('offline', syncOnline);
   window.addEventListener('popstate', onPopState);
 
-  window.MsbLuz = { show, hide, homeCard, VIDEO, SIZES, DEFAULT_SIZE, _onPopState: onPopState };
+  window.MsbLuz = { show, hide, homeCard, ensureData, LESSON_COUNT, VIDEO, SIZES, DEFAULT_SIZE, _onPopState: onPopState };
 })();
