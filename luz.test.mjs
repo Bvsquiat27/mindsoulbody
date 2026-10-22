@@ -176,7 +176,8 @@ test('CSP allows only the YouTube nocookie frame, nothing else loosened', () => 
 
 test('Luz is wired into Home, the router, and the offline shell', () => {
   const html = read('./index.html');
-  assert.ok(html.includes('<script src="luz-data.js" defer></script><script src="luz.js" defer></script>'));
+  assert.ok(html.includes('<script src="luz.js" defer></script>'));
+  assert.equal(html.includes('luz-data.js'), false, 'the lesson data loads when the section opens, not at startup');
   assert.ok(html.includes('<link rel="stylesheet" href="luz.css">'));
   const aura = read('./aura.js');
   assert.ok(aura.includes("else if(state.screen==='luz'&&window.MsbLuz)MsbLuz.show(screen);"));
@@ -184,7 +185,7 @@ test('Luz is wired into Home, the router, and the offline shell', () => {
   assert.equal((aura.match(/MsbLuz\.homeCard\(\)/g) || []).length, 1, 'card in the shared Home pair');
   assert.equal((aura.match(/\$\{homeFeatures\(\)\}/g) || []).length, 2, 'pair on both Home screens');
   const sw = read('./sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v164'/);
+  assert.match(sw, /const CACHE_VERSION = 'v165'/);
   for (const f of ['./luz-data.js', './luz.js', './luz.css', './img/luz/luz-video-thumb.jpg']) assert.ok(sw.includes(`'${f}'`), f);
   assert.match(sw, /if \(url\.origin !== self\.location\.origin\) return;/, 'cross-origin (YouTube frame) requests are never cached');
   assert.equal(sw.includes('youtube'), false);
@@ -377,7 +378,7 @@ test('St. Luke lesson: right after icons, linked both ways, and honest about Scr
     assert.ok(firstHistory > 3, `${lang} history comes after the Scripture paragraphs`);
     assert.match(b.at(-1), lang === 'es' ? /Hechos 2/ : /Acts 2/, `${lang} closes with Pentecost`);
   }
-  // Angel asked for the case to be presented confidently: the skeptical caveats are gone.
+  // The case is presented confidently: the skeptical caveats stay out.
   for (const re of [/copias más tardías/, /se añadió después/, /historiadores/, /discuten/, /no están de acuerdo/, /No es una prueba/, /atribuido a/i, /estudiosos/]) assert.doesNotMatch(es, re, `es still has ${re}`);
   for (const re of [/later copies/, /added afterward/, /historians (think|debate)/, /\bdebate/, /disagree/, /not proof/, /credited to St\. Andrew/, /[Ss]cholars/]) assert.doesNotMatch(en, re, `en still has ${re}`);
   assert.equal(luke.father.who.es, 'San Andrés de Creta (siglo VIII)');

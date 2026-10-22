@@ -247,5 +247,5 @@ test('boot reads the small study index; the full library waits for a study or se
   assert.match(aura, /const MSB_FULL_LIBRARY_SCREENS=\['study','search'\]/);
   assert.match(sw, /'\.\/data\/study-index\.json'/);
   assert.match(sw, /'\.\/data\/study-library\.json'/, 'the full library is still precached for offline use');
-  assert.match(html, /<script src="luz-data\.js" defer><\/script>/, 'Lessons for Luz still ships with the shell');
+  assert.match(sw, /'\.\/luz-data\.js'/, 'Lessons for Luz data is still precached with the shell (it loads when the section opens)');
 });
