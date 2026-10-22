@@ -81,6 +81,10 @@
   }
   const BADGE_NAME = { stone: 'Good memory', loaves: 'Little learner', seed: 'Super squisher', bush: 'Question pro', basket: 'Noah’s helper', tree: 'Quick memory', ark: 'Perfect score', coat: 'Three days in a row', lamp: 'Light of the world', 'first-squish': 'First squish', 'squish-200': 'Squish galore', 'all-lessons': 'Every lesson learned', 'match-3star': 'Three-star match', 'first-trick': 'First trick', 'trick-master': 'Trick master', friendship: 'Friendship', ladder: 'Memory champion', raven: 'Eager learner', wheat: 'Squish harvest', oil: 'Question star', coin: 'Halfway hero', donkey: 'Good neighbor', jar: 'Five-day streak', crown: 'Star collector', boat: 'Triple perfect', tomb: 'Easter morning', lily: 'Little artist', key: 'Keep on asking', pearl: 'Memory treasure', manna: 'Daily bread', scroll: 'Scroll seeker', shofar: 'Sharp ears', tablets: 'Story keeper', elephant: 'Gentle giant', honeycomb: 'Sweet words', anchor: 'Steady traveler', shield: 'Brave aim', chariot: 'Bible games champion' };
   const BADGE_ICON = { stone: '🃏', loaves: '📖', seed: '🤲', bush: '❓', basket: '🌈', tree: '⚡', ark: '💯', coat: '📅', lamp: '💡', 'first-squish': '👆', 'squish-200': '🎉', 'all-lessons': '🎓', 'match-3star': '⭐', 'first-trick': '✨', 'trick-master': '🎩', friendship: '🤝', ladder: '🧠', raven: '📚', wheat: '🌾', oil: '🌟', coin: '🗺️', donkey: '💛', jar: '🔥', crown: '👑', boat: '🎯', tomb: '🌅', lily: '🖍️', key: '🔑', pearl: '🦪', manna: '🍞', scroll: '🔎', shofar: '📯', tablets: '📜', elephant: '🐘', honeycomb: '🍯', anchor: '🧭', shield: '🛡️', chariot: '🏆' };
+  /* painted badge pictures (img/kids, see kids-art.js) */
+  const KA = () => window.MsbKidsArt;
+  const BADGE_ART = id => KA().spot(`squishy-badge|${id}`) || 'badge-medal';
+  const badgeImg = (id, px) => KA().img(BADGE_ART(id), { px, cls: 'sq-badge-pic' });
   /* "2026-10-11" -> "11 oct 2026" / "Oct 11, 2026" in the app language */
   function niceDate(key) {
     const [y, m, d] = String(key).split('-').map(Number);
@@ -434,12 +438,32 @@
       case 'kgDone': case 'kgBest': return [[L('Play {game}', { game: L(KG_NAME[ch.game] || 'Bible games') }), `data-sq-go-game="${ch.game}"`]];
       case 'kgAll': return [[L('Open the Bible games'), 'data-sq-go-game="hub"']];
       case 'colored': return [[L('Open the coloring book'), 'data-sq-go-color']];
+      case 'final': {
+        /* the lamp: go to the next squishy still locked, and to Manna Match
+           while no level has 3 stars yet */
+        const left = C().finalLeft(ch, ctx()), out = [];
+        if (left.locked.length) { const next = byId(left.locked[0]); out.push([L('Next: {name}', { name: next ? nameOf(next) : L('Locked') }), `data-sq-go-locked="${esc(left.locked[0])}"`]); }
+        if (!left.three) out.push([L('Play Manna Match'), 'data-sq-go-match']);
+        return out.length ? out : null;
+      }
       default: return null;
     }
   }
+  /* Tapping a locked tile (or the lamp's Next button): say what opens it */
+  function showLocked(id) { ui.go = id; const ch = C().challengeFor(id), back = ch ? C().wonBackProgress(store2(), ch) : null; ui.msg = back ? `${L('Win it back: {goal}', { goal: againText(ch, back.need) })} (${back.have} / ${back.need})` : ch ? L('To unlock it: {task}', { task: challengeText(ch) }) : L('Locked'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); }
+  /* For the lamp: what is still left, in words */
+  function finalLeftHtml(ch) {
+    const left = C().finalLeft(ch, ctx());
+    const names = left.locked.map(id => byId(id)).filter(Boolean).map(nameOf);
+    const shown = names.slice(0, 6).join(', ') + (names.length > 6 ? ', …' : '');
+    const squishLine = names.length ? (names.length === 1 ? L('Still locked: {names}', { names: shown }) : L('Still locked ({n}): {names}', { n: names.length, names: shown })) : L('Every other squishy is open ✓');
+    const starLine = left.three ? L('3 stars on a Manna Match level ✓') : L('Still to do: 3 stars on a Manna Match level');
+    return `<ul class="sq-final-left"><li>${esc(squishLine)}</li><li>${esc(starLine)}</li></ul>`;
+  }
   function goHtml() {
     const ch = ui.go && C().challengeFor(ui.go), g = ch && goFor(ch, C().wonBackProgress(store2(), ch));
-    return g ? `<p class="sq-go-row">${g.map((x, i) => `<button type="button" class="${i ? 'secondary' : 'primary'} sq-go" ${x[1]}>▶ ${esc(x[0])}</button>`).join(' ')}</p>` : '';
+    const left = ch && ch.kind === 'final' && !C().wonBackProgress(store2(), ch) ? finalLeftHtml(ch) : '';
+    return left + (g ? `<p class="sq-go-row">${g.map((x, i) => `<button type="button" class="${i ? 'secondary' : 'primary'} sq-go" ${x[1]}>▶ ${esc(x[0])}</button>`).join(' ')}</p>` : '');
   }
 
   /* Achievements: every badge, earned or not, with progress. */
@@ -448,9 +472,9 @@
     const got = list.filter(b => b.earned).length;
     const rows = list.map(b => {
       const text = challengeText(b), tierCls = b.tier === 'common' ? '' : ` ${b.tier}`;
-      const art = b.squishy ? `<span class="sq-badge-art${b.earned ? '' : ' dim'}">${A().svg(b.squishy)}</span>` : `<span class="sq-badge-art emoji" aria-hidden="true">${BADGE_ICON[b.id] || '🏅'}</span>`;
+      const art = b.squishy ? `<span class="sq-badge-art${b.earned ? '' : ' dim'}">${A().svg(b.squishy)}</span>` : `<span class="sq-badge-art pic" aria-hidden="true">${badgeImg(b.id, 44)}</span>`;
       const status = b.earned ? `<span class="sq-badge-date">✓ ${esc(L('Earned {date}', { date: niceDate(b.earned) }))}</span>` : progressBar(b.progress, text);
-      return `<li class="sq-badge${b.earned ? ' earned' : ''}${tierCls}"><span class="sq-medal" aria-hidden="true">${b.earned ? BADGE_ICON[b.id] || '🏅' : '🔒'}</span>${art}<span class="sq-badge-body"><strong>${esc(L(BADGE_NAME[b.id] || b.id))}</strong>${TIER_LABEL[b.tier] ? `<span class="sq-tier inline">${esc(L(TIER_LABEL[b.tier]))}</span>` : ''}${b.earned ? `<span class="sq-req">${esc(text)}</span>` : ''}${status}</span></li>`;
+      return `<li class="sq-badge${b.earned ? ' earned' : ''}${tierCls}"><span class="sq-medal" aria-hidden="true">${b.earned ? badgeImg(b.id, 36) : '🔒'}</span>${art}<span class="sq-badge-body"><strong>${esc(L(BADGE_NAME[b.id] || b.id))}</strong>${TIER_LABEL[b.tier] ? `<span class="sq-tier inline">${esc(L(TIER_LABEL[b.tier]))}</span>` : ''}${b.earned ? `<span class="sq-req">${esc(text)}</span>` : ''}${status}</span></li>`;
     }).join('');
     return `<h2 class="sq-h2">${esc(L('Achievements'))}</h2><p class="sq-hint">${esc(L('Badges earned: {n} of {total}', { n: got, total: list.length }))}</p><ul class="sq-badges">${rows}</ul>${tricksHtml()}`;
   }
@@ -726,7 +750,11 @@
   function drawParts(g) {
     const p = pv, F = FXM(); if (!F) return;
     g.setTransform(1, 0, 0, 1, 0, 0);
-    for (const it of p.pile) F.emo(g, it.ch, it.x * p.dpr, it.y * p.dpr, 22 * p.dpr, 1, it.rot);
+    for (const it of p.pile) {
+      const im = KA().image(it.art);
+      if (!KA().ready(im)) continue;
+      const d = 26 * p.dpr; g.save(); g.translate(it.x * p.dpr, it.y * p.dpr); g.rotate(it.rot); g.drawImage(im, -d / 2, -d / 2, d, d); g.restore();
+    }
     for (const pt of p.parts) F.drawParticle(g, pt, p.dpr);
   }
   function animGeom(ox, oy, s, pose, bb) {
@@ -954,7 +982,7 @@
   function addLoaf() {
     const p = pv; if (p.pile.length >= 30) p.pile.shift();
     const n = p.pile.length, size = p.body.size * p.scale, row = Math.floor(n / 10), col = n % 10;
-    p.pile.push({ ch: n % 2 ? '🐟' : '🍞', x: p.cw / 2 + (col - 4.5) * size * 0.12 + (row % 2) * size * 0.05, y: p.oy + size * 1.08 - row * 14, rot: (Math.random() - 0.5) * 0.6 });
+    p.pile.push({ art: n % 2 ? 'm3-fish' : 'm3-loaf', x: p.cw / 2 + (col - 4.5) * size * 0.12 + (row % 2) * size * 0.05, y: p.oy + size * 1.08 - row * 14, rot: (Math.random() - 0.5) * 0.6 });
     burst('crumbs', 6); SQUISH.pluck(0.2);
   }
   function startAnim(def, extra) {
@@ -1159,13 +1187,13 @@
       inner = `<span class="eyebrow">${esc(L('YOU WON!'))}</span><h2>${esc(L('Great job!'))}</h2>${next ? `<p>${esc(L('Next challenge:'))}</p><div class="sq-next-ch">${progressBar(next.pr, challengeText(next.k))}</div>` : `<p>${esc(L('You already have every squishy. Well done!'))}</p>`}${button}`;
     } else if (big) {
       const legend = tier === 'legendary';
-      inner = `<div class="sq-trophy${legend ? ' legendary' : ''}" aria-hidden="true"><span class="sq-trophy-rays"></span><span class="sq-trophy-medal">${legend ? '👑' : '🏆'}</span></div>
+      inner = `<div class="sq-trophy${legend ? ' legendary' : ''}" aria-hidden="true"><span class="sq-trophy-rays"></span><span class="sq-trophy-medal">${KA().img(legend ? 'tier-legendary' : KA().spot('other|trophy medal'), { px: 80, cls: 'sq-trophy-pic' })}</span></div>
         <span class="eyebrow">${esc(legend ? L('LEGENDARY ACHIEVEMENT') : L('RARE ACHIEVEMENT'))}</span><h2>${esc(legend ? L('Legendary squishy unlocked!') : L('Rare squishy unlocked!'))}</h2>
         <p class="sq-ach-name">${esc(L('You unlocked {name}!', { name: nameOf(x) }))}</p>
         <div class="sq-new sq-new-big${x.glow ? ' sq-new-glow' : ''}">${A().svg(x.id, nameOf(x))}</div>
-        <p class="sq-ach-badge"><span aria-hidden="true">${BADGE_ICON[x.id] || '🏅'}</span> ${esc(L('Badge: {name}', { name: L(BADGE_NAME[x.id]) }))}<br><span class="muted">${esc(challengeText(ch))}</span></p>${more}${button}`;
+        <p class="sq-ach-badge"><span aria-hidden="true">${badgeImg(x.id, 28)}</span> ${esc(L('Badge: {name}', { name: L(BADGE_NAME[x.id]) }))}<br><span class="muted">${esc(challengeText(ch))}</span></p>${more}${button}`;
     } else {
-      inner = `<span class="eyebrow">${esc(L('NEW SQUISHY!'))}</span><h2>${esc(L('You unlocked {name}!', { name: nameOf(x) }))}</h2><div class="sq-new">${A().svg(x.id, nameOf(x))}</div><p class="sq-ach-badge"><span aria-hidden="true">${BADGE_ICON[x.id] || '🏅'}</span> ${esc(L('Badge: {name}', { name: L(BADGE_NAME[x.id]) }))}</p>${more}${button}`;
+      inner = `<span class="eyebrow">${esc(L('NEW SQUISHY!'))}</span><h2>${esc(L('You unlocked {name}!', { name: nameOf(x) }))}</h2><div class="sq-new">${A().svg(x.id, nameOf(x))}</div><p class="sq-ach-badge"><span aria-hidden="true">${badgeImg(x.id, 28)}</span> ${esc(L('Badge: {name}', { name: L(BADGE_NAME[x.id]) }))}</p>${more}${button}`;
     }
     box.classList.toggle('final', tier === 'legendary');
     box.classList.toggle('rare', tier === 'rare');
@@ -1216,7 +1244,9 @@
     if (goView) { ui.view = goView.dataset.sqGoView; ui.msg = ''; ui.go = null; if (ui.view === 'memory') newMemory(); else newRound(); render(); window.scrollTo({ top: 0, behavior: 'auto' }); return; }
     if (t.closest('[data-sq-go-play]')) { ui.msg = ''; ui.go = null; const first = prog().unlocked()[0] || 'lamb'; render(); openPlay(first); return; }
     const lockedTile = t.closest('[data-sq-locked]');
-    if (lockedTile) { ui.go = lockedTile.dataset.sqLocked; const ch = C().challengeFor(lockedTile.dataset.sqLocked), back = ch ? C().wonBackProgress(store2(), ch) : null; ui.msg = back ? `${L('Win it back: {goal}', { goal: againText(ch, back.need) })} (${back.have} / ${back.need})` : ch ? L('To unlock it: {task}', { task: challengeText(ch) }) : L('Locked'); render(); ui.root.querySelector('.sq-msg')?.scrollIntoView({ block: 'center' }); return; }
+    const goLocked = t.closest('[data-sq-go-locked]');
+    if (goLocked && byId(goLocked.dataset.sqGoLocked)) { showLocked(goLocked.dataset.sqGoLocked); return; }
+    if (lockedTile) { showLocked(lockedTile.dataset.sqLocked); return; }
     const star = t.closest('[data-sq-star]');
     if (star) {
       prog().addStar(star.dataset.sqStar); play('twinkle'); vibrate(15); afterProgress(false);
@@ -1284,7 +1314,7 @@
     /* Kid badges for the Profile achievements screen (this phone only) */
     kidBadges() {
       if (!C() || !D()) return null;
-      const list = C().badges(store2(), D().SQUISHIES).map(b => ({ id: b.id, name: L(BADGE_NAME[b.id] || b.id), icon: BADGE_ICON[b.id] || '🏅', tier: b.tier, earned: b.earned || null, squishy: b.squishy || null }));
+      const list = C().badges(store2(), D().SQUISHIES).map(b => ({ id: b.id, name: L(BADGE_NAME[b.id] || b.id), icon: BADGE_ICON[b.id] || '🏅', art: KA().src(BADGE_ART(b.id), 128), tier: b.tier, earned: b.earned || null, squishy: b.squishy || null }));
       let stars = 0;
       try { const m = JSON.parse(localStorage.getItem(C().KEYS.match)) || {}; Object.values(m.stars || {}).forEach(v => { stars += Math.max(0, Math.min(3, Number(v) || 0)); }); } catch { stars = 0; }
       const levels = window.MsbMatch3Data && Array.isArray(MsbMatch3Data.LEVELS) ? MsbMatch3Data.LEVELS.length : 20;

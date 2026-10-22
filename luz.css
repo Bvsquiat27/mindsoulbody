@@ -1,0 +1,66 @@
+/* Lessons for Luz: large, high-contrast reading for an older reader.
+   Every size is relative to --luz-size (set by the text-size control). */
+.luz{--luz-size:21px;font-size:var(--luz-size);line-height:1.6;color:var(--text);max-width:760px}
+.luz h1,.luz h1.luz-question{font-size:1.7em;font-weight:600;line-height:1.25;margin:.2em 0 .5em;color:var(--text)}
+.luz h2{font-size:1.2em;line-height:1.3;margin:1.4em 0 .5em;color:var(--text)}
+.luz p{margin:0 0 .9em;font-size:1em;color:var(--text)}
+.luz .eyebrow{display:block;font-size:.7em;letter-spacing:.12em;font-weight:800;color:var(--gold);margin:0 0 .4em}
+.luz-lead{font-size:1em;color:var(--text)}
+.luz a{color:var(--gold);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+/* Focus ring in the text color: the highest contrast in every theme (Light, Sepia, Dark). */
+.luz button:focus-visible,.luz a:focus-visible,.luz-home-card:focus-visible{outline:4px solid var(--text);outline-offset:3px;box-shadow:0 0 0 3px var(--bg)}
+.luz-btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:56px;min-width:56px;padding:.4em 1em;border-radius:14px;border:2px solid var(--text);background:var(--surface);color:var(--text);font:inherit;font-size:.9em;font-weight:700;cursor:pointer;text-decoration:none}
+.luz a.luz-btn{color:var(--text);text-decoration:none}
+.luz-btn:disabled{opacity:.4;cursor:default}
+.luz-btn.on,.luz-btn[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+.luz-btn:active{transform:translateY(1px)}
+.luz-back{margin-bottom:.8em}
+.luz-tools{display:flex;flex-wrap:wrap;gap:.8em 1.4em;margin:.6em 0 1.2em;padding:.8em;border:2px solid var(--line);border-radius:18px;background:var(--surface)}
+.luz-tool{display:flex;flex-direction:column;gap:.35em}
+.luz-tool-label{font-size:.8em;font-weight:700}
+.luz-seg{display:flex;gap:.5em}
+.luz-btn-big{font-size:1.05em}
+.luz-card{border:2px solid var(--line);background:var(--surface);border-radius:20px;padding:1em;margin:0 0 1.2em}
+.luz .luz-video-title{margin:.2em 0 .2em;font-size:1.05em;font-family:inherit;font-weight:800;line-height:1.35}
+.luz-video-channel{font-size:.85em;margin-bottom:.6em}
+.luz-video-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;margin-bottom:.7em}
+.luz-video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.luz-video-play{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:#000;cursor:pointer;display:block}
+.luz-video-play img{width:100%;height:100%;object-fit:cover;display:block}
+.luz-play-badge{position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;background:#000000c0;color:#fff;border:3px solid #fff;display:flex;align-items:center;justify-content:center}
+.luz-play-badge svg{width:46px;height:46px;margin-left:6px}
+.luz-play-label{position:absolute;left:0;right:0;bottom:0;padding:.5em;background:#000000c8;color:#fff;font-weight:800;font-size:.9em;text-align:center}
+.luz-video-offline{border:2px solid var(--gold);border-radius:12px;padding:.6em .8em;font-weight:700}
+.luz-yt{width:100%}
+.luz-list-title{margin-top:1em}
+.luz-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6em}
+.luz-q-btn{display:flex;align-items:center;gap:.7em;width:100%;min-height:64px;padding:.7em .9em;text-align:left;border:2px solid var(--line);border-radius:16px;background:var(--surface);color:var(--text);font:inherit;font-size:1em;font-weight:600;line-height:1.35;cursor:pointer}
+@media (hover:hover){.luz-q-btn:hover{border-color:var(--text)}}
+.luz-num{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:2em;height:2em;border-radius:50%;background:var(--text);color:var(--bg);font-weight:800;font-size:.85em}
+.luz-question{outline:none}
+.luz-short{border-left:6px solid var(--gold);background:var(--surface);border-radius:12px;padding:.8em 1em;margin:0 0 1em}
+.luz-short p{font-weight:700;margin:0}
+.luz-speech{display:flex;flex-wrap:wrap;gap:.5em;margin:0 0 1.2em}
+.luz-speech .speech-rate{min-height:56px;min-width:56px;font-size:.85em}
+.luz-listen{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.luz-verse,.luz-father{margin:0 0 1em;padding:.8em 1em;border:2px solid var(--line);border-radius:14px;background:var(--surface)}
+.luz-verse p,.luz-father p{font-family:var(--serif);font-size:1.05em;margin-bottom:.4em}
+.luz-verse cite,.luz-father cite{display:block;font-style:normal;font-weight:800;font-size:.85em;color:var(--gold)}
+.luz .luz-note{font-size:.8em;font-family:inherit;margin:.5em 0 0}
+.luz-sources{padding-left:1.1em;margin:0 0 1em}
+.luz-sources li{margin:.5em 0}
+.luz-see{list-style:none;margin:0 0 1em;padding:0}
+.luz-pager{display:flex;justify-content:space-between;gap:.6em;margin:1.6em 0 .8em}
+.luz-pager .luz-btn{min-height:64px;font-size:1em;padding:.4em 1.1em}
+.luz-next{margin-left:auto;background:var(--text);color:var(--bg);border-color:var(--text)}
+/* "Back to my lessons": full width, filled, at the top and bottom of every lesson. */
+.luz-board-btn{display:flex;width:100%;min-height:64px;font-size:1em;background:var(--text);color:var(--bg);border-color:var(--text);margin:0 0 .9em}
+.luz-board-btn[data-luz-back="bottom"]{margin:.4em 0 1.2em}
+.luz-q-btn.luz-q-last{border:3px solid var(--text)}
+.luz .speech-current{outline:3px solid var(--gold);outline-offset:4px;border-radius:6px}
+.luz-home-card{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;margin:0 0 18px;padding:20px 22px;min-height:96px;border-radius:22px;border:2px solid var(--gold);background:var(--surface);color:var(--text);font:inherit;cursor:pointer}
+.luz-home-card .eyebrow{margin:0;font-size:12px}
+.luz-home-card strong{font-size:24px;line-height:1.2}
+.luz-home-card span:last-child{font-size:16px}
+@media (max-width:480px){.luz h1,.luz h1.luz-question{font-size:1.55em}.luz-tools{padding:.6em}.luz-pager .luz-btn{flex:1 1 0;padding:.4em .6em}}
+@media (prefers-reduced-motion:reduce){.luz-btn:active{transform:none}}

@@ -52,3 +52,42 @@ test('the worker lists shield as legendary with the 5-squishy minimum', async ()
   assert.ok(W.SQUISHY_LEGENDARY.includes('shield'));
   assert.equal(W.TRADE_RULES.LEGEND_MIN, 5);
 });
+
+test('lesson sync sends only lesson ids, dates and scores; with the switch off it sends nothing', async () => {
+  const m = new Map([['msb_friends_id', JSON.stringify({ code: 'MSB-ME', secret: 's3cret' })]]);
+  globalThis.localStorage = { getItem: (k) => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)) };
+  const sent = [];
+  globalThis.fetch = async (url, init) => { sent.push({ url, body: JSON.parse(init.body) }); return { ok: true, status: 200, json: async () => ({ ok: true }) }; };
+  try {
+    const opts = { progress: [{ study_id: 'grace', completed_at: 100, quiz_score: 2, notes: 'private words' }], lastStudy: 'mercy' };
+    await N.syncLessons(opts, true);
+    const on = sent.pop();
+    assert.match(on.url, /\/lessons\/sync$/);
+    assert.equal(on.body.hidden, false);
+    assert.deepEqual(Object.keys(on.body).sort(), ['code', 'hidden', 'lessons', 'secret']);
+    assert.deepEqual(on.body.lessons.done, [{ id: 'grace', ts: 100000, score: 2 }]);
+    assert.deepEqual(Object.keys(on.body.lessons.current).sort(), ['id', 'ts']);
+    assert.doesNotMatch(JSON.stringify(on.body), /private words/);
+    N.setLessonsShared(false);
+    await N.syncLessons(opts, true);
+    const off = sent.pop();
+    assert.deepEqual(off.body.lessons, { current: null, done: [] });
+    assert.equal(off.body.hidden, true);
+    // no friend code: nothing leaves the device
+    m.delete('msb_friends_id'); N.setLessonsShared(true);
+    assert.deepEqual(await N.syncLessons(opts, true), { skipped: true });
+    assert.equal(sent.length, 0);
+  } finally { delete globalThis.fetch; delete globalThis.localStorage; }
+});
+
+test('the lessons switch and the friend lessons view have EN and ES text', () => {
+  const src = readFileSync('my-notes.js', 'utf8');
+  for (const [en, es] of [['Friends can see my lessons', 'Mis amigos pueden ver mis lecciones'], ['Friends can see your lessons.', 'Tus amigos pueden ver tus lecciones.'], ['Your lessons are private.', 'Tus lecciones son privadas.'], ['This friend keeps their lessons private.', 'Este amigo mantiene sus lecciones en privado.'], ['Lessons could not load right now.', 'No se pudieron cargar las lecciones ahora.']]) {
+    assert.ok(src.includes(`tr('${en}', '${es}')`), en);
+  }
+  const html = N.friendLessonsHtml('Mary', { current: null, done: [] }, null, look);
+  assert.match(html, /Mary’s lessons/);
+  globalThis.localStorage = { getItem: () => null, setItem() {} };
+  try { assert.match(N.profileHtml({}), /data-lessons-share role="switch" aria-checked="true"/, 'on by default'); }
+  finally { delete globalThis.localStorage; }
+});

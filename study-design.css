@@ -155,21 +155,21 @@ html{background:var(--bg)}body{color:var(--text);font-family:Outfit,system-ui,sa
 .daily-stack::after{background:color-mix(in srgb,var(--teal) 28%,transparent)}
 .daily-stack .eyebrow,.daily-stack>span:last-of-type,.neon-stat .eyebrow,.neon-stat>span:last-child{color:var(--ink-soft)}
 .verse-play{background:var(--teal);color:var(--on-accent);box-shadow:0 8px 20px #0006}
-.neon-stat.violet{background:radial-gradient(circle at 90% 100%,var(--app-hero-glow),transparent 49%),linear-gradient(130deg,var(--surface2),var(--app-hero))}
-.neon-stat.mint{background:radial-gradient(circle at 92% 98%,var(--app-hero-glow),transparent 52%),linear-gradient(130deg,var(--app-card),var(--app-active))}
+.neon-stat.violet{background:radial-gradient(circle at 90% 100%,var(--card-glow),transparent 49%),linear-gradient(130deg,var(--surface2),var(--app-hero))}
+.neon-stat.mint{background:radial-gradient(circle at 92% 98%,var(--card-glow),transparent 52%),linear-gradient(130deg,var(--app-card),var(--app-active))}
 .bar-lines{background:repeating-linear-gradient(to bottom,transparent 0 calc(25% - 1px),color-mix(in srgb,var(--teal) 28%,transparent) calc(25% - 1px) 25%)}
 .bar-day i,.bar-day:nth-child(even) i{background:linear-gradient(180deg,var(--teal),color-mix(in srgb,var(--teal) 30%,transparent) 77%,transparent);box-shadow:0 0 16px color-mix(in srgb,var(--teal) 40%,transparent)}
 .donut{box-shadow:0 0 30px color-mix(in srgb,var(--teal) 20%,transparent)}
 .donut>div{background:var(--surface);box-shadow:inset 0 0 24px #0006}
 .orb{background:radial-gradient(circle at 34% 60%,var(--chart-warm) 5%,transparent 42%),radial-gradient(circle at 65% 45%,var(--teal) 12%,transparent 62%),radial-gradient(circle at 80% 65%,var(--chart-cool),transparent 56%)}
-.hub-card,.hub-card:nth-child(2){color:var(--text);border-color:var(--border);background:radial-gradient(circle at 90% 8%,var(--app-hero-glow),transparent 40%),linear-gradient(135deg,var(--app-hero),var(--app-card-end))}
-.hub-card:nth-child(2){background:radial-gradient(circle at 88% 16%,var(--app-hero-glow),transparent 42%),linear-gradient(135deg,var(--app-active),var(--surface))}
+.hub-card,.hub-card:nth-child(2){color:var(--text);border-color:var(--border);background:radial-gradient(circle at 90% 8%,var(--card-glow),transparent 40%),linear-gradient(135deg,var(--app-hero),var(--app-card-end))}
+.hub-card:nth-child(2){background:radial-gradient(circle at 88% 16%,var(--card-glow),transparent 42%),linear-gradient(135deg,var(--app-active),var(--surface))}
 .hub-card>span:last-child{color:var(--ink-soft)}
 .hub-card:hover,.lesson-card:hover,.challenge-card:hover{border-color:var(--teal)}
-.lesson-card,.challenge-card,.challenge-card:nth-child(2n),.lesson-card:nth-child(4n+2),.challenge-card:nth-child(4n+2),.lesson-card:nth-child(4n+3),.challenge-card:nth-child(4n+3),.lesson-card:nth-child(4n+4),.challenge-card:nth-child(4n+4){background:radial-gradient(circle at 82% 18%,var(--app-hero-glow),transparent 46%),linear-gradient(135deg,var(--app-hero),var(--app-card) 64%,var(--app-card-end));border-color:var(--border);color:var(--text)}
+.lesson-card,.challenge-card,.challenge-card:nth-child(2n),.lesson-card:nth-child(4n+2),.challenge-card:nth-child(4n+2),.lesson-card:nth-child(4n+3),.challenge-card:nth-child(4n+3),.lesson-card:nth-child(4n+4),.challenge-card:nth-child(4n+4){background:radial-gradient(circle at 82% 18%,var(--card-glow),transparent 46%),linear-gradient(135deg,var(--app-hero),var(--app-card) 64%,var(--app-card-end));border-color:var(--border);color:var(--text)}
 .lesson-card:nth-child(4n+2),.challenge-card:nth-child(4n+2){background:radial-gradient(circle at 85% 15%,var(--app-hero-glow),transparent 42%),linear-gradient(130deg,var(--app-active),var(--surface2) 62%,var(--bg))}
 .lesson-card:nth-child(4n+3),.challenge-card:nth-child(4n+3){background:radial-gradient(circle at 80% 10%,color-mix(in srgb,var(--chart-warm) 70%,transparent),transparent 44%),linear-gradient(130deg,var(--app-reading),var(--surface) 68%,var(--bg))}
-.lesson-card:nth-child(4n+4),.challenge-card:nth-child(4n+4){background:radial-gradient(circle at 82% 18%,var(--app-hero-glow),transparent 46%),linear-gradient(135deg,var(--surface2),var(--app-hero) 70%,var(--app-card-end))}
+.lesson-card:nth-child(4n+4),.challenge-card:nth-child(4n+4){background:radial-gradient(circle at 82% 18%,var(--card-glow),transparent 46%),linear-gradient(135deg,var(--surface2),var(--app-hero) 70%,var(--app-card-end))}
 .lesson-card::after{background:linear-gradient(transparent,color-mix(in srgb,var(--bg) 82%,transparent))}
 .lesson-card .lesson-meta,.lesson-card h3,.challenge-card h3,.game-layer,.game-layer .eyebrow{color:var(--text)}
 .lesson-card p,.challenge-card p,.lesson-card footer,.challenge-card footer,.game-layer>span:last-child{color:var(--ink-soft)}
@@ -326,7 +326,7 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .prayer-source cite{font-style:italic}
 
 /* Light and sepia sit beside the six dark palettes. Text, muted copy, and accents stay at least 4.5:1 on their backgrounds. */
-:root[data-theme="light"]{color-scheme:light;--bg:#f7f4ee;--surface:#fffdf8;--surface2:#efeae2;--line:#1b191426;--text:#1b1914;--muted:#3e382f;--gold:#7a4e0c;--teal:#0b5e52;--on-accent:#f7fffc;--nav-idle:#3e382f;--ink-soft:#241f18;--border:#1b191455;--app-glow:#0b5e5222;--app-glow-2:#efeae2;--app-sidebar:#f7f4eee8;--app-nav:#fffdf8f2;--app-active:#d7efe9;--app-active-border:#0b5e52;--app-card:#fffdf8;--app-card-end:#efeae2;--app-hero:#e5f3ef;--app-hero-end:#f7f4ee;--app-hero-glow:#0b5e5233;--app-reading:#efeae2;--app-reading-end:#f7f4ee;--app-lesson:#e7f3f0;--app-bible:#fffdf8;--app-input:#ffffff;--chart-warm:#7a4e0c;--chart-cool:#0b5e52}
+:root[data-theme="light"]{color-scheme:light;--bg:#f7f4ee;--surface:#fffdf8;--surface2:#efeae2;--line:#1b191426;--text:#1b1914;--muted:#36302a;--gold:#7a4e0c;--teal:#0b5e52;--on-accent:#f7fffc;--nav-idle:#3e382f;--ink-soft:#241f18;--border:#1b191455;--app-glow:#0b5e5222;--app-glow-2:#efeae2;--app-sidebar:#f7f4eee8;--app-nav:#fffdf8f2;--app-active:#d7efe9;--app-active-border:#0b5e52;--app-card:#fffdf8;--app-card-end:#efeae2;--app-hero:#e5f3ef;--app-hero-end:#f7f4ee;--app-hero-glow:#0b5e5233;--app-reading:#efeae2;--app-reading-end:#f7f4ee;--app-lesson:#e7f3f0;--app-bible:#fffdf8;--app-input:#ffffff;--chart-warm:#7a4e0c;--chart-cool:#0b5e52}
 :root[data-theme="sepia"]{color-scheme:light;--bg:#f4e6cf;--surface:#fbf3e4;--surface2:#ead9b8;--line:#2a1c1026;--text:#2a1c10;--muted:#5c4632;--gold:#6a3410;--teal:#6a3410;--on-accent:#fff8ee;--nav-idle:#5c4632;--ink-soft:#2a1c10;--border:#2a1c1055;--app-glow:#6a341022;--app-glow-2:#ead9b8;--app-sidebar:#f4e6cfe8;--app-nav:#fbf3e4f2;--app-active:#e4cba3;--app-active-border:#6a3410;--app-card:#fbf3e4;--app-card-end:#ead9b8;--app-hero:#f0ddc0;--app-hero-end:#f4e6cf;--app-hero-glow:#6a341033;--app-reading:#ead9b8;--app-reading-end:#f4e6cf;--app-lesson:#f0ddc0;--app-bible:#fbf3e4;--app-input:#fffaf1;--chart-warm:#6a3410;--chart-cool:#8a5a32}
 :root[data-theme="light"] .mini-choice.correct,:root[data-theme="sepia"] .mini-choice.correct,:root[data-theme="light"] .mini-choice.incorrect,:root[data-theme="sepia"] .mini-choice.incorrect,:root[data-theme="light"] .mini-feedback.incorrect,:root[data-theme="sepia"] .mini-feedback.incorrect{color:#fff8f2}
 :root[data-theme="light"] .card,:root[data-theme="sepia"] .card{box-shadow:inset 0 1px #fff,0 12px 32px #1b191414}
@@ -548,7 +548,7 @@ label[for="friends-name"],label[for="friends-add-code"]{display:block;font-weigh
 .sq-sound{margin-left:auto;min-height:44px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:inherit;font:inherit;font-weight:700}
 .sq-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:10px 0 14px}
 .sq-tab{min-height:48px;padding:4px 6px;border-radius:14px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:inherit;font:inherit;font-size:.82rem;font-weight:700;line-height:1.15}
-.sq-tab.active{background:var(--teal);color:rgb(6,36,32);border-color:transparent}
+.sq-tab.active{background:var(--teal);color:var(--on-accent);border-color:transparent}
 .sq-hint{text-align:center;margin:8px 0}
 html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .sq-play{position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;padding:calc(10px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));background:radial-gradient(ellipse at 50% 70%,rgb(75,59,102),rgb(29,24,40) 75%);color:rgb(255,255,255);overscroll-behavior:none}
@@ -570,7 +570,7 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .sq-play-hint{margin:8px 0 0;text-align:center;font-size:14px;color:rgb(228,219,239)}
 .sq-sheet{position:absolute;left:0;right:0;bottom:0;max-height:78%;overflow:auto;padding:12px 12px calc(14px + env(safe-area-inset-bottom));background:rgba(29,24,40,0.95);border-radius:24px 24px 0 0;box-shadow:0 -12px 40px rgba(0,0,0,0.6);touch-action:pan-y;overscroll-behavior:contain}
 .sq-sheet[hidden]{display:none}
-.sq-sheet .sq-card{margin:0}
+.sq-sheet .sq-card{margin:0;color:var(--text)}
 @media (prefers-reduced-motion:reduce){.sq-learn{animation:none}}
 .sq-card{margin:10px 0}
 .sq-card h2{margin:4px 0 6px}
@@ -593,7 +593,7 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .sq-name{font-size:.82rem;font-weight:700;line-height:1.15;text-align:center;overflow-wrap:anywhere}
 .sq-star{position:absolute;top:4px;right:6px}
 .sq-tile.locked .sq-art{filter:brightness(0) opacity(.38)}
-.sq-tile.locked .sq-name{opacity:.75}
+.sq-tile.locked .sq-name{color:var(--muted)}
 .sq-lock{position:absolute;top:34%;left:50%;transform:translate(-50%,-50%);font-size:1.6rem}
 .sq-tile.right{border-color:rgb(110,220,140);box-shadow:0 0 0 2px rgb(110,220,140)}
 .sq-tile.wrong{opacity:.55}
@@ -637,7 +637,7 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .sq-sparks i:nth-child(1){left:22%}.sq-sparks i:nth-child(2){left:44%;animation-delay:.7s}.sq-sparks i:nth-child(3){left:64%;animation-delay:1.4s}.sq-sparks i:nth-child(4){left:80%;animation-delay:2.1s}
 .sq-tile.locked.final{border-color:rgba(255,214,110,.45);background:linear-gradient(110deg,rgba(255,255,255,.04) 30%,rgba(255,226,140,.22) 50%,rgba(255,255,255,.04) 70%) 0 0/250% 100%;animation:sq-shimmer 3.2s linear infinite}
 .sq-tile.locked.final .sq-art{filter:brightness(0) opacity(.42) drop-shadow(0 0 6px rgba(255,214,110,.6))}
-.sq-tile.locked.final .sq-name{color:rgb(255,226,150);opacity:1}
+.sq-tile.locked.final .sq-name{color:rgb(255,226,150);opacity:1}:root[data-theme="light"] .sq-tile.locked.final .sq-name,:root[data-theme="sepia"] .sq-tile.locked.final .sq-name{color:var(--gold)}
 @keyframes sq-glow{0%,100%{filter:drop-shadow(0 0 5px rgba(255,214,110,.55))}50%{filter:drop-shadow(0 0 13px rgba(255,226,140,.95))}}
 @keyframes sq-float{0%{opacity:0;transform:translateY(0) scale(.6)}25%{opacity:1}100%{opacity:0;transform:translateY(-60px) scale(1)}}
 @keyframes sq-shimmer{0%{background-position:100% 0}100%{background-position:-150% 0}}
@@ -666,8 +666,8 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .m3-trail .done{stroke:rgba(255,214,110,.75);stroke-width:6;stroke-dasharray:2 12}
 .m3-map{list-style:none;margin:0;padding:0}
 .m3-chapter{position:absolute;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:8px;height:40px;font:600 1.05rem/1.1 var(--serif);text-align:center}
-.m3-chapter>span:last-child{padding:6px 14px;border-radius:999px;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.14)}
-.m3-chapter.locked{opacity:.55}
+.m3-chapter>span:last-child{padding:6px 14px;border-radius:999px;background:var(--surface);color:var(--text);border:1px solid var(--line)}
+.m3-chapter.locked>span:first-child{opacity:.55}.m3-chapter.locked>span:last-child{color:var(--muted)}
 .m3-ch-icon{font-size:1.4rem}
 .m3-step{position:absolute;width:118px;margin-left:-59px;display:flex;flex-direction:column;align-items:center}
 .m3-node{width:60px;height:60px;border-radius:50%;border:3px solid rgba(255,255,255,.85);background:radial-gradient(circle at 35% 30%,rgb(255,236,150),rgb(242,166,35));color:rgb(74,52,10);font:800 1.35rem/1 system-ui,sans-serif;box-shadow:0 5px 0 rgb(170,100,10),0 8px 16px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:0}
@@ -867,6 +867,12 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .my-note p{margin:6px 0 0;white-space:pre-wrap}
 .my-note-verse{margin:6px 0 0;font-style:italic}
 .my-note-verse cite{display:block;font-style:normal;font-size:.85rem;opacity:.8}
+
+/* Cards soften the palette glow so the meta line that runs under it keeps 4.5:1. */
+:root{--card-glow:color-mix(in srgb,var(--app-hero-glow) 40%,transparent)}
+.sq-final-left{margin:8px 0 12px;padding-left:20px;color:var(--text);font-size:14px;line-height:1.45}
+.sq-final-left li+li{margin-top:4px}
+
 /* Friend lessons */
 .friend-chip-button{cursor:pointer;border:1px solid color-mix(in srgb,var(--teal) 45%,transparent);min-height:32px}
 .friend-lessons{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:10px}

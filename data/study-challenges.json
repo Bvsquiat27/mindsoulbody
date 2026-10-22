@@ -4350,9 +4350,9 @@
             "El Salmo 119"
           ],
           "correct": 0,
-          "explanation": "El Salmo 23 de la RV1909 empieza: “JEHOVÁ es mi pastor; nada me faltará”.",
+          "explanation": "El Salmo 23 de la RV1909 empieza: “Jehová es mi pastor; nada me faltará”.",
           "promptEs": "¿Qué salmo empieza “Jehová es mi pastor” en la numeración de la RV1909?",
-          "explanationEs": "El Salmo 23 de la RV1909 empieza: “JEHOVÁ es mi pastor; nada me faltará”."
+          "explanationEs": "El Salmo 23 de la RV1909 empieza: “Jehová es mi pastor; nada me faltará”."
         },
         {
           "prompt": "¿Qué salmo abre con el grito que Jesús cita en la cruz?",
@@ -6865,7 +6865,7 @@
         },
         {
           "heading": "La Escritura manda la intercesión y la muestra en el cielo",
-          "body": "Pablo manda que se hagan intercesiones por todos: «AMONESTO pues, ante todas cosas, que se hagan rogativas, oraciones, peticiones, hacimientos de gracias, por todos los hombres» (1 Timoteo 2:1-3, RV1909). Santiago dice que la oración del justo puede mucho: «la oración del justo, obrando eficazmente, puede mucho» (Santiago 5:16, RV1909). El Apocalipsis le da a ese mismo patrón una imagen celestial: los ancianos tienen copas de oro llenas de incienso, que son las oraciones de los santos (Apocalipsis 5:8), y un ángel ofrece incienso con las oraciones de todos los santos delante del trono (Apocalipsis 8:3-4). Pedirle a un santo que ore no es una religión nueva; es intercesión recibida dentro de la comunión de Cristo."
+          "body": "Pablo manda que se hagan intercesiones por todos: «Amonesto pues, ante todas cosas, que se hagan rogativas, oraciones, peticiones, hacimientos de gracias, por todos los hombres» (1 Timoteo 2:1-3, RV1909). Santiago dice que la oración del justo puede mucho: «la oración del justo, obrando eficazmente, puede mucho» (Santiago 5:16, RV1909). El Apocalipsis le da a ese mismo patrón una imagen celestial: los ancianos tienen copas de oro llenas de incienso, que son las oraciones de los santos (Apocalipsis 5:8), y un ángel ofrece incienso con las oraciones de todos los santos delante del trono (Apocalipsis 8:3-4). Pedirle a un santo que ore no es una religión nueva; es intercesión recibida dentro de la comunión de Cristo."
         },
         {
           "heading": "No es adoración, ni necromancia",
@@ -16435,7 +16435,26 @@
       ],
       "deeper": true,
       "titleEs": "Mapa de los concilios",
-      "summaryEs": "Une cada controversia con el concilio que dio una respuesta clara."
+      "summaryEs": "Une cada controversia con el concilio que dio una respuesta clara.",
+      "categoryEs": "Juego de historia",
+      "promptsEs": [
+        "El Hijo no es una criatura; es de una misma esencia con el Padre.",
+        "María es Theotokos porque su Hijo es una sola Persona divina encarnada.",
+        "Cristo es una sola Persona en dos naturalezas completas.",
+        "La veneración de los íconos se defiende a la luz de la Encarnación."
+      ],
+      "optionsEs": [
+        "Calcedonia (451)",
+        "Nicea II (787)",
+        "Nicea I (325)",
+        "Éfeso (431)"
+      ],
+      "explanationsEs": [
+        "Nicea I (325) confesó al Hijo como homoousios —de una misma esencia con el Padre— y no una criatura.",
+        "Éfeso (431) confesó a María como Theotokos: el que nació de ella es el Hijo divino encarnado, una sola Persona.",
+        "Calcedonia (451) confesó a Cristo como una sola Persona en dos naturalezas completas, divina y humana, sin confusión.",
+        "Nicea II (787) defendió la veneración de los íconos porque el Hijo de verdad se hizo visible en la Encarnación."
+      ]
     },
     {
       "id": "argument",
@@ -16470,7 +16489,26 @@
       ],
       "deeper": true,
       "titleEs": "Arma la respuesta",
-      "summaryEs": "Elige el primer paso más firme ante cada objeción. La precisión importa más que ganar un punto."
+      "summaryEs": "Elige el primer paso más firme ante cada objeción. La precisión importa más que ganar un punto.",
+      "categoryEs": "Juego de defensa de la fe",
+      "promptsEs": [
+        "“Si Jesús es Dios, ¿por qué llamar a María Madre de Dios?”",
+        "“Si la salvación es por gracia, ¿por qué hablar de obras?”",
+        "“Si los íconos muestran a Cristo, ¿estás adorando madera?”",
+        "“Si la resurrección es real, ¿fue solo un regreso a la vida mortal de siempre?”"
+      ],
+      "optionsEs": [
+        "Distingue la veneración de un ícono de la adoración que se debe solo a Dios.",
+        "Muestra que el que nació de María es el Hijo divino encarnado.",
+        "Distingue la resurrección gloriosa de una simple vuelta a la vida.",
+        "Explica cómo la fe viva da fruto de amor por la gracia."
+      ],
+      "explanationsEs": [
+        "Theotokos nombra a la Persona que María dio a luz: el Hijo divino, que tomó carne. No hace a María la fuente de la divinidad.",
+        "La gracia y las obras no son rivales. La fe viva da fruto de amor; la obra es fruto de la gracia, no un salario que la gana.",
+        "Un ícono se venera como una ventana a la persona que muestra. La adoración que se debe solo a Dios no se le da a la madera.",
+        "La resurrección es una vida gloriosa, no un regreso a la existencia mortal de siempre."
+      ]
     }
   ]
 }

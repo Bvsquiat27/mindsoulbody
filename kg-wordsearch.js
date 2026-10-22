@@ -9,6 +9,8 @@
   const SIZE = 10;
   const COLORS = 6;
   const list = () => D().WORDSEARCH;
+  /* each puzzle's painted picture (img/kids, see kids-art.js) */
+  const wsArt = (p, px) => window.MsbKidsArt.img(window.MsbKidsArt.data('WORDSEARCH', p.id) || 'gbadge-word-1', { px, cls: 'kg-pick-art' });
 
   function start() { return { view: 'pick', at: 0, puzzle: null, found: [], anchor: -1, preview: [], won: false }; }
   function begin(s, i) {
@@ -19,7 +21,7 @@
   }
   function pickHtml(s) {
     const done = prog().done('wordsearch');
-    const items = list().map((p, i) => `<li><button type="button" class="card kg-pick${done.includes(p.id) ? ' done' : ''}" data-ws-pick="${i}"><span class="kg-pick-icon" aria-hidden="true">${p.icon}</span><span><strong>${esc(name(p.title))}</strong><small>${esc(done.includes(p.id) ? t('Found it all ✓', '¡Todo encontrado! ✓') : t('{n} words', '{n} palabras', { n: p.words[lang()].length }))}</small></span></button></li>`).join('');
+    const items = list().map((p, i) => `<li><button type="button" class="card kg-pick${done.includes(p.id) ? ' done' : ''}" data-ws-pick="${i}"><span class="kg-pick-icon" aria-hidden="true">${wsArt(p, 44)}</span><span><strong>${esc(name(p.title))}</strong><small>${esc(done.includes(p.id) ? t('Found it all ✓', '¡Todo encontrado! ✓') : t('{n} words', '{n} palabras', { n: p.words[lang()].length }))}</small></span></button></li>`).join('');
     return `<p class="kg-lead">${esc(t('Pick a puzzle. Find every hidden word to unlock its verse.', 'Escoge una sopa de letras. Encuentra todas las palabras para descubrir su versículo.'))}</p><ul class="kg-picks">${items}</ul>`;
   }
   function playHtml(s) {
@@ -33,7 +35,7 @@
     }).join('');
     const words = z.placed.map((w, i) => `<li class="${s.found.includes(i) ? 'got' : ''}">${esc(w.word)}</li>`).join('');
     const status = s.won ? '' : t('Found {n} of {total}', 'Encontradas {n} de {total}', { n: s.found.length, total: z.placed.length });
-    return `<p class="kg-sub"><span aria-hidden="true">${p.icon}</span> ${esc(name(p.title))}</p><ul class="kg-ws-words" aria-label="${esc(t('Words to find', 'Palabras para encontrar'))}">${words}</ul><p class="kg-msg" role="status" aria-live="polite" data-kg-msg>${esc(s.msg || status)}</p><div class="kg-ws-grid" data-ws-grid style="--n:${SIZE}">${cells}</div>${s.won ? verseHtml(p.verse, t('YOU FOUND THEM ALL!', '¡LAS ENCONTRASTE TODAS!'), `<button type="button" class="primary" data-ws-next>${esc(s.at + 1 < list().length ? t('Next puzzle', 'Siguiente sopa') : t('All puzzles', 'Todas las sopas'))}</button><button type="button" class="secondary" data-ws-list>${esc(t('Pick another', 'Escoger otra'))}</button>`) : `<p class="small muted kg-help">${esc(t('Drag across a word, or tap its first and last letter.', 'Arrastra sobre una palabra, o toca su primera y última letra.'))}</p>`}`;
+    return `<p class="kg-sub"><span aria-hidden="true">${wsArt(p, 28)}</span> ${esc(name(p.title))}</p><ul class="kg-ws-words" aria-label="${esc(t('Words to find', 'Palabras para encontrar'))}">${words}</ul><p class="kg-msg" role="status" aria-live="polite" data-kg-msg>${esc(s.msg || status)}</p><div class="kg-ws-grid" data-ws-grid style="--n:${SIZE}">${cells}</div>${s.won ? verseHtml(p.verse, t('YOU FOUND THEM ALL!', '¡LAS ENCONTRASTE TODAS!'), `<button type="button" class="primary" data-ws-next>${esc(s.at + 1 < list().length ? t('Next puzzle', 'Siguiente sopa') : t('All puzzles', 'Todas las sopas'))}</button><button type="button" class="secondary" data-ws-list>${esc(t('Pick another', 'Escoger otra'))}</button>`) : `<p class="small muted kg-help">${esc(t('Drag across a word, or tap its first and last letter.', 'Arrastra sobre una palabra, o toca su primera y última letra.'))}</p>`}`;
   }
   function paint(screen, s) {
     const z = s.puzzle; if (!z) return;
@@ -101,7 +103,7 @@
     grid.addEventListener('pointercancel', () => { drag = null; s.preview = s.anchor < 0 ? [] : [s.anchor]; paint(screen, s); });
   }
   K._helpers.register({
-    id: 'wordsearch', icon: '🔎',
+    id: 'wordsearch', icon: '🔎', art: 'tile-wordsearch',
     name: { en: 'Bible Word Search', es: 'Sopa de letras bíblica' },
     blurb: { en: 'Find hidden words and unlock a verse', es: 'Encuentra palabras y descubre un versículo' },
     total: () => list().length,

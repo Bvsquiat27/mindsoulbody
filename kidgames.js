@@ -155,6 +155,9 @@
   const badgeDefs = () => C().badgeDefs(totals()).filter(b => GAMES.some(g => g.id === b.game) || (b.retired && prog().get().badges[b.id]));
 
   const ui = { root: null, game: null, state: null, msg: '' };
+  /* painted pictures for tiles, badges and toasts (img/kids, see kids-art.js) */
+  const KA = () => window.MsbKidsArt;
+  const TIER_ART = { legendary: 'tier-legendary', rare: 'tier-rare', common: 'tier-common' };
   const name = o => (o && typeof o === 'object' ? o[lang()] || o.en : o);
 
   function soundButton() {
@@ -174,8 +177,8 @@
     sound('badge'); buzz([20, 50, 30]);
     const box = ui.root.querySelector('[data-kg-badge-pop]');
     if (!box) return;
-    box.innerHTML = list.map(b => `<span class="kg-badge-pop"><span aria-hidden="true">${b.icon}</span> ${esc(t('New badge: {name}', '¡Nueva insignia: {name}!', { name: name(b.name) }))}</span>`).join('')
-      + squishies.map(x => `<span class="kg-badge-pop kg-squishy-pop tier-${esc(x.tier || 'common')}"><span aria-hidden="true">${x.tier === 'legendary' ? '👑' : x.tier === 'rare' ? '💎' : '🧸'}</span> ${esc(x.tier === 'legendary' ? t('LEGENDARY squishy: {name}!', '¡Squishy LEGENDARIO: {name}!', { name: x.name }) : x.tier === 'rare' ? t('Rare squishy: {name}!', '¡Squishy raro: {name}!', { name: x.name }) : t('New squishy: {name}!', '¡Nuevo squishy: {name}!', { name: x.name }))}<small>${esc(t('Open Bible squishies to celebrate', 'Abre Squishies de la Biblia para celebrar'))}</small></span>`).join('');
+    box.innerHTML = list.map(b => `<span class="kg-badge-pop"><span aria-hidden="true">${KA().img(b.art, { px: 28, cls: 'kg-pop-art' })}</span> ${esc(t('New badge: {name}', '¡Nueva insignia: {name}!', { name: name(b.name) }))}</span>`).join('')
+      + squishies.map(x => `<span class="kg-badge-pop kg-squishy-pop tier-${esc(x.tier || 'common')}"><span aria-hidden="true">${KA().img(TIER_ART[x.tier] || 'tier-common', { px: 28, cls: 'kg-pop-art' })}</span> ${esc(x.tier === 'legendary' ? t('LEGENDARY squishy: {name}!', '¡Squishy LEGENDARIO: {name}!', { name: x.name }) : x.tier === 'rare' ? t('Rare squishy: {name}!', '¡Squishy raro: {name}!', { name: x.name }) : t('New squishy: {name}!', '¡Nuevo squishy: {name}!', { name: x.name }))}<small>${esc(t('Open Bible squishies to celebrate', 'Abre Squishies de la Biblia para celebrar'))}</small></span>`).join('');
     box.hidden = false;
     clearTimeout(badgeToast.timer);
     badgeToast.timer = setTimeout(() => { if (box.isConnected) box.hidden = true; }, 4200);
@@ -191,14 +194,14 @@
     const tiles = GAMES.map(g => {
       const total = g.total ? g.total() : 0, done = (v.done[g.id] || []).length;
       const status = g.status ? g.status(v) : total ? t('{n} of {total} done', '{n} de {total} hechos', { n: Math.min(done, total), total }) : '';
-      return `<button type="button" class="card kg-tile" data-kg-open="${g.id}"><span class="kg-tile-icon" aria-hidden="true">${g.icon}</span><span class="kg-tile-body"><strong>${esc(name(g.name))}</strong><span>${esc(name(g.blurb))}</span>${status ? `<small class="kg-tile-status">${esc(status)}</small>` : ''}</span></button>`;
+      return `<button type="button" class="card kg-tile" data-kg-open="${g.id}"><span class="kg-tile-icon kg-tile-pic" aria-hidden="true">${KA().img(g.art, { px: 56 })}</span><span class="kg-tile-body"><strong>${esc(name(g.name))}</strong><span>${esc(name(g.blurb))}</span>${status ? `<small class="kg-tile-status">${esc(status)}</small>` : ''}</span></button>`;
     }).join('');
     /* Bible squishies and Manna Match moved here from Stories; their own
        screens still open through data-squishy-open / data-match-open */
     const extra = (window.MsbSquishy ? `<button type="button" class="card kg-tile kg-tile-art" data-squishy-open><span class="kg-tile-icon" aria-hidden="true">${window.MsbSquishyArt ? MsbSquishyArt.svg('lamb') : '🧸'}</span><span class="kg-tile-body"><strong>${esc(t('Bible squishies', 'Squishies de la Biblia'))}</strong><span>${esc(t('Squish a soft friend and learn its Bible story', 'Aprieta a un amiguito suave y aprende su historia de la Biblia'))}</span></span></button>` : '')
-      + (window.MsbMatch ? `<button type="button" class="card kg-tile kg-tile-art" data-match-open><span class="kg-tile-icon" aria-hidden="true">${window.MsbMatchArt ? MsbMatchArt.svg('loaf') : '🍞'}</span><span class="kg-tile-body"><strong>${esc(t('Manna Match', 'Combina el maná'))}</strong><span>${esc(t('Match Bible pictures and learn a lesson in every level', 'Combina dibujos de la Biblia y aprende una lección en cada nivel'))}</span></span></button>` : '');
+      + (window.MsbMatch ? `<button type="button" class="card kg-tile kg-tile-art" data-match-open><span class="kg-tile-icon" aria-hidden="true">${KA().img('m3-loaf', { px: 50 })}</span><span class="kg-tile-body"><strong>${esc(t('Manna Match', 'Combina el maná'))}</strong><span>${esc(t('Match Bible pictures and learn a lesson in every level', 'Combina dibujos de la Biblia y aprende una lección en cada nivel'))}</span></span></button>` : '');
     const defs = badgeDefs();
-    const badges = defs.map(b => { const got = v.badges[b.id]; return `<li class="kg-badge${got ? ' earned' : ''}"><span aria-hidden="true">${got ? b.icon : '🔒'}</span><strong>${esc(name(b.name))}</strong><small>${esc(got ? t('Earned', 'Ganada') : name(b.goal))}</small></li>`; }).join('');
+    const badges = defs.map(b => { const got = v.badges[b.id]; return `<li class="kg-badge${got ? ' earned' : ''}"><span aria-hidden="true">${got ? KA().img(b.art, { px: 40 }) : '🔒'}</span><strong>${esc(name(b.name))}</strong><small>${esc(got ? t('Earned', 'Ganada') : name(b.goal))}</small></li>`; }).join('');
     return `<button class="text-button back" type="button" data-kg-exit>${esc(t('← Abby’s Room', '← El cuarto de Abby'))}</button><span class="eyebrow">${esc(t('BIBLE GAMES', 'JUEGOS BÍBLICOS'))}</span><h1>${esc(t('Bible games', 'Juegos bíblicos'))}</h1><p class="lead">${esc(t('Play, think, and finish each game with a verse to keep.', 'Juega, piensa y termina cada juego con un versículo para guardar.'))}</p><div class="kg-topbar">${soundButton()}</div><div class="kg-tiles">${extra}${tiles}</div><h2 class="kg-h2">${esc(t('Game badges', 'Insignias de juegos'))}</h2><p class="small muted">${esc(t('Earned {n} of {total}. They also show in your Kids\u2019 badges.', 'Ganadas {n} de {total}. También salen en tus Insignias de niños.', { n: defs.filter(b => v.badges[b.id]).length, total: defs.length }))}</p><ul class="kg-badges">${badges}</ul>`;
   }
 
@@ -236,7 +239,7 @@
     kidBadges() {
       if (!C() || !D()) return null;
       const v = prog().get();
-      return badgeDefs().map(b => ({ id: b.id, name: name(b.name), icon: b.icon, tier: 'common', earned: v.badges[b.id] || null }));
+      return badgeDefs().map(b => ({ id: b.id, name: name(b.name), icon: b.icon, art: KA().src(b.art, 128), tier: 'common', earned: v.badges[b.id] || null }));
     },
     _ui: ui,
     _helpers: { t, esc, lang, name, sound, buzz, prog, award, render, verseHtml, gameHead, reduced, register, celebrate, animalCall, noise, coach, coachSeen, levelCard, starPings, floatText, tone, chord }

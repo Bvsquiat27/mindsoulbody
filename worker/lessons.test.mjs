@@ -42,3 +42,21 @@ test('caps and cleaning', () => {
   assert.equal(c.current, null);
   assert.deepEqual(c.done, [{ id: 'ok', ts: null, score: null }]);
 });
+
+test('lesson endpoints need the account secret, and oversize lists are refused', async () => {
+  const kv = memoryKv(); const { a, m } = await people(kv);
+  assert.equal((await call(kv, '/lessons/sync', { code: m.code, secret: 'wrong', lessons: L })).status, 401);
+  assert.equal((await call(kv, '/lessons/sync', { code: 'MSB-NOPE', secret: 'x', lessons: L })).status, 404);
+  assert.equal((await call(kv, '/lessons/friend', { code: a.code, friend: m.code })).status, 401);
+  const big = { done: Array.from({ length: LESSONS_LIMITS.COUNT + 1 }, (_, i) => ({ id: 'l' + i })) };
+  assert.equal((await call(kv, '/lessons/sync', { code: m.code, secret: m.secret, lessons: big })).status, 400);
+  assert.equal((await call(kv, '/lessons/nope', { code: m.code, secret: m.secret })).status, 404);
+});
+
+test('only lesson ids, dates and scores are stored, never names or note text', async () => {
+  const kv = memoryKv(); const { m } = await people(kv);
+  await call(kv, '/lessons/sync', { code: m.code, secret: m.secret, lessons: { current: { id: 'psalm-23', ts: 5, title: 'x', note: 'secret note' }, done: [{ id: 'grace', ts: 2, score: 80, note: 'secret note', name: 'Mary' }] } });
+  const stored = JSON.parse(await kv.get(`lessons:${m.code}`));
+  assert.doesNotMatch(JSON.stringify(stored), /secret note|Mary/);
+  assert.deepEqual(stored.done, [{ id: 'grace', ts: 2, score: 80 }]);
+});

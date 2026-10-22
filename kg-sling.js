@@ -22,6 +22,9 @@
     { fill: '#9b5de5', dark: '#5d2b9e', mark: 'star', en: 'purple', es: 'morada' },
   ];
   const POWER = { slow: { icon: '🐢', en: 'Slow!', es: '¡Lento!' }, reverse: { icon: '↩', en: 'Back up!', es: '¡Atrás!' }, bomb: { icon: '💥', en: 'Boom!', es: '¡Bum!' }, zap: { icon: '⚡', en: 'Zap! Same color gone!', es: '¡Zas! ¡Fuera ese color!' } };
+  /* painted power-stone badges, drawn on the stone (img/kids, see kids-art.js) */
+  const KA = () => window.MsbKidsArt;
+  const POW_ART = { slow: 'sling-pow-slow', reverse: 'sling-pow-reverse', bomb: 'sling-pow-bomb', zap: 'sling-pow-zap' };
   let raf = 0;
   const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
 
@@ -39,7 +42,7 @@
     if (prog().migrateSling()) moved = true;
     const note = moved ? `<p class="kg-msg kg-new-sling" role="status">${esc(t('New Sling! Your cleared levels are open in the new game.', '¡Nueva Honda! Tus niveles superados están abiertos en el juego nuevo.'))}</p>` : '';
     const v = prog().get(), l = lang(), intro = S().intro;
-    const lv = S().levels.map((x, i) => { const st = Number(v.best[`sling:${x.id}`]) || 0; const open = i === 0 || (v.done.sling || []).includes(S().levels[i - 1].id); return `<li><button type="button" class="card kg-pick zm-pick${st ? ' done' : ''}" ${open ? `data-sl-pick="${i}"` : 'disabled'}><span class="kg-pick-icon" aria-hidden="true">${open ? ['🏞️', '🌊', '🌀', '⛰️', '⛺', '〰️', '🎀', '🏔️', '🐚', '🌪️', '🐍', '👣', '🧩', '🦶', '⛈️'][i] || '🪨' : '🔒'}</span><span><strong>${esc(t('Level {n}', 'Nivel {n}', { n: i + 1 }))} · ${esc(x.title[l])}</strong><small>${esc(open ? t('{n} stones in the chain', '{n} piedras en la cadena', { n: x.count }) : t('Finish level {n} first', 'Termina primero el nivel {n}', { n: i }))}</small>${st ? starRow(st) : ''}</span></button></li>`; }).join('');
+    const lv = S().levels.map((x, i) => { const st = Number(v.best[`sling:${x.id}`]) || 0; const open = i === 0 || (v.done.sling || []).includes(S().levels[i - 1].id); return `<li><button type="button" class="card kg-pick zm-pick${st ? ' done' : ''}" ${open ? `data-sl-pick="${i}"` : 'disabled'}><span class="kg-pick-icon" aria-hidden="true">${open ? KA().img(KA().spot(`sling-level|${x.id}`) || 'sling-stone', { px: 44, cls: 'kg-pick-art' }) : '🔒'}</span><span><strong>${esc(t('Level {n}', 'Nivel {n}', { n: i + 1 }))} · ${esc(x.title[l])}</strong><small>${esc(open ? t('{n} stones in the chain', '{n} piedras en la cadena', { n: x.count }) : t('Finish level {n} first', 'Termina primero el nivel {n}', { n: i }))}</small>${st ? starRow(st) : ''}</span></button></li>`; }).join('');
     return `${note}<blockquote class="kg-quote kg-sl-intro">“${esc(intro.text[l])}” <span class="kg-verse-ref">${esc(intro.ref[l])}</span></blockquote><p class="kg-lead">${esc(t('Stop the stones before they reach Goliath! Match 3 of a color to pop them.', '¡Detén las piedras antes de que lleguen a Goliat! Junta 3 del mismo color para reventarlas.'))}</p><ul class="kg-picks">${lv}</ul>`;
   }
   const stoneName = c => (lang() === 'es' ? STONES[c].es : STONES[c].en);
@@ -52,12 +55,12 @@
       const n = C().zumaStars(s.z.maxFrac), last = s.at + 1 >= S().levels.length;
       return `${head}${field}${levelCard({ eyebrow: t('THE GIANT FELL!', '¡CAYÓ EL GIGANTE!'), title: t('Level {n} complete', 'Nivel {n} completo', { n: s.at + 1 }), stars: n, record: s.record, text: t('{n} stones popped · best combo x{c}', '{n} piedras reventadas · mejor combo x{c}', { n: s.popped, c: Math.max(1, s.best) }), reward: last ? t('You beat every level, brave shepherd!', '¡Superaste todos los niveles, pastor valiente!') : t('Next level unlocked: a new path, faster stones', 'Siguiente nivel abierto: un camino nuevo y piedras más rápidas'), actions: `${!last ? `<button type="button" class="primary" data-sl-next>${esc(t('Next level', 'Siguiente nivel'))} →</button>` : ''}<button type="button" class="secondary" data-sl-again>${esc(t('Play again', 'Jugar otra vez'))}</button><button type="button" class="secondary" data-sl-list>${esc(t('Levels', 'Niveles'))}</button>` })}<div class="kg-lesson"><span class="eyebrow">${esc(t('COURAGE', 'VALENTÍA'))}</span><p>${esc(S().lesson[l])}</p></div>${verseHtml(lv.verse, t('A VERSE FOR COURAGE', 'UN VERSÍCULO PARA SER VALIENTE'), '')}`;
     }
-    if (s.lost) return `${head}${field}${levelCard({ lost: true, art: '🪨', eyebrow: t('THE STONES REACHED GOLIATH', 'LAS PIEDRAS LLEGARON A GOLIAT'), title: t('So close!', '¡Casi!'), text: t('David trusted God and kept going. Try again!', 'David confió en Dios y siguió adelante. ¡Inténtalo otra vez!'), actions: `<button type="button" class="primary" data-sl-again>${esc(t('Try again', 'Intentar otra vez'))}</button><button type="button" class="secondary" data-sl-list>${esc(t('Levels', 'Niveles'))}</button>` })}${verseHtml(lv.verse, t('A VERSE FOR COURAGE', 'UN VERSÍCULO PARA SER VALIENTE'), '')}`;
+    if (s.lost) return `${head}${field}${levelCard({ lost: true, art: KA().img('sling-lost', { px: 72 }), eyebrow: t('THE STONES REACHED GOLIATH', 'LAS PIEDRAS LLEGARON A GOLIAT'), title: t('So close!', '¡Casi!'), text: t('David trusted God and kept going. Try again!', 'David confió en Dios y siguió adelante. ¡Inténtalo otra vez!'), actions: `<button type="button" class="primary" data-sl-again>${esc(t('Try again', 'Intentar otra vez'))}</button><button type="button" class="secondary" data-sl-list>${esc(t('Levels', 'Niveles'))}</button>` })}${verseHtml(lv.verse, t('A VERSE FOR COURAGE', 'UN VERSÍCULO PARA SER VALIENTE'), '')}`;
     const tut = coach('sling', t('David’s Sling', 'La honda de David'), [
-      { icon: '👆', text: t('Tap or drag to aim. Let go to sling the stone.', 'Toca o arrastra para apuntar. Suelta para lanzar la piedra.') },
-      { icon: '🔴', text: t('Make 3 or more of a color touch to pop them. Gaps that close can pop again!', 'Junta 3 o más del mismo color para reventarlas. ¡Los huecos que se cierran pueden reventar otra vez!') },
-      { icon: '🔁', text: t('Tap David or Swap to use your next stone.', 'Toca a David o Cambiar para usar tu siguiente piedra.') },
-      { icon: '🛡️', text: t('Clear the chain, then hit Goliath to win. Do not let the stones reach him!', 'Vacía la cadena y luego golpea a Goliat para ganar. ¡No dejes que las piedras lleguen a él!') },
+      { icon: KA().img('howto-sling-aim', { px: 34 }), text: t('Tap or drag to aim. Let go to sling the stone.', 'Toca o arrastra para apuntar. Suelta para lanzar la piedra.') },
+      { icon: KA().img('howto-sling-match', { px: 34 }), text: t('Make 3 or more of a color touch to pop them. Gaps that close can pop again!', 'Junta 3 o más del mismo color para reventarlas. ¡Los huecos que se cierran pueden reventar otra vez!') },
+      { icon: KA().img('howto-sling-swap', { px: 34 }), text: t('Tap David or Swap to use your next stone.', 'Toca a David o Cambiar para usar tu siguiente piedra.') },
+      { icon: KA().img('howto-sling-win', { px: 34 }), text: t('Clear the chain, then hit Goliath to win. Do not let the stones reach him!', 'Vacía la cadena y luego golpea a Goliat para ganar. ¡No dejes que las piedras lleguen a él!') },
     ], K._ui.coachForce === 'sling');
     const hint = s.final ? t('Now aim at Goliath and let go!', '¡Ahora apunta a Goliat y suelta!') : s.msg || t('Tap or drag to aim, let go to throw.', 'Toca o arrastra para apuntar, suelta para lanzar.');
     return `${tut}${head}${field}<div class="zm-bar"><span class="zm-hold"><span class="small">${esc(t('Now', 'Ahora'))}</span>${stoneDot(s.cur, true)}<span class="sr-only">${esc(stoneName(s.cur.c))}</span></span><button type="button" class="secondary zm-swap" data-sl-swap aria-label="${esc(t('Swap: use the {b} stone next', 'Cambiar: usar la piedra {b}', { b: stoneName(s.next.c) }))}">🔁 ${esc(t('Swap', 'Cambiar'))}</button><span class="zm-hold"><span class="small">${esc(t('Next', 'Siguiente'))}</span>${stoneDot(s.next)}</span></div><p class="kg-msg" role="status" aria-live="polite" data-kg-msg>${esc(hint)}</p>`;
@@ -77,7 +80,11 @@
         spr(name); const im = SPR[name];
         const done = () => (im.naturalWidth ? (im.decode ? im.decode().catch(() => null) : Promise.resolve()).then(ok) : fail(Error(name)));
         if (im.complete) done(); else { im.addEventListener('load', done, { once: true }); im.addEventListener('error', () => fail(Error(name)), { once: true }); }
-      }))).then(() => { bg = null; }, err => { artReady = null; for (const n of SPRITES) if (SPR[n] && !SPR[n].naturalWidth) delete SPR[n]; throw err; });
+      })).concat(Object.values(POW_ART).map(n => new Promise(ok => {
+        /* power badges: wait for them too, but a missing one only leaves the stone plain */
+        const im = KA().image(n); if (!im || KA().ready(im)) { ok(); return; }
+        im.addEventListener('load', ok, { once: true }); im.addEventListener('error', ok, { once: true });
+      })))).then(() => { bg = null; }, err => { artReady = null; for (const n of SPRITES) if (SPR[n] && !SPR[n].naturalWidth) delete SPR[n]; throw err; });
     }
     return artReady;
   }
@@ -126,7 +133,7 @@
     else if (c.mark === 'diamond') { g.moveTo(0, -m); g.lineTo(m, 0.1); g.lineTo(0, m * 1.1); g.lineTo(-m, 0.1); g.closePath(); }
     else { for (let i = 0; i < 10; i += 1) { const a = -Math.PI / 2 + i * Math.PI / 5, rr2 = i % 2 ? m * 0.45 : m; g.lineTo(Math.cos(a) * rr2, Math.sin(a) * rr2 + 1); } g.closePath(); }
     g.fill();
-    if (st.p) { g.font = `${Math.round(r * 1.05)}px system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#fff'; g.strokeStyle = 'rgba(0,0,0,.5)'; g.lineWidth = 3; g.strokeText(POWER[st.p].icon, 0, 1); g.fillText(POWER[st.p].icon, 0, 1); }
+    if (st.p) { const pa = KA().image(POW_ART[st.p]); if (KA().ready(pa)) { const d = r * 1.5; g.drawImage(pa, -d / 2, -d / 2, d, d); } }
     g.fillStyle = 'rgba(255,255,255,.6)'; g.beginPath(); g.ellipse(-r * 0.38, -r * 0.42, r * 0.3, r * 0.17, -0.6, 0, TAU); g.fill();
     g.fillStyle = 'rgba(255,255,255,.9)'; g.beginPath(); g.arc(-r * 0.5, -r * 0.5, r * 0.08, 0, TAU); g.fill();
     g.strokeStyle = 'rgba(255,255,255,.35)'; g.lineWidth = 1; g.beginPath(); g.arc(0, 0, r * 0.8, 0.3, 1.6); g.stroke();
@@ -380,7 +387,7 @@
     });
   }
   K._helpers.register({
-    id: 'sling', icon: '🪨',
+    id: 'sling', icon: '🪨', art: 'tile-sling',
     name: { en: 'David\u2019s Sling', es: 'La honda de David' },
     blurb: { en: 'Stop the rolling stones and face the giant', es: 'Detén las piedras y enfrenta al gigante' },
     total: () => S().levels.length,

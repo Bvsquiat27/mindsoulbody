@@ -310,7 +310,7 @@ test('sling levels 6-15: new paths, the zap stone, new courage verses; shield co
   const sq = read('./squishy.js');
   assert.match(sq, /<details class="sq-sent"\$\{ui\.trade\.sentOpen \? ' open' : ''\}>/);
   assert.match(sq, /ui\.trade\.sentOpen = true;/);
-  assert.equal((read('./kg-map.js').match(/ data-mp-fb/g) || []).length, 3, 'map travelers (map, trip list, how-to-play) fall back if the art is missing'); assert.doesNotMatch(read('./kg-map.js'), /onerror=/, 'the CSP blocks inline handlers'); assert.match(read('./kg-map.js'), /mp-trav-fb" y="-6" text-anchor="middle" font-size="24">\$\{travEmoji\(m\)\}/, 'journeys without painted art use an emoji traveler');
+  assert.equal((read('./kg-map.js').match(/ data-mp-fb/g) || []).length, 4, 'map travelers (map, trip list, how-to-play, Walk on button) fall back if the art is missing'); assert.doesNotMatch(read('./kg-map.js'), /onerror=/, 'the CSP blocks inline handlers'); assert.match(read('./kg-map.js'), /mp-trav-fb" y="-6" text-anchor="middle" font-size="24">\$\{travEmoji\(m\)\}/, 'journeys without painted art use an emoji traveler');
   assert.match(read('./kg-sling.js'), /burstAt\(s, e\.x, gChest\(e\)/);
 });
 

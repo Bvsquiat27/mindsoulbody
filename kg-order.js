@@ -78,7 +78,7 @@
     list.addEventListener('pointercancel', end);
   }
   K._helpers.register({
-    id: 'order', icon: '🖼️',
+    id: 'order', icon: '🖼️', art: 'tile-order',
     name: { en: 'Story Order', es: 'Ordena la historia' },
     blurb: { en: 'Put the Bible pictures in order', es: 'Pon los dibujos bíblicos en orden' },
     total: () => sets().length,
