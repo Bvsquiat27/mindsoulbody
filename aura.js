@@ -34,8 +34,18 @@ function hapticStrong(){
   hapticAt=typeof performance!=='undefined'&&performance.now?performance.now():Date.now();
   try{if(typeof navigator!=='undefined'&&typeof navigator.vibrate==='function')navigator.vibrate([35,40,90])}catch{}
 }
+/* Prayer rope: a firm pulse for every knot (no tap-rate gap, so quick prayers
+   still feel each one) and a double tap when a round is finished. */
+const HAPTIC_KNOT_MS=16;
+const HAPTIC_ROUND=[22,70,22];
+function hapticKnot(kind){
+  if(!hapticOn())return;
+  hapticAt=typeof performance!=='undefined'&&performance.now?performance.now():Date.now();
+  try{if(typeof navigator!=='undefined'&&typeof navigator.vibrate==='function')navigator.vibrate(kind==='round'?HAPTIC_ROUND:HAPTIC_KNOT_MS)}catch{}
+}
 window.haptic=haptic;
 window.hapticStrong=hapticStrong;
+window.hapticKnot=hapticKnot;
 function hapticControl(node){
   const el=node&&node.nodeType===1?node:node&&node.parentElement;
   if(!el||typeof el.closest!=='function')return null;
