@@ -185,7 +185,7 @@ test('Luz is wired into Home, the router, and the offline shell', () => {
   assert.equal((aura.match(/MsbLuz\.homeCard\(\)/g) || []).length, 1, 'card in the shared Home pair');
   assert.equal((aura.match(/\$\{homeFeatures\(\)\}/g) || []).length, 2, 'pair on both Home screens');
   const sw = read('./sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v167'/);
+  assert.match(sw, /const CACHE_VERSION = 'v168'/);
   for (const f of ['./luz-data.js', './luz.js', './luz.css', './img/luz/luz-video-thumb.jpg']) assert.ok(sw.includes(`'${f}'`), f);
   assert.match(sw, /if \(url\.origin !== self\.location\.origin\) return;/, 'cross-origin (YouTube frame) requests are never cached');
   assert.equal(sw.includes('youtube'), false);

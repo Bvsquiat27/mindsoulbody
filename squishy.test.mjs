@@ -769,7 +769,7 @@ test('only trick squishies mention a secret trick; the first squish shows the le
   assert.match(ui, /if \(learn && learn\.hidden\) \{\s*learn\.hidden = false;[\s\S]{0,400}sheet\.innerHTML = cardHtml\(p\.x\); sheet\.hidden = false;/);
   assert.match(ui, /sheet\.hidden && C\(\)\.lessonSeen\(store2\(\)\)\.first\(p\.id\)\) setTimeout/, 'only the first squish of each squishy');
   assert.ok(i18n.includes('"Verified": "Verificado"'));
-  for (const k of ['Gold', 'Teal', 'Black', 'Read Scripture with the Orthodox Church. A profile on this device keeps your notes and progress in this browser.']) assert.ok(new RegExp(`['"]${k.replace(/[.]/g, '\\.')}['"]:`).test(i18n), k);
+  for (const k of ['Gold', 'Teal', 'Black', 'Read Scripture with the Orthodox Church. A profile on this device saves your notes and progress. With a friend code, friends can see your notes and lessons unless you turn sharing off in Profile.']) assert.ok(new RegExp(`['"]${k.replace(/[.]/g, '\\.')}['"]:`).test(i18n), k);
 });
 
 test('every squishy has its own feel: softness, bounce and buzz', () => {
