@@ -185,7 +185,7 @@ test('Luz is wired into Home, the router, and the offline shell', () => {
   assert.equal((aura.match(/MsbLuz\.homeCard\(\)/g) || []).length, 1, 'card in the shared Home pair');
   assert.equal((aura.match(/\$\{homeFeatures\(\)\}/g) || []).length, 2, 'pair on both Home screens');
   const sw = read('./sw.js');
-  assert.match(sw, /const CACHE_VERSION = 'v169'/);
+  assert.match(sw, /const CACHE_VERSION = 'v170'/);
   for (const f of ['./luz-data.js', './luz.js', './luz.css', './img/luz/luz-video-thumb.jpg']) assert.ok(sw.includes(`'${f}'`), f);
   assert.match(sw, /if \(url\.origin !== self\.location\.origin\) return;/, 'cross-origin (YouTube frame) requests are never cached');
   assert.equal(sw.includes('youtube'), false);
@@ -360,15 +360,15 @@ test('St. Luke lesson: right after icons, linked both ways, and honest about Scr
   const text = (lang) => [luke.short[lang], ...luke.body[lang]].join(' ');
   const es = text('es'), en = text('en');
   // Luke as iconographer is framed as the Church's Tradition, not as something the Bible states.
-  assert.match(es, /Tradición de la Iglesia/); assert.match(es, /Esto no lo cuenta la Biblia/);
-  assert.match(en, /Church’s Tradition/); assert.match(en, /The Bible does not tell this story/);
+  assert.match(es, /tradición de la Iglesia/); assert.doesNotMatch(es, /Tradición de la Iglesia/); assert.match(es, /Esto no lo cuenta la Biblia/);
+  assert.match(en, /Church tradition/); assert.doesNotMatch(en, /Church’s Tradition/); assert.match(en, /The Bible does not tell this story/);
   for (const re of [/Hodegetria/, /Teodoro el Lector/, /siglo VI\b/, /Eudocia/, /Pulqueria/, /San Andrés de Creta/, /siglo VIII/, /Paráclesis/, /18 de octubre/, /Salus Populi Romani/, /proegraphē/, /con colores lo que la predicación hace con palabras/, /Hechos 2/, /Pentecostés/, /“nosotros”/]) assert.match(es, re, `es ${re}`);
   for (const re of [/Hodegetria/, /Theodore the Lector/, /6th century/, /Eudocia/, /Pulcheria/, /St\. Andrew of Crete/, /8th century/, /Paraklesis/, /October 18/, /Salus Populi Romani/, /proegraphē/, /with color what preaching does with words/, /Acts 2/, /Pentecost/, /“we”/]) assert.match(en, re, `en ${re}`);
   // Bible first, then the Church's history: the short answer and body lead with Scripture.
   assert.match(luke.short.es, /^El libro de los Hechos/); assert.match(luke.short.en, /^The book of Acts/);
-  assert.ok(luke.short.es.indexOf('Hechos') < luke.short.es.indexOf('Tradición de la Iglesia'));
-  assert.ok(luke.short.en.indexOf('Acts') < luke.short.en.indexOf('Church’s Tradition'));
-  for (const [lang, bible, history] of [['es', /^Empecemos con la Biblia\. En Hechos 16/, /^Y la historia de la Iglesia nos cuenta el resto\./], ['en', /^Let us begin with the Bible\. In Acts 16/, /^And the Church’s history tells us the rest\./]]) {
+  assert.ok(luke.short.es.indexOf('Hechos') < luke.short.es.indexOf('tradición de la Iglesia'));
+  assert.ok(luke.short.en.indexOf('Acts') < luke.short.en.indexOf('Church tradition'));
+  for (const [lang, bible, history] of [['es', /^Empecemos con la Biblia\. En Hechos 16/, /^Y la tradición de la Iglesia nos cuenta el resto\./], ['en', /^Let us begin with the Bible\. In Acts 16/, /^And Church tradition tells us the rest\./]]) {
     const b = luke.body[lang];
     assert.match(b[0], bible, `${lang} opens with Acts 16`);
     assert.match(b[1], lang === 'es' ? /flaqueza de carne/ : /infirmity of the flesh/);
@@ -410,4 +410,23 @@ test('the icons lesson shows a "see also" button that opens the St. Luke lesson'
   h.click({ list: true });
   assert.equal(h.current(), 'board');
   assert.equal(h.scrolled.at(-1), 'luke');
+});
+
+test('audit oct23: Catholic lesson gives Scripture first, then history; traditions are labeled as Church tradition', () => {
+  const L = loadData();
+  const cat = L.lessons.find((l) => l.id === 'catholic');
+  for (const lang of ['es', 'en']) {
+    const b = cat.body[lang];
+    const scripture = b.findIndex((p) => /Juan 15:26|John 15:26/.test(p));
+    const history = b.findIndex((p) => /1054/.test(p));
+    assert.ok(scripture > 0 && history > scripture, `${lang} Scripture (${scripture}) before 1054 (${history})`);
+    assert.ok(b.findIndex((p) => /anciano también con ellos|also an elder/.test(p)) < history, `${lang} 1 Peter before history`);
+  }
+  const luke = L.lessons.find((l) => l.id === 'luke');
+  const es = luke.body.es.join(' '), en = luke.body.en.join(' ');
+  assert.ok((es.match(/tradición de la Iglesia/g) || []).length >= 3);
+  assert.ok((en.match(/Church tradition/g) || []).length >= 3);
+  const cross = L.lessons.find((l) => l.id === 'cross');
+  assert.match(cross.body.es.join(' '), /tradición de la Iglesia recibida de los apóstoles/);
+  assert.match(cross.body.en.join(' '), /Church tradition received from the apostles/);
 });

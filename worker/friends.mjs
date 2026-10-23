@@ -78,10 +78,20 @@ function corsHeaders(origin) {
   };
 }
 
+/* basic hardening for every API reply; CORS headers stay as they were */
+export const SECURITY_HEADERS = {
+  'x-content-type-options': 'nosniff',
+  'referrer-policy': 'no-referrer',
+  'x-frame-options': 'DENY',
+  'content-security-policy': "default-src 'none'; frame-ancestors 'none'",
+  'strict-transport-security': 'max-age=31536000',
+  'cache-control': 'no-store',
+};
+
 function json(data, status = 200, origin = ORIGIN) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'content-type': 'application/json', ...corsHeaders(origin) },
+    headers: { 'content-type': 'application/json; charset=utf-8', ...SECURITY_HEADERS, ...corsHeaders(origin) },
   });
 }
 
@@ -504,29 +514,53 @@ function publicRoom(room) {
   };
 }
 
+/* the leaderboard is public: a handle if the player set one, otherwise only
+   the first word of their name, never a full name */
+export function boardName(name, handle) {
+  const h = typeof handle === 'string' ? handle.trim().replace(/^@+/, '').split(/\s+/)[0] : '';
+  if (h) return h.slice(0, 24);
+  const first = typeof name === 'string' ? name.trim().split(/\s+/)[0] || '' : '';
+  return first.slice(0, 24);
+}
+
 function publicScore(entry, id) {
   return {
     id: id || '',
-    name: typeof entry.name === 'string' ? entry.name : '',
+    name: boardName(entry.name, entry.handle),
     score: Number(entry.score) || 0,
     level: Number(entry.level) || 0,
     ts: Number(entry.ts) || 0,
   };
 }
 
+/* The whole board is one KV key, so two players saving at once could undo
+   each other. edit(board) changes the board in place and returns true if it
+   changed anything; it must be safe to run again. After a put, wait a moment,
+   read again, and re-apply if another write took the change away. */
+async function editBoard(env, edit) {
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const board = await loadBoard(env);
+    if (!edit(board)) return;
+    await env.FRIENDS.put(BOARD_KEY, JSON.stringify(board));
+    await settle(env);
+    if (!edit(await loadBoard(env))) return;
+  }
+}
+
 async function stampBoardId(env, code, publicId) {
   if (!code || !publicId) return;
-  const board = await loadBoard(env);
-  let dirty = false;
-  for (const rows of Object.values(board)) {
-    if (!Array.isArray(rows)) continue;
-    for (const entry of rows) {
-      if (!entry || typeof entry !== 'object') continue;
-      if (String(entry.code || '').trim().toUpperCase() !== code) continue;
-      if (entry.id !== publicId) { entry.id = publicId; dirty = true; }
+  await editBoard(env, (board) => {
+    let dirty = false;
+    for (const rows of Object.values(board)) {
+      if (!Array.isArray(rows)) continue;
+      for (const entry of rows) {
+        if (!entry || typeof entry !== 'object') continue;
+        if (String(entry.code || '').trim().toUpperCase() !== code) continue;
+        if (entry.id !== publicId) { entry.id = publicId; dirty = true; }
+      }
     }
-  }
-  if (dirty) await env.FRIENDS.put(BOARD_KEY, JSON.stringify(board));
+    return dirty;
+  });
 }
 
 async function presentScoreList(env, list, limit) {
@@ -810,6 +844,24 @@ async function saveTrade(env, t) {
   t.updatedAt = Date.now();
   await env.FRIENDS.put(`trade:${t.id}`, JSON.stringify(t), { expirationTtl: TRADE_KV_TTL });
 }
+/* Each person's ✓ lives in its own key that only they write, so two people
+   pressing ✓ at the same moment can no longer overwrite each other's ✓ in the
+   shared trade record. The value is the board rev they agreed to. */
+const checkKey = (id, code) => `tc:${id}:${code}`;
+async function loadChecks(env, t) {
+  const out = {};
+  for (const code of [t.from, t.to]) {
+    let v = 0;
+    try { v = Number(await env.FRIENDS.get(checkKey(t.id, code))) || 0; } catch { v = 0; }
+    out[code] = Math.max(v, Number(t.checks && t.checks[code]) || 0);
+  }
+  return out;
+}
+const bothChecked = (t, checks) => checks[t.from] === t.rev && checks[t.to] === t.rev;
+/* how long a ✓ waits for the other person's ✓ to land before it answers */
+const TRADE_SETTLE_MS = 300;
+const tradeSettle = (env) => { const ms = env.TRADE_SETTLE_MS ?? TRADE_SETTLE_MS; return ms > 0 ? new Promise((r) => setTimeout(r, ms / 2 + Math.random() * ms)) : Promise.resolve(); };
+
 async function loadTradeIndex(env, code) {
   try { const v = JSON.parse(await env.FRIENDS.get(`trades:${code}`) || '[]'); return Array.isArray(v) ? v.filter((x) => TRADE_ID.test(x)) : []; } catch { return []; }
 }
@@ -868,6 +920,52 @@ async function activeTrades(env, code) {
   return out;
 }
 
+/* Both pressed ✓ on this exact board: check ownership again, then swap. Safe
+   to run twice at once (both confirms, or a confirm and a look): a side whose
+   record already holds this swap is not checked or changed again. */
+async function finishTrade(env, t0, me0, now) {
+  const t = (await loadTrade(env, t0.id)) || t0;
+  const me = hydrate(await loadUser(env, me0.code)) || me0;
+  t.checks = await loadChecks(env, t);
+  if (t.status === 'done') return [{ ok: true, trade: tradeView(t, me.code) }];
+  if (t.status !== 'open' || !bothChecked(t, t.checks)) return [{ ok: true, trade: tradeView(t, me.code) }];
+  const other = otherSide(t, me.code);
+  const friend = await friendsBothWays(env, me, other);
+  if (!friend) return [{ error: 'You are not friends' }, 403];
+  const users = { [me.code]: me, [friend.code]: friend };
+  const applied = (code) => squishyRecord(users[code]).pending.some((p) => p.trade === t.id);
+  for (const code of [t.from, t.to]) {
+    if (applied(code) || applied(otherSide(t, code))) continue;
+    const owner = squishyRecord(users[code]), receiver = squishyRecord(users[otherSide(t, code)]);
+    const locked = await lockedElsewhere(env, code, t.id);
+    const give = t.offers[code];
+    const bad = give.some((id) => !owner.ids.includes(id) || locked.has(id)) ? 'owned' : give.some((id) => receiver.ids.includes(id)) ? 'already' : '';
+    if (bad) {
+      const latest = await loadTrade(env, t.id);
+      if (latest && latest.status === 'done') { latest.checks = await loadChecks(env, latest); return [{ ok: true, trade: tradeView(latest, me.code) }]; }
+      t.checks = { [t.from]: 0, [t.to]: 0 };
+      t.rev += 1;
+      await saveTrade(env, t);
+      return [{ error: bad === 'owned' ? 'A squishy on the board is not available any more' : 'Your friend already has one of those squishies', reason: bad, trade: tradeView(t, me.code) }, 409];
+    }
+  }
+  /* mark it done first so a later confirm cannot swap twice */
+  t.status = 'done';
+  t.expiresAt = Math.min(t.createdAt + TRADE_RULES.MAX_LIFE_MS, now + TRADE_RULES.OPEN_TTL_MS);
+  t.result = { [t.from]: { give: t.offers[t.from], get: t.offers[t.to] }, [t.to]: { give: t.offers[t.to], get: t.offers[t.from] }, ts: now };
+  await saveTrade(env, t);
+  for (const code of [t.from, t.to]) {
+    if (applied(code)) continue;
+    const u = users[code], rec = squishyRecord(u), r = t.result[code];
+    rec.ids = withPending(rec.ids, [{ give: r.give, get: r.get }]);
+    rec.pending = [...rec.pending, { trade: t.id, give: r.give, get: r.get, ts: now }].slice(-TRADE_RULES.PENDING_MAX);
+    rec.updatedAt = now;
+    u.squishies = rec;
+    await saveUser(env, u, ['squishies']);
+  }
+  return [{ ok: true, trade: tradeView(t, me.code) }];
+}
+
 export async function handleTrade(path, body, env, authedUser) {
   const a = await authedUser(env, body);
   if (a.error) return [{ error: a.error }, a.status];
@@ -877,9 +975,13 @@ export async function handleTrade(path, body, env, authedUser) {
     if (!(await takeRate(env, `rate:trade-read:${me.code}`, TRADE_RULES.RATE_READ))) return [{ error: 'Too many trade checks this hour' }, 429];
     const list = [];
     for (const id of await loadTradeIndex(env, me.code)) {
-      const t = await loadTrade(env, id);
+      let t = await loadTrade(env, id);
       if (!t) continue;
       if (expireIfOld(t, now)) await saveTrade(env, t);
+      if (t.status === 'open') {
+        t.checks = await loadChecks(env, t);
+        if (bothChecked(t, t.checks)) { const [done] = await finishTrade(env, t, me, now); if (done && done.trade) { list.push(done.trade); continue; } t = (await loadTrade(env, id)) || t; }
+      }
       list.push(tradeView(t, me.code));
     }
     return [{ trades: list, pending: squishyRecord(me).pending }];
@@ -913,10 +1015,17 @@ export async function handleTrade(path, body, env, authedUser) {
 
   const t = await loadTrade(env, body?.trade);
   if (!t || !isParty(t, me.code)) return [{ error: 'Trade not found' }, 404];
+  if (!FINAL_STATES.includes(t.status)) t.checks = await loadChecks(env, t);
   if (expireIfOld(t, now)) { await saveTrade(env, t); return [{ error: 'This trade has expired', trade: tradeView(t, me.code) }, 410]; }
 
   if (path === '/trade/state') {
     if (!(await takeRate(env, `rate:trade-read:${me.code}`, TRADE_RULES.RATE_READ))) return [{ error: 'Too many trade checks this hour' }, 429];
+    if (t.status === 'open') {
+      t.checks = await loadChecks(env, t);
+      /* both ✓ landed but neither confirm saw the other's (KV is slow to
+         spread between places): the next look finishes the swap */
+      if (bothChecked(t, t.checks)) { const [done, code] = await finishTrade(env, t, me, now); return [done.trade ? { trade: done.trade, ...(done.error ? { error: done.error, reason: done.reason } : {}) } : done, done.trade ? 200 : code]; }
+    }
     return [{ trade: tradeView(t, me.code) }];
   }
 
@@ -987,46 +1096,84 @@ export async function handleTrade(path, body, env, authedUser) {
   }
 
   if (path === '/trade/confirm') {
+    t.checks = await loadChecks(env, t);
     if (Number(body?.rev) !== t.rev) return [{ error: 'The board changed. Look again before you press ✓.', reason: 'changed', trade: tradeView(t, me.code) }, 409];
     const check = tradeCheck(t);
     if (!check.ok) return [{ error: 'This trade is not fair yet', reason: check.problems[0], trade: tradeView(t, me.code) }, 400];
+    await env.FRIENDS.put(checkKey(t.id, me.code), String(t.rev), { expirationTtl: TRADE_KV_TTL });
     t.checks[me.code] = t.rev;
-    touch();
-    const other = otherSide(t, me.code);
-    if (t.checks[other] !== t.rev) { await saveTrade(env, t); return [{ ok: true, trade: tradeView(t, me.code) }]; }
-
-    /* both pressed ✓ on this exact board: check ownership again, then swap */
-    const friend = await friendsBothWays(env, me, other);
-    if (!friend) return [{ error: 'You are not friends' }, 403];
-    const users = { [me.code]: me, [friend.code]: friend };
-    for (const code of [t.from, t.to]) {
-      const owner = squishyRecord(users[code]), receiver = squishyRecord(users[otherSide(t, code)]);
-      const locked = await lockedElsewhere(env, code, t.id);
-      const give = t.offers[code];
-      const bad = give.some((id) => !owner.ids.includes(id) || locked.has(id)) ? 'owned' : give.some((id) => receiver.ids.includes(id)) ? 'already' : '';
-      if (bad) {
-        t.checks = { [t.from]: 0, [t.to]: 0 };
-        t.rev += 1;
-        await saveTrade(env, t);
-        return [{ error: bad === 'owned' ? 'A squishy on the board is not available any more' : 'Your friend already has one of those squishies', reason: bad, trade: tradeView(t, me.code) }, 409];
-      }
+    if (!bothChecked(t, t.checks)) {
+      /* the other ✓ may be on its way right now: give it a moment, then look again */
+      await tradeSettle(env);
+      const fresh = await loadTrade(env, t.id);
+      if (!fresh || fresh.rev !== t.rev || fresh.status !== 'open') { const v = fresh || t; v.checks = await loadChecks(env, v); return [{ ok: true, trade: tradeView(v, me.code) }]; }
+      t.checks = await loadChecks(env, t);
+      t.checks[me.code] = t.rev;
+      if (!bothChecked(t, t.checks)) return [{ ok: true, trade: tradeView(t, me.code) }];
     }
-    /* mark it done first so a second confirm cannot swap twice */
-    t.status = 'done';
-    t.result = { [t.from]: { give: t.offers[t.from], get: t.offers[t.to] }, [t.to]: { give: t.offers[t.to], get: t.offers[t.from] }, ts: now };
-    await saveTrade(env, t);
-    for (const code of [t.from, t.to]) {
-      const u = users[code], rec = squishyRecord(u), r = t.result[code];
-      rec.ids = withPending(rec.ids, [{ give: r.give, get: r.get }]);
-      rec.pending = [...rec.pending, { trade: t.id, give: r.give, get: r.get, ts: now }].slice(-TRADE_RULES.PENDING_MAX);
-      rec.updatedAt = now;
-      u.squishies = rec;
-      await saveUser(env, u, ['squishies']);
-    }
-    return [{ ok: true, trade: tradeView(t, me.code) }];
+    return finishTrade(env, t, me, now);
   }
 
   return [{ error: 'Not found' }, 404];
+}
+
+/* every per-person rate bucket, so a deleted account leaves no keys behind */
+const RATE_NAMES = ['account-delete', 'friend-add', 'friend-change', 'lessons', 'lessons-hide', 'lessons-read', 'msg', 'mynotes', 'mynotes-hide', 'mynotes-read', 'note', 'note-change', 'room', 'scores', 'shared', 'shared-edit', 'study', 'study-delete', 'sync', 'trade', 'trade-move', 'trade-read', 'verse', 'verse-read'];
+
+/* Delete an account and what it left with friends: the user record, saved
+   lessons and notes, trades, friend links on both sides (with the messages,
+   notes, verses and shared notebooks between them) and leaderboard rows.
+   The user record goes last, so a delete that stops part way can be run again. */
+async function deleteAccount(env, user) {
+  const me = user.code;
+  const others = new Set([...(user.friends || []), ...cleanRequests(user.requestsIn).map((r) => r.code), ...cleanRequests(user.requestsOut).map((r) => r.code)]);
+  for (const id of user.shared || []) {
+    try { const n = JSON.parse((await env.FRIENDS.get(`shared:${id}`)) || 'null'); if (n && Array.isArray(n.editors)) for (const c of n.editors) if (c !== me) others.add(c); } catch { /* skip */ }
+  }
+  for (const v of await loadVersebox(env, me)) { const c = otherParty(v, me); if (c) others.add(c); }
+  others.delete(me);
+  /* trades: cancel the open ones so the friend's board closes, then drop them */
+  for (const id of await loadTradeIndex(env, me)) {
+    const t = await loadTrade(env, id);
+    if (t && isParty(t, me)) { others.add(otherSide(t, me)); if (!FINAL_STATES.includes(t.status)) { t.status = 'cancelled'; t.note = { by: me, kind: 'cancelled', ts: Date.now() }; await saveTrade(env, t); } }
+    await env.FRIENDS.delete(checkKey(id, me));
+  }
+  await env.FRIENDS.delete(`trades:${me}`);
+  for (const code of others) {
+    if (!/^[A-Z0-9-]{4,24}$/.test(code)) continue;
+    const f = hydrate(await loadUser(env, code));
+    if (f) {
+      f.friends = (f.friends || []).filter((c) => c !== me);
+      f.requestsIn = withoutCode(f.requestsIn, me);
+      f.requestsOut = withoutCode(f.requestsOut, me);
+      f.shared = (f.shared || []).filter((id) => !(user.shared || []).includes(id));
+      const own = [...LINKS, 'shared'];
+      for (const n of f.inbox || []) if (n && n.from === me) own.push(`inbox-${n.id}`);
+      f.inbox = (f.inbox || []).filter((n) => !(n && n.from === me));
+      if (f.threads && f.threads[me]) { f.threads = { ...f.threads }; delete f.threads[me]; own.push('threads'); }
+      await saveUser(env, f, own, false);
+      const box = await loadVersebox(env, code);
+      const kept = box.filter((v) => otherParty(v, code) !== me);
+      if (kept.length !== box.length) await saveVersebox(env, code, kept);
+    }
+    await env.FRIENDS.delete(pairKey(me, code));
+    await env.FRIENDS.delete(reqKey(me, code));
+    await env.FRIENDS.delete(reqKey(code, me));
+    await env.FRIENDS.delete(studyStorageKey(me, code).key);
+  }
+  for (const id of user.shared || []) await env.FRIENDS.delete(`shared:${id}`);
+  await editBoard(env, (board) => {
+    let dirty = false;
+    for (const show of Object.keys(board)) {
+      if (!Array.isArray(board[show])) continue;
+      const kept = board[show].filter((e) => !(e && (String(e.code || '').toUpperCase() === me || (user.publicId && e.id === user.publicId))));
+      if (kept.length !== board[show].length) { board[show] = kept; dirty = true; }
+    }
+    return dirty;
+  });
+  for (const k of [`versebox:${me}`, `lessons:${me}`, `mynotes:${me}`]) await env.FRIENDS.delete(k);
+  for (const r of RATE_NAMES) await env.FRIENDS.delete(`rate:${r}:${me}`);
+  await env.FRIENDS.delete(`user:${me}`);
 }
 
 export async function handleFriends(request, env) {
@@ -1034,7 +1181,7 @@ export async function handleFriends(request, env) {
   const reply = (data, status = 200) => json(data, status, origin);
   try {
     const url = new URL(request.url);
-    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders(origin) });
+    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { ...SECURITY_HEADERS, ...corsHeaders(origin) } });
     if (url.pathname === '/health' && request.method === 'GET') return reply({ ok: true });
     if (url.pathname === '/recovery-email' && (request.method === 'GET' || request.method === 'POST')) {
       return reply({
@@ -1099,6 +1246,15 @@ export async function handleFriends(request, env) {
       await stampBoardId(env, a.user.code, publicId);
       const squishyPending = squishyRecord(a.user).pending;
       return reply({ ok: true, publicId, ...(a.user.verified === true ? { verified: true } : {}), ...(squishyPending.length ? { squishyPending } : {}), ...(warnings.length ? { warning: warnings.join(' ') } : {}) });
+    }
+
+    if (url.pathname === '/account/delete') {
+      const a = await authed(env, body);
+      if (a.error) return reply({ error: a.error }, a.status);
+      if (body?.confirm !== 'DELETE') return reply({ error: 'Send confirm: "DELETE" to delete this account' }, 400);
+      if (!(await takeRate(env, `rate:account-delete:${a.user.code}`, 10))) return reply({ error: 'Too many tries this hour' }, 429);
+      await deleteAccount(env, a.user);
+      return reply({ ok: true, deleted: a.user.code });
     }
 
     if (url.pathname === '/friends') {
@@ -1324,19 +1480,22 @@ export async function handleFriends(request, env) {
       if (!(await takeRate(env, `rate:scores:${a.user.code}`, RATE_LIMITS.scores))) return reply({ error: 'Too many scores this hour' }, 429);
       const publicId = await ensurePublicId(env, a.user);
       await stampBoardId(env, a.user.code, publicId);
-      const board = await loadBoard(env);
-      const list = Array.isArray(board[show]) ? board[show] : [];
-      const mine = list.find((e) => e.code === a.user.code);
-      if (!mine || score > mine.score) {
-        const entry = { code: a.user.code, id: publicId, name: a.user.name, score, level, ts: Date.now() };
-        const next = list.filter((e) => e.code !== a.user.code).concat(entry);
+      /* only the public display name is stored on the board */
+      const entry = { code: a.user.code, id: publicId, name: boardName(a.user.name, a.user.handle), score, level, ts: Date.now() };
+      await editBoard(env, (board) => {
+        const list = Array.isArray(board[show]) ? board[show] : [];
+        const mine = list.find((e) => e && e.code === a.user.code);
+        if (mine && mine.score >= score) {
+          if (mine.id === publicId && mine.name === entry.name) return false;
+          mine.id = publicId; mine.name = entry.name; return true;
+        }
+        const next = list.filter((e) => e && e.code !== a.user.code).concat({ ...entry });
         next.sort((x, y) => y.score - x.score || x.ts - y.ts);
-        board[show] = next.slice(0, BOARD_MAX);
-        await env.FRIENDS.put(BOARD_KEY, JSON.stringify(board));
-      } else if (mine && mine.id !== publicId) {
-        mine.id = publicId;
-        await env.FRIENDS.put(BOARD_KEY, JSON.stringify(board));
-      }
+        const top = next.slice(0, BOARD_MAX);
+        if (!top.some((e) => e.code === a.user.code)) return false; // not high enough for the board
+        board[show] = top;
+        return true;
+      });
       return reply({ ok: true });
     }
 

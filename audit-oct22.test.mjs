@@ -136,7 +136,7 @@ test('L6: luz-data.js loads when Lessons for Luz opens, and stays precached for 
 test('L7: the game packs are cache-first per service worker version, not fetched no-store', () => {
   const aura = read('./aura.js'), sw = read('./sw.js');
   assert.doesNotMatch(aura, /fetch\('data\/(study-challenges|holy-spirit)\.json',\{cache:'no-store'\}\)/);
-  assert.match(sw, /const VERSIONED_DATA = \['\/data\/study-challenges\.json', '\/data\/holy-spirit\.json'\];/);
+  assert.match(sw, /const VERSIONED_DATA = \['\/data\/study-challenges\.json', '\/data\/holy-spirit\.json'[^\]]*\];/);
   assert.match(sw, /if \(isVersionedData\(url\)\) \{\n    event\.respondWith\(versionedData\(request\)\);/);
   assert.ok(sw.indexOf('if (isVersionedData(url))') < sw.indexOf('if (isStudyNotes(url) || isDataRequest(url))'));
   assert.match(sw, /const DATA_CACHE = `msb-data-\$\{CACHE_VERSION\}`;/, 'a new version brings new copies');
