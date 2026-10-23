@@ -14,7 +14,7 @@
    served from it, with Range requests answered as 206 slices.
    Bump BIBLE_DATA_VERSION only when the Bible JSON itself changes.
    Bump CACHE_VERSION to refresh the precached shell. */
-const CACHE_VERSION = 'v169';
+const CACHE_VERSION = 'v170';
 const SHELL_CACHE = `msb-shell-${CACHE_VERSION}`;
 const DATA_CACHE = `msb-data-${CACHE_VERSION}`;
 const BIBLE_DATA_VERSION = 'kjv-3';
@@ -156,11 +156,11 @@ const REFILL_HEADER = 'X-MSB-Refill';
 const isWorshipAudio = (url) => /\/audio\/[a-z0-9-]+\.(?:ogg|mp3)$/.test(url.pathname);
 const isStudyNotes = (url) => url.pathname.endsWith('/study-notes.json');
 const isDataRequest = (url) => url.pathname.includes('/data/');
-/* The two big game packs (about 1 MB together) change only with a release, so
-   they are served cache-first from this version's DATA_CACHE, which install
-   fills. A new CACHE_VERSION brings the new copies; other data stays
-   network-first. */
-const VERSIONED_DATA = ['/data/study-challenges.json', '/data/holy-spirit.json'];
+/* The game packs and the bundled study library, index and trivia change only
+   with a release, so they are served cache-first from this version's
+   DATA_CACHE, which install fills (cache: 'reload'). A new CACHE_VERSION brings
+   the new copies; other data stays network-first. */
+const VERSIONED_DATA = ['/data/study-challenges.json', '/data/holy-spirit.json', '/data/study-library.json', '/data/study-index.json', '/data/trivia.json'];
 const isVersionedData = (url) => VERSIONED_DATA.some((p) => url.pathname.endsWith(p));
 async function versionedData(request) {
   const cache = await caches.open(DATA_CACHE);
