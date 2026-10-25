@@ -637,6 +637,7 @@ const HOUR_MS = 60 * 60 * 1000;
 const SCORE_MAX = 1000000;
 export const RATE_LIMITS = {
   register: 80,
+  signinCode: 10,
   sync: 60,
   msg: 60,
   note: 40,
@@ -773,6 +774,13 @@ export const TRADE_RULES = {
 };
 const TRADE_KV_TTL = 2 * 60 * 60;
 const TRADE_ID = /^[a-f0-9]{16}$/;
+const SIGNIN_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+/* sign-in codes are 8 characters from SIGNIN_ALPHABET; spaces and dashes are ignored */
+export function cleanSigninCode(value) {
+  const c = String(value ?? '').toUpperCase().replace(/[\s-]+/g, '');
+  return c.length === 8 && [...c].every((ch) => SIGNIN_ALPHABET.includes(ch)) ? c : '';
+}
+export async function signinCodeKey(clean) { return `signin:${await sha256hex(`signin:${clean}`)}`; }
 const FINAL_STATES = ['done', 'declined', 'cancelled', 'expired'];
 export const tradableSquishy = (id) => SQUISHY_IDS.includes(id) && id !== 'lamp' && !SQUISHY_STARTERS.includes(id);
 
@@ -1013,6 +1021,9 @@ export async function handleTrade(path, body, env, authedUser) {
     return [{ ok: true, trade: tradeView(t, me.code) }];
   }
 
+  /* a gift from the app admin has no trade behind it: it stays in pending so
+     every phone that signs in to this account receives it once */
+  if (path === '/trade/ack' && squishyRecord(me).pending.some((p) => p.trade === body?.trade && p.gift === true)) return [{ ok: true }];
   const t = await loadTrade(env, body?.trade);
   if (!t || !isParty(t, me.code)) return [{ error: 'Trade not found' }, 404];
   if (!FINAL_STATES.includes(t.status)) t.checks = await loadChecks(env, t);
@@ -1230,6 +1241,31 @@ export async function handleFriends(request, env) {
       };
       await env.FRIENDS.put(`user:${code}`, JSON.stringify(user));
       return reply({ code, secret, publicId: user.publicId });
+    }
+
+    /* One-time sign-in code: the app admin stores signin:<sha256> in KV (see
+       signinCodeKey) with a 48 hour TTL. Typing the code on any phone gives
+       that phone a fresh account secret and the public profile to show, so
+       nobody has to type the long secret. Single use, hashed, rate-limited. */
+    if (url.pathname === '/signin-code/redeem') {
+      if (!(await takeRate(env, `rate:signin-code:${clientIp(request)}`, RATE_LIMITS.signinCode))) return reply({ error: 'Too many tries this hour. Wait a while and try again.' }, 429);
+      const typed = cleanSigninCode(body?.signinCode);
+      if (!typed) return reply({ error: 'That sign-in code is not right. Check it and try again.' }, 400);
+      const key = await signinCodeKey(typed);
+      let grant = null; try { grant = JSON.parse(await env.FRIENDS.get(key) || 'null'); } catch { grant = null; }
+      if (!grant || typeof grant.code !== 'string' || !(Number(grant.exp) > Date.now())) return reply({ error: 'That sign-in code is not right or has expired. Ask for a new one.' }, 404);
+      await env.FRIENDS.delete(key);
+      const user = hydrate(await loadUser(env, grant.code));
+      if (!user) return reply({ error: 'That sign-in code is not right or has expired. Ask for a new one.' }, 404);
+      const secret = randomHex(16);
+      user.secretHash = await sha256hex(secret);
+      const publicId = await ensurePublicId(env, user);
+      const own = ['secretHash'];
+      if (user.publicId !== publicId) { user.publicId = publicId; own.push('publicId'); }
+      await saveUser(env, user, own);
+      const profile = {};
+      for (const k of ['name', 'handle', 'city', 'bio', 'denomination', 'avatar_data', 'cover_data']) if (typeof user[k] === 'string' && user[k]) profile[k] = user[k];
+      return reply({ ok: true, code: user.code, secret, publicId, profile, ...(user.verified === true ? { verified: true } : {}) });
     }
 
     if (url.pathname === '/sync') {

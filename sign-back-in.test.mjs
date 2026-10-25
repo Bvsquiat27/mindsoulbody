@@ -76,7 +76,7 @@ test('sign in points people to the sign-back-in path and Profile shows the key o
   assert.match(aura, /if\(kind==='friends-relink'\)return msbRelinkDialog\(\)/);
   assert.match(aura, /\$\{msbAccountKeyHtml\(\)\}\$\{msbBackupHtml\(\)\}/);
   assert.match(line('function msbAccountKeyHtml('), /value=""/);
-  assert.match(readFileSync('sw.js', 'utf8'), /const CACHE_VERSION = 'v171'/);
+  assert.match(readFileSync('sw.js', 'utf8'), /const CACHE_VERSION = 'v172'/);
 });
 
 test('a phone that just signed back in does not replace saved notes or lessons with an empty list', () => {
