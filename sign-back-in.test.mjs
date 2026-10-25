@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const aura = readFileSync(new URL('./aura.js', import.meta.url), 'utf8');
 const line = (start) => aura.split('\n').find((l) => l.startsWith(start));
-const fns = ['function msbAccountKeyParse(', 'function msbStatsHaveProgress(', 'async function msbFriendsRelink(', 'let msbRestorePullAt=', 'async function msbRestorePull(', 'async function msbFriendsSync('].map(line);
+const fns = ['function msbAccountKeyParse(', 'function msbStatsHaveProgress(', 'async function msbFriendsRelink(', 'let msbRestorePullAt=', 'const MSB_RESTORE_FAIL_KEY=', 'async function msbRestorePull(', 'async function msbRestorePullOnce(', 'async function msbFriendsSync('].map(line);
 const KEY = 'a'.repeat(16) + '0123456789abcdef';
 
 function harness(saved, call, extra = {}) {
@@ -103,7 +103,7 @@ test('sign in points people to the sign-back-in path and Profile shows the key o
   assert.match(aura, /if\(kind==='friends-relink'\)return msbRelinkDialog\(\)/);
   assert.match(aura, /\$\{msbAccountKeyHtml\(\)\}\$\{msbBackupHtml\(\)\}/);
   assert.match(line('function msbAccountKeyHtml('), /value=""/);
-  assert.match(readFileSync('sw.js', 'utf8'), /const CACHE_VERSION = 'v174'/);
+  assert.match(readFileSync('sw.js', 'utf8'), /const CACHE_VERSION = 'v175'/);
 });
 
 test('a phone that just signed back in does not replace saved notes or lessons until the saved copy is merged', () => {
@@ -132,4 +132,28 @@ test('squishies the server already has come back to a restored phone (not the la
   assert.deepEqual(added, locked);
   assert.deepEqual(JSON.parse(mem.get('msb_squishy_unlocked')), locked);
   assert.deepEqual(S.restoreIds(ls, locked, SQUISHIES, C), []);
+});
+
+test('if the saved copy keeps not coming back, a gentle note shows once and the phone keeps trying', async () => {
+  const fail = (path) => { if (path === '/me/state') throw new Error('offline'); return { ok: true }; };
+  const toasts = [];
+  const src = ['let msbRestorePullAt=', 'const MSB_RESTORE_FAIL_KEY=', 'async function msbRestorePull(', 'async function msbRestorePullOnce('].map(line).join('\n');
+  const ls = new Map();
+  const mk = () => new Function('msbFriendsCall', 'localStorage', 'toast', 'msbEs', 'msbStore', 'msbSave', 'msbLoadMyNotes', 'MSB_FRIENDS_KEY', 'msbFriendsId', `${src}\nreturn msbRestorePull;`)(
+    async (p) => fail(p), { getItem: (k) => ls.get(k) ?? null, setItem: (k, v) => ls.set(k, String(v)), removeItem: (k) => ls.delete(k) },
+    (m) => toasts.push(m), () => false, () => ({ profile: {} }), () => {}, async () => null, 'msb_friends_id', () => null);
+  const id = { code: 'MSB-ABC234', secret: KEY, restored: true };
+  for (let i = 0; i < 4; i++) assert.equal(await mk()(id), false); /* a fresh load each time, like reopening the app */
+  assert.equal(ls.get('msb_restore_fail'), '4');
+  assert.ok(toasts.length >= 1 && toasts.every((m) => /still on their way[^]*Nothing is lost/.test(m)));
+  assert.equal(id.restored, true);
+});
+
+test('a restored phone fills empty profile fields from the saved copy and keeps what it has', async () => {
+  const store = { profile: { name: 'Kept' }, notes: [], progress: [] };
+  const h = harness({ code: 'MSB-ABC234', secret: KEY, restored: true }, (path) => (path === '/me/state' ? { ok: true, code: 'MSB-ABC234', profile: { name: 'Other', city: 'Town', bio: 'Hi' }, notes: { hidden: true, notes: [] }, lessons: { hidden: true, done: [] } } : { ok: true }), { store });
+  await h.msbFriendsSync();
+  assert.equal(h.store.profile.name, 'Kept');
+  assert.equal(h.store.profile.city, 'Town');
+  assert.equal(h.store.profile.bio, 'Hi');
 });

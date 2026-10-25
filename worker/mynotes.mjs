@@ -77,6 +77,17 @@ export async function handleMyNotes(path, body, env, deps) {
   return [{ error: 'Not found' }, 404];
 }
 
+/* the account's own saved notes and lessons, for a phone that signed back in */
+export async function readOwnState(env, code) {
+  const notes = await readNotes(env, code);
+  let rec = null;
+  try { rec = JSON.parse((await env.FRIENDS.get(`lessons:${code}`)) || 'null'); } catch { rec = null; }
+  const lessons = rec && typeof rec === 'object'
+    ? { hidden: !!rec.hidden, current: rec.hidden ? null : rec.current || null, done: rec.hidden || !Array.isArray(rec.done) ? [] : rec.done }
+    : { hidden: false, current: null, done: [] };
+  return { notes, lessons };
+}
+
 async function readNotes(env, code) {
   try {
     const r = JSON.parse((await env.FRIENDS.get(`mynotes:${code}`)) || 'null');
