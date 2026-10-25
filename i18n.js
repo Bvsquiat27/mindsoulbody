@@ -1603,6 +1603,8 @@
     "No password is saved on this device yet. Create an account first.": "Todavía no hay una contraseña guardada en este dispositivo. Primero crea una cuenta.",
     "This phone does not have your account yet. Tap Got a sign-in code? to get back in, or create an account.": "Este teléfono todavía no tiene tu cuenta. Toca ¿Tienes un código para entrar? para volver a entrar, o crea una cuenta.",
     "Password saved on this phone.": "Contraseña guardada en este teléfono.",
+    "This phone already has a password. Use Change password instead.": "Este teléfono ya tiene una contraseña. Usa Cambiar contraseña.",
+    "The password was not saved. Try again.": "No se guardó la contraseña. Inténtalo de nuevo.",
     "Welcome back. You are signed in on this phone.": "Qué bueno verte de nuevo. Ya entraste en este teléfono.",
     "No recovery email was sent.": "No se envió el correo de recuperación.",
     "No recovery email was sent. The mail server could not be reached, and no mailbox or sending key is available from this app.": "No se envió el correo de recuperación. No se pudo conectar con el servidor de correo, y esta app no tiene un buzón ni una clave de envío.",

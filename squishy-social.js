@@ -58,6 +58,26 @@
     return { ack: done, got: newly };
   }
 
+  /* A phone that signed back in: squishies the server already has for this
+     account come back here like gifts (never the lamp, never starters), so the
+     next sync sends the full list instead of only what this phone earned. */
+  function restoreIds(storage, ids, squishies, core) {
+    const known = new Set(squishies.map(x => x.id)), starters = new Set(squishies.filter(x => !x.locked).map(x => x.id));
+    const back = [...new Set(Array.isArray(ids) ? ids : [])].filter(id => typeof id === 'string' && known.has(id) && !starters.has(id) && id !== 'lamp');
+    let open = readJson(storage, UNLOCKED_KEY, []);
+    if (!Array.isArray(open)) open = [];
+    const room = core.roomLedger(storage), added = [];
+    for (const id of back) if (!open.includes(id)) { open.push(id); added.push(id); }
+    if (!added.length) return [];
+    room.got = [...new Set([...room.got, ...added])];
+    room.away = room.away.filter(id => !added.includes(id));
+    try {
+      storage.setItem(UNLOCKED_KEY, JSON.stringify(open));
+      storage.setItem(ROOM_KEY, JSON.stringify(room));
+    } catch { return []; }
+    return added;
+  }
+
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
   /* A friend's collection, grouped and tidy at 390px. ids: the friend's list
@@ -86,5 +106,5 @@
     return `<section class="card squishy-public" data-i18n-skip><span class="eyebrow">${es ? 'MIS SQUISHIES' : 'MY SQUISHIES'}</span><label class="reading-share-row"><input type="checkbox" id="squishy-public" ${on ? 'checked' : ''}> <span>${es ? 'Mostrar mi colección de squishies a mis amigos' : 'Show my squishy collection to friends'}</span></label><p class="muted">${es ? 'Activado por defecto. Tus amigos ven qué squishies tienes, nada más.' : 'On by default. Friends see which squishies you have, nothing else.'}</p></section>`;
   }
 
-  return { PUBLIC_KEY, ROOM_KEY, LEGENDARY_MIN, isPublic, setPublic, payload, applyPending, gridHtml, toggleHtml };
+  return { PUBLIC_KEY, ROOM_KEY, LEGENDARY_MIN, isPublic, setPublic, payload, applyPending, restoreIds, gridHtml, toggleHtml };
 });
