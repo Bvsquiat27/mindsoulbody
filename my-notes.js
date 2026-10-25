@@ -75,9 +75,10 @@
     const me = ids(); if (!me) return { skipped: true };
     const hidden = !shared();
     const notes = hidden ? [] : collect(opts0);
-    /* a phone that just signed back in has no notes yet: an empty list would
-       replace the notes already saved for this friend code, so wait for one */
-    if (me.restored && !hidden && !notes.length) return { skipped: true };
+    /* a phone that just signed back in: any list sent now would replace the
+       notes already saved for this friend code, so wait until the saved copy
+       has been pulled and merged here (that clears restored) */
+    if (me.restored && !hidden) return { skipped: true, restored: true };
     /* hiding sends no notes at all: the server keeps nothing readable */
     return post('/mynotes/sync', { code: me.code, secret: me.secret, hidden, notes });
   }
@@ -198,7 +199,7 @@
     const me = ids(); if (!me) return { skipped: true };
     const hidden = !lessonsShared();
     const lessons = hidden ? { current: null, done: [] } : lessonsPayload(opts0);
-    if (me.restored && !hidden && !lessons.current && !lessons.done.length) return { skipped: true };
+    if (me.restored && !hidden) return { skipped: true, restored: true };
     const sig = JSON.stringify([hidden, lessons.current && lessons.current.id, lessons.done.map((d) => [d.id, d.score])]);
     if (!force && sig === lastLessonSig) return { skipped: true };
     const r = await post('/lessons/sync', { code: me.code, secret: me.secret, hidden, lessons });
@@ -244,5 +245,52 @@
     }
   }
 
-  return { LESSONS_SHARE_KEY, lessonsShared, setLessonsShared, lessonsPayload, syncLessons, syncLessonsSoon, friendLessonsHtml, fillFriendLessons, KEY, SHARE_KEY, MAX, readAll, get, save, shared, setShared, collect, listHtml, profileHtml, boxHtml, shareText, syncNow, syncSoon, friendNotes, fillFriend, wire };
+  /* ---------- signing back in: merge the server copy into this phone ---------- */
+  /* devotional notes the server has and this phone does not; this phone's own
+     note for a day always wins */
+  function mergeDevotional(serverNotes, ls = store()) {
+    const all = readAll(ls); let added = 0;
+    for (const n of Array.isArray(serverNotes) ? serverNotes : []) {
+      if (!n || n.kind !== 'devotional' || typeof n.key !== 'string' || !n.key || typeof n.text !== 'string' || !n.text.trim()) continue;
+      if (all[n.key] && typeof all[n.key].text === 'string' && all[n.key].text.trim()) continue;
+      const meta = {};
+      for (const k of ['title', 'ref', 'verse']) if (typeof n[k] === 'string' && n[k]) meta[k] = n[k];
+      if (n.lang === 'es') meta.lang = 'es';
+      for (const k of ['book', 'chapter', 'v']) if (n[k] != null) meta[k] = n[k];
+      all[n.key] = { ...meta, text: n.text.slice(0, MAX), ts: Number(n.ts) || Date.now() };
+      added++;
+    }
+    if (added) ls.setItem(KEY, JSON.stringify(all));
+    return added;
+  }
+  /* study notes: [{ study_id, body, updated_at (seconds) }]; local wins */
+  function mergeStudyNotes(local, serverNotes) {
+    const out = Array.isArray(local) ? local.slice() : [];
+    const have = new Set(out.filter((e) => e && typeof e.body === 'string' && e.body.trim()).map((e) => String(e.study_id)));
+    for (const n of Array.isArray(serverNotes) ? serverNotes : []) {
+      if (!n || n.kind !== 'study' || typeof n.key !== 'string' || !n.key || typeof n.text !== 'string' || !n.text.trim() || have.has(n.key)) continue;
+      const i = out.findIndex((e) => e && String(e.study_id) === n.key);
+      if (i >= 0) out.splice(i, 1);
+      out.push({ study_id: n.key, body: n.text.slice(0, MAX), updated_at: Math.floor((Number(n.ts) || Date.now()) / 1000) });
+      have.add(n.key);
+    }
+    return out;
+  }
+  /* finished lessons: [{ study_id, completed_at (seconds), quiz_score }]; a
+     lesson finished on either phone stays finished */
+  function mergeProgress(local, lessons) {
+    const out = Array.isArray(local) ? local.slice() : [];
+    const done = lessons && Array.isArray(lessons.done) ? lessons.done : [];
+    for (const d of done) {
+      if (!d || !LESSON_ID.test(String(d.id || ''))) continue;
+      const id = String(d.id), ts = Math.floor((Number(d.ts) || Date.now()) / 1000), score = Number.isInteger(d.score) ? d.score : null;
+      const i = out.findIndex((r) => r && String(r.study_id) === id);
+      if (i < 0) { out.push({ study_id: id, completed_at: ts, quiz_score: score }); continue; }
+      const r = out[i];
+      out[i] = { ...r, completed_at: r.completed_at || ts, quiz_score: r.quiz_score ?? score };
+    }
+    return out;
+  }
+
+  return { mergeDevotional, mergeStudyNotes, mergeProgress, LESSONS_SHARE_KEY, lessonsShared, setLessonsShared, lessonsPayload, syncLessons, syncLessonsSoon, friendLessonsHtml, fillFriendLessons, KEY, SHARE_KEY, MAX, readAll, get, save, shared, setShared, collect, listHtml, profileHtml, boxHtml, shareText, syncNow, syncSoon, friendNotes, fillFriend, wire };
 });
