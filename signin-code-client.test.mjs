@@ -28,9 +28,21 @@ test('sign-in codes are cleaned the same way as the server', () => {
   assert.equal(clean('ABC'), '');
 });
 
-test('redeeming checks the new password before using the single-use code', () => {
+test('the code alone signs in: no password field, and the phone is marked as a code sign-in', () => {
+  const dlg = aura.slice(aura.indexOf('function msbSigninCodeDialog'), aura.indexOf('async function msbSigninCodeSubmit'));
+  assert.equal(dlg.includes('new_password'), false);
+  assert.ok(dlg.includes('signin-code-input'));
   const body = aura.slice(aura.indexOf('async function msbSigninCodeSubmit'), aura.indexOf('async function msbSigninCodeSubmit') + 4000);
-  assert.ok(body.indexOf('pw.length<10') < body.indexOf("'/signin-code/redeem'"));
+  assert.equal(body.includes('pw.length'), false);
+  assert.ok(body.includes('store.codeSignin=true'));
   assert.ok(body.includes('restored:true'));
   assert.ok(body.includes('msbFriendsSync()'));
+});
+
+test('a code sign-in stays signed in and can add a password later, never required', () => {
+  assert.ok(aura.includes("(store.passwordHash||store.codeSignin===true)&&p.registered"));
+  assert.ok(aura.includes("if(!store.password&&!store.passwordHash&&store.codeSignin!==true){store.signedOut=true"));
+  assert.ok(aura.includes("Add a password for this phone','Agrega una contraseña para este teléfono'"));
+  assert.ok(aura.includes('${msbAddPasswordHtml()}${msbAccountKeyHtml()}'));
+  assert.ok(aura.includes("if(!(store.codeSignin===true&&!store.passwordHash)&&!await msbPasswordMatches"));
 });
