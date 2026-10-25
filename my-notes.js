@@ -74,8 +74,12 @@
     if (opts) opts0 = opts;
     const me = ids(); if (!me) return { skipped: true };
     const hidden = !shared();
+    const notes = hidden ? [] : collect(opts0);
+    /* a phone that just signed back in has no notes yet: an empty list would
+       replace the notes already saved for this friend code, so wait for one */
+    if (me.restored && !hidden && !notes.length) return { skipped: true };
     /* hiding sends no notes at all: the server keeps nothing readable */
-    return post('/mynotes/sync', { code: me.code, secret: me.secret, hidden, notes: hidden ? [] : collect(opts0) });
+    return post('/mynotes/sync', { code: me.code, secret: me.secret, hidden, notes });
   }
   async function friendNotes(code) {
     const me = ids(); if (!me) throw Error(tr('Get a friend code on your profile first.', 'Primero obtén un código de amigo en tu perfil.'));
@@ -194,6 +198,7 @@
     const me = ids(); if (!me) return { skipped: true };
     const hidden = !lessonsShared();
     const lessons = hidden ? { current: null, done: [] } : lessonsPayload(opts0);
+    if (me.restored && !hidden && !lessons.current && !lessons.done.length) return { skipped: true };
     const sig = JSON.stringify([hidden, lessons.current && lessons.current.id, lessons.done.map((d) => [d.id, d.score])]);
     if (!force && sig === lastLessonSig) return { skipped: true };
     const r = await post('/lessons/sync', { code: me.code, secret: me.secret, hidden, lessons });
