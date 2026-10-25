@@ -5,8 +5,30 @@ import { readFileSync } from 'node:fs';
 const aura = readFileSync(new URL('./aura.js', import.meta.url), 'utf8');
 const i18n = readFileSync(new URL('./i18n.js', import.meta.url), 'utf8');
 
-test('the welcome screen offers a sign-in code in English and Spanish', () => {
-  assert.match(aura, /data-action="signin-code">\$\{msbEs\(\)\?'¿Tienes un código para entrar\?':'Got a sign-in code\?'\}/);
+test('one big Sign in with code button, in English and Spanish, comes first on Welcome and in Sign in', () => {
+  assert.ok(aura.includes(`class="primary signin-code-cta" data-action="signin-code" data-i18n-skip>\${msbEs()?'Entrar con código':'Sign in with code'}</button>`));
+  const welcome = line('function welcome(');
+  assert.ok(welcome.indexOf('${msbSigninCodeButtonHtml()}') > 0);
+  assert.ok(welcome.indexOf('${msbSigninCodeButtonHtml()}') < welcome.indexOf('${homeFeatures()}'));
+  assert.ok(welcome.indexOf('${msbSigninCodeButtonHtml()}') < welcome.indexOf('data-action="signup"'));
+  assert.ok(welcome.includes(`data-action="signin-code">\${msbEs()?'¿Tienes un código para entrar?':'Got a sign-in code?'}`));
+  assert.ok(welcome.includes('data-action="signin"'));
+  assert.ok(aura.includes("'Entra con el usuario o correo y la contraseña que elegiste en este teléfono.'),msbSigninCodeButtonHtml()+field('Email or username'"));
+  assert.ok(aura.includes("${esc(t('New phone or app cleared? Use a sign-in code'"));
+});
+
+test('Today, Friends and Profile show Sign in with code only while this phone is not linked', () => {
+  const src = ['function msbSigninCodeButtonHtml(', 'function msbSigninCodeCtaHtml('].map(line).join('\n');
+  let id = null, es = false;
+  const f = new Function('msbFriendsId', 'msbEs', `${src}\nreturn msbSigninCodeCtaHtml;`)(() => id, () => es);
+  assert.match(f(), /data-action="signin-code"[^>]*>Sign in with code</);
+  es = true;
+  assert.match(f(), />Entrar con código</);
+  id = { code: 'MSB-ABC234', secret: 'a'.repeat(32) };
+  assert.equal(f(), '');
+  assert.ok(line('function today(').includes('screen.innerHTML=`${msbSigninCodeCtaHtml()}'));
+  assert.ok(line('function profile(').includes('screen.innerHTML=`${msbSigninCodeCtaHtml()}'));
+  assert.ok(line('function friendsScreen(').includes('if(!id){screen.innerHTML=`${msbSigninCodeCtaHtml()}'));
 });
 
 test('a phone with no saved password goes straight to the sign-in code screen', () => {
@@ -44,7 +66,8 @@ test('a code sign-in stays signed in and can add a password later, never require
   assert.ok(aura.includes("if(!store.password&&!store.passwordHash&&store.codeSignin!==true){store.signedOut=true"));
   assert.ok(aura.includes("Add a password for this phone','Agrega una contraseña para este teléfono'"));
   assert.ok(aura.includes('${msbAddPasswordHtml()}${msbAccountKeyHtml()}'));
-  assert.ok(aura.includes("if(!(store.codeSignin===true&&!store.passwordHash)&&!await msbPasswordMatches"));
+  /* the old change-password path needs the current password: Add a password is the only way in */
+  assert.ok(aura.includes("if(clean==='/auth/password'){if(!store.passwordHash||!await msbPasswordMatches(store,body?.current_password))throw Error('Current password is not correct.')"));
 });
 
 const line = (start) => aura.split('\n').find((l) => l.startsWith(start));
@@ -90,17 +113,33 @@ test('a code-only phone that lost its friend key goes to the sign-in code screen
 
 test('a sign-in code asks before it replaces a different friend account on this phone', async () => {
   const store = { profile: {} };
-  const h = codeEnv(store, { code: 'MSB-OLD234', secret: 'a'.repeat(32) }, redeemed('MSB-NEW234'));
-  await assert.rejects(h.msbSigninCodeSubmit(form('abcd-ef23')), /already uses friend code MSB-OLD234[^]*Tap Sign in again/);
-  assert.equal(h.calls.length, 0);
+  /* the server says the code is for another account without using it up */
+  const other = (path, body) => { if (body.onlyFor) { const e = new Error('other'); e.status = 409; throw e; } return redeemed('MSB-NEW234')(); };
+  const h = codeEnv(store, { code: 'MSB-OLD234', secret: 'a'.repeat(32) }, other);
+  await assert.rejects(h.msbSigninCodeSubmit(form('abcd-ef23')), /different account than the one on this phone \(MSB-OLD234\)[^]*Tap Sign in again/);
+  assert.equal(h.calls.length, 1);
+  assert.equal(h.calls[0].body.onlyFor, 'MSB-OLD234');
   assert.equal(JSON.parse(h.ls.get('msb_friends_id')).code, 'MSB-OLD234');
   await h.msbSigninCodeSubmit(form('ABCDEF23'));
-  assert.equal(h.calls.length, 1);
+  assert.equal(h.calls.length, 2);
+  assert.equal('onlyFor' in h.calls[1].body, false);
+  assert.equal(h.env.state.signinCodeConfirm, '');
   assert.equal(JSON.parse(h.ls.get('msb_friends_id')).code, 'MSB-NEW234');
   assert.equal(store.codeSignin, true);
   const fresh = codeEnv({ profile: {} }, null, redeemed('MSB-NEW234'));
   await fresh.msbSigninCodeSubmit(form('ABCDEF23'));
   assert.equal(fresh.calls.length, 1);
+  assert.equal('onlyFor' in fresh.calls[0].body, false);
+  /* same account already on this phone: no warning, signs straight in */
+  const same = codeEnv({ profile: {} }, { code: 'MSB-NEW234', secret: 'a'.repeat(32) }, redeemed('MSB-NEW234'));
+  await same.msbSigninCodeSubmit(form('ABCDEF23'));
+  assert.equal(same.calls.length, 1);
+  assert.equal(JSON.parse(same.ls.get('msb_friends_id')).code, 'MSB-NEW234');
+});
+
+test('leaving the sign-in code screen forgets a pending switch', () => {
+  assert.ok(aura.includes("state.dialog=kind;if(kind!=='signin-code')state.signinCodeConfirm='';"));
+  assert.match(line('function closeDialog('), /state\.signinCodeConfirm=''/);
 });
 
 test('New recovery code and Change password wait until a code-only phone has a password', () => {

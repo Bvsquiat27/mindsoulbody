@@ -36,7 +36,7 @@
    Public /scores never includes friend codes. */
 
 import { handlePush, runPushCron } from './push.mjs';
-import { handleMyNotes, handleLessons } from './mynotes.mjs';
+import { handleMyNotes, handleLessons, readOwnState } from './mynotes.mjs';
 
 const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const SHOWS = ['jeopardy', 'millionaire', 'feud', 'sound', 'babel', 'defend', 'doctrine'];
@@ -638,6 +638,7 @@ const SCORE_MAX = 1000000;
 export const RATE_LIMITS = {
   register: 80,
   signinCode: 10,
+  meState: 30,
   sync: 60,
   msg: 60,
   note: 40,
@@ -1254,6 +1255,10 @@ export async function handleFriends(request, env) {
       const key = await signinCodeKey(typed);
       let grant = null; try { grant = JSON.parse(await env.FRIENDS.get(key) || 'null'); } catch { grant = null; }
       if (!grant || typeof grant.code !== 'string' || !(Number(grant.exp) > Date.now())) return reply({ error: 'That sign-in code is not right or has expired. Ask for a new one.' }, 404);
+      /* a phone that already has a friend code sends it as onlyFor: a code for
+         another account is not used up, so the phone can ask first */
+      const onlyFor = typeof body?.onlyFor === 'string' ? body.onlyFor.trim().toUpperCase() : '';
+      if (onlyFor && onlyFor !== grant.code) return reply({ error: 'This sign-in code is for another account.', otherAccount: true }, 409);
       await env.FRIENDS.delete(key);
       const user = hydrate(await loadUser(env, grant.code));
       if (!user) return reply({ error: 'That sign-in code is not right or has expired. Ask for a new one.' }, 404);
@@ -1266,6 +1271,25 @@ export async function handleFriends(request, env) {
       const profile = {};
       for (const k of ['name', 'handle', 'city', 'bio', 'denomination', 'avatar_data', 'cover_data']) if (typeof user[k] === 'string' && user[k]) profile[k] = user[k];
       return reply({ ok: true, code: user.code, secret, publicId, profile, ...(user.verified === true ? { verified: true } : {}) });
+    }
+
+    /* a phone that signed back in pulls its own saved copy once, merges it,
+       and only then sends full lists again (each list replaces the server's) */
+    if (url.pathname === '/me/state') {
+      const a = await authed(env, body);
+      if (a.error) return reply({ error: a.error }, a.status);
+      if (!(await takeRate(env, `rate:me-state:${a.user.code}`, RATE_LIMITS.meState))) return reply({ error: 'Too many requests this hour' }, 429);
+      const user = a.user, rec = squishyRecord(user);
+      const profile = {};
+      for (const k of ['name', 'handle', 'city', 'bio', 'denomination', 'avatar_data', 'cover_data']) if (typeof user[k] === 'string' && user[k]) profile[k] = user[k];
+      const own = await readOwnState(env, user.code);
+      return reply({
+        ok: true, code: user.code, publicId: user.publicId || '', profile,
+        squishies: { ids: rec.ids, public: rec.public },
+        notes: own.notes, lessons: own.lessons,
+        stats: user.stats || null,
+        ...(user.verified === true ? { verified: true } : {}),
+      });
     }
 
     if (url.pathname === '/sync') {

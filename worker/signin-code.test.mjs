@@ -60,3 +60,18 @@ test('an admin squishy gift reaches every sync and its ack keeps it for other ph
   assert.equal(ack.status, 200);
   assert.equal(JSON.parse(kv.data.get(`user:${a.code}`)).squishies.pending.length, 1);
 });
+
+test('onlyFor: a code for another account is not used up and answers 409', async () => {
+  const kv = memoryKv();
+  const a = (await call(kv, '/register', { name: 'Ana' })).data;
+  const b = (await call(kv, '/register', { name: 'Ben' })).data;
+  await grant(kv, a.code, 'ABCDEF23');
+  const other = await call(kv, '/signin-code/redeem', { signinCode: 'ABCDEF23', onlyFor: b.code });
+  assert.equal(other.status, 409);
+  assert.equal(other.data.otherAccount, true);
+  assert.ok(!('secret' in other.data));
+  const same = await call(kv, '/signin-code/redeem', { signinCode: 'ABCDEF23', onlyFor: a.code.toLowerCase() });
+  assert.equal(same.status, 200);
+  assert.equal(same.data.code, a.code);
+  assert.equal((await call(kv, '/signin-code/redeem', { signinCode: 'ABCDEF23' })).status, 404);
+});
