@@ -504,21 +504,6 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "follow-strangers",
-   "cat": "family",
-   "en": "Is it okay for married Christians to follow attractive strangers on social media?",
-   "es": "¿Está bien que los cristianos casados sigan a desconocidos atractivos en redes sociales?",
-   "ref": {
-    "book": 18,
-    "chapter": 31,
-    "verse": 7,
-    "en": "Job 31:7",
-    "es": "Job 31:7",
-    "textEn": "If my step hath turned out of the way, And mine heart walked after mine eyes, And if any blot hath cleaved to mine hands;",
-    "textEs": "Si mis pasos se apartaron del camino, y si mi corazón se fué tras mis ojos, y si algo se apegó á mis manos,"
-   }
-  },
-  {
    "id": "wear-whatever",
    "cat": "church",
    "en": "Is it okay for Christians to wear whatever they want to church because God looks at the heart?",
@@ -681,21 +666,6 @@ window.MsbPewTalkData = {
     "es": "1 Timoteo 3:3",
     "textEn": "not given to wine, no striker, not greedy of filthy lucre; but patient, not a brawler, not covetous;",
     "textEs": "No amador del vino, no heridor, no codicioso de torpes ganancias, sino moderado, no litigioso, ajeno de avaricia;"
-   }
-  },
-  {
-   "id": "church-hop",
-   "cat": "church",
-   "en": "Is it okay for Christians to church-hop instead of committing to one church?",
-   "es": "¿Está bien que los cristianos anden de iglesia en iglesia en lugar de comprometerse con una?",
-   "ref": {
-    "book": 46,
-    "chapter": 12,
-    "verse": 27,
-    "en": "1 Corinthians 12:27",
-    "es": "1 Corintios 12:27",
-    "textEn": "Now ye are the body of Christ, and members in particular.",
-    "textEs": "Pues vosotros sois el cuerpo de Cristo, y miembros en parte."
    }
   },
   {
@@ -984,21 +954,6 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "career-climb",
-   "cat": "money",
-   "en": "Is it okay for Christians to miss family dinners to climb the career ladder?",
-   "es": "¿Está bien que los cristianos se pierdan las cenas en familia para subir en su carrera?",
-   "ref": {
-    "book": 21,
-    "chapter": 4,
-    "verse": 6,
-    "en": "Ecclesiastes 4:6",
-    "es": "Eclesiastés 4:6",
-    "textEn": "Better is an handful with quietness, than both the hands full with travail and vexation of spirit.",
-    "textEs": "Mas vale el un puño lleno con descanso, que ambos puños llenos con trabajo y aflicción de espíritu."
-   }
-  },
-  {
    "id": "sue-believer",
    "cat": "money",
    "en": "Is it okay for Christians to sue another Christian?",
@@ -1221,21 +1176,6 @@ window.MsbPewTalkData = {
     "es": "1 Corintios 6:19",
     "textEn": "What? know ye not that your body is the temple of the Holy Ghost which is in you, which ye have of God, and ye are not your own?",
     "textEs": "¿O ignoráis que vuestro cuerpo es templo del Espíritu Santo, el cual está en vosotros, el cual tenéis de Dios, y que no sois vuestros?"
-   }
-  },
-  {
-   "id": "shooter-games",
-   "cat": "culture",
-   "en": "Is it okay for Christians to play shooter video games?",
-   "es": "¿Está bien que los cristianos jueguen videojuegos de disparos?",
-   "ref": {
-    "book": 19,
-    "chapter": 11,
-    "verse": 5,
-    "en": "Psalms 11:5",
-    "es": "Salmos 11:5",
-    "textEn": "The LORD trieth the righteous: But the wicked and him that loveth violence his soul hateth.",
-    "textEs": "Jehová prueba al justo; empero al malo y al que ama la violencia, su alma aborrece."
    }
   },
   {

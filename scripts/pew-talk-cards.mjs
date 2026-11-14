@@ -48,7 +48,6 @@ export const CARDS = [
   ['vent-spouse', 'family', 'Is it okay for Christians to vent about their spouse to friends?', '¿Está bien que los cristianos se desahoguen con sus amigos quejándose de su cónyuge?', 20, 17, 9],
   ['toxic-parents', 'family', 'Is it okay for Christians to cut off toxic parents?', '¿Está bien que los cristianos corten la relación con padres tóxicos?', 2, 20, 12],
   ['quick-wedding', 'family', 'Is it okay for Christians to marry after only a few months of dating?', '¿Está bien que los cristianos se casen después de solo unos meses de noviazgo?', 20, 19, 2],
-  ['follow-strangers', 'family', 'Is it okay for married Christians to follow attractive strangers on social media?', '¿Está bien que los cristianos casados sigan a desconocidos atractivos en redes sociales?', 18, 31, 7],
   // Church
   ['wear-whatever', 'church', 'Is it okay for Christians to wear whatever they want to church because God looks at the heart?', '¿Está bien que los cristianos se pongan lo que quieran para ir a la iglesia porque Dios mira el corazón?', 59, 2, 2],
   ['leave-politics', 'church', 'Is it okay for Christians to leave a church over politics?', '¿Está bien que los cristianos dejen una iglesia por cuestiones políticas?', 46, 1, 10],
@@ -61,7 +60,6 @@ export const CARDS = [
   ['serve-struggling', 'church', 'Is it okay for Christians to serve on the worship team while struggling with a habit they have not beaten?', '¿Está bien que los cristianos sirvan en la alabanza mientras luchan con un hábito que no han vencido?', 45, 3, 23],
   ['raise-hands', 'church', 'Is it okay for Christians to raise their hands in worship at a church where nobody else does?', '¿Está bien que los cristianos levanten las manos en la alabanza en una iglesia donde nadie más lo hace?', 54, 2, 8],
   ['pastor-car', 'church', 'Is it okay for pastors to drive luxury cars?', '¿Está bien que los pastores manejen carros de lujo?', 54, 3, 3],
-  ['church-hop', 'church', 'Is it okay for Christians to church-hop instead of committing to one church?', '¿Está bien que los cristianos anden de iglesia en iglesia en lugar de comprometerse con una?', 46, 12, 27],
   ['prayer-gossip', 'church', 'Is it still gossip if you start it with “we should pray for her”?', '¿Sigue siendo chisme si empiezas con “deberíamos orar por ella”?', 20, 11, 13],
   ['mute-group-chat', 'church', 'Is it okay to mute the church group chat?', '¿Está bien silenciar el chat de grupo de la iglesia?', 20, 10, 19],
   ['store-bought', 'church', 'Should store-bought food be allowed at the church potluck?', '¿Se debería permitir comida comprada en la comida compartida de la iglesia?', 45, 12, 13],
@@ -82,7 +80,6 @@ export const CARDS = [
   ['side-hustle', 'money', 'Is it okay for Christians to work on a side hustle during company hours?', '¿Está bien que los cristianos trabajen en un negocio propio durante las horas de la empresa?', 56, 2, 10],
   ['wedding-debt', 'money', 'Is it okay for Christians to go into debt for a dream wedding?', '¿Está bien que los cristianos se endeuden por una boda de ensueño?', 42, 14, 28],
   ['street-giving', 'money', 'Is it okay for Christians to say no to someone asking for money on the street?', '¿Está bien que los cristianos le digan que no a alguien que pide dinero en la calle?', 20, 3, 27],
-  ['career-climb', 'money', 'Is it okay for Christians to miss family dinners to climb the career ladder?', '¿Está bien que los cristianos se pierdan las cenas en familia para subir en su carrera?', 21, 4, 6],
   ['sue-believer', 'money', 'Is it okay for Christians to sue another Christian?', '¿Está bien que los cristianos demanden a otro cristiano?', 46, 6, 1],
   ['tithe-grandma', 'money', 'Should you tithe on the birthday money grandma slipped you?', '¿Deberías diezmar del dinero de cumpleaños que te dio tu abuela a escondidas?', 47, 9, 7],
   // Life and Culture
@@ -99,7 +96,6 @@ export const CARDS = [
   ['unfollow', 'culture', 'Is it okay for Christians to unfollow friends whose posts make them angry?', '¿Está bien que los cristianos dejen de seguir a amigos cuyas publicaciones los hacen enojar?', 45, 12, 18],
   ['cremation', 'culture', 'Is it okay for Christians to be cremated?', '¿Está bien que los cristianos sean cremados?', 21, 12, 7],
   ['cannabis', 'culture', 'Is it okay for Christians to use cannabis where it is legal?', '¿Está bien que los cristianos consuman cannabis donde es legal?', 46, 6, 19],
-  ['shooter-games', 'culture', 'Is it okay for Christians to play shooter video games?', '¿Está bien que los cristianos jueguen videojuegos de disparos?', 19, 11, 5],
   ['santa', 'culture', 'Is it okay for Christian parents to tell their kids Santa is real?', '¿Está bien que los padres cristianos les digan a sus hijos que Santa Claus es real?', 43, 8, 32],
   ['good-deeds-online', 'culture', 'Is it okay for Christians to post their good deeds online?', '¿Está bien que los cristianos publiquen sus buenas obras en redes?', 40, 6, 3],
   ['church-shirt-traffic', 'culture', 'Can you cut someone off in traffic while wearing your church T-shirt?', '¿Se vale cerrarle el paso a alguien en el tráfico con tu playera de la iglesia puesta?', 50, 4, 5],
