@@ -82,7 +82,7 @@ window.MsbPewTalk = (() => {
       <p class="lead">${t('Play with friends, each on your own phone. Everyone sees the same card at the same time and answers in secret. When everyone has answered, or the timer ends, all the answers show at once. Then talk it over.', 'Juega con tus amigos, cada quien en su propio teléfono. Todos ven la misma tarjeta al mismo tiempo y responden en secreto. Cuando todos responden, o se acaba el tiempo, se muestran todas las respuestas a la vez. Luego platican.')}</p>
       <div class="pew-legend">${ANSWERS.map(a => `<span class="pew-chip pew-${a.id}"><strong>${esc(es() ? a.es : a.en)}</strong> ${esc(es() ? a.hintEs : a.hintEn)}</span>`).join('')}</div>
       ${body}<p class="small muted" role="status" data-pew-status>${esc(msg || '')}</p>
-      <p class="footnote">${t('2 to 6 players. A game for laughing and talking together. There are no wrong answers, and nothing here is a ruling of the Church. Ask your priest about the real questions.', 'De 2 a 6 jugadores. Un juego para reír y platicar juntos. No hay respuestas incorrectas y nada aquí es una enseñanza oficial de la Iglesia. Pregúntale a tu sacerdote las preguntas de verdad.')}</p>`);
+      <p class="footnote">${t('2 to 6 players. A game for laughing and talking together. There are no wrong answers, and nothing here is official teaching of any church. Bring the real questions to your pastor or priest.', 'De 2 a 6 jugadores. Un juego para reír y platicar juntos. No hay respuestas incorrectas y nada aquí es enseñanza oficial de ninguna iglesia. Lleva las preguntas de verdad a tu pastor o sacerdote.')}</p>`);
     if (online === null) probeOnline().then(() => { if (S && S.view === 'menu') menu(msg); });
     else if (online === true && id) showInvites();
   }
