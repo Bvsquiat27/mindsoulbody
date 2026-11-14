@@ -880,3 +880,49 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .friend-lesson-open{display:grid;gap:2px;width:100%;text-align:left;padding:12px 14px;background:none;border:0;color:inherit;font:inherit;cursor:pointer;min-height:44px}
 .friend-lesson-note{margin:0;padding:0 14px 12px;white-space:pre-wrap;overflow-wrap:anywhere}
 .friend-lesson-note .eyebrow{display:block}
+
+/* Pew Talk conversation cards */
+.pew{max-width:640px}
+.pew .subject-filters .filter{white-space:nowrap}
+.pew .primary+.small,.pew .pew-reveal>.small{margin-top:10px}
+.pew h2{margin-top:18px}
+.pew-legend{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 14px}
+.pew-chip{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.86rem;color:var(--muted)}
+.pew-chip strong{color:var(--text);margin-right:4px}
+.pew-modes{display:grid;gap:12px;margin:16px 0}
+.pew-mode{display:flex;flex-direction:column;gap:6px;align-items:flex-start;text-align:left;cursor:pointer;color:var(--text)}
+.pew-mode h3{margin:0}.pew-mode p{margin:0}
+.pew-soon{opacity:.72;cursor:default}
+.pew-card{position:relative;margin:14px 0 16px;padding:26px 22px 20px;border-radius:22px;background:linear-gradient(160deg,var(--surface2),var(--surface));border:1px solid var(--gold);box-shadow:0 10px 28px rgba(0,0,0,.22);display:flex;flex-direction:column;gap:10px;min-height:170px}
+.pew-cat{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.pew-q{font-family:var(--serif);font-size:1.45rem;line-height:1.3;margin:0;color:var(--text)}
+.pew-count{margin-top:auto;font-size:.78rem;color:var(--muted)}
+.pew-answers{display:grid;gap:10px;margin:8px 0 14px}
+.pew-answer{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer;font:inherit;min-height:56px}
+.pew-answer strong{font-size:1.08rem}.pew-answer span{font-size:.84rem;color:var(--muted)}
+.pew-answer:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.pew .pew-amen{border-left:5px solid rgb(220,191,132)}
+.pew .pew-mercy{border-left:5px solid rgb(206,140,140)}
+.pew .pew-pray{border-left:5px solid rgb(140,172,220)}
+.pew-pass{padding:6px 0 12px}
+.pew-reveal h2{margin:6px 0 10px}
+.pew-tally{display:grid;gap:10px}
+.pew-group{padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+.pew-group-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pew-group p{margin:6px 0 0;color:var(--text)}
+.pew-num{font-size:1.3rem;font-weight:800;color:var(--gold)}
+.pew-verse{margin:12px 0;padding:12px 14px;border-radius:14px;border:1px dashed var(--line)}
+.pew-verse summary{cursor:pointer;font-weight:600}
+.pew-verse blockquote,.pew-closing{font-family:var(--serif);font-size:1.12rem;line-height:1.45;margin:10px 0 4px;color:var(--text)}
+.pew-actions{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.pew-count-row{display:flex;gap:8px;margin:6px 0 12px}
+.pew-names{display:grid;gap:8px;margin-bottom:14px}
+.pew-names input{width:100%}
+.pew-joinrow{display:flex;gap:8px;align-items:center;margin-top:14px}
+.pew-joinrow input{flex:1;min-width:0;text-transform:uppercase;letter-spacing:.12em}
+.pew-roomcode{font-size:2rem;letter-spacing:.2em;text-align:center}
+.pew-players{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.pew-player{border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.84rem;color:var(--muted)}
+.pew-player.done{border-color:var(--gold);color:var(--text)}
+.pew-invite-list{display:grid;gap:8px}
+@media (min-width:720px){.pew-modes{grid-template-columns:1fr 1fr}.pew-answers{grid-template-columns:repeat(3,1fr)}}
