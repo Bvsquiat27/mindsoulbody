@@ -5,52 +5,217 @@ window.MsbPewTalkData = {
    "Dating",
    "Noviazgo"
   ],
-  "service": [
-   "Church Service",
-   "El servicio"
-  ],
   "family": [
    "Marriage and Family",
    "Matrimonio y familia"
   ],
-  "life": [
-   "Life",
-   "La vida"
-  ],
   "church": [
    "Church",
    "La iglesia"
+  ],
+  "money": [
+   "Money and Work",
+   "Dinero y trabajo"
+  ],
+  "culture": [
+   "Life and Culture",
+   "Vida y cultura"
   ]
  },
  "cards": [
   {
-   "id": "phone-fast",
+   "id": "date-unbeliever",
    "cat": "dating",
-   "en": "Is it okay to stop texting someone back and blame it on a phone fast?",
-   "es": "¿Está bien dejar de contestarle a alguien y echarle la culpa a tu “ayuno de celular”?",
+   "en": "Is it okay for Christians to date someone who does not share their faith?",
+   "es": "¿Está bien que los cristianos salgan con alguien que no comparte su fe?",
    "ref": {
-    "book": 49,
-    "chapter": 4,
-    "verse": 25,
-    "en": "Ephesians 4:25",
-    "es": "Efesios 4:25",
-    "textEn": "Wherefore putting away lying, speak every man truth with his neighbour: for we are members one of another.",
-    "textEs": "Por lo cual, dejada la mentira, hablad verdad cada uno con su prójimo; porque somos miembros los unos de los otros."
+    "book": 47,
+    "chapter": 6,
+    "verse": 14,
+    "en": "2 Corinthians 6:14",
+    "es": "2 Corintios 6:14",
+    "textEn": "Be ye not unequally yoked together with unbelievers: for what fellowship hath righteousness with unrighteousness? and what communion hath light with darkness?",
+    "textEs": "No os juntéis en yugo con los infieles: porque ¿qué compañía tiene la justicia con la injusticia? ¿y qué comunión la luz con las tinieblas?"
    }
   },
   {
-   "id": "better-band",
+   "id": "live-together",
    "cat": "dating",
-   "en": "Should you date someone from another church just because their worship band is better?",
-   "es": "¿Deberías salir con alguien de otra iglesia solo porque su grupo de alabanza es mejor?",
+   "en": "Is it okay for Christians to live together before marriage?",
+   "es": "¿Está bien que los cristianos vivan juntos antes de casarse?",
    "ref": {
-    "book": 30,
+    "book": 58,
+    "chapter": 13,
+    "verse": 4,
+    "en": "Hebrews 13:4",
+    "es": "Hebreos 13:4",
+    "textEn": "Marriage is honourable in all, and the bed undefiled: but whoremongers and adulterers God will judge.",
+    "textEs": "Honroso es en todos el matrimonio, y el lecho sin mancilla; mas á los fornicarios y á los adúlteros juzgará Dios."
+   }
+  },
+  {
+   "id": "missionary-dating",
+   "cat": "dating",
+   "en": "Is it okay for Christians to start dating someone in hopes they will come to faith?",
+   "es": "¿Está bien que los cristianos empiecen a salir con alguien con la esperanza de que llegue a la fe?",
+   "ref": {
+    "book": 46,
+    "chapter": 7,
+    "verse": 16,
+    "en": "1 Corinthians 7:16",
+    "es": "1 Corintios 7:16",
+    "textEn": "For what knowest thou, O wife, whether thou shalt save thy husband? or how knowest thou, O man, whether thou shalt save thy wife?",
+    "textEs": "Porque ¿de dónde sabes, oh mujer, si quizá harás salvo á tu marido? ¿ó de dónde sabes, oh marido, si quizá harás salva á tu mujer?"
+   }
+  },
+  {
+   "id": "dating-apps",
+   "cat": "dating",
+   "en": "Is it okay for Christians to look for love on secular dating apps?",
+   "es": "¿Está bien que los cristianos busquen pareja en aplicaciones de citas seculares?",
+   "ref": {
+    "book": 20,
     "chapter": 3,
+    "verse": 6,
+    "en": "Proverbs 3:6",
+    "es": "Proverbios 3:6",
+    "textEn": "In all thy ways acknowledge him, And he shall direct thy paths.",
+    "textEs": "Reconócelo en todos tus caminos, y él enderezará tus veredas."
+   }
+  },
+  {
+   "id": "kiss-early",
+   "cat": "dating",
+   "en": "Is it okay for Christians to kiss before they are engaged?",
+   "es": "¿Está bien que los cristianos se besen antes de estar comprometidos?",
+   "ref": {
+    "book": 22,
+    "chapter": 2,
+    "verse": 7,
+    "en": "Song of Solomon 2:7",
+    "es": "Cantar de los Cantares 2:7",
+    "textEn": "I charge you, O ye daughters of Jerusalem, By the roes, and by the hinds of the field, That ye stir not up, nor awake my love, Till he please.",
+    "textEs": "Yo os conjuro, oh doncellas de Jerusalem, por las gamas y por las ciervas del campo, que no despertéis ni hagáis velar al amor, hasta que quiera."
+   }
+  },
+  {
+   "id": "age-gap",
+   "cat": "dating",
+   "en": "Is it okay for Christians to date someone with a big age gap?",
+   "es": "¿Está bien que los cristianos salgan con alguien con mucha diferencia de edad?",
+   "ref": {
+    "book": 21,
+    "chapter": 3,
+    "verse": 1,
+    "en": "Ecclesiastes 3:1",
+    "es": "Eclesiastés 3:1",
+    "textEn": "To every thing there is a season, and a time to every purpose under the heaven:",
+    "textEs": "Para todas las cosas hay sazón, y todo lo que se quiere debajo del cielo, tiene su tiempo:"
+   }
+  },
+  {
+   "id": "couple-content",
+   "cat": "dating",
+   "en": "Is it okay for Christians to post a lot of couple content online?",
+   "es": "¿Está bien que los cristianos publiquen mucho contenido de pareja en redes?",
+   "ref": {
+    "book": 20,
+    "chapter": 27,
+    "verse": 2,
+    "en": "Proverbs 27:2",
+    "es": "Proverbios 27:2",
+    "textEn": "Let another man praise thee, and not thine own mouth; A stranger, and not thine own lips.",
+    "textEs": "Alábete el extraño, y no tu boca; el ajeno, y no tus labios."
+   }
+  },
+  {
+   "id": "text-breakup",
+   "cat": "dating",
+   "en": "Is it okay for Christians to end a relationship over text?",
+   "es": "¿Está bien que los cristianos terminen una relación por mensaje de texto?",
+   "ref": {
+    "book": 49,
+    "chapter": 4,
+    "verse": 15,
+    "en": "Ephesians 4:15",
+    "es": "Efesios 4:15",
+    "textEn": "but speaking the truth in love, may grow up into him in all things, which is the head, even Christ:",
+    "textEs": "Antes siguiendo la verdad en amor, crezcamos en todas cosas en aquel que es la cabeza, á saber, Cristo;"
+   }
+  },
+  {
+   "id": "ghosting",
+   "cat": "dating",
+   "en": "Is it okay for Christians to ghost someone instead of having the hard talk?",
+   "es": "¿Está bien que los cristianos dejen de contestarle a alguien en lugar de tener la plática difícil?",
+   "ref": {
+    "book": 40,
+    "chapter": 7,
+    "verse": 12,
+    "en": "Matthew 7:12",
+    "es": "Mateo 7:12",
+    "textEn": "Therefore all things whatsoever ye would that men should do to you, do ye even so to them: for this is the law and the prophets.",
+    "textEs": "Así que, todas las cosas que quisierais que los hombres hiciesen con vosotros, así también haced vosotros con ellos; porque esta es la ley y los profetas."
+   }
+  },
+  {
+   "id": "date-divorced",
+   "cat": "dating",
+   "en": "Is it okay for Christians to date someone who has been divorced?",
+   "es": "¿Está bien que los cristianos salgan con alguien que se ha divorciado?",
+   "ref": {
+    "book": 51,
+    "chapter": 3,
+    "verse": 13,
+    "en": "Colossians 3:13",
+    "es": "Colosenses 3:13",
+    "textEn": "forbearing one another, and forgiving one another, if any man have a quarrel against any: even as Christ forgave you, so also do ye.",
+    "textEs": "Sufriéndoos los unos á los otros, y perdonándoos los unos á los otros si alguno tuviere queja del otro: de la manera que Cristo os perdonó, así también hacedlo vosotros."
+   }
+  },
+  {
+   "id": "parents-disapprove",
+   "cat": "dating",
+   "en": "Is it okay for Christians to keep dating someone their parents disapprove of?",
+   "es": "¿Está bien que los cristianos sigan saliendo con alguien que sus padres no aprueban?",
+   "ref": {
+    "book": 20,
+    "chapter": 15,
+    "verse": 22,
+    "en": "Proverbs 15:22",
+    "es": "Proverbios 15:22",
+    "textEn": "Without counsel purposes are disappointed: But in the multitude of counsellors they are established.",
+    "textEs": "Los pensamientos son frustrados donde no hay consejo; mas en la multitud de consejeros se afirman."
+   }
+  },
+  {
+   "id": "other-tradition",
+   "cat": "dating",
+   "en": "Is it okay for Christians to date someone from a very different church tradition?",
+   "es": "¿Está bien que los cristianos salgan con alguien de una tradición de iglesia muy diferente?",
+   "ref": {
+    "book": 49,
+    "chapter": 4,
     "verse": 3,
-    "en": "Amos 3:3",
-    "es": "Amós 3:3",
-    "textEn": "Can two walk together, except they be agreed?",
-    "textEs": "¿Andarán dos juntos, si no estuvieren de concierto?"
+    "en": "Ephesians 4:3",
+    "es": "Efesios 4:3",
+    "textEn": "endeavouring to keep the unity of the Spirit in the bond of peace.",
+    "textEs": "Solícitos á guardar la unidad del Espíritu en el vínculo de la paz."
+   }
+  },
+  {
+   "id": "same-roof",
+   "cat": "dating",
+   "en": "Is it okay for a Christian couple to spend the night under the same roof if nothing happens?",
+   "es": "¿Está bien que una pareja cristiana pase la noche bajo el mismo techo si no pasa nada?",
+   "ref": {
+    "book": 52,
+    "chapter": 5,
+    "verse": 22,
+    "en": "1 Thessalonians 5:22",
+    "es": "1 Tesalonicenses 5:22",
+    "textEn": "Abstain from all appearance of evil.",
+    "textEs": "Apartaos de toda especie de mal."
    }
   },
   {
@@ -66,21 +231,6 @@ window.MsbPewTalkData = {
     "es": "Santiago 5:16",
     "textEn": "Confess your faults one to another, and pray one for another, that ye may be healed. The effectual fervent prayer of a righteous man availeth much.",
     "textEs": "Confesaos vuestras faltas unos á otros, y rogad los unos por los otros, para que seáis sanos; la oración del justo, obrando eficazmente, puede mucho."
-   }
-  },
-  {
-   "id": "ex-bible",
-   "cat": "dating",
-   "en": "Is it okay to keep the Bible your ex gave you, notes in the margins and all?",
-   "es": "¿Está bien quedarte con la Biblia que te regaló tu ex, con todo y sus notas?",
-   "ref": {
-    "book": 23,
-    "chapter": 43,
-    "verse": 18,
-    "en": "Isaiah 43:18",
-    "es": "Isaías 43:18",
-    "textEn": "Remember ye not the former things, neither consider the things of old.",
-    "textEs": "No os acordéis de las cosas pasadas, ni traigáis á memoria las cosas antiguas."
    }
   },
   {
@@ -114,460 +264,175 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "who-pays",
-   "cat": "dating",
-   "en": "Should the guy always pay on a church date?",
-   "es": "¿El hombre siempre debería pagar en una cita cristiana?",
-   "ref": {
-    "book": 50,
-    "chapter": 2,
-    "verse": 4,
-    "en": "Philippians 2:4",
-    "es": "Filipenses 2:4",
-    "textEn": "Look not every man on his own things, but every man also on the things of others.",
-    "textEs": "No mirando cada uno á lo suyo propio, sino cada cual también á lo de los otros."
-   }
-  },
-  {
-   "id": "secret-couple",
-   "cat": "dating",
-   "en": "Is it okay for a new couple to sit together at church before they tell anybody?",
-   "es": "¿Está bien que una pareja nueva se siente junta en la iglesia antes de contarle a nadie?",
-   "ref": {
-    "book": 21,
-    "chapter": 3,
-    "verse": 1,
-    "en": "Ecclesiastes 3:1",
-    "es": "Eclesiastés 3:1",
-    "textEn": "To every thing there is a season, and a time to every purpose under the heaven:",
-    "textEs": "Para todas las cosas hay sazón, y todo lo que se quiere debajo del cielo, tiene su tiempo:"
-   }
-  },
-  {
-   "id": "pastors-kid",
-   "cat": "dating",
-   "en": "Is it a good idea to date the pastor’s kid?",
-   "es": "¿Es buena idea salir con el hijo o la hija del pastor?",
+   "id": "ex-friends-married",
+   "cat": "family",
+   "en": "Is it okay for Christians to stay friends with an ex while married?",
+   "es": "¿Está bien que los cristianos sigan siendo amigos de un ex estando casados?",
    "ref": {
     "book": 20,
-    "chapter": 3,
-    "verse": 5,
-    "en": "Proverbs 3:5",
-    "es": "Proverbios 3:5",
-    "textEn": "Trust in the LORD with all thine heart; And lean not unto thine own understanding.",
-    "textEs": "Fíate de Jehová de todo tu corazón, y no estribes en tu prudencia."
+    "chapter": 4,
+    "verse": 23,
+    "en": "Proverbs 4:23",
+    "es": "Proverbios 4:23",
+    "textEn": "Keep thy heart with all diligence; For out of it are the issues of life.",
+    "textEs": "Sobre toda cosa guardada guarda tu corazón; porque de él mana la vida."
    }
   },
   {
-   "id": "loves-jesus-bio",
-   "cat": "dating",
-   "en": "Does “loves Jesus” on a dating profile count as a whole personality?",
-   "es": "¿Poner “ama a Jesús” en tu perfil de citas cuenta como toda una personalidad?",
+   "id": "prenup",
+   "cat": "family",
+   "en": "Is it okay for Christians to sign a prenuptial agreement?",
+   "es": "¿Está bien que los cristianos firmen un acuerdo prenupcial?",
    "ref": {
     "book": 40,
-    "chapter": 7,
-    "verse": 16,
-    "en": "Matthew 7:16",
-    "es": "Mateo 7:16",
-    "textEn": "Ye shall know them by their fruits. Do men gather grapes of thorns, or figs of thistles?",
-    "textEs": "Por sus frutos los conoceréis. ¿Cógense uvas de los espinos, ó higos de los abrojos?"
+    "chapter": 19,
+    "verse": 6,
+    "en": "Matthew 19:6",
+    "es": "Mateo 19:6",
+    "textEn": "Wherefore they are no more twain, but one flesh. What therefore God hath joined together, let not man put asunder.",
+    "textEs": "Así que, no son ya más dos, sino una carne: por tanto, lo que Dios juntó, no lo aparte el hombre."
    }
   },
   {
-   "id": "breakup-church",
-   "cat": "dating",
-   "en": "After a breakup, should the one who ended it be the one to find a new church?",
-   "es": "Después de terminar, ¿quien cortó debería ser quien se busque otra iglesia?",
-   "ref": {
-    "book": 45,
-    "chapter": 12,
-    "verse": 18,
-    "en": "Romans 12:18",
-    "es": "Romanos 12:18",
-    "textEn": "If it be possible, as much as lieth in you, live peaceably with all men.",
-    "textEs": "Si se puede hacer, cuanto está en vosotros, tened paz con todos los hombres."
-   }
-  },
-  {
-   "id": "show-ex",
-   "cat": "dating",
-   "en": "Is it okay to bring a date to church just so your ex sees you moved on?",
-   "es": "¿Está bien llevar a alguien a la iglesia solo para que tu ex vea que ya lo superaste?",
-   "ref": {
-    "book": 50,
-    "chapter": 2,
-    "verse": 3,
-    "en": "Philippians 2:3",
-    "es": "Filipenses 2:3",
-    "textEn": "Let nothing be done through strife or vainglory; but in lowliness of mind let each esteem other better than themselves.",
-    "textEs": "Nada hagáis por contienda ó por vanagloria; antes bien en humildad, estimándoos inferiores los unos á los otros:"
-   }
-  },
-  {
-   "id": "altar-call-exit",
-   "cat": "service",
-   "en": "Is it okay to slip out during the altar call to beat the parking lot traffic?",
-   "es": "¿Está bien salirte durante el llamado al altar para ganarle al tráfico del estacionamiento?",
-   "ref": {
-    "book": 19,
-    "chapter": 46,
-    "verse": 10,
-    "en": "Psalms 46:10",
-    "es": "Salmos 46:10",
-    "textEn": "Be still, and know that I am God: I will be exalted among the heathen, I will be exalted in the earth.",
-    "textEs": "Estad quietos, y conoced que yo soy Dios: ensalzado he de ser entre las gentes, ensalzado seré en la tierra."
-   }
-  },
-  {
-   "id": "text-sermon",
-   "cat": "service",
-   "en": "Is texting during the sermon fine if you are texting the sermon notes?",
-   "es": "¿Está bien mandar mensajes durante el sermón si estás mandando los apuntes?",
-   "ref": {
-    "book": 59,
-    "chapter": 1,
-    "verse": 22,
-    "en": "James 1:22",
-    "es": "Santiago 1:22",
-    "textEn": "But be ye doers of the word, and not hearers only, deceiving your own selves.",
-    "textEs": "Mas sed hacedores de la palabra, y no tan solamente oidores, engañándoos á vosotros mismos."
-   }
-  },
-  {
-   "id": "jeans",
-   "cat": "service",
-   "en": "Is it okay to wear jeans to church?",
-   "es": "¿Está bien ir a la iglesia en jeans?",
-   "ref": {
-    "book": 19,
-    "chapter": 29,
-    "verse": 2,
-    "en": "Psalms 29:2",
-    "es": "Salmos 29:2",
-    "textEn": "Give unto the LORD the glory due unto his name; Worship the LORD in the beauty of holiness.",
-    "textEs": "Dad á Jehová la gloria debida á su nombre: humillaos á Jehová en el glorioso santuario."
-   }
-  },
-  {
-   "id": "sermon-clock",
-   "cat": "service",
-   "en": "Should sermons come with a countdown clock like a basketball game?",
-   "es": "¿Los sermones deberían tener un reloj en cuenta regresiva como un partido de básquet?",
-   "ref": {
-    "book": 44,
-    "chapter": 20,
-    "verse": 9,
-    "en": "Acts 20:9",
-    "es": "Hechos 20:9",
-    "textEn": "And there sat in a window a certain young man named Eutychus, being fallen into a deep sleep: and as Paul was long preaching, he sunk down with sleep, and fell down from the third loft, and was taken up dead.",
-    "textEs": "Y un mancebo llamado Eutichô que estaba sentado en la ventana, tomado de un sueño profundo, como Pablo disputaba largamente, postrado del sueño cayó del tercer piso abajo, y fué alzado muerto."
-   }
-  },
-  {
-   "id": "save-row",
-   "cat": "service",
-   "en": "Is it okay to save a whole row with Bibles and jackets?",
-   "es": "¿Está bien apartar una fila entera con Biblias y chamarras?",
-   "ref": {
-    "book": 42,
-    "chapter": 14,
-    "verse": 10,
-    "en": "Luke 14:10",
-    "es": "Lucas 14:10",
-    "textEn": "But when thou art bidden, go and sit down in the lowest room; that when he that bade thee cometh, he may say unto thee, Friend, go up higher: then shalt thou have worship in the presence of them that sit at meat with thee.",
-    "textEs": "Mas cuando fueres convidado, ve, y siéntate en el postrer lugar; porque cuando viniere el que te llamó, te diga: Amigo, sube arriba: entonces tendrás gloria delante de los que juntamente se asientan á la mesa."
-   }
-  },
-  {
-   "id": "communion-snack",
-   "cat": "service",
-   "en": "Is it okay to eat a granola bar right before communion?",
-   "es": "¿Está bien comerte una barrita de granola justo antes de la comunión?",
-   "ref": {
-    "book": 46,
-    "chapter": 11,
-    "verse": 28,
-    "en": "1 Corinthians 11:28",
-    "es": "1 Corintios 11:28",
-    "textEn": "But let a man examine himself, and so let him eat of that bread, and drink of that cup.",
-    "textEs": "Por tanto, pruébese cada uno á sí mismo, y coma así de aquel pan, y beba de aquella copa."
-   }
-  },
-  {
-   "id": "last-song",
-   "cat": "service",
-   "en": "If you walk in during the last worship song, are you still on time?",
-   "es": "Si entras durante la última canción de alabanza, ¿todavía llegaste a tiempo?",
-   "ref": {
-    "book": 19,
-    "chapter": 122,
-    "verse": 1,
-    "en": "Psalms 122:1",
-    "es": "Salmos 122:1",
-    "textEn": "I was glad when they said unto me, Let us go into the house of the LORD.",
-    "textEs": "Yo me alegré con los que me decían: A la casa de Jehová iremos."
-   }
-  },
-  {
-   "id": "basket-pass",
-   "cat": "service",
-   "en": "Is it okay to pass the offering basket empty-handed because you give online?",
-   "es": "¿Está bien pasar la canasta de la ofrenda sin poner nada porque das en línea?",
-   "ref": {
-    "book": 47,
-    "chapter": 9,
-    "verse": 7,
-    "en": "2 Corinthians 9:7",
-    "es": "2 Corintios 9:7",
-    "textEn": "Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity: for God loveth a cheerful giver.",
-    "textEs": "Cada uno dé como propuso en su corazón: no con tristeza, ó por necesidad; porque Dios ama el dador alegre."
-   }
-  },
-  {
-   "id": "louder-amen",
-   "cat": "service",
-   "en": "Should the pastor keep saying “I can’t hear you” until the Amen gets louder?",
-   "es": "¿Se vale que el pastor siga diciendo “no los escucho” hasta que el Amén suene más fuerte?",
-   "ref": {
-    "book": 19,
-    "chapter": 66,
-    "verse": 1,
-    "en": "Psalms 66:1",
-    "es": "Salmos 66:1",
-    "textEn": "Make a joyful noise unto God, all ye lands:",
-    "textEs": "Aclamad á Dios con alegría, toda la tierra:"
-   }
-  },
-  {
-   "id": "fake-call",
-   "cat": "service",
-   "en": "Is it okay to fake a phone call during “turn and greet your neighbor”?",
-   "es": "¿Está bien fingir una llamada cuando dicen “saluden a su vecino”?",
-   "ref": {
-    "book": 45,
-    "chapter": 16,
-    "verse": 16,
-    "en": "Romans 16:16",
-    "es": "Romanos 16:16",
-    "textEn": "Salute one another with an holy kiss. The churches of Christ salute you.",
-    "textEs": "Saludaos los unos á los otros con ósculo santo. Os saludan todas las iglesias de Cristo."
-   }
-  },
-  {
-   "id": "assigned-seats",
-   "cat": "service",
-   "en": "Should churches have assigned seats so nobody fights over the back row?",
-   "es": "¿Las iglesias deberían tener asientos asignados para que nadie pelee por la última fila?",
-   "ref": {
-    "book": 46,
-    "chapter": 14,
-    "verse": 40,
-    "en": "1 Corinthians 14:40",
-    "es": "1 Corintios 14:40",
-    "textEn": "Let all things be done decently and in order.",
-    "textEs": "Empero hágase todo decentemente y con orden."
-   }
-  },
-  {
-   "id": "nodding-nap",
-   "cat": "service",
-   "en": "Is a quick nap during the sermon fine as long as you nod like you agree?",
-   "es": "¿Está bien echarte una siestita en el sermón si asientes como si estuvieras de acuerdo?",
-   "ref": {
-    "book": 41,
-    "chapter": 14,
-    "verse": 38,
-    "en": "Mark 14:38",
-    "es": "Marcos 14:38",
-    "textEn": "Watch ye and pray, lest ye enter into temptation. The spirit truly is ready, but the flesh is weak.",
-    "textEs": "Velad y orad, para que no entréis en tentación: el espíritu á la verdad es presto, mas la carne enferma."
-   }
-  },
-  {
-   "id": "film-worship",
-   "cat": "service",
-   "en": "Is it okay to film the whole worship set for your story?",
-   "es": "¿Está bien grabar toda la alabanza para tu historia?",
-   "ref": {
-    "book": 40,
-    "chapter": 6,
-    "verse": 1,
-    "en": "Matthew 6:1",
-    "es": "Mateo 6:1",
-    "textEn": "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven.",
-    "textEs": "Mirad que no hagáis vuestra justicia delante de los hombres, para ser vistos de ellos: de otra manera no tendréis merced de vuestro Padre que está en los cielos."
-   }
-  },
-  {
-   "id": "tithe-grandma",
+   "id": "phone-passwords",
    "cat": "family",
-   "en": "Should you tithe on the birthday money grandma slipped you?",
-   "es": "¿Deberías diezmar del dinero que te regaló la abuela en tu cumpleaños?",
-   "ref": {
-    "book": 39,
-    "chapter": 3,
-    "verse": 10,
-    "en": "Malachi 3:10",
-    "es": "Malaquías 3:10",
-    "textEn": "Bring ye all the tithes into the storehouse, that there may be meat in mine house, and prove me now herewith, saith the LORD of hosts, if I will not open you the windows of heaven, and pour you out a blessing, that there shall not be room enough to receive it.",
-    "textEs": "Traed todos los diezmos al alfolí, y haya alimento en mi casa; y probadme ahora en esto, dice Jehová de los ejércitos, si no os abriré las ventanas de los cielos, y vaciaré sobre vosotros bendición hasta que sobreabunde."
-   }
-  },
-  {
-   "id": "kids-brunch",
-   "cat": "family",
-   "en": "Is it okay to drop the kids at Sunday school and sneak off for breakfast?",
-   "es": "¿Está bien dejar a los niños en la escuela dominical y escaparte a desayunar?",
-   "ref": {
-    "book": 5,
-    "chapter": 6,
-    "verse": 7,
-    "en": "Deuteronomy 6:7",
-    "es": "Deuteronomio 6:7",
-    "textEn": "and thou shalt teach them diligently unto thy children, and shalt talk of them when thou sittest in thine house, and when thou walkest by the way, and when thou liest down, and when thou risest up.",
-    "textEs": "Y las repetirás á tus hijos, y hablarás de ellas estando en tu casa, y andando por el camino, y al acostarte, y cuando te levantes:"
-   }
-  },
-  {
-   "id": "spouse-elbow",
-   "cat": "family",
-   "en": "Is it okay to elbow your spouse when the sermon is clearly about them?",
-   "es": "¿Está bien darle un codazo a tu pareja cuando el sermón claramente es para él o ella?",
-   "ref": {
-    "book": 40,
-    "chapter": 7,
-    "verse": 3,
-    "en": "Matthew 7:3",
-    "es": "Mateo 7:3",
-    "textEn": "And why beholdest thou the mote that is in thy brother's eye, but considerest not the beam that is in thine own eye?",
-    "textEs": "Y ¿por qué miras la mota que está en el ojo de tu hermano, y no echas de ver la viga que está en tu ojo?"
-   }
-  },
-  {
-   "id": "two-churches",
-   "cat": "family",
-   "en": "Should a married couple ever go to two different churches?",
-   "es": "¿Una pareja casada debería ir alguna vez a dos iglesias diferentes?",
-   "ref": {
-    "book": 8,
-    "chapter": 1,
-    "verse": 16,
-    "en": "Ruth 1:16",
-    "es": "Rut 1:16",
-    "textEn": "And Ruth said, Intreat me not to leave thee, or to return from following after thee: for whither thou goest, I will go; and where thou lodgest, I will lodge: thy people shall be my people, and thy God my God:",
-    "textEs": "Y Ruth respondió: No me ruegues que te deje, y me aparte de ti: porque donde quiera que tú fueres, iré yo; y donde quiera que vivieres, viviré. Tu pueblo será mi pueblo, y tu Dios mi Dios."
-   }
-  },
-  {
-   "id": "tournament-sunday",
-   "cat": "family",
-   "en": "Is it okay to skip church for your kid’s travel tournament?",
-   "es": "¿Está bien faltar a la iglesia por el torneo de tu hijo?",
-   "ref": {
-    "book": 6,
-    "chapter": 24,
-    "verse": 15,
-    "en": "Joshua 24:15",
-    "es": "Josué 24:15",
-    "textEn": "And if it seem evil unto you to serve the LORD, choose you this day whom ye will serve; whether the gods which your fathers served that were on the other side of the flood, or the gods of the Amorites, in whose land ye dwell: but as for me and my house, we will serve the LORD.",
-    "textEs": "Y si mal os parece servir á Jehová, escogeos hoy á quién sirváis; si á los dioses á quienes sirvieron vuestros padres, cuando estuvieron de esotra parte del río, ó á los dioses de los Amorrheos en cuya tierra habitáis: que yo y mi casa serviremos á Jehová."
-   }
-  },
-  {
-   "id": "in-laws-church",
-   "cat": "family",
-   "en": "Is it okay to skip your in-laws’ church when you visit them?",
-   "es": "¿Está bien no ir a la iglesia de tus suegros cuando los visitas?",
-   "ref": {
-    "book": 2,
-    "chapter": 20,
-    "verse": 12,
-    "en": "Exodus 20:12",
-    "es": "Éxodo 20:12",
-    "textEn": "Honour thy father and thy mother: that thy days may be long upon the land which the LORD thy God giveth thee.",
-    "textEs": "Honra á tu padre y á tu madre, porque tus días se alarguen en la tierra que Jehová tu Dios te da."
-   }
-  },
-  {
-   "id": "holiday-grace",
-   "cat": "family",
-   "en": "Should whoever prays over the holiday dinner get a two-minute limit?",
-   "es": "¿Quien ora en la cena de las fiestas debería tener un límite de dos minutos?",
-   "ref": {
-    "book": 40,
-    "chapter": 6,
-    "verse": 7,
-    "en": "Matthew 6:7",
-    "es": "Mateo 6:7",
-    "textEn": "But when ye pray, use not vain repetitions, as the heathen do: for they think that they shall be heard for their much speaking.",
-    "textEs": "Y orando, no seáis prolijos, como los Gentiles; que piensan que por su parlería serán oídos."
-   }
-  },
-  {
-   "id": "paid-verses",
-   "cat": "family",
-   "en": "Is it okay to pay your kids to memorize Bible verses?",
-   "es": "¿Está bien pagarles a tus hijos para que se aprendan versículos?",
-   "ref": {
-    "book": 19,
-    "chapter": 119,
-    "verse": 11,
-    "en": "Psalms 119:11",
-    "es": "Salmos 119:11",
-    "textEn": "Thy word have I hid in mine heart, That I might not sin against thee.",
-    "textEs": "En mi corazón he guardado tus dichos, para no pecar contra ti."
-   }
-  },
-  {
-   "id": "car-argument",
-   "cat": "family",
-   "en": "Is it okay to argue the whole drive to church and smile the second you walk in?",
-   "es": "¿Está bien pelear todo el camino a la iglesia y sonreír en cuanto entras?",
+   "en": "Is it okay for married Christians to keep their phone passwords from each other?",
+   "es": "¿Está bien que los cristianos casados se guarden la contraseña del celular el uno del otro?",
    "ref": {
     "book": 49,
-    "chapter": 4,
-    "verse": 26,
-    "en": "Ephesians 4:26",
-    "es": "Efesios 4:26",
-    "textEn": "Be ye angry, and sin not: let not the sun go down upon your wrath:",
-    "textEs": "Airaos, y no pequéis; no se ponga el sol sobre vuestro enojo;"
+    "chapter": 5,
+    "verse": 31,
+    "en": "Ephesians 5:31",
+    "es": "Efesios 5:31",
+    "textEn": "For this cause shall a man leave his father and mother, and shall be joined unto his wife, and they two shall be one flesh.",
+    "textEs": "Por esto dejará el hombre á su padre y á su madre, y se allegará á su mujer, y serán dos en una carne."
    }
   },
   {
-   "id": "matching-outfits",
+   "id": "spouse-secret",
    "cat": "family",
-   "en": "Is it okay to make the whole family match for the church photo?",
-   "es": "¿Está bien obligar a toda la familia a vestirse igual para la foto de la iglesia?",
-   "ref": {
-    "book": 51,
-    "chapter": 3,
-    "verse": 21,
-    "en": "Colossians 3:21",
-    "es": "Colosenses 3:21",
-    "textEn": "Fathers, provoke not your children to anger, lest they be discouraged.",
-    "textEs": "Padres, no irritéis á vuestros hijos, porque no se hagan de poco ánimo."
-   }
-  },
-  {
-   "id": "grandma-thinks",
-   "cat": "family",
-   "en": "Is it okay to let grandma think you still go to church every Sunday?",
-   "es": "¿Está bien dejar que la abuela crea que todavía vas a la iglesia cada domingo?",
+   "en": "Is it ever okay for Christians to keep a secret from their spouse?",
+   "es": "¿Alguna vez está bien que los cristianos le guarden un secreto a su cónyuge?",
    "ref": {
     "book": 20,
-    "chapter": 12,
-    "verse": 22,
-    "en": "Proverbs 12:22",
-    "es": "Proverbios 12:22",
-    "textEn": "Lying lips are abomination to the LORD: But they that deal truly are his delight.",
-    "textEs": "Los labios mentirosos son abominación á Jehová: mas los obradores de verdad su contentamiento."
+    "chapter": 31,
+    "verse": 11,
+    "en": "Proverbs 31:11",
+    "es": "Proverbios 31:11",
+    "textEn": "The heart of her husband doth safely trust in her, So that he shall have no need of spoil.",
+    "textEs": "El corazón de su marido está en ella confiado, y no tendrá necesidad de despojo."
    }
   },
   {
-   "id": "allowance-offering",
+   "id": "unhappy-divorce",
    "cat": "family",
-   "en": "Should kids have to put part of their allowance in the offering?",
-   "es": "¿Los niños deberían poner parte de su mesada en la ofrenda?",
+   "en": "Is it okay for Christians to divorce because they are simply unhappy?",
+   "es": "¿Está bien que los cristianos se divorcien solo porque no son felices?",
+   "ref": {
+    "book": 39,
+    "chapter": 2,
+    "verse": 16,
+    "en": "Malachi 2:16",
+    "es": "Malaquías 2:16",
+    "textEn": "For the LORD, the God of Israel, saith that he hateth putting away: for one covereth violence with his garment, saith the LORD of hosts: therefore take heed to your spirit, that ye deal not treacherously.",
+    "textEs": "Porque Jehová Dios de Israel ha dicho que él aborrece que sea repudiada; y cubra la iniquidad con su vestido, dijo Jehová de los ejércitos. Guardaos pues en vuestros espíritus, y no seáis desleales."
+   }
+  },
+  {
+   "id": "separate-accounts",
+   "cat": "family",
+   "en": "Is it okay for Christian couples to keep separate bank accounts?",
+   "es": "¿Está bien que las parejas cristianas tengan cuentas de banco separadas?",
+   "ref": {
+    "book": 21,
+    "chapter": 4,
+    "verse": 9,
+    "en": "Ecclesiastes 4:9",
+    "es": "Eclesiastés 4:9",
+    "textEn": "Two are better than one; because they have a good reward for their labour.",
+    "textEs": "Mejores son dos que uno; porque tienen mejor paga de su trabajo."
+   }
+  },
+  {
+   "id": "opposite-sex-friends",
+   "cat": "family",
+   "en": "Is it okay for married Christians to have close friends of the opposite sex?",
+   "es": "¿Está bien que los cristianos casados tengan amistades cercanas del sexo opuesto?",
+   "ref": {
+    "book": 18,
+    "chapter": 31,
+    "verse": 1,
+    "en": "Job 31:1",
+    "es": "Job 31:1",
+    "textEn": "I made a covenant with mine eyes; Why then should I think upon a maid?",
+    "textEs": "Hice pacto con mis ojos: ¿cómo pues había yo de pensar en virgen?"
+   }
+  },
+  {
+   "id": "side-with-spouse",
+   "cat": "family",
+   "en": "Is it okay for married Christians to take their spouse’s side over their own parents?",
+   "es": "¿Está bien que los cristianos casados se pongan del lado de su cónyuge antes que de sus propios padres?",
+   "ref": {
+    "book": 1,
+    "chapter": 2,
+    "verse": 24,
+    "en": "Genesis 2:24",
+    "es": "Génesis 2:24",
+    "textEn": "Therefore shall a man leave his father and his mother, and shall cleave unto his wife: and they shall be one flesh.",
+    "textEs": "Por tanto, dejará el hombre á su padre y á su madre, y allegarse ha á su mujer, y serán una sola carne."
+   }
+  },
+  {
+   "id": "final-say",
+   "cat": "family",
+   "en": "Is it okay for a Christian husband to always have the final say?",
+   "es": "¿Está bien que el esposo cristiano siempre tenga la última palabra?",
+   "ref": {
+    "book": 49,
+    "chapter": 5,
+    "verse": 21,
+    "en": "Ephesians 5:21",
+    "es": "Efesios 5:21",
+    "textEn": "submitting yourselves one to another in the fear of God.",
+    "textEs": "Sujetados los unos á los otros en el temor de Dios."
+   }
+  },
+  {
+   "id": "no-kids",
+   "cat": "family",
+   "en": "Is it okay for Christian couples to choose not to have children?",
+   "es": "¿Está bien que las parejas cristianas decidan no tener hijos?",
+   "ref": {
+    "book": 19,
+    "chapter": 127,
+    "verse": 3,
+    "en": "Psalms 127:3",
+    "es": "Salmos 127:3",
+    "textEn": "Lo, children are an heritage of the LORD: And the fruit of the womb is his reward.",
+    "textEs": "He aquí, heredad de Jehová son los hijos: cosa de estima el fruto del vientre."
+   }
+  },
+  {
+   "id": "spanking",
+   "cat": "family",
+   "en": "Is it okay for Christian parents to spank their children?",
+   "es": "¿Está bien que los padres cristianos les den nalgadas a sus hijos?",
+   "ref": {
+    "book": 20,
+    "chapter": 13,
+    "verse": 24,
+    "en": "Proverbs 13:24",
+    "es": "Proverbios 13:24",
+    "textEn": "He that spareth his rod hateth his son: But he that loveth him chasteneth him betimes.",
+    "textEs": "El que detiene el castigo, á su hijo aborrece: mas el que lo ama, madruga á castigarlo."
+   }
+  },
+  {
+   "id": "teen-church",
+   "cat": "family",
+   "en": "Is it okay for Christian parents to let their teens decide whether to go to church?",
+   "es": "¿Está bien que los padres cristianos dejen que sus adolescentes decidan si van a la iglesia?",
    "ref": {
     "book": 20,
     "chapter": 22,
@@ -579,198 +444,273 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "check-calendar",
-   "cat": "life",
-   "en": "Is it okay to say “let me check my calendar” when you already know you are not going?",
-   "es": "¿Está bien decir “déjame revisar mi agenda” cuando ya sabes que no vas a ir?",
+   "id": "secular-counselor",
+   "cat": "family",
+   "en": "Is it okay for Christians to see a secular marriage counselor?",
+   "es": "¿Está bien que los cristianos vayan con un consejero matrimonial secular?",
    "ref": {
-    "book": 40,
-    "chapter": 5,
-    "verse": 37,
-    "en": "Matthew 5:37",
-    "es": "Mateo 5:37",
-    "textEn": "But let your communication be, Yea, yea; Nay, nay: for whatsoever is more than these cometh of evil.",
-    "textEs": "Mas sea vuestro hablar: Sí, sí; No, no; porque lo que es más de esto, de mal procede."
+    "book": 20,
+    "chapter": 11,
+    "verse": 14,
+    "en": "Proverbs 11:14",
+    "es": "Proverbios 11:14",
+    "textEn": "Where no counsel is, the people fall: But in the multitude of counsellors there is safety.",
+    "textEs": "Cuando faltaren las industrias, caerá el pueblo: mas en la multitud de consejeros hay salud."
    }
   },
   {
-   "id": "only-christian-music",
-   "cat": "life",
-   "en": "Should Christians only listen to Christian music?",
-   "es": "¿Los cristianos deberían escuchar solo música cristiana?",
+   "id": "vent-spouse",
+   "cat": "family",
+   "en": "Is it okay for Christians to vent about their spouse to friends?",
+   "es": "¿Está bien que los cristianos se desahoguen con sus amigos quejándose de su cónyuge?",
    "ref": {
-    "book": 50,
-    "chapter": 4,
-    "verse": 8,
-    "en": "Philippians 4:8",
-    "es": "Filipenses 4:8",
-    "textEn": "Finally, brethren, whatsoever things are true, whatsoever things are honest, whatsoever things are just, whatsoever things are pure, whatsoever things are lovely, whatsoever things are of good report; if there be any virtue, and if there be any praise, think on these things.",
-    "textEs": "Por lo demás, hermanos, todo lo que es verdadero, todo lo honesto, todo lo justo, todo lo puro, todo lo amable, todo lo que es de buen nombre; si hay virtud alguna, si alguna alabanza, en esto pensad."
+    "book": 20,
+    "chapter": 17,
+    "verse": 9,
+    "en": "Proverbs 17:9",
+    "es": "Proverbios 17:9",
+    "textEn": "He that covereth a transgression seeketh love; But he that repeateth a matter separateth very friends.",
+    "textEs": "El que cubre la prevaricación, busca amistad: mas el que reitera la palabra, aparta al amigo."
    }
   },
   {
-   "id": "binge-sabbath",
-   "cat": "life",
-   "en": "Is it okay to binge a whole series on Sunday and call it a day of rest?",
-   "es": "¿Está bien ver una serie entera el domingo y llamarlo día de descanso?",
+   "id": "toxic-parents",
+   "cat": "family",
+   "en": "Is it okay for Christians to cut off toxic parents?",
+   "es": "¿Está bien que los cristianos corten la relación con padres tóxicos?",
    "ref": {
-    "book": 41,
-    "chapter": 2,
-    "verse": 27,
-    "en": "Mark 2:27",
-    "es": "Marcos 2:27",
-    "textEn": "And he said unto them, The sabbath was made for man, and not man for the sabbath:",
-    "textEs": "También les dijo: El sábado por causa del hombre es hecho; no el hombre por causa del sábado."
+    "book": 2,
+    "chapter": 20,
+    "verse": 12,
+    "en": "Exodus 20:12",
+    "es": "Éxodo 20:12",
+    "textEn": "Honour thy father and thy mother: that thy days may be long upon the land which the LORD thy God giveth thee.",
+    "textEs": "Honra á tu padre y á tu madre, porque tus días se alarguen en la tierra que Jehová tu Dios te da."
    }
   },
   {
-   "id": "pastor-spot",
-   "cat": "life",
-   "en": "Is it okay to pray for a parking spot and then take the pastor’s?",
-   "es": "¿Está bien orar por un lugar de estacionamiento y luego quedarte con el del pastor?",
+   "id": "quick-wedding",
+   "cat": "family",
+   "en": "Is it okay for Christians to marry after only a few months of dating?",
+   "es": "¿Está bien que los cristianos se casen después de solo unos meses de noviazgo?",
    "ref": {
-    "book": 40,
-    "chapter": 7,
+    "book": 20,
+    "chapter": 19,
+    "verse": 2,
+    "en": "Proverbs 19:2",
+    "es": "Proverbios 19:2",
+    "textEn": "Also, that the soul be without knowledge, it is not good; And he that hasteth with his feet sinneth.",
+    "textEs": "El alma sin ciencia no es buena; y el presuroso de pies peca."
+   }
+  },
+  {
+   "id": "follow-strangers",
+   "cat": "family",
+   "en": "Is it okay for married Christians to follow attractive strangers on social media?",
+   "es": "¿Está bien que los cristianos casados sigan a desconocidos atractivos en redes sociales?",
+   "ref": {
+    "book": 18,
+    "chapter": 31,
     "verse": 7,
-    "en": "Matthew 7:7",
-    "es": "Mateo 7:7",
-    "textEn": "Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you:",
-    "textEs": "Pedid, y se os dará; buscad, y hallaréis; llamad, y se os abrirá."
+    "en": "Job 31:7",
+    "es": "Job 31:7",
+    "textEn": "If my step hath turned out of the way, And mine heart walked after mine eyes, And if any blot hath cleaved to mine hands;",
+    "textEs": "Si mis pasos se apartaron del camino, y si mi corazón se fué tras mis ojos, y si algo se apegó á mis manos,"
    }
   },
   {
-   "id": "praying-exit",
-   "cat": "life",
-   "en": "Is it okay to use “I’ll be praying for you” just to end a conversation?",
-   "es": "¿Está bien usar “voy a orar por ti” solo para terminar una plática?",
+   "id": "wear-whatever",
+   "cat": "church",
+   "en": "Is it okay for Christians to wear whatever they want to church because God looks at the heart?",
+   "es": "¿Está bien que los cristianos se pongan lo que quieran para ir a la iglesia porque Dios mira el corazón?",
    "ref": {
     "book": 59,
     "chapter": 2,
-    "verse": 16,
-    "en": "James 2:16",
-    "es": "Santiago 2:16",
-    "textEn": "and one of you say unto them, Depart in peace, be ye warmed and filled; notwithstanding ye give them not those things which are needful to the body; what doth it profit?",
-    "textEs": "Y alguno de vosotros les dice: Id en paz, calentaos y hartaos; pero no les diereis las cosas que son necesarias para el cuerpo: ¿qué aprovechará?"
+    "verse": 2,
+    "en": "James 2:2",
+    "es": "Santiago 2:2",
+    "textEn": "For if there come unto your assembly a man with a gold ring, in goodly apparel, and there come in also a poor man in vile raiment;",
+    "textEs": "Porque si en vuestra congregación entra un hombre con anillo de oro, y de preciosa ropa, y también entra un pobre con vestidura vil,"
    }
   },
   {
-   "id": "worship-workout",
-   "cat": "life",
-   "en": "Does dancing to worship music count as your workout?",
-   "es": "¿Bailar con música de alabanza cuenta como tu ejercicio?",
+   "id": "leave-politics",
+   "cat": "church",
+   "en": "Is it okay for Christians to leave a church over politics?",
+   "es": "¿Está bien que los cristianos dejen una iglesia por cuestiones políticas?",
    "ref": {
-    "book": 54,
-    "chapter": 4,
-    "verse": 8,
-    "en": "1 Timothy 4:8",
-    "es": "1 Timoteo 4:8",
-    "textEn": "For bodily exercise profiteth little: but godliness is profitable unto all things, having promise of the life that now is, and of that which is to come.",
-    "textEs": "Porque el ejercicio corporal para poco es provechoso; mas la piedad para todo aprovecha, pues tiene promesa de esta vida presente, y de la venidera."
-   }
-  },
-  {
-   "id": "hammer-word",
-   "cat": "life",
-   "en": "Is a bad word okay if you just hit your thumb with a hammer?",
-   "es": "¿Se vale una mala palabra si te acabas de machucar el dedo con el martillo?",
-   "ref": {
-    "book": 49,
-    "chapter": 4,
-    "verse": 29,
-    "en": "Ephesians 4:29",
-    "es": "Efesios 4:29",
-    "textEn": "Let no corrupt communication proceed out of your mouth, but that which is good to the use of edifying, that it may minister grace unto the hearers.",
-    "textEs": "Ninguna palabra torpe salga de vuestra boca, sino la que sea buena para edificación, para que dé gracia á los oyentes."
-   }
-  },
-  {
-   "id": "lottery-tithe",
-   "cat": "life",
-   "en": "Is it okay for a Christian to play the lottery if they promise to tithe the winnings?",
-   "es": "¿Está bien que un cristiano juegue la lotería si promete diezmar lo que gane?",
-   "ref": {
-    "book": 54,
-    "chapter": 6,
+    "book": 46,
+    "chapter": 1,
     "verse": 10,
-    "en": "1 Timothy 6:10",
-    "es": "1 Timoteo 6:10",
-    "textEn": "For the love of money is the root of all evil: which while some coveted after, they have erred from the faith, and pierced themselves through with many sorrows.",
-    "textEs": "Porque el amor del dinero es la raíz de todos los males: el cual codiciando algunos, se descaminaron de la fe, y fueron traspasados de muchos dolores."
+    "en": "1 Corinthians 1:10",
+    "es": "1 Corintios 1:10",
+    "textEn": "Now I beseech you, brethren, by the name of our Lord Jesus Christ, that ye all speak the same thing, and that there be no divisions among you; but that ye be perfectly joined together in the same mind and in the same judgment.",
+    "textEs": "Os ruego pues, hermanos, por el nombre de nuestro Señor Jesucristo, que habléis todos una misma cosa, y que no haya entre vosotros disensiones, antes seáis perfectamente unidos en una misma mente y en un mismo parecer."
    }
   },
   {
-   "id": "verse-tattoo",
-   "cat": "life",
-   "en": "Is it okay to get a Bible verse tattoo?",
-   "es": "¿Está bien tatuarte un versículo?",
+   "id": "online-church",
+   "cat": "church",
+   "en": "Is it okay for Christians to watch church online instead of going in person?",
+   "es": "¿Está bien que los cristianos vean la iglesia en línea en lugar de ir en persona?",
    "ref": {
-    "book": 20,
-    "chapter": 3,
-    "verse": 3,
-    "en": "Proverbs 3:3",
-    "es": "Proverbios 3:3",
-    "textEn": "Let not mercy and truth forsake thee: Bind them about thy neck; Write them upon the table of thine heart:",
-    "textEs": "Misericordia y verdad no te desamparen; átalas á tu cuello, escríbelas en la tabla de tu corazón:"
+    "book": 58,
+    "chapter": 10,
+    "verse": 25,
+    "en": "Hebrews 10:25",
+    "es": "Hebreos 10:25",
+    "textEn": "not forsaking the assembling of ourselves together, as the manner of some is; but exhorting one another: and so much the more, as ye see the day approaching.",
+    "textEs": "No dejando nuestra congregación, como algunos tienen por costumbre, mas exhortándonos; y tanto más, cuanto veis que aquel día se acerca."
    }
   },
   {
-   "id": "church-shirt",
-   "cat": "life",
-   "en": "Can you cut someone off in traffic while wearing your church T-shirt?",
-   "es": "¿Se vale cerrarle el paso a alguien en el tráfico con tu playera de la iglesia puesta?",
+   "id": "music-style",
+   "cat": "church",
+   "en": "Is it okay for Christians to leave a church because the music is not their style?",
+   "es": "¿Está bien que los cristianos dejen una iglesia porque la música no es de su estilo?",
+   "ref": {
+    "book": 19,
+    "chapter": 100,
+    "verse": 1,
+    "en": "Psalms 100:1",
+    "es": "Salmos 100:1",
+    "textEn": "Make a joyful noise unto the LORD, all ye lands.",
+    "textEs": "Cantad alegres á Dios, habitantes de toda la tierra."
+   }
+  },
+  {
+   "id": "criticize-pastor",
+   "cat": "church",
+   "en": "Is it okay for Christians to criticize their pastor publicly online?",
+   "es": "¿Está bien que los cristianos critiquen a su pastor públicamente en internet?",
    "ref": {
     "book": 40,
-    "chapter": 5,
-    "verse": 16,
-    "en": "Matthew 5:16",
-    "es": "Mateo 5:16",
-    "textEn": "Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.",
-    "textEs": "Así alumbre vuestra luz delante de los hombres, para que vean vuestras obras buenas, y glorifiquen á vuestro Padre que está en los cielos."
+    "chapter": 18,
+    "verse": 15,
+    "en": "Matthew 18:15",
+    "es": "Mateo 18:15",
+    "textEn": "Moreover if thy brother shall trespass against thee, go and tell him his fault between thee and him alone: if he shall hear thee, thou hast gained thy brother.",
+    "textEs": "Por tanto, si tu hermano pecare contra ti, ve, y redargúyele entre ti y él solo: si te oyere, has ganado á tu hermano."
    }
   },
   {
-   "id": "tract-tip",
-   "cat": "life",
-   "en": "Is it okay to leave a gospel tract instead of a tip?",
-   "es": "¿Está bien dejar un folleto del evangelio en lugar de propina?",
+   "id": "admit-doubts",
+   "cat": "church",
+   "en": "Is it okay for Christians to admit their doubts out loud at church?",
+   "es": "¿Está bien que los cristianos admitan sus dudas en voz alta en la iglesia?",
    "ref": {
-    "book": 42,
-    "chapter": 10,
-    "verse": 7,
-    "en": "Luke 10:7",
-    "es": "Lucas 10:7",
-    "textEn": "And in the same house remain, eating and drinking such things as they give: for the labourer is worthy of his hire. Go not from house to house.",
-    "textEs": "Y posad en aquella misma casa, comiendo y bebiendo lo que os dieren; porque el obrero digno es de su salario. No os paséis de casa en casa."
+    "book": 41,
+    "chapter": 9,
+    "verse": 24,
+    "en": "Mark 9:24",
+    "es": "Marcos 9:24",
+    "textEn": "And straightway the father of the child cried out, and said with tears, Lord, I believe; help thou mine unbelief.",
+    "textEs": "Y luego el padre del muchacho dijo clamando: Creo, ayuda mi incredulidad."
    }
   },
   {
-   "id": "halloween-candy",
-   "cat": "life",
-   "en": "Should Christians hand out candy on Halloween?",
-   "es": "¿Los cristianos deberían repartir dulces en Halloween?",
+   "id": "sports-sunday",
+   "cat": "church",
+   "en": "Is it okay for Christian families to skip church for their kids’ sports games?",
+   "es": "¿Está bien que las familias cristianas falten a la iglesia por los partidos de sus hijos?",
+   "ref": {
+    "book": 40,
+    "chapter": 6,
+    "verse": 33,
+    "en": "Matthew 6:33",
+    "es": "Mateo 6:33",
+    "textEn": "But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.",
+    "textEs": "Mas buscad primeramente el reino de Dios y su justicia, y todas estas cosas os serán añadidas."
+   }
+  },
+  {
+   "id": "pulpit-politics",
+   "cat": "church",
+   "en": "Is it okay for pastors to endorse political candidates from the pulpit?",
+   "es": "¿Está bien que los pastores apoyen a candidatos políticos desde el púlpito?",
+   "ref": {
+    "book": 43,
+    "chapter": 18,
+    "verse": 36,
+    "en": "John 18:36",
+    "es": "Juan 18:36",
+    "textEn": "Jesus answered, My kingdom is not of this world: if my kingdom were of this world, then would my servants fight, that I should not be delivered to the Jews: but now is my kingdom not from hence.",
+    "textEs": "Respondió Jesús: Mi reino no es de este mundo: si de este mundo fuera mi reino, mis servidores pelearían para que yo no fuera entregado á los Judíos: ahora, pues, mi reino no es de aquí."
+   }
+  },
+  {
+   "id": "serve-struggling",
+   "cat": "church",
+   "en": "Is it okay for Christians to serve on the worship team while struggling with a habit they have not beaten?",
+   "es": "¿Está bien que los cristianos sirvan en la alabanza mientras luchan con un hábito que no han vencido?",
    "ref": {
     "book": 45,
-    "chapter": 14,
-    "verse": 5,
-    "en": "Romans 14:5",
-    "es": "Romanos 14:5",
-    "textEn": "One man esteemeth one day above another: another esteemeth every day alike. Let every man be fully persuaded in his own mind.",
-    "textEs": "Uno hace diferencia entre día y día; otro juzga iguales todos los días. Cada uno esté asegurado en su ánimo."
+    "chapter": 3,
+    "verse": 23,
+    "en": "Romans 3:23",
+    "es": "Romanos 3:23",
+    "textEn": "for all have sinned, and come short of the glory of God;",
+    "textEs": "Por cuanto todos pecaron, y están destituídos de la gloria de Dios;"
    }
   },
   {
-   "id": "praying-late",
-   "cat": "life",
-   "en": "Is “I was praying” a good excuse for being late to work?",
-   "es": "¿“Estaba orando” es buena excusa para llegar tarde al trabajo?",
+   "id": "raise-hands",
+   "cat": "church",
+   "en": "Is it okay for Christians to raise their hands in worship at a church where nobody else does?",
+   "es": "¿Está bien que los cristianos levanten las manos en la alabanza en una iglesia donde nadie más lo hace?",
    "ref": {
-    "book": 51,
+    "book": 54,
+    "chapter": 2,
+    "verse": 8,
+    "en": "1 Timothy 2:8",
+    "es": "1 Timoteo 2:8",
+    "textEn": "I will therefore that men pray every where, lifting up holy hands, without wrath and doubting.",
+    "textEs": "Quiero, pues, que los hombres oren en todo lugar, levantando manos limpias, sin ira ni contienda."
+   }
+  },
+  {
+   "id": "pastor-car",
+   "cat": "church",
+   "en": "Is it okay for pastors to drive luxury cars?",
+   "es": "¿Está bien que los pastores manejen carros de lujo?",
+   "ref": {
+    "book": 54,
     "chapter": 3,
-    "verse": 23,
-    "en": "Colossians 3:23",
-    "es": "Colosenses 3:23",
-    "textEn": "and whatsoever ye do, do it heartily, as to the Lord, and not unto men;",
-    "textEs": "Y todo lo que hagáis, hacedlo de ánimo, como al Señor, y no á los hombres;"
+    "verse": 3,
+    "en": "1 Timothy 3:3",
+    "es": "1 Timoteo 3:3",
+    "textEn": "not given to wine, no striker, not greedy of filthy lucre; but patient, not a brawler, not covetous;",
+    "textEs": "No amador del vino, no heridor, no codicioso de torpes ganancias, sino moderado, no litigioso, ajeno de avaricia;"
+   }
+  },
+  {
+   "id": "church-hop",
+   "cat": "church",
+   "en": "Is it okay for Christians to church-hop instead of committing to one church?",
+   "es": "¿Está bien que los cristianos anden de iglesia en iglesia en lugar de comprometerse con una?",
+   "ref": {
+    "book": 46,
+    "chapter": 12,
+    "verse": 27,
+    "en": "1 Corinthians 12:27",
+    "es": "1 Corintios 12:27",
+    "textEn": "Now ye are the body of Christ, and members in particular.",
+    "textEs": "Pues vosotros sois el cuerpo de Cristo, y miembros en parte."
+   }
+  },
+  {
+   "id": "prayer-gossip",
+   "cat": "church",
+   "en": "Is it still gossip if you start it with “we should pray for her”?",
+   "es": "¿Sigue siendo chisme si empiezas con “deberíamos orar por ella”?",
+   "ref": {
+    "book": 20,
+    "chapter": 11,
+    "verse": 13,
+    "en": "Proverbs 11:13",
+    "es": "Proverbios 11:13",
+    "textEn": "A talebearer revealeth secrets: But he that is of a faithful spirit concealeth the matter.",
+    "textEs": "El que anda en chismes, descubre el secreto: mas el de espíritu fiel encubre la cosa."
    }
   },
   {
@@ -804,153 +744,543 @@ window.MsbPewTalkData = {
    }
   },
   {
+   "id": "altar-call-exit",
+   "cat": "church",
+   "en": "Is it okay to slip out during the altar call to beat the parking lot traffic?",
+   "es": "¿Está bien salirte durante el llamado al altar para ganarle al tráfico del estacionamiento?",
+   "ref": {
+    "book": 19,
+    "chapter": 46,
+    "verse": 10,
+    "en": "Psalms 46:10",
+    "es": "Salmos 46:10",
+    "textEn": "Be still, and know that I am God: I will be exalted among the heathen, I will be exalted in the earth.",
+    "textEs": "Estad quietos, y conoced que yo soy Dios: ensalzado he de ser entre las gentes, ensalzado seré en la tierra."
+   }
+  },
+  {
    "id": "coffee-hop",
    "cat": "church",
-   "en": "Is it okay to church-hop until you find the best coffee?",
-   "es": "¿Está bien cambiar de iglesia hasta encontrar el mejor café?",
+   "en": "Is it okay to choose a church because it has the best coffee?",
+   "es": "¿Está bien escoger una iglesia porque tiene el mejor café?",
    "ref": {
-    "book": 58,
-    "chapter": 10,
-    "verse": 25,
-    "en": "Hebrews 10:25",
-    "es": "Hebreos 10:25",
-    "textEn": "not forsaking the assembling of ourselves together, as the manner of some is; but exhorting one another: and so much the more, as ye see the day approaching.",
-    "textEs": "No dejando nuestra congregación, como algunos tienen por costumbre, mas exhortándonos; y tanto más, cuanto veis que aquel día se acerca."
+    "book": 19,
+    "chapter": 122,
+    "verse": 1,
+    "en": "Psalms 122:1",
+    "es": "Salmos 122:1",
+    "textEn": "I was glad when they said unto me, Let us go into the house of the LORD.",
+    "textEs": "Yo me alegré con los que me decían: A la casa de Jehová iremos."
    }
   },
   {
-   "id": "pastor-car",
-   "cat": "church",
-   "en": "Should pastors drive fancy cars?",
-   "es": "¿Los pastores deberían manejar carros de lujo?",
-   "ref": {
-    "book": 54,
-    "chapter": 3,
-    "verse": 3,
-    "en": "1 Timothy 3:3",
-    "es": "1 Timoteo 3:3",
-    "textEn": "not given to wine, no striker, not greedy of filthy lucre; but patient, not a brawler, not covetous;",
-    "textEs": "No amador del vino, no heridor, no codicioso de torpes ganancias, sino moderado, no litigioso, ajeno de avaricia;"
-   }
-  },
-  {
-   "id": "prayer-gossip",
-   "cat": "church",
-   "en": "Is it still gossip if you start it with “we should pray for her”?",
-   "es": "¿Sigue siendo chisme si empiezas con “deberíamos orar por ella”?",
+   "id": "taxes-timesheets",
+   "cat": "money",
+   "en": "Is it ever okay for Christians to bend the truth on taxes or timesheets?",
+   "es": "¿Alguna vez está bien que los cristianos maquillen la verdad en sus impuestos o en su registro de horas del trabajo?",
    "ref": {
     "book": 20,
     "chapter": 11,
-    "verse": 13,
-    "en": "Proverbs 11:13",
-    "es": "Proverbios 11:13",
-    "textEn": "A talebearer revealeth secrets: But he that is of a faithful spirit concealeth the matter.",
-    "textEs": "El que anda en chismes, descubre el secreto: mas el de espíritu fiel encubre la cosa."
+    "verse": 1,
+    "en": "Proverbs 11:1",
+    "es": "Proverbios 11:1",
+    "textEn": "A false balance is abomination to the LORD: But a just weight is his delight.",
+    "textEs": "El peso falso abominación es á Jehová: mas la pesa cabal le agrada."
    }
   },
   {
-   "id": "volunteer-guilt",
-   "cat": "church",
-   "en": "Should churches be allowed to guilt people into volunteering?",
-   "es": "¿Se vale que la iglesia haga sentir culpable a la gente para que sirva de voluntaria?",
+   "id": "tithe-debt",
+   "cat": "money",
+   "en": "Is it okay for Christians to pause tithing while they pay off debt?",
+   "es": "¿Está bien que los cristianos dejen de diezmar mientras pagan sus deudas?",
    "ref": {
-    "book": 60,
-    "chapter": 5,
-    "verse": 2,
-    "en": "1 Peter 5:2",
-    "es": "1 Pedro 5:2",
-    "textEn": "feed the flock of God which is among you, taking the oversight thereof, not by constraint, but willingly; not for filthy lucre, but of a ready mind;",
-    "textEs": "Apacentad la grey de Dios que está entre vosotros, teniendo cuidado de ella, no por fuerza, sino voluntariamente; no por ganancia deshonesta, sino de un ánimo pronto;"
+    "book": 39,
+    "chapter": 3,
+    "verse": 10,
+    "en": "Malachi 3:10",
+    "es": "Malaquías 3:10",
+    "textEn": "Bring ye all the tithes into the storehouse, that there may be meat in mine house, and prove me now herewith, saith the LORD of hosts, if I will not open you the windows of heaven, and pour you out a blessing, that there shall not be room enough to receive it.",
+    "textEs": "Traed todos los diezmos al alfolí, y haya alimento en mi casa; y probadme ahora en esto, dice Jehová de los ejércitos, si no os abriré las ventanas de los cielos, y vaciaré sobre vosotros bendición hasta que sobreabunde."
    }
   },
   {
-   "id": "short-announcements",
-   "cat": "church",
-   "en": "Should the announcements ever take longer than the worship?",
-   "es": "¿Los anuncios deberían durar alguna vez más que la alabanza?",
+   "id": "lottery",
+   "cat": "money",
+   "en": "Is it okay for Christians to play the lottery?",
+   "es": "¿Está bien que los cristianos jueguen a la lotería?",
    "ref": {
-    "book": 21,
-    "chapter": 5,
-    "verse": 2,
-    "en": "Ecclesiastes 5:2",
-    "es": "Eclesiastés 5:2",
-    "textEn": "Be not rash with thy mouth, and let not thine heart be hasty to utter any thing before God: for God is in heaven, and thou upon earth: therefore let thy words be few.",
-    "textEs": "No te des priesa con tu boca, ni tu corazón se apresure á proferir palabra delante de Dios; porque Dios está en el cielo, y tú sobre la tierra: por tanto, sean pocas tus palabras."
+    "book": 20,
+    "chapter": 13,
+    "verse": 11,
+    "en": "Proverbs 13:11",
+    "es": "Proverbios 13:11",
+    "textEn": "Wealth gotten by vanity shall be diminished: But he that gathereth by labour shall increase.",
+    "textEs": "Disminuiránse las riquezas de vanidad: empero multiplicará el que allega con su mano."
    }
   },
   {
-   "id": "freezing-church",
-   "cat": "church",
-   "en": "Is it okay to complain that the church is freezing every single Sunday?",
-   "es": "¿Está bien quejarte de que la iglesia está helada todos los domingos?",
+   "id": "sports-betting",
+   "cat": "money",
+   "en": "Is it okay for Christians to bet on sports with friends?",
+   "es": "¿Está bien que los cristianos apuesten en los deportes con sus amigos?",
    "ref": {
-    "book": 50,
-    "chapter": 2,
-    "verse": 14,
-    "en": "Philippians 2:14",
-    "es": "Filipenses 2:14",
-    "textEn": "Do all things without murmurings and disputings:",
-    "textEs": "Haced todo sin murmuraciones y contiendas,"
+    "book": 54,
+    "chapter": 6,
+    "verse": 10,
+    "en": "1 Timothy 6:10",
+    "es": "1 Timoteo 6:10",
+    "textEn": "For the love of money is the root of all evil: which while some coveted after, they have erred from the faith, and pierced themselves through with many sorrows.",
+    "textEs": "Porque el amor del dinero es la raíz de todos los males: el cual codiciando algunos, se descaminaron de la fe, y fueron traspasados de muchos dolores."
    }
   },
   {
-   "id": "back-row",
-   "cat": "church",
-   "en": "Should the back-row crowd have to move up when the pastor asks?",
-   "es": "¿Los de la última fila deberían pasarse adelante cuando el pastor lo pide?",
+   "id": "family-loans",
+   "cat": "money",
+   "en": "Is it okay for Christians to say no when family asks to borrow money?",
+   "es": "¿Está bien que los cristianos digan que no cuando la familia les pide dinero prestado?",
    "ref": {
-    "book": 40,
+    "book": 20,
+    "chapter": 22,
+    "verse": 7,
+    "en": "Proverbs 22:7",
+    "es": "Proverbios 22:7",
+    "textEn": "The rich ruleth over the poor, And the borrower is servant to the lender.",
+    "textEs": "El rico se enseñoreará de los pobres; y el que toma prestado, siervo es del que empresta."
+   }
+  },
+  {
+   "id": "sunday-job",
+   "cat": "money",
+   "en": "Is it okay for Christians to take a job that means working every Sunday?",
+   "es": "¿Está bien que los cristianos acepten un trabajo que implica trabajar todos los domingos?",
+   "ref": {
+    "book": 2,
     "chapter": 20,
-    "verse": 16,
-    "en": "Matthew 20:16",
-    "es": "Mateo 20:16",
-    "textEn": "So the last shall be first, and the first last: for many be called, but few chosen.",
-    "textEs": "Así los primeros serán postreros, y los postreros primeros: porque muchos son llamados, mas pocos escogidos."
-   }
-  },
-  {
-   "id": "invite-back",
-   "cat": "church",
-   "en": "Is it okay to invite a friend to your church just so they stop inviting you to theirs?",
-   "es": "¿Está bien invitar a un amigo a tu iglesia solo para que deje de invitarte a la suya?",
-   "ref": {
-    "book": 43,
-    "chapter": 1,
-    "verse": 46,
-    "en": "John 1:46",
-    "es": "Juan 1:46",
-    "textEn": "And Nathanael said unto him, Can there any good thing come out of Nazareth? Philip saith unto him, Come and see.",
-    "textEs": "Y díjole Natanael: ¿De Nazaret puede haber algo de bueno? Dícele Felipe: Ven y ve."
-   }
-  },
-  {
-   "id": "wifi-password",
-   "cat": "church",
-   "en": "Should churches give out the Wi-Fi password?",
-   "es": "¿Las iglesias deberían compartir la contraseña del wifi?",
-   "ref": {
-    "book": 40,
-    "chapter": 10,
     "verse": 8,
-    "en": "Matthew 10:8",
-    "es": "Mateo 10:8",
-    "textEn": "Heal the sick, cleanse the lepers, raise the dead, cast out devils: freely ye have received, freely give.",
-    "textEs": "Sanad enfermos, limpiad leprosos, resucitad muertos, echad fuera demonios: de gracia recibisteis, dad de gracia."
+    "en": "Exodus 20:8",
+    "es": "Éxodo 20:8",
+    "textEn": "Remember the sabbath day, to keep it holy.",
+    "textEs": "Acordarte has del día del reposo, para santificarlo:"
    }
   },
   {
-   "id": "clap-baptism",
-   "cat": "church",
-   "en": "Is it okay to cheer and clap when someone gets baptized?",
-   "es": "¿Está bien echar porras y aplaudir cuando bautizan a alguien?",
+   "id": "tract-tip",
+   "cat": "money",
+   "en": "Is it okay for Christians to leave a gospel tract instead of a good tip?",
+   "es": "¿Está bien que los cristianos dejen un folleto evangelístico en lugar de una buena propina?",
+   "ref": {
+    "book": 54,
+    "chapter": 5,
+    "verse": 18,
+    "en": "1 Timothy 5:18",
+    "es": "1 Timoteo 5:18",
+    "textEn": "For the scripture saith, Thou shalt not muzzle the ox that treadeth out the corn. And, The labourer is worthy of his reward.",
+    "textEs": "Porque la Escritura dice: No embozarás al buey que trilla; y: Digno es el obrero de su jornal."
+   }
+  },
+  {
+   "id": "get-rich",
+   "cat": "money",
+   "en": "Is it okay for Christians to make getting rich a life goal?",
+   "es": "¿Está bien que los cristianos tengan como meta en la vida hacerse ricos?",
+   "ref": {
+    "book": 54,
+    "chapter": 6,
+    "verse": 9,
+    "en": "1 Timothy 6:9",
+    "es": "1 Timoteo 6:9",
+    "textEn": "But they that will be rich fall into temptation and a snare, and into many foolish and hurtful lusts, which drown men in destruction and perdition.",
+    "textEs": "Porque los que quieren enriquecerse, caen en tentación y lazo, y en muchas codicias locas y dañosas, que hunden á los hombres en perdición y muerte."
+   }
+  },
+  {
+   "id": "mental-health-day",
+   "cat": "money",
+   "en": "Is it okay for Christians to call in sick for a mental health day?",
+   "es": "¿Está bien que los cristianos se reporten enfermos para tomarse un día de salud mental?",
+   "ref": {
+    "book": 41,
+    "chapter": 6,
+    "verse": 31,
+    "en": "Mark 6:31",
+    "es": "Marcos 6:31",
+    "textEn": "And he said unto them, Come ye yourselves apart into a desert place, and rest a while: for there were many coming and going, and they had no leisure so much as to eat.",
+    "textEs": "Y él les dijo: Venid vosotros aparte al lugar desierto, y reposad un poco. Porque eran muchos los que iban y venían, que ni aun tenían lugar de comer."
+   }
+  },
+  {
+   "id": "bar-casino-job",
+   "cat": "money",
+   "en": "Is it okay for Christians to work at a bar or a casino?",
+   "es": "¿Está bien que los cristianos trabajen en un bar o en un casino?",
+   "ref": {
+    "book": 46,
+    "chapter": 10,
+    "verse": 31,
+    "en": "1 Corinthians 10:31",
+    "es": "1 Corintios 10:31",
+    "textEn": "Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God.",
+    "textEs": "Si pues coméis, ó bebéis, ó hacéis otra cosa, hacedlo todo á gloria de Dios."
+   }
+  },
+  {
+   "id": "luxury-spending",
+   "cat": "money",
+   "en": "Is it okay for Christians to buy luxury things while others are in need?",
+   "es": "¿Está bien que los cristianos compren cosas de lujo mientras otros pasan necesidad?",
+   "ref": {
+    "book": 62,
+    "chapter": 3,
+    "verse": 17,
+    "en": "1 John 3:17",
+    "es": "1 Juan 3:17",
+    "textEn": "But whoso hath this world's good, and seeth his brother have need, and shutteth up his bowels of compassion from him, how dwelleth the love of God in him?",
+    "textEs": "Mas el que tuviere bienes de este mundo, y viere á su hermano tener necesidad, y le cerrare sus entrañas, ¿cómo está el amor de Dios en él?"
+   }
+  },
+  {
+   "id": "side-hustle",
+   "cat": "money",
+   "en": "Is it okay for Christians to work on a side hustle during company hours?",
+   "es": "¿Está bien que los cristianos trabajen en un negocio propio durante las horas de la empresa?",
+   "ref": {
+    "book": 56,
+    "chapter": 2,
+    "verse": 10,
+    "en": "Titus 2:10",
+    "es": "Tito 2:10",
+    "textEn": "not purloining, but shewing all good fidelity; that they may adorn the doctrine of God our Saviour in all things.",
+    "textEs": "No defraudando, antes mostrando toda buena lealtad, para que adornen en todo la doctrina de nuestro Salvador Dios."
+   }
+  },
+  {
+   "id": "wedding-debt",
+   "cat": "money",
+   "en": "Is it okay for Christians to go into debt for a dream wedding?",
+   "es": "¿Está bien que los cristianos se endeuden por una boda de ensueño?",
    "ref": {
     "book": 42,
-    "chapter": 15,
+    "chapter": 14,
+    "verse": 28,
+    "en": "Luke 14:28",
+    "es": "Lucas 14:28",
+    "textEn": "For which of you, intending to build a tower, sitteth not down first, and counteth the cost, whether he have sufficient to finish it?",
+    "textEs": "Porque ¿cuál de vosotros, queriendo edificar una torre, no cuenta primero sentado los gastos, si tiene lo que necesita para acabarla?"
+   }
+  },
+  {
+   "id": "street-giving",
+   "cat": "money",
+   "en": "Is it okay for Christians to say no to someone asking for money on the street?",
+   "es": "¿Está bien que los cristianos le digan que no a alguien que pide dinero en la calle?",
+   "ref": {
+    "book": 20,
+    "chapter": 3,
+    "verse": 27,
+    "en": "Proverbs 3:27",
+    "es": "Proverbios 3:27",
+    "textEn": "Withhold not good from them to whom it is due, When it is in the power of thine hand to do it.",
+    "textEs": "No detengas el bien de sus dueños, cuando tuvieres poder para hacerlo."
+   }
+  },
+  {
+   "id": "career-climb",
+   "cat": "money",
+   "en": "Is it okay for Christians to miss family dinners to climb the career ladder?",
+   "es": "¿Está bien que los cristianos se pierdan las cenas en familia para subir en su carrera?",
+   "ref": {
+    "book": 21,
+    "chapter": 4,
+    "verse": 6,
+    "en": "Ecclesiastes 4:6",
+    "es": "Eclesiastés 4:6",
+    "textEn": "Better is an handful with quietness, than both the hands full with travail and vexation of spirit.",
+    "textEs": "Mas vale el un puño lleno con descanso, que ambos puños llenos con trabajo y aflicción de espíritu."
+   }
+  },
+  {
+   "id": "sue-believer",
+   "cat": "money",
+   "en": "Is it okay for Christians to sue another Christian?",
+   "es": "¿Está bien que los cristianos demanden a otro cristiano?",
+   "ref": {
+    "book": 46,
+    "chapter": 6,
+    "verse": 1,
+    "en": "1 Corinthians 6:1",
+    "es": "1 Corintios 6:1",
+    "textEn": "Dare any of you, having a matter against another, go to law before the unjust, and not before the saints?",
+    "textEs": "¿Osa alguno de vosotros, teniendo algo con otro, ir á juicio delante de los injustos, y no delante de los santos?"
+   }
+  },
+  {
+   "id": "tithe-grandma",
+   "cat": "money",
+   "en": "Should you tithe on the birthday money grandma slipped you?",
+   "es": "¿Deberías diezmar del dinero de cumpleaños que te dio tu abuela a escondidas?",
+   "ref": {
+    "book": 47,
+    "chapter": 9,
+    "verse": 7,
+    "en": "2 Corinthians 9:7",
+    "es": "2 Corintios 9:7",
+    "textEn": "Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity: for God loveth a cheerful giver.",
+    "textEs": "Cada uno dé como propuso en su corazón: no con tristeza, ó por necesidad; porque Dios ama el dador alegre."
+   }
+  },
+  {
+   "id": "explicit-music",
+   "cat": "culture",
+   "en": "Is it okay for Christians to listen to secular music that contains sexual or explicit lyrics?",
+   "es": "¿Está bien que los cristianos escuchen música secular con letras sexuales o explícitas?",
+   "ref": {
+    "book": 50,
+    "chapter": 4,
+    "verse": 8,
+    "en": "Philippians 4:8",
+    "es": "Filipenses 4:8",
+    "textEn": "Finally, brethren, whatsoever things are true, whatsoever things are honest, whatsoever things are just, whatsoever things are pure, whatsoever things are lovely, whatsoever things are of good report; if there be any virtue, and if there be any praise, think on these things.",
+    "textEs": "Por lo demás, hermanos, todo lo que es verdadero, todo lo honesto, todo lo justo, todo lo puro, todo lo amable, todo lo que es de buen nombre; si hay virtud alguna, si alguna alabanza, en esto pensad."
+   }
+  },
+  {
+   "id": "tattoos",
+   "cat": "culture",
+   "en": "Is it okay for Christians to get tattoos?",
+   "es": "¿Está bien que los cristianos se hagan tatuajes?",
+   "ref": {
+    "book": 3,
+    "chapter": 19,
+    "verse": 28,
+    "en": "Leviticus 19:28",
+    "es": "Levítico 19:28",
+    "textEn": "Ye shall not make any cuttings in your flesh for the dead, nor print any marks upon you: I am the LORD.",
+    "textEs": "Y no haréis rasguños en vuestra carne por un muerto, ni imprimiréis en vosotros señal alguna: Yo Jehová."
+   }
+  },
+  {
+   "id": "social-drinking",
+   "cat": "culture",
+   "en": "Is it okay for Christians to drink alcohol socially?",
+   "es": "¿Está bien que los cristianos tomen alcohol en reuniones sociales?",
+   "ref": {
+    "book": 49,
+    "chapter": 5,
+    "verse": 18,
+    "en": "Ephesians 5:18",
+    "es": "Efesios 5:18",
+    "textEn": "And be not drunk with wine, wherein is excess; but be filled with the Spirit;",
+    "textEs": "Y no os embriaguéis de vino, en lo cual hay disolución; mas sed llenos de Espíritu;"
+   }
+  },
+  {
+   "id": "r-rated",
+   "cat": "culture",
+   "en": "Is it okay for Christians to watch R-rated movies?",
+   "es": "¿Está bien que los cristianos vean películas para adultos con clasificación R?",
+   "ref": {
+    "book": 19,
+    "chapter": 101,
+    "verse": 3,
+    "en": "Psalms 101:3",
+    "es": "Salmos 101:3",
+    "textEn": "I will set no wicked thing before mine eyes: I hate the work of them that turn aside; It shall not cleave to me.",
+    "textEs": "No pondré delante de mis ojos cosa injusta: aborrezco la obra de los que se desvían: ninguno de ellos se allegará á mí."
+   }
+  },
+  {
+   "id": "cursing",
+   "cat": "culture",
+   "en": "Is it okay for Christians to curse when they stub their toe?",
+   "es": "¿Está bien que los cristianos digan una grosería cuando se pegan en el dedo del pie?",
+   "ref": {
+    "book": 49,
+    "chapter": 4,
+    "verse": 29,
+    "en": "Ephesians 4:29",
+    "es": "Efesios 4:29",
+    "textEn": "Let no corrupt communication proceed out of your mouth, but that which is good to the use of edifying, that it may minister grace unto the hearers.",
+    "textEs": "Ninguna palabra torpe salga de vuestra boca, sino la que sea buena para edificación, para que dé gracia á los oyentes."
+   }
+  },
+  {
+   "id": "white-lies",
+   "cat": "culture",
+   "en": "Is it okay for Christians to tell a white lie to spare someone’s feelings?",
+   "es": "¿Está bien que los cristianos digan una mentira piadosa para no herir a alguien?",
+   "ref": {
+    "book": 49,
+    "chapter": 4,
+    "verse": 25,
+    "en": "Ephesians 4:25",
+    "es": "Efesios 4:25",
+    "textEn": "Wherefore putting away lying, speak every man truth with his neighbour: for we are members one of another.",
+    "textEs": "Por lo cual, dejada la mentira, hablad verdad cada uno con su prójimo; porque somos miembros los unos de los otros."
+   }
+  },
+  {
+   "id": "therapy",
+   "cat": "culture",
+   "en": "Is it okay for Christians to lean on therapy and medication, not just prayer?",
+   "es": "¿Está bien que los cristianos se apoyen en la terapia y los medicamentos, no solo en la oración?",
+   "ref": {
+    "book": 42,
+    "chapter": 5,
+    "verse": 31,
+    "en": "Luke 5:31",
+    "es": "Lucas 5:31",
+    "textEn": "And Jesus answering said unto them, They that are whole need not a physician; but they that are sick.",
+    "textEs": "Y respondiendo Jesús, les dijo: Los que están sanos no necesitan médico, sino los que están enfermos."
+   }
+  },
+  {
+   "id": "halloween",
+   "cat": "culture",
+   "en": "Is it okay for Christians to hand out candy on Halloween?",
+   "es": "¿Está bien que los cristianos repartan dulces en Halloween?",
+   "ref": {
+    "book": 45,
+    "chapter": 14,
+    "verse": 5,
+    "en": "Romans 14:5",
+    "es": "Romanos 14:5",
+    "textEn": "One man esteemeth one day above another: another esteemeth every day alike. Let every man be fully persuaded in his own mind.",
+    "textEs": "Uno hace diferencia entre día y día; otro juzga iguales todos los días. Cada uno esté asegurado en su ánimo."
+   }
+  },
+  {
+   "id": "horoscopes",
+   "cat": "culture",
+   "en": "Is it okay for Christians to read their horoscope just for fun?",
+   "es": "¿Está bien que los cristianos lean su horóscopo solo por diversión?",
+   "ref": {
+    "book": 5,
+    "chapter": 18,
     "verse": 10,
-    "en": "Luke 15:10",
-    "es": "Lucas 15:10",
-    "textEn": "Likewise, I say unto you, there is joy in the presence of the angels of God over one sinner that repenteth.",
-    "textEs": "Así os digo que hay gozo delante de los ángeles de Dios por un pecador que se arrepiente."
+    "en": "Deuteronomy 18:10",
+    "es": "Deuteronomio 18:10",
+    "textEn": "There shall not be found among you any one that maketh his son or his daughter to pass through the fire, or that useth divination, or an observer of times, or an enchanter, or a witch,",
+    "textEs": "No sea hallado en ti quien haga pasar su hijo ó su hija por el fuego, ni practicante de adivinaciones, ni agorero, ni sortílego, ni hechicero,"
+   }
+  },
+  {
+   "id": "yoga",
+   "cat": "culture",
+   "en": "Is it okay for Christians to do yoga?",
+   "es": "¿Está bien que los cristianos practiquen yoga?",
+   "ref": {
+    "book": 46,
+    "chapter": 10,
+    "verse": 23,
+    "en": "1 Corinthians 10:23",
+    "es": "1 Corintios 10:23",
+    "textEn": "All things are lawful for me, but all things are not expedient: all things are lawful for me, but all things edify not.",
+    "textEs": "Todo me es lícito, mas no todo conviene: todo me es lícito, mas no todo edifica."
+   }
+  },
+  {
+   "id": "unfollow",
+   "cat": "culture",
+   "en": "Is it okay for Christians to unfollow friends whose posts make them angry?",
+   "es": "¿Está bien que los cristianos dejen de seguir a amigos cuyas publicaciones los hacen enojar?",
+   "ref": {
+    "book": 45,
+    "chapter": 12,
+    "verse": 18,
+    "en": "Romans 12:18",
+    "es": "Romanos 12:18",
+    "textEn": "If it be possible, as much as lieth in you, live peaceably with all men.",
+    "textEs": "Si se puede hacer, cuanto está en vosotros, tened paz con todos los hombres."
+   }
+  },
+  {
+   "id": "cremation",
+   "cat": "culture",
+   "en": "Is it okay for Christians to be cremated?",
+   "es": "¿Está bien que los cristianos sean cremados?",
+   "ref": {
+    "book": 21,
+    "chapter": 12,
+    "verse": 7,
+    "en": "Ecclesiastes 12:7",
+    "es": "Eclesiastés 12:7",
+    "textEn": "Then shall the dust return to the earth as it was: and the spirit shall return unto God who gave it.",
+    "textEs": "Y el polvo se torne á la tierra, como era, y el espíritu se vuelva á Dios que lo dió."
+   }
+  },
+  {
+   "id": "cannabis",
+   "cat": "culture",
+   "en": "Is it okay for Christians to use cannabis where it is legal?",
+   "es": "¿Está bien que los cristianos consuman cannabis donde es legal?",
+   "ref": {
+    "book": 46,
+    "chapter": 6,
+    "verse": 19,
+    "en": "1 Corinthians 6:19",
+    "es": "1 Corintios 6:19",
+    "textEn": "What? know ye not that your body is the temple of the Holy Ghost which is in you, which ye have of God, and ye are not your own?",
+    "textEs": "¿O ignoráis que vuestro cuerpo es templo del Espíritu Santo, el cual está en vosotros, el cual tenéis de Dios, y que no sois vuestros?"
+   }
+  },
+  {
+   "id": "shooter-games",
+   "cat": "culture",
+   "en": "Is it okay for Christians to play shooter video games?",
+   "es": "¿Está bien que los cristianos jueguen videojuegos de disparos?",
+   "ref": {
+    "book": 19,
+    "chapter": 11,
+    "verse": 5,
+    "en": "Psalms 11:5",
+    "es": "Salmos 11:5",
+    "textEn": "The LORD trieth the righteous: But the wicked and him that loveth violence his soul hateth.",
+    "textEs": "Jehová prueba al justo; empero al malo y al que ama la violencia, su alma aborrece."
+   }
+  },
+  {
+   "id": "santa",
+   "cat": "culture",
+   "en": "Is it okay for Christian parents to tell their kids Santa is real?",
+   "es": "¿Está bien que los padres cristianos les digan a sus hijos que Santa Claus es real?",
+   "ref": {
+    "book": 43,
+    "chapter": 8,
+    "verse": 32,
+    "en": "John 8:32",
+    "es": "Juan 8:32",
+    "textEn": "and ye shall know the truth, and the truth shall make you free.",
+    "textEs": "Y conoceréis la verdad, y la verdad os libertará."
+   }
+  },
+  {
+   "id": "good-deeds-online",
+   "cat": "culture",
+   "en": "Is it okay for Christians to post their good deeds online?",
+   "es": "¿Está bien que los cristianos publiquen sus buenas obras en redes?",
+   "ref": {
+    "book": 40,
+    "chapter": 6,
+    "verse": 3,
+    "en": "Matthew 6:3",
+    "es": "Mateo 6:3",
+    "textEn": "But when thou doest alms, let not thy left hand know what thy right hand doeth:",
+    "textEs": "Mas cuando tú haces limosna, no sepa tu izquierda lo que hace tu derecha;"
+   }
+  },
+  {
+   "id": "church-shirt-traffic",
+   "cat": "culture",
+   "en": "Can you cut someone off in traffic while wearing your church T-shirt?",
+   "es": "¿Se vale cerrarle el paso a alguien en el tráfico con tu playera de la iglesia puesta?",
+   "ref": {
+    "book": 50,
+    "chapter": 4,
+    "verse": 5,
+    "en": "Philippians 4:5",
+    "es": "Filipenses 4:5",
+    "textEn": "Let your moderation be known unto all men. The Lord is at hand.",
+    "textEs": "Vuestra modestia sea conocida de todos los hombres. El Señor está cerca."
    }
   }
  ]

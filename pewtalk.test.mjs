@@ -16,10 +16,10 @@ function load() {
   return ctx;
 }
 
-test('about 60 original cards, each with English, Spanish and a category', () => {
+test('about 80 original cards, each with English, Spanish and a category', () => {
   const { window } = load();
   const { cards, categories } = window.MsbPewTalkData;
-  assert.ok(cards.length >= 55 && cards.length <= 80, `${cards.length} cards`);
+  assert.ok(cards.length >= 70 && cards.length <= 95, `${cards.length} cards`);
   assert.equal(new Set(cards.map((c) => c.id)).size, cards.length);
   for (const c of cards) {
     assert.ok(categories[c.cat], c.id);
@@ -27,6 +27,15 @@ test('about 60 original cards, each with English, Spanish and a category', () =>
     assert.doesNotMatch(c.es, /\busted(es)?\b/i, `${c.id} uses tú`);
   }
   for (const cat of Object.keys(categories)) assert.ok(cards.filter((c) => c.cat === cat).length >= 8, cat);
+});
+
+test('the deck is built around "Is it okay for Christians to..." questions, including Angel\'s own five', () => {
+  const { window } = load();
+  const cards = window.MsbPewTalkData.cards;
+  for (const q of ['Is it okay for Christians to stay friends with an ex while married?', 'Is it okay for Christians to wear whatever they want to church because God looks at the heart?', 'Is it okay for Christians to sign a prenuptial agreement?', 'Is it ever okay for Christians to bend the truth on taxes or timesheets?', 'Is it okay for Christians to listen to secular music that contains sexual or explicit lyrics?']) assert.ok(cards.some((c) => c.en === q), q);
+  const light = cards.filter((c) => !/\b(Christians?|Christian (couples?|parents|families|husband|couple)|pastors)\b/.test(c.en));
+  assert.ok(light.length <= 10, `${light.length} lighter cards`);
+  assert.deepEqual(Object.keys(window.MsbPewTalkData.categories), ['dating', 'family', 'church', 'money', 'culture']);
 });
 
 test('cards speak to Christians of every tradition, with nothing tied to one church', () => {
