@@ -14,6 +14,7 @@
      leaderboard → { show: [{ code, id, name, score, level, ts }] } cap 50
      shared:<16 hex>
      room:ROOM-XXXXXX with a two-hour TTL
+     pew:<CODE> and pewinv:<code>: Pew Talk card rooms, see pewtalk.mjs
      versebox:<code> → array, newest first, max 100. Each item:
        { id, from, fromName, to, toName, book, chapter, verse,
          reference, text, note, translation, ts, read, direction }
@@ -37,6 +38,7 @@
 
 import { handlePush, runPushCron } from './push.mjs';
 import { handleMyNotes, handleLessons, readOwnState } from './mynotes.mjs';
+import { handlePew } from './pewtalk.mjs';
 
 const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const SHOWS = ['jeopardy', 'millionaire', 'feud', 'sound', 'babel', 'defend', 'doctrine'];
@@ -1130,7 +1132,7 @@ export async function handleTrade(path, body, env, authedUser) {
 }
 
 /* every per-person rate bucket, so a deleted account leaves no keys behind */
-const RATE_NAMES = ['account-delete', 'friend-add', 'friend-change', 'lessons', 'lessons-hide', 'lessons-read', 'msg', 'mynotes', 'mynotes-hide', 'mynotes-read', 'note', 'note-change', 'room', 'scores', 'shared', 'shared-edit', 'study', 'study-delete', 'sync', 'trade', 'trade-move', 'trade-read', 'verse', 'verse-read'];
+const RATE_NAMES = ['account-delete', 'friend-add', 'friend-change', 'lessons', 'lessons-hide', 'lessons-read', 'msg', 'mynotes', 'mynotes-hide', 'mynotes-read', 'note', 'note-change', 'pew', 'pew-read', 'room', 'scores', 'shared', 'shared-edit', 'study', 'study-delete', 'sync', 'trade', 'trade-move', 'trade-read', 'verse', 'verse-read'];
 
 /* Delete an account and what it left with friends: the user record, saved
    lessons and notes, trades, friend links on both sides (with the messages,
@@ -1151,6 +1153,7 @@ async function deleteAccount(env, user) {
     await env.FRIENDS.delete(checkKey(id, me));
   }
   await env.FRIENDS.delete(`trades:${me}`);
+  await env.FRIENDS.delete(`pewinv:${me}`);
   for (const code of others) {
     if (!/^[A-Z0-9-]{4,24}$/.test(code)) continue;
     const f = hydrate(await loadUser(env, code));
@@ -1910,6 +1913,11 @@ export async function handleFriends(request, env) {
     }
     if (url.pathname.startsWith('/mynotes/')) {
       const [data, code = 200] = await handleMyNotes(url.pathname, body, env, { authed, friendsBothWays, takeRate });
+      return reply(data, code);
+    }
+
+    if (url.pathname.startsWith('/pew/')) {
+      const [data, code = 200] = await handlePew(url.pathname, body, env, { authed, takeRate, friendsBothWays });
       return reply(data, code);
     }
 

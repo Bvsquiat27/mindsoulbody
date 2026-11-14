@@ -1,6 +1,6 @@
 /* Pew Talk: original cards in English and Spanish with exact KJV / RV1909
-   verses, wired into Games, offline shell, and online play hidden until the
-   worker answers /pew/hello. */
+   verses, wired into Games and the offline shell. Online only; it shows as
+   coming soon until the worker answers /pew/hello. */
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFileSync } from 'node:fs';
@@ -68,7 +68,7 @@ test('decks deal unseen cards first and can be narrowed to one category', () => 
 test('wired into Games, the router, the offline shell, and online waits for the worker', () => {
   const aura = read('./aura.js'), sw = read('./sw.js'), ui = read('./pewtalk.js'), html = appHtml();
   assert.match(aura, /data-nav="pew"/);
-  assert.match(aura, /const MSB_PEW_TALK_LIVE=false;/, 'hidden from Games until the worker is live');
+  assert.match(aura, /const MSB_PEW_TALK_LIVE=true;/, 'shown in Games once this branch ships with the worker');
   assert.match(aura, /if\(MSB_PEW_TALK_LIVE&&/);
   assert.match(aura, /state\.screen==='pew'\)MsbPewTalk\.show/);
   assert.match(aura, /MSB_DEFERRED_SCREENS=\['trivia','show','pew'/);
@@ -77,4 +77,12 @@ test('wired into Games, the router, the offline shell, and online waits for the 
   assert.match(ui, /msbFriendsCall\('\/pew\/hello'/);
   assert.match(ui, /COMING SOON/);
   assert.match(ui, /MUY PRONTO/);
+});
+
+test('online only: no pass-the-phone mode, a round timer, and the countdown follows the server', () => {
+  const ui = read('./pewtalk.js');
+  assert.doesNotMatch(ui, /local-setup|local-vote|Pass the phone|Pasa el teléfono/);
+  assert.match(ui, /timer: S\.timer/);
+  assert.match(ui, /st\.msLeft != null \? Date\.now\(\) \+ st\.msLeft/);
+  assert.match(ui, /'\/pew\/state'/);
 });
