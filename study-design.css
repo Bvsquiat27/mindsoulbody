@@ -892,6 +892,7 @@ html.sq-locked,html.sq-locked body{overflow:hidden;overscroll-behavior:none}
 .pew-modes{display:grid;gap:12px;margin:16px 0}
 .pew-mode{display:flex;flex-direction:column;gap:6px;align-items:flex-start;text-align:left;cursor:pointer;color:var(--text)}
 .pew-mode h3{margin:0}.pew-mode p{margin:0}
+.pew-mode-static{cursor:default}.pew-mode-static .primary{margin-top:6px}.pew-mode-static .pew-count-row,.pew-mode-static .pew-joinrow{align-self:stretch}
 .pew-soon{opacity:.72;cursor:default}
 .pew-card{position:relative;margin:14px 0 16px;padding:26px 22px 20px;border-radius:22px;background:linear-gradient(160deg,var(--surface2),var(--surface));border:1px solid var(--gold);box-shadow:0 10px 28px rgba(0,0,0,.22);display:flex;flex-direction:column;gap:10px;min-height:170px}
 .pew-cat{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
