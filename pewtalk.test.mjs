@@ -68,6 +68,8 @@ test('decks deal unseen cards first and can be narrowed to one category', () => 
 test('wired into Games, the router, the offline shell, and online waits for the worker', () => {
   const aura = read('./aura.js'), sw = read('./sw.js'), ui = read('./pewtalk.js'), html = appHtml();
   assert.match(aura, /data-nav="pew"/);
+  assert.match(aura, /const MSB_PEW_TALK_LIVE=false;/, 'hidden from Games until the worker is live');
+  assert.match(aura, /if\(MSB_PEW_TALK_LIVE&&/);
   assert.match(aura, /state\.screen==='pew'\)MsbPewTalk\.show/);
   assert.match(aura, /MSB_DEFERRED_SCREENS=\['trivia','show','pew'/);
   assert.ok(html.indexOf('pewtalk-data.js') < html.indexOf('pewtalk.js"'));
