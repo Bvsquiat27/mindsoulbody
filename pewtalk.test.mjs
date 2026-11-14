@@ -65,11 +65,11 @@ test('decks deal unseen cards first and can be narrowed to one category', () => 
   const { buildDeck } = ctx.window.MsbPewTalk._test;
   const all = buildDeck('all');
   assert.equal(all.length, ctx.window.MsbPewTalkData.cards.length);
-  const fam = buildDeck('home');
-  assert.ok(fam.every((id) => ctx.window.MsbPewTalkData.cards.find((c) => c.id === id).cat === 'home'));
+  const fam = buildDeck('family');
+  assert.ok(fam.every((id) => ctx.window.MsbPewTalkData.cards.find((c) => c.id === id).cat === 'family'));
   ctx.localStorage.setItem('msb_pew_seen', JSON.stringify([fam[0]]));
-  assert.notEqual(buildDeck('home')[0], fam[0]);
-  assert.equal(buildDeck('home').at(-1), fam[0]);
+  assert.notEqual(buildDeck('family')[0], fam[0]);
+  assert.equal(buildDeck('family').at(-1), fam[0]);
 });
 
 test('wired into Games, the router, the offline shell, and online waits for the worker', () => {
