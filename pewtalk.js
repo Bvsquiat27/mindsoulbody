@@ -69,20 +69,24 @@ window.MsbPewTalk = (() => {
     const chips = ['all', ...cats].map(id => `<button type="button" class="filter ${S.cat === id ? 'active' : ''}" data-pew="cat" data-cat="${id}" aria-pressed="${S.cat === id}">${esc(id === 'all' ? t('All', 'Todas') : catLabel(id))}<span class="subject-count">${count(id)}</span></button>`).join('');
     const timers = TIMERS.map(n => `<button type="button" class="filter ${S.timer === n ? 'active' : ''}" data-pew="timer" data-n="${n}" aria-pressed="${S.timer === n}">${n ? `${n} s` : t('No timer', 'Sin reloj')}</button>`).join('');
     const id = ident();
-    let body;
-    if (online === null) body = `<p class="lead">${t('Checking whether online rooms are open…', 'Revisando si las salas en línea están abiertas…')}</p>`;
-    else if (online === false) body = `<div class="card pew-mode pew-soon" aria-disabled="true"><span class="lesson-meta">${t('ONLINE · COMING SOON', 'EN LÍNEA · MUY PRONTO')}</span><h3>${t('Rooms are not open yet', 'Las salas todavía no están abiertas')}</h3><p>${t('Soon friends on their own phones can join one room and answer together. Check your internet if this stays here.', 'Pronto tus amigos podrán unirse desde su propio teléfono y responder juntos. Revisa tu internet si esto no cambia.')}</p></div>`;
-    else if (!id) body = `<p class="lead">${t('Pew Talk rooms are for friends. Get your friend code first in Profile, then Friends.', 'Las salas de Plática de banca son para amigos. Primero obtén tu código de amigo en Perfil, luego Amigos.')}</p>`;
-    else body = `<p class="subject-caption">${t('Cards', 'Tarjetas')}</p><div class="subject-filters" role="group" aria-label="${t('Choose cards', 'Elige tarjetas')}">${chips}</div>
-      <p class="subject-caption">${t('Time to answer each card', 'Tiempo para responder cada tarjeta')}</p><div class="pew-count-row" role="group" aria-label="${t('Answer timer', 'Reloj para responder')}">${timers}</div>
-      <button class="primary" data-pew="create">${t('Open a room', 'Abrir una sala')}</button>
-      <p class="pew-joinrow"><input class="text-input" data-pew-code placeholder="${t('Room code', 'Código de sala')}" autocapitalize="characters" autocomplete="off" maxlength="9" aria-label="${t('Room code', 'Código de sala')}"><button class="secondary" data-pew="join-code">${t('Join', 'Unirme')}</button></p>
-      <div data-pew-invites></div>`;
+    let online_;
+    if (online === null) online_ = `<p class="small muted">${t('Checking whether online rooms are open…', 'Revisando si las salas en línea están abiertas…')}</p>`;
+    else if (online === false) online_ = `<p class="small muted">${t('Rooms are not open right now. Check your internet, or play solo.', 'Las salas no están abiertas ahora. Revisa tu internet o juega solo.')}</p>`;
+    else if (!id) online_ = `<p class="small muted">${t('Rooms are for friends. Get your friend code first in Profile, then Friends.', 'Las salas son para amigos. Primero obtén tu código de amigo en Perfil, luego Amigos.')}</p>`;
+    else online_ = `<p class="subject-caption">${t('Time to answer each card', 'Tiempo para responder cada tarjeta')}</p><div class="pew-count-row" role="group" aria-label="${t('Answer timer', 'Reloj para responder')}">${timers}</div>
+        <button class="primary" data-pew="create">${t('Open a room', 'Abrir una sala')}</button>
+        <p class="pew-joinrow"><input class="text-input" data-pew-code placeholder="${t('Room code', 'Código de sala')}" autocapitalize="characters" autocomplete="off" maxlength="9" aria-label="${t('Room code', 'Código de sala')}"><button class="secondary" data-pew="join-code">${t('Join', 'Unirme')}</button></p>
+        <div data-pew-invites></div>`;
+    const body = `<p class="subject-caption">${t('Cards', 'Tarjetas')}</p><div class="subject-filters" role="group" aria-label="${t('Choose cards', 'Elige tarjetas')}">${chips}</div>
+      <div class="pew-modes">
+        <section class="card pew-mode pew-mode-static"><span class="lesson-meta">${t('JUST YOU · WORKS OFFLINE', 'SOLO TÚ · FUNCIONA SIN INTERNET')}</span><h3>${t('Play solo', 'Jugar solo')}</h3><p>${t('Go through the cards at your own pace. Pick your answer, read the verse, and think it over.', 'Recorre las tarjetas a tu ritmo. Escoge tu respuesta, lee el versículo y piénsalo.')}</p><button class="primary" data-pew="solo">${t('Play solo', 'Jugar solo')}</button></section>
+        <section class="card pew-mode pew-mode-static"><span class="lesson-meta">${t('WITH FRIENDS · ONLINE', 'CON AMIGOS · EN LÍNEA')}</span><h3>${t('Play with friends', 'Jugar con amigos')}</h3><p>${t('Each on your own phone, the same card for everyone, all the answers shown at once.', 'Cada quien en su teléfono, la misma tarjeta para todos y todas las respuestas a la vez.')}</p>${online_}</section>
+      </div>`;
     set(`${back('games', t('← Games', '← Juegos'))}${head()}
-      <p class="lead">${t('Play with friends, each on your own phone. Everyone sees the same card at the same time and answers in secret. When everyone has answered, or the timer ends, all the answers show at once. Then talk it over.', 'Juega con tus amigos, cada quien en su propio teléfono. Todos ven la misma tarjeta al mismo tiempo y responden en secreto. Cuando todos responden, o se acaba el tiempo, se muestran todas las respuestas a la vez. Luego platican.')}</p>
+      <p class="lead">${t('Real questions Christians argue about. Play solo at your own pace, or with friends, each on your own phone: everyone answers in secret and all the answers show at once. Then talk it over.', 'Preguntas reales que los cristianos debaten. Juega solo a tu ritmo, o con amigos, cada quien en su teléfono: todos responden en secreto y las respuestas se muestran a la vez. Luego platiquen.')}</p>
       <div class="pew-legend">${ANSWERS.map(a => `<span class="pew-chip pew-${a.id}"><strong>${esc(es() ? a.es : a.en)}</strong> ${esc(es() ? a.hintEs : a.hintEn)}</span>`).join('')}</div>
       ${body}<p class="small muted" role="status" data-pew-status>${esc(msg || '')}</p>
-      <p class="footnote">${t('2 to 6 players. A game for laughing and talking together. There are no wrong answers, and nothing here is official teaching of any church. Bring the real questions to your pastor or priest.', 'De 2 a 6 jugadores. Un juego para reír y platicar juntos. No hay respuestas incorrectas y nada aquí es enseñanza oficial de ninguna iglesia. Lleva las preguntas de verdad a tu pastor o sacerdote.')}</p>`);
+      <p class="footnote">${t('Solo, or 2 to 6 players online. A game for laughing and talking together. There are no wrong answers, and nothing here is official teaching of any church. Bring the real questions to your pastor or priest.', 'Solo, o de 2 a 6 jugadores en línea. Un juego para reír y platicar juntos. No hay respuestas incorrectas y nada aquí es enseñanza oficial de ninguna iglesia. Lleva las preguntas de verdad a tu pastor o sacerdote.')}</p>`);
     if (online === null) probeOnline().then(() => { if (S && S.view === 'menu') menu(msg); });
     else if (online === true && id) showInvites();
   }
@@ -94,6 +98,43 @@ window.MsbPewTalk = (() => {
       <p class="lead">${rounds === 1 ? t('You talked through 1 card.', 'Platicaron 1 tarjeta.') : t(`You talked through ${rounds} cards.`, `Platicaron ${rounds} tarjetas.`)} ${rounds ? (oneMind === 1 ? t('Everyone agreed once.', 'Todos estuvieron de acuerdo una vez.') : t(`Everyone agreed ${oneMind} times.`, `Todos estuvieron de acuerdo ${oneMind} veces.`)) : ''}</p>
       <blockquote class="pew-closing">${t('Behold, how good and how pleasant it is for brethren to dwell together in unity! Psalms 133:1', '¡Mirad cuán bueno y cuán delicioso es habitar los hermanos igualmente en uno! Salmos 133:1')}</blockquote></section>
       <div class="pew-actions"><button class="primary" data-pew="menu">${t('Play again', 'Jugar otra vez')}</button><button class="secondary" data-pew="games">${t('All games', 'Todos los juegos')}</button></div>`);
+  }
+
+  /* ---------- solo: one phone, no room, no server ---------- */
+  const REFLECT = {
+    amen: [['You said Amen. What verse or experience backs you up? Now picture a believer you respect who would answer differently, and why.', 'Dijiste Amén. ¿Qué versículo o experiencia te respalda? Ahora piensa en un creyente que respetas y que respondería distinto, y por qué.'],
+      ['You said Amen. Freedom in Christ is real. Would your answer change if a newer believer were watching you?', 'Dijiste Amén. La libertad en Cristo es real. ¿Cambiaría tu respuesta si un creyente nuevo te estuviera viendo?']],
+    mercy: [['You said Lord, have mercy. What bothers you most: the thing itself, or what it usually leads to?', 'Dijiste Señor, ten piedad. ¿Qué te inquieta más: la cosa en sí, o a lo que normalmente lleva?'],
+      ['You said Lord, have mercy. Holding a line is good. How would you say it with grace to someone who sees it the other way?', 'Dijiste Señor, ten piedad. Mantener un límite es bueno. ¿Cómo se lo dirías con gracia a alguien que lo ve diferente?']],
+    pray: [['You said Let me pray on it. Gray areas are real. Read the verse below and ask: what would honor God and love my neighbor here?', 'Dijiste Lo voy a orar. Las zonas grises son reales. Lee el versículo y pregúntate: ¿qué honraría a Dios y amaría a mi prójimo aquí?'],
+      ['You said Let me pray on it. Who could you talk this over with this week: a friend, your spouse, or your pastor?', 'Dijiste Lo voy a orar. ¿Con quién podrías platicar esto esta semana: un amigo, tu cónyuge o tu pastor?']],
+  };
+  function solo() {
+    stopPoll();
+    S = { view: 'solo', cat: (S && S.cat) || 'all', timer: S && S.timer !== undefined ? S.timer : 60, deck: buildDeck((S && S.cat) || 'all'), i: 0, pick: null, picks: { amen: 0, mercy: 0, pray: 0 } };
+    renderSolo();
+  }
+  function renderSolo() {
+    if (!S || S.view !== 'solo') return;
+    const top = `${back('menu', t('← Pew Talk', '← Plática de banca'))}${head()}`;
+    const c = card(S.deck[S.i]);
+    if (!c) { soloFinish(); return; }
+    const last = S.i + 1 >= S.deck.length;
+    if (!S.pick) { set(`${top}${cardHtml(c, S.i + 1, S.deck.length)}<p class="lead">${t('What do you say?', '¿Tú qué dices?')}</p>${answerButtons('solo-pick')}<div class="pew-actions"><button class="text-button" data-pew="solo-end">${t('End and see my tally', 'Terminar y ver mi resumen')}</button></div>`); return; }
+    const a = ANSWERS.find(x => x.id === S.pick), r = REFLECT[S.pick][S.i % 2];
+    const verse = c.ref ? `<details class="pew-verse" open><summary>${t('Read the verse', 'Leer el versículo')} · ${esc(es() ? c.ref.es : c.ref.en)}</summary><blockquote>${esc(es() ? c.ref.textEs : c.ref.textEn)}</blockquote><p class="small muted">${esc(es() ? `${c.ref.es} · Reina-Valera 1909` : `${c.ref.en} · KJV`)}</p></details>` : '';
+    set(`${top}${cardHtml(c, S.i + 1, S.deck.length)}<section class="pew-reveal pew-solo-reflect"><div class="pew-group pew-${a.id}"><div class="pew-group-head"><strong>${esc(es() ? a.es : a.en)}</strong></div><p>${esc(es() ? r[1] : r[0])}</p></div>${verse}</section>
+      <div class="pew-actions"><button class="primary" data-pew="solo-next" data-pew-focus>${last ? t('See my tally', 'Ver mi resumen') : t('Next card', 'Siguiente tarjeta')}</button>${last ? '' : `<button class="secondary" data-pew="solo-end">${t('End here', 'Terminar aquí')}</button>`}</div>`);
+  }
+  function soloFinish() {
+    const p = S.picks, n = p.amen + p.mercy + p.pray;
+    set(`${back('menu', t('← Pew Talk', '← Plática de banca'))}${head()}
+      <section class="pew-reveal"><h2>${t('Your tally', 'Tu resumen')}</h2>
+      <p class="lead">${n === 1 ? t('You answered 1 card.', 'Respondiste 1 tarjeta.') : t(`You answered ${n} cards.`, `Respondiste ${n} tarjetas.`)}</p>
+      <div class="pew-tally">${ANSWERS.map(a => `<div class="pew-group pew-${a.id}"><div class="pew-group-head"><strong>${esc(es() ? a.es : a.en)}</strong><span class="pew-num">${p[a.id]}</span></div></div>`).join('')}</div>
+      <p class="small">${t('Pick a card that made you stop and talk it over with someone this week.', 'Escoge una tarjeta que te hizo pensar y platícala con alguien esta semana.')}</p>
+      <blockquote class="pew-closing">${t('Prove all things; hold fast that which is good. 1 Thessalonians 5:21', 'Examinadlo todo; retened lo bueno. 1 Tesalonicenses 5:21')}</blockquote></section>
+      <div class="pew-actions"><button class="primary" data-pew="solo">${t('Play again', 'Jugar otra vez')}</button><button class="secondary" data-pew="menu">${t('Back to Pew Talk', 'Volver a Plática de banca')}</button></div>`);
   }
 
   /* ---------- rooms (friends worker /pew/) ---------- */
@@ -230,6 +271,10 @@ window.MsbPewTalk = (() => {
     if (a === 'leave') { leave(() => menu()); return; }
     if (a === 'cat') { S.cat = b.dataset.cat; menu(); return; }
     if (a === 'timer') { S.timer = Number(b.dataset.n); menu(); return; }
+    if (a === 'solo') { solo(); return; }
+    if (a === 'solo-pick') { if (S && S.view === 'solo' && !S.pick) { S.pick = b.dataset.answer; S.picks[S.pick]++; markSeen(S.deck[S.i]); renderSolo(); } return; }
+    if (a === 'solo-next') { if (S && S.view === 'solo') { S.i++; S.pick = null; if (S.i >= S.deck.length) soloFinish(); else { renderSolo(); window.scrollTo && window.scrollTo(0, 0); } } return; }
+    if (a === 'solo-end') { if (S && S.view === 'solo') soloFinish(); return; }
     if (a === 'create') { create(); return; }
     if (a === 'join-code') { const el = root.querySelector('[data-pew-code]'); join((el ? el.value : '').trim()); return; }
     if (a === 'join') { join(b.dataset.room); return; }

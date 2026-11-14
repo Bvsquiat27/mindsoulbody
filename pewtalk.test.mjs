@@ -91,8 +91,8 @@ test('wired into Games, the router, the offline shell, and online waits for the 
   assert.ok(html.indexOf('pewtalk-data.js') < html.indexOf('pewtalk.js"'));
   for (const f of ['pewtalk-data.js', 'pewtalk.js']) assert.ok(sw.includes(`'./${f}'`), f);
   assert.match(ui, /msbFriendsCall\('\/pew\/hello'/);
-  assert.match(ui, /COMING SOON/);
-  assert.match(ui, /MUY PRONTO/);
+  assert.match(ui, /Rooms are not open right now/);
+  assert.match(ui, /Las salas no están abiertas ahora/);
 });
 
 test('online only: no pass-the-phone mode, a round timer, and the countdown follows the server', () => {
@@ -139,4 +139,37 @@ test('a phone the room lost joins again, and a lost vote is sent again', async (
   const votes = calls.filter(([p]) => p === '/pew/vote');
   assert.equal(votes.length, 2, 'the room forgot the vote, so it is sent again');
   assert.equal(votes[1][1].answer, 'pray');
+});
+
+test('solo play works with no room and no server: pick, reflection with the verse, next, and a tally', async () => {
+  const store = new Map(); let clickHandler = null; const calls = [];
+  const ctx = { window: {}, document: { addEventListener(type, fn) { if (type === 'click') clickHandler = fn; } }, localStorage: { getItem: (k) => store.get(k) ?? null, setItem: (k, v) => store.set(k, String(v)) }, setTimeout, clearInterval() {}, setInterval() { return 1; } };
+  ctx.msbFriendsCall = ctx.window.msbFriendsCall = async (path) => { calls.push(path); throw Error('offline'); };
+  vm.runInNewContext(read('./pewtalk-data.js'), ctx);
+  ctx.MsbPewTalkData = ctx.window.MsbPewTalkData;
+  vm.runInNewContext(read('./pewtalk.js'), ctx);
+  const P = ctx.window.MsbPewTalk;
+  const root = { innerHTML: '', querySelector: () => null, contains: () => true };
+  P._test.setOnline(false); P.show(root, {});
+  assert.match(root.innerHTML, /data-pew="solo"/, 'Play solo shows even when rooms are offline');
+  assert.match(root.innerHTML, /Play solo/);
+  const tap = (dataset) => clickHandler({ target: { closest: () => ({ dataset, disabled: false }) } });
+  tap({ pew: 'cat', cat: 'money' }); tap({ pew: 'solo' });
+  const S = () => P._test.S;
+  assert.equal(S().view, 'solo'); assert.equal(S().deck.length, 16);
+  assert.match(root.innerHTML, /data-pew="solo-pick"/);
+  const first = S().deck[0];
+  tap({ pew: 'solo-pick', answer: 'mercy' });
+  assert.match(root.innerHTML, /You said Lord, have mercy/);
+  assert.match(root.innerHTML, /<details class="pew-verse" open>/);
+  assert.match(root.innerHTML, /data-pew="solo-next"/);
+  tap({ pew: 'solo-pick', answer: 'amen' });
+  assert.deepEqual({ ...S().picks }, { amen: 0, mercy: 1, pray: 0 }, 'one pick per card');
+  tap({ pew: 'solo-next' });
+  assert.notEqual(S().deck[S().i], first);
+  tap({ pew: 'solo-pick', answer: 'pray' }); tap({ pew: 'solo-end' });
+  assert.match(root.innerHTML, /Your tally/);
+  assert.match(root.innerHTML, /You answered 2 cards/);
+  assert.match(root.innerHTML, /Prove all things; hold fast that which is good/);
+  assert.equal(calls.filter((p) => p !== '/pew/hello').length, 0, 'solo never calls the server');
 });
