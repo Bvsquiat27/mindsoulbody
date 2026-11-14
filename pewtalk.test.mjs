@@ -29,6 +29,13 @@ test('about 60 original cards, each with English, Spanish and a category', () =>
   for (const cat of Object.keys(categories)) assert.ok(cards.filter((c) => c.cat === cat).length >= 8, cat);
 });
 
+test('cards speak to Christians of every tradition, with nothing tied to one church', () => {
+  const { window } = load();
+  const text = window.MsbPewTalkData.cards.map((c) => `${c.en} ${c.es}`).join(' ');
+  for (const w of ['icon', 'ícono', 'Pascha', 'Lent', 'Cuaresma', 'homily', 'homilía', 'prayer rope', 'cordón', 'name day', 'Many Years', 'chant', 'sign of the cross', 'persign', 'shrimp', 'blessed bread', 'pan bendito']) assert.equal(text.toLowerCase().includes(w.toLowerCase()), false, w);
+  assert.equal(window.MsbPewTalkData.categories.feast, undefined);
+});
+
 test('nothing is lifted from the retail game: its name and answer cards are not used', () => {
   const all = ['./pewtalk.js', './pewtalk-data.js', './scripts/pew-talk-cards.mjs'].map(read).join('\n').toLowerCase();
   for (const phrase of ['let the church say', 'i rebuke that', 'i convert', 'pray about it when']) assert.equal(all.includes(phrase), false, phrase);

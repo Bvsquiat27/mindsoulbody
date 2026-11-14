@@ -5,9 +5,9 @@ window.MsbPewTalkData = {
    "Church Life",
    "Vida en la iglesia"
   ],
-  "feast": [
-   "Fasts and Feasts",
-   "Ayunos y fiestas"
+  "worship": [
+   "Worship, Prayer and the Bible",
+   "Alabanza, oración y la Biblia"
   ],
   "home": [
    "Home and Family",
@@ -18,8 +18,8 @@ window.MsbPewTalkData = {
    "Amistad y noviazgo"
   ],
   "daily": [
-   "Everyday Faith",
-   "Fe de cada día"
+   "Work, Online and Serving",
+   "Trabajo, redes y servicio"
   ]
  },
  "cards": [
@@ -41,8 +41,8 @@ window.MsbPewTalkData = {
   {
    "id": "on-time",
    "cat": "church",
-   "en": "Should walking in after the Gospel reading still count as on time?",
-   "es": "¿Llegar después de la lectura del Evangelio todavía cuenta como llegar a tiempo?",
+   "en": "Should walking in during the second song still count as on time?",
+   "es": "¿Llegar durante la segunda canción todavía cuenta como llegar a tiempo?",
    "ref": {
     "book": 19,
     "chapter": 122,
@@ -54,25 +54,10 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "hum-along",
-   "cat": "church",
-   "en": "Is it fine to hum along when you do not know the words to the hymn?",
-   "es": "¿Está bien tararear cuando no te sabes la letra del himno?",
-   "ref": {
-    "book": 19,
-    "chapter": 100,
-    "verse": 1,
-    "en": "Psalms 100:1",
-    "es": "Salmos 100:1",
-    "textEn": "Make a joyful noise unto the LORD, all ye lands.",
-    "textEs": "Cantad alegres á Dios, habitantes de toda la tierra."
-   }
-  },
-  {
    "id": "fussy-baby",
    "cat": "church",
-   "en": "Is it okay to step out before the final blessing when the baby is fussing?",
-   "es": "¿Está bien salir antes de la bendición final cuando el bebé está inquieto?",
+   "en": "Is it okay to step out before the last song when the baby is fussing?",
+   "es": "¿Está bien salir antes de la última canción cuando el bebé está inquieto?",
    "ref": {
     "book": 23,
     "chapter": 40,
@@ -84,40 +69,10 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "service-snacks",
+   "id": "service-photo",
    "cat": "church",
-   "en": "Is it okay to bring a quiet snack to a long service for a little one?",
-   "es": "¿Está bien llevar algo de comer, sin hacer ruido, a un servicio largo para un niño pequeño?",
-   "ref": {
-    "book": 41,
-    "chapter": 10,
-    "verse": 14,
-    "en": "Mark 10:14",
-    "es": "Marcos 10:14",
-    "textEn": "But when Jesus saw it, he was much displeased, and said unto them, Suffer the little children to come unto me, and forbid them not: for of such is the kingdom of God.",
-    "textEs": "Y viéndolo Jesús, se enojó, y les dijo: Dejad los niños venir, y no se lo estorbéis; porque de los tales es el reino de Dios."
-   }
-  },
-  {
-   "id": "coffee-hour",
-   "cat": "church",
-   "en": "Should coffee hour after church count as part of the service?",
-   "es": "¿La hora del café después de la iglesia debería contar como parte del servicio?",
-   "ref": {
-    "book": 44,
-    "chapter": 2,
-    "verse": 46,
-    "en": "Acts 2:46",
-    "es": "Hechos 2:46",
-    "textEn": "And they, continuing daily with one accord in the temple, and breaking bread from house to house, did eat their meat with gladness and singleness of heart,",
-    "textEs": "Y perseverando unánimes cada día en el templo, y partiendo el pan en las casas, comían juntos con alegría y con sencillez de corazón,"
-   }
-  },
-  {
-   "id": "icon-photo",
-   "cat": "church",
-   "en": "Is it okay to take a picture of the icons during the service?",
-   "es": "¿Está bien tomar una foto de los íconos durante el servicio?",
+   "en": "Is it okay to take pictures during the service?",
+   "es": "¿Está bien tomar fotos durante el servicio?",
    "ref": {
     "book": 35,
     "chapter": 2,
@@ -144,21 +99,6 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "secret-candle",
-   "cat": "church",
-   "en": "Is it fine to light a candle for someone without telling them?",
-   "es": "¿Está bien encender una vela por alguien sin decírselo?",
-   "ref": {
-    "book": 40,
-    "chapter": 6,
-    "verse": 6,
-    "en": "Matthew 6:6",
-    "es": "Mateo 6:6",
-    "textEn": "But thou, when thou prayest, enter into thy closet, and when thou hast shut thy door, pray to thy Father which is in secret; and thy Father which seeth in secret shall reward thee openly.",
-    "textEs": "Mas tú, cuando oras, éntrate en tu cámara, y cerrada tu puerta, ora á tu Padre que está en secreto; y tu Padre que ve en secreto, te recompensará en público."
-   }
-  },
-  {
    "id": "say-no",
    "cat": "church",
    "en": "Can you volunteer for everything at church and still say no sometimes?",
@@ -174,25 +114,10 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "choir-first",
+   "id": "sermon-nap",
    "cat": "church",
-   "en": "Should the choir get to go first in the food line?",
-   "es": "¿El coro debería pasar primero en la fila de la comida?",
-   "ref": {
-    "book": 40,
-    "chapter": 20,
-    "verse": 16,
-    "en": "Matthew 20:16",
-    "es": "Mateo 20:16",
-    "textEn": "So the last shall be first, and the first last: for many be called, but few chosen.",
-    "textEs": "Así los primeros serán postreros, y los postreros primeros: porque muchos son llamados, mas pocos escogidos."
-   }
-  },
-  {
-   "id": "homily-nap",
-   "cat": "church",
-   "en": "Is it okay to nod off for a second during a long homily if you were up all night?",
-   "es": "¿Está bien cabecear un segundo durante una homilía larga si no dormiste en toda la noche?",
+   "en": "Is it okay to nod off for a second during a long sermon if you were up all night?",
+   "es": "¿Está bien cabecear un segundo durante un sermón largo si no dormiste en toda la noche?",
    "ref": {
     "book": 44,
     "chapter": 20,
@@ -204,10 +129,10 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "homily-long",
+   "id": "sermon-long",
    "cat": "church",
-   "en": "Is it okay to tell the priest, kindly, that the homily ran long?",
-   "es": "¿Está bien decirle al sacerdote, con cariño, que la homilía estuvo larga?",
+   "en": "Is it okay to tell the pastor, kindly, that the sermon ran long?",
+   "es": "¿Está bien decirle al pastor, con cariño, que el sermón estuvo largo?",
    "ref": {
     "book": 20,
     "chapter": 15,
@@ -219,18 +144,18 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "kids-bell",
+   "id": "kids-lead",
    "cat": "church",
-   "en": "Should kids get to ring the church bell once a year?",
-   "es": "¿Deberían dejar que los niños toquen la campana de la iglesia una vez al año?",
+   "en": "Should the kids get to lead one worship song a year?",
+   "es": "¿Deberían dejar que los niños dirijan una canción de alabanza al año?",
    "ref": {
     "book": 19,
-    "chapter": 150,
-    "verse": 5,
-    "en": "Psalms 150:5",
-    "es": "Salmos 150:5",
-    "textEn": "Praise him upon the loud cymbals: Praise him upon the high sounding cymbals.",
-    "textEs": "Alabadle con címbalos resonantes: alabadle con címbalos de júbilo."
+    "chapter": 8,
+    "verse": 2,
+    "en": "Psalms 8:2",
+    "es": "Salmos 8:2",
+    "textEn": "Out of the mouth of babes and sucklings hast thou ordained strength because of thine enemies, That thou mightest still the enemy and the avenger.",
+    "textEs": "De la boca de los chiquitos y de los que maman, fundaste la fortaleza, á causa de tus enemigos, para hacer cesar al enemigo, y al que se venga."
    }
   },
   {
@@ -249,10 +174,235 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "veggie-burger",
-   "cat": "feast",
-   "en": "Does a veggie burger that tastes exactly like meat still count as fasting?",
-   "es": "¿Una hamburguesa vegetal que sabe igualita a la carne todavía cuenta como ayuno?",
+   "id": "greeter-hugs",
+   "cat": "church",
+   "en": "Should church greeters be allowed to hug everyone who walks in?",
+   "es": "¿Los que dan la bienvenida en la iglesia deberían poder abrazar a todos los que llegan?",
+   "ref": {
+    "book": 45,
+    "chapter": 16,
+    "verse": 16,
+    "en": "Romans 16:16",
+    "es": "Romanos 16:16",
+    "textEn": "Salute one another with an holy kiss. The churches of Christ salute you.",
+    "textEs": "Saludaos los unos á los otros con ósculo santo. Os saludan todas las iglesias de Cristo."
+   }
+  },
+  {
+   "id": "announcements",
+   "cat": "church",
+   "en": "Should the announcements ever be longer than the sermon?",
+   "es": "¿Los anuncios deberían durar alguna vez más que el sermón?",
+   "ref": {
+    "book": 46,
+    "chapter": 14,
+    "verse": 40,
+    "en": "1 Corinthians 14:40",
+    "es": "1 Corintios 14:40",
+    "textEn": "Let all things be done decently and in order.",
+    "textEs": "Empero hágase todo decentemente y con orden."
+   }
+  },
+  {
+   "id": "visit-other",
+   "cat": "church",
+   "en": "Is it good to visit a friend’s church from a different tradition?",
+   "es": "¿Es bueno visitar la iglesia de un amigo de otra tradición?",
+   "ref": {
+    "book": 43,
+    "chapter": 17,
+    "verse": 21,
+    "en": "John 17:21",
+    "es": "Juan 17:21",
+    "textEn": "that they all may be one; as thou, Father, art in me, and I in thee, that they also may be one in us: that the world may believe that thou hast sent me.",
+    "textEs": "Para que todos sean una cosa; como tú, oh Padre, en mí, y yo en ti, que también ellos sean en nosotros una cosa: para que el mundo crea que tú me enviaste."
+   }
+  },
+  {
+   "id": "potato-salad",
+   "cat": "church",
+   "en": "Is store-bought potato salad welcome at a church potluck?",
+   "es": "¿La ensalada de papa comprada en la tienda es bienvenida en una comida compartida de la iglesia?",
+   "ref": {
+    "book": 45,
+    "chapter": 12,
+    "verse": 13,
+    "en": "Romans 12:13",
+    "es": "Romanos 12:13",
+    "textEn": "distributing to the necessity of saints; given to hospitality.",
+    "textEs": "Comunicando á las necesidades de los santos; siguiendo la hospitalidad."
+   }
+  },
+  {
+   "id": "raise-hands",
+   "cat": "worship",
+   "en": "Is it okay to raise your hands in worship even if nobody else does?",
+   "es": "¿Está bien levantar las manos en la alabanza aunque nadie más lo haga?",
+   "ref": {
+    "book": 19,
+    "chapter": 134,
+    "verse": 2,
+    "en": "Psalms 134:2",
+    "es": "Salmos 134:2",
+    "textEn": "Lift up your hands in the sanctuary, And bless the LORD.",
+    "textEs": "Alzad vuestras manos al santuario, y bendecid á Jehová."
+   }
+  },
+  {
+   "id": "off-key",
+   "cat": "worship",
+   "en": "Is it fine to sing loudly even when you are off key?",
+   "es": "¿Está bien cantar fuerte aunque desafines?",
+   "ref": {
+    "book": 19,
+    "chapter": 100,
+    "verse": 1,
+    "en": "Psalms 100:1",
+    "es": "Salmos 100:1",
+    "textEn": "Make a joyful noise unto the LORD, all ye lands.",
+    "textEs": "Cantad alegres á Dios, habitantes de toda la tierra."
+   }
+  },
+  {
+   "id": "fog-lights",
+   "cat": "worship",
+   "en": "Do lights and a fog machine help you worship?",
+   "es": "¿Las luces y la máquina de humo te ayudan a alabar?",
+   "ref": {
+    "book": 19,
+    "chapter": 96,
+    "verse": 9,
+    "en": "Psalms 96:9",
+    "es": "Salmos 96:9",
+    "textEn": "O worship the LORD in the beauty of holiness: Fear before him, all the earth.",
+    "textEs": "Encorvaos á Jehová en la hermosura de su santuario: temed delante de él, toda la tierra."
+   }
+  },
+  {
+   "id": "old-hymns",
+   "cat": "worship",
+   "en": "Are the old hymns better than the new worship songs?",
+   "es": "¿Los himnos antiguos son mejores que las canciones de alabanza nuevas?",
+   "ref": {
+    "book": 51,
+    "chapter": 3,
+    "verse": 16,
+    "en": "Colossians 3:16",
+    "es": "Colosenses 3:16",
+    "textEn": "Let the word of Christ dwell in you richly in all wisdom; teaching and admonishing one another in psalms and hymns and spiritual songs, singing with grace in your hearts to the Lord.",
+    "textEs": "La palabra de Cristo habite en vosotros en abundancia en toda sabiduría, enseñándoos y exhortándoos los unos á los otros con salmos é himnos y canciones espirituales, con gracia cantando en vuestros corazones al Señor."
+   }
+  },
+  {
+   "id": "same-chorus",
+   "cat": "worship",
+   "en": "Is it okay when the worship team sings the same chorus eight times?",
+   "es": "¿Está bien que el equipo de alabanza cante el mismo coro ocho veces?",
+   "ref": {
+    "book": 19,
+    "chapter": 136,
+    "verse": 1,
+    "en": "Psalms 136:1",
+    "es": "Salmos 136:1",
+    "textEn": "O give thanks unto the LORD; for he is good: For his mercy endureth for ever.",
+    "textEs": "Alabad á Jehová, porque es bueno; porque para siempre es su misericordia."
+   }
+  },
+  {
+   "id": "short-grace",
+   "cat": "worship",
+   "en": "Should the person praying over the meal keep it under one minute?",
+   "es": "¿Quien ora por la comida debería hacerlo en menos de un minuto?",
+   "ref": {
+    "book": 40,
+    "chapter": 6,
+    "verse": 7,
+    "en": "Matthew 6:7",
+    "es": "Mateo 6:7",
+    "textEn": "But when ye pray, use not vain repetitions, as the heathen do: for they think that they shall be heard for their much speaking.",
+    "textEs": "Y orando, no seáis prolijos, como los Gentiles; que piensan que por su parlería serán oídos."
+   }
+  },
+  {
+   "id": "eyes-open",
+   "cat": "worship",
+   "en": "Is it okay to pray with your eyes open?",
+   "es": "¿Está bien orar con los ojos abiertos?",
+   "ref": {
+    "book": 19,
+    "chapter": 121,
+    "verse": 1,
+    "en": "Psalms 121:1",
+    "es": "Salmos 121:1",
+    "textEn": "I will lift up mine eyes unto the hills, From whence cometh my help.",
+    "textEs": "Alzaré mis ojos á los montes, de donde vendrá mi socorro."
+   }
+  },
+  {
+   "id": "pray-aloud",
+   "cat": "worship",
+   "en": "Should everyone take a turn praying out loud in small group?",
+   "es": "¿Todos deberían tomar un turno para orar en voz alta en el grupo pequeño?",
+   "ref": {
+    "book": 40,
+    "chapter": 18,
+    "verse": 20,
+    "en": "Matthew 18:20",
+    "es": "Mateo 18:20",
+    "textEn": "For where two or three are gathered together in my name, there am I in the midst of them.",
+    "textEs": "Porque donde están dos ó tres congregados en mi nombre, allí estoy en medio de ellos."
+   }
+  },
+  {
+   "id": "bible-app",
+   "cat": "worship",
+   "en": "Does reading the Bible on your phone count the same as a paper Bible?",
+   "es": "¿Leer la Biblia en tu teléfono cuenta igual que una Biblia de papel?",
+   "ref": {
+    "book": 19,
+    "chapter": 119,
+    "verse": 105,
+    "en": "Psalms 119:105",
+    "es": "Salmos 119:105",
+    "textEn": "Thy word is a lamp unto my feet, And a light unto my path.",
+    "textEs": "Lámpara es á mis pies tu palabra, y lumbrera á mi camino."
+   }
+  },
+  {
+   "id": "bible-notes",
+   "cat": "worship",
+   "en": "Is it okay to highlight and write all over your Bible?",
+   "es": "¿Está bien subrayar y escribir por toda tu Biblia?",
+   "ref": {
+    "book": 19,
+    "chapter": 119,
+    "verse": 11,
+    "en": "Psalms 119:11",
+    "es": "Salmos 119:11",
+    "textEn": "Thy word have I hid in mine heart, That I might not sin against thee.",
+    "textEs": "En mi corazón he guardado tus dichos, para no pecar contra ti."
+   }
+  },
+  {
+   "id": "bible-year",
+   "cat": "worship",
+   "en": "Should every Christian try reading the whole Bible in a year?",
+   "es": "¿Todo cristiano debería intentar leer toda la Biblia en un año?",
+   "ref": {
+    "book": 55,
+    "chapter": 3,
+    "verse": 16,
+    "en": "2 Timothy 3:16",
+    "es": "2 Timoteo 3:16",
+    "textEn": "All scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness:",
+    "textEs": "Toda Escritura es inspirada divinamente y útil para enseñar, para redargüir, para corregir, para instituir en justicia,"
+   }
+  },
+  {
+   "id": "give-up",
+   "cat": "worship",
+   "en": "Is giving up sweets for a season a good way to grow closer to God?",
+   "es": "¿Dejar los dulces por una temporada es buena manera de acercarte a Dios?",
    "ref": {
     "book": 29,
     "chapter": 2,
@@ -264,153 +414,18 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "plan-pascha",
-   "cat": "feast",
-   "en": "Is it okay to start planning your Pascha feast in the first week of Lent?",
-   "es": "¿Está bien empezar a planear tu banquete de Pascua en la primera semana de Cuaresma?",
-   "ref": {
-    "book": 21,
-    "chapter": 3,
-    "verse": 1,
-    "en": "Ecclesiastes 3:1",
-    "es": "Eclesiastés 3:1",
-    "textEn": "To every thing there is a season, and a time to every purpose under the heaven:",
-    "textEs": "Para todas las cosas hay sazón, y todo lo que se quiere debajo del cielo, tiene su tiempo:"
-   }
-  },
-  {
-   "id": "shellfish",
-   "cat": "feast",
-   "en": "Should shrimp really be allowed on fasting days?",
-   "es": "¿De verdad deberían permitirse los camarones en días de ayuno?",
-   "ref": {
-    "book": 45,
-    "chapter": 14,
-    "verse": 3,
-    "en": "Romans 14:3",
-    "es": "Romanos 14:3",
-    "textEn": "Let not him that eateth despise him that eateth not; and let not him which eateth not judge him that eateth: for God hath received him.",
-    "textEs": "El que come, no menosprecie al que no come: y el que no come, no juzgue al que come; porque Dios le ha levantado."
-   }
-  },
-  {
-   "id": "forgot-fast",
-   "cat": "feast",
-   "en": "If you forget it is a fasting day and eat cheese, does the rest of the day still count?",
-   "es": "Si se te olvida que es día de ayuno y comes queso, ¿el resto del día todavía cuenta?",
-   "ref": {
-    "book": 25,
-    "chapter": 3,
-    "verse": 23,
-    "en": "Lamentations 3:23",
-    "es": "Lamentaciones 3:23",
-    "textEn": "They are new every morning: Great is thy faithfulness.",
-    "textEs": "Nuevas son cada mañana; grande es tu fidelidad."
-   }
-  },
-  {
-   "id": "tell-fasting",
-   "cat": "feast",
-   "en": "Is it fine to tell friends you are fasting when they ask why you skipped dessert?",
-   "es": "¿Está bien decirles a tus amigos que estás ayunando cuando preguntan por qué no comiste postre?",
+   "id": "secret-prayer",
+   "cat": "worship",
+   "en": "Is it fine to pray for someone for years without ever telling them?",
+   "es": "¿Está bien orar por alguien durante años sin decírselo nunca?",
    "ref": {
     "book": 40,
     "chapter": 6,
-    "verse": 17,
-    "en": "Matthew 6:17",
-    "es": "Mateo 6:17",
-    "textEn": "But thou, when thou fastest, anoint thine head, and wash thy face;",
-    "textEs": "Mas tú, cuando ayunas, unge tu cabeza y lava tu rostro;"
-   }
-  },
-  {
-   "id": "red-eggs",
-   "cat": "feast",
-   "en": "At Pascha, should the youngest or the oldest crack the first red egg?",
-   "es": "En Pascua, ¿quién debería chocar primero el huevo rojo, el más pequeño o el más grande?",
-   "ref": {
-    "book": 46,
-    "chapter": 15,
-    "verse": 20,
-    "en": "1 Corinthians 15:20",
-    "es": "1 Corintios 15:20",
-    "textEn": "But now is Christ risen from the dead, and become the firstfruits of them that slept.",
-    "textEs": "Mas ahora Cristo ha resucitado de los muertos; primicias de los que durmieron es hecho."
-   }
-  },
-  {
-   "id": "lent-social",
-   "cat": "feast",
-   "en": "Is it okay to give up social media for Lent and check it just once?",
-   "es": "¿Está bien dejar las redes sociales en Cuaresma y revisarlas solo una vez?",
-   "ref": {
-    "book": 40,
-    "chapter": 26,
-    "verse": 41,
-    "en": "Matthew 26:41",
-    "es": "Mateo 26:41",
-    "textEn": "Watch and pray, that ye enter not into temptation: the spirit indeed is willing, but the flesh is weak.",
-    "textEs": "Velad y orad, para que no entréis en tentación: el espíritu á la verdad está presto, mas la carne enferma."
-   }
-  },
-  {
-   "id": "second-slice",
-   "cat": "feast",
-   "en": "Is a feast day a good reason for a second slice of cake?",
-   "es": "¿Un día de fiesta es buena razón para un segundo pedazo de pastel?",
-   "ref": {
-    "book": 16,
-    "chapter": 8,
-    "verse": 10,
-    "en": "Nehemiah 8:10",
-    "es": "Nehemías 8:10",
-    "textEn": "Then he said unto them, Go your way, eat the fat, and drink the sweet, and send portions unto them for whom nothing is prepared: for this day is holy unto our Lord: neither be ye sorry; for the joy of the LORD is your strength.",
-    "textEs": "Díjoles luego: Id, comed grosuras, y bebed vino dulce, y enviad porciones á los que no tienen prevenido; porque día santo es á nuestro Señor: y no os entristezcáis, porque el gozo de Jehová es vuestra fortaleza."
-   }
-  },
-  {
-   "id": "risen-languages",
-   "cat": "feast",
-   "en": "Should everyone learn to say “Christ is risen” in at least three languages?",
-   "es": "¿Todos deberían aprender a decir “Cristo ha resucitado” en al menos tres idiomas?",
-   "ref": {
-    "book": 44,
-    "chapter": 2,
-    "verse": 8,
-    "en": "Acts 2:8",
-    "es": "Hechos 2:8",
-    "textEn": "And how hear we every man in our own tongue, wherein we were born?",
-    "textEs": "¿Cómo, pues, les oímos nosotros hablar cada uno en nuestra lengua en que somos nacidos?"
-   }
-  },
-  {
-   "id": "blessed-bread",
-   "cat": "feast",
-   "en": "Is it okay to eat the blessed bread on the drive home?",
-   "es": "¿Está bien comerte el pan bendito de camino a casa?",
-   "ref": {
-    "book": 43,
-    "chapter": 6,
-    "verse": 35,
-    "en": "John 6:35",
-    "es": "Juan 6:35",
-    "textEn": "And Jesus said unto them, I am the bread of life: he that cometh to me shall never hunger; and he that believeth on me shall never thirst.",
-    "textEs": "Y Jesús les dijo: Yo soy el pan de vida: el que á mí viene, nunca tendrá hambre; y el que en mí cree, no tendrá sed jamás."
-   }
-  },
-  {
-   "id": "many-years",
-   "cat": "feast",
-   "en": "Is it okay to sing “Many Years” to someone who is turning nine?",
-   "es": "¿Está bien cantarle “Muchos años” a alguien que cumple nueve?",
-   "ref": {
-    "book": 19,
-    "chapter": 118,
-    "verse": 24,
-    "en": "Psalms 118:24",
-    "es": "Salmos 118:24",
-    "textEn": "This is the day which the LORD hath made; We will rejoice and be glad in it.",
-    "textEs": "Este es el día que hizo Jehová: nos gozaremos y alegraremos en él."
+    "verse": 6,
+    "en": "Matthew 6:6",
+    "es": "Mateo 6:6",
+    "textEn": "But thou, when thou prayest, enter into thy closet, and when thou hast shut thy door, pray to thy Father which is in secret; and thy Father which seeth in secret shall reward thee openly.",
+    "textEs": "Mas tú, cuando oras, éntrate en tu cámara, y cerrada tu puerta, ora á tu Padre que está en secreto; y tu Padre que ve en secreto, te recompensará en público."
    }
   },
   {
@@ -506,7 +521,7 @@ window.MsbPewTalkData = {
   {
    "id": "siblings-hands",
    "cat": "home",
-   "en": "Should siblings who were arguing have to hold hands for the Our Father?",
+   "en": "Should siblings who were arguing have to hold hands for the Lord’s Prayer?",
    "es": "¿Los hermanos que estaban discutiendo deberían tomarse de la mano para el Padre Nuestro?",
    "ref": {
     "book": 19,
@@ -519,10 +534,10 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "icon-corners",
+   "id": "verse-walls",
    "cat": "home",
-   "en": "Is it okay to have an icon corner in every room of the house?",
-   "es": "¿Está bien tener un rincón de íconos en cada cuarto de la casa?",
+   "en": "Is it okay to have a Bible verse on every wall of the house?",
+   "es": "¿Está bien tener un versículo en cada pared de la casa?",
    "ref": {
     "book": 5,
     "chapter": 6,
@@ -551,8 +566,8 @@ window.MsbPewTalkData = {
   {
    "id": "car-singing",
    "cat": "home",
-   "en": "Is it fine to sing hymns loudly in the car with the windows down?",
-   "es": "¿Está bien cantar himnos a todo volumen en el carro con las ventanas abajo?",
+   "en": "Is it fine to sing worship songs loudly in the car with the windows down?",
+   "es": "¿Está bien cantar alabanzas a todo volumen en el carro con las ventanas abajo?",
    "ref": {
     "book": 19,
     "chapter": 95,
@@ -564,18 +579,33 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "name-day",
+   "id": "faith-birthday",
    "cat": "home",
-   "en": "Should every name day get a party?",
-   "es": "¿Cada día del santo debería tener fiesta?",
+   "en": "Should the day someone was baptized or came to faith get a party every year?",
+   "es": "¿El día en que alguien fue bautizado o llegó a la fe debería celebrarse con fiesta cada año?",
    "ref": {
-    "book": 58,
-    "chapter": 12,
+    "book": 42,
+    "chapter": 15,
+    "verse": 10,
+    "en": "Luke 15:10",
+    "es": "Lucas 15:10",
+    "textEn": "Likewise, I say unto you, there is joy in the presence of the angels of God over one sinner that repenteth.",
+    "textEs": "Así os digo que hay gozo delante de los ángeles de Dios por un pecador que se arrepiente."
+   }
+  },
+  {
+   "id": "early-christmas",
+   "cat": "home",
+   "en": "Is it okay to put up the Christmas decorations in October?",
+   "es": "¿Está bien poner los adornos de Navidad en octubre?",
+   "ref": {
+    "book": 21,
+    "chapter": 3,
     "verse": 1,
-    "en": "Hebrews 12:1",
-    "es": "Hebreos 12:1",
-    "textEn": "Wherefore seeing we also are compassed about with so great a cloud of witnesses, let us lay aside every weight, and the sin which doth so easily beset us, and let us run with patience the race that is set before us,",
-    "textEs": "Por tanto nosotros también, teniendo en derredor nuestro una tan grande nube de testigos, dejando todo el peso del pecado que nos rodea, corramos con paciencia la carrera que nos es propuesta,"
+    "en": "Ecclesiastes 3:1",
+    "es": "Eclesiastés 3:1",
+    "textEn": "To every thing there is a season, and a time to every purpose under the heaven:",
+    "textEs": "Para todas las cosas hay sazón, y todo lo que se quiere debajo del cielo, tiene su tiempo:"
    }
   },
   {
@@ -624,10 +654,10 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "meet-priest",
+   "id": "meet-pastor",
    "cat": "friends",
-   "en": "Should you meet someone’s priest before you meet their parents?",
-   "es": "¿Deberías conocer al sacerdote de alguien antes que a sus papás?",
+   "en": "Should you meet someone’s pastor before you meet their parents?",
+   "es": "¿Deberías conocer al pastor de alguien antes que a sus papás?",
    "ref": {
     "book": 20,
     "chapter": 11,
@@ -639,7 +669,7 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "unfollow",
+   "id": "mute-friend",
    "cat": "friends",
    "en": "Is it okay to mute a friend who posts too many arguments about religion?",
    "es": "¿Está bien silenciar a un amigo que publica demasiadas discusiones sobre religión?",
@@ -674,13 +704,13 @@ window.MsbPewTalkData = {
    "en": "Is it okay to wait in the car so you do not have to chat after church?",
    "es": "¿Está bien esperar en el carro para no tener que platicar después de la iglesia?",
    "ref": {
-    "book": 58,
-    "chapter": 10,
-    "verse": 25,
-    "en": "Hebrews 10:25",
-    "es": "Hebreos 10:25",
-    "textEn": "not forsaking the assembling of ourselves together, as the manner of some is; but exhorting one another: and so much the more, as ye see the day approaching.",
-    "textEs": "No dejando nuestra congregación, como algunos tienen por costumbre, mas exhortándonos; y tanto más, cuanto veis que aquel día se acerca."
+    "book": 20,
+    "chapter": 18,
+    "verse": 24,
+    "en": "Proverbs 18:24",
+    "es": "Proverbios 18:24",
+    "textEn": "A man that hath friends must shew himself friendly: And there is a friend that sticketh closer than a brother.",
+    "textEs": "El hombre que tiene amigos, ha de mostrarse amigo: y amigo hay más conjunto que el hermano."
    }
   },
   {
@@ -759,10 +789,145 @@ window.MsbPewTalkData = {
    }
   },
   {
-   "id": "cross-test",
+   "id": "work-lunch",
    "cat": "daily",
-   "en": "Is it okay to make the sign of the cross before a test?",
-   "es": "¿Está bien persignarte antes de un examen?",
+   "en": "Is it okay to pray over your lunch in front of coworkers?",
+   "es": "¿Está bien orar por tu almuerzo frente a tus compañeros de trabajo?",
+   "ref": {
+    "book": 40,
+    "chapter": 5,
+    "verse": 16,
+    "en": "Matthew 5:16",
+    "es": "Mateo 5:16",
+    "textEn": "Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.",
+    "textEs": "Así alumbre vuestra luz delante de los hombres, para que vean vuestras obras buenas, y glorifiquen á vuestro Padre que está en los cielos."
+   }
+  },
+  {
+   "id": "email-verse",
+   "cat": "daily",
+   "en": "Should you put a Bible verse in your work email signature?",
+   "es": "¿Deberías poner un versículo en la firma de tu correo del trabajo?",
+   "ref": {
+    "book": 45,
+    "chapter": 1,
+    "verse": 16,
+    "en": "Romans 1:16",
+    "es": "Romanos 1:16",
+    "textEn": "For I am not ashamed of the gospel of Christ: for it is the power of God unto salvation to every one that believeth; to the Jew first, and also to the Greek.",
+    "textEs": "Porque no me avergüenzo del evangelio: porque es potencia de Dios para salud á todo aquel que cree; al Judío primeramente y también al Griego."
+   }
+  },
+  {
+   "id": "post-devotional",
+   "cat": "daily",
+   "en": "Should you post your morning devotional on social media?",
+   "es": "¿Deberías publicar tu devocional de la mañana en las redes sociales?",
+   "ref": {
+    "book": 40,
+    "chapter": 6,
+    "verse": 1,
+    "en": "Matthew 6:1",
+    "es": "Mateo 6:1",
+    "textEn": "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven.",
+    "textEs": "Mirad que no hagáis vuestra justicia delante de los hombres, para ser vistos de ellos: de otra manera no tendréis merced de vuestro Padre que está en los cielos."
+   }
+  },
+  {
+   "id": "church-selfie",
+   "cat": "daily",
+   "en": "Is it okay to post a selfie from church?",
+   "es": "¿Está bien publicar una selfie desde la iglesia?",
+   "ref": {
+    "book": 19,
+    "chapter": 34,
+    "verse": 3,
+    "en": "Psalms 34:3",
+    "es": "Salmos 34:3",
+    "textEn": "O magnify the LORD with me, And let us exalt his name together.",
+    "textEs": "Engrandeced á Jehová conmigo, y ensalcemos su nombre á una."
+   }
+  },
+  {
+   "id": "online-church",
+   "cat": "daily",
+   "en": "Does watching church online in your pajamas count as going to church?",
+   "es": "¿Ver la iglesia en línea en pijama cuenta como ir a la iglesia?",
+   "ref": {
+    "book": 58,
+    "chapter": 10,
+    "verse": 25,
+    "en": "Hebrews 10:25",
+    "es": "Hebreos 10:25",
+    "textEn": "not forsaking the assembling of ourselves together, as the manner of some is; but exhorting one another: and so much the more, as ye see the day approaching.",
+    "textEs": "No dejando nuestra congregación, como algunos tienen por costumbre, mas exhortándonos; y tanto más, cuanto veis que aquel día se acerca."
+   }
+  },
+  {
+   "id": "social-break",
+   "cat": "daily",
+   "en": "Is it okay to give up social media for a season and check it just once?",
+   "es": "¿Está bien dejar las redes sociales por una temporada y revisarlas solo una vez?",
+   "ref": {
+    "book": 40,
+    "chapter": 26,
+    "verse": 41,
+    "en": "Matthew 26:41",
+    "es": "Mateo 26:41",
+    "textEn": "Watch and pray, that ye enter not into temptation: the spirit indeed is willing, but the flesh is weak.",
+    "textEs": "Velad y orad, para que no entréis en tentación: el espíritu á la verdad está presto, mas la carne enferma."
+   }
+  },
+  {
+   "id": "serve-kids",
+   "cat": "daily",
+   "en": "Should everyone serve in the kids ministry at least once?",
+   "es": "¿Todos deberían servir en el ministerio de niños al menos una vez?",
+   "ref": {
+    "book": 41,
+    "chapter": 9,
+    "verse": 37,
+    "en": "Mark 9:37",
+    "es": "Marcos 9:37",
+    "textEn": "Whosoever shall receive one of such children in my name, receiveth me: and whosoever shall receive me, receiveth not me, but him that sent me.",
+    "textEs": "El que recibiere en mi nombre uno de los tales niños, á mí recibe; y el que á mí recibe, no recibe á mí, mas al que me envió."
+   }
+  },
+  {
+   "id": "parking-team",
+   "cat": "daily",
+   "en": "Is serving on the parking team just as important as preaching?",
+   "es": "¿Servir en el equipo de estacionamiento es tan importante como predicar?",
+   "ref": {
+    "book": 46,
+    "chapter": 12,
+    "verse": 21,
+    "en": "1 Corinthians 12:21",
+    "es": "1 Corintios 12:21",
+    "textEn": "And the eye cannot say unto the hand, I have no need of thee: nor again the head to the feet, I have no need of you.",
+    "textEs": "Ni el ojo puede decir á la mano: No te he menester: ni asimismo la cabeza á los pies: No tengo necesidad de vosotros."
+   }
+  },
+  {
+   "id": "give-app",
+   "cat": "daily",
+   "en": "Is giving through an app just as meaningful as the offering plate?",
+   "es": "¿Dar por una aplicación tiene el mismo valor que la ofrenda en el plato?",
+   "ref": {
+    "book": 47,
+    "chapter": 9,
+    "verse": 7,
+    "en": "2 Corinthians 9:7",
+    "es": "2 Corintios 9:7",
+    "textEn": "Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity: for God loveth a cheerful giver.",
+    "textEs": "Cada uno dé como propuso en su corazón: no con tristeza, ó por necesidad; porque Dios ama el dador alegre."
+   }
+  },
+  {
+   "id": "pray-test",
+   "cat": "daily",
+   "en": "Is it okay to pray for help right before a test you did not study for?",
+   "es": "¿Está bien pedirle ayuda a Dios justo antes de un examen para el que no estudiaste?",
    "ref": {
     "book": 50,
     "chapter": 4,
@@ -771,111 +936,6 @@ window.MsbPewTalkData = {
     "es": "Filipenses 4:13",
     "textEn": "I can do all things through Christ which strengtheneth me.",
     "textEs": "Todo lo puedo en Cristo que me fortalece."
-   }
-  },
-  {
-   "id": "ambulance",
-   "cat": "daily",
-   "en": "Should you say a short prayer every time you hear an ambulance?",
-   "es": "¿Deberías decir una oración corta cada vez que escuchas una ambulancia?",
-   "ref": {
-    "book": 52,
-    "chapter": 5,
-    "verse": 17,
-    "en": "1 Thessalonians 5:17",
-    "es": "1 Tesalonicenses 5:17",
-    "textEn": "Pray without ceasing.",
-    "textEs": "Orad sin cesar."
-   }
-  },
-  {
-   "id": "chant-chores",
-   "cat": "daily",
-   "en": "Is it fine to play church chant while doing chores?",
-   "es": "¿Está bien poner cantos de la iglesia mientras haces los quehaceres?",
-   "ref": {
-    "book": 51,
-    "chapter": 3,
-    "verse": 23,
-    "en": "Colossians 3:23",
-    "es": "Colosenses 3:23",
-    "textEn": "and whatsoever ye do, do it heartily, as to the Lord, and not unto men;",
-    "textEs": "Y todo lo que hagáis, hacedlo de ánimo, como al Señor, y no á los hombres;"
-   }
-  },
-  {
-   "id": "parking-spot",
-   "cat": "daily",
-   "en": "Is it okay to ask God for a parking spot?",
-   "es": "¿Está bien pedirle a Dios un lugar para estacionarte?",
-   "ref": {
-    "book": 40,
-    "chapter": 7,
-    "verse": 7,
-    "en": "Matthew 7:7",
-    "es": "Mateo 7:7",
-    "textEn": "Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you:",
-    "textEs": "Pedid, y se os dará; buscad, y hallaréis; llamad, y se os abrirá."
-   }
-  },
-  {
-   "id": "shopping-cart",
-   "cat": "daily",
-   "en": "Should you return the shopping cart even when nobody is watching?",
-   "es": "¿Deberías devolver el carrito del súper aunque nadie te esté viendo?",
-   "ref": {
-    "book": 42,
-    "chapter": 16,
-    "verse": 10,
-    "en": "Luke 16:10",
-    "es": "Lucas 16:10",
-    "textEn": "He that is faithful in that which is least is faithful also in much: and he that is unjust in the least is unjust also in much.",
-    "textEs": "El que es fiel en lo muy poco, también en lo más es fiel: y el que en lo muy poco es injusto, también en lo más es injusto."
-   }
-  },
-  {
-   "id": "pocket-rope",
-   "cat": "daily",
-   "en": "Is it okay to keep a prayer rope in your pocket just in case?",
-   "es": "¿Está bien llevar un cordón de oración en el bolsillo por si acaso?",
-   "ref": {
-    "book": 19,
-    "chapter": 141,
-    "verse": 2,
-    "en": "Psalms 141:2",
-    "es": "Salmos 141:2",
-    "textEn": "Let my prayer be set forth before thee as incense; And the lifting up of my hands as the evening sacrifice.",
-    "textEs": "Sea enderezada mi oración delante de ti como un perfume, el don de mis manos como la ofrenda de la tarde."
-   }
-  },
-  {
-   "id": "not-morning",
-   "cat": "daily",
-   "en": "Can you be a morning-prayer person if you are not a morning person?",
-   "es": "¿Puedes ser de los que oran en la mañana si no eres persona mañanera?",
-   "ref": {
-    "book": 19,
-    "chapter": 5,
-    "verse": 3,
-    "en": "Psalms 5:3",
-    "es": "Salmos 5:3",
-    "textEn": "My voice shalt thou hear in the morning, O LORD; In the morning will I direct my prayer unto thee, and will look up.",
-    "textEs": "Oh Jehová, de mañana oirás mi voz; de mañana me presentaré á ti, y esperaré."
-   }
-  },
-  {
-   "id": "quote-argument",
-   "cat": "daily",
-   "en": "Is it fine to quote a verse to win a family argument?",
-   "es": "¿Está bien citar un versículo para ganar una discusión familiar?",
-   "ref": {
-    "book": 49,
-    "chapter": 4,
-    "verse": 29,
-    "en": "Ephesians 4:29",
-    "es": "Efesios 4:29",
-    "textEn": "Let no corrupt communication proceed out of your mouth, but that which is good to the use of edifying, that it may minister grace unto the hearers.",
-    "textEs": "Ninguna palabra torpe salga de vuestra boca, sino la que sea buena para edificación, para que dé gracia á los oyentes."
    }
   },
   {
@@ -891,66 +951,6 @@ window.MsbPewTalkData = {
     "es": "Santiago 4:15",
     "textEn": "For that ye ought to say, If the Lord will, we shall live, and do this, or that.",
     "textEs": "En lugar de lo cual deberíais decir: Si el Señor quisiere, y si viviéremos, haremos esto ó aquello."
-   }
-  },
-  {
-   "id": "extra-tip",
-   "cat": "daily",
-   "en": "Is it okay to tip extra when your server is having a rough day?",
-   "es": "¿Está bien dejar más propina cuando quien te atiende está teniendo un día difícil?",
-   "ref": {
-    "book": 47,
-    "chapter": 9,
-    "verse": 7,
-    "en": "2 Corinthians 9:7",
-    "es": "2 Corintios 9:7",
-    "textEn": "Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity: for God loveth a cheerful giver.",
-    "textEs": "Cada uno dé como propuso en su corazón: no con tristeza, ó por necesidad; porque Dios ama el dador alegre."
-   }
-  },
-  {
-   "id": "sunday-rest",
-   "cat": "daily",
-   "en": "Is it okay to rest on Sunday afternoon and do absolutely nothing?",
-   "es": "¿Está bien descansar el domingo por la tarde y no hacer absolutamente nada?",
-   "ref": {
-    "book": 40,
-    "chapter": 11,
-    "verse": 28,
-    "en": "Matthew 11:28",
-    "es": "Mateo 11:28",
-    "textEn": "Come unto me, all ye that labour and are heavy laden, and I will give you rest.",
-    "textEs": "Venid á mí todos los que estáis trabajados y cargados, que yo os haré descansar."
-   }
-  },
-  {
-   "id": "lost-keys",
-   "cat": "daily",
-   "en": "Should you thank God out loud when you find your lost keys?",
-   "es": "¿Deberías darle gracias a Dios en voz alta cuando encuentras tus llaves perdidas?",
-   "ref": {
-    "book": 42,
-    "chapter": 15,
-    "verse": 9,
-    "en": "Luke 15:9",
-    "es": "Lucas 15:9",
-    "textEn": "And when she hath found it, she calleth her friends and her neighbours together, saying, Rejoice with me; for I have found the piece which I had lost.",
-    "textEs": "Y cuando la hubiere hallado, junta las amigas y las vecinas, diciendo: Dadme el parabién, porque he hallado la dracma que había perdido."
-   }
-  },
-  {
-   "id": "traffic-smile",
-   "cat": "daily",
-   "en": "Should you smile at the driver who just cut you off?",
-   "es": "¿Deberías sonreírle al conductor que se te acaba de atravesar?",
-   "ref": {
-    "book": 20,
-    "chapter": 15,
-    "verse": 1,
-    "en": "Proverbs 15:1",
-    "es": "Proverbios 15:1",
-    "textEn": "A soft answer turneth away wrath: But grievous words stir up anger.",
-    "textEs": "La blanda respuesta quita la ira: mas la palabra áspera hace subir el furor."
    }
   }
  ]
