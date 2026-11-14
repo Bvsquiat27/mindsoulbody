@@ -102,3 +102,41 @@ test('online only: no pass-the-phone mode, a round timer, and the countdown foll
   assert.match(ui, /st\.msLeft != null \? Date\.now\(\) \+ st\.msLeft/);
   assert.match(ui, /'\/pew\/state'/);
 });
+
+test('a phone the room lost joins again, and a lost vote is sent again', async () => {
+  const store = new Map(), intervals = [], calls = [];
+  let clickHandler = null;
+  const room = (over) => ({ room: 'ABCDE', host: 'MSB-HOST', status: 'waiting', round: 0, phase: 'vote', total: 3, card: null, deck: [], timer: 0, msLeft: null, players: [{ code: 'MSB-HOST', name: 'Host', answered: false, answer: null }, { code: 'MSB-ME', name: 'Me', answered: false, answer: null }], ...over });
+  let stateReply = () => { const e = Error('You are not in that room'); e.status = 403; throw e; };
+  const api = async (path, body) => {
+    calls.push([path, body]);
+    if (path === '/pew/join') return room();
+    if (path === '/pew/state') return stateReply();
+    if (path === '/pew/vote') return room({ status: 'active', card: window.MsbPewTalkData.cards[0].id, players: [{ code: 'MSB-HOST', name: 'Host', answered: false }, { code: 'MSB-ME', name: 'Me', answered: true }] });
+    return { ok: true };
+  };
+  const ctx = { window: {}, document: { addEventListener(type, fn) { if (type === 'click') clickHandler = fn; } }, localStorage: { getItem: (k) => store.get(k) ?? null, setItem: (k, v) => store.set(k, String(v)) }, setTimeout, clearInterval() {}, setInterval(fn) { intervals.push(fn); return intervals.length; } };
+  ctx.msbFriendsId = ctx.window.msbFriendsId = () => ({ code: 'MSB-ME', secret: 's' });
+  ctx.msbFriendsCall = ctx.window.msbFriendsCall = api;
+  vm.runInNewContext(read('./pewtalk-data.js'), ctx);
+  ctx.MsbPewTalkData = ctx.window.MsbPewTalkData;
+  const window = ctx.window;
+  vm.runInNewContext(read('./pewtalk.js'), ctx);
+  const root = { innerHTML: '', querySelector: () => null, contains: () => true };
+  const P = window.MsbPewTalk;
+  P._test.setOnline(true); P.show(root, {});
+  const tap = async (dataset) => { clickHandler({ target: { closest: () => ({ dataset, disabled: false }) } }); await new Promise((r) => setTimeout(r, 0)); };
+  await tap({ pew: 'join', room: 'ABCDE' });
+  assert.equal(calls.filter(([p]) => p === '/pew/join').length, 1);
+  await intervals.at(-2)(); await new Promise((r) => setTimeout(r, 0));
+  assert.equal(calls.filter(([p]) => p === '/pew/join').length, 2, 'a 403 from /pew/state joins the room again');
+  assert.equal(P._test.S.view, 'online'); assert.ok(!P._test.S.gone);
+  stateReply = () => room({ status: 'active', card: window.MsbPewTalkData.cards[0].id });
+  await intervals.at(-2)(); await new Promise((r) => setTimeout(r, 0));
+  await tap({ pew: 'vote', answer: 'pray' });
+  assert.equal(calls.filter(([p]) => p === '/pew/vote').length, 1);
+  await intervals.at(-2)(); await new Promise((r) => setTimeout(r, 0));
+  const votes = calls.filter(([p]) => p === '/pew/vote');
+  assert.equal(votes.length, 2, 'the room forgot the vote, so it is sent again');
+  assert.equal(votes[1][1].answer, 'pray');
+});
