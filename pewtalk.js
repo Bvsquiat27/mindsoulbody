@@ -127,9 +127,26 @@ window.MsbPewTalk = (() => {
     stopPoll();
     poll = setInterval(async () => {
       if (!root || !S || !S.room) { stopPoll(); return; }
-      try { const st = await call('/pew/state', { room: S.room }); if (S && S.room === st.room) { const changed = JSON.stringify(st.players) + st.phase + st.round + st.status !== JSON.stringify(S.st.players) + S.st.phase + S.st.round + S.st.status; S.st = st; stampClock(st); if (changed) renderOnline(); } } catch (e) { if (e && e.status === 404 && S) { S.gone = true; stopPoll(); renderOnline(); } }
+      try { const st = await call('/pew/state', { room: S.room }); if (S && S.room === st.room) { const changed = JSON.stringify(st.players) + st.phase + st.round + st.status !== JSON.stringify(S.st.players) + S.st.phase + S.st.round + S.st.status; S.st = st; stampClock(st); if (changed) renderOnline(); resendLostVote(st); } } catch (e) { if (e && e.status === 404 && S) { S.gone = true; stopPoll(); renderOnline(); } else if (e && e.status === 403 && S) rejoin(); }
     }, 1500);
     clockTick = setInterval(paintClock, 250);
+  }
+  /* The room lives in a plain key-value store, so two changes that land at the
+     same moment (a friend joining while the host sends an invite, or two votes)
+     can overwrite each other. Each phone heals itself: a player the room lost
+     joins again, and a vote the room lost is sent again. */
+  async function rejoin() {
+    if (!S || !S.room || S.rejoining) return;
+    S.rejoining = true;
+    try { const st = await call('/pew/join', { room: S.room }); if (S && st && st.room === S.room) { S.st = st; stampClock(st); renderOnline(); } }
+    catch (err) { if (S && S.view === 'online') { S.gone = true; S.goneMsg = err && err.message; stopPoll(); renderOnline(); } }
+    finally { if (S) S.rejoining = false; }
+  }
+  function resendLostVote(st) {
+    const id = ident(), v = S && S.voted;
+    if (!id || !v || S.busy || st.status !== 'active' || st.phase !== 'vote' || v.round !== st.round) return;
+    const mine = st.players.find(p => p.code === id.code);
+    if (mine && !mine.answered) act('/pew/vote', { round: v.round, answer: v.answer });
   }
   async function showInvites() {
     if (!ident()) return;
@@ -160,7 +177,7 @@ window.MsbPewTalk = (() => {
     const st = S.st, id = ident(), me = id ? id.code : '';
     const host = st.host === me;
     const top = `${back('leave', t('← Leave room', '← Salir de la sala'))}${head()}`;
-    if (S.gone) { set(`${top}<p class="lead">${t('This room has closed.', 'Esta sala se cerró.')}</p><button class="primary" data-pew="menu">${t('Back to Pew Talk', 'Volver a Plática de banca')}</button>`); return; }
+    if (S.gone) { set(`${top}<p class="lead">${t('This room has closed.', 'Esta sala se cerró.')}</p>${S.goneMsg ? `<p class="small muted">${esc(S.goneMsg)}</p>` : ''}<button class="primary" data-pew="menu">${t('Back to Pew Talk', 'Volver a Plática de banca')}</button>`); return; }
     const players = `<div class="pew-players">${st.players.map(p => `<span class="pew-player${p.answered && st.phase === 'vote' && st.status === 'active' ? ' done' : ''}">${esc(p.name)}${p.code === me ? ` (${t('you', 'tú')})` : ''}${p.code === st.host ? ` · ${t('host', 'anfitrión')}` : ''}${st.status === 'active' && st.phase === 'vote' ? ` · ${p.answered ? t('answered', 'respondió') : t('thinking', 'pensando')}` : ''}</span>`).join('')}</div>`;
     if (st.status === 'waiting') {
       const friends = (window.msbFriendsCached ? msbFriendsCached() : []) || [];
@@ -218,7 +235,7 @@ window.MsbPewTalk = (() => {
     if (a === 'join') { join(b.dataset.room); return; }
     if (a === 'invite') { const to = b.dataset.to; call('/pew/invite', { room: S.room, to }).then(() => { if (S && S.invited) { S.invited.push(to); renderOnline(); } }, err => status(err.message)); return; }
     if (a === 'start') { act('/pew/start'); return; }
-    if (a === 'vote') { act('/pew/vote', { round: S.st.round, answer: b.dataset.answer }); return; }
+    if (a === 'vote') { S.voted = { round: S.st.round, answer: b.dataset.answer }; act('/pew/vote', { round: S.st.round, answer: b.dataset.answer }); return; }
     if (a === 'reveal') { act('/pew/reveal'); return; }
     if (a === 'next') { act('/pew/next', { round: S.st.round }); return; }
     if (a === 'end') { act('/pew/next', { round: S.st.round, end: true }); return; }
